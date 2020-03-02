@@ -1,0 +1,49 @@
+{
+  "services": {
+    "consumerId": "91e1b78e-261b-4676-8317-4cf5bfa24a42",
+    "privateKey": {
+      "file": "config/private-key-qa.pem",
+      "version": 2,
+      "algorithm": "RSA",
+      "encoding": "PKCS#8"
+    },
+    "providers": {
+      "@walmart/electrode-ccm-client": {
+        "options": {
+          "environment": "DEV",
+          "cloud": "dev",
+          "node": ""
+        }
+      },
+      "@walmart/electrode-quimby-client": {}
+    }
+  },
+  "plugins": {
+    "inert": {
+      "enable": true
+    },
+    "electrodeStaticPaths": {
+      "enable": true,
+      "options": {
+        "pathPrefix": "dist"
+      }
+    },
+    "webapp": {
+      "module": "@walmart/electrode-index-page",
+      "options": {
+        "pageTitle": "test",
+        "paths": {
+          "/{args*}": {
+            "content": {
+              "module": "./{{env.APP_SRC_DIR}}/server/views/index-view"
+            }
+          }
+        },
+        "cdn": {
+          "enabled": false,
+          "mapping": "config/assets.json"
+        }
+      }
+    }
+  }
+}

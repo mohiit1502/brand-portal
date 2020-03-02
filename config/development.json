@@ -1,0 +1,24 @@
+{
+  "connections": {
+    "default": {
+      "routes": {
+        "cors": true
+      }
+    }
+  },
+  "plugins": {
+    "webapp": {
+      "insertTokenIds": true
+    }
+  },
+  "logging": {
+    "verbose": false,
+    "transports": [
+      {
+        "type": "stdout",
+        "default": true,
+        "level": "warn"
+      }
+    ]
+  }
+}
