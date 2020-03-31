@@ -17,8 +17,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../styles/raleway.css";
+import Login from "./login/login";
 import custom from "../styles/custom.css"; // eslint-disable-line no-unused-vars
-import electrodePng from "../images/electrode.png";
+import electrodePng from "../assets/images/electrode.png";
 import DemoStates from "./demo-states";
 import DemoPureStates from "./demo-pure-states";
 import { DemoButtons } from "./demo-buttons";
@@ -47,9 +48,9 @@ class Home extends React.Component {
       <div styleName="custom.container">
         <Nav {...this.props} />
 
-        {/**/}
+
         <Notifications />
-        {/**/}
+
 
         <section styleName="custom.header">
           <h2>
@@ -69,18 +70,18 @@ class Home extends React.Component {
           <DemoPureStates />
         </div>
 
-        {/**/}
+
         <div styleName="custom.docs-section">
           <DemoCookies />
         </div>
-        {/**/}
 
-        {/**/}
+
+
         <div styleName="custom.docs-section">
           <h6 styleName="custom.docs-header">Demo Isomorphic UI Config</h6>
           <div>config.ui.demo: "{config.ui.demo}"</div>
         </div>
-        {/**/}
+
 
         <div styleName="custom.docs-section">
           <DemoButtons />
@@ -103,3 +104,6 @@ export default connect(
   mapStateToProps,
   dispatch => ({ dispatch })
 )(Home);
+
+
+

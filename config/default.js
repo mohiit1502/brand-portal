@@ -13,7 +13,13 @@ module.exports = {
     }
   },
   ui: {
-    demo: "hello from ui config"
+    demo: "hello from ui configs"
+  },
+  electrodeStaticPaths: {
+    enable: true,
+    options: {
+      pathPrefix: "dist"
+    }
   },
   connections: {
     default: {

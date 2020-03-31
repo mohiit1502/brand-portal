@@ -7,6 +7,7 @@ import "../styles/custom.css";
 class DemoStates extends React.Component {
   render() {
     const { checked, value, dispatch } = this.props;
+    window.console.log(this.state, this.props);
     return (
       <div>
         <h6 styleName="docs-header">Demo Managing States with Redux</h6>

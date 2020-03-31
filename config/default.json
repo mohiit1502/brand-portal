@@ -31,7 +31,7 @@
     "webapp": {
       "module": "@walmart/electrode-index-page",
       "options": {
-        "pageTitle": "test",
+        "pageTitle": "Ro Pro",
         "paths": {
           "/{args*}": {
             "content": {
@@ -39,6 +39,8 @@
             }
           }
         },
+        "serverSideRendering": true,
+
         "cdn": {
           "enabled": false,
           "mapping": "config/assets.json"

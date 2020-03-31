@@ -62,11 +62,21 @@ const showFakeComp = (store, action) => {
   return store || { value: false };
 };
 
+const login = (store, action) => {
+  if (action.type === "GET_LOGIN_LINK") {
+    return {
+      value: action.value
+    };
+  }
+  return store || { value: false };
+};
+
 export default combineReducers({
   checkBox,
   number,
   username,
   textarea,
   selectedOption,
-  showFakeComp
+  showFakeComp,
+  login
 });

@@ -1,0 +1,43 @@
+/*
+** The order of imports is important. custom override should be imported before bootstrap scss.
+*/
+
+@import "override/variables";
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+@font-face {
+  font-family: BogleWeb-Regular;
+  src: url('../assets/fonts/bogle/BogleWeb-Regular.ttf');
+}
+
+html,body {
+  &, .js-content{
+    &, .route-wrapper {
+      & , .view-container {
+        position: relative;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        font-family: BogleWeb-Regular, sans-serif;
+      }
+    }
+  }
+}
+
+/*
+** Generic Classes Start
+*/
+
+.no-border-radius {
+  border-radius: 0;
+}
+
+/*
+** Generic Classes End
+*/
+
+.view-container {
+  @extend .container-fluid;
+}
+
+

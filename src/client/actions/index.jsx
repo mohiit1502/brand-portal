@@ -37,6 +37,13 @@ export const selectOption = value => {
   };
 };
 
+export const getLoginLink = value => {
+  return {
+    type: "GET_LOGIN_LINK",
+    value
+  };
+};
+
 export const setShowFakeComp = value => {
   return {
     type: "SHOW_FAKE_COMP",

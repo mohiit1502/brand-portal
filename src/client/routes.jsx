@@ -1,14 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Home from "./components/home";
 import Demo1 from "./components/demo1";
 import Demo2 from "./components/demo2";
+import Login from "./components/login/login";
+import LoginRedirect from "./components/login/login-redirect";
+
+
 import { withRouter } from "react-router-dom";
 import { renderRoutes } from "react-router-config";
 
 const Root = ({ route, children }) => {
   return (
-    <div>
+    <div className="route-wrapper">
       {renderRoutes(route.routes)}
       {children}
     </div>
@@ -29,7 +32,12 @@ const routes = [
       {
         path: "/",
         exact: true,
-        component: Home
+        component: Login
+      },
+      {
+        path: "/brands",
+        exact: true,
+        component: LoginRedirect
       },
       {
         path: "/demo1",

@@ -22,6 +22,7 @@ class Demo1 extends Component {
     return (
       <div styleName="custom.container">
         <Nav {...this.props} />
+        <div className="btn btn-default btn-danger">ASfd</div>
         <div styleName="demoStyle.container">
           <h2>Forms Demo</h2>
           <form>
