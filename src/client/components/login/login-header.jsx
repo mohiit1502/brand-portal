@@ -2,13 +2,16 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import walmartLogo from "../../assets/images/wm-white-logo.png";
+import walmartLogo from "../../images/wm-white-logo.png";
 import "../../styles/login/login-header.scss";
 
 class LoginHeader extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loginRedirectLink: "/api/login/falcon-redirect"
+    };
   }
 
   render() {
@@ -19,7 +22,7 @@ class LoginHeader extends React.Component {
           <img src={walmartLogo} />
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
-                aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"/>
         </button>
 
@@ -32,7 +35,7 @@ class LoginHeader extends React.Component {
               <a className="nav-link" href="#">FAQ</a>
             </li>
             <li className="nav-item ml-4 d-flex align-items-center">
-              <a className="nav-link btn btn-navy-blue login-btn" href={this.props.loginRedirect}>Login</a>
+              <a className="nav-link btn btn-navy-blue login-btn" href={this.state.loginRedirectLink}>Login</a>
             </li>
           </ul>
         </div>

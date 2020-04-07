@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 import "../styles/raleway.css";
 import Login from "./login/login";
 import custom from "../styles/custom.css"; // eslint-disable-line no-unused-vars
-import electrodePng from "../assets/images/electrode.png";
+
 import DemoStates from "./demo-states";
 import DemoPureStates from "./demo-pure-states";
 import { DemoButtons } from "./demo-buttons";
@@ -57,7 +57,7 @@ class Home extends React.Component {
             <span>Hello from </span>
             <a href="https://github.com/electrode-io">
               {"Electrode"}
-              <img src={electrodePng} />
+
             </a>
           </h2>
         </section>

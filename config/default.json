@@ -28,6 +28,9 @@
         "pathPrefix": "dist"
       }
     },
+    "user-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/user/user-manager-api"
+    },
     "webapp": {
       "module": "@walmart/electrode-index-page",
       "options": {

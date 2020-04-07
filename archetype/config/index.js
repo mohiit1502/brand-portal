@@ -1,6 +1,6 @@
 module.exports = {
   options: {
-    criticalCSS: true,
+    criticalCSS: false,
     jest: false,
     mocha: true,
     typescript: true,
@@ -10,10 +10,11 @@ module.exports = {
     sass: true
   },
   webpack: {
-    cssModuleSupport: true,
+    cssModuleSupport: false,
     electrodeDevOpenBrowser: true
   },
   babel: {
     enableTypeScript: true
   }
 };
+

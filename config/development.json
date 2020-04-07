@@ -2,7 +2,7 @@
   "connections": {
     "default": {
       "routes": {
-        "cors": true
+        "cors": false
       }
     }
   },

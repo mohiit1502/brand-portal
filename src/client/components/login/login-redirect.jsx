@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import ClientUtils from "../../utility/ClientUtils";
+import Http from "../../utility/Http";
 
 
 class LoginRedirect extends React.Component {
@@ -8,7 +11,19 @@ class LoginRedirect extends React.Component {
   }
 
   componentDidMount() {
-    alert();
+
+    const props = ClientUtils.getQueryParams(this.props.location);
+
+    if (!props.code) {
+      //redirect to login again.
+    }
+    Http.post("/api/login/access-token", {code: props.code})
+      .then(res => {
+        window.console.log(res);
+      })
+      .catch(err => {
+        window.console.log(err);
+      });
   }
 
   render() {
@@ -19,7 +34,9 @@ class LoginRedirect extends React.Component {
 }
 
 
-LoginRedirect.propTypes = {};
+LoginRedirect.propTypes = {
+  location: PropTypes.object
+};
 
 const mapStateToProps = state => state;
 

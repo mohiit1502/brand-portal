@@ -34,11 +34,11 @@ const routes = [
         exact: true,
         component: Login
       },
-      {
-        path: "/brands",
-        exact: true,
-        component: LoginRedirect
-      },
+      // {
+      //   path: "/login-redirect",
+      //   exact: true,
+      //   component: LoginRedirect
+      // },
       {
         path: "/demo1",
         exact: true,
