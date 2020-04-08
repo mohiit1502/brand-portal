@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Demo1 from "./components/demo1";
 import Demo2 from "./components/demo2";
 import Login from "./components/login/login";
-import LoginRedirect from "./components/login/login-redirect";
+import UserRegistration from "./components/user-registration/user-registration";
 
 
 import { withRouter } from "react-router-dom";
@@ -34,11 +34,11 @@ const routes = [
         exact: true,
         component: Login
       },
-      // {
-      //   path: "/login-redirect",
-      //   exact: true,
-      //   component: LoginRedirect
-      // },
+      {
+        path: "/register-user",
+        exact: true,
+        component: UserRegistration
+      },
       {
         path: "/demo1",
         exact: true,

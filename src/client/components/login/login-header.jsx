@@ -44,14 +44,8 @@ class LoginHeader extends React.Component {
   }
 }
 
-LoginHeader.propTypes = {
-  loginRedirect: PropTypes.string
-};
+LoginHeader.propTypes = {};
 
-const mapStateToProps = state => {
-  return {
-    loginRedirect: state.login.loginRedirect
-  };
-};
+const mapStateToProps = state => state;
 
 export default connect(mapStateToProps, dispatch => ({dispatch}))(LoginHeader);

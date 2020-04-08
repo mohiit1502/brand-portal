@@ -1,0 +1,13 @@
+@import "../override/variables";
+
+$input-border : 1px solid #979797;
+
+.bootstrap-input-box {
+  label {
+    margin-bottom: 4px;
+  }
+  .form-control-input{
+    border: $input-border;
+    filter: none;
+  }
+}

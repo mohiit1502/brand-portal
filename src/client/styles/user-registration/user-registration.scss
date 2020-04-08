@@ -1,0 +1,37 @@
+@import "../override/variables";
+
+$input-border : 1px solid #979797;
+
+.input-border {
+  border : $input-border;
+}
+
+.register-user-container {
+  & {
+    background: $white;
+  }
+
+  .register-user-left-panel {
+    background: $navy-blue;
+  }
+
+  .register-user-form-panel {
+    .form-content-col {
+      @extend .input-border;
+
+      .form-header-row{
+        .create-profile-header{
+          font-size: 28px;
+        }
+      }
+
+      .form-inputs-row{
+        .submit-btn{
+          @extend .input-border;
+        }
+      }
+
+    }
+  }
+}
+

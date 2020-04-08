@@ -15,6 +15,7 @@ class Demo1 extends Component {
       textarea: { value: "" },
       selectedOption: { value: "0-13" }
     };
+    console.log(props);
   }
 
   render() {
