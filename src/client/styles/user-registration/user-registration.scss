@@ -21,11 +21,16 @@ $input-border : 1px solid #979797;
 
       .form-header-row{
         .create-profile-header{
-          font-size: 28px;
+          font-size: 26px;
         }
       }
 
+      .form-description-row{
+        font-size: 15px;
+      }
+
       .form-inputs-row{
+        font-size: 15px;
         .submit-btn{
           @extend .input-border;
         }

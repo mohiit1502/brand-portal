@@ -104,7 +104,7 @@ class UserRegistration extends React.Component {
                   </div>
                 </div>
 
-                <div className="row form-description-row my-2">
+                <div className="row form-description-row my-4">
                   <div className="col text-left">
                     <span className="create-profile-description text-left">
                       Provide the information in the form below to create your profile. A user profile is must for registering your brand.
