@@ -5,8 +5,6 @@ import Leftnav from "./left-nav/left-nav";
 import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
 import "../styles/home.scss";
-import {Redirect} from "react-router";
-import CONSTANTS from "../constants/constants";
 
 class Home extends React.Component {
   constructor(props) {
@@ -16,9 +14,9 @@ class Home extends React.Component {
   render () {
     return (
       <div className="view-container home-container">
-        <HomeHeader/>
-        <Leftnav />
-        <ContentRenderer/>
+        <HomeHeader {...this.props}/>
+        <Leftnav {...this.props}/>
+        <ContentRenderer {...this.props}/>
       </div>
     );
   }

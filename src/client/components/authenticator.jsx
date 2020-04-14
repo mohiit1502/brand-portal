@@ -19,8 +19,8 @@ class Authenticator extends React.Component {
     return pathname === CONSTANTS.ROUTES.ROOT_PATH;
   }
 
-
   render () {
+
     if (this.state.isLoggedIn) {
       if (this.isRootPath(this.props.location.pathname)) {
         return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH} />;
@@ -32,7 +32,9 @@ class Authenticator extends React.Component {
     } else {
       return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
     }
+
   }
+
 }
 
 Authenticator.propTypes = {

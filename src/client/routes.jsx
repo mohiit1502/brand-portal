@@ -4,13 +4,14 @@ import Demo1 from "./components/temp-delete-later/demo1";
 import Demo2 from "./components/temp-delete-later/demo2";
 import Modal from "./components/modal/custom-modal";
 import Authenticator from "./components/authenticator";
-import CONSTANTS from "./constants/constants";
 import { withRouter } from "react-router-dom";
 import { renderRoutes } from "react-router-config";
 import {Redirect} from "react-router";
+import CONSTANTS from "./constants/constants";
+import ClientUtils from "./utility/ClientUtils";
 
 const Root = ({ route, children }) => {
-  return (
+    return (
     <div className="route-wrapper">
       {renderRoutes(route.routes)}
       {children}
@@ -26,12 +27,12 @@ Root.propTypes = {
 
 const routes = [
    {
-    path: "/",
+    path: CONSTANTS.ROUTES.ROOT_PATH,
     component: withRouter(Root),
     init: "./init-top",
     routes: [
       {
-        path: ["/", "/user-management/user-list"],
+        path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES),
         exact: true,
         component: Authenticator
       },

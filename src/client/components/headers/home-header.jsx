@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import walmartLogo from "../../images/wm-white-logo.png";
 import "../../styles/headers/home-header.scss";
+import CONSTANTS from "../../constants/constants";
 
 class HomeHeader extends React.Component {
   constructor (props) {
@@ -31,7 +32,7 @@ class HomeHeader extends React.Component {
               <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                  aria-expanded="false">Josh Hopkins</a>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
-                <a className="dropdown-item" href="#">Profile</a>
+                <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
                 <a className="dropdown-item" href="#">Logout</a>
               </div>
             </li>

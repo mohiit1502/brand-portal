@@ -12,4 +12,20 @@ export default class ClientUtils {
     return <Redirect to={path} />;
   }
 
+  static  getAllValuesFromRecursiveTree(tree) {
+
+    if (typeof tree !== "object" || tree === null) {
+      return [tree];
+    }
+
+    const list = [];
+
+    for (const i in tree) {
+      if (tree.hasOwnProperty(i)) {
+        list.push(...this.getAllValuesFromRecursiveTree(tree[i]));
+      }
+    }
+    return list;
+  }
+
 }
