@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import {modal} from "./modal-reducers";
 
 // const checkBox = (store, action) => {
 //   if (action.type === "TOGGLE_CHECK") {
@@ -86,8 +87,10 @@ const userRegistration = (store, action) => {
   return store || {};
 };
 
+
 export default combineReducers({
-  userRegistration
+  userRegistration,
+  modal
   // checkBox
   // number,
   // username,

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../../styles/login/login.scss";
-import LoginHeader from "./login-header";
+import LoginHeader from "../headers/login-header";
 
 class Login extends React.Component {
 
@@ -23,7 +23,7 @@ class Login extends React.Component {
         </div>
         <div className="row mt-5 registration-row">
           <div className="col text-center">
-            <a className="register-btn btn btn-primary no-border-radius px-4" href={this.state.registerUserLink}> Register Now </a>
+            <div className="register-btn btn btn-primary no-border-radius px-4"> Register Now </div>
           </div>
         </div>
       </div>

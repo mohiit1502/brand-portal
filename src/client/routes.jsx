@@ -1,19 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Demo1 from "./components/demo1";
-import Demo2 from "./components/demo2";
-import Login from "./components/login/login";
-import UserRegistration from "./components/user-registration/user-registration";
-
-
+import Demo1 from "./components/temp-delete-later/demo1";
+import Demo2 from "./components/temp-delete-later/demo2";
+import Modal from "./components/modal/custom-modal";
+import Authenticator from "./components/authenticator";
+import CONSTANTS from "./constants/constants";
 import { withRouter } from "react-router-dom";
 import { renderRoutes } from "react-router-config";
+import {Redirect} from "react-router";
 
 const Root = ({ route, children }) => {
   return (
     <div className="route-wrapper">
       {renderRoutes(route.routes)}
       {children}
+      <Modal/>
     </div>
   );
 };
@@ -24,20 +25,15 @@ Root.propTypes = {
 };
 
 const routes = [
-  {
+   {
     path: "/",
     component: withRouter(Root),
     init: "./init-top",
     routes: [
       {
-        path: "/",
+        path: ["/", "/user-management/user-list"],
         exact: true,
-        component: Login
-      },
-      {
-        path: "/register-user",
-        exact: true,
-        component: UserRegistration
+        component: Authenticator
       },
       {
         path: "/demo1",
@@ -48,6 +44,10 @@ const routes = [
         path: "/demo2",
         exact: true,
         component: Demo2
+      },
+      {
+        path: "/*",
+        component: () => <Redirect to="/" />
       }
     ]
   }

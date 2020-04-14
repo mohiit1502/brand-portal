@@ -1,8 +1,16 @@
 import React from "react";
-import custom from "../styles/custom.css"; // eslint-disable-line no-unused-vars
+import custom from "../../styles/custom.css"; // eslint-disable-line no-unused-vars
 import milligram from "milligram/dist/milligram.css"; // eslint-disable-line no-unused-vars
-export default () => (
+
+/*
+ * Demostrates a simple pure functional component
+ */
+
+export const DemoButtons = () => (
   <div>
+    <h6 styleName="custom.docs-header">
+      demo CSS modules with buttons from <a href="https://milligram.io/">milligram</a>
+    </h6>
     <div styleName="custom.docs-example">
       <a styleName="milligram.button" href="#">
         Anchor button

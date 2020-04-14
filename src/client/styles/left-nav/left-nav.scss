@@ -1,0 +1,26 @@
+@import "../override/variables";
+
+$nav-grey: #3D454C;
+$left-nav-width : 230px;
+$nav-selected-grey : #2B3339;
+$nav-left-border-color : #F7F9FA;
+.left-nav {
+  background: $nav-grey;
+  max-width: $left-nav-width;
+
+  .nav-item {
+    .nav-link {
+      color : $white;
+      @extend .my-2;
+    }
+
+    .sub-nav-item {
+      line-height: 0;
+      border-left: 6px solid transparent;
+      &.active {
+        background: $nav-selected-grey;
+        border-left: 6px solid $nav-left-border-color;
+      }
+    }
+  }
+}

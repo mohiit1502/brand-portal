@@ -6,8 +6,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { toggleCheck, incNumber, decNumber } from "../actions";
-import "../styles/custom.css";
+import { toggleCheck, incNumber, decNumber } from "../../actions";
+import "../../styles/custom.css";
 
 const DemoPureStates = props => {
   const { checked, value, dispatch } = props;

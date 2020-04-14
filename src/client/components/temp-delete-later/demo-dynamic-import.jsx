@@ -2,10 +2,10 @@ import React from "react";
 import loadable from "@loadable/component";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { setShowFakeComp } from "../actions";
+import { setShowFakeComp } from "../../actions";
 import Promise from "bluebird";
-import demoStyle from "../styles/demo2.css"; // eslint-disable-line no-unused-vars
-import custom from "../styles/custom.css"; // eslint-disable-line no-unused-vars
+import demoStyle from "../../styles/demo2.css"; // eslint-disable-line no-unused-vars
+import custom from "../../styles/custom.css"; // eslint-disable-line no-unused-vars
 
 const Fallback = () => (
   <div styleName="custom.dynamic-demo-fallback">

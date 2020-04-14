@@ -1,13 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import "../../styles/user-registration/user-registration.scss";
 import BootstrapInput from "./bootstrap-input";
+import {toggleModal, TOGGLE_ACTIONS} from "../../actions/modal-actions";
 
 class UserRegistration extends React.Component {
 
   constructor (props) {
     super(props);
-
     this.onInputChange = this.onInputChange.bind(this);
 
     this.state = {
@@ -65,7 +66,6 @@ class UserRegistration extends React.Component {
   }
 
   onInputChange (evt, key) {
-
     if (evt && evt.target && evt.target.value) {
       const targetVal = evt.target.value;
       this.setState(state => {
@@ -78,9 +78,10 @@ class UserRegistration extends React.Component {
     }
   }
 
-  submitRegistrationForm () {
-
-    console.log("hi");
+  submitRegistrationForm (evt) {
+    //evt.preventDefault();
+    console.log(evt);
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW);
   }
 
   render () {
@@ -120,14 +121,14 @@ class UserRegistration extends React.Component {
                           const formInput = this.state.form.inputData[key];
                           return (
                             <BootstrapInput key={key} inputId={key} formId={this.state.form.id} label={formInput.label}
-                              required={formInput.required} value={formInput.value}
-                              type={formInput.type} pattern={formInput.pattern} onChangeEvent={this.onInputChange} />
+                                            required={formInput.required} value={formInput.value}
+                                            type={formInput.type} pattern={formInput.pattern} onChangeEvent={this.onInputChange} />
                           );
                         })
                       }
                       <div className="row mt-5">
                         <div className="col">
-                          <button type="submit" className={`${enabledSubmitClass} submit-btn btn btn-block no-border-radius`} >
+                          <button type="submit" className={`${enabledSubmitClass} submit-btn btn btn-block no-border-radius`} onClick={this.submitRegistrationForm}>
                             CREATE ACCOUNT
                           </button>
                         </div>
@@ -164,13 +165,22 @@ class UserRegistration extends React.Component {
   }
 }
 
+UserRegistration.propTypes = {
+  toggleModal: PropTypes.func
+};
+
 const mapStateToProps = state => {
   return {
-    userRegistration: state.userRegistration
+    userRegistration: state.userRegistration,
+    modal: state.modal
   };
+};
+
+const mapDispatchToProps = {
+  toggleModal
 };
 
 export default connect(
   mapStateToProps,
-  dispatch => ({dispatch})
+  mapDispatchToProps
 )(UserRegistration);

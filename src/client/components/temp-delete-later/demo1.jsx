@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Nav } from "./nav";
-import { inputName, inputTextarea, selectOption } from "../actions";
-import custom from "../styles/custom.css"; // eslint-disable-line no-unused-vars
-import demoStyle from "../styles/demo1.css"; // eslint-disable-line no-unused-vars
+import { inputName, inputTextarea, selectOption } from "../../actions";
+import custom from "../../styles/custom.css"; // eslint-disable-line no-unused-vars
+import demoStyle from "../../styles/demo1.css"; // eslint-disable-line no-unused-vars
 
 class Demo1 extends Component {
   constructor(props) {
@@ -76,9 +76,9 @@ Demo1.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    username: state.username.value,
-    textarea: state.textarea.value,
-    selectedOption: state.selectedOption.value
+    // username: state.username.value,
+    // textarea: state.textarea.value,
+    // selectedOption: state.selectedOption.value
   };
 };
 

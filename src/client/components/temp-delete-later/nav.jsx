@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import styles from "../styles/nav.css"; // eslint-disable-line no-unused-vars
+import styles from "../../styles/nav.css"; // eslint-disable-line no-unused-vars
 
 export class Nav extends Component {
   constructor(props) {

@@ -1,109 +1,31 @@
-/*
- * This is a demo component the Eletrode app generator included
- * to show using Milligram CSS lib and Redux
- * store for display HTML elements and managing states.
- *
- * To start your own app, please replace or remove these files:
- *
- * - this file (home.jsx)
- * - demo-buttons.jsx
- * - demo-pure-states.jsx
- * - demo-states.jsx
- * - reducers/index.jsx
- * - styles/*.css
- *
- */
-
 import React from "react";
 import { connect } from "react-redux";
-import "../styles/raleway.css";
-import Login from "./login/login";
-import custom from "../styles/custom.css"; // eslint-disable-line no-unused-vars
-
-import DemoStates from "./demo-states";
-import DemoPureStates from "./demo-pure-states";
-import { DemoButtons } from "./demo-buttons";
-import DemoDynamicImport from "./demo-dynamic-import";
-import { Nav } from "./nav";
-
-//
-import DemoCookies from "./demo-cookies";
-//
-
-//
-import config from "@walmart/electrode-ui-config";
-//
-
-//
-import Notifications from "react-notify-toast";
-//
+import HomeHeader from "./headers/home-header";
+import Leftnav from "./left-nav/left-nav";
+import ContentRenderer from "./content-renderer/content-renderer";
+import PropTypes from "prop-types";
+import "../styles/home.scss";
+import {Redirect} from "react-router";
+import CONSTANTS from "../constants/constants";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  render() {
+  render () {
     return (
-      <div styleName="custom.container">
-        <Nav {...this.props} />
-
-
-        <Notifications />
-
-
-        <section styleName="custom.header">
-          <h2>
-            <span>Hello from </span>
-            <a href="https://github.com/electrode-io">
-              {"Electrode"}
-
-            </a>
-          </h2>
-        </section>
-
-        <div styleName="custom.docs-section">
-          <DemoStates />
-        </div>
-
-        <div styleName="custom.docs-section">
-          <DemoPureStates />
-        </div>
-
-
-        <div styleName="custom.docs-section">
-          <DemoCookies />
-        </div>
-
-
-
-        <div styleName="custom.docs-section">
-          <h6 styleName="custom.docs-header">Demo Isomorphic UI Config</h6>
-          <div>config.ui.demo: "{config.ui.demo}"</div>
-        </div>
-
-
-        <div styleName="custom.docs-section">
-          <DemoButtons />
-        </div>
-
-        <div styleName="custom.docs-section">
-          <DemoDynamicImport/>
-        </div>
-
+      <div className="view-container home-container">
+        <HomeHeader/>
+        <Leftnav />
+        <ContentRenderer/>
       </div>
     );
   }
 }
 
-Home.propTypes = {};
+Home.propTypes = {
+  location: PropTypes.object
+};
 
-const mapStateToProps = state => state;
-
-export default connect(
-  mapStateToProps,
-  dispatch => ({ dispatch })
-)(Home);
-
-
-
+export default connect()(Home);

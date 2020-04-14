@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import walmartLogo from "../../images/wm-white-logo.png";
-import "../../styles/login/login-header.scss";
+import "../../styles/headers/login-header.scss";
 
 class LoginHeader extends React.Component {
 

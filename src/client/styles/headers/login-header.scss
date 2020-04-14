@@ -1,0 +1,25 @@
+@import "../override/variables";
+
+$nav-max-height : 61px;
+.login-header-nav{
+
+  max-height: $nav-max-height;
+  .walmart-brand{
+    img {
+      width: 122px;
+    }
+  }
+  .navbar-collapsible-header{
+    .nav-item {
+      .nav-link {
+        font-size: 12px;
+        color : white;
+        &.login-btn{
+          width : 90px;
+          border : 1px solid $white;
+          @extend .py-1;
+        }
+      }
+    }
+  }
+}
