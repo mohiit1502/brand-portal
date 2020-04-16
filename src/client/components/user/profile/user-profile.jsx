@@ -208,10 +208,14 @@ class UserProfile extends React.Component {
                   <div className="col h-100">
                     <div className="row pt-5">
                       <div className="col-xl-6 col-10">
-                        <label>
-                          <input type="checkbox" className="mr-2" checked={this.state.form.underwritingChecked} onChange={this.toggleUnderwritingCheck}/>
-                          I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.
-                        </label>
+                        {
+                          this.state.form.isDisabled ? <div><br/><br/></div> :
+                            <label>
+                              <input type="checkbox" className="mr-2" checked={this.state.form.underwritingChecked} onChange={this.toggleUnderwritingCheck}/>
+                              I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.
+                            </label>
+
+                        }
                       </div>
                     </div>
                     <div className="row pt-5">
