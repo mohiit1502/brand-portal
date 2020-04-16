@@ -41,7 +41,7 @@ class Leftnav extends React.Component {
 
   render () {
     return (
-      <div className="left-nav h-100 w-25">
+      <div className="left-nav d-inline-block">
         <ul className="nav flex-column">
           {
             this.state.NAVIGATION_PANEL.map((item => {

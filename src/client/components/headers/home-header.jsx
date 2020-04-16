@@ -12,7 +12,7 @@ class HomeHeader extends React.Component {
   render() {
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark home-header-nav">
+      <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <a className="navbar-brand walmart-brand" href="#">
           <img src={walmartLogo} />
         </a>

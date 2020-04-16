@@ -1,0 +1,69 @@
+@import "../override/variables";
+
+$input-blue: #017DC6;
+$disabled-background : #F7F7F7;
+$disabled-font : #A3A8A9;
+$input-border : 1px solid #979797;
+
+.custom-input-form-group {
+
+  .custom-input-label{
+    margin: 0;
+    top: -47px;
+    position: relative;
+    left: 15px;
+    background: white;
+    //padding: 0 5px;
+    font-size: 12px;
+
+    .label-upper-bg{
+      z-index: 1;
+    }
+
+    .label-lower-bg {
+      top : 50%;
+      z-index: 1;
+    }
+
+    .label-text {
+      position: relative;
+      z-index: 2;
+      margin: 0 5px;
+    }
+
+  }
+
+
+
+  .custom-input-element{
+    height: 34px;
+    font-size: 14px;
+    padding-left: 20px;
+    border : 1px solid $input-border;
+    &:focus, &:active{
+      box-shadow: none;
+      border : 1px solid $input-blue;
+
+      & + .custom-input-label {
+        color : $input-blue;
+      }
+    }
+
+    &[disabled]{
+      color : $disabled-font;
+      & + .custom-input-label {
+        color : $disabled-font;
+        background: white;
+        .label-lower-bg {
+          background: $disabled-background;
+        }
+      }
+
+      background: $disabled-background;
+    }
+  }
+
+  .custom-input-help-text{
+
+  }
+}

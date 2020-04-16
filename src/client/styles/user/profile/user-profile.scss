@@ -1,0 +1,9 @@
+@import "../../override/variables";
+
+.user-profile-content {
+  .password-reset-row {
+    .badge {
+      border: 1px solid $blue;
+    }
+  }
+}

@@ -9,7 +9,8 @@
   font-family: BogleWeb-Regular;
   src: url('../assets/fonts/bogle/BogleWeb-Regular.ttf');
 }
-
+$min-viewport-width : 1024px;
+$min-viewport-height : 768px;
 html,body {
   &, .js-content{
     &, .route-wrapper {
@@ -20,6 +21,8 @@ html,body {
         height: 100%;
         width: 100%;
         font-family: BogleWeb-Regular, sans-serif;
+        min-width: $min-viewport-width;
+        min-height: $min-viewport-height;
       }
     }
   }
@@ -41,6 +44,45 @@ html,body {
   cursor: default;
 }
 
+.h-10 {
+  height: 10%;
+}
+
+.h-20 {
+  height: 20%;
+}
+
+.h-40 {
+  height: 40%;
+}
+
+.h-60 {
+  height: 60%;
+}
+
+.h-80 {
+  height: 80%;
+}
+
+.h-90 {
+  height: 90%;
+}
+
+.font-size-12 {
+  font-size: 12px;
+}
+
+.font-size-13 {
+  font-size: 13px;
+}
+
+.font-size-14 {
+  font-size: 14px;
+}
+
+.font-size-15 {
+  font-size: 15px;
+}
 /*
 ** Generic Classes End
 */

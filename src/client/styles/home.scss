@@ -3,6 +3,7 @@
 .home-container{
   &{
     background: $white;
+    overflow: hidden;
   }
 
   .tag-line-row{
