@@ -9,6 +9,13 @@
   font-family: BogleWeb-Regular;
   src: url('../assets/fonts/bogle/BogleWeb-Regular.ttf');
 }
+
+@font-face {
+  font-family: MyriadPro-Regular;
+  src: url('../assets/fonts/myriad/Myriad-Pro-Regular.ttf');
+}
+
+
 $min-viewport-width : 1024px;
 $min-viewport-height : 768px;
 html,body {
@@ -82,6 +89,10 @@ html,body {
 
 .font-size-15 {
   font-size: 15px;
+}
+
+.btn-sm {
+  @extend .font-size-14;
 }
 /*
 ** Generic Classes End

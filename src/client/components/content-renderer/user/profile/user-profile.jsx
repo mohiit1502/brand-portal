@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../styles/user/profile/user-profile.scss";
+import "../../../../styles/content-renderer/user/profile/user-profile.scss";
 import PropTypes from "prop-types";
-import CustomInput from "../../custom-input/custom-input";
+import CustomInput from "../../../custom-input/custom-input";
 
 class UserProfile extends React.Component {
 
@@ -138,12 +138,12 @@ class UserProfile extends React.Component {
     return (
       <div className="row user-profile-content h-100">
         <div className="col h-100">
-          <div className="row h-10">
+          <div className="row content-header-row h-10">
             <div className="col">
               <h3>User Profile</h3>
             </div>
           </div>
-          <div className="row mt-4 h-90">
+          <div className="row content-row mt-4 h-90">
             <div className="col">
               <form className="h-100" autoComplete="off">
                 <div className="row h-60">

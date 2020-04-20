@@ -1,0 +1,52 @@
+@import "../override/variables";
+
+$table-header-color : #A2ACB2;
+$table-content-color : #2B3339;
+$table-border-color : #E2E5E7;
+
+.custom-table {
+  font-family: MyriadPro-Regular, sans-serif;
+  thead {
+    tr {
+      height: 30px;
+      th {
+        color : $table-header-color;
+        font-size: 10px;
+        font-weight: normal;
+        vertical-align: middle;
+        border: 1px solid $table-border-color;
+        border-top : 0;
+
+        &:first-child {
+          border-left: 0;
+        }
+
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+  }
+
+  tbody {
+
+    tr {
+      height: 48px;
+
+      td {
+        font-size: 14px;
+        font-weight: normal;
+        vertical-align: middle;
+        color : $table-content-color;
+        .company-name {
+          font-size: 10px;
+          display: inline-block;
+          height: 15px;
+          padding: 0px 2px !important;
+          color: #6D7278;
+          border-radius: 2px;
+        }
+      }
+    }
+  }
+}

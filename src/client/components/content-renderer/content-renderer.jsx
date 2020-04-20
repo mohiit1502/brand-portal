@@ -3,7 +3,9 @@ import { connect } from "react-redux";
 import {Route, Switch} from "react-router";
 import CONSTANTS from "../../constants/constants";
 import "../../styles/content-renderer/content-page.scss";
-import UserProfile from "../user/profile/user-profile";
+import UserProfile from "./user/profile/user-profile";
+import UserList from "./user/user-list";
+import UserApproval from "./user/user-approval";
 
 class ContentRenderer extends React.Component {
   constructor (props) {
@@ -18,10 +20,10 @@ class ContentRenderer extends React.Component {
             <UserProfile/>
           </Route>
           <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_LIST}>
-            <div>list</div>
+            <UserList/>
           </Route>
           <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_APPROVAL}>
-            <div>approval</div>
+            <UserApproval/>
           </Route>
         </Switch>
       </div>

@@ -5,5 +5,5 @@
   width: calc(100% - #{$left-nav-width});
   height: calc(100% - #{$nav-max-height});
   overflow: hidden;
-  @extend .p-5;
+  @extend .p-4;
 }
