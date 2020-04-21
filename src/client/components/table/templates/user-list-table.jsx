@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const UserListTable = function(props) {
 
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
-  const { Dropdown } = templateProps;
+  const { Dropdown, dropdownOptions } = templateProps;
 
   return (
     <div className="table-responsive">
@@ -50,7 +50,7 @@ const UserListTable = function(props) {
                       }
                       {
                         cell.column.id === "status" && cell.row.values.role.toLowerCase() !== "super admin" &&
-                        <Dropdown/>
+                        <Dropdown options={dropdownOptions}/>
                       }
                     </td>);
                   })

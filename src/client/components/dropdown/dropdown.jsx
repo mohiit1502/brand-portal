@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../../styles/dropdown/dropdown.scss";
+import PropTypes from "prop-types";
 
 class Dropdown extends React.Component {
 
@@ -12,18 +13,25 @@ class Dropdown extends React.Component {
     return (
       <div className="dropdown custom-dropdown d-inline-block">
 
-        <span className="dropdown-toggle-btn cursor-pointer" data-toggle="dropdown"> &nbsp; ;;; </span>
+        <span className="dropdown-toggle-btn cursor-pointer" data-toggle="dropdown"> &nbsp; {this.props.options.buttonText} </span>
 
         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a className="dropdown-item" href="#">Edit User Profile</a>
-          <a className="dropdown-item" href="#">Suspend User Profile</a>
-          <a className="dropdown-item" href="#">Delete User Profile</a>
-          <a className="dropdown-item" href="#">Resend Invite</a>
+          {
+            this.props.options.dropdownOptions.map((option, i) => {
+              return (
+                <a key={i} id={option.id}className="dropdown-item" onClick={option.clickCallback}>{option.value}</a>
+              );
+            })
+          }
         </div>
       </div>
     );
   }
 }
+
+Dropdown.propTypes = {
+  options: PropTypes.object
+};
 
 const mapStateToProps = state => state;
 

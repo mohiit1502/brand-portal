@@ -4,11 +4,12 @@ const modal = (store, action) => {
   switch (action.type) {
     case "TOGGLE_MODAL": {
       const enable = action.value ? (action.value === TOGGLE_ACTIONS.SHOW) : !store.enable;
-      return { enable };
+      return { enable, template: action.templateName};
     }
     default: {
       return store || {
-        enable: false
+        enable: false,
+        template: null
       };
     }
   }

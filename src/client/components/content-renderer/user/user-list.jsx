@@ -6,13 +6,50 @@ import CustomTable from "../../table/custom-table";
 import dummydata from "./dummydata.js";
 import UserListTable from "../../table/templates/user-list-table";
 import Dropdown from "../../dropdown/dropdown";
+import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 
 class UserList extends React.Component {
 
   constructor (props) {
     super(props);
+
+    this.createNewUser = this.createNewUser.bind(this);
+
     this.state = {
       userList: [],
+      dropdown: {
+        buttonText: ";;;",
+        dropdownOptions: [
+          {
+            id: 1,
+            value: "Edit User Profile",
+            clickCallback (evt) {
+              console.log(1);
+            }
+          },
+          {
+            id: 2,
+            value: "Suspend User Profile",
+            clickCallback (evt) {
+              console.log(2);
+            }
+          },
+          {
+            id: 3,
+            value: "Delete User Profile",
+            clickCallback (evt) {
+              console.log(3);
+            }
+          },
+          {
+            id: 4,
+            value: "Resend Invite",
+            clickCallback (evt) {
+              console.log(4);
+            }
+          }
+        ]
+      },
       userListColumns: [
         {
           Header: "#",
@@ -48,6 +85,13 @@ class UserList extends React.Component {
     this.fetchUserData();
   }
 
+  componentDidUpdate(prevProps) {
+    //console.log(prevProps.userEdit.save, this.props.userEdit.save);
+  }
+
+  createNewUser () {
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "CreateUserTemplate" });
+  }
 
   render () {
 
@@ -63,7 +107,7 @@ class UserList extends React.Component {
             <div className="col h-100">
               <div className="row action-row align-items-center">
                 <div className="col-6">
-                  <div className="btn btn-primary btn-sm px-3">
+                  <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>
                     New User
                   </div>
                 </div>
@@ -83,8 +127,11 @@ class UserList extends React.Component {
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">
-                      { this.state.userList.length && <CustomTable data={this.state.userList} columns={this.state.userListColumns} template={UserListTable}
-                        templateProps={{Dropdown}}/>}
+                      {
+                        this.state.userList.length &&
+                        <CustomTable data={this.state.userList} columns={this.state.userListColumns} template={UserListTable}
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
+                      }
                     </div>
                   </div>
 
@@ -134,9 +181,22 @@ class UserList extends React.Component {
   }
 }
 
-const mapStateToProps = state => state;
+UserList.propTypes = {
+  toggleModal: PropTypes.func
+};
+
+const mapStateToProps = state => {
+  return {
+    modal: state.modal,
+    userEdit : state.userEdit
+  };
+};
+
+const mapDispatchToProps = {
+  toggleModal
+};
 
 export default connect(
   mapStateToProps,
-  dispatch => ({dispatch})
+  mapDispatchToProps
 )(UserList);
