@@ -1,25 +1,56 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../../../styles/content-renderer/user/user-list.scss";
-import { useTable } from "react-table";
 import PropTypes from "prop-types";
 import CustomTable from "../../table/custom-table";
-
+import dummydata from "./dummydata.js";
+import UserListTable from "../../table/templates/user-list-table";
+import Dropdown from "../../dropdown/dropdown";
 
 class UserList extends React.Component {
 
   constructor (props) {
     super(props);
+    this.state = {
+      userList: [],
+      userListColumns: [
+        {
+          Header: "#",
+          accessor: "sequence",
+          canSort: true
+        },
+        {
+          Header: "USER NAME",
+          accessor: "username"
+        },
+        {
+          Header: "ROLE",
+          accessor: "role"
+        },
+        {
+          Header: "ASSOCIATED BRANDS",
+          accessor: "brands"
+        },
+        {
+          Header: "PROFILE STATUS",
+          accessor: "status"
+        }
+      ]
+    };
   }
 
-  componentDidMount() {
+  async fetchUserData () {
+    const userList = await dummydata;
+    this.setState({userList});
+  }
 
+  async componentDidMount() {
+    this.fetchUserData();
   }
 
 
   render () {
 
-    let i = 1;
     return (
       <div className="row user-list-content h-100">
         <div className="col h-100">
@@ -28,7 +59,6 @@ class UserList extends React.Component {
               <h3>User List</h3>
             </div>
           </div>
-
           <div className="row content-row h-90">
             <div className="col h-100">
               <div className="row action-row align-items-center">
@@ -53,7 +83,8 @@ class UserList extends React.Component {
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">
-                      <CustomTable />
+                      { this.state.userList.length && <CustomTable data={this.state.userList} columns={this.state.userListColumns} template={UserListTable}
+                        templateProps={{Dropdown}}/>}
                     </div>
                   </div>
 
@@ -82,15 +113,15 @@ class UserList extends React.Component {
                     </div>
                     <div className="col text-right">
 
-                        <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                          Show 10 Users &nbsp;&nbsp;&nbsp;
-                        </button>
-                        <div className="dropdown-menu user-count-dropdown-menu">
-                          <a className="dropdown-item" >Show 10 Users</a>
-                          <a className="dropdown-item" >Show 20 Users</a>
-                          <a className="dropdown-item" >Show 30 Users</a>
-                        </div>
+                      <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Show 10 Users &nbsp;&nbsp;&nbsp;
+                      </button>
+                      <div className="dropdown-menu user-count-dropdown-menu">
+                        <a className="dropdown-item" >Show 10 Users</a>
+                        <a className="dropdown-item" >Show 20 Users</a>
+                        <a className="dropdown-item" >Show 30 Users</a>
+                      </div>
                     </div>
                   </div>
                 </div>
