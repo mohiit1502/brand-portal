@@ -105,7 +105,7 @@ class UserList extends React.Component {
           </div>
           <div className="row content-row h-90">
             <div className="col h-100">
-              <div className="row action-row align-items-center">
+              <div className="row action-row align-items-center dropdown">
                 <div className="col-6">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>
                     New User
@@ -119,8 +119,166 @@ class UserList extends React.Component {
                     <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name" />
                   </div>
                 </div>
-                <div className="col-lg-1 col-2 text-center">
-                  <span className="filter-btn"> <strong>|</strong> &nbsp;&nbsp; Filter</span>
+                <div className="col-lg-1 col-2 text-center cursor-pointer" data-toggle="dropdown">
+                  <span className="filter-btn" > <strong>|</strong> &nbsp;&nbsp; Filter</span>
+
+                </div>
+                <div className="col-12 filter-dropdown-column">
+                  <div className="dropdown-menu dropdown-menu-right mt-n4 no-border-radius mr-4 px-5 w-100">
+                    <div className="row filter-headers-row align-items-center border-bottom py-3">
+                      <div className="col">
+                        <span className="filters-header-text">Filters</span>
+                      </div>
+                      <div className="col text-right">
+                        <div className="btn filter-btns clear-btn text-primary mx-4">Clear All Filters</div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3">Apply Filters </div>
+                        <span className="filter-close-btn">&times;</span>
+                      </div>
+                    </div>
+                    <div className="row filter-content-row py-3">
+                      <div className="col company-col">
+                        <div className="filter-col-header">
+                          Company
+                        </div>
+                        <ul className="filter-col-list pl-0 mt-2">
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                All
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Mark Monitor
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                ESeal
+                              </label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="col role-col">
+                        <div className="filter-col-header">
+                          Role
+                        </div>
+                        <ul className="filter-col-list pl-0 mt-2">
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                All
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Super Admin
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Admin
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Reporter
+                              </label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="col brand-col">
+                        <div className="filter-col-header">
+                          Associated Brands
+                        </div>
+                        <ul className="filter-col-list pl-0 mt-2">
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                All
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Mark Monitor
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                ESeal
+                              </label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="col status-col">
+                        <div className="filter-col-header">
+                          Profile Status
+                        </div>
+                        <ul className="filter-col-list pl-0 mt-2">
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="radio" value="" id="defaultCheck1" name="profileStatusRadio"/>
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                All
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="radio" value="" id="defaultCheck1" name="profileStatusRadio"/>
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Active
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="radio" value="" id="defaultCheck1" name="profileStatusRadio"/>
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Inactive
+                              </label>
+                            </div>
+                          </li>
+                          <li>
+                            <div className="form-check">
+                              <input className="form-check-input" type="radio" value="" id="defaultCheck1" name="profileStatusRadio"/>
+                              <label className="form-check-label" htmlFor="defaultCheck1">
+                                Suspended
+                              </label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
               <div className="row user-list-row align-items-start">
@@ -130,7 +288,7 @@ class UserList extends React.Component {
                       {
                         this.state.userList.length &&
                         <CustomTable data={this.state.userList} columns={this.state.userListColumns} template={UserListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
+                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
                       }
                     </div>
                   </div>
@@ -161,7 +319,7 @@ class UserList extends React.Component {
                     <div className="col text-right">
 
                       <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                              aria-haspopup="true" aria-expanded="false">
                         Show 10 Users &nbsp;&nbsp;&nbsp;
                       </button>
                       <div className="dropdown-menu user-count-dropdown-menu">

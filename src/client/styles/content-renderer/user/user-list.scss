@@ -5,7 +5,9 @@ $filter-color : #3F484E;
 $action-row-height : 50px;
 $pagination-inactive-color : #627282;
 $dropdown-border : #BBCAD2;
-
+$filters-background : #F7F9FA;
+$filters-text-color : #333333;
+$filer-text-color : #424242;
 .user-list-content {
   .content-row {
     .action-row {
@@ -25,6 +27,46 @@ $dropdown-border : #BBCAD2;
 
       .filter-btn {
         color : $filter-color;
+      }
+
+      .filter-dropdown-column {
+        .dropdown-menu {
+          border : 0;
+          background: $filters-background;
+          box-shadow: 0 2px 0 0 #E1E7E9, 0 -2px 0 0 #E1E7E9;
+
+          .filter-headers-row {
+            .filters-header-text {
+              font-size: 20px;
+              color : $filters-text-color;
+            }
+
+            .filter-btns {
+              font-size: 15px;
+            }
+
+            .filter-close-btn{
+              font-size: 50px;
+              top: -21px;
+              position: absolute;
+            }
+          }
+
+          .filter-content-row {
+            .filter-col-header {
+              color : $filer-text-color;
+            }
+            ul.filter-col-list {
+              list-style: none;
+              li {
+                input[type="checkbox"] {
+                  top: 1px;
+                }
+                @extend .my-2
+              }
+            }
+          }
+        }
       }
 
     }
