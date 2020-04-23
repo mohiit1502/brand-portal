@@ -12,7 +12,7 @@ class CustomModal extends React.Component {
   constructor (props) {
     super(props);
     this.toggleModal = this.toggleModal.bind(this);
-    this.defaultTemplate = this.defaultTemplate.bind(this);
+    // this.defaultTemplate = this.defaultTemplate.bind(this);
   }
 
   componentDidMount() {
@@ -24,29 +24,29 @@ class CustomModal extends React.Component {
     this.toggleModal(toggleAction);
   }
 
-  defaultTemplate() {
-    return (<div className="modal fade show" id="exampleModalCenter" tabIndex="-1" role="dialog">
-      <div className="modal-dialog modal-dialog-centered" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title mx-auto" id="exampleModalCenterTitle">
-              Thank you for Registering!
-            </h5>
-            {/*<button type="button" className="close" aria-label="Close"  onClick={() => this.toggleModal(TOGGLE_ACTIONS.HIDE)}>*/}
-            {/*  <span aria-hidden="true">&times;</span>*/}
-            {/*</button>*/}
-          </div>
-          <div className="modal-body text-center">
-            You still have remaining steps to complete your account activation process. Please check XXXX.XXXX@XXX.com and click the email sent to you to activate your account.
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary"  onClick={() => this.toggleModal(TOGGLE_ACTIONS.HIDE)}>Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>);
-  }
+  // defaultTemplate() {
+  //   return (<div className="modal fade show" id="exampleModalCenter" tabIndex="-1" role="dialog">
+  //     <div className="modal-dialog modal-dialog-centered" role="document">
+  //       <div className="modal-content">
+  //         <div className="modal-header">
+  //           <h5 className="modal-title mx-auto" id="exampleModalCenterTitle">
+  //             Thank you for Registering!
+  //           </h5>
+  //           {/*<button type="button" className="close" aria-label="Close"  onClick={() => this.toggleModal(TOGGLE_ACTIONS.HIDE)}>*/}
+  //           {/*  <span aria-hidden="true">&times;</span>*/}
+  //           {/*</button>*/}
+  //         </div>
+  //         <div className="modal-body text-center">
+  //           You still have remaining steps to complete your account activation process. Please check XXXX.XXXX@XXX.com and click the email sent to you to activate your account.
+  //         </div>
+  //         <div className="modal-footer">
+  //           <button type="button" className="btn btn-secondary"  onClick={() => this.toggleModal(TOGGLE_ACTIONS.HIDE)}>Close</button>
+  //           <button type="button" className="btn btn-primary">Save changes</button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>);
+  // }
 
   fetchTemplate(key) {
     switch (key) {

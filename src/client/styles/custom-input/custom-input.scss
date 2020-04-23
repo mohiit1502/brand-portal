@@ -4,6 +4,71 @@ $input-blue: #017DC6;
 $disabled-background : #F7F7F7;
 $disabled-font : #A3A8A9;
 $input-border : 1px solid #979797;
+$radio-color : #017DC6;
+$radio-border-color : #E2E5E7;
+
+.form-group-radio {
+  margin: 0;
+
+  .radio-btn-box {
+    color : $radio-color;
+    border-radius: 0;
+    height: 38px;
+    width: 106px;
+    border: 1px solid $radio-border-color;
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    label {
+      width: 100%;
+      height: 100%;
+      line-height: 34px;
+      cursor: pointer;
+    }
+
+    &.active {
+      background : $radio-color;
+      color : white;
+    }
+  }
+}
+
+.custom-select-form-group {
+  input[readonly] {
+    background: white;
+  }
+
+  .dropdown-menu{
+    width : 100%;
+    @extend .py-0;
+    .dropdown-item {
+      cursor: pointer;
+      &:active, &:focus, &:hover {
+        background : transparent;
+      }
+    }
+  }
+}
+
+.custom-multi-select-form-group{
+  @extend .custom-select-form-group;
+  .dropdown-menu{
+    .dropdown-item {
+      cursor: default;
+      .overlay-hidden-checkbox {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        visibility: hidden;
+      }
+    }
+  }
+
+
+
+}
 
 .custom-input-form-group {
 
@@ -67,3 +132,4 @@ $input-border : 1px solid #979797;
 
   }
 }
+

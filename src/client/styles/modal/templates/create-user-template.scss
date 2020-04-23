@@ -1,0 +1,34 @@
+@import "../../override/variables";
+
+$header-height : 65px;
+$header-background : #2B3339;
+$header-color : #EFF3F5;
+
+.modal {
+  .modal-dialog {
+    .modal-content {
+      border-radius : 3px;
+      .modal-header {
+        border-radius : 2px;
+        height: $header-height;
+        background: $header-background;
+        color: $header-color;
+        font-size: 20px;
+      }
+
+      .modal-body {
+
+        form {
+          .user-undertaking {
+            top: 2px;
+          }
+
+          .user-undertaking-label {
+            color: $header-background;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}

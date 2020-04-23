@@ -2,12 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import "../../styles/custom-input/custom-input.scss";
+import $ from "jquery";
 
 class CustomInput extends React.Component {
 
   constructor (props) {
     super(props);
     this.onInputChange = this.onInputChange.bind(this);
+    this.getRadioInputType = this.getRadioInputType.bind(this);
+    this.getTextInputType = this.getTextInputType.bind(this);
+    this.getSelectInput = this.getSelectInput.bind(this);
+    this.getMultiSelectInput = this.getMultiSelectInput.bind(this);
+    this.setSelectInputValue = this.setSelectInputValue.bind(this);
+    this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
+    this.setMultiSelectValueFromDropdownOptions = this.setMultiSelectValueFromDropdownOptions.bind(this);
 
     this.state = {
       label: this.props.label,
@@ -19,13 +27,14 @@ class CustomInput extends React.Component {
       value: this.props.value,
       pattern: this.props.pattern,
       disabled: this.props.disabled,
-      onChangeEvent: this.props.onChangeEvent
+      onChangeEvent: this.props.onChangeEvent,
+      radioOptions: this.props.radioOptions,
+      dropdownOptions: this.props.dropdownOptions
     };
   }
 
   onInputChange(evt, key) {
     if (evt && evt.target) {
-
       this.setState({
         value: evt.target.value
       });
@@ -33,8 +42,18 @@ class CustomInput extends React.Component {
     this.state.onChangeEvent(evt, key);
   }
 
+  setSelectInputValue (value, key) {
+    if (value) {
+      this.setState({
+        value
+      });
+    }
+    this.state.onChangeEvent(value, key);
+  }
+
+
   havePropsChanged(prevProps, newProps) {
-    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled"];
+    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "radioOptions", "dropdownOptions"];
     const changedProps = {};
     for (const i in changeableProps) {
       if (prevProps[changeableProps[i]] !== newProps[changeableProps[i]]) {
@@ -49,7 +68,6 @@ class CustomInput extends React.Component {
 
   componentDidUpdate(prevProps) {
     const changedProps = this.havePropsChanged(prevProps, this.props);
-
     if (changedProps) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState(changedProps);
@@ -57,9 +75,123 @@ class CustomInput extends React.Component {
 
   }
 
-  render () {
+  componentDidMount() {
+    this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
+  }
+
+  getSelectInput() {
     return (
-      <div className="form-group custom-input-form-group">
+      <div className="form-group custom-input-form-group custom-select-form-group dropdown">
+        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
+          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
+          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
+          data-toggle="dropdown"/>
+        {this.state.disabled}
+        <label className="custom-input-label" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+          <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
+          <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
+          <span className="label-text"> { this.state.label } </span>
+        </label>
+
+        <div className="dropdown-menu">
+          {
+            this.props.dropdownOptions.map(option => {
+              return <a key={option.id} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value, this.state.inputId); } }>{option.value}</a>;
+            })
+          }
+        </div>
+      </div>
+    );
+  }
+
+
+  setMultiSelectInputValue (evt, key, optionId) {
+    if (evt && evt.target) {
+      const state = {...this.state};
+      const dropdownOptions = state.dropdownOptions;
+      this.setState({
+        dropdownOptions
+      });
+      const selectedList = this.setMultiSelectValueFromDropdownOptions(dropdownOptions);
+      this.state.onChangeEvent(selectedList, key, optionId);
+    }
+  }
+
+  setMultiSelectValueFromDropdownOptions (dropdownOptions) {
+    const selectedList = [];
+    for (const i in dropdownOptions) {
+      if (dropdownOptions[i].selected) {
+        selectedList.push(dropdownOptions[i].value);
+      }
+    }
+    this.setState({
+      value: selectedList.join(", ")
+    });
+    return selectedList;
+  }
+
+
+  getMultiSelectInput () {
+    return (
+
+      <div className="form-group custom-input-form-group custom-multi-select-form-group dropdown">
+        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
+          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
+          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
+          data-toggle="dropdown"/>
+        {this.state.disabled}
+        <label className="custom-input-label" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+          <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
+          <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
+          <span className="label-text"> { this.state.label } </span>
+        </label>
+
+        <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
+          {
+            this.state.dropdownOptions.map(option => {
+              return (
+                <a key={option.id} className="dropdown-item">
+                  <div className="form-check pl-0">
+                    <input className="cursor-pointer" type="checkbox" autoComplete="off" value={option.value}
+                      id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
+                      onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
+                      <label className="form-check-label ml-2 cursor-pointer" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
+                        {option.value}
+                      </label>
+                  </div>
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+    );
+  }
+
+  getRadioInputType () {
+    return (
+      <div className="form-group custom-input-form-group form-group-radio">
+        {
+          this.props.radioOptions.map((option, i) => {
+            return (
+              <div key={i}  className={`btn btn-sm radio-btn-box  p-0 ${this.props.value === option.value ? "active" : "inactive"}`}>
+                <input type="radio" id={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`} name={`${this.state.formId}-${this.state.inputId}-custom-input`}
+                  className="custom-control-input" value={option.value} checked={this.props.value === option.value}
+                  onChange={ e => { this.onInputChange(e, this.state.inputId); }}/>
+                <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
+                  {option.value}
+                </label>
+              </div>
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+  getTextInputType () {
+    return (
+      <div className="form-group custom-input-form-group form-group-text">
 
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
@@ -77,6 +209,21 @@ class CustomInput extends React.Component {
       </div>
     );
   }
+  render () {
+
+    switch (this.props.type) {
+      case "text" :
+      case "email" :
+        return this.getTextInputType();
+      case "radio" :
+        return this.getRadioInputType();
+      case "select" :
+        return this.getSelectInput();
+      case "multiselect" :
+        return this.getMultiSelectInput();
+    }
+    return null;
+  }
 }
 
 CustomInput.propTypes = {
@@ -89,7 +236,9 @@ CustomInput.propTypes = {
   value: PropTypes.string,
   pattern: PropTypes.string,
   disabled: PropTypes.bool,
-  onChangeEvent: PropTypes.func
+  onChangeEvent: PropTypes.func,
+  radioOptions: PropTypes.array,
+  dropdownOptions: PropTypes.array
 };
 
 const mapStateToProps = state => state;
