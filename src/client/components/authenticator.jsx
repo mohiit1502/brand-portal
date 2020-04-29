@@ -5,13 +5,17 @@ import Home from "./home";
 import {Redirect} from "react-router";
 import PropTypes from "prop-types";
 import CONSTANTS from "../constants/constants";
+import Cookies from "electrode-cookies";
 
 class Authenticator extends React.Component {
 
   constructor (props) {
     super(props);
+    const COOKIE_NAME = "session_token";
+    const sessionCookie = Cookies.get(COOKIE_NAME);
+
     this.state = {
-      isLoggedIn: true
+      isLoggedIn: !!sessionCookie
     };
   }
 

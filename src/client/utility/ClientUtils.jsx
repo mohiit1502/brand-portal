@@ -28,4 +28,20 @@ export default class ClientUtils {
     return list;
   }
 
+  static where (arrayList, filterObj) {
+    let index = -1;
+    for (let i = 0; i < arrayList.length; i++) {
+      for (const j in filterObj) {
+        if (filterObj.hasOwnProperty(j) && arrayList[i].hasOwnProperty(j) && filterObj[j] === arrayList[i][j]) {
+          index = i;
+        } else {
+          index = -1;
+        }
+      }
+      if (index !== -1) {
+        return index;
+      }
+    }
+    return index;
+  }
 }

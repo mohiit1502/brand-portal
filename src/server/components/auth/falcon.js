@@ -29,7 +29,7 @@ class Falcon {
           scope: this.scope,
           responseType: this.responseType,
           isInternal: this.isInternal
-        }},{encode : false});
+        }}, {encode: false});
     } catch (err) {
       throw new Error(err);
     }

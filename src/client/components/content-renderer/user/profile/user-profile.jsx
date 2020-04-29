@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "../../../../styles/content-renderer/user/profile/user-profile.scss";
 import PropTypes from "prop-types";
 import CustomInput from "../../../custom-input/custom-input";
+import Http from "../../../../utility/Http";
 
 class UserProfile extends React.Component {
 
@@ -14,6 +15,7 @@ class UserProfile extends React.Component {
     this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
 
     this.state = {
+      pageLoading: true,
       form: {
         isDisabled: true,
         underwritingChecked: false,
@@ -65,19 +67,34 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
+    // const obj = {
+    //   firstName: "Shubhansh",
+    //   lastName: "Sahai",
+    //   companyName: "Walmart Labs",
+    //   emailId: "shubhansh.sahai@walmartlabs.com",
+    //   phone: "9686648597"
+    // };
+    //
+    // this.setFormData(obj);
+    this.getProfileInfo();
+  }
+
+  async getProfileInfo () {
+    const profile = await Http.get("/api/userInfo");
+
     const obj = {
-      firstName: "Shubhansh",
-      lastName: "Sahai",
-      companyName: "Walmart Labs",
-      emailId: "shubhansh.sahai@walmartlabs.com",
-      phone: "9686648597"
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      companyName: profile.organization.name,
+      emailId: profile.loginId,
+      phone: profile.phoneNumber
     };
 
     this.setFormData(obj);
-
   }
 
   setFormData(obj) {
+
     const form = {...this.state.form};
     form.inputData.firstName.value = obj.firstName;
     form.inputData.firstName.disabled = true;
@@ -91,7 +108,8 @@ class UserProfile extends React.Component {
     form.inputData.phone.disabled = true;
 
     this.setState({
-      form
+      form,
+      pageLoading: false
     });
   }
 
@@ -134,7 +152,6 @@ class UserProfile extends React.Component {
   }
 
   render () {
-
     return (
       <div className="row user-profile-content h-100">
         <div className="col h-100">
