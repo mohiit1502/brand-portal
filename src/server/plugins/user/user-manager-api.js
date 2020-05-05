@@ -10,6 +10,10 @@ class UserManagerApi {
     this.register = this.register.bind(this);
     this.loginSuccessRedirect = this.loginSuccessRedirect.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
+    this.logout = this.logout.bind(this);
+    this.getNewUserRoles = this.getNewUserRoles.bind(this);
+    this.getNewUserBrands = this.getNewUserBrands.bind(this);
+    this.createUser = this.createUser.bind(this);
 
     this.name = "UserManagerApi";
   }
@@ -54,23 +58,102 @@ class UserManagerApi {
       },
       {
         method: "GET",
+        path: "/api/newUser/roles",
+        handler: this.getNewUserRoles
+      },
+      {
+        method: "GET",
+        path: "/api/newUser/brands",
+        handler: this.getNewUserBrands
+      },
+      {
+        method: "GET",
         path: "/login-redirect",
         handler: this.loginSuccessRedirect
+      },
+      {
+        method: "GET",
+        path: "/logout",
+        handler: this.logout
+      },
+      {
+        method: "POST",
+        path: "/api/users",
+        handler: this.createUser
       }
     ]);
 
   }
 
-  async getUserInfo (request, h) {
+  getHeaders(request) {
+    return {
+      ROPRO_AUTH_TOKEN: request.state.session_token,
+      ROPRO_USER_ID:	request.state.session_token_login_id,
+      ROPRO_CLIENT_ID:	"abcd"
+    };
+  }
+  async createUser(request, h) {
+    try {
+      const payload = request.payload;
+      const headers = this.getHeaders(request);
+      const options = {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers
+      };
+      console.info("-----");
+      console.info(payload);
+      console.info("-----");
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
+      console.log(options);
+      const json = await fetchJSON(url, options);
+      return h.response(json);
+    } catch (err) {
+      console.error(err);
+      return h.response(err).code(402);
+    }
+
+  }
+
+  async getNewUserRoles (request, h) {
+    const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/role";
+    const headers = this.getHeaders(request);
+
+    const options = {
+      method: "GET",
+      headers
+    };
+
+    const json = await fetchJSON(url, options);
+    return h.response(json);
+  }
+
+  async getNewUserBrands (request, h) {
+    const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/brand/assignable";
+    const headers = this.getHeaders(request);
+    const options = {
+      method: "GET",
+      headers
+    };
+
+    const json = await fetchJSON(url, options);
+    return h.response(json);
+  }
+
+
+  async getUserInfo (request) {
 
     try {
       //temporary login below
-      const login = await this.loginStaticUser();
-      //temporary login above
-      const authToken = login.payload.authenticationToken.authToken;
+      // const login = await this.loginStaticUser();
+      // //temporary login above
+      // const authToken = login.payload.authenticationToken.authToken;
+      //
+      // console.info(request.state.session_token);
+
       const headers = {
-        ROPRO_AUTH_TOKEN: authToken,
-        ROPRO_USER_ID:	"test.admin@ropro.com",
+        ROPRO_AUTH_TOKEN: request.state.session_token,
+        ROPRO_USER_ID:	request.state.session_token_login_id,
         ROPRO_CLIENT_ID:	"abcd"
       };
       const options = {
@@ -78,7 +161,7 @@ class UserManagerApi {
         headers
       };
 
-      const json = await fetchJSON("http://umf.ropro.stg.walmart.com/ropro/umf/v1/user/me", options);
+      const json = await fetchJSON("http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/me", options);
       return json;
     } catch (err) {
       console.error(err);
@@ -118,10 +201,38 @@ class UserManagerApi {
     const query = request.query;
     const ttl = 30 * 60 * 1000;
     // eslint-disable-next-line camelcase
-    const {id_token} = await this.getAccessToken(query.code);
+    /*const {id_token} = await this.getAccessToken(query.code);
     const user = await ServerUtils.decryptToken(id_token);
-    h.state("session_token", id_token, {ttl});
-    return h.redirect(`/user-management/user-list?id_token=${JSON.stringify(user)}`);
+    h.state("session_token", id_token, {ttl});*/
+    //temporary login below
+    const login = await this.loginStaticUser();
+    const authToken = login.payload.authenticationToken.authToken;
+    const loginId = login.payload.principal.loginId;
+    h.state("session_token", authToken, {
+      ttl,
+      isSecure: false,
+      isHttpOnly: false,
+      domain: "localhost",
+      isSameSite: false
+    });
+    h.state("session_token_login_id", loginId, {
+      ttl,
+      isSecure: false,
+      isHttpOnly: false,
+      domain: "localhost",
+      isSameSite: false
+    });
+
+    //temporary login above
+
+
+    return h.redirect(`/user-management/user-list?id_token=${JSON.stringify(login.payload)}`);
+  }
+
+  async logout(request, h) {
+    h.unstate("session_token");
+    h.unstate("session_token_login_id");
+    return h.redirect("/");
   }
 
   async redirectToFalcon (request, h) {

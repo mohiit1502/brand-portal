@@ -10,7 +10,7 @@ class HomeHeader extends React.Component {
   }
 
   render() {
-
+    const logoutUrl = "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=http://localhost:3000/logout";
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <a className="navbar-brand walmart-brand" href="#">
@@ -33,7 +33,7 @@ class HomeHeader extends React.Component {
                  aria-expanded="false">Josh Hopkins</a>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
-                <a className="dropdown-item" href="#">Logout</a>
+                <a className="dropdown-item" href={logoutUrl}>Logout</a>
               </div>
             </li>
           </ul>

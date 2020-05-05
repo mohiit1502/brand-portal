@@ -5,6 +5,9 @@ import {saveUser} from "../../../actions/user/edit-user-actions";
 import {TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import "../../../styles/modal/templates/create-user-template.scss";
 import CustomInput from "../../custom-input/custom-input";
+import Http from "../../../utility/Http";
+import Cookies from "electrode-cookies";
+import ClientUtils from "../../../utility/ClientUtils";
 
 
 class CreateUserTemplate extends React.Component {
@@ -16,6 +19,7 @@ class CreateUserTemplate extends React.Component {
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
       form: {
@@ -88,20 +92,7 @@ class CreateUserTemplate extends React.Component {
             type: "select",
             pattern: null,
             disabled: false,
-            options: [
-              {
-                id: 1,
-                value: "Super Admin"
-              },
-              {
-                id: 2,
-                value: "Admin"
-              },
-              {
-                id: 3,
-                value: "Reporter"
-              }
-            ]
+            options: []
           },
           brands: {
             label: "Assign Brand",
@@ -110,28 +101,7 @@ class CreateUserTemplate extends React.Component {
             type: "multiselect",
             pattern: null,
             disabled: false,
-            options: [
-              {
-                id: 1,
-                value: "Nike",
-                selected: false
-              },
-              {
-                id: 2,
-                value: "Air Force",
-                selected: false
-              },
-              {
-                id: 3,
-                value: "Nike Inc",
-                selected: false
-              },
-              {
-                id: 4,
-                value: "Air Force 1",
-                selected: false
-              }
-            ]
+            options: []
           }
         },
         undertaking: {
@@ -140,6 +110,79 @@ class CreateUserTemplate extends React.Component {
         }
       }
     };
+  }
+
+  componentDidMount() {
+    this.fetchRolesForUser();
+    this.fetchBrandsForUser();
+  }
+
+  async handleSubmit(evt) {
+    evt.preventDefault();
+
+    const loginId = this.state.form.inputData.emailId.value;
+    const brands = this.state.form.inputData.brands.options.filter(v => v.selected).map(v => ({id: v.id}));
+    const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
+    const firstName = this.state.form.inputData.firstName.value;
+    const lastName = this.state.form.inputData.lastName.value;
+    const role = {
+      id: this.state.form.inputData.role.options[ClientUtils.where(this.state.form.inputData.role.options, {value: this.state.form.inputData.role.value})].id
+    };
+
+    const payload = {
+      user: {
+        loginId,
+        firstName,
+        lastName,
+        brands,
+        role,
+        phoneCountry: "+1",
+        phoneNumber: this.state.form.inputData.phone.value
+      }
+    };
+
+    if (isThirdParty) {
+      payload.user = {
+        ...payload.user,
+        properties: {
+        isThirdPary: isThirdParty,
+          companyName: this.state.form.inputData.companyName.value
+      }};
+    }
+
+    const url = "/api/users";
+    Http.post(url, payload)
+      .then(res => {
+        this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+      });
+  }
+
+  async fetchRolesForUser () {
+    const form = {...this.state.form};
+
+    return Http.get("/api/newUser/roles")
+      .then(res => {
+        form.inputData.role.options = res.roles;
+
+        form.inputData.role.options.map(v => {v.value = v.name; });
+
+        this.setState({form});
+
+      });
+  }
+
+  async fetchBrandsForUser () {
+    const form = {...this.state.form};
+
+    return Http.get("/api/newUser/brands")
+      .then(res => {
+        form.inputData.brands.options = res;
+
+        form.inputData.brands.options.map(v => {v.value = v.name; v.selected = false;});
+
+        this.setState({form});
+      });
+
   }
 
   onInputChange (evt, key) {
@@ -204,7 +247,7 @@ class CreateUserTemplate extends React.Component {
               </button>
             </div>
             <div className="modal-body text-left">
-              <form className="h-100 pt-3">
+              <form onSubmit={this.handleSubmit} className="h-100 pt-3">
                 <div className="row">
                   <div className="col">
                     <div className="text-secondary font-size-14 mb-2">Select type of user</div>
@@ -236,17 +279,21 @@ class CreateUserTemplate extends React.Component {
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.lastName.disabled} />
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-4">
-                    <CustomInput key={"companyName"}
-                      inputId={"companyName"}
-                      formId={this.state.form.id} label={this.state.form.inputData.companyName.label}
-                      required={this.state.form.inputData.companyName.required} value={this.state.form.inputData.companyName.value}
-                      type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled} />
+                {
+                  this.state.form.inputData.userType.value.toLowerCase() !== "internal" &&
+                  <div className="row">
+                    <div className="col-4">
+                      <CustomInput key={"companyName"}
+                        inputId={"companyName"}
+                        formId={this.state.form.id} label={this.state.form.inputData.companyName.label}
+                        required={this.state.form.inputData.companyName.required} value={this.state.form.inputData.companyName.value}
+                        type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}
+                        onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled} />
+                    </div>
+                    <div className="col" />
                   </div>
-                  <div className="col" />
-                </div>
+                }
+
                 <div className="row">
                   <div className="col-4">
                     <CustomInput key={"emailId"}
@@ -288,7 +335,7 @@ class CreateUserTemplate extends React.Component {
                 <div className="row">
                   <div className="col">
                     <div className="form-check">
-                      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected}
+                      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
                         {this.state.form.undertaking.label}
@@ -298,7 +345,7 @@ class CreateUserTemplate extends React.Component {
                 </div>
                 <div className="row mt-3">
                   <div className="col text-right">
-                    <div className="btn btn-sm cancel-btn text-primary">Cancel</div>
+                    <div className="btn btn-sm cancel-btn text-primary" type="button" data-dismiss="modal">Cancel</div>
                     <button type="submit" className="btn btn-sm btn-secondary submit-btn px-3 ml-3">Invite</button>
                   </div>
                 </div>

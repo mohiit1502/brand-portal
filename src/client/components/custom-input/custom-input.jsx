@@ -83,7 +83,7 @@ class CustomInput extends React.Component {
     return (
       <div className="form-group custom-input-form-group custom-select-form-group dropdown">
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
+          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown"/>
         {this.state.disabled}
@@ -136,7 +136,7 @@ class CustomInput extends React.Component {
 
       <div className="form-group custom-input-form-group custom-multi-select-form-group dropdown">
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
+          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown"/>
         {this.state.disabled}
