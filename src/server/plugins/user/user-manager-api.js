@@ -14,6 +14,7 @@ class UserManagerApi {
     this.getNewUserRoles = this.getNewUserRoles.bind(this);
     this.getNewUserBrands = this.getNewUserBrands.bind(this);
     this.createUser = this.createUser.bind(this);
+    this.getUsers = this.getUsers.bind(this);
 
     this.name = "UserManagerApi";
   }
@@ -80,6 +81,11 @@ class UserManagerApi {
         method: "POST",
         path: "/api/users",
         handler: this.createUser
+      },
+      {
+        method: "GET",
+        path: "/api/users",
+        handler: this.getUsers
       }
     ]);
 
@@ -92,6 +98,27 @@ class UserManagerApi {
       ROPRO_CLIENT_ID:	"abcd"
     };
   }
+
+  async getUsers(request, h) {
+    try {
+
+      const headers = this.getHeaders(request);
+      const options = {
+        method: "GET",
+        headers
+      };
+
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/";
+      const json = await fetchJSON(url, options);
+      return h.response(json);
+    } catch (err) {
+      console.error(err);
+      return h.response(err).code(402);
+    }
+
+  }
+
+
   async createUser(request, h) {
     try {
       const payload = request.payload;
@@ -101,11 +128,9 @@ class UserManagerApi {
         body: JSON.stringify(payload),
         headers
       };
-      console.info("-----");
-      console.info(payload);
-      console.info("-----");
+
       const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
-      console.log(options);
+
       const json = await fetchJSON(url, options);
       return h.response(json);
     } catch (err) {

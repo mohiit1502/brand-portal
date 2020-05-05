@@ -49,7 +49,7 @@ const UserListTable = function(props) {
                         <span className="company-name ml-2 border font-size-12 p-1">{cell.row.original.company}</span>
                       }
                       {
-                        cell.column.id === "status" && cell.row.values.role.toLowerCase() !== "super admin" &&
+                        cell.column.id === "status" && cell.row.values.role && cell.row.values.role.toLowerCase() !== "admin" &&
                         <Dropdown options={dropdownOptions}/>
                       }
                     </td>);

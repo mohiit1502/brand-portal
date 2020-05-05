@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 
 
 const Table = function ({ columns, data, Template, templateProps }) {
-
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = useTable({ columns, data}, useSortBy);
 
   return <Template {...{getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps}}/>;
@@ -17,16 +16,15 @@ const CustomTable = function (props) {
     () => props.columns,
     []
   );
-
-
-  const data = React.useMemo(
-    () => props.data,
-    []
-  );
+  // TODO: use memo here
+  // let data = React.useMemo(
+  //   () => props.data,
+  //   []
+  // );
 
 
   return (
-    <Table columns={columns} data={data} templateProps={props.templateProps} Template={props.template}/>
+    <Table columns={columns} data={props.data} templateProps={props.templateProps} Template={props.template}/>
   );
 };
 

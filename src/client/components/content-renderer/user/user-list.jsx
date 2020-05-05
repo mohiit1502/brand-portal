@@ -8,6 +8,7 @@ import UserListTable from "../../table/templates/user-list-table";
 import Dropdown from "../../dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import ClientUtils from "../../../utility/ClientUtils";
+import Http from "../../../utility/Http";
 
 class UserList extends React.Component {
 
@@ -16,9 +17,11 @@ class UserList extends React.Component {
 
     this.createNewUser = this.createNewUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
+    this.uiSearch = this.uiSearch.bind(this);
 
     this.state = {
       userList: [],
+      filteredList: [],
       filters: [
         {
           id: "company",
@@ -200,9 +203,37 @@ class UserList extends React.Component {
     };
   }
 
+  async uiSearch (evt) {
+    const searchText = evt.target.value && evt.target.value.toLowerCase();
+    const allUsers = this.state.userList;
+    const filteredList = allUsers.filter(user => {
+      return user.username.toLowerCase().indexOf(searchText) !== -1;
+    });
+    this.setState({filteredList});
+  }
+
   async fetchUserData () {
-    const userList = await dummydata;
-    this.setState({userList});
+    let userList = await Http.get("/api/users");
+
+    userList = userList.records.map((user, i) => {
+      const newUser = {
+        id: user.id,
+        loginId: user.loginId,
+        username: `${user.firstName} ${user.lastName}`,
+        sequence: i + 1,
+        role: user.role.name,
+        brands: user.brands.map(brand => brand.name),
+        status: user.enabled ? "Active" : "Inactive"
+      };
+      if (user.properties && user.properties.isThirdParty) {
+        newUser.company = user.properties.companyName;
+      }
+      return newUser;
+    });
+
+    const filteredList = [...userList];
+
+    this.setState({userList, filteredList});
   }
 
   async componentDidMount() {
@@ -267,7 +298,8 @@ class UserList extends React.Component {
                     <div className="input-group-prepend bg-transparent">
                       <div className="input-group-text bg-transparent">@</div>
                     </div>
-                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name" />
+                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name"
+                      onChange={this.uiSearch}/>
                   </div>
                 </div>
                 <div className="col-lg-1 col-2 text-center cursor-pointer" data-toggle="dropdown">
@@ -326,8 +358,8 @@ class UserList extends React.Component {
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">
                       {
-                        this.state.userList.length &&
-                        <CustomTable data={this.state.userList} columns={this.state.userListColumns} template={UserListTable}
+                        this.state.filteredList.length > 0 &&
+                        <CustomTable data={[...this.state.filteredList]} columns={this.state.userListColumns} template={UserListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
                       }
                     </div>
