@@ -50,7 +50,8 @@ const UserListTable = function(props) {
                       }
                       {
                         cell.column.id === "status" && cell.row.values.role && cell.row.values.role.toLowerCase() !== "admin" &&
-                        <Dropdown options={dropdownOptions}/>
+                          <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions}/>&nbsp;&nbsp;</span>
+
                       }
                     </td>);
                   })

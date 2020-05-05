@@ -9,7 +9,8 @@ import Dropdown from "../../dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import ClientUtils from "../../../utility/ClientUtils";
 import Http from "../../../utility/Http";
-
+import searchIcon from "../../../images/18-px-search.svg";
+import burgerIcon from "../../../images/group-23.svg";
 class UserList extends React.Component {
 
   constructor (props) {
@@ -148,7 +149,7 @@ class UserList extends React.Component {
         }
       ],
       dropdown: {
-        buttonText: ";;;",
+        buttonText: burgerIcon,
         dropdownOptions: [
           {
             id: 1,
@@ -406,7 +407,9 @@ class UserList extends React.Component {
                 <div className="col-lg-5 col-4 text-right">
                   <div className="input-group input-group-sm">
                     <div className="input-group-prepend bg-transparent">
-                      <div className="input-group-text bg-transparent">@</div>
+                      <div className="input-group-text bg-transparent">
+                        <img src={searchIcon} className="Group-23" />
+                      </div>
                     </div>
                     <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name"
                       onChange={this.uiSearch}/>

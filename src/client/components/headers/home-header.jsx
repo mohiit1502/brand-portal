@@ -10,7 +10,7 @@ class HomeHeader extends React.Component {
   }
 
   render() {
-    const logoutUrl = "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=http://electrode-nodejs.dev.ro-pro.catdev.qa.walmart.com/logout";
+    const logoutUrl = "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=http://localhost:3000/logout";
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <a className="navbar-brand walmart-brand" href="#">

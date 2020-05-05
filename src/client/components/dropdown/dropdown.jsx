@@ -13,7 +13,7 @@ class Dropdown extends React.Component {
     return (
       <div className="dropdown custom-dropdown d-inline-block">
 
-        <span className="dropdown-toggle-btn cursor-pointer" data-toggle="dropdown"> &nbsp; {this.props.options.buttonText} </span>
+        <span className="dropdown-toggle-btn cursor-pointer" data-toggle="dropdown"> &nbsp; <img src={this.props.options.buttonText} /> </span>
 
         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
           {
