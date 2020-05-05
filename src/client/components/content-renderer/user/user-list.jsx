@@ -242,7 +242,14 @@ class UserList extends React.Component {
   }
 
   resetFilters() {
-
+    const filters = [...this.state.filters];
+    filters.forEach(filter => {
+      filter.filterOptions.forEach(filterOption => {
+        filterOption.selected = false;
+      });
+    });
+    const filteredList = [...this.state.userList];
+    this.setState({filters, filteredList});
   }
 
   applyFilters() {
