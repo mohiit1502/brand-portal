@@ -18,6 +18,9 @@ class UserList extends React.Component {
     this.createNewUser = this.createNewUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.uiSearch = this.uiSearch.bind(this);
+    this.createFilters = this.createFilters.bind(this);
+    this.resetFilters = this.resetFilters.bind(this);
+    this.applyFilters = this.applyFilters.bind(this);
 
     this.state = {
       userList: [],
@@ -233,7 +236,107 @@ class UserList extends React.Component {
 
     const filteredList = [...userList];
 
+    const filters = this.createFilters(userList);
+
     this.setState({userList, filteredList});
+  }
+
+  resetFilters() {
+
+  }
+
+  applyFilters() {
+    let userList = [...this.state.userList];
+    this.state.filters.map(filter => {
+        const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value!=="all");
+        console.log(filterOptionsSelected)
+
+        if (filterOptionsSelected.length) {
+          const filterId = filter.id;
+          if (filterId === "brands") {
+            userList = userList.filter(user => {
+              let bool = false;
+              filterOptionsSelected.map(filterOption => {
+                user[filterId].map(brand => {
+                  bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1;
+                });
+              });
+              return bool;
+            });
+          } else {
+            userList = userList.filter(user => {
+              let bool = false;
+              filterOptionsSelected.map(filterOption => {
+                bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
+              });
+              return bool;
+            });
+          }
+        }
+    });
+
+    this.setState({filteredList: userList});
+  }
+
+  createFilters(userList) {
+    const brandsSet = new Set();
+    const rolesSet = new Set();
+    const statusSet = new Set();
+    const companySet = new Set();
+
+    userList.map(user => {
+      user.brands.map(brand => {
+        brandsSet.add(brand);
+      });
+      if (user.role) {
+        rolesSet.add(user.role);
+      }
+      if (user.status) {
+        statusSet.add(user.status);
+      }
+
+      if (user.company) {
+        companySet.add(user.company);
+      }
+    });
+
+    const companyFilter = {
+      id: "company",
+      name: "Company",
+      filterOptions: Array.from(companySet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+    };
+
+    const brandsFilter = {
+      id: "brands",
+      name: "Associated Brands",
+      filterOptions: Array.from(brandsSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+    };
+
+    const rolesFilter = {
+      id: "role",
+      name: "Role",
+      filterOptions: Array.from(rolesSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+    };
+
+    const statusFilter = {
+      id: "status",
+      name: "Profile Status",
+      filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+    };
+
+    const filters = [companyFilter, rolesFilter, brandsFilter, statusFilter];
+    filters.forEach(filter => {
+      if (filter.filterOptions.length) {
+        const all = {
+            id: 0,
+            name: "All",
+            value: "all",
+            selected: false
+          };
+        filter.filterOptions.unshift(all);
+      }
+    });
+    this.setState({filters});
   }
 
   async componentDidMount() {
@@ -313,8 +416,8 @@ class UserList extends React.Component {
                         <span className="filters-header-text">Filters</span>
                       </div>
                       <div className="col text-right">
-                        <div className="btn filter-btns clear-btn text-primary mx-4">Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3">Apply Filters </div>
+                        <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={this.applyFilters}>Apply Filters </div>
                         <span className="filter-close-btn">&times;</span>
                       </div>
                     </div>
