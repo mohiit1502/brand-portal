@@ -102,6 +102,7 @@ class UserManagerApi {
   async getUsers(request, h) {
     try {
 
+
       const headers = this.getHeaders(request);
       const options = {
         method: "GET",
@@ -244,14 +245,12 @@ class UserManagerApi {
         ttl,
         isSecure: false,
         isHttpOnly: false,
-        domain: "localhost",
         isSameSite: false
       });
       h.state("session_token_login_id", loginId, {
         ttl,
         isSecure: false,
         isHttpOnly: false,
-        domain: "localhost",
         isSameSite: false
       });
 
