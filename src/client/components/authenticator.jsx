@@ -11,7 +11,7 @@ class Authenticator extends React.Component {
 
   constructor (props) {
     super(props);
-    const COOKIE_NAME = "session_token";
+    const COOKIE_NAME = "auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
 
     this.state = {

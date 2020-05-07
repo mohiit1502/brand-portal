@@ -40,7 +40,7 @@ class UserManagerApi {
   }
 
   register(server) {
-    server.state("session_token", {
+    server.state("auth_session_token", {
       isSecure: false,
       isHttpOnly: false,
       domain: "localhost",
@@ -93,7 +93,7 @@ class UserManagerApi {
 
   getHeaders(request) {
     return {
-      ROPRO_AUTH_TOKEN: request.state.session_token,
+      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"abcd"
     };
@@ -175,10 +175,10 @@ class UserManagerApi {
       // //temporary login above
       // const authToken = login.payload.authenticationToken.authToken;
       //
-      // console.info(request.state.session_token);
+      // console.info(request.state.auth_session_token);
 
       const headers = {
-        ROPRO_AUTH_TOKEN: request.state.session_token,
+        ROPRO_AUTH_TOKEN: request.state.auth_session_token,
         ROPRO_USER_ID:	request.state.session_token_login_id,
         ROPRO_CLIENT_ID:	"abcd"
       };
@@ -236,12 +236,12 @@ class UserManagerApi {
       // eslint-disable-next-line camelcase
       /*const {id_token} = await this.getAccessToken(query.code);
       const user = await ServerUtils.decryptToken(id_token);
-      h.state("session_token", id_token, {ttl});*/
+      h.state("auth_session_token", id_token, {ttl});*/
       //temporary login below
       const login = await this.loginStaticUser();
       const authToken = login.payload.authenticationToken.authToken;
       const loginId = login.payload.principal.loginId;
-      h.state("session_token", authToken, {
+      h.state("auth_session_token", authToken, {
         ttl,
         isSecure: false,
         isHttpOnly: false,
@@ -266,7 +266,7 @@ class UserManagerApi {
   }
 
   async logout(request, h) {
-    h.unstate("session_token");
+    h.unstate("auth_session_token");
     h.unstate("session_token_login_id");
     return h.redirect("/");
   }
