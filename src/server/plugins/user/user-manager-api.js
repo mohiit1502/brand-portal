@@ -40,12 +40,10 @@ class UserManagerApi {
   }
 
   register(server) {
-    server.state("auth_session_token", {
-      isSecure: false,
-      isHttpOnly: false,
-      domain: "localhost",
-      isSameSite: false
-    });
+    // server.state("auth_session_token", {
+    //   isSecure: false,
+    //   isHttpOnly: false
+    // });
     server.route([
       {
         method: "GET",
@@ -244,14 +242,12 @@ class UserManagerApi {
       h.state("auth_session_token", authToken, {
         ttl,
         isSecure: false,
-        isHttpOnly: false,
-        isSameSite: false
+        isHttpOnly: false
       });
       h.state("session_token_login_id", loginId, {
         ttl,
         isSecure: false,
-        isHttpOnly: false,
-        isSameSite: false
+        isHttpOnly: false
       });
 
       //temporary login above
