@@ -289,7 +289,7 @@ class UserManagerApi {
 
       const payload =   {
         code: authorizationCode,
-        redirect_uri: CONSTANTS.IAM.REDIRECT_URL,
+        redirect_uri: CONSTANTS.IAM.BASE_URL + CONSTANTS.IAM.REDIRECT_URL,
         grant_type: CONSTANTS.IAM.GRANT_TYPE
       };
 

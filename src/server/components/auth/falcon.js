@@ -6,7 +6,7 @@ class Falcon {
 
   constructor() {
     this.baseUrl = CONSTANTS.IAM.FALCON_LOGIN_URL;
-    this.redirectUri = CONSTANTS.IAM.REDIRECT_URL;
+    this.redirectUri = CONSTANTS.IAM.BASE_URL + CONSTANTS.IAM.REDIRECT_URL;
     this.clientId = CONSTANTS.IAM.CLIENT_ID;
     this.nonce = ServerUtils.randomStringGenerator(CONSTANTS.IAM.NONCE_STRING_LENGTH).toUpperCase();
     this.clientType = CONSTANTS.IAM.CLIENT_TYPE;

@@ -7,17 +7,21 @@ import CONSTANTS from "../../constants/constants";
 class HomeHeader extends React.Component {
   constructor (props) {
     super(props);
+    console.log();
   }
 
   render() {
-    const logoutUrl = "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=http://localhost:3000/logout";
+    //TODO: correct the config for logout;
+
+    const baseUrl = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === "development" ? "http://localhost:3000" : "http://electrode-nodejs.dev.ro-pro.catdev.qa.walmart.com";
+    const logoutUrl = `https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=${baseUrl}/logout`;
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <a className="navbar-brand walmart-brand" href="#">
           <img src={walmartLogo} />
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
-                aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"/>
         </button>
 
@@ -30,7 +34,7 @@ class HomeHeader extends React.Component {
             </li>
             <li className="nav-item dropdown nav-item-profile ml-4">
               <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                 aria-expanded="false">Josh Hopkins</a>
+                aria-expanded="false">Josh Hopkins</a>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
                 <a className="dropdown-item" href={logoutUrl}>Logout</a>

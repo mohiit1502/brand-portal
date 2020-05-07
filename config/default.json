@@ -61,7 +61,7 @@
             }
           }
         },
-        "serverSideRendering": false,
+        "serverSideRendering": true,
 
         "cdn": {
           "enabled": false,
