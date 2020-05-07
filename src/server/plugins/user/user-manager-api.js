@@ -195,63 +195,75 @@ class UserManagerApi {
   }
 
   async loginStaticUser() {
-    const headers = {
-      "WM_SVC.ENV": "stg",
-      "WM_CONSUMER.ID":	"c57c1b08-77a7-48bc-9789-f7176fa1e454",
-      "WM_QOS.CORRELATION_ID":	"SOMECORRELATIONID",
-      "WM_SVC.NAME":	"platform-iam-server",
-      "WM_SVC.VERSION":	"1.0.0",
-      "WM_CONSUMER.NAME": "seller-portal-app"
-    };
-    const options = {
-      body: JSON.stringify(
-        {
-          payload: {
-            password: "Test@123",
-            realmId: "fe6be7ac-78a1-11ea-bc55-0242ac130003",
-            tenantId: "YUMA_SUPPLIER",
-            userId: "test.admin@ropro.com"
+    try {
+      const headers = {
+        "WM_SVC.ENV": "stg",
+        "WM_CONSUMER.ID":	"c57c1b08-77a7-48bc-9789-f7176fa1e454",
+        "WM_QOS.CORRELATION_ID":	"SOMECORRELATIONID",
+        "WM_SVC.NAME":	"platform-iam-server",
+        "WM_SVC.VERSION":	"1.0.0",
+        "WM_CONSUMER.NAME": "seller-portal-app"
+      };
+      const options = {
+        body: JSON.stringify(
+          {
+            payload: {
+              password: "Test@123",
+              realmId: "fe6be7ac-78a1-11ea-bc55-0242ac130003",
+              tenantId: "YUMA_SUPPLIER",
+              userId: "test.admin@ropro.com"
+            }
           }
-        }
-      ),
-      method: "POST",
-      headers
-    };
+        ),
+        method: "POST",
+        headers
+      };
 
-    const json = await fetchJSON("https://stg.iam.platform.prod.walmart.com/platform-iam-server/iam/authnService", options);
-    return json;
+      const json = await fetchJSON("https://stg.iam.platform.prod.walmart.com/platform-iam-server/iam/authnService", options);
+      return json;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
   }
 
   async loginSuccessRedirect (request, h) {
-    const query = request.query;
-    const ttl = 30 * 60 * 1000;
-    // eslint-disable-next-line camelcase
-    /*const {id_token} = await this.getAccessToken(query.code);
-    const user = await ServerUtils.decryptToken(id_token);
-    h.state("session_token", id_token, {ttl});*/
-    //temporary login below
-    const login = await this.loginStaticUser();
-    const authToken = login.payload.authenticationToken.authToken;
-    const loginId = login.payload.principal.loginId;
-    h.state("session_token", authToken, {
-      ttl,
-      isSecure: false,
-      isHttpOnly: false,
-      domain: "localhost",
-      isSameSite: false
-    });
-    h.state("session_token_login_id", loginId, {
-      ttl,
-      isSecure: false,
-      isHttpOnly: false,
-      domain: "localhost",
-      isSameSite: false
-    });
+    try {
+      const query = request.query;
+      const ttl = 30 * 60 * 1000;
+      // eslint-disable-next-line camelcase
+      /*const {id_token} = await this.getAccessToken(query.code);
+      const user = await ServerUtils.decryptToken(id_token);
+      h.state("session_token", id_token, {ttl});*/
+      //temporary login below
+      const login = await this.loginStaticUser();
+      const authToken = login.payload.authenticationToken.authToken;
+      const loginId = login.payload.principal.loginId;
+      h.state("session_token", authToken, {
+        ttl,
+        isSecure: false,
+        isHttpOnly: false,
+        domain: "localhost",
+        isSameSite: false
+      });
+      h.state("session_token_login_id", loginId, {
+        ttl,
+        isSecure: false,
+        isHttpOnly: false,
+        domain: "localhost",
+        isSameSite: false
+      });
 
-    //temporary login above
+      //temporary login above
 
 
-    return h.redirect(`/user-management/user-list?id_token=${JSON.stringify(login.payload)}`);
+      return h.redirect(`/user-management/user-list?id_token=${JSON.stringify(login.payload)}`);
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+
   }
 
   async logout(request, h) {
@@ -261,7 +273,12 @@ class UserManagerApi {
   }
 
   async redirectToFalcon (request, h) {
-    return h.redirect(falcon.generateLoginURL());
+    try {
+      return h.redirect(falcon.generateLoginURL());
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   async getAccessToken(authorizationCode) {
