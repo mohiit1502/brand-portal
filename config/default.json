@@ -42,7 +42,7 @@
             }
           }
         },
-        "serverSideRendering": true,
+        "serverSideRendering": false,
 
         "cdn": {
           "enabled": false,
