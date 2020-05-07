@@ -253,7 +253,7 @@ class UserManagerApi {
       //temporary login above
 
 
-      return h.redirect(`/user-management/user-list?id_token=${JSON.stringify(login.payload)}`);
+      return h.redirect(`/user-management/user-list`);
     } catch (err) {
       console.error(err);
       throw err;
