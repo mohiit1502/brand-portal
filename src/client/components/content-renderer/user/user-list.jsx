@@ -168,8 +168,13 @@ class UserList extends React.Component {
           {
             id: 3,
             value: "Delete User Profile",
-            clickCallback (evt) {
-              console.log(3);
+            clickCallback: (evt, option, data) => {
+              console.log(evt, option, data);
+              const response = Http.delete(`/api/users/${data.loginId}`);
+              response.then(res => {
+                console.log(res);
+                this.fetchUserData();
+              });
             }
           },
           {
@@ -225,10 +230,14 @@ class UserList extends React.Component {
         loginId: user.loginId,
         username: `${user.firstName} ${user.lastName}`,
         sequence: i + 1,
-        role: user.role.name,
         brands: user.brands.map(brand => brand.name),
         status: user.enabled ? "Active" : "Inactive"
       };
+
+      if (user.role && user.role.name) {
+        newUser.role = user.role.name;
+      }
+      console.log(user.properties.companyName);
       if (user.properties && user.properties.isThirdParty) {
         newUser.company = user.properties.companyName;
       }
@@ -256,8 +265,8 @@ class UserList extends React.Component {
   applyFilters() {
     let userList = [...this.state.userList];
     this.state.filters.map(filter => {
-        const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value!=="all");
-        console.log(filterOptionsSelected)
+        const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
+        console.log(filterOptionsSelected);
 
         if (filterOptionsSelected.length) {
           const filterId = filter.id;

@@ -19,4 +19,13 @@ export default class Http {
     };
     return fetchJSON(urlString, options);
   }
+
+  static delete(url, queryParams) {
+    const urlString = queryString.stringifyUrl({url, query: queryParams});
+    const options = {
+      method: "DELETE",
+      noInject: true
+    };
+    return fetchJSON(urlString, options);
+  }
 }

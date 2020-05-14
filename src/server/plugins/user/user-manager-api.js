@@ -1,9 +1,8 @@
-import { fetchJSON } from "@walmart/electrode-fetch";
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
 import CONSTANTS from "../../constants/server-constants";
-import ServerUtils from "../../utility/ServerUtils";
+import ServerHttp from "../../utility/ServerHttp";
 
 class UserManagerApi {
   constructor() {
@@ -15,6 +14,7 @@ class UserManagerApi {
     this.getNewUserBrands = this.getNewUserBrands.bind(this);
     this.createUser = this.createUser.bind(this);
     this.getUsers = this.getUsers.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
 
     this.name = "UserManagerApi";
   }
@@ -76,14 +76,24 @@ class UserManagerApi {
         handler: this.logout
       },
       {
+        method: "GET",
+        path: "/api/users",
+        handler: this.getUsers
+      },
+      {
         method: "POST",
         path: "/api/users",
         handler: this.createUser
       },
       {
-        method: "GET",
-        path: "/api/users",
-        handler: this.getUsers
+        method: "delete",
+        path: "/api/users/{emailId}",
+        handler: this.deleteUser,
+        options: {
+          log: {
+            collect: true
+          }
+        }
       }
     ]);
 
@@ -100,21 +110,37 @@ class UserManagerApi {
   async getUsers(request, h) {
     try {
 
-
       const headers = this.getHeaders(request);
       const options = {
         method: "GET",
         headers
       };
 
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/";
-      const json = await fetchJSON(url, options);
-      return h.response(json);
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
     } catch (err) {
-      console.error(err);
-      return h.response(err).code(402);
+      return h.response(err).code(err.status);
     }
 
+  }
+
+  async deleteUser (request, h) {
+    try {
+
+      const headers = this.getHeaders(request);
+      const options = {
+        method: "DELETE",
+        headers: { ...headers, "Content-Type": "text/plain" }
+      };
+
+      const url = `http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/${request.params.emailId}`;
+      const response = await ServerHttp.delete(url, options);
+      return h.response(response.body).code(response.status);
+
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
   }
 
 
@@ -123,105 +149,98 @@ class UserManagerApi {
       const payload = request.payload;
       const headers = this.getHeaders(request);
       const options = {
-        method: "POST",
-        body: JSON.stringify(payload),
         headers
       };
 
       const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
 
-      const json = await fetchJSON(url, options);
-      return h.response(json);
+      const response = await ServerHttp.post(url, options, payload);
+      return h.response(response.body).code(response.status);
     } catch (err) {
-      console.error(err);
-      return h.response(err).code(402);
+      return h.response(err).code(err.status);
     }
 
   }
 
   async getNewUserRoles (request, h) {
-    const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/role";
-    const headers = this.getHeaders(request);
+    try {
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/role";
+      const headers = this.getHeaders(request);
 
-    const options = {
-      method: "GET",
-      headers
-    };
+      const options = {
+        headers
+      };
 
-    const json = await fetchJSON(url, options);
-    return h.response(json);
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
   }
 
   async getNewUserBrands (request, h) {
-    const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/brand/assignable";
-    const headers = this.getHeaders(request);
-    const options = {
-      method: "GET",
-      headers
-    };
+    try {
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/brand/assignable";
+      const headers = this.getHeaders(request);
 
-    const json = await fetchJSON(url, options);
-    return h.response(json);
+      const options = {
+        headers
+      };
+
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
   }
 
 
-  async getUserInfo (request) {
-
+  async getUserInfo (request, h) {
     try {
-      //temporary login below
-      // const login = await this.loginStaticUser();
-      // //temporary login above
-      // const authToken = login.payload.authenticationToken.authToken;
-      //
-      // console.info(request.state.auth_session_token);
-
       const headers = {
         ROPRO_AUTH_TOKEN: request.state.auth_session_token,
         ROPRO_USER_ID:	request.state.session_token_login_id,
         ROPRO_CLIENT_ID:	"abcd"
       };
       const options = {
-        method: "GET",
         headers
       };
-
-      const json = await fetchJSON("http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/me", options);
-      return json;
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/me";
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
     } catch (err) {
-      console.error(err);
-      throw err;
+      return h.response(err).code(err.status);
     }
   }
 
   async loginStaticUser() {
     try {
       const headers = {
+        "WM_SVC.NAME": "platform-iam-server",
         "WM_SVC.ENV": "stg",
         "WM_CONSUMER.ID":	"c57c1b08-77a7-48bc-9789-f7176fa1e454",
         "WM_QOS.CORRELATION_ID":	"SOMECORRELATIONID",
-        "WM_SVC.NAME":	"platform-iam-server",
         "WM_SVC.VERSION":	"1.0.0",
         "WM_CONSUMER.NAME": "seller-portal-app"
       };
       const options = {
-        body: JSON.stringify(
-          {
-            payload: {
-              password: "Test@123",
-              realmId: "fe6be7ac-78a1-11ea-bc55-0242ac130003",
-              tenantId: "YUMA_SUPPLIER",
-              userId: "test.admin@ropro.com"
-            }
-          }
-        ),
-        method: "POST",
         headers
       };
 
-      const json = await fetchJSON("https://stg.iam.platform.prod.walmart.com/platform-iam-server/iam/authnService", options);
-      return json;
+      const payload = {
+        payload: {
+          password: "Password@1234",
+          realmId: "62b2aca3-dd67-4c05-9089-e7e538bb36e0",
+          tenantId: "YumaSupplierExperience_ROOT",
+          userId: " administratornew@cocacola.com"
+        }
+      };
+
+      const url = "https://stg.iam.platform.prod.walmart.com/platform-iam-server/iam/authnService";
+
+      const response = await ServerHttp.post(url, options, payload);
+      return response.body;
     } catch (e) {
-      console.log(e);
       throw e;
     }
 
@@ -300,16 +319,13 @@ class UserManagerApi {
         "WM_CONSUMER.NAME": "seller-portal-app"
       };
       const options = {
-        body: JSON.stringify(payload),
-        method: "POST",
         headers
       };
 
-      const json = await fetchJSON(url, options);
-      return json;
+      const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
+      return response.body;
 
     } catch (err) {
-      console.error(err);
       throw err;
     }
   }

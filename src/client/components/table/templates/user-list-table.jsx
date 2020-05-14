@@ -49,8 +49,8 @@ const UserListTable = function(props) {
                         <span className="company-name ml-2 border font-size-12 p-1">{cell.row.original.company}</span>
                       }
                       {
-                        cell.column.id === "status" && cell.row.values.role && cell.row.values.role.toLowerCase() !== "admin" &&
-                          <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions}/>&nbsp;&nbsp;</span>
+                        cell.column.id === "status" && (cell.row.values.role === undefined || cell.row.values.role.toLowerCase() !== "super admin") &&
+                          <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions} data={row.original}/>&nbsp;&nbsp;</span>
 
                       }
                     </td>);

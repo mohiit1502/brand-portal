@@ -19,7 +19,7 @@ class Dropdown extends React.Component {
           {
             this.props.options.dropdownOptions.map((option, i) => {
               return (
-                <a key={i} id={option.id}className="dropdown-item" onClick={option.clickCallback}>{option.value}</a>
+                <a key={i} id={option.id}className="dropdown-item" onClick={e => {option.clickCallback(e, option, this.props.data);}}>{option.value}</a>
               );
             })
           }
@@ -30,7 +30,8 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
-  options: PropTypes.object
+  options: PropTypes.object,
+  data: PropTypes.object
 };
 
 const mapStateToProps = state => state;
