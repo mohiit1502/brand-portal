@@ -52,6 +52,31 @@ export default class ServerHttp {
     throw new ServerHttpError(status, err.error, err.message);
   }
 
+  static async put(url, options, data) {
+
+    options.headers = options.headers || {};
+    options.headers = { "Content-Type": "application/json", ...options.headers };
+    const response = await fetch(url, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      ...options
+    });
+
+    const {ok, status, headers} = response;
+
+    if (ok) {
+      if (headers.get("content-type") === "application/json") {
+        const body = await response.json();
+        return {status, body};
+      }
+      return response;
+    }
+
+    const err = await response.json();
+    console.log(err);
+    throw new ServerHttpError(status, err.error, err.message);
+  }
+
   static async delete(url, options, queryParams) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
 

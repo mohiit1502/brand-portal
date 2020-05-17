@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import "../../../styles/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
 import CustomTable from "../../table/custom-table";
-import dummydata from "./dummydata.js";
 import UserListTable from "../../table/templates/user-list-table";
 import Dropdown from "../../dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
@@ -11,17 +10,20 @@ import ClientUtils from "../../../utility/ClientUtils";
 import Http from "../../../utility/Http";
 import searchIcon from "../../../images/18-px-search.svg";
 import burgerIcon from "../../../images/group-23.svg";
+import {saveUserCompleted} from "../../../actions/user/user-actions";
 class UserList extends React.Component {
 
   constructor (props) {
     super(props);
 
     this.createNewUser = this.createNewUser.bind(this);
+    this.editUser = this.editUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.uiSearch = this.uiSearch.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
     this.applyFilters = this.applyFilters.bind(this);
+    this.fetchUserData = this.fetchUserData.bind(this);
 
     this.state = {
       userList: [],
@@ -30,122 +32,7 @@ class UserList extends React.Component {
         {
           id: "company",
           name: "Company",
-          filterOptions: [
-            {
-              id: 0,
-              name: "All",
-              value: "all",
-              selected: false
-            },
-            {
-              id: 1,
-              name: "Mark Monitor",
-              value: "Mark Monitor",
-              selected: false
-            },
-            {
-              id: 2,
-              name: "ESeal",
-              value: "ESeal",
-              selected: false
-            }
-          ]
-        },
-        {
-          id: "role",
-          name: "Role",
-          filterOptions: [
-            {
-              id: 0,
-              name: "All",
-              value: "all",
-              selected: false
-            },
-            {
-              id: 1,
-              name: "Super Admin",
-              value: "Super Admin",
-              selected: false
-            },
-            {
-              id: 2,
-              name: "Admin",
-              value: "Admin",
-              selected: false
-            },
-            {
-              id: 3,
-              name: "Reporter",
-              value: "Reporter",
-              selected: false
-            }
-          ]
-        },
-        {
-          id: "brands",
-          name: "Associated Brands",
-          filterOptions: [
-            {
-              id: 0,
-              name: "All",
-              value: "all",
-              selected: false
-            },
-            {
-              id: 1,
-              name: "Nike",
-              value: "Nike",
-              selected: false
-            },
-            {
-              id: 2,
-              name: "Air Max",
-              value: "Air Max",
-              selected: false
-            },
-            {
-              id: 3,
-              name: "Air Force",
-              value: "Air Force",
-              selected: false
-            },
-            {
-              id: 4,
-              name: "Air Force 1",
-              value: "Air Force 1",
-              selected: false
-            }
-          ]
-        },
-        {
-          id: "status",
-          name: "Profile Status",
-          filterOptions: [
-            {
-              id: 0,
-              name: "All",
-              value: "all",
-              selected: false
-            },
-            {
-              id: 1,
-              name: "Active",
-              value: "Active",
-              selected: false
-            },
-            {
-              id: 2,
-              name: "Inactive",
-              value: "Inactive",
-              selected: false
-            },
-            {
-              id: 3,
-              name: "Suspended",
-              value: "Suspended",
-              selected: false
-            }
-          ]
+          filterOptions: []
         }
       ],
       dropdown: {
@@ -154,25 +41,27 @@ class UserList extends React.Component {
           {
             id: 1,
             value: "Edit User Profile",
-            clickCallback (evt) {
-              console.log(1);
+            clickCallback: (evt, option, data) => {
+              this.editUser(data.original);
             }
           },
           {
             id: 2,
             value: "Suspend User Profile",
-            clickCallback (evt) {
-              console.log(2);
+            clickCallback: (evt, option, data) => {
+              const response = Http.put(`/api/users/status/${data.loginId}/SUSPEND`);
+              response.then(res => {
+                this.fetchUserData();
+              });
             }
           },
           {
             id: 3,
             value: "Delete User Profile",
             clickCallback: (evt, option, data) => {
-              console.log(evt, option, data);
               const response = Http.delete(`/api/users/${data.loginId}`);
               response.then(res => {
-                console.log(res);
+                console.log(1, res);
                 this.fetchUserData();
               });
             }
@@ -222,7 +111,7 @@ class UserList extends React.Component {
   }
 
   async fetchUserData () {
-    let userList = await Http.get("/api/users");
+    let userList = (await Http.get("/api/users")).body;
 
     userList = userList.records.map((user, i) => {
       const newUser = {
@@ -231,13 +120,14 @@ class UserList extends React.Component {
         username: `${user.firstName} ${user.lastName}`,
         sequence: i + 1,
         brands: user.brands.map(brand => brand.name),
-        status: user.enabled ? "Active" : "Inactive"
+        status: user.enabled ? "Active" : "Inactive",
+        original: user
       };
 
       if (user.role && user.role.name) {
         newUser.role = user.role.name;
       }
-      console.log(user.properties.companyName);
+
       if (user.properties && user.properties.isThirdParty) {
         newUser.company = user.properties.companyName;
       }
@@ -266,7 +156,6 @@ class UserList extends React.Component {
     let userList = [...this.state.userList];
     this.state.filters.map(filter => {
         const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-        console.log(filterOptionsSelected);
 
         if (filterOptionsSelected.length) {
           const filterId = filter.id;
@@ -361,11 +250,18 @@ class UserList extends React.Component {
   }
 
   componentDidUpdate() {
-
+    if (this.props.userEdit.save) {
+      this.fetchUserData();
+      this.props.saveUserCompleted();
+    }
   }
 
   createNewUser () {
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "CreateUserTemplate" });
+  }
+
+  editUser (userData) {
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "CreateUserTemplate", data: userData });
   }
 
   onFilterChange (filterId, optionId) {
@@ -534,7 +430,9 @@ class UserList extends React.Component {
 }
 
 UserList.propTypes = {
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
+  saveUserCompleted: PropTypes.func,
+  userEdit: PropTypes.object
 };
 
 const mapStateToProps = state => {
@@ -545,7 +443,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  toggleModal
+  toggleModal,
+  saveUserCompleted
 };
 
 export default connect(

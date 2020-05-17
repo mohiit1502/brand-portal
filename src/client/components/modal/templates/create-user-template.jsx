@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {saveUser} from "../../../actions/user/edit-user-actions";
+import {saveUserInitiated} from "../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import "../../../styles/modal/templates/create-user-template.scss";
 import CustomInput from "../../custom-input/custom-input";
@@ -9,20 +9,23 @@ import Http from "../../../utility/Http";
 import Cookies from "electrode-cookies";
 import ClientUtils from "../../../utility/ClientUtils";
 
-
 class CreateUserTemplate extends React.Component {
+
+
 
   constructor(props) {
     super(props);
-    this.saveChanges = this.saveChanges.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
+    this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
     this.state = {
       form: {
+        isUpdateTemplate: false,
+        templateUpdateComplete: false,
         isDisabled: false,
         underwritingChecked: false,
         id: "user-profile-form",
@@ -113,76 +116,75 @@ class CreateUserTemplate extends React.Component {
   }
 
   componentDidMount() {
+    if (this.props.data && !this.state.form.templateUpdateComplete) {
+      this.prepopulateInputFields(this.props.data);
+    }
     this.fetchRolesForUser();
     this.fetchBrandsForUser();
   }
 
-  async handleSubmit(evt) {
-    evt.preventDefault();
-
-    const loginId = this.state.form.inputData.emailId.value;
-    const brands = this.state.form.inputData.brands.options.filter(v => v.selected).map(v => ({id: v.id}));
-    const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
-    const firstName = this.state.form.inputData.firstName.value;
-    const lastName = this.state.form.inputData.lastName.value;
-    const role = {
-      id: this.state.form.inputData.role.options[ClientUtils.where(this.state.form.inputData.role.options, {value: this.state.form.inputData.role.value})].id
-    };
-
-    const payload = {
-      user: {
-        loginId,
-        firstName,
-        lastName,
-        brands,
-        role,
-        phoneCountry: "+1",
-        phoneNumber: this.state.form.inputData.phone.value
-      }
-    };
-
-    if (isThirdParty) {
-      payload.user = {
-        ...payload.user,
-        properties: {
-        isThirdPary: isThirdParty,
-          companyName: this.state.form.inputData.companyName.value
-      }};
+  componentDidUpdate(prevProps) {
+    if (this.props.data && this.props.data !== prevProps.data && !this.state.form.templateUpdateComplete) {
+      this.prepopulateInputFields(this.props.data);
     }
-
-    const url = "/api/users";
-    Http.post(url, payload)
-      .then(res => {
-        this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-      });
   }
 
-  async fetchRolesForUser () {
+  prepopulateInputFields (data) {
     const form = {...this.state.form};
+    console.log(data.properties.companyName);
+    form.inputData.firstName.value = data.firstName;
+    form.inputData.companyName.value = data.properties.isThirdPary ? data.properties.companyName : "";
+    form.inputData.userType.value = data.properties.isThirdPary ? "3rd Party" : "Internal";
+    form.inputData.lastName.value = data.lastName;
+    form.inputData.emailId.value = data.loginId;
+    form.inputData.role.value = data.role.name;
+    form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
+    form.templateUpdateComplete = true;
 
-    return Http.get("/api/newUser/roles")
-      .then(res => {
-        form.inputData.role.options = res.roles;
-
-        form.inputData.role.options.map(v => {v.value = v.name; });
-
-        this.setState({form});
-
-      });
+    form.isUpdateTemplate = true;
+    console.log(form.inputData);
+    this.setState({form});
   }
 
-  async fetchBrandsForUser () {
-    const form = {...this.state.form};
+  getPopulatedBrands (brands) {
+    if (brands.options.length) {
+      if (this.props.data && this.props.data.brands) {
+        brands.value = this.props.data.brands.map(brand => brand.name).join(", ");
+      }
 
-    return Http.get("/api/newUser/brands")
-      .then(res => {
-        form.inputData.brands.options = res;
-
-        form.inputData.brands.options.map(v => {v.value = v.name; v.selected = false;});
-
-        this.setState({form});
+      brands.options = brands.options.map(brand => {
+        brand.value = brand.name;
+        let selected = false;
+        if (this.props.data && this.props.data.brands) {
+          selected = ClientUtils.where(this.props.data.brands, {id: brand.id}) > -1;
+        }
+        brand.selected = selected;
+        return brand;
       });
+      return brands;
+    } else {
+      return brands;
+    }
+  }
 
+  resetTemplateStatus () {
+    const form = {...this.state.form};
+    form.templateUpdateComplete = false;
+    form.isUpdateTemplate = false;
+
+    form.inputData.firstName.value = "";
+    form.inputData.userType.value = "Internal";
+    form.inputData.companyName.value = "";
+    form.inputData.lastName.value = "";
+    form.inputData.emailId.value = "";
+    form.inputData.role.value = "";
+    form.inputData.brands.value = "";
+    form.inputData.brands.options = form.inputData.brands.options.map(brand => {
+      brand.selected = false;
+      return brand;
+    });
+
+    this.setState({form});
   }
 
   onInputChange (evt, key) {
@@ -230,18 +232,93 @@ class CreateUserTemplate extends React.Component {
     });
   }
 
-  saveChanges() {
-    this.props.saveUser();
+  async handleSubmit(evt) {
+    evt.preventDefault();
+
+    const loginId = this.state.form.inputData.emailId.value;
+    const brands = this.state.form.inputData.brands.options.filter(v => v.selected).map(v => ({id: v.id}));
+    const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
+    const firstName = this.state.form.inputData.firstName.value;
+    const lastName = this.state.form.inputData.lastName.value;
+    const role = {
+      id: this.state.form.inputData.role.options[ClientUtils.where(this.state.form.inputData.role.options, {value: this.state.form.inputData.role.value})].id
+    };
+
+    const payload = {
+      user: {
+        loginId,
+        firstName,
+        lastName,
+        brands,
+        role,
+        phoneCountry: "+1",
+        phoneNumber: this.state.form.inputData.phone.value
+      }
+    };
+
+    if (isThirdParty) {
+      payload.user = {
+        ...payload.user,
+        properties: {
+          isThirdPary: isThirdParty,
+          companyName: this.state.form.inputData.companyName.value
+        }};
+    }
+
+    const url = "/api/users";
+
+    if (this.state.form.isUpdateTemplate) {
+      return Http.put(`${url}/${payload.user.loginId}`, payload)
+        .then(res => {
+          this.resetTemplateStatus();
+          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+          this.props.saveUserInitiated();
+        });
+    } else {
+      return Http.post(url, payload)
+        .then(res => {
+          this.resetTemplateStatus();
+          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+          this.props.saveUserInitiated();
+        });
+    }
   }
 
+  async fetchRolesForUser () {
+
+
+    return Http.get("/api/newUser/roles")
+      .then(res => {
+        const form = {...this.state.form};
+        form.inputData.role.options = res.body.roles;
+        form.inputData.role.options.map(v => {v.value = v.name; });
+        this.setState({form});
+
+      });
+  }
+
+  async fetchBrandsForUser () {
+    return Http.get("/api/newUser/brands")
+      .then(res => {
+        const form = {...this.state.form};
+        form.inputData.brands.options = res.body;
+        // form.inputData.brands.options.map(v => {v.value = v.name; v.selected = false;});
+        form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
+        this.setState({form});
+      });
+
+  }
 
   render() {
+    console.log("create rendering")
     return (
       <div className="modal fade show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
-              Add a New User
+              {
+               this.state.form.isUpdateTemplate ? "Edit User" : "Add a New User"
+              }
               <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -280,7 +357,7 @@ class CreateUserTemplate extends React.Component {
                   </div>
                 </div>
                 {
-                  this.state.form.inputData.userType.value.toLowerCase() !== "internal" &&
+                  this.state.form.inputData.userType.value && this.state.form.inputData.userType.value.toLowerCase() !== "internal" &&
                   <div className="row">
                     <div className="col-4">
                       <CustomInput key={"companyName"}
@@ -345,7 +422,7 @@ class CreateUserTemplate extends React.Component {
                 </div>
                 <div className="row mt-3">
                   <div className="col text-right">
-                    <div className="btn btn-sm cancel-btn text-primary" type="button" data-dismiss="modal">Cancel</div>
+                    <div className="btn btn-sm cancel-btn text-primary" type="button" data-dismiss="modal" onClick={this.resetTemplateStatus}>Cancel</div>
                     <button type="submit" className="btn btn-sm btn-secondary submit-btn px-3 ml-3">Invite</button>
                   </div>
                 </div>
@@ -360,7 +437,8 @@ class CreateUserTemplate extends React.Component {
 
 CreateUserTemplate.propTypes = {
   toggleModal: PropTypes.func,
-  saveUser: PropTypes.func
+  saveUserInitiated: PropTypes.func,
+  data: PropTypes.object
 };
 
 const mapStateToProps = state => {
@@ -370,7 +448,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  saveUser
+  saveUserInitiated
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUserTemplate);

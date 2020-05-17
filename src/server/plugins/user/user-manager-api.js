@@ -15,6 +15,8 @@ class UserManagerApi {
     this.createUser = this.createUser.bind(this);
     this.getUsers = this.getUsers.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
+    this.updateUserStatus = this.updateUserStatus.bind(this);
+    this.updateUser = this.updateUser.bind(this);
 
     this.name = "UserManagerApi";
   }
@@ -86,6 +88,21 @@ class UserManagerApi {
         handler: this.createUser
       },
       {
+        method: "PUT",
+        path: "/api/users/{emailId}",
+        handler: this.updateUser,
+        options: {
+          payload: {
+            parse: true
+          }
+        }
+      },
+      {
+        method: "PUT",
+        path: "/api/users/{emailId}/status/{status}",
+        handler: this.updateUserStatus
+      },
+      {
         method: "delete",
         path: "/api/users/{emailId}",
         handler: this.deleteUser,
@@ -107,6 +124,23 @@ class UserManagerApi {
     };
   }
 
+  async updateUser (request, h) {
+    try {
+      const payload = request.payload.user;
+      const headers = this.getHeaders(request);
+      const options = {
+        headers
+      };
+
+      const url = `http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/${payload.loginId}`;
+
+      const response = await ServerHttp.put(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
   async getUsers(request, h) {
     try {
 
@@ -122,7 +156,38 @@ class UserManagerApi {
     } catch (err) {
       return h.response(err).code(err.status);
     }
+  }
 
+  async createUser(request, h) {
+    try {
+      const payload = request.payload;
+      const headers = this.getHeaders(request);
+      const options = {
+        headers
+      };
+
+      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
+
+      const response = await ServerHttp.post(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async updateUserStatus (request, h) {
+    try {
+      const headers = this.getHeaders(request);
+      const options = {
+        headers
+      };
+      const url = `http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/${request.params.emailId}/status/${request.params.status}`;
+
+      const response = await ServerHttp.put(url, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
   }
 
   async deleteUser (request, h) {
@@ -141,25 +206,6 @@ class UserManagerApi {
     } catch (err) {
       return h.response(err).code(err.status);
     }
-  }
-
-
-  async createUser(request, h) {
-    try {
-      const payload = request.payload;
-      const headers = this.getHeaders(request);
-      const options = {
-        headers
-      };
-
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
-
-      const response = await ServerHttp.post(url, options, payload);
-      return h.response(response.body).code(response.status);
-    } catch (err) {
-      return h.response(err).code(err.status);
-    }
-
   }
 
   async getNewUserRoles (request, h) {

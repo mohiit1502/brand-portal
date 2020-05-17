@@ -1,31 +1,60 @@
-import {fetchJSON} from "@walmart/electrode-fetch";
+import fetch from "node-fetch";
 import queryString from "query-string";
+import ClientHttpError from "./ClientHttpError";
 
 export default class Http {
 
-  static get(url, queryParams) {
+  static async get(url, queryParams) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
     const options = {
       method: "GET"
     };
-    return fetchJSON(urlString, options);
+    const response = await fetch(urlString, options);
+    const {ok, status, headers} = response;
+    if (ok) {
+      if (headers.get("content-type").indexOf("application/json") !== -1) {
+        const body = await response.json();
+        return {status, body};
+      }
+      return response;
+    }
+
+    const err = await response.json();
+    console.log(err);
+    throw new ClientHttpError(status, err.error, err.message);
   }
 
-  static post(url, data, queryParams) {
+  static async post(url, data, queryParams) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
     const options = {
       method: "POST",
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
     };
-    return fetchJSON(urlString, options);
+    return fetch(urlString, options);
+
   }
 
-  static delete(url, queryParams) {
+  static async put(url, data, queryParams) {
+    const urlString = queryString.stringifyUrl({url, query: queryParams});
+    const options = {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    return fetch(urlString, options);
+  }
+
+  static async delete(url, queryParams) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
     const options = {
       method: "DELETE",
       noInject: true
     };
-    return fetchJSON(urlString, options);
+    return fetch(urlString, options);
   }
 }

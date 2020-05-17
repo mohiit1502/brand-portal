@@ -80,7 +80,7 @@ class UserProfile extends React.Component {
   }
 
   async getProfileInfo () {
-    const profile = await Http.get("/api/userInfo");
+    const profile = (await Http.get("/api/userInfo")).body;
 
     const obj = {
       firstName: profile.firstName,

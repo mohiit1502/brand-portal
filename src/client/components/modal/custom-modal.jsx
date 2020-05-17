@@ -12,7 +12,6 @@ class CustomModal extends React.Component {
   constructor (props) {
     super(props);
     this.toggleModal = this.toggleModal.bind(this);
-    // this.defaultTemplate = this.defaultTemplate.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +38,7 @@ class CustomModal extends React.Component {
   render () {
     const CustomComponent = this.fetchTemplate(this.props.modal.template);
     return (
-      CustomComponent && <CustomComponent toggleModal={this.toggleModal}/>
+      CustomComponent && <CustomComponent toggleModal={this.toggleModal} data={this.props.modal.data}/>
     );
   }
 }

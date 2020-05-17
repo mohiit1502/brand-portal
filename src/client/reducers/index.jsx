@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import {modal} from "./modal-reducers";
-import {userEdit} from "./user/edit-user-reducers";
+import {userEdit} from "./user/user-reducers";
 
 
 // const checkBox = (store, action) => {
