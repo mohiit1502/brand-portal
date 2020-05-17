@@ -61,7 +61,6 @@ class UserList extends React.Component {
             clickCallback: (evt, option, data) => {
               const response = Http.delete(`/api/users/${data.loginId}`);
               response.then(res => {
-                console.log(1, res);
                 this.fetchUserData();
               });
             }
@@ -257,11 +256,13 @@ class UserList extends React.Component {
   }
 
   createNewUser () {
-    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "CreateUserTemplate" });
+    const meta = { templateName: "CreateUserTemplate" };
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
   editUser (userData) {
-    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "CreateUserTemplate", data: userData });
+    const meta = { templateName: "CreateUserTemplate", data: {...userData} };
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
   onFilterChange (filterId, optionId) {

@@ -16,7 +16,7 @@ class CustomInput extends React.Component {
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
     this.setMultiSelectValueFromDropdownOptions = this.setMultiSelectValueFromDropdownOptions.bind(this);
-    console.log("constructor");
+
     this.state = {
       label: this.props.label,
       key: this.props.key,
@@ -34,26 +34,10 @@ class CustomInput extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.inputId === "companyName") {
-      console.log("mounting", this.props.value, this.state.value);
+
+    if (this.props.type === "multiselect") {
+      this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
     }
-
-    this.setState({
-      label: this.props.label,
-      key: this.props.key,
-      formId: this.props.formId,
-      inputId: this.props.inputId,
-      type: this.props.type,
-      required: this.props.required,
-      value: this.props.value,
-      pattern: this.props.pattern,
-      disabled: this.props.disabled,
-      onChangeEvent: this.props.onChangeEvent,
-      radioOptions: this.props.radioOptions,
-      dropdownOptions: this.props.dropdownOptions
-    });
-
-    this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
   }
 
   componentDidUpdate(prevProps) {
@@ -62,9 +46,6 @@ class CustomInput extends React.Component {
     if (changedProps) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState(changedProps);
-      if (this.props.inputId === "companyName") {
-        console.log("updating changed props");
-      }
     }
   }
 
@@ -73,9 +54,6 @@ class CustomInput extends React.Component {
       this.setState({
         value: evt.target.value
       });
-    }
-    if (this.props.inputId === "companyName") {
-      console.log("input change", key, evt.target && evt.target.value);
     }
 
     this.state.onChangeEvent(evt, key);
@@ -99,14 +77,7 @@ class CustomInput extends React.Component {
       }
     }
     if (Object.keys(changedProps).length) {
-      if (this.props.inputId === "companyName") {
-        console.log("checking props change", changedProps);
-      }
-
       return changedProps;
-    }
-    if (this.props.inputId === "companyName") {
-      console.log("checking props change", false);
     }
 
     return false;
@@ -151,6 +122,7 @@ class CustomInput extends React.Component {
   }
 
   setMultiSelectValueFromDropdownOptions (dropdownOptions) {
+
     const selectedList = [];
     for (const i in dropdownOptions) {
       if (dropdownOptions[i].selected) {
@@ -222,9 +194,6 @@ class CustomInput extends React.Component {
   }
 
   getTextInputType () {
-    if (this.props.inputId === "companyName") {
-      console.log("setting text input", this.state.value);
-    }
 
     return (
       <div className="form-group custom-input-form-group form-group-text">
@@ -251,14 +220,7 @@ class CustomInput extends React.Component {
     switch (this.props.type) {
       case "text" :
       case "email" :
-      {
-        if (this.props.inputId === "companyName") {
-          console.log(this.props, this.state);
-        }
-
         return this.getTextInputType();
-      }
-
       case "radio" :
         return this.getRadioInputType();
       case "select" :

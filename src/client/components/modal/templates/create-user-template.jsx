@@ -131,7 +131,6 @@ class CreateUserTemplate extends React.Component {
 
   prepopulateInputFields (data) {
     const form = {...this.state.form};
-    console.log(data.properties.companyName);
     form.inputData.firstName.value = data.firstName;
     form.inputData.companyName.value = data.properties.isThirdPary ? data.properties.companyName : "";
     form.inputData.userType.value = data.properties.isThirdPary ? "3rd Party" : "Internal";
@@ -142,7 +141,6 @@ class CreateUserTemplate extends React.Component {
     form.templateUpdateComplete = true;
 
     form.isUpdateTemplate = true;
-    console.log(form.inputData);
     this.setState({form});
   }
 
@@ -252,17 +250,15 @@ class CreateUserTemplate extends React.Component {
         brands,
         role,
         phoneCountry: "+1",
-        phoneNumber: this.state.form.inputData.phone.value
+        phoneNumber: this.state.form.inputData.phone.value,
+        properties: {
+          isThirdPary: isThirdParty
+        }
       }
     };
 
     if (isThirdParty) {
-      payload.user = {
-        ...payload.user,
-        properties: {
-          isThirdPary: isThirdParty,
-          companyName: this.state.form.inputData.companyName.value
-        }};
+      payload.user.properties.companyName = this.state.form.inputData.companyName.value;
     }
 
     const url = "/api/users";
@@ -310,16 +306,15 @@ class CreateUserTemplate extends React.Component {
   }
 
   render() {
-    console.log("create rendering")
     return (
       <div className="modal fade show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
-               this.state.form.isUpdateTemplate ? "Edit User" : "Add a New User"
+                this.state.form.isUpdateTemplate ? "Edit User" : "Add a New User"
               }
-              <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close">
+              <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -330,30 +325,30 @@ class CreateUserTemplate extends React.Component {
                     <div className="text-secondary font-size-14 mb-2">Select type of user</div>
                     <div>
                       <CustomInput key={"userType"}
-                        inputId={"userType"} radioOptions={this.state.form.inputData.userType.options}
-                        formId={this.state.form.id} label={this.state.form.inputData.userType.label}
-                        required={this.state.form.inputData.userType.required} value={this.state.form.inputData.userType.value}
-                        type={this.state.form.inputData.userType.type}
-                        onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.userType.disabled} />
+                                   inputId={"userType"} radioOptions={this.state.form.inputData.userType.options}
+                                   formId={this.state.form.id} label={this.state.form.inputData.userType.label}
+                                   required={this.state.form.inputData.userType.required} value={this.state.form.inputData.userType.value}
+                                   type={this.state.form.inputData.userType.type}
+                                   onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.userType.disabled} />
                     </div>
                   </div>
                 </div>
                 <div className="row mt-4">
                   <div className="col-4">
                     <CustomInput key={"firstName"}
-                      inputId={"firstName"}
-                      formId={this.state.form.id} label={this.state.form.inputData.firstName.label}
-                      required={this.state.form.inputData.firstName.required} value={this.state.form.inputData.firstName.value}
-                      type={this.state.form.inputData.firstName.type} pattern={this.state.form.inputData.firstName.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.firstName.disabled} />
+                                 inputId={"firstName"}
+                                 formId={this.state.form.id} label={this.state.form.inputData.firstName.label}
+                                 required={this.state.form.inputData.firstName.required} value={this.state.form.inputData.firstName.value}
+                                 type={this.state.form.inputData.firstName.type} pattern={this.state.form.inputData.firstName.pattern}
+                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.firstName.disabled} />
                   </div>
                   <div className="col-4">
                     <CustomInput key={"lastName"}
-                      inputId={"lastName"}
-                      formId={this.state.form.id} label={this.state.form.inputData.lastName.label}
-                      required={this.state.form.inputData.lastName.required} value={this.state.form.inputData.lastName.value}
-                      type={this.state.form.inputData.lastName.type} pattern={this.state.form.inputData.lastName.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.lastName.disabled} />
+                                 inputId={"lastName"}
+                                 formId={this.state.form.id} label={this.state.form.inputData.lastName.label}
+                                 required={this.state.form.inputData.lastName.required} value={this.state.form.inputData.lastName.value}
+                                 type={this.state.form.inputData.lastName.type} pattern={this.state.form.inputData.lastName.pattern}
+                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.lastName.disabled} />
                   </div>
                 </div>
                 {
@@ -361,11 +356,11 @@ class CreateUserTemplate extends React.Component {
                   <div className="row">
                     <div className="col-4">
                       <CustomInput key={"companyName"}
-                        inputId={"companyName"}
-                        formId={this.state.form.id} label={this.state.form.inputData.companyName.label}
-                        required={this.state.form.inputData.companyName.required} value={this.state.form.inputData.companyName.value}
-                        type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}
-                        onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled} />
+                                   inputId={"companyName"}
+                                   formId={this.state.form.id} label={this.state.form.inputData.companyName.label}
+                                   required={this.state.form.inputData.companyName.required} value={this.state.form.inputData.companyName.value}
+                                   type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}
+                                   onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled} />
                     </div>
                     <div className="col" />
                   </div>
@@ -374,46 +369,46 @@ class CreateUserTemplate extends React.Component {
                 <div className="row">
                   <div className="col-4">
                     <CustomInput key={"emailId"}
-                      inputId={"emailId"}
-                      formId={this.state.form.id} label={this.state.form.inputData.emailId.label}
-                      required={this.state.form.inputData.emailId.required} value={this.state.form.inputData.emailId.value}
-                      type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled} />
+                                 inputId={"emailId"}
+                                 formId={this.state.form.id} label={this.state.form.inputData.emailId.label}
+                                 required={this.state.form.inputData.emailId.required} value={this.state.form.inputData.emailId.value}
+                                 type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern}
+                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled} />
                   </div>
                   <div className="col-4">
                     <CustomInput key={"phone"}
-                      inputId={"phone"}
-                      formId={this.state.form.id} label={this.state.form.inputData.phone.label}
-                      required={this.state.form.inputData.phone.required} value={this.state.form.inputData.phone.value}
-                      type={this.state.form.inputData.phone.type} pattern={this.state.form.inputData.phone.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} />
+                                 inputId={"phone"}
+                                 formId={this.state.form.id} label={this.state.form.inputData.phone.label}
+                                 required={this.state.form.inputData.phone.required} value={this.state.form.inputData.phone.value}
+                                 type={this.state.form.inputData.phone.type} pattern={this.state.form.inputData.phone.pattern}
+                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} />
                   </div>
                 </div>
                 <div className="row">
                   <div className="col-4">
                     <CustomInput key={"role"}
-                      inputId={"role"}
-                      formId={this.state.form.id} label={this.state.form.inputData.role.label}
-                      required={this.state.form.inputData.role.required} value={this.state.form.inputData.role.value}
-                      type={this.state.form.inputData.role.type} pattern={this.state.form.inputData.role.pattern}
-                      onChangeEvent={this.setSelectInputValue} disabled={this.state.form.inputData.role.disabled}
-                      dropdownOptions={this.state.form.inputData.role.options}/>
+                                 inputId={"role"}
+                                 formId={this.state.form.id} label={this.state.form.inputData.role.label}
+                                 required={this.state.form.inputData.role.required} value={this.state.form.inputData.role.value}
+                                 type={this.state.form.inputData.role.type} pattern={this.state.form.inputData.role.pattern}
+                                 onChangeEvent={this.setSelectInputValue} disabled={this.state.form.inputData.role.disabled}
+                                 dropdownOptions={this.state.form.inputData.role.options}/>
                   </div>
                   <div className="col-4">
                     <CustomInput key={"brands"}
-                      inputId={"brands"}
-                      formId={this.state.form.id} label={this.state.form.inputData.brands.label}
-                      required={this.state.form.inputData.brands.required} value={this.state.form.inputData.brands.value}
-                      type={this.state.form.inputData.brands.type} pattern={this.state.form.inputData.brands.pattern}
-                      onChangeEvent={this.setMultiSelectInputValue} disabled={this.state.form.inputData.brands.disabled}
-                      dropdownOptions={this.state.form.inputData.brands.options}/>
+                                 inputId={"brands"}
+                                 formId={this.state.form.id} label={this.state.form.inputData.brands.label}
+                                 required={this.state.form.inputData.brands.required} value={this.state.form.inputData.brands.value}
+                                 type={this.state.form.inputData.brands.type} pattern={this.state.form.inputData.brands.pattern}
+                                 onChangeEvent={this.setMultiSelectInputValue} disabled={this.state.form.inputData.brands.disabled}
+                                 dropdownOptions={this.state.form.inputData.brands.options}/>
                   </div>
                 </div>
                 <div className="row">
                   <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
-                        onChange={this.undertakingtoggle}/>
+                             onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
                         {this.state.form.undertaking.label}
                       </label>
