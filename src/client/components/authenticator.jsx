@@ -6,17 +6,49 @@ import {Redirect} from "react-router";
 import PropTypes from "prop-types";
 import CONSTANTS from "../constants/constants";
 import Cookies from "electrode-cookies";
+import Http from "../utility/Http";
+import {updateUserProfile} from "../actions/user/user-actions";
+import StorageSrvc, {STORAGE_TYPES} from "../utility/StorageSrvc";
 
 class Authenticator extends React.Component {
+
+  storageSrvc;
 
   constructor (props) {
     super(props);
     const COOKIE_NAME = "auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
-
+    this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     this.state = {
       isLoggedIn: !!sessionCookie
     };
+  }
+
+  componentDidMount() {
+    if (this.state.isLoggedIn) {
+      this.getProfileInfo();
+    } else {
+      this.removeSessionProfile();
+    }
+  }
+
+  async getProfileInfo () {
+    try {
+      let profile = this.storageSrvc.getJSONItem("userProfile");
+      if (!profile) {
+        profile = (await Http.get("/api/userInfo")).body;
+        this.storageSrvc.setJSONItem("userProfile", profile);
+      }
+
+      this.props.updateUserProfile(profile);
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  removeSessionProfile () {
+    this.storageSrvc.removeItem("userProfile");
   }
 
   isRootPath (pathname) {
@@ -36,16 +68,25 @@ class Authenticator extends React.Component {
     } else {
       return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
     }
-
   }
-
 }
 
 Authenticator.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
+  updateUserProfile: PropTypes.func,
+  userProfile: PropTypes.object
 };
 
+const mapStateToProps = state => {
+  return {
+    userProfile: state.userProfile
+  };
+};
 
-export default connect()(Authenticator);
+const mapDispatchToProps = {
+  updateUserProfile
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Authenticator);
 
 

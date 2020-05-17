@@ -4,8 +4,12 @@ import "../../../../styles/content-renderer/user/profile/user-profile.scss";
 import PropTypes from "prop-types";
 import CustomInput from "../../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
+import {updateUserProfile} from "../../../../actions/user/user-actions";
+import StorageSrvc, {STORAGE_TYPES} from "../../../../utility/StorageSrvc";
 
 class UserProfile extends React.Component {
+
+  storageSrvc;
 
   constructor (props) {
     super(props);
@@ -13,6 +17,8 @@ class UserProfile extends React.Component {
     this.setFormData = this.setFormData.bind(this);
     this.disableInput = this.disableInput.bind(this);
     this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
+    this.saveUser = this.saveUser.bind(this);
+    this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
 
     this.state = {
       pageLoading: true,
@@ -67,44 +73,27 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    // const obj = {
-    //   firstName: "Shubhansh",
-    //   lastName: "Sahai",
-    //   companyName: "Walmart Labs",
-    //   emailId: "shubhansh.sahai@walmartlabs.com",
-    //   phone: "9686648597"
-    // };
-    //
-    // this.setFormData(obj);
-    this.getProfileInfo();
+
   }
 
-  async getProfileInfo () {
-    const profile = (await Http.get("/api/userInfo")).body;
-
-    const obj = {
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      companyName: profile.organization.name,
-      emailId: profile.loginId,
-      phone: profile.phoneNumber
-    };
-
-    this.setFormData(obj);
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setFormData(this.props.userProfile);
+    }
   }
+
 
   setFormData(obj) {
-
     const form = {...this.state.form};
     form.inputData.firstName.value = obj.firstName;
     form.inputData.firstName.disabled = true;
     form.inputData.lastName.value = obj.lastName;
     form.inputData.lastName.disabled = true;
-    form.inputData.companyName.value = obj.companyName;
+    form.inputData.companyName.value = obj.properties.companyName;
     form.inputData.companyName.disabled = true;
-    form.inputData.emailId.value = obj.emailId;
+    form.inputData.emailId.value = obj.loginId;
     form.inputData.emailId.disabled = true;
-    form.inputData.phone.value = obj.phone;
+    form.inputData.phone.value = obj.phoneNumber;
     form.inputData.phone.disabled = true;
 
     this.setState({
@@ -136,7 +125,7 @@ class UserProfile extends React.Component {
     form.inputData.firstName.disabled = disable;
     form.inputData.lastName.disabled = disable;
     form.inputData.companyName.disabled = disable;
-    form.inputData.emailId.disabled = disable;
+    //form.inputData.emailId.disabled = disable;
     form.inputData.phone.disabled = disable;
 
     this.setState({
@@ -151,6 +140,36 @@ class UserProfile extends React.Component {
     this.setState({form});
   }
 
+  async saveUser (evt) {
+    evt.preventDefault();
+
+    const loginId = this.state.form.inputData.emailId.value;
+    const firstName = this.state.form.inputData.firstName.value;
+    const lastName = this.state.form.inputData.lastName.value;
+    const phoneNumber = this.state.form.inputData.phone.value;
+    const payload = {
+      user: {
+        loginId,
+        firstName,
+        lastName,
+        phoneNumber,
+        properties: {
+          companyName: this.state.form.inputData.companyName.value
+        }
+      }
+    };
+
+
+    const url = "/api/users";
+
+    return Http.put(`${url}/${payload.user.loginId}`, payload)
+      .then(async res => {
+        this.props.updateUserProfile(res.body);
+        this.storageSrvc.setJSONItem("userProfile", res.body);
+        this.disableInput(true);
+      });
+  }
+
   render () {
     return (
       <div className="row user-profile-content h-100">
@@ -162,7 +181,7 @@ class UserProfile extends React.Component {
           </div>
           <div className="row content-row mt-4 h-90">
             <div className="col">
-              <form className="h-100" autoComplete="off">
+              <form className="h-100" autoComplete="off" onSubmit={this.saveUser}>
                 <div className="row h-60">
                   <div className="col h-100">
                     <div className="row">
@@ -236,7 +255,7 @@ class UserProfile extends React.Component {
                       </div>
                     </div>
                     <div className="row pt-5">
-                      <div className="col-xl-3 col-5" />
+                        <div className="col-xl-3 col-5" />
                       <div className="col-xl-3 col-5 text-right">
                         {
                           this.state.form.isDisabled ?
@@ -269,9 +288,22 @@ class UserProfile extends React.Component {
   }
 }
 
-const mapStateToProps = state => state;
+UserProfile.propTypes = {
+  userProfile: PropTypes.object,
+  updateUserProfile: PropTypes.func
+};
+
+const mapStateToProps = state => {
+  return {
+    userProfile: state.userProfile
+  };
+};
+
+const mapDispatchToProps = {
+  updateUserProfile
+};
 
 export default connect(
   mapStateToProps,
-  dispatch => ({dispatch})
+  mapDispatchToProps
 )(UserProfile);

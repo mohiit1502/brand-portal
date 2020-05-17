@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import walmartLogo from "../../images/wm-white-logo.png";
+import PropTypes from "prop-types";
 import "../../styles/headers/home-header.scss";
 import CONSTANTS from "../../constants/constants";
 
 class HomeHeader extends React.Component {
   constructor (props) {
     super(props);
-    console.log();
   }
 
   render() {
@@ -34,7 +34,7 @@ class HomeHeader extends React.Component {
             </li>
             <li className="nav-item dropdown nav-item-profile ml-4">
               <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false">Josh Hopkins</a>
+                aria-expanded="false">{`${this.props.userProfile.firstName} ${this.props.userProfile.lastName}`}</a>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
                 <a className="dropdown-item" href={logoutUrl}>Logout</a>
@@ -47,4 +47,16 @@ class HomeHeader extends React.Component {
   }
 }
 
-export  default  connect()(HomeHeader);
+HomeHeader.propTypes = {
+  userProfile: PropTypes.object
+};
+
+
+const mapStateToProps = state => {
+  return {
+    userProfile: state.userProfile
+  };
+};
+
+
+export  default  connect(mapStateToProps)(HomeHeader);

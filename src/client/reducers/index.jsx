@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import {modal} from "./modal-reducers";
-import {userEdit} from "./user/user-reducers";
+import {userEdit, userProfile} from "./user/user-reducers";
 
 
 // const checkBox = (store, action) => {
@@ -93,7 +93,8 @@ const userRegistration = (store, action) => {
 export default combineReducers({
   userRegistration,
   modal,
-  userEdit
+  userEdit,
+  userProfile
   // checkBox
   // number,
   // username,

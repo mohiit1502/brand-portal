@@ -1,3 +1,15 @@
+const userProfile = (store, action) => {
+  switch (action.type) {
+    case "UPDATE_PROFILE": {
+      const storeData = action.value;
+      return { ...storeData };
+    }
+    default: {
+      return store ||  { };
+    }
+  }
+};
+
 const userEdit = (store, action) => {
   switch (action.type) {
     case "SAVE_USER_INITIATED": {
@@ -14,4 +26,4 @@ const userEdit = (store, action) => {
   }
 };
 
-export {userEdit};
+export {userEdit, userProfile};

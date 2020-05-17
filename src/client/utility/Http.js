@@ -33,7 +33,19 @@ export default class Http {
         "Content-Type": "application/json"
       }
     };
-    return fetch(urlString, options);
+    const response = await fetch(urlString, options);
+    const {ok, status, headers} = response;
+    if (ok) {
+      if (headers.get("content-type").indexOf("application/json") !== -1) {
+        const body = await response.json();
+        return {status, body};
+      }
+      return response;
+    }
+
+    const err = await response.json();
+    console.log(err);
+    throw new ClientHttpError(status, err.error, err.message);
 
   }
 
@@ -46,7 +58,20 @@ export default class Http {
         "Content-Type": "application/json"
       }
     };
-    return fetch(urlString, options);
+
+    const response = await fetch(urlString, options);
+    const {ok, status, headers} = response;
+    if (ok) {
+      if (headers.get("content-type").indexOf("application/json") !== -1) {
+        const body = await response.json();
+        return {status, body};
+      }
+      return response;
+    }
+
+    const err = await response.json();
+    console.log(err);
+    throw new ClientHttpError(status, err.error, err.message);
   }
 
   static async delete(url, queryParams) {

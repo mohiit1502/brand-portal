@@ -269,6 +269,9 @@ class CreateUserTemplate extends React.Component {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
+        })
+        .catch(err => {
+          console.log(err);
         });
     } else {
       return Http.post(url, payload)
@@ -276,6 +279,9 @@ class CreateUserTemplate extends React.Component {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
   }
