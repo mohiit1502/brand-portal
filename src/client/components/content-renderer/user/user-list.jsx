@@ -49,7 +49,7 @@ class UserList extends React.Component {
             id: 2,
             value: "Suspend User Profile",
             clickCallback: (evt, option, data) => {
-              const response = Http.put(`/api/users/status/${data.loginId}/SUSPEND`);
+              const response = Http.put(`/api/users/${data.loginId}/status/SUSPEND`);
               response.then(res => {
                 this.fetchUserData();
               });
