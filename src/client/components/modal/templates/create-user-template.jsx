@@ -2,16 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {saveUserInitiated} from "../../../actions/user/user-actions";
-import {TOGGLE_ACTIONS} from "../../../actions/modal-actions";
+import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import "../../../styles/modal/templates/create-user-template.scss";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../utility/Http";
-import Cookies from "electrode-cookies";
 import ClientUtils from "../../../utility/ClientUtils";
 
+
 class CreateUserTemplate extends React.Component {
-
-
 
   constructor(props) {
     super(props);
@@ -22,8 +20,10 @@ class CreateUserTemplate extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
+
     this.state = {
       form: {
+        submitDisabled: false,
         isUpdateTemplate: false,
         templateUpdateComplete: false,
         isDisabled: false,
@@ -136,6 +136,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.userType.value = data.properties.isThirdPary ? "3rd Party" : "Internal";
     form.inputData.lastName.value = data.lastName;
     form.inputData.emailId.value = data.loginId;
+    form.inputData.emailId.disabled = true;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
     form.templateUpdateComplete = true;
@@ -183,6 +184,7 @@ class CreateUserTemplate extends React.Component {
     });
 
     this.setState({form});
+    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
   }
 
   onInputChange (evt, key) {
@@ -265,7 +267,7 @@ class CreateUserTemplate extends React.Component {
 
     if (this.state.form.isUpdateTemplate) {
       return Http.put(`${url}/${payload.user.loginId}`, payload)
-        .then(res => {
+        .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
@@ -274,11 +276,13 @@ class CreateUserTemplate extends React.Component {
           console.log(err);
         });
     } else {
+
       return Http.post(url, payload)
         .then(res => {
           this.resetTemplateStatus();
-          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
+          const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
+          this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
         })
         .catch(err => {
           console.log(err);
@@ -313,14 +317,14 @@ class CreateUserTemplate extends React.Component {
 
   render() {
     return (
-      <div className="modal fade show" id="singletonModal" tabIndex="-1" role="dialog">
+      <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
                 this.state.form.isUpdateTemplate ? "Edit User" : "Add a New User"
               }
-              <button type="button" className="close text-white" data-dismiss="modal" aria-label="Close" onClick={this.resetTemplateStatus}>
+              <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -423,8 +427,8 @@ class CreateUserTemplate extends React.Component {
                 </div>
                 <div className="row mt-3">
                   <div className="col text-right">
-                    <div className="btn btn-sm cancel-btn text-primary" type="button" data-dismiss="modal" onClick={this.resetTemplateStatus}>Cancel</div>
-                    <button type="submit" className="btn btn-sm btn-secondary submit-btn px-3 ml-3">Invite</button>
+                    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
+                    <button type="submit" className="btn btn-sm btn-secondary submit-btn px-3 ml-3" disabled={this.state.submitDisabled}>Invite</button>
                   </div>
                 </div>
               </form>
@@ -449,7 +453,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  saveUserInitiated
+  saveUserInitiated,
+  toggleModal
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUserTemplate);

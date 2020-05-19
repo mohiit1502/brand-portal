@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import $ from "jquery";
 import {TOGGLE_ACTIONS} from "../../actions/modal-actions";
 import CreateUserTemplate from "../../components/modal/templates/create-user-template";
+import NewUserAddedTemplate from "../../components/modal/templates/new-user-added-template";
 
 class CustomModal extends React.Component {
 
@@ -26,19 +27,30 @@ class CustomModal extends React.Component {
 
   fetchTemplate(key) {
     switch (key) {
-      case "CreateUserTemplate" : return CreateUserTemplate;
+      case "CreateUserTemplate": return CreateUserTemplate;
+      case "NewUserAddedTemplate": return NewUserAddedTemplate;
     }
     return null;
   }
 
   toggleModal(toggleAction) {
-    return $(".modal").modal(toggleAction);
+    const modalElements = $(".modal");
+    const backdrop = $(".modal-backdrop");
+    const options = {
+      backdrop: "static",
+      show: toggleAction.toLowerCase() === "show"
+    };
+    modalElements.modal(options);
+    if (toggleAction.toLowerCase() !== "show") {
+      backdrop.remove();
+    }
+    return modalElements;
   }
 
   render () {
     const CustomComponent = this.fetchTemplate(this.props.modal.template);
     return (
-      CustomComponent && <CustomComponent toggleModal={this.toggleModal} data={this.props.modal.data}/>
+      CustomComponent && <CustomComponent  data={this.props.modal.data}/>
     );
   }
 }
