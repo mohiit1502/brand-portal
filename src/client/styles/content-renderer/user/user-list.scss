@@ -38,6 +38,10 @@ $filer-text-color : #424242;
       }
     }
     .filter-dropdown-row{
+      position: relative;
+      margin-right: -40px;
+      margin-left: -40px;
+      height: 0;
       .filter-dropdown-column {
         position: relative;
         z-index: 9;
