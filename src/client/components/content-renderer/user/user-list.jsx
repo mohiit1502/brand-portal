@@ -9,6 +9,8 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import ClientUtils from "../../../utility/ClientUtils";
 import Http from "../../../utility/Http";
 import searchIcon from "../../../images/18-px-search.svg";
+import filterIcon from "../../../images/filter-sc.svg";
+
 import burgerIcon from "../../../images/group-23.svg";
 import {saveUserCompleted} from "../../../actions/user/user-actions";
 import PaginationNav from "../../pagination/pagination-nav";
@@ -28,6 +30,7 @@ class UserList extends React.Component {
     this.fetchUserData = this.fetchUserData.bind(this);
     this.paginationCallback = this.paginationCallback.bind(this);
     this.changePageSize = this.changePageSize.bind(this);
+    this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
 
     this.state = {
       page: {
@@ -38,13 +41,8 @@ class UserList extends React.Component {
       userList: [],
       paginatedList: [],
       filteredList: [],
-      filters: [
-        {
-          id: "company",
-          name: "Company",
-          filterOptions: []
-        }
-      ],
+      filters: [],
+      showFilters: false,
       dropdown: {
         buttonText: burgerIcon,
         dropdownOptions: [
@@ -167,6 +165,7 @@ class UserList extends React.Component {
     });
     const filteredList = [...this.state.paginatedList];
     this.setState({filters, filteredList});
+    this.toggleFilterVisibility();
   }
 
   applyFilters() {
@@ -200,6 +199,7 @@ class UserList extends React.Component {
     });
 
     this.setState({filteredList: paginatedList});
+    this.toggleFilterVisibility();
   }
 
   createFilters(paginatedList) {
@@ -318,6 +318,14 @@ class UserList extends React.Component {
 
   }
 
+  toggleFilterVisibility () {
+    this.setState(state => {
+      state = {...state};
+      state.showFilters = !state.showFilters;
+      return state;
+    });
+  }
+
   render () {
 
     const viewerShip = () => {
@@ -330,26 +338,25 @@ class UserList extends React.Component {
         return `Viewing 0 of ${total} Users`;
       }
       return "";
-
     };
 
     return (
       <div className="row user-list-content h-100">
         <div className="col h-100">
-          <div className="row content-header-row h-10">
+          <div className="row content-header-row p-4 h-10">
             <div className="col">
               <h3>User List</h3>
             </div>
           </div>
-          <div className="row content-row h-90">
-            <div className="col h-100">
-              <div className="row action-row align-items-center dropdown">
-                <div className="col-6">
+          <div className="row content-row p-4 h-90">
+            <div className="col h-100;">
+              <div className="row action-row align-items-center">
+                <div className="col-lg-8 col-6">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>
-                    New User
+                    Invite User
                   </div>
                 </div>
-                <div className="col-lg-5 col-4 text-right">
+                <div className="col-lg-4 col-6 text-right">
                   <div className="input-group input-group-sm">
                     <div className="input-group-prepend bg-transparent">
                       <div className="input-group-text bg-transparent">
@@ -358,14 +365,19 @@ class UserList extends React.Component {
                     </div>
                     <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name"
                       onChange={this.uiSearch}/>
+                    <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
+                      <div className="bg-transparent">
+                        <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
+                          <img src={filterIcon} height="20px"/> Filter
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="col-lg-1 col-2 text-center cursor-pointer" data-toggle="dropdown">
-                  <span className="filter-btn" > <strong>|</strong> &nbsp;&nbsp; Filter</span>
-
-                </div>
-                <div className="col-12 filter-dropdown-column">
-                  <div className="dropdown-menu dropdown-menu-right mt-n4 no-border-radius px-5 w-100">
+              </div>
+              <div className="row filter-dropdown-row">
+                <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
+                  <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
                     <div className="row filter-headers-row align-items-center border-bottom py-3">
                       <div className="col">
                         <span className="filters-header-text">Filters</span>
@@ -373,7 +385,7 @@ class UserList extends React.Component {
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
                         <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={this.applyFilters}>Apply Filters </div>
-                        <span className="filter-close-btn">&times;</span>
+                        <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
                     <div className="row filter-content-row py-3">

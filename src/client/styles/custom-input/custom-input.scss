@@ -18,6 +18,16 @@ $input-placeholder-color : #6E7677;
     width: 106px;
     border: 1px solid $radio-border-color;
 
+    &:first-child {
+      border-bottom-left-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
     input[type="radio"] {
       display: none;
     }
@@ -25,7 +35,7 @@ $input-placeholder-color : #6E7677;
     label {
       width: 100%;
       height: 100%;
-      line-height: 34px;
+      line-height: 38px;
       cursor: pointer;
     }
 
@@ -74,6 +84,7 @@ $input-placeholder-color : #6E7677;
 .custom-input-form-group {
 
   height: 58px;
+  font-family: MyriadPro-Regular, sans-serif;
 
   .custom-input-label{
     margin: 0;
@@ -86,7 +97,7 @@ $input-placeholder-color : #6E7677;
     transition: top 100ms, font-size 100ms, background 100ms;
 
     &.custom-input-label-placeholder {
-      top : -29px;
+      top : -28px;
       font-size: 16px;
       color: $input-placeholder-color;
       background: transparent;
@@ -112,6 +123,7 @@ $input-placeholder-color : #6E7677;
 
 
   .custom-input-element{
+
     height: 34px;
     font-size: 14px;
     padding-left: 20px;
@@ -140,6 +152,10 @@ $input-placeholder-color : #6E7677;
   }
 
   .custom-input-help-text{
+    position: relative;
+    top: -26px;
+    padding-left: 20px;
+    font-size: 12px;
 
   }
 }

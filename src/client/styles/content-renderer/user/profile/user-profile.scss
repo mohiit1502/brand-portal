@@ -1,6 +1,9 @@
 @import "../../../override/variables";
 
 .user-profile-content {
+  .content-header-row {
+    background: #FAFAFA;
+  }
   .password-reset-row {
     .badge {
       border: 1px solid $blue;

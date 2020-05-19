@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import sortIcon from "../../../images/sort.svg";
 
 
 const UserListTable = function(props) {
@@ -21,7 +22,7 @@ const UserListTable = function(props) {
                   headerGroup.headers.map(header => {
                     return (
                       <th key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                        { header.render("Header") }
+                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
                       </th>
                     );
                   })

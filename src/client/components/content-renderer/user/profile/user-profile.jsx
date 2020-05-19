@@ -174,12 +174,12 @@ class UserProfile extends React.Component {
     return (
       <div className="row user-profile-content h-100">
         <div className="col h-100">
-          <div className="row content-header-row h-10">
+          <div className="row content-header-row p-4 h-10">
             <div className="col">
               <h3>User Profile</h3>
             </div>
           </div>
-          <div className="row content-row mt-4 h-90">
+          <div className="row content-row p-4 mt-4 h-90">
             <div className="col">
               <form className="h-100" autoComplete="off" onSubmit={this.saveUser}>
                 <div className="row h-60">
