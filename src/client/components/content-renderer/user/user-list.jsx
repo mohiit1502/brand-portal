@@ -11,6 +11,8 @@ import Http from "../../../utility/Http";
 import searchIcon from "../../../images/18-px-search.svg";
 import burgerIcon from "../../../images/group-23.svg";
 import {saveUserCompleted} from "../../../actions/user/user-actions";
+import PaginationNav from "../../pagination/pagination-nav";
+
 class UserList extends React.Component {
 
   constructor (props) {
@@ -24,9 +26,17 @@ class UserList extends React.Component {
     this.resetFilters = this.resetFilters.bind(this);
     this.applyFilters = this.applyFilters.bind(this);
     this.fetchUserData = this.fetchUserData.bind(this);
+    this.paginationCallback = this.paginationCallback.bind(this);
+    this.changePageSize = this.changePageSize.bind(this);
 
     this.state = {
+      page: {
+        offset: 0,
+        size: 10,
+        sizeOptions: [5, 10, 15, 20, 30]
+      },
       userList: [],
+      paginatedList: [],
       filteredList: [],
       filters: [
         {
@@ -102,11 +112,23 @@ class UserList extends React.Component {
 
   async uiSearch (evt) {
     const searchText = evt.target.value && evt.target.value.toLowerCase();
-    const allUsers = this.state.userList;
+    const allUsers = this.state.paginatedList;
     const filteredList = allUsers.filter(user => {
       return user.username.toLowerCase().indexOf(searchText) !== -1;
     });
     this.setState({filteredList});
+  }
+
+
+  paginationCallback (page) {
+    const pageState = {...this.state.page};
+    pageState.offset = page.offset;
+    pageState.size = page.size;
+    const paginatedList = [...page.list];
+    const filteredList = [...page.list];
+    this.createFilters(paginatedList);
+
+    this.setState({page: pageState, paginatedList, filteredList});
   }
 
   async fetchUserData () {
@@ -133,11 +155,7 @@ class UserList extends React.Component {
       return newUser;
     });
 
-    const filteredList = [...userList];
-
-    const filters = this.createFilters(userList);
-
-    this.setState({userList, filteredList});
+    this.setState({userList});
   }
 
   resetFilters() {
@@ -147,49 +165,50 @@ class UserList extends React.Component {
         filterOption.selected = false;
       });
     });
-    const filteredList = [...this.state.userList];
+    const filteredList = [...this.state.paginatedList];
     this.setState({filters, filteredList});
   }
 
   applyFilters() {
-    let userList = [...this.state.userList];
-    this.state.filters.map(filter => {
-        const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
-        if (filterOptionsSelected.length) {
-          const filterId = filter.id;
-          if (filterId === "brands") {
-            userList = userList.filter(user => {
-              let bool = false;
-              filterOptionsSelected.map(filterOption => {
-                user[filterId].map(brand => {
-                  bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1;
-                });
+    let paginatedList = [...this.state.paginatedList];
+    this.state.filters.map(filter => {
+      const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
+
+      if (filterOptionsSelected.length) {
+        const filterId = filter.id;
+        if (filterId === "brands") {
+          paginatedList = paginatedList.filter(user => {
+            let bool = false;
+            filterOptionsSelected.map(filterOption => {
+              user[filterId].map(brand => {
+                bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1;
               });
-              return bool;
             });
-          } else {
-            userList = userList.filter(user => {
-              let bool = false;
-              filterOptionsSelected.map(filterOption => {
-                bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-              });
-              return bool;
+            return bool;
+          });
+        } else {
+          paginatedList = paginatedList.filter(user => {
+            let bool = false;
+            filterOptionsSelected.map(filterOption => {
+              bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
             });
-          }
+            return bool;
+          });
         }
+      }
     });
 
-    this.setState({filteredList: userList});
+    this.setState({filteredList: paginatedList});
   }
 
-  createFilters(userList) {
+  createFilters(paginatedList) {
     const brandsSet = new Set();
     const rolesSet = new Set();
     const statusSet = new Set();
     const companySet = new Set();
 
-    userList.map(user => {
+    paginatedList.map(user => {
       user.brands.map(brand => {
         brandsSet.add(brand);
       });
@@ -233,11 +252,11 @@ class UserList extends React.Component {
     filters.forEach(filter => {
       if (filter.filterOptions.length) {
         const all = {
-            id: 0,
-            name: "All",
-            value: "all",
-            selected: false
-          };
+          id: 0,
+          name: "All",
+          value: "all",
+          selected: false
+        };
         filter.filterOptions.unshift(all);
       }
     });
@@ -289,10 +308,30 @@ class UserList extends React.Component {
     this.setState({
       ...state
     });
+  }
+
+  changePageSize(size) {
+
+    const page = {...this.state.page};
+    page.size = size;
+    this.setState({page});
 
   }
 
   render () {
+
+    const viewerShip = () => {
+      const from = this.state.page.offset * this.state.page.size + 1;
+      const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
+      const total = this.state.userList.length;
+      if (this.state.userList.length && to >= from) {
+        return `Viewing ${from} - ${to} of ${total} Users`;
+      } else if (this.state.userList.length && to <= from) {
+        return `Viewing 0 of ${total} Users`;
+      }
+      return "";
+
+    };
 
     return (
       <div className="row user-list-content h-100">
@@ -386,37 +425,27 @@ class UserList extends React.Component {
 
                   <div className="row user-list-table-manage-row h-10 align-items-center">
                     <div className="col">
-                      Viewing 1 - 10 of 100 Users
+                      { viewerShip() }
                     </div>
                     <div className="col text-center">
-                      <nav>
-                        <ul className="pagination pagination-sm justify-content-center align-items-center m-0">
-                          <li className="page-item">
-                            <a className="page-link" href="#" aria-label="Previous">
-                              <span aria-hidden="true"> &lt; </span>
-                            </a>
-                          </li>
-                          <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                          <li className="page-item"><a className="page-link" href="#">2</a></li>
-                          <li className="page-item"><a className="page-link" href="#">3</a></li>
-                          <li className="page-item">
-                            <a className="page-link" href="#" aria-label="Next">
-                              <span aria-hidden="true"> &gt; </span>
-                            </a>
-                          </li>
-                        </ul>
-                      </nav>
+                      <PaginationNav list={this.state.userList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
                     </div>
                     <div className="col text-right">
 
-                      <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Show 10 Users &nbsp;&nbsp;&nbsp;
-                      </button>
+                      {
+                        !!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
+                        </button>
+                      }
+
                       <div className="dropdown-menu user-count-dropdown-menu">
-                        <a className="dropdown-item" >Show 10 Users</a>
-                        <a className="dropdown-item" >Show 20 Users</a>
-                        <a className="dropdown-item" >Show 30 Users</a>
+                        {
+                          this.state.page.sizeOptions.map(val => {
+                            return (<a key={val} className="dropdown-item"
+                              onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
+                          })
+                        }
                       </div>
                     </div>
                   </div>
@@ -452,3 +481,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(UserList);
+
