@@ -34,7 +34,9 @@ class HomeHeader extends React.Component {
             </li>
             <li className="nav-item dropdown nav-item-profile ml-4">
               <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false">{`${this.props.userProfile.firstName} ${this.props.userProfile.lastName}`}</a>
+                aria-expanded="false">
+                {`${this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
+              </a>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
                 <a className="dropdown-item" href={logoutUrl}>Logout</a>
