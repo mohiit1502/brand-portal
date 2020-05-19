@@ -6,6 +6,7 @@ $disabled-font : #A3A8A9;
 $input-border : 1px solid #979797;
 $radio-color : #017DC6;
 $radio-border-color : #E2E5E7;
+$input-placeholder-color : #6E7677;
 
 .form-group-radio {
   margin: 0;
@@ -72,6 +73,8 @@ $radio-border-color : #E2E5E7;
 
 .custom-input-form-group {
 
+  height: 58px;
+
   .custom-input-label{
     margin: 0;
     top: -47px;
@@ -80,6 +83,14 @@ $radio-border-color : #E2E5E7;
     background: white;
     //padding: 0 5px;
     font-size: 12px;
+    transition: top 100ms, font-size 100ms, background 100ms;
+
+    &.custom-input-label-placeholder {
+      top : -29px;
+      font-size: 16px;
+      color: $input-placeholder-color;
+      background: transparent;
+    }
 
     .label-upper-bg{
       z-index: 1;

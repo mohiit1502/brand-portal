@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import "../../styles/custom-input/custom-input.scss";
-import $ from "jquery";
 
 class CustomInput extends React.Component {
 
@@ -91,12 +90,12 @@ class CustomInput extends React.Component {
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown"/>
-        {this.state.disabled}
-        <label className="custom-input-label" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+        <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
+
 
         <div className="dropdown-menu">
           {
@@ -143,8 +142,7 @@ class CustomInput extends React.Component {
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown"/>
-        {this.state.disabled}
-        <label className="custom-input-label" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+        <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
@@ -159,9 +157,9 @@ class CustomInput extends React.Component {
                     <input className="cursor-pointer" type="checkbox" autoComplete="off" value={option.value}
                       id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
                       onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
-                      <label className="form-check-label ml-2 cursor-pointer" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
-                        {option.value}
-                      </label>
+                    <label className="form-check-label ml-2 cursor-pointer" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
+                      {option.value}
+                    </label>
                   </div>
                 </a>
               );
@@ -197,17 +195,17 @@ class CustomInput extends React.Component {
 
     return (
       <div className="form-group custom-input-form-group form-group-text">
-
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           onChange={ e => { this.onInputChange(e, this.state.inputId); } }/>
-        {this.state.disabled}
-        <label className="custom-input-label" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+
+        <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
+
 
         {/*TODO: For future error messages*/}
         {/*<small className="form-text custom-input-help-text text-muted">We'll never share your email with anyone else.</small>*/}
