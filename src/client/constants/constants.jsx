@@ -3,6 +3,10 @@ const CONSTANTS = {
     ROOT_PATH: "/",
     DEFAULT_REDIRECT_PATH: "/user-management/user-list",
 
+    ONBOARD: {
+      COMPANY_REGISTER: "/onboard/company/register"
+    },
+
     USER_MGMT: {
       USER_LIST: "/user-management/user-list",
       USER_APPROVAL: "/user-management/user-approval"

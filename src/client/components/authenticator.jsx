@@ -9,6 +9,7 @@ import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
 import {updateUserProfile} from "../actions/user/user-actions";
 import StorageSrvc, {STORAGE_TYPES} from "../utility/StorageSrvc";
+import Onboarder from "./onboard/onboarder";
 
 class Authenticator extends React.Component {
 
@@ -20,7 +21,8 @@ class Authenticator extends React.Component {
     const sessionCookie = Cookies.get(COOKIE_NAME);
     this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     this.state = {
-      isLoggedIn: !!sessionCookie
+      isLoggedIn: !!sessionCookie,
+      isOnboarded: true
     };
   }
 
@@ -55,13 +57,31 @@ class Authenticator extends React.Component {
     return pathname === CONSTANTS.ROUTES.ROOT_PATH;
   }
 
-  render () {
+  isOnboardingPath (pathname) {
+    for (const i in CONSTANTS.ROUTES.ONBOARD) {
+      if (pathname === CONSTANTS.ROUTES.ONBOARD[i]) {
+        return true;
+      }
+    }
+    return false;
+  }
 
+  render () {
     if (this.state.isLoggedIn) {
       if (this.isRootPath(this.props.location.pathname)) {
+        if (this.state.isOnboarded) {
+          return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH} />;
+        } else {
+          return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
+        }
+      } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
+        return <Onboarder {...this.props} />;
+      } else if (!this.state.isOnboarded && !this.isOnboardingPath(this.props.location.pathname)) {
+        return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
+      } else if (this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
         return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH} />;
       } else {
-        return <Home {...this.props}/>;
+        return <Home {...this.props} {...this.state}/>;
       }
     } else  if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
