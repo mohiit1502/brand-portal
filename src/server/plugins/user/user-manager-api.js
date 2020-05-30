@@ -142,8 +142,8 @@ class UserManagerApi {
   }
 
   async getUsers(request, h) {
-    try {
 
+    try {
       const headers = this.getHeaders(request);
       const options = {
         method: "GET",
@@ -242,6 +242,7 @@ class UserManagerApi {
 
 
   async getUserInfo (request, h) {
+
     try {
       const headers = {
         ROPRO_AUTH_TOKEN: request.state.auth_session_token,

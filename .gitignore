@@ -147,6 +147,7 @@ Temporary Items
 .hg
 .project
 .tmp
+.ccm
 
 # Build
 dist

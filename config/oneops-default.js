@@ -13,5 +13,18 @@ module.exports = {
         }
       }
     }
+  },
+  services: {
+    environment: "dev",
+    providers: {
+      "@walmart/electrode-ccm-client": {
+        options: {
+          environment: "{{env.ONEOPS_ENVPROFILE}}",
+          cloudEnvironment: "{{env.ONEOPS_ENVIRONMENT}}",
+          cloud: "{{env.ONEOPS_CLOUD}}",
+          node: "{{env.ONEOPS_CI_NAME}}"
+        }
+      }
+    }
   }
 };

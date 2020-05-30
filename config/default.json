@@ -29,12 +29,28 @@
     "providers": {
       "@walmart/electrode-ccm-client": {
         "options": {
-          "environment": "DEV",
-          "cloud": "dev",
-          "node": ""
+          "environment": "dev"
         }
       },
       "@walmart/electrode-quimby-client": {}
+    }
+  },
+  "ccm": {
+    "autoLoad": true,
+    "keys":{
+      "root": {
+        "profiles": {
+          "default": {
+            "environment": "dev"
+          }
+        },
+        "data": {
+          "IAM": {
+            "serviceName": "ro-pro",
+            "+configNames": ["IAM"]
+          }
+        }
+      }
     }
   },
   "plugins": {

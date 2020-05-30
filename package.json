@@ -32,7 +32,7 @@
   "scripts": {
     "build": "clap build",
     "prod-start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 clap -n -x electrode/build prod",
-    "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
+    "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
     "test": "clap check",
     "coverage": "clap check",
     "prod": "echo 'Starting standalone server in PROD mode'; NODE_ENV=production node ./lib/server/",
