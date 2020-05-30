@@ -22,7 +22,7 @@ class Authenticator extends React.Component {
     this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     this.state = {
       isLoggedIn: !!sessionCookie,
-      isOnboarded: true
+      isOnboarded: false
     };
   }
 
@@ -74,12 +74,12 @@ class Authenticator extends React.Component {
         } else {
           return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
         }
-      } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
-        return <Onboarder {...this.props} />;
       } else if (!this.state.isOnboarded && !this.isOnboardingPath(this.props.location.pathname)) {
         return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
       } else if (this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
         return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH} />;
+      } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
+        return <Onboarder {...this.props} {...this.state} />;
       } else {
         return <Home {...this.props} {...this.state}/>;
       }

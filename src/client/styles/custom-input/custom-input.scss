@@ -7,7 +7,7 @@ $input-border : 1px solid #979797;
 $radio-color : #017DC6;
 $radio-border-color : #E2E5E7;
 $input-placeholder-color : #6E7677;
-
+$textarea-label: #41484F;
 .form-group-radio {
   margin: 0;
 
@@ -83,8 +83,16 @@ $input-placeholder-color : #6E7677;
 
 .custom-input-form-group {
 
-  height: 58px;
+  min-height: 58px;
   font-family: MyriadPro-Regular, sans-serif;
+
+  &.disabled {
+    .custom-input-label-placeholder {
+      .label-upper-bg {
+        background: $disabled-background;
+      }
+    }
+  }
 
   .custom-input-label{
     margin: 0;
@@ -118,9 +126,13 @@ $input-placeholder-color : #6E7677;
       margin: 0 5px;
     }
 
+    &.custom-input-label-textarea {
+      top: 0;
+      left: 0;
+      font-size: 14px;
+    }
+
   }
-
-
 
   .custom-input-element{
 
@@ -128,6 +140,9 @@ $input-placeholder-color : #6E7677;
     font-size: 14px;
     padding-left: 20px;
     border : 1px solid $input-border;
+    &.custom-input-element-textarea {
+      height: unset;
+    }
     &:focus, &:active{
       box-shadow: none;
       border : 1px solid $input-blue;
@@ -142,6 +157,7 @@ $input-placeholder-color : #6E7677;
       & + .custom-input-label {
         color : $disabled-font;
         background: white;
+
         .label-lower-bg {
           background: $disabled-background;
         }

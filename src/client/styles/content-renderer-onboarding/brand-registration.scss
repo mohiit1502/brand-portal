@@ -1,0 +1,27 @@
+@import "../override/variables";
+
+@import "../override/variables";
+
+$subtitle-color: #6E7677;
+
+.title-row {
+  font-family: MyriadPro-Regular;
+  .company-registration-title {
+
+    font-size: 32px;
+  }
+
+  .company-registration-subtitle {
+    font-size: 16px;
+    color: $subtitle-color;
+  }
+}
+
+.company-reg-form-row {
+  .primary-file-upload, .additional-file-upload {
+    .upload-btn {
+      @extend .mt-2;
+      width: 100px;
+    }
+  }
+}

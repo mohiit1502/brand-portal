@@ -4,7 +4,8 @@ const CONSTANTS = {
     DEFAULT_REDIRECT_PATH: "/user-management/user-list",
 
     ONBOARD: {
-      COMPANY_REGISTER: "/onboard/company/register"
+      COMPANY_REGISTER: "/onboard/register/company",
+      BRAND_REGISTER: "/onboard/register/brand"
     },
 
     USER_MGMT: {

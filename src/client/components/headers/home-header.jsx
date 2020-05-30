@@ -8,6 +8,7 @@ import CONSTANTS from "../../constants/constants";
 class HomeHeader extends React.Component {
   constructor (props) {
     super(props);
+    console.log(props);
   }
 
   render() {
@@ -38,7 +39,9 @@ class HomeHeader extends React.Component {
                 {`${this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
               </a>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
-                <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
+                {
+                  this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
+                }
                 <a className="dropdown-item" href={logoutUrl}>Logout</a>
               </div>
             </li>
@@ -50,7 +53,8 @@ class HomeHeader extends React.Component {
 }
 
 HomeHeader.propTypes = {
-  userProfile: PropTypes.object
+  userProfile: PropTypes.object,
+  isOnboarded: PropTypes.bool
 };
 
 
