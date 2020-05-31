@@ -1,13 +1,13 @@
 import nj from "node-jose";
 import CONSTANTS from "../constants/server-constants";
 
-export default class ServerUtils {
+class ServerUtils {
 
   constructor() {
 
   }
 
-  static randomStringGenerator(len) {
+  randomStringGenerator(len) {
     const random = [];
     const CharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -18,7 +18,7 @@ export default class ServerUtils {
     return random.join("");
   }
 
-  static decryptToken(idToken) {
+  decryptToken(idToken) {
 
     const falconSSOTokenKey = JSON.parse(CONSTANTS.IAM.IdTokenEncryptionKey);
     const keystore = nj.JWK.createKeyStore();
@@ -44,3 +44,5 @@ export default class ServerUtils {
     });
   }
 }
+
+export default new ServerUtils();

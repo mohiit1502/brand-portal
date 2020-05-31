@@ -204,25 +204,27 @@ class CustomInput extends React.Component {
   getSubtitleAndError () {
     let subtitleText = "";
     let subtitleClass = "text-muted";
+    let errorClass = "";
 
     if (this.state.error) {
       subtitleText = this.state.error;
       subtitleClass = "text-danger";
+      errorClass = "has-error";
     } else if (this.state.subtitle) {
       subtitleText = this.state.subtitle;
     } else if (!this.state.required) {
       subtitleText = "Optional";
     }
 
-    return {subtitleText, subtitleClass};
+    return {subtitleText, subtitleClass, errorClass};
   }
 
   getTextInputType () {
 
-    const {subtitleText, subtitleClass} = this.getSubtitleAndError();
+    const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""}`}>
+      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${errorClass}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}

@@ -44,4 +44,5 @@ export default class ClientUtils {
     }
     return index;
   }
+
 }

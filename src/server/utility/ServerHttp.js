@@ -52,6 +52,27 @@ export default class ServerHttp {
     throw new ServerHttpError(status, err.error, err.message);
   }
 
+  static async postAsFormData(url, options, data) {
+    options.headers = {};
+    const response = await fetch(url, {
+      method: "POST",
+      body: data,
+      ...options
+    });
+
+    const {ok, status, headers} = response;
+    if (ok) {
+      if (headers.get("content-type") === "application/json") {
+        return {status, body: await response.json()};
+      }
+      return response;
+    }
+
+    const err = await response.json();
+    console.log(err);
+    throw new ServerHttpError(status, err.error, err.message);
+  }
+
   static async put(url, options, data) {
 
     options.headers = options.headers || {};

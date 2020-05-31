@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import {Route, Switch} from "react-router";
-import CONSTANTS from "../../constants/constants";
-import "../../styles/content-renderer-onboarding/content-renderer-onboarding.scss";
+import CONSTANTS from "../../../constants/constants";
+import "../../../styles/content-renderer-onboarding/content-renderer-onboarding.scss";
 import BrandRegistration from "./brand-registration";
 import CompanyProfileRegistration from "./company-profile-registration";
 

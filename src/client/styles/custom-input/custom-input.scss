@@ -174,5 +174,12 @@ $textarea-label: #41484F;
     font-size: 12px;
 
   }
+
+  &.has-error {
+    .custom-input-element, .custom-input-label {
+      @extend .text-danger;
+      @extend .border-danger;
+    }
+  }
 }
 

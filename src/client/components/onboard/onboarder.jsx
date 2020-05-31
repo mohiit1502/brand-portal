@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import HomeHeader from "../headers/home-header";
-import ContentRendererOnboard from "../content-renderer-onboarding/content-renderer-onboard";
+import ContentRendererOnboard from "./content-renderer-onboarding/content-renderer-onboard";
 import Stepper from "../stepper/stepper";
 
 

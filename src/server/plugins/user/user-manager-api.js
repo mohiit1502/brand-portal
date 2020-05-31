@@ -42,11 +42,8 @@ class UserManagerApi {
   }
 
   register(server) {
-    // server.state("auth_session_token", {
-    //   isSecure: false,
-    //   isHttpOnly: false
-    // });
-    server.route([
+
+    return server.route([
       {
         method: "GET",
         path: "/api/login/falcon-redirect",

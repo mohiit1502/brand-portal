@@ -1,5 +1,5 @@
 import CONSTANTS from "../../constants/server-constants";
-import ServerUtils from "../../utility/ServerUtils";
+import ServerUtils from "../../utility/server-utils";
 import queryString from "query-string";
 
 class Falcon {

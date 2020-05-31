@@ -22,7 +22,7 @@ class Authenticator extends React.Component {
     this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     this.state = {
       isLoggedIn: !!sessionCookie,
-      isOnboarded: true
+      isOnboarded: false
     };
   }
 

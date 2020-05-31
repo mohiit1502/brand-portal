@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import CustomInput from "../custom-input/custom-input";
+import CustomInput from "../../custom-input/custom-input";
 
 class BrandRegistration extends React.Component {
 

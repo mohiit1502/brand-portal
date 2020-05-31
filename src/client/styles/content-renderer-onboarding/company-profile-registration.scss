@@ -18,8 +18,13 @@ $subtitle-color: #6E7677;
 .company-reg-form-row {
   .primary-file-upload, .additional-file-upload {
     .upload-btn {
-      @extend .mt-2;
       width: 100px;
+    }
+    .uploaded-file-label{
+      .cancel-file-selection-btn {
+        font-size: 32px;
+        line-height: 24px;
+      }
     }
   }
 }

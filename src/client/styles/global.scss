@@ -30,6 +30,7 @@ html,body {
         font-family: BogleWeb-Regular, sans-serif;
         min-width: $min-viewport-width;
         min-height: $min-viewport-height;
+        overflow: hidden;
       }
     }
   }
@@ -38,6 +39,11 @@ html,body {
 /*
 ** Generic Classes Start
 */
+
+.check-green-icon-white-bg {
+  border-radius: 50%;
+  background: white;
+}
 
 .no-border-radius {
   border-radius: 0;

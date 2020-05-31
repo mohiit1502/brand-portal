@@ -1,0 +1,23 @@
+@import "../override/variables";
+
+$progress-bg-color: #B2D5C9;
+$progress-bar-color: #53B987;
+
+.progress {
+  position: relative;
+  height: 31px !important;
+  background: $progress-bg-color;
+  .progress-bar-text {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 15px;
+    font-family: MyriadPro-Regular, serif;
+    line-height: 32px;
+    padding-left: 15px;
+  }
+  .progress-bar {
+    background: $progress-bar-color;
+  }
+}
