@@ -7,6 +7,7 @@ import CheckGreenIcon from "../../../images/check-grn.svg";
 import {CustomInterval} from "../../../utility/timer-utils";
 import ProgressBar from "../../progress-bar/progress-bar";
 import {Redirect} from "react-router";
+import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
 
 class CompanyProfileRegistration extends React.Component {
@@ -118,7 +119,6 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.state.value &&
       form.inputData.zip.value &&
       form.inputData.businessRegistrationDoc.id;
-    console.log(!!bool);
     this.setState({isSubmitDisabled: !bool});
   }
 
@@ -136,7 +136,7 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
-  async checkCompanyNameAvailability (evt) {
+  async checkCompanyNameAvailability () {
     try {
       if (!this.state.form.inputData.companyName.value) {
         return;
@@ -144,6 +144,7 @@ class CompanyProfileRegistration extends React.Component {
       const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = true;
+      form.inputData.companyName.error = "";
       form.inputData.address.disabled = false;
       form.inputData.city.disabled = false;
       form.inputData.state.disabled = false;
@@ -258,11 +259,25 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
+    const org = {
+      name: this.state.form.inputData.companyName.value,
+      address: this.state.form.inputData.address.value,
+      city: this.state.form.inputData.city.value,
+      state: this.state.form.inputData.state.value,
+      zip: this.state.form.inputData.zip.value,
+      countryCode: this.state.form.inputData.country.value,
+      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
+    };
+    if (this.state.form.inputData.additionalDoc.id) {
+      org.additionalDocId = this.state.form.inputData.additionalDoc.id;
+    }
+    this.props.updateOrgData(org);
     this.setState({redirectToBrands: true});
   }
 
 
   render() {
+
     if (this.state.redirectToBrands) {
       return <Redirect to={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER} />;
     }
@@ -425,5 +440,10 @@ class CompanyProfileRegistration extends React.Component {
     );
   }
 }
+
+CompanyProfileRegistration.propTypes = {
+  updateOrgData: PropTypes.func
+};
+
 
 export  default  connect()(CompanyProfileRegistration);

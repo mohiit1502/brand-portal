@@ -16,10 +16,10 @@ class ContentRendererOnboard extends React.Component {
       <div className="content-page-onboard d-inline-block">
         <Switch>
           <Route path={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}>
-            <CompanyProfileRegistration />
+            <CompanyProfileRegistration {...this.props}/>
           </Route>
           <Route path={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER}>
-            <BrandRegistration />
+            <BrandRegistration {...this.props}/>
           </Route>
         </Switch>
       </div>

@@ -6,6 +6,7 @@ import $ from "jquery";
 import {TOGGLE_ACTIONS} from "../../actions/modal-actions";
 import CreateUserTemplate from "../../components/modal/templates/create-user-template";
 import NewUserAddedTemplate from "../../components/modal/templates/new-user-added-template";
+import CompanyBrandRegisteredTemplate from "../../components/modal/templates/company-brand-registered-template";
 
 class CustomModal extends React.Component {
 
@@ -29,6 +30,7 @@ class CustomModal extends React.Component {
     switch (key) {
       case "CreateUserTemplate": return CreateUserTemplate;
       case "NewUserAddedTemplate": return NewUserAddedTemplate;
+      case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
     }
     return null;
   }

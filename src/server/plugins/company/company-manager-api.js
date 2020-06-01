@@ -8,6 +8,8 @@ class CompanyManagerApi {
   constructor() {
     this.name = "CompanyManagerApi";
     this.register = this.register.bind(this);
+    this.registerOrganization = this.registerOrganization.bind(this);
+    this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
   }
 
   register (server) {
@@ -38,8 +40,57 @@ class CompanyManagerApi {
             allow: "multipart/form-data"
           }
         }
+      },
+      {
+        method: "GET",
+        path: "/api/brand/trademark/validity/{trademarkNumber}",
+        handler: this.checkTrademarkValidity
+      },
+      {
+        method: "POST",
+        path: "/api/org/register",
+        handler: this.registerOrganization
       }
     ]);
+  }
+
+  getHeaders(request) {
+    return {
+      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
+      ROPRO_USER_ID:	request.state.session_token_login_id,
+      ROPRO_CLIENT_ID:	"abcd",
+      ROPRO_CORRELATION_ID: "sdfsdf"
+    };
+  }
+
+  async registerOrganization (request, h) {
+    try {
+      const headers = this.getHeaders(request);
+      const options = {
+        method: "POST",
+        headers
+      };
+      const payload = request.payload;
+      const response = await ServerHttp.post(`http://brandservice.ropro.stg.walmart.com/ropro/org-service/org`, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async checkTrademarkValidity (request, h) {
+    try {
+      const options = {
+        ROPRO_CORRELATION_ID: "sdfsdf",
+        ROPRO_CLIENT_ID: "dsfasdf"
+      };
+      const response = await ServerHttp.get(`http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands/ip/${request.params.trademarkNumber}`, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
   }
 
   async uploadAdditionalDocument (request, h) {

@@ -5,7 +5,7 @@ $progress-bar-color: #53B987;
 
 .progress {
   position: relative;
-  height: 31px !important;
+  height: 38px !important;
   background: $progress-bg-color;
   .progress-bar-text {
     position: absolute;
@@ -14,7 +14,7 @@ $progress-bar-color: #53B987;
     color: white;
     font-size: 15px;
     font-family: MyriadPro-Regular, serif;
-    line-height: 32px;
+    line-height: 38px;
     padding-left: 15px;
   }
   .progress-bar {

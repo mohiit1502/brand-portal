@@ -1,25 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../../styles/stepper/stepper.scss";
+import PropTypes from "prop-types";
 
 class Stepper extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      steps: [
-        {
-          order: 1,
-          name: "Company Profile",
-          complete: true
-        },
-        {
-          order: 2,
-          name: "Brand Details",
-          complete: true
-        }
-      ]
-    };
   }
 
   render() {
@@ -27,7 +14,7 @@ class Stepper extends React.Component {
       <div className="row stepper-row align-items-center">
         <div className="col text-center stepper-col">
           {
-            this.state.steps.map((step, i) => {
+            this.props.steps.map((step, i) => {
               return (
                 <div className="step-box" key={step.order}>
                   <div className="step-title">Step {step.order}: {step.name}</div>
@@ -44,5 +31,9 @@ class Stepper extends React.Component {
     );
   }
 }
+
+Stepper.propTypes = {
+  steps: PropTypes.array
+};
 
 export  default  connect()(Stepper);

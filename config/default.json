@@ -69,6 +69,9 @@
     "company-manager-api": {
       "module": "./{{env.APP_SRC_DIR}}/server/plugins/company/company-manager-api"
     },
+    "brand-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/brand/brand-manager-api"
+    },
     "webapp": {
       "module": "@walmart/electrode-index-page",
       "options": {
