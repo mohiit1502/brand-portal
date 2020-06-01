@@ -3,6 +3,7 @@ import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
 import CONSTANTS from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
+import ServerUtils from "../../utility/server-utils";
 
 class UserManagerApi {
   constructor() {
@@ -295,13 +296,16 @@ class UserManagerApi {
       const query = request.query;
       const ttl = 30 * 60 * 1000;
       // eslint-disable-next-line camelcase
-      /*const {id_token} = await this.getAccessToken(query.code);
+      const {id_token} = await this.getAccessToken(query.code);
       const user = await ServerUtils.decryptToken(id_token);
-      h.state("auth_session_token", id_token, {ttl});*/
+      const loginId = user.loginid;
+      const authToken = user["iam-token"];
+
       //temporary login below
-      const login = await this.loginStaticUser();
-      const authToken = login.payload.authenticationToken.authToken;
-      const loginId = login.payload.principal.loginId;
+      // const login = await this.loginStaticUser();
+      // const authToken = login.payload.authenticationToken.authToken;
+      // const loginId = login.payload.principal.loginId;
+
       h.state("auth_session_token", authToken, {
         ttl,
         isSecure: false,

@@ -394,7 +394,7 @@ class CompanyProfileRegistration extends React.Component {
                       <div className={`uploaded-file-label form-control`}>
                         {this.state.form.inputData.businessRegistrationDoc.filename}
 
-                        <span aria-hidden="true" className="cancel-file-selection-btn float-right" onClick={this.cancelPrimaryDocumentSelection}>&times;</span>
+                        <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelPrimaryDocumentSelection}>&times;</span>
                       </div>
                     }
                   </div>
@@ -420,7 +420,7 @@ class CompanyProfileRegistration extends React.Component {
                       <div className={`uploaded-file-label form-control`}>
                         {this.state.form.inputData.additionalDoc.filename}
 
-                        <span aria-hidden="true" className="cancel-file-selection-btn float-right" onClick={this.cancelAdditionalDocumentSelection}>&times;</span>
+                        <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelAdditionalDocumentSelection}>&times;</span>
                       </div>
                     }
                   </div>
