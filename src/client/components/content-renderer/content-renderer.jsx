@@ -16,6 +16,9 @@ class ContentRenderer extends React.Component {
     return (
       <div className="content-page d-inline-block">
         <Switch>
+          <Route path={CONSTANTS.ROUTES.BRANDS.BRANDS_LIST}>
+            <div>hello</div>
+          </Route>
           <Route path={CONSTANTS.ROUTES.PROFILE.USER}>
             <UserProfile/>
           </Route>
@@ -25,6 +28,7 @@ class ContentRenderer extends React.Component {
           <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_APPROVAL}>
             <UserApproval/>
           </Route>
+
         </Switch>
       </div>
     );

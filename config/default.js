@@ -13,7 +13,7 @@ module.exports = {
     }
   },
   ui: {
-    demo: "hello from ui configs"
+
   },
   electrodeStaticPaths: {
     enable: true,

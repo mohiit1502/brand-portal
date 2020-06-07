@@ -13,6 +13,10 @@ const CONSTANTS = {
       USER_APPROVAL: "/user-management/user-approval"
     },
 
+    BRANDS: {
+      BRANDS_LIST: "/brands"
+    },
+
     PROFILE: {
       USER: "/profile/user-profile"
     }

@@ -129,13 +129,12 @@ class CompanyManagerApi {
 
   async checkCompanyNameAvailabililty (request, h) {
     try {
-      return h.response("hello temporary").code(200);
       const name = request.query.name;
       const options = {
         ROPRO_CORRELATION_ID: "sdfsdf",
         ROPRO_CLIENT_ID: "dsfasdf"
       };
-      const response = await ServerHttp.get("http://brandservice.ropro.stg.walmart.com/ropro/org-service/org", options, {name});
+      const response = await ServerHttp.get("http://brandservice.ropro.stg.walmart.com/ropro/org-service/org/uniqueness", options, {name});
       return h.response(response.body).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);

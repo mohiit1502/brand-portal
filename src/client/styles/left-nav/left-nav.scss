@@ -16,6 +16,11 @@ $nav-left-border-color : #F7F9FA;
       @extend .my-2;
     }
 
+    &.active {
+      background: $nav-selected-grey;
+      border-left: 6px solid $nav-left-border-color;
+    }
+
     .sub-nav-item {
       line-height: 0;
       border-left: 6px solid transparent;

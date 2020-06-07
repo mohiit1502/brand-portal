@@ -66,6 +66,10 @@ class BrandRegistration extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+
+  }
+
   checkToEnableSubmit () {
     const form = {...this.state.form};
     const bool = form.inputData.trademarkNumber.isValid &&

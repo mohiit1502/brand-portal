@@ -37,6 +37,9 @@
   },
   "ccm": {
     "autoLoad": true,
+    "uiFilter": {
+      "$.ui": [ ".*"]
+    },
     "keys":{
       "root": {
         "profiles": {
@@ -45,6 +48,10 @@
           }
         },
         "data": {
+          "ui": {
+            "serviceName": "ro-pro",
+            "+configNames": ["ui"]
+          },
           "IAM": {
             "serviceName": "ro-pro",
             "+configNames": ["IAM"]

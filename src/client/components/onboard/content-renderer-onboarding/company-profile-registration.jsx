@@ -111,6 +111,7 @@ class CompanyProfileRegistration extends React.Component {
     };
   }
 
+
   checkToEnableSubmit () {
     const form = {...this.state.form};
     const bool = form.inputData.companyName.value &&
@@ -380,7 +381,7 @@ class CompanyProfileRegistration extends React.Component {
                     </div>
                     {
                       !this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
-                      <label className="btn btn-sm btn-primary upload-btn">
+                      <label className="btn btn-sm btn-primary upload-btn mb-2">
                         Upload
                         <input type="file" className="d-none" onChange={this.uploadPrimaryDocument}/>
                       </label>
@@ -391,7 +392,7 @@ class CompanyProfileRegistration extends React.Component {
                     }
                     {
                       !this.state.form.inputData.businessRegistrationDoc.uploading && this.state.form.inputData.businessRegistrationDoc.id &&
-                      <div className={`uploaded-file-label form-control`}>
+                      <div className={`uploaded-file-label form-control mb-2`}>
                         {this.state.form.inputData.businessRegistrationDoc.filename}
 
                         <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelPrimaryDocumentSelection}>&times;</span>
@@ -406,7 +407,7 @@ class CompanyProfileRegistration extends React.Component {
                     </div>
                     {
                       !this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&
-                      <label className="btn btn-sm btn-primary upload-btn">
+                      <label className="btn btn-sm btn-primary upload-btn mb-2">
                         Upload
                         <input type="file" className="d-none" onChange={this.uploadAdditionalDocument}/>
                       </label>
@@ -417,7 +418,7 @@ class CompanyProfileRegistration extends React.Component {
                     }
                     {
                       !this.state.form.inputData.additionalDoc.uploading && this.state.form.inputData.additionalDoc.id &&
-                      <div className={`uploaded-file-label form-control`}>
+                      <div className={`uploaded-file-label form-control mb-2`}>
                         {this.state.form.inputData.additionalDoc.filename}
 
                         <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelAdditionalDocumentSelection}>&times;</span>
@@ -442,7 +443,8 @@ class CompanyProfileRegistration extends React.Component {
 }
 
 CompanyProfileRegistration.propTypes = {
-  updateOrgData: PropTypes.func
+  updateOrgData: PropTypes.func,
+  modal: PropTypes.object
 };
 
 

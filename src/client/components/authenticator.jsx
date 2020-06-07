@@ -20,9 +20,11 @@ class Authenticator extends React.Component {
     const COOKIE_NAME = "auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
     this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
+
     this.state = {
       isLoggedIn: !!sessionCookie,
-      isOnboarded: true
+      isOnboarded: false,
+      profileInformationLoaded: false
     };
   }
 
@@ -34,6 +36,16 @@ class Authenticator extends React.Component {
     }
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.userProfile !== this.props.userProfile) {
+      //this.setOnboardStatus(this.props.userProfile.organization);
+    }
+  }
+
+  setOnboardStatus (status) {
+    return this.setState({isOnboarded: !!status});
+  }
+
   async getProfileInfo () {
     try {
       let profile = this.storageSrvc.getJSONItem("userProfile");
@@ -41,8 +53,9 @@ class Authenticator extends React.Component {
         profile = (await Http.get("/api/userInfo")).body;
         this.storageSrvc.setJSONItem("userProfile", profile);
       }
-
+      this.setOnboardStatus(profile.organization);
       this.props.updateUserProfile(profile);
+      this.setState({profileInformationLoaded: true});
 
     } catch (e) {
       console.error(e);
@@ -68,20 +81,24 @@ class Authenticator extends React.Component {
 
   render () {
     if (this.state.isLoggedIn) {
-      if (this.isRootPath(this.props.location.pathname)) {
-        if (this.state.isOnboarded) {
-          return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH} />;
+      if (this.state.profileInformationLoaded) {
+        if (this.isRootPath(this.props.location.pathname)) {
+          if (this.state.isOnboarded) {
+            return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH}/>;
+          } else {
+            return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
+          }
+        } else if (!this.state.isOnboarded && !this.isOnboardingPath(this.props.location.pathname)) {
+          return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
+        } else if (this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
+          return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH}/>;
+        } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
+          return <Onboarder {...this.props} {...this.state} />;
         } else {
-          return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
+          return <Home {...this.props} {...this.state}/>;
         }
-      } else if (!this.state.isOnboarded && !this.isOnboardingPath(this.props.location.pathname)) {
-        return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
-      } else if (this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
-        return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH} />;
-      } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
-        return <Onboarder {...this.props} {...this.state} />;
       } else {
-        return <Home {...this.props} {...this.state}/>;
+        return <div> Loading... </div>;
       }
     } else  if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;

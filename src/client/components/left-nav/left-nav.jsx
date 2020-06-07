@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ClientUtils from "../../utility/ClientUtils";
 import "../../styles/left-nav/left-nav.scss";
+import PropTypes from "prop-types";
 import CONSTANTS from "../../constants/constants";
 
 class Leftnav extends React.Component {
@@ -47,7 +48,7 @@ class Leftnav extends React.Component {
             this.state.NAVIGATION_PANEL.map((item => {
               return (
                 <li className={`nav-item ${item.active ? "active" : "inactive"}`} key={item.id}>
-                  <a className="nav-link" href={item.href} onClick={evt => {this.navigateTo(evt, item);}}>{item.value}</a>
+                  <a className="nav-link" href={item.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, item.href);}}>{item.value}</a>
                   {
                     item.children && <ul className="nav flex-column">
                       {item.children.map(subItem => {
@@ -70,5 +71,10 @@ class Leftnav extends React.Component {
     );
   }
 }
+
+Leftnav.propTypes = {
+  location: PropTypes.object
+};
+
 
 export  default  connect()(Leftnav);

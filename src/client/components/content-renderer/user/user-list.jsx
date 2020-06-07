@@ -10,10 +10,10 @@ import ClientUtils from "../../../utility/ClientUtils";
 import Http from "../../../utility/Http";
 import searchIcon from "../../../images/18-px-search.svg";
 import filterIcon from "../../../images/filter-sc.svg";
-
 import burgerIcon from "../../../images/group-23.svg";
 import {saveUserCompleted} from "../../../actions/user/user-actions";
 import PaginationNav from "../../pagination/pagination-nav";
+import config from "@walmart/electrode-ui-config";
 
 class UserList extends React.Component {
 
