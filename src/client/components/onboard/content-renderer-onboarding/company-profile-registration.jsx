@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../../../styles/content-renderer-onboarding/company-profile-registration.scss";
-import CustomInput from "../../custom-input/custom-input";
+import CustomInput from "../../custom-components/custom-input/custom-input";
 import Http from "../../../utility/Http";
 import CheckGreenIcon from "../../../images/check-grn.svg";
 import {CustomInterval} from "../../../utility/timer-utils";
-import ProgressBar from "../../progress-bar/progress-bar";
+import ProgressBar from "../../custom-components/progress-bar/progress-bar";
 import {Redirect} from "react-router";
 import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
@@ -24,6 +24,7 @@ class CompanyProfileRegistration extends React.Component {
     this.cancelPrimaryDocumentSelection = this.cancelPrimaryDocumentSelection.bind(this);
     this.cancelAdditionalDocumentSelection = this.cancelAdditionalDocumentSelection.bind(this);
     this.cancelDocumentSelection = this.cancelDocumentSelection.bind(this);
+    this.undertakingtoggle = this.undertakingtoggle.bind(this);
 
     this.state = {
       isSubmitDisabled: true,
@@ -40,7 +41,8 @@ class CompanyProfileRegistration extends React.Component {
             disabled: false,
             isUnique: false,
             subtitle: "Please ensure the company name entered is correct and matches the official document records.",
-            error: ""
+            error: "",
+            requestAdministratorAccess: false
           },
           address: {
             label: "Address",
@@ -106,9 +108,21 @@ class CompanyProfileRegistration extends React.Component {
             filename: "",
             error: ""
           }
+        },
+        requestAccessUndertaking: {
+          selected: false,
+          label: "I have read and agree to the Terms Of Use."
         }
       }
     };
+  }
+
+  undertakingtoggle () {
+    const state = {...this.state};
+    state.form.requestAccessUndertaking.selected = !state.form.requestAccessUndertaking.selected;
+    this.setState({
+      ...state
+    }, this.checkToEnableSubmit);
   }
 
 
@@ -143,6 +157,12 @@ class CompanyProfileRegistration extends React.Component {
         return;
       }
       const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
+      if (!response.body.unique) {
+        throw {
+          error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
+        };
+      }
+
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = true;
       form.inputData.companyName.error = "";
@@ -156,6 +176,7 @@ class CompanyProfileRegistration extends React.Component {
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = false;
       form.inputData.companyName.error = err.error;
+      form.inputData.companyName.requestAdministratorAccess = true;
       this.setState({form});
       console.log(err);
     }
@@ -267,7 +288,7 @@ class CompanyProfileRegistration extends React.Component {
       state: this.state.form.inputData.state.value,
       zip: this.state.form.inputData.zip.value,
       countryCode: this.state.form.inputData.country.value,
-      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
+      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id
     };
     if (this.state.form.inputData.additionalDoc.id) {
       org.additionalDocId = this.state.form.inputData.additionalDoc.id;
@@ -323,116 +344,142 @@ class CompanyProfileRegistration extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="form-row">
-                  <div className="col">
-                    <CustomInput key={"address"}
-                      inputId={"address"}
-                      formId={this.state.form.id} label={this.state.form.inputData.address.label}
-                      required={this.state.form.inputData.address.required} value={this.state.form.inputData.address.value}
-                      type={this.state.form.inputData.address.type} pattern={this.state.form.inputData.address.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.address.disabled}
-                      error={this.state.form.inputData.address.error} subtitle={this.state.form.inputData.address.subtitle}/>
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="col">
-                    <CustomInput key={"city"}
-                      inputId={"city"}
-                      formId={this.state.form.id} label={this.state.form.inputData.city.label}
-                      required={this.state.form.inputData.city.required} value={this.state.form.inputData.city.value}
-                      type={this.state.form.inputData.city.type} pattern={this.state.form.inputData.city.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.city.disabled}
-                      error={this.state.form.inputData.city.error} subtitle={this.state.form.inputData.city.subtitle}/>
-                  </div>
-                  <div className="col">
-                    <CustomInput key={"state"}
-                      inputId={"state"}
-                      formId={this.state.form.id} label={this.state.form.inputData.state.label}
-                      required={this.state.form.inputData.state.required} value={this.state.form.inputData.state.value}
-                      type={this.state.form.inputData.state.type} pattern={this.state.form.inputData.state.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.state.disabled}
-                      error={this.state.form.inputData.state.error} subtitle={this.state.form.inputData.state.subtitle}/>
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="col">
-                    <CustomInput key={"zip"}
-                      inputId={"zip"}
-                      formId={this.state.form.id} label={this.state.form.inputData.zip.label}
-                      required={this.state.form.inputData.zip.required} value={this.state.form.inputData.zip.value}
-                      type={this.state.form.inputData.zip.type} pattern={this.state.form.inputData.zip.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.zip.disabled}
-                      error={this.state.form.inputData.zip.error} subtitle={this.state.form.inputData.zip.subtitle}/>
-                  </div>
-                  <div className="col">
-                    <CustomInput key={"country"}
-                      inputId={"country"}
-                      formId={this.state.form.id} label={this.state.form.inputData.country.label}
-                      required={this.state.form.inputData.country.required} value={this.state.form.inputData.country.value}
-                      type={this.state.form.inputData.country.type} pattern={this.state.form.inputData.country.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.country.disabled}
-                      error={this.state.form.inputData.country.error} subtitle={this.state.form.inputData.country.subtitle}/>
-                  </div>
-                </div>
-                <div className="form-row primary-file-upload mb-3">
-                  <div className="col">
-                    <div className="file-upload-title mb-2">
-                      Please provide business registration documents if you are a corporation
-                    </div>
-                    {
-                      !this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
-                      <label className="btn btn-sm btn-primary upload-btn mb-2">
-                        Upload
-                        <input type="file" className="d-none" onChange={this.uploadPrimaryDocument}/>
-                      </label>
-                    }
-                    {
-                      this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
-                      <ProgressBar filename={this.state.form.inputData.businessRegistrationDoc.filename} uploadPercentage={this.state.form.inputData.businessRegistrationDoc.uploadPercentage} />
-                    }
-                    {
-                      !this.state.form.inputData.businessRegistrationDoc.uploading && this.state.form.inputData.businessRegistrationDoc.id &&
-                      <div className={`uploaded-file-label form-control mb-2`}>
-                        {this.state.form.inputData.businessRegistrationDoc.filename}
-
-                        <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelPrimaryDocumentSelection}>&times;</span>
+                {
+                  !this.state.form.inputData.companyName.requestAdministratorAccess &&
+                  <React.Fragment>
+                    <div className="form-row">
+                      <div className="col">
+                        <CustomInput key={"address"}
+                          inputId={"address"}
+                          formId={this.state.form.id} label={this.state.form.inputData.address.label}
+                          required={this.state.form.inputData.address.required} value={this.state.form.inputData.address.value}
+                          type={this.state.form.inputData.address.type} pattern={this.state.form.inputData.address.pattern}
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.address.disabled}
+                          error={this.state.form.inputData.address.error} subtitle={this.state.form.inputData.address.subtitle}/>
                       </div>
-                    }
-                  </div>
-                </div>
-                <div className="form-row additional-file-upload mb-3">
-                  <div className="col">
-                    <div className="file-upload-title mb-2">
-                      Additonal document (optional)
                     </div>
-                    {
-                      !this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&
-                      <label className="btn btn-sm btn-primary upload-btn mb-2">
-                        Upload
-                        <input type="file" className="d-none" onChange={this.uploadAdditionalDocument}/>
-                      </label>
-                    }
-                    {
-                      this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&
-                      <ProgressBar filename={this.state.form.inputData.additionalDoc.filename} uploadPercentage={this.state.form.inputData.additionalDoc.uploadPercentage} />
-                    }
-                    {
-                      !this.state.form.inputData.additionalDoc.uploading && this.state.form.inputData.additionalDoc.id &&
-                      <div className={`uploaded-file-label form-control mb-2`}>
-                        {this.state.form.inputData.additionalDoc.filename}
-
-                        <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelAdditionalDocumentSelection}>&times;</span>
+                    <div className="form-row">
+                      <div className="col">
+                        <CustomInput key={"city"}
+                          inputId={"city"}
+                          formId={this.state.form.id} label={this.state.form.inputData.city.label}
+                          required={this.state.form.inputData.city.required} value={this.state.form.inputData.city.value}
+                          type={this.state.form.inputData.city.type} pattern={this.state.form.inputData.city.pattern}
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.city.disabled}
+                          error={this.state.form.inputData.city.error} subtitle={this.state.form.inputData.city.subtitle}/>
                       </div>
-                    }
-                  </div>
-                </div>
-                <div className="form-row mt-3">
-                  <div className="col text-right">
-                    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetCompanyRegistration}>Cancel</div>
-                    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled}
-                      onClick={this.gotoBrandRegistration}> Next </button>
-                  </div>
-                </div>
+                      <div className="col">
+                        <CustomInput key={"state"}
+                          inputId={"state"}
+                          formId={this.state.form.id} label={this.state.form.inputData.state.label}
+                          required={this.state.form.inputData.state.required} value={this.state.form.inputData.state.value}
+                          type={this.state.form.inputData.state.type} pattern={this.state.form.inputData.state.pattern}
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.state.disabled}
+                          error={this.state.form.inputData.state.error} subtitle={this.state.form.inputData.state.subtitle}/>
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="col">
+                        <CustomInput key={"zip"}
+                          inputId={"zip"}
+                          formId={this.state.form.id} label={this.state.form.inputData.zip.label}
+                          required={this.state.form.inputData.zip.required} value={this.state.form.inputData.zip.value}
+                          type={this.state.form.inputData.zip.type} pattern={this.state.form.inputData.zip.pattern}
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.zip.disabled}
+                          error={this.state.form.inputData.zip.error} subtitle={this.state.form.inputData.zip.subtitle}/>
+                      </div>
+                      <div className="col">
+                        <CustomInput key={"country"}
+                          inputId={"country"}
+                          formId={this.state.form.id} label={this.state.form.inputData.country.label}
+                          required={this.state.form.inputData.country.required} value={this.state.form.inputData.country.value}
+                          type={this.state.form.inputData.country.type} pattern={this.state.form.inputData.country.pattern}
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.country.disabled}
+                          error={this.state.form.inputData.country.error} subtitle={this.state.form.inputData.country.subtitle}/>
+                      </div>
+                    </div>
+                    <div className="form-row primary-file-upload mb-3">
+                      <div className="col">
+                        <div className="file-upload-title mb-2">
+                          Please provide business registration documents if you are a corporation
+                        </div>
+                        {
+                          !this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
+                          <label className="btn btn-sm btn-primary upload-btn mb-2">
+                            Upload
+                            <input type="file" className="d-none" onChange={this.uploadPrimaryDocument}/>
+                          </label>
+                        }
+                        {
+                          this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
+                          <ProgressBar filename={this.state.form.inputData.businessRegistrationDoc.filename} uploadPercentage={this.state.form.inputData.businessRegistrationDoc.uploadPercentage} />
+                        }
+                        {
+                          !this.state.form.inputData.businessRegistrationDoc.uploading && this.state.form.inputData.businessRegistrationDoc.id &&
+                          <div className={`uploaded-file-label form-control mb-2`}>
+                            {this.state.form.inputData.businessRegistrationDoc.filename}
+
+                            <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelPrimaryDocumentSelection}>&times;</span>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <div className="form-row additional-file-upload mb-3">
+                      <div className="col">
+                        <div className="file-upload-title mb-2">
+                          Additonal document (optional)
+                        </div>
+                        {
+                          !this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&
+                          <label className="btn btn-sm btn-primary upload-btn mb-2">
+                            Upload
+                            <input type="file" className="d-none" onChange={this.uploadAdditionalDocument}/>
+                          </label>
+                        }
+                        {
+                          this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&
+                          <ProgressBar filename={this.state.form.inputData.additionalDoc.filename} uploadPercentage={this.state.form.inputData.additionalDoc.uploadPercentage} />
+                        }
+                        {
+                          !this.state.form.inputData.additionalDoc.uploading && this.state.form.inputData.additionalDoc.id &&
+                          <div className={`uploaded-file-label form-control mb-2`}>
+                            {this.state.form.inputData.additionalDoc.filename}
+
+                            <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer" onClick={this.cancelAdditionalDocumentSelection}>&times;</span>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <div className="form-row mt-3">
+                      <div className="col text-right">
+                        <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetCompanyRegistration}>Cancel</div>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled}
+                          onClick={this.gotoBrandRegistration}> Next </button>
+                      </div>
+                    </div>
+                  </React.Fragment> ||
+                  <React.Fragment>
+                    <div className="form-row mt-5">
+                      <div className="col text-right">
+                        <div className="form-check">
+                          <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.requestAccessUndertaking.selected} required={true}
+                            onChange={this.undertakingtoggle}/>
+                          <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
+                            {this.state.form.requestAccessUndertaking.label}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="form-row mt-3">
+                      <div className="col text-right">
+                        <div className="btn btn-sm cancel-btn text-primary" type="button">Cancel</div>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3"
+                          disabled={!this.state.form.requestAccessUndertaking.selected}> Request Access </button>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                }
+
               </form>
             </div>
           </div>

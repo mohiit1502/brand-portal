@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Login from "./login/login";
-import Home from "./home";
+import Home from "./home/home";
 import {Redirect} from "react-router";
 import PropTypes from "prop-types";
 import CONSTANTS from "../constants/constants";

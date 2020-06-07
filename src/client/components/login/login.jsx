@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import "../../styles/login/login.scss";
-import LoginHeader from "../headers/login-header";
+import LoginHeader from "../custom-components/headers/login-header";
 
 class Login extends React.Component {
 

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Demo1 from "./components/temp-delete-later/demo1";
 import Demo2 from "./components/temp-delete-later/demo2";
-import Modal from "./components/modal/custom-modal";
+import Modal from "./components/custom-components/modal/custom-modal";
 import Authenticator from "./components/authenticator";
 import { withRouter } from "react-router-dom";
 import { renderRoutes } from "react-router-config";

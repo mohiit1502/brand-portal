@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import HomeHeader from "../headers/home-header";
+import HomeHeader from "../custom-components/headers/home-header";
 import ContentRendererOnboard from "./content-renderer-onboarding/content-renderer-onboard";
-import Stepper from "../stepper/stepper";
+import Stepper from "../custom-components/stepper/stepper";
 import ClientUtils from "../../utility/ClientUtils";
 
 

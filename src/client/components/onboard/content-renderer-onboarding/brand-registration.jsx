@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import CustomInput from "../../custom-input/custom-input";
+import CustomInput from "../../custom-components/custom-input/custom-input";
 import CheckGreenIcon from "../../../images/check-grn.svg";
 import {Redirect} from "react-router";
 import CONSTANTS from "../../../constants/constants";
