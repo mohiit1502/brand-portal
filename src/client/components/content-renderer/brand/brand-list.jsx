@@ -11,16 +11,14 @@ import Http from "../../../utility/Http";
 import searchIcon from "../../../images/18-px-search.svg";
 import filterIcon from "../../../images/filter-sc.svg";
 import burgerIcon from "../../../images/group-23.svg";
-import {saveUserCompleted} from "../../../actions/user/user-actions";
 import PaginationNav from "../../pagination/pagination-nav";
-import config from "@walmart/electrode-ui-config";
 
-class UserList extends React.Component {
+class BrandList extends React.Component {
 
   constructor (props) {
     super(props);
 
-    this.createNewUser = this.createNewUser.bind(this);
+    this.addNewBrand = this.addNewBrand.bind(this);
     this.editUser = this.editUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.uiSearch = this.uiSearch.bind(this);
@@ -274,7 +272,7 @@ class UserList extends React.Component {
     }
   }
 
-  createNewUser () {
+  addNewBrand () {
     const meta = { templateName: "CreateUserTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
@@ -345,15 +343,15 @@ class UserList extends React.Component {
         <div className="col h-100">
           <div className="row content-header-row p-4 h-10">
             <div className="col">
-              <h3>User List</h3>
+              <h3>Your Brands</h3>
             </div>
           </div>
           <div className="row content-row p-4 h-90">
             <div className="col h-100;">
               <div className="row action-row align-items-center">
                 <div className="col-lg-8 col-6">
-                  <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>
-                    Invite User
+                  <div className="btn btn-primary btn-sm px-3" onClick={this.addNewBrand}>
+                    New Brand
                   </div>
                 </div>
                 <div className="col-lg-4 col-6 text-right">
@@ -363,8 +361,8 @@ class UserList extends React.Component {
                         <img src={searchIcon} className="Group-23" />
                       </div>
                     </div>
-                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name"
-                      onChange={this.uiSearch}/>
+                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by Brand Name"
+                           onChange={this.uiSearch}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
@@ -404,7 +402,7 @@ class UserList extends React.Component {
                                       <li key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                            onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
+                                                 onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>
@@ -430,7 +428,7 @@ class UserList extends React.Component {
                       {
                         this.state.filteredList.length > 0 &&
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.userListColumns} template={UserListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
+                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
                       }
                     </div>
                   </div>
@@ -446,7 +444,7 @@ class UserList extends React.Component {
 
                       {
                         !!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false">
                           Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
                         </button>
                       }
@@ -455,7 +453,7 @@ class UserList extends React.Component {
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
-                              onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
+                                       onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
                           })
                         }
                       </div>
@@ -471,10 +469,8 @@ class UserList extends React.Component {
   }
 }
 
-UserList.propTypes = {
-  toggleModal: PropTypes.func,
-  saveUserCompleted: PropTypes.func,
-  userEdit: PropTypes.object
+BrandList.propTypes = {
+  toggleModal: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -485,12 +481,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  toggleModal,
-  saveUserCompleted
+  toggleModal
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserList);
+)(BrandList);
 
