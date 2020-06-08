@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import "../../../../styles/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
 import CustomTable from "../../../custom-components/table/custom-table";
-import UserListTable from "../../../custom-components/table/templates/user-list-table";
+import brandListTable from "../../../custom-components/table/templates/brand-list-table";
 import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
@@ -11,7 +11,6 @@ import Http from "../../../../utility/Http";
 import searchIcon from "../../../../images/18-px-search.svg";
 import filterIcon from "../../../../images/filter-sc.svg";
 import burgerIcon from "../../../../images/group-23.svg";
-import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 
 class BrandList extends React.Component {
@@ -26,7 +25,7 @@ class BrandList extends React.Component {
     this.createFilters = this.createFilters.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
     this.applyFilters = this.applyFilters.bind(this);
-    this.fetchUserData = this.fetchUserData.bind(this);
+    this.fetchBrands = this.fetchBrands.bind(this);
     this.paginationCallback = this.paginationCallback.bind(this);
     this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
@@ -37,7 +36,7 @@ class BrandList extends React.Component {
         size: 10,
         sizeOptions: [5, 10, 15, 20, 30]
       },
-      userList: [],
+      brandList: [],
       paginatedList: [],
       filteredList: [],
       filters: [],
@@ -47,61 +46,53 @@ class BrandList extends React.Component {
         dropdownOptions: [
           {
             id: 1,
-            value: "Edit User Profile",
+            value: "Edit Brand Details",
             clickCallback: (evt, option, data) => {
-              this.editUser(data.original);
+              alert(1);
+              //this.editUser(data.original);
             }
           },
           {
             id: 2,
-            value: "Suspend User Profile",
+            value: "Suspend Brand",
             clickCallback: (evt, option, data) => {
-              const response = Http.put(`/api/users/${data.loginId}/status/SUSPEND`);
-              response.then(res => {
-                this.fetchUserData();
-              });
+              alert(2);
+              // const response = Http.put(`/api/users/${data.loginId}/status/SUSPEND`);
+              // response.then(res => {
+              //   this.fetchBrands();
+              // });
             }
           },
           {
             id: 3,
-            value: "Delete User Profile",
+            value: "Delete Brand",
             clickCallback: (evt, option, data) => {
-              const response = Http.delete(`/api/users/${data.loginId}`);
-              response.then(res => {
-                this.fetchUserData();
-              });
-            }
-          },
-          {
-            id: 4,
-            value: "Resend Invite",
-            clickCallback (evt) {
-              console.log(4);
+              alert(3);
+              // const response = Http.delete(`/api/users/${data.loginId}`);
+              // response.then(res => {
+              //   this.fetchBrands();
+              // });
             }
           }
         ]
       },
-      userListColumns: [
+      brandListColumns: [
         {
           Header: "#",
           accessor: "sequence",
           canSort: true
         },
         {
-          Header: "USER NAME",
-          accessor: "username"
+          Header: "BRAND NAME",
+          accessor: "brandName"
         },
         {
-          Header: "ROLE",
-          accessor: "role"
+          Header: "DATE ADDED",
+          accessor: "dateAdded"
         },
         {
-          Header: "ASSOCIATED BRANDS",
-          accessor: "brands"
-        },
-        {
-          Header: "PROFILE STATUS",
-          accessor: "status"
+          Header: "STATUS",
+          accessor: "brandStatus"
         }
       ]
     };
@@ -109,15 +100,15 @@ class BrandList extends React.Component {
 
   async uiSearch (evt) {
     const searchText = evt.target.value && evt.target.value.toLowerCase();
-    const allUsers = this.state.paginatedList;
-    const filteredList = allUsers.filter(user => {
-      return user.username.toLowerCase().indexOf(searchText) !== -1;
+    const allBrands = this.state.paginatedList;
+    const filteredList = allBrands.filter(brand => {
+      return brand.brandName.toLowerCase().indexOf(searchText) !== -1;
     });
     this.setState({filteredList});
   }
 
-
   paginationCallback (page) {
+    console.log(page);
     const pageState = {...this.state.page};
     pageState.offset = page.offset;
     pageState.size = page.size;
@@ -128,31 +119,34 @@ class BrandList extends React.Component {
     this.setState({page: pageState, paginatedList, filteredList});
   }
 
-  async fetchUserData () {
-    let userList = (await Http.get("/api/users")).body;
-
-    userList = userList.records.map((user, i) => {
-      const newUser = {
-        id: user.id,
-        loginId: user.loginId,
-        username: `${user.firstName} ${user.lastName}`,
-        sequence: i + 1,
-        brands: user.brands.map(brand => brand.name),
-        status: user.enabled ? "Active" : "Inactive",
-        original: user
-      };
-
-      if (user.role && user.role.name) {
-        newUser.role = user.role.name;
+  async fetchBrands () {
+    const brands = [
+      {
+        brandId: "brand id",
+        brandName: "coca gola",
+        dateAdded: "05-15-2020",
+        caseStatus: "Pending Verification",
+        brandStatus: "Active",
+        caseId: "servicenow caseid"
+      },
+      {
+        brandId: "brand id",
+        brandName: "Maggi Noodles",
+        dateAdded: "12-08-2019",
+        caseStatus: "Verified",
+        brandStatus: "Inactive",
+        caseId: "servicenow caseid 2"
       }
+    ];
+    let brandList = brands; //(await Http.get("/api/brands")).body;
 
-      if (user.properties && user.properties.isThirdParty) {
-        newUser.company = user.properties.companyName;
-      }
-      return newUser;
+    brandList = brandList.map((brand, i) => {
+      const newBrand = { ...brand, sequence: i + 1 };
+      newBrand.original = brand;
+      return newBrand;
     });
 
-    this.setState({userList});
+    this.setState({brandList});
   }
 
   resetFilters() {
@@ -175,25 +169,15 @@ class BrandList extends React.Component {
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        if (filterId === "brands") {
-          paginatedList = paginatedList.filter(user => {
-            let bool = false;
-            filterOptionsSelected.map(filterOption => {
-              user[filterId].map(brand => {
-                bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1;
-              });
-            });
-            return bool;
+        console.log(filterId);
+        paginatedList = paginatedList.filter(user => {
+          let bool = false;
+          filterOptionsSelected.map(filterOption => {
+            bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
           });
-        } else {
-          paginatedList = paginatedList.filter(user => {
-            let bool = false;
-            filterOptionsSelected.map(filterOption => {
-              bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-            });
-            return bool;
-          });
-        }
+          return bool;
+        });
+
       }
     });
 
@@ -202,52 +186,28 @@ class BrandList extends React.Component {
   }
 
   createFilters(paginatedList) {
+    console.log(paginatedList);
     const brandsSet = new Set();
-    const rolesSet = new Set();
     const statusSet = new Set();
-    const companySet = new Set();
 
-    paginatedList.map(user => {
-      user.brands.map(brand => {
-        brandsSet.add(brand);
-      });
-      if (user.role) {
-        rolesSet.add(user.role);
-      }
-      if (user.status) {
-        statusSet.add(user.status);
-      }
-
-      if (user.company) {
-        companySet.add(user.company);
-      }
+    paginatedList.map(brand => {
+      brandsSet.add(brand.brandName);
+      statusSet.add(brand.brandStatus);
     });
 
-    const companyFilter = {
-      id: "company",
-      name: "Company",
-      filterOptions: Array.from(companySet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
-    };
-
     const brandsFilter = {
-      id: "brands",
-      name: "Associated Brands",
+      id: "brandName",
+      name: "Brands",
       filterOptions: Array.from(brandsSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
-    const rolesFilter = {
-      id: "role",
-      name: "Role",
-      filterOptions: Array.from(rolesSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
-    };
-
     const statusFilter = {
-      id: "status",
+      id: "brandStatus",
       name: "Profile Status",
       filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
-    const filters = [companyFilter, rolesFilter, brandsFilter, statusFilter];
+    const filters = [ brandsFilter, statusFilter];
     filters.forEach(filter => {
       if (filter.filterOptions.length) {
         const all = {
@@ -263,14 +223,14 @@ class BrandList extends React.Component {
   }
 
   async componentDidMount() {
-    this.fetchUserData();
+    this.fetchBrands();
   }
 
   componentDidUpdate() {
-    if (this.props.userEdit.save) {
-      this.fetchUserData();
-      this.props.saveUserCompleted();
-    }
+    // if (this.props.userEdit.save) {
+    //   this.fetchBrands();
+    //   this.props.saveUserCompleted();
+    // }
   }
 
   addNewBrand () {
@@ -330,10 +290,10 @@ class BrandList extends React.Component {
     const viewerShip = () => {
       const from = this.state.page.offset * this.state.page.size + 1;
       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
-      const total = this.state.userList.length;
-      if (this.state.userList.length && to >= from) {
+      const total = this.state.brandList.length;
+      if (this.state.brandList.length && to >= from) {
         return `Viewing ${from} - ${to} of ${total} Users`;
-      } else if (this.state.userList.length && to <= from) {
+      } else if (this.state.brandList.length && to <= from) {
         return `Viewing 0 of ${total} Users`;
       }
       return "";
@@ -428,24 +388,23 @@ class BrandList extends React.Component {
                     <div className="col h-100 overflow-auto">
                       {
                         this.state.filteredList.length > 0 &&
-                        <CustomTable data={[...this.state.filteredList]} columns={this.state.userListColumns} template={UserListTable}
+                        <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={brandListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
                       }
                     </div>
                   </div>
-
                   <div className="row user-list-table-manage-row h-10 align-items-center mx-0">
                     <div className="col">
                       { viewerShip() }
                     </div>
                     <div className="col text-center">
-                      <PaginationNav list={this.state.userList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
+                      <PaginationNav list={this.state.brandList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
                     </div>
                     <div className="col text-right">
 
                       {
-                        !!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                        !!this.state.brandList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                                                                 aria-haspopup="true" aria-expanded="false">
                           Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
                         </button>
                       }

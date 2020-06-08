@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
 
 
-const UserListTable = function(props) {
+const BrandListTable = function(props) {
 
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions } = templateProps;
@@ -46,13 +46,8 @@ const UserListTable = function(props) {
                         Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
                       }
                       {
-                        cell.column.id === "username" && cell.row.original.company &&
-                        <span className="company-name ml-2 border font-size-12 p-1">{cell.row.original.company}</span>
-                      }
-                      {
-                        cell.column.id === "status" && (cell.row.values.role === undefined || cell.row.values.role.toLowerCase() !== "super admin") &&
-                          <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions} data={row.original}/>&nbsp;&nbsp;</span>
-
+                        cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
+                        <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions} data={row.original}/>&nbsp;&nbsp;</span>
                       }
                     </td>);
                   })
@@ -67,7 +62,7 @@ const UserListTable = function(props) {
   );
 };
 
-UserListTable.propTypes = {
+BrandListTable.propTypes = {
   getTableBodyProps: PropTypes.object,
   headerGroups: PropTypes.object,
   rows: PropTypes.object,
@@ -75,5 +70,4 @@ UserListTable.propTypes = {
   templateProps: PropTypes.object
 };
 
-export default connect()(UserListTable);
-
+export default connect()(BrandListTable);
