@@ -348,7 +348,7 @@ class UserList extends React.Component {
             </div>
           </div>
           <div className="row content-row p-4 h-90">
-            <div className="col h-100;">
+            <div className="col content-col h-100;">
               <div className="row action-row align-items-center">
                 <div className="col-lg-8 col-6">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>

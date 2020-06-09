@@ -30,7 +30,7 @@ html,body {
         font-family: BogleWeb-Regular, sans-serif;
         min-width: $min-viewport-width;
         min-height: $min-viewport-height;
-        overflow: hidden;
+        overflow: auto;
       }
     }
   }

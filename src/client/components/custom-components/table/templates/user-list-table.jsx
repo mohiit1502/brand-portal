@@ -68,10 +68,10 @@ const UserListTable = function(props) {
 };
 
 UserListTable.propTypes = {
-  getTableBodyProps: PropTypes.object,
-  headerGroups: PropTypes.object,
-  rows: PropTypes.object,
-  prepareRow: PropTypes.object,
+  getTableBodyProps: PropTypes.func,
+  headerGroups: PropTypes.array,
+  rows: PropTypes.array,
+  prepareRow: PropTypes.func,
   templateProps: PropTypes.object
 };
 

@@ -5,4 +5,6 @@
   width: calc(100% - #{$left-nav-width});
   height: calc(100% - #{$nav-max-height});
   overflow: hidden;
+  position: absolute;
+  left: $left-nav-width;
 }

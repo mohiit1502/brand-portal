@@ -19,7 +19,7 @@ class UserProfile extends React.Component {
     this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
     this.saveUser = this.saveUser.bind(this);
     this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
-
+    console.log(this.props.userProfile)
     this.state = {
       pageLoading: true,
       form: {
@@ -30,7 +30,7 @@ class UserProfile extends React.Component {
           firstName: {
             label: "First Name",
             required: true,
-            value: "",
+            value: this.props.userProfile.firstName,
             type: "text",
             pattern: null,
             disabled: true
@@ -38,7 +38,7 @@ class UserProfile extends React.Component {
           lastName: {
             label: "Last Name",
             required: true,
-            value: "",
+            value: this.props.userProfile.lastName,
             type: "text",
             pattern: null,
             disabled: true
@@ -46,7 +46,7 @@ class UserProfile extends React.Component {
           companyName: {
             label: "Company Name",
             required: true,
-            value: "",
+            value: this.props.userProfile.organization.name,
             type: "text",
             pattern: null,
             disabled: true
@@ -54,7 +54,7 @@ class UserProfile extends React.Component {
           emailId: {
             label: "Email ID",
             required: true,
-            value: "",
+            value: this.props.userProfile.loginId,
             type: "email",
             pattern: null,
             disabled: true
@@ -62,7 +62,7 @@ class UserProfile extends React.Component {
           phone: {
             label: "Mobile Number",
             required: false,
-            value: "",
+            value: this.props.userProfile.phoneNumber,
             type: "text",
             pattern: null,
             disabled: true
@@ -77,6 +77,8 @@ class UserProfile extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+
+    console.log(prevProps , this.props);
     if (prevProps !== this.props) {
       this.setFormData(this.props.userProfile);
     }

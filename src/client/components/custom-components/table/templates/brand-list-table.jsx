@@ -63,10 +63,10 @@ const BrandListTable = function(props) {
 };
 
 BrandListTable.propTypes = {
-  getTableBodyProps: PropTypes.object,
-  headerGroups: PropTypes.object,
-  rows: PropTypes.object,
-  prepareRow: PropTypes.object,
+  getTableBodyProps: PropTypes.func,
+  headerGroups: PropTypes.array,
+  rows: PropTypes.array,
+  prepareRow: PropTypes.func,
   templateProps: PropTypes.object
 };
 

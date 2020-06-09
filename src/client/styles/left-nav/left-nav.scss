@@ -5,6 +5,7 @@ $nav-grey: #3D454C;
 $nav-selected-grey : #2B3339;
 $nav-left-border-color : #F7F9FA;
 .left-nav {
+  position: absolute;
   background: $nav-grey;
   width: $left-nav-width;
   height: calc(100% - #{$nav-max-height});
