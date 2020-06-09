@@ -48,7 +48,6 @@ class BrandList extends React.Component {
             id: 1,
             value: "Edit Brand Details",
             clickCallback: (evt, option, data) => {
-              alert(1);
               //this.editUser(data.original);
             }
           },
@@ -56,22 +55,26 @@ class BrandList extends React.Component {
             id: 2,
             value: "Suspend Brand",
             clickCallback: (evt, option, data) => {
-              alert(2);
-              // const response = Http.put(`/api/users/${data.loginId}/status/SUSPEND`);
-              // response.then(res => {
-              //   this.fetchBrands();
-              // });
+              const payload = {
+                status: "Suspend"
+              };
+              const response = Http.put(`/api/brands/${data.brandId}`, payload);
+              response.then(res => {
+                this.fetchBrands();
+              });
             }
           },
           {
             id: 3,
             value: "Delete Brand",
             clickCallback: (evt, option, data) => {
-              alert(3);
-              // const response = Http.delete(`/api/users/${data.loginId}`);
-              // response.then(res => {
-              //   this.fetchBrands();
-              // });
+              const payload = {
+                status: "Delete"
+              };
+              const response = Http.put(`/api/brands/${data.brandId}`, payload);
+              response.then(res => {
+                this.fetchBrands();
+              });
             }
           }
         ]
@@ -138,9 +141,9 @@ class BrandList extends React.Component {
         caseId: "servicenow caseid 2"
       }
     ];
-    let brandList = brands; //(await Http.get("/api/brands")).body;
+    let brandList = (await Http.get("/api/brands")).body;
 
-    brandList = brandList.map((brand, i) => {
+    brandList = brandList.brands.map((brand, i) => {
       const newBrand = { ...brand, sequence: i + 1 };
       newBrand.original = brand;
       return newBrand;
@@ -234,7 +237,7 @@ class BrandList extends React.Component {
   }
 
   addNewBrand () {
-    const meta = { templateName: "CreateUserTemplate" };
+    const meta = { templateName: "NewBrandTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
@@ -323,7 +326,7 @@ class BrandList extends React.Component {
                       </div>
                     </div>
                     <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by Brand Name"
-                           onChange={this.uiSearch}/>
+                      onChange={this.uiSearch}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
@@ -363,7 +366,7 @@ class BrandList extends React.Component {
                                       <li key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                                 onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
+                                            onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>
@@ -389,7 +392,7 @@ class BrandList extends React.Component {
                       {
                         this.state.filteredList.length > 0 &&
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={brandListTable}
-                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
                       }
                     </div>
                   </div>
@@ -404,7 +407,7 @@ class BrandList extends React.Component {
 
                       {
                         !!this.state.brandList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                                                                 aria-haspopup="true" aria-expanded="false">
+                          aria-haspopup="true" aria-expanded="false">
                           Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
                         </button>
                       }
@@ -413,7 +416,7 @@ class BrandList extends React.Component {
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
-                                       onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
+                              onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
                           })
                         }
                       </div>

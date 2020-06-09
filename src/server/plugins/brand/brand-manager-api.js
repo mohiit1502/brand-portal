@@ -9,6 +9,8 @@ class BrandManagerApi {
     this.name = "BrandManagerApi";
     this.register = this.register.bind(this);
     this.getBrands = this.getBrands.bind(this);
+    this.createBrand = this.createBrand.bind(this);
+    this.updateBrand = this.updateBrand.bind(this);
   }
 
   register (server) {
@@ -17,6 +19,16 @@ class BrandManagerApi {
         method: "GET",
         path: "/api/brands",
         handler: this.getBrands
+      },
+      {
+        method: "POST",
+        path: "/api/brands",
+        handler: this.createBrand
+      },
+      {
+        method: "PUT",
+        path: "/api/brands/{brandId}",
+        handler: this.updateBrand
       }
     ]);
   }
@@ -35,7 +47,6 @@ class BrandManagerApi {
     try {
       const headers = this.getHeaders(request);
       const options = {
-        method: "GET",
         headers
       };
 
@@ -47,6 +58,42 @@ class BrandManagerApi {
       return h.response(err).code(err.status);
     }
   }
+
+  async createBrand(request, h) {
+    try {
+      const headers = this.getHeaders(request);
+      const payload = request.payload;
+      const options = {
+        headers
+      };
+
+      const url = "http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands";
+      const response = await ServerHttp.post(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async updateBrand(request, h) {
+    try {
+      const headers = this.getHeaders(request);
+      const payload = request.payload;
+      const options = {
+        headers
+      };
+
+      const url = `http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands/${request.params.brandId}`;
+      const response = await ServerHttp.put(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+
 
 }
 

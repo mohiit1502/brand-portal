@@ -43,6 +43,9 @@ html,body {
 .check-green-icon-white-bg {
   border-radius: 50%;
   background: white;
+  top: -1px;
+  position: relative;
+  height: 18px;
 }
 
 .no-border-radius {

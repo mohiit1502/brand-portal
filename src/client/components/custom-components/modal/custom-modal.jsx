@@ -7,6 +7,7 @@ import {TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import CreateUserTemplate from "./templates/create-user-template";
 import NewUserAddedTemplate from "./templates/new-user-added-template";
 import CompanyBrandRegisteredTemplate from "./templates/company-brand-registered-template";
+import NewBrandTemplate from "./templates/new-brand-template";
 
 class CustomModal extends React.Component {
 
@@ -31,6 +32,7 @@ class CustomModal extends React.Component {
       case "CreateUserTemplate": return CreateUserTemplate;
       case "NewUserAddedTemplate": return NewUserAddedTemplate;
       case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
+      case "NewBrandTemplate": return NewBrandTemplate;
     }
     return null;
   }
@@ -56,6 +58,7 @@ class CustomModal extends React.Component {
     );
   }
 }
+
 CustomModal.propTypes = {
   modal: PropTypes.object
 };

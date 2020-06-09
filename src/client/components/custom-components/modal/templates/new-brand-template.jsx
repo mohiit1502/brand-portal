@@ -1,39 +1,42 @@
 import React from "react";
-import { connect } from "react-redux";
-import CustomInput from "../../custom-components/custom-input/custom-input";
-import CheckGreenIcon from "../../../images/check-grn.svg";
-import {Redirect} from "react-router";
-import CONSTANTS from "../../../constants/constants";
-import Http from "../../../utility/Http";
-import PropTypes from "prop-types";
-import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
+import {connect} from "react-redux";
+import CheckGreenIcon from "../../../../images/check-grn.svg";
 
-class BrandRegistration extends React.Component {
+import PropTypes from "prop-types";
+import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
+import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import CustomInput from "../../custom-input/custom-input";
+import Http from "../../../../utility/Http";
+import ClientUtils from "../../../../utility/ClientUtils";
+
+class NewBrandTemplate extends React.Component {
 
   constructor(props) {
     super(props);
     this.onInputChange = this.onInputChange.bind(this);
-    this.gotoCompanyRegistration = this.gotoCompanyRegistration.bind(this);
-    this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
-    this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
-
+    this.undertakingtoggle = this.undertakingtoggle.bind(this);
+    this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
-      isSubmitDisabled: true,
-      redirectToCompanyReg: !this.props.org,
       form: {
-        id: "company-profile-reg",
+        isSubmitDisabled: true,
+        isUpdateTemplate: false,
+        templateUpdateComplete: false,
+        isDisabled: false,
+        underwritingChecked: false,
+        id: "brand-addition-form",
         inputData: {
           trademarkNumber: {
-            label: "Trademark Number",
+            label: "Brand Trademark Number",
             required: true,
             value: "",
             type: "text",
             pattern: null,
             disabled: false,
             isValid: false,
-            subtitle: "Please input the correct number associated with your company trademark. Only USPTO registered trademarks will be accepted.",
+            subtitle: "",
             error: ""
           },
           brandName: {
@@ -65,20 +68,7 @@ class BrandRegistration extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-
-  }
-
-  checkToEnableSubmit () {
-    const form = {...this.state.form};
-    const bool = form.inputData.trademarkNumber.isValid &&
-      form.inputData.trademarkNumber.value &&
-      form.inputData.brandName.value &&
-      form.undertaking.selected;
-    this.setState({isSubmitDisabled: !bool});
-  }
-
-  onInputChange (evt, key) {
+  onInputChange(evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       this.setState(state => {
@@ -91,42 +81,23 @@ class BrandRegistration extends React.Component {
     }
   }
 
+  checkToEnableSubmit() {
+    const form = {...this.state.form};
+    const bool = form.inputData.trademarkNumber.isValid &&
+      form.inputData.trademarkNumber.value &&
+      form.inputData.brandName.value &&
+      form.undertaking.selected;
+
+    form.isSubmitDisabled = !bool;
+    this.setState({form});
+  }
+
   undertakingtoggle () {
     const state = {...this.state};
     state.form.undertaking.selected = !state.form.undertaking.selected;
     this.setState({
       ...state
     }, this.checkToEnableSubmit);
-  }
-
-  gotoCompanyRegistration () {
-    this.setState({redirectToCompanyReg: true});
-  }
-
-  async submitOnboardingForm(evt) {
-    evt.preventDefault();
-    try {
-      const brand = {
-        trademarkNumber: this.state.form.inputData.trademarkNumber.value,
-        name: this.state.form.inputData.brandName.value,
-        comments: "<Comments>"
-      };
-      if (this.state.form.inputData.comments.value) {
-        brand.comments = this.state.form.inputData.comments.value;
-      }
-      const data = {
-        org: this.props.org,
-        brand
-      };
-
-      const response = (await Http.post("/api/org/register", data)).body;
-      const meta = { templateName: "CompanyBrandRegisteredTemplate" };
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-
   }
 
   async checkTrademarkValidity () {
@@ -151,37 +122,79 @@ class BrandRegistration extends React.Component {
     }
   }
 
+  async handleSubmit(evt) {
+    evt.preventDefault();
+
+    const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
+    const name = this.state.form.inputData.brandName.value;
+    const comments = this.state.form.inputData.comments.value;
+
+    const payload = { trademarkNumber, name, comments };
+
+
+    const url = "/api/brands";
+
+    if (this.state.form.isUpdateTemplate) {
+      return Http.put(url, payload)
+        .then(() => {
+          this.resetTemplateStatus();
+          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+          this.props.saveBrandInitiated();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+
+      return Http.post(url, payload)
+        .then(res => {
+          console.log(res);
+          this.resetTemplateStatus();
+          this.props.saveBrandInitiated();
+          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+
+  resetTemplateStatus () {
+    // const form = {...this.state.form};
+    // form.templateUpdateComplete = false;
+    // form.isUpdateTemplate = false;
+    //
+    // form.inputData.firstName.value = "";
+    // form.inputData.userType.value = "Internal";
+    // form.inputData.companyName.value = "";
+    // form.inputData.lastName.value = "";
+    // form.inputData.emailId.value = "";
+    // form.inputData.role.value = "";
+    // form.inputData.brands.value = "";
+    // form.inputData.brands.options = form.inputData.brands.options.map(brand => {
+    //   brand.selected = false;
+    //   return brand;
+    // });
+    //
+    // this.setState({form});
+    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+  }
 
   render() {
-    if (this.state.redirectToCompanyReg) {
-      return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
-    }
     return (
-      <div className="row justify-content-center">
-        <div className="col-lg-6 col-md-8 col-12">
-          <div className="row title-row mb-4">
-            <div className="col">
-              <div className="row">
-                <div className="col">
-                  <div className="company-registration-title">
-                    Thank you for sharing your company info.
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <div className="company-registration-subtitle">
-                    Now tell us about your brand
-                  </div>
-                </div>
-              </div>
+      <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header align-items-center">
+              Register a Brand
+              <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-          </div>
-          <div className="row company-reg-form-row">
-            <div className="col">
-              <form>
+            <div className="modal-body text-left">
+              <form onSubmit={this.handleSubmit} className="h-100 pt-3">
                 <div className="form-row">
-                  <div className="col-10">
+                  <div className="col-8">
                     <CustomInput key={"trademarkNumber"}
                       inputId={"trademarkNumber"}
                       formId={this.state.form.id} label={this.state.form.inputData.trademarkNumber.label}
@@ -190,13 +203,16 @@ class BrandRegistration extends React.Component {
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled}
                       error={this.state.form.inputData.trademarkNumber.error} subtitle={this.state.form.inputData.trademarkNumber.subtitle}/>
                   </div>
-                  <div className="col-2">
+                  <div className="col-4">
                     <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid ? "btn-success" : "btn-primary"}`}
                       onClick={this.checkTrademarkValidity}>
-                      {this.state.form.inputData.trademarkNumber.isValid ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
+                      {
+                        this.state.form.inputData.trademarkNumber.isValid ? <React.Fragment><img className="check-green-icon-white-bg" src={CheckGreenIcon} /> &nbsp;&nbsp;Valid </React.Fragment> : "Check"
+                      }
                     </div>
                   </div>
                 </div>
+
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"brandName"}
@@ -219,8 +235,9 @@ class BrandRegistration extends React.Component {
                       error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
                   </div>
                 </div>
-                <div className="form-row mt-5">
-                  <div className="col text-right">
+
+                <div className="row">
+                  <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
@@ -230,11 +247,12 @@ class BrandRegistration extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="form-row mt-3">
+                <div className="row mt-3">
                   <div className="col text-right">
-                    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.gotoCompanyRegistration}>Back</div>
-                    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled}
-                      onClick={this.submitOnboardingForm}> Submit </button>
+                    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
+                    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.form.isSubmitDisabled}>
+                      Submit
+                    </button>
                   </div>
                 </div>
               </form>
@@ -246,18 +264,24 @@ class BrandRegistration extends React.Component {
   }
 }
 
-BrandRegistration.propTypes = {
-  toggleModal: PropTypes.func,
-  org: PropTypes.PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object
-  ])
+NewBrandTemplate.propTypes = {
+  modal: PropTypes.object,
+  toggleModal: PropTypes.func
 };
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  return {
+    modal: state.modal
+  };
+};
 
 const mapDispatchToProps = {
   toggleModal
 };
 
-export  default  connect(mapStateToProps, mapDispatchToProps)(BrandRegistration);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewBrandTemplate);
+
+
