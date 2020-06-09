@@ -4,7 +4,7 @@ import HomeHeader from "../custom-components/headers/home-header";
 import Leftnav from "../custom-components/left-nav/left-nav";
 import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
-import "../../styles/home.scss";
+import "../../styles/home/home.scss";
 
 class Home extends React.Component {
   constructor(props) {

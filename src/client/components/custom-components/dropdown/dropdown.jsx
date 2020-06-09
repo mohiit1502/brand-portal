@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../styles/dropdown/dropdown.scss";
+import "../../../styles/custom-components/dropdown/dropdown.scss";
 import PropTypes from "prop-types";
 
 class Dropdown extends React.Component {

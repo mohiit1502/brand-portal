@@ -1,5 +1,5 @@
 import React from "react";
-import "../../../styles/table/custom-table.scss";
+import "../../../styles/custom-components/table/custom-table.scss";
 import {useSortBy, useTable} from "react-table";
 
 import PropTypes from "prop-types";

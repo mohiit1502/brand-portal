@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {Route, Switch} from "react-router";
 import CONSTANTS from "../../../constants/constants";
-import "../../../styles/content-renderer/content-renderer.scss";
+import "../../../styles/home/content-renderer/content-renderer.scss";
 import UserProfile from "./user/profile/user-profile";
 import UserList from "./user/user-list";
 import UserApproval from "./user/user-approval";

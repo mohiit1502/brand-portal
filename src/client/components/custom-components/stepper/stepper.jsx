@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../styles/stepper/stepper.scss";
+import "../../../styles/custom-components/stepper/stepper.scss";
 import PropTypes from "prop-types";
 
 class Stepper extends React.Component {

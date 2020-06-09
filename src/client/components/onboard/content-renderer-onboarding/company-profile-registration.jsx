@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../styles/content-renderer-onboarding/company-profile-registration.scss";
+import "../../../styles/onboard/content-renderer-onboarding/company-profile-registration.scss";
 import CustomInput from "../../custom-components/custom-input/custom-input";
 import Http from "../../../utility/Http";
 import CheckGreenIcon from "../../../images/check-grn.svg";

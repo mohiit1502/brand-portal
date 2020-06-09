@@ -1,13 +1,9 @@
-@import "../override/variables";
+@import "../../override/variables";
 
-$dropdown-white : #F9F9F9;
+$nav-max-height : 61px;
+.login-header-nav{
 
-
-.home-header-nav{
-  background: $blue;
-  height: $nav-max-height;
   max-height: $nav-max-height;
-
   .walmart-brand{
     img {
       width: 122px;
@@ -15,13 +11,8 @@ $dropdown-white : #F9F9F9;
   }
   .navbar-collapsible-header{
     .nav-item {
-      &.nav-item-profile {
-        .dropdown-menu {
-          background: $dropdown-white;
-        }
-      }
       .nav-link {
-        font-size: 16px;
+        font-size: 12px;
         color : white;
         &.login-btn{
           width : 90px;

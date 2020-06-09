@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import walmartLogo from "../../../images/wm-white-logo.png";
 import PropTypes from "prop-types";
-import "../../../styles/headers/home-header.scss";
+import "../../../styles/custom-components/headers/home-header.scss";
 import CONSTANTS from "../../../constants/constants";
 
 class HomeHeader extends React.Component {

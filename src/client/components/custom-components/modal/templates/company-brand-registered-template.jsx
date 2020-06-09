@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
 
 import PropTypes from "prop-types";
-import "../../../../styles/modal/templates/new-user-added-template.scss";
+import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 
 class CompanyBrandRegisteredTemplate extends React.Component {

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {saveUserInitiated} from "../../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import "../../../../styles/modal/templates/create-user-template.scss";
+import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
 import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";

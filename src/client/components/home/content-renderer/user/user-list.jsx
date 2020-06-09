@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../../styles/content-renderer/user/user-list.scss";
+import "../../../../styles/home/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";

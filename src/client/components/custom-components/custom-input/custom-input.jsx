@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import "../../../styles/custom-input/custom-input.scss";
+import "../../../styles/custom-components/custom-input/custom-input.scss";
 
 class CustomInput extends React.Component {
 

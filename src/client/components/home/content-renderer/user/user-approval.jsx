@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../../styles/content-renderer/user/user-approval.scss";
+import "../../../../styles/home/content-renderer/user/user-approval.scss";
 import PropTypes from "prop-types";
 
 

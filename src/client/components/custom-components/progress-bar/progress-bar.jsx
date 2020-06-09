@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import "../../../styles/progress-bar/progress-bar.scss";
+import "../../../styles/custom-components/progress-bar/progress-bar.scss";
 
 class ProgressBar extends React.Component {
   constructor(props) {

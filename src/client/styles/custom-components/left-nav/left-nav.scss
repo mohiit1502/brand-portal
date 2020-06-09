@@ -1,4 +1,4 @@
-@import "../override/variables";
+@import "../../override/variables";
 
 $nav-grey: #3D454C;
 
@@ -11,15 +11,29 @@ $nav-left-border-color : #F7F9FA;
   height: calc(100% - #{$nav-max-height});
   overflow: hidden;
 
+
+
   .nav-item {
+    @extend .py-2;
+
     .nav-link {
       color : $white;
-      @extend .my-2;
     }
 
-    &.active {
-      background: $nav-selected-grey;
-      border-left: 6px solid $nav-left-border-color;
+    &.main-nav-item {
+      background: $nav-grey;
+      &.active{
+        .nav-link {
+          background: $nav-selected-grey;
+          border-left: 6px solid $nav-left-border-color;
+        }
+        .sub-nav-item {
+          .nav-link {
+            background: transparent;
+            border-left: 0;
+          }
+        }
+      }
     }
 
     .sub-nav-item {
@@ -31,4 +45,6 @@ $nav-left-border-color : #F7F9FA;
       }
     }
   }
+
+
 }
