@@ -2,6 +2,8 @@
 // This is the client side entry point for the React app.
 //
 
+import "bootstrap";
+import "./styles/global.scss";
 import React from "react";
 import { render, hydrate } from "react-dom";
 import { routes } from "./routes";
@@ -11,8 +13,6 @@ import { Provider } from "react-redux";
 import rootReducer from "./reducers";
 import { renderRoutes } from "react-router-config";
 import { ElectrodeApplication } from "@walmart/electrode-application";
-import "bootstrap";
-import "./styles/global.scss";
 
 // Redux configure store with Hot Module Reload
 //

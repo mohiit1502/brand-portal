@@ -4,7 +4,6 @@ $stepper-row-height: 106px;
 
 .content-page-onboard {
   display: inline-block;
-  width: 100%;
   height: calc(100% - #{$nav-max-height} - #{$stepper-row-height});
   overflow: hidden;
 }

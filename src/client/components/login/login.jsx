@@ -14,7 +14,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="view-container login-container">
+      <div className="login-container view-container">
         <LoginHeader/>
         <div className="row mt-5 tag-line-row">
           <div className="col">

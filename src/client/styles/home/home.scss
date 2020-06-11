@@ -1,10 +1,9 @@
 @import "../override/variables";
 
 .home-container{
-  &{
-    background: $white;
-    overflow: hidden;
-  }
+  background: $white;
+  overflow: hidden;
+  padding: 0 15px;
 
   .tag-line-row{
     .product-tag-line{

@@ -5,6 +5,7 @@ import HomeHeader from "../custom-components/headers/home-header";
 import ContentRendererOnboard from "./content-renderer-onboarding/content-renderer-onboard";
 import Stepper from "../custom-components/stepper/stepper";
 import ClientUtils from "../../utility/ClientUtils";
+import "../../styles/onboard/onboarder.scss";
 
 
 class Onboarder extends React.Component {
@@ -42,7 +43,7 @@ class Onboarder extends React.Component {
 
   render() {
     return (
-      <div className="view-container home-container">
+      <div className="view-container onboard-container">
         <HomeHeader {...this.props}/>
         <Stepper steps={this.state.steps}/>
         <ContentRendererOnboard {...this.props} {...this.state} updateOrgData={this.callback}/>

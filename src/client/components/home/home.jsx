@@ -15,8 +15,10 @@ class Home extends React.Component {
      return (
         <div className="view-container home-container">
           <HomeHeader {...this.props}/>
-          <Leftnav {...this.props}/>
-          <ContentRenderer {...this.props}/>
+          <div className="mx-n3">
+              <Leftnav {...this.props}/>
+              <ContentRenderer {...this.props}/>
+          </div>
         </div>
       );
   }

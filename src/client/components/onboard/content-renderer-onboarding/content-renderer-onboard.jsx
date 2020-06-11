@@ -13,15 +13,17 @@ class ContentRendererOnboard extends React.Component {
 
   render () {
     return (
-      <div className="content-page-onboard d-inline-block">
-        <Switch>
-          <Route path={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}>
-            <CompanyProfileRegistration {...this.props}/>
-          </Route>
-          <Route path={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER}>
-            <BrandRegistration {...this.props}/>
-          </Route>
-        </Switch>
+      <div className="content-page-onboard row">
+        <div className="col">
+          <Switch>
+            <Route path={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}>
+              <CompanyProfileRegistration {...this.props}/>
+            </Route>
+            <Route path={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER}>
+              <BrandRegistration {...this.props}/>
+            </Route>
+          </Switch>
+        </div>
       </div>
     );
   }

@@ -11,20 +11,24 @@
 }
 
 @font-face {
-  font-family: MyriadPro-Regular;
+  font-family: MyriadPro-Regular, sans-serif;
   src: url('../assets/fonts/myriad/Myriad-Pro-Regular.ttf');
 }
 
 
 $min-viewport-width : 1024px;
 $min-viewport-height : 768px;
+
+.view-container {
+ // @extend .container-fluid;
+}
+
 html,body {
   &, .js-content{
     &, .route-wrapper {
       & , .view-container {
         position: relative;
         margin: 0;
-        padding: 0;
         height: 100%;
         width: 100%;
         font-family: BogleWeb-Regular, sans-serif;
@@ -107,8 +111,6 @@ html,body {
 ** Generic Classes End
 */
 
-.view-container {
-  @extend .container-fluid;
-}
+
 
 

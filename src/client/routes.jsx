@@ -9,6 +9,7 @@ import { renderRoutes } from "react-router-config";
 import {Redirect} from "react-router";
 import CONSTANTS from "./constants/constants";
 import ClientUtils from "./utility/ClientUtils";
+import Notification from "./components/custom-components/notification/notification";
 
 const Root = ({ route, children }) => {
     return (
@@ -16,6 +17,7 @@ const Root = ({ route, children }) => {
       {renderRoutes(route.routes)}
       {children}
       <Modal/>
+      <Notification/>
     </div>
   );
 };

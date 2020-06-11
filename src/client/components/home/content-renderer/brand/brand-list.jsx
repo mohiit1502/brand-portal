@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../../styles/home/content-renderer/user/user-list.scss";
+import "../../../../styles/home/content-renderer/brand/brand-list.scss";
 import PropTypes from "prop-types";
 import CustomTable from "../../../custom-components/table/custom-table";
 import brandListTable from "../../../custom-components/table/templates/brand-list-table";
@@ -11,7 +11,9 @@ import Http from "../../../../utility/Http";
 import searchIcon from "../../../../images/18-px-search.svg";
 import filterIcon from "../../../../images/filter-sc.svg";
 import burgerIcon from "../../../../images/group-23.svg";
+import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
+import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 
 class BrandList extends React.Component {
 
@@ -19,7 +21,6 @@ class BrandList extends React.Component {
     super(props);
 
     this.addNewBrand = this.addNewBrand.bind(this);
-    this.editUser = this.editUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.uiSearch = this.uiSearch.bind(this);
     this.createFilters = this.createFilters.bind(this);
@@ -29,6 +30,7 @@ class BrandList extends React.Component {
     this.paginationCallback = this.paginationCallback.bind(this);
     this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
+    this.editBrand = this.editBrand.bind(this);
 
     this.state = {
       page: {
@@ -48,7 +50,7 @@ class BrandList extends React.Component {
             id: 1,
             value: "Edit Brand Details",
             clickCallback: (evt, option, data) => {
-              //this.editUser(data.original);
+              this.editBrand(data.original);
             }
           },
           {
@@ -101,7 +103,13 @@ class BrandList extends React.Component {
     };
   }
 
+  editBrand (brandData) {
+    const meta = { templateName: "NewBrandTemplate", data: {...brandData} };
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+  }
+
   async uiSearch (evt) {
+    this.props.showNotification(NOTIFICATION_TYPE.SUCCESS);
     const searchText = evt.target.value && evt.target.value.toLowerCase();
     const allBrands = this.state.paginatedList;
     const filteredList = allBrands.filter(brand => {
@@ -111,7 +119,7 @@ class BrandList extends React.Component {
   }
 
   paginationCallback (page) {
-    console.log(page);
+
     const pageState = {...this.state.page};
     pageState.offset = page.offset;
     pageState.size = page.size;
@@ -123,31 +131,17 @@ class BrandList extends React.Component {
   }
 
   async fetchBrands () {
-    const brands = [
-      {
-        brandId: "brand id",
-        brandName: "coca gola",
-        dateAdded: "05-15-2020",
-        caseStatus: "Pending Verification",
-        brandStatus: "Active",
-        caseId: "servicenow caseid"
-      },
-      {
-        brandId: "brand id",
-        brandName: "Maggi Noodles",
-        dateAdded: "12-08-2019",
-        caseStatus: "Verified",
-        brandStatus: "Inactive",
-        caseId: "servicenow caseid 2"
-      }
-    ];
-    let brandList = (await Http.get("/api/brands")).body;
+    const response = (await Http.get("/api/brands")).body;
 
-    brandList = brandList.brands.map((brand, i) => {
-      const newBrand = { ...brand, sequence: i + 1 };
-      newBrand.original = brand;
-      return newBrand;
-    });
+    let brandList = [];
+
+    if (response.brands && response.brands.length) {
+      brandList = response.brands.map((brand, i) => {
+        const newBrand = { ...brand, sequence: i + 1 };
+        newBrand.original = brand;
+        return newBrand;
+      });
+    }
 
     this.setState({brandList});
   }
@@ -189,7 +183,7 @@ class BrandList extends React.Component {
   }
 
   createFilters(paginatedList) {
-    console.log(paginatedList);
+
     const brandsSet = new Set();
     const statusSet = new Set();
 
@@ -230,19 +224,14 @@ class BrandList extends React.Component {
   }
 
   componentDidUpdate() {
-    // if (this.props.userEdit.save) {
-    //   this.fetchBrands();
-    //   this.props.saveUserCompleted();
-    // }
+    if (this.props.brandEdit.save) {
+      this.fetchBrands();
+      this.props.saveBrandCompleted();
+    }
   }
 
   addNewBrand () {
     const meta = { templateName: "NewBrandTemplate" };
-    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-  }
-
-  editUser (userData) {
-    const meta = { templateName: "CreateUserTemplate", data: {...userData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
@@ -305,6 +294,7 @@ class BrandList extends React.Component {
     return (
       <div className="row user-list-content h-100">
         <div className="col h-100">
+
           <div className="row content-header-row p-4 h-10">
             <div className="col">
               <h3>Your Brands</h3>
@@ -433,18 +423,23 @@ class BrandList extends React.Component {
 }
 
 BrandList.propTypes = {
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
+  saveBrandCompleted: PropTypes.func,
+  brandEdit: PropTypes.object,
+  showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     modal: state.modal,
-    userEdit: state.userEdit
+    brandEdit: state.brandEdit
   };
 };
 
 const mapDispatchToProps = {
-  toggleModal
+  toggleModal,
+  saveBrandCompleted,
+  showNotification
 };
 
 export default connect(
