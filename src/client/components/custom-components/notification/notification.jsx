@@ -45,7 +45,7 @@ class Notification extends React.Component {
   render() {
     const statusClass = this.state.type === NOTIFICATION_TYPE.SUCCESS ? this.statusClassOptions.SUCCESS : this.statusClassOptions.ERROR;
     return (
-      <div className={`toast custom-toast ${statusClass}`} role="alert" aria-live="assertive" aria-atomic="true" data-delay={111500}>
+      <div className={`toast custom-toast ${statusClass}`} role="alert" aria-live="assertive" aria-atomic="true" data-delay={2500}>
         <div className="toast-body">
           <div className="row align-items-center justify-content-center">
             <div className="col-2 text-center">
