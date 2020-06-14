@@ -6,7 +6,9 @@ import PropTypes from "prop-types";
 import "../../../styles/custom-components/notification/notification.scss";
 import NotificationSuccessImg from "../../../images/verified.svg";
 import TimesSuccess from "../../../images/times-success.svg";
-import {NOTIFICATION_TYPE} from "../../../actions/notification/notification-actions";
+import {hideNotification, NOTIFICATION_TYPE} from "../../../actions/notification/notification-actions";
+import $ from "jquery";
+
 
 class Notification extends React.Component {
   constructor(props) {
@@ -20,7 +22,7 @@ class Notification extends React.Component {
 
     this.state = {
       type: NOTIFICATION_TYPE.SUCCESS,
-      message: "",
+      message: ""
     };
   }
 
@@ -28,17 +30,17 @@ class Notification extends React.Component {
 
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
+  componentDidUpdate() {
+    if (this.props.notification.show) {
       this.updateNotification(this.props.notification);
     }
   }
 
   updateNotification(notification) {
-    console.log(notification);
     const action = notification.show ? "show" : "hide";
     this.setState({type: notification.notificationType, message: notification.message});
     $(".toast").toast(action);
+    this.props.hideNotification();
   }
 
 
@@ -52,9 +54,9 @@ class Notification extends React.Component {
               <img src={NotificationSuccessImg}/>
             </div>
             <div className="col-8 text-left">
-              <span className="ml-3">
+              <div className="ml-3">
                 {this.state.message}
-              </span>
+              </div>
             </div>
             <div className="col-2 text-center">
               <img src={TimesSuccess} type="button" data-dismiss="toast" aria-label="Close" />
@@ -70,7 +72,8 @@ class Notification extends React.Component {
 
 Notification.propTypes = {
   show: PropTypes.bool,
-  notification: PropTypes.object
+  notification: PropTypes.object,
+  hideNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -83,7 +86,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   toggleModal,
-  saveBrandCompleted
+  saveBrandCompleted,
+  hideNotification
 };
 
 export default connect(

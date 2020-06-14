@@ -111,7 +111,6 @@ class BrandList extends React.Component {
   async uiSearch (evt) {
 
     const searchText = evt.target.value && evt.target.value.toLowerCase();
-    this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, searchText);
     const allBrands = this.state.paginatedList;
     const filteredList = allBrands.filter(brand => {
       return brand.brandName.toLowerCase().indexOf(searchText) !== -1;

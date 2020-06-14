@@ -7,6 +7,7 @@ import "../../../../styles/custom-components/modal/templates/new-user-added-temp
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
+import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 
 class NewBrandTemplate extends React.Component {
 
@@ -69,7 +70,6 @@ class NewBrandTemplate extends React.Component {
   }
 
   componentDidMount() {
-
     if (this.props.data && !this.state.form.templateUpdateComplete) {
       this.prepopulateInputFields(this.props.data);
     }
@@ -167,8 +167,9 @@ class NewBrandTemplate extends React.Component {
 
     if (this.state.form.isUpdateTemplate) {
       return Http.put(`${url}/${this.props.data.brandId}`, {comments})
-        .then(() => {
+        .then(res => {
           this.resetTemplateStatus();
+          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
         })
@@ -179,8 +180,10 @@ class NewBrandTemplate extends React.Component {
 
       return Http.post(url, payload)
         .then(res => {
+          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.request.name}’ added to your brand portfolio`);
           this.resetTemplateStatus();
           this.props.saveBrandInitiated();
+
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
         })
         .catch(err => {
@@ -228,17 +231,17 @@ class NewBrandTemplate extends React.Component {
                 <div className="form-row">
                   <div className="col-8">
                     <CustomInput key={"trademarkNumber"}
-                                 inputId={"trademarkNumber"}
-                                 formId={this.state.form.id} label={this.state.form.inputData.trademarkNumber.label}
-                                 required={this.state.form.inputData.trademarkNumber.required} value={this.state.form.inputData.trademarkNumber.value}
-                                 type={this.state.form.inputData.trademarkNumber.type} pattern={this.state.form.inputData.trademarkNumber.pattern}
-                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled}
-                                 error={this.state.form.inputData.trademarkNumber.error} subtitle={this.state.form.inputData.trademarkNumber.subtitle}/>
+                      inputId={"trademarkNumber"}
+                      formId={this.state.form.id} label={this.state.form.inputData.trademarkNumber.label}
+                      required={this.state.form.inputData.trademarkNumber.required} value={this.state.form.inputData.trademarkNumber.value}
+                      type={this.state.form.inputData.trademarkNumber.type} pattern={this.state.form.inputData.trademarkNumber.pattern}
+                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled}
+                      error={this.state.form.inputData.trademarkNumber.error} subtitle={this.state.form.inputData.trademarkNumber.subtitle}/>
                   </div>
                   {
                     !this.state.form.isUpdateTemplate && <div className="col-4">
                       <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid ? "btn-success" : "btn-primary"}`}
-                           onClick={this.checkTrademarkValidity}>
+                        onClick={this.checkTrademarkValidity}>
                         {
                           this.state.form.inputData.trademarkNumber.isValid ? <React.Fragment><img className="check-green-icon-white-bg" src={CheckGreenIcon} /> &nbsp;&nbsp;Valid </React.Fragment> : "Check"
                         }
@@ -250,23 +253,23 @@ class NewBrandTemplate extends React.Component {
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"brandName"}
-                                 inputId={"brandName"}
-                                 formId={this.state.form.id} label={this.state.form.inputData.brandName.label}
-                                 required={this.state.form.inputData.brandName.required} value={this.state.form.inputData.brandName.value}
-                                 type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern}
-                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.brandName.disabled}
-                                 error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
+                      inputId={"brandName"}
+                      formId={this.state.form.id} label={this.state.form.inputData.brandName.label}
+                      required={this.state.form.inputData.brandName.required} value={this.state.form.inputData.brandName.value}
+                      type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern}
+                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.brandName.disabled}
+                      error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
                   </div>
                 </div>
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"comments"}
-                                 inputId={"comments"}
-                                 formId={this.state.form.id} label={this.state.form.inputData.comments.label}
-                                 required={this.state.form.inputData.comments.required} value={this.state.form.inputData.comments.value}
-                                 type={this.state.form.inputData.comments.type} pattern={this.state.form.inputData.comments.pattern}
-                                 onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.comments.disabled}
-                                 error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
+                      inputId={"comments"}
+                      formId={this.state.form.id} label={this.state.form.inputData.comments.label}
+                      required={this.state.form.inputData.comments.required} value={this.state.form.inputData.comments.value}
+                      type={this.state.form.inputData.comments.type} pattern={this.state.form.inputData.comments.pattern}
+                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.comments.disabled}
+                      error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
                   </div>
                 </div>
 
@@ -274,7 +277,7 @@ class NewBrandTemplate extends React.Component {
                   <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
-                             onChange={this.undertakingtoggle}/>
+                        onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
                         {this.state.form.undertaking.label}
                       </label>
@@ -302,7 +305,8 @@ NewBrandTemplate.propTypes = {
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
-  data: PropTypes.object
+  data: PropTypes.object,
+  showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -313,12 +317,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   toggleModal,
-  saveBrandInitiated
+  saveBrandInitiated,
+  showNotification
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(NewBrandTemplate);
-
-
