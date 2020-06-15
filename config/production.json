@@ -5,7 +5,7 @@
       "IAM_TOKEN_URL": "https://idp.stg.sso.platform.prod.walmart.com/platform-sso-server/token",
       "FALCON_LOGIN_URL": "https://retaillink.login.stg.wal-mart.com/authorize",
       "BASE_URL": "http://electrode-nodejs.dev.ro-pro.catdev.qa.walmart.com",
-      "REDIRECT_URL" : "/login-redirect",
+      "REDIRECT_PATH" : "/login-redirect",
       "CLIENT_ID" : "a0e15a47-ce50-4416-9514-0641afab1fc2",
       "CLIENT_SECRET" : "LT_TOzrO7TI2mKS_NFdqtqOco-rZ_L_WgrdRjdA8j3T7Q5gTOddC_pK81VVVD9ypvSysiDe7bugSvuMB9nN4Ig",
       "NONCE_STRING_LENGTH" : 8,

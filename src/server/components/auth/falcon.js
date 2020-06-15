@@ -4,31 +4,30 @@ import queryString from "query-string";
 
 class Falcon {
 
-  constructor() {
-    this.baseUrl = CONSTANTS.IAM.FALCON_LOGIN_URL;
-    this.redirectUri = CONSTANTS.IAM.BASE_URL + CONSTANTS.IAM.REDIRECT_URL;
-    this.clientId = CONSTANTS.IAM.CLIENT_ID;
-    this.nonce = ServerUtils.randomStringGenerator(CONSTANTS.IAM.NONCE_STRING_LENGTH).toUpperCase();
-    this.clientType = CONSTANTS.IAM.CLIENT_TYPE;
-    this.state = ServerUtils.randomStringGenerator(CONSTANTS.IAM.NONCE_STRING_LENGTH).toUpperCase();
-    this.scope = CONSTANTS.IAM.SCOPE;
-    this.responseType = CONSTANTS.IAM.RESPONSE_TYPE;
-    this.isInternal = CONSTANTS.IAM.IS_INTERNAL;
-  }
-
-  generateLoginURL() {
+  generateLoginURL(request) {
     try {
+      const IAM = request.app.ccmGet("IAM");
+      const baseUrl = IAM.FALCON_LOGIN_URL;
+      const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
+      const clientId = IAM.CLIENT_ID;
+      const nonce = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
+      const clientType = IAM.CLIENT_TYPE;
+      const state = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
+      const scope = IAM.SCOPE;
+      const responseType = IAM.RESPONSE_TYPE;
+      const isInternal = IAM.IS_INTERNAL;
+
       return queryString.stringifyUrl({
-        url: this.baseUrl,
+        url: baseUrl,
         query: {
-          redirectUri: this.redirectUri,
-          clientId: this.clientId,
-          nonce: this.nonce,
-          clientType: this.clientType,
-          state: this.state,
-          scope: this.scope,
-          responseType: this.responseType,
-          isInternal: this.isInternal
+          redirectUri,
+          clientId,
+          nonce,
+          clientType,
+          state,
+          scope,
+          responseType,
+          isInternal
         }}, {encode: false});
     } catch (err) {
       throw new Error(err);

@@ -7,6 +7,7 @@ import ServerUtils from "../../utility/server-utils";
 
 
 class UserManagerApi {
+
   constructor() {
     this.register = this.register.bind(this);
     this.loginSuccessRedirect = this.loginSuccessRedirect.bind(this);
@@ -44,7 +45,6 @@ class UserManagerApi {
   }
 
   register(server) {
-
     return server.route([
       {
         method: "GET",
@@ -65,16 +65,6 @@ class UserManagerApi {
         method: "GET",
         path: "/api/newUser/brands",
         handler: this.getNewUserBrands
-      },
-      {
-        method: "GET",
-        path: "/login-redirect",
-        handler: this.loginSuccessRedirect
-      },
-      {
-        method: "GET",
-        path: "/logout",
-        handler: this.logout
       },
       {
         method: "GET",
@@ -110,6 +100,16 @@ class UserManagerApi {
             collect: true
           }
         }
+      },
+      {
+        method: "GET",
+        path: "/login-redirect",
+        handler: this.loginSuccessRedirect
+      },
+      {
+        method: "GET",
+        path: "/logout",
+        handler: this.logout
       }
     ]);
 
@@ -130,8 +130,9 @@ class UserManagerApi {
       const options = {
         headers
       };
-
-      const url = `http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/${payload.loginId}`;
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}/${payload.loginId}`;
 
       const response = await ServerHttp.put(url, options, payload);
       return h.response(response.body).code(response.status);
@@ -141,7 +142,6 @@ class UserManagerApi {
   }
 
   async getUsers(request, h) {
-
     try {
       const headers = this.getHeaders(request);
       const options = {
@@ -149,7 +149,10 @@ class UserManagerApi {
         headers
       };
 
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}`;
+
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -165,7 +168,9 @@ class UserManagerApi {
         headers
       };
 
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users";
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
       return h.response(response.body).code(response.status);
@@ -180,7 +185,10 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const url = `http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/${request.params.emailId}/status/${request.params.status}`;
+
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
 
       const response = await ServerHttp.put(url, options);
       return h.response(response.body).code(response.status);
@@ -198,7 +206,9 @@ class UserManagerApi {
         headers: { ...headers, "Content-Type": "text/plain" }
       };
 
-      const url = `http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/${request.params.emailId}`;
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
       const response = await ServerHttp.delete(url, options);
       return h.response(response.body).code(response.status);
 
@@ -209,7 +219,9 @@ class UserManagerApi {
 
   async getNewUserRoles (request, h) {
     try {
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/role";
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const ROLE_PATH = request.app.ccmGet("USER_MANAGER.ROLE_PATH");
+      const url = `${BASE_URL}${ROLE_PATH}`;
       const headers = this.getHeaders(request);
 
       const options = {
@@ -225,7 +237,10 @@ class UserManagerApi {
 
   async getNewUserBrands (request, h) {
     try {
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/brand/assignable";
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("USER_MANAGER.ASSIGNABLE_BRANDS_PATH");
+      const url = `${BASE_URL}${ASSIGNABLE_BRANDS_PATH}`;
+
       const headers = this.getHeaders(request);
 
       const options = {
@@ -251,7 +266,10 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const url = "http://umf.ropro.stg.walmart.com/ropro/umf/v1/users/me";
+      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
+      const USER_SELF_INFO_PATH = request.app.ccmGet("USER_MANAGER.USER_SELF_INFO_PATH");
+      const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
+
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -297,7 +315,7 @@ class UserManagerApi {
       const query = request.query;
       const ttl = 30 * 60 * 1000;
       // eslint-disable-next-line camelcase
-      const {id_token} = await this.getAccessToken(query.code);
+      const {id_token} = await this.getAccessToken(request, query.code);
       const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginid;
       const authToken = user["iam-token"];
@@ -306,6 +324,7 @@ class UserManagerApi {
       // const login = await this.loginStaticUser();
       // const authToken = login.payload.authenticationToken.authToken;
       // const loginId = login.payload.principal.loginId;
+      //temporary login above
 
       h.state("auth_session_token", authToken, {
         ttl,
@@ -317,8 +336,6 @@ class UserManagerApi {
         isSecure: false,
         isHttpOnly: false
       });
-
-      //temporary login above
 
 
       return h.redirect(`/user-management/user-list`);
@@ -337,35 +354,37 @@ class UserManagerApi {
 
   async redirectToFalcon (request, h) {
     try {
-      return h.redirect(falcon.generateLoginURL());
+      return h.redirect(falcon.generateLoginURL(request));
     } catch (e) {
       console.log(e);
       throw e;
     }
   }
 
-  async getAccessToken(authorizationCode) {
+  async getAccessToken(request, authorizationCode) {
     try {
-      const url = CONSTANTS.IAM.IAM_TOKEN_URL;
-      const clientId = CONSTANTS.IAM.CLIENT_ID;
-      const clientSecret = CONSTANTS.IAM.CLIENT_SECRET;
-      const encoding = CONSTANTS.IAM.ENCODING;
+      const IAM = request.app.ccmGet("IAM");
+
+      const url = IAM.IAM_TOKEN_URL;
+      const clientId = IAM.CLIENT_ID;
+      const clientSecret = IAM.CLIENT_SECRET;
+      const encoding = IAM.ENCODING;
 
       const payload =   {
         code: authorizationCode,
-        redirect_uri: CONSTANTS.IAM.BASE_URL + CONSTANTS.IAM.REDIRECT_URL,
-        grant_type: CONSTANTS.IAM.GRANT_TYPE
+        redirect_uri: CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH,
+        grant_type: IAM.GRANT_TYPE
       };
 
       const base64 = Buffer.from(`${clientId}:${clientSecret}`).toString(encoding);
       const headers = {
         Authorization: `Basic ${base64}`,
-        "WM_SVC.ENV": "stg",
-        "WM_CONSUMER.ID":	"22e991f3-e61f-4c46-9a16-47142ea5f6a2",
-        "WM_QOS.CORRELATION_ID":	"SOMECORRELATIONID",
-        "WM_SVC.NAME":	"platform-sso-server",
-        "WM_SVC.VERSION":	"1.0.0",
-        "WM_CONSUMER.NAME": "seller-portal-app"
+        "WM_SVC.ENV": IAM["WM_SVC.ENV"],
+        "WM_CONSUMER.ID": IAM["WM_CONSUMER.ID"],
+        "WM_QOS.CORRELATION_ID": IAM["WM_QOS.CORRELATION_ID"],
+        "WM_SVC.NAME": IAM["WM_SVC.NAME"],
+        "WM_SVC.VERSION": IAM["WM_SVC.VERSION"],
+        "WM_CONSUMER.NAME": IAM["WM_CONSUMER.NAME"]
       };
       const options = {
         headers
