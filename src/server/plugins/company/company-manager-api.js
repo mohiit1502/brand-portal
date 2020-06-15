@@ -1,8 +1,5 @@
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
-import FS from "fs";
-import Stream from "stream";
-import fetch from "node-fetch";
 
 class CompanyManagerApi {
   constructor() {
@@ -71,7 +68,11 @@ class CompanyManagerApi {
         headers
       };
       const payload = request.payload;
-      const response = await ServerHttp.post(`http://brandservice.ropro.stg.walmart.com/ropro/org-service/org`, options, payload);
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const REGISTER_ORG_PATH = request.app.ccmGet("BRAND_CONFIG.REGISTER_ORG_PATH");
+      const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
+
+      const response = await ServerHttp.post(url, options, payload);
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log(err);
@@ -85,7 +86,12 @@ class CompanyManagerApi {
         ROPRO_CORRELATION_ID: "sdfsdf",
         ROPRO_CLIENT_ID: "dsfasdf"
       };
-      const response = await ServerHttp.get(`http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands/ip/${request.params.trademarkNumber}`, options);
+
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const TM_VALIDITY_PATH = request.app.ccmGet("BRAND_CONFIG.TM_VALIDITY_PATH");
+      const url = `${BASE_URL}${TM_VALIDITY_PATH}/${request.params.trademarkNumber}`;
+
+      const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log(err);
@@ -102,7 +108,11 @@ class CompanyManagerApi {
       const buffer = await file.read();
       const fd = new FormData();
       fd.append("file", buffer.toString("utf-8"), {filename});
-      const response = await ServerHttp.postAsFormData("http://brandservice.ropro.stg.walmart.com/ropro/org-service/org/additional-doc", options, fd);
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const ADDITIONAL_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.ADDITIONAL_DOC_PATH");
+      const url = `${BASE_URL}${ADDITIONAL_DOC_PATH}`;
+
+      const response = await ServerHttp.postAsFormData(url, options, fd);
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log(err);
@@ -119,7 +129,10 @@ class CompanyManagerApi {
       const buffer = await file.read();
       const fd = new FormData();
       fd.append("file", buffer.toString("utf-8"), {filename});
-      const response = await ServerHttp.postAsFormData("http://brandservice.ropro.stg.walmart.com/ropro/org-service/org/br-doc", options, fd);
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const BUSINESS_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.BUSINESS_DOC_PATH");
+      const url = `${BASE_URL}${BUSINESS_DOC_PATH}`;
+      const response = await ServerHttp.postAsFormData(url, options, fd);
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log(err);
@@ -134,7 +147,11 @@ class CompanyManagerApi {
         ROPRO_CORRELATION_ID: "sdfsdf",
         ROPRO_CLIENT_ID: "dsfasdf"
       };
-      const response = await ServerHttp.get("http://brandservice.ropro.stg.walmart.com/ropro/org-service/org/uniqueness", options, {name});
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const COMPANY_NAME_UNIQUENESS_PATH = request.app.ccmGet("BRAND_CONFIG.COMPANY_NAME_UNIQUENESS_PATH");
+      const url = `${BASE_URL}${COMPANY_NAME_UNIQUENESS_PATH}`;
+
+      const response = await ServerHttp.get(url, options, {name});
       return h.response(response.body).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);

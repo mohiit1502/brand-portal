@@ -130,8 +130,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${payload.loginId}`;
 
       const response = await ServerHttp.put(url, options, payload);
@@ -149,8 +149,8 @@ class UserManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
       const response = await ServerHttp.get(url, options);
@@ -168,8 +168,8 @@ class UserManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -186,8 +186,8 @@ class UserManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
 
       const response = await ServerHttp.put(url, options);
@@ -206,8 +206,8 @@ class UserManagerApi {
         headers: { ...headers, "Content-Type": "text/plain" }
       };
 
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_MANAGER.USER_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
       const response = await ServerHttp.delete(url, options);
       return h.response(response.body).code(response.status);
@@ -219,8 +219,8 @@ class UserManagerApi {
 
   async getNewUserRoles (request, h) {
     try {
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const ROLE_PATH = request.app.ccmGet("USER_MANAGER.ROLE_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const ROLE_PATH = request.app.ccmGet("USER_CONFIG.ROLE_PATH");
       const url = `${BASE_URL}${ROLE_PATH}`;
       const headers = this.getHeaders(request);
 
@@ -237,8 +237,8 @@ class UserManagerApi {
 
   async getNewUserBrands (request, h) {
     try {
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("USER_MANAGER.ASSIGNABLE_BRANDS_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
       const url = `${BASE_URL}${ASSIGNABLE_BRANDS_PATH}`;
 
       const headers = this.getHeaders(request);
@@ -266,8 +266,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_MANAGER.BASE_URL");
-      const USER_SELF_INFO_PATH = request.app.ccmGet("USER_MANAGER.USER_SELF_INFO_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_SELF_INFO_PATH = request.app.ccmGet("USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
 
       const response = await ServerHttp.get(url, options);

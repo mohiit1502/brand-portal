@@ -1,8 +1,4 @@
 import ServerHttp from "../../utility/ServerHttp";
-import FormData from "form-data";
-import FS from "fs";
-import Stream from "stream";
-import fetch from "node-fetch";
 
 class BrandManagerApi {
   constructor() {
@@ -50,14 +46,17 @@ class BrandManagerApi {
         headers
       };
 
-      const url = "http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands";
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const url = `${BASE_URL}${BRANDS_PATH}`;
+
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log(err);
       return h.response(err).code(err.status);
     }
-  }
+    }
 
   async createBrand(request, h) {
     try {
@@ -67,7 +66,10 @@ class BrandManagerApi {
         headers
       };
 
-      const url = "http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands";
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const url = `${BASE_URL}${BRANDS_PATH}`;
+
       const response = await ServerHttp.post(url, options, payload);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -84,7 +86,9 @@ class BrandManagerApi {
         headers
       };
 
-      const url = `http://brandservice.ropro.stg.walmart.com/ropro/brand-service/brands/${request.params.brandId}`;
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const url = `${BASE_URL}${BRANDS_PATH}/${request.params.brandId}`;
       const response = await ServerHttp.put(url, options, payload);
       return h.response(response.body).code(response.status);
     } catch (err) {
