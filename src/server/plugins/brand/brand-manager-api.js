@@ -10,6 +10,7 @@ class BrandManagerApi {
   }
 
   register (server) {
+
     return server.route([
       {
         method: "GET",

@@ -17,6 +17,10 @@ const CONSTANTS = {
       BRANDS_LIST: "/brands"
     },
 
+    CLAIMS: {
+      CLAIMS_LIST: "/claims"
+    },
+
     PROFILE: {
       USER: "/profile/user-profile"
     }

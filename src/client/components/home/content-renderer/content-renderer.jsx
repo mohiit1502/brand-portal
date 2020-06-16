@@ -7,6 +7,7 @@ import UserProfile from "./user/profile/user-profile";
 import UserList from "./user/user-list";
 import UserApproval from "./user/user-approval";
 import BrandList from "./brand/brand-list";
+import ClaimList from "./claim/claim-list";
 
 class ContentRenderer extends React.Component {
   constructor (props) {
@@ -28,6 +29,9 @@ class ContentRenderer extends React.Component {
           </Route>
           <Route path={CONSTANTS.ROUTES.BRANDS.BRANDS_LIST}>
             <BrandList/>
+          </Route>
+          <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIMS_LIST}>
+            <ClaimList/>
           </Route>
         </Switch>
       </div>

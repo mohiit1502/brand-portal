@@ -347,9 +347,14 @@ class UserManagerApi {
   }
 
   async logout(request, h) {
-    h.unstate("auth_session_token");
-    h.unstate("session_token_login_id");
-    return h.redirect("/");
+    try {
+      h.unstate("auth_session_token");
+      h.unstate("session_token_login_id");
+      return h.redirect("/");
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 
   async redirectToFalcon (request, h) {

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
+import ArrowDown from "../../../images/arrow-down-dk.png";
 
 class CustomInput extends React.Component {
 
@@ -88,8 +89,11 @@ class CustomInput extends React.Component {
 
 
   getSelectInput() {
+
+    const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
+
     return (
-      <div className="form-group custom-input-form-group custom-select-form-group dropdown">
+      <div className={`form-group custom-input-form-group custom-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
@@ -99,15 +103,16 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        {
-          this.state.required && this.state.value === "" && <small className="form-text custom-input-help-text text-muted">Required</small>
-        }
+        <img src={ArrowDown} className="dropdown-arrow"/>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+          { subtitleText }
+        </small>
 
 
         <div className="dropdown-menu">
           {
-            this.props.dropdownOptions.map(option => {
-              return <a key={option.id} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value, this.state.inputId); } }>{option.value}</a>;
+            this.props.dropdownOptions.map((option, i) => {
+              return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value, this.state.inputId); } }>{option.value}</a>;
             })
           }
         </div>
@@ -142,9 +147,12 @@ class CustomInput extends React.Component {
   }
 
   getMultiSelectInput () {
+
+    const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
+
     return (
 
-      <div className="form-group custom-input-form-group custom-multi-select-form-group dropdown">
+      <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-4"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
@@ -154,9 +162,9 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        {
-          this.state.required && this.state.value === "" && <small className="form-text custom-input-help-text text-muted">Required</small>
-        }
+        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+          { subtitleText }
+        </small>
 
         <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
           {
@@ -224,7 +232,7 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${errorClass}`}>
+      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
@@ -247,7 +255,7 @@ class CustomInput extends React.Component {
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
-        <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows="4"
+        <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.props.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onInputChange(e, this.state.inputId); }} />
       </div>
@@ -287,7 +295,8 @@ CustomInput.propTypes = {
   radioOptions: PropTypes.array,
   dropdownOptions: PropTypes.array,
   subtitle: PropTypes.string,
-  error: PropTypes.string
+  error: PropTypes.string,
+  rowCount: PropTypes.number
 };
 
 const mapStateToProps = state => state;

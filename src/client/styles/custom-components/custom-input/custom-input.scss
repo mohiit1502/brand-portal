@@ -6,8 +6,28 @@ $disabled-font : #A3A8A9;
 $input-border : 1px solid #979797;
 $radio-color : #017DC6;
 $radio-border-color : #E2E5E7;
-$input-placeholder-color : #6E7677;
+$input-placeholder-color : #2C333A;
 $textarea-label: #41484F;
+$dropdown-select-background: rgb(178, 216, 237);
+
+@mixin custom-placeholderCSS {
+  top : -28px;
+  font-size: 16px;
+  color: $input-placeholder-color;
+  background: transparent;
+}
+
+@mixin custom-label-css {
+  margin: 0;
+  top: -47px;
+  position: relative;
+  left: 15px;
+  background: white;
+  font-size: 12px;
+  color: $input-placeholder-color;
+  transition: top 100ms, font-size 100ms, background 100ms;
+}
+
 .form-group-radio {
   margin: 0;
 
@@ -51,13 +71,26 @@ $textarea-label: #41484F;
     background: white;
   }
 
+  .dropdown-arrow {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    height: 24px;
+  }
+
   .dropdown-menu{
     width : 100%;
+    max-height: 250px;
+    overflow: auto;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.15);
     @extend .py-0;
     .dropdown-item {
       cursor: pointer;
+      height: 38px;
+      line-height: 32px;
+
       &:active, &:focus, &:hover {
-        background : transparent;
+        background: $dropdown-select-background;
       }
     }
   }
@@ -66,6 +99,8 @@ $textarea-label: #41484F;
 .custom-multi-select-form-group{
   @extend .custom-select-form-group;
   .dropdown-menu{
+    max-height: 250px;
+    overflow: auto;
     .dropdown-item {
       cursor: default;
       .overlay-hidden-checkbox {
@@ -76,9 +111,6 @@ $textarea-label: #41484F;
       }
     }
   }
-
-
-
 }
 
 .custom-input-form-group {
@@ -95,20 +127,14 @@ $textarea-label: #41484F;
   }
 
   .custom-input-label{
-    margin: 0;
-    top: -47px;
-    position: relative;
-    left: 15px;
-    background: white;
-    //padding: 0 5px;
-    font-size: 12px;
-    transition: top 100ms, font-size 100ms, background 100ms;
+    @include custom-label-css();
 
     &.custom-input-label-placeholder {
-      top : -28px;
-      font-size: 16px;
-      color: $input-placeholder-color;
-      background: transparent;
+      @include custom-placeholderCSS();
+      //top : -28px;
+      //font-size: 16px;
+      //color: $input-placeholder-color;
+      //background: transparent;
     }
 
     .label-upper-bg{
@@ -148,6 +174,7 @@ $textarea-label: #41484F;
       border : 1px solid $input-blue;
 
       & + .custom-input-label {
+        @include custom-label-css();
         color : $input-blue;
       }
     }

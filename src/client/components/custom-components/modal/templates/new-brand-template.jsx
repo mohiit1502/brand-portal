@@ -193,23 +193,6 @@ class NewBrandTemplate extends React.Component {
   }
 
   resetTemplateStatus () {
-    // const form = {...this.state.form};
-    // form.templateUpdateComplete = false;
-    // form.isUpdateTemplate = false;
-    //
-    // form.inputData.firstName.value = "";
-    // form.inputData.userType.value = "Internal";
-    // form.inputData.companyName.value = "";
-    // form.inputData.lastName.value = "";
-    // form.inputData.emailId.value = "";
-    // form.inputData.role.value = "";
-    // form.inputData.brands.value = "";
-    // form.inputData.brands.options = form.inputData.brands.options.map(brand => {
-    //   brand.selected = false;
-    //   return brand;
-    // });
-    //
-    // this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
   }
 

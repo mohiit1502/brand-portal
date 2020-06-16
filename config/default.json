@@ -63,6 +63,10 @@
           "BRAND_CONFIG": {
             "serviceName": "ro-pro",
             "+configNames": ["BRAND_CONFIG"]
+          },
+          "CLAIM_CONFIG": {
+            "serviceName": "ro-pro",
+            "+configNames": ["CLAIM_CONFIG"]
           }
         }
       }
@@ -86,6 +90,9 @@
     },
     "brand-manager-api": {
       "module": "./{{env.APP_SRC_DIR}}/server/plugins/brand/brand-manager-api"
+    },
+    "claim-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/claim/claim-manager-api"
     },
     "webapp": {
       "module": "@walmart/electrode-index-page",

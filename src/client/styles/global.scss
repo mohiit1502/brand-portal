@@ -40,6 +40,14 @@ html,body {
   }
 }
 
+input[type="checkbox"] {
+  box-shadow: none;
+}
+
+input[type="text"] {
+  box-shadow: none;
+}
+
 /*
 ** Generic Classes Start
 */
@@ -106,7 +114,14 @@ html,body {
 
 .btn-sm {
   @extend .font-size-14;
+  height: 34px;
+  line-height: 24px !important;
 }
+
+.make-it-white {
+  filter: grayscale(100%) brightness(100);
+}
+
 /*
 ** Generic Classes End
 */
