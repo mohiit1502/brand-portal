@@ -26,7 +26,6 @@ class CustomModal extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("update");
     const toggleAction = this.props.modal.enable ? TOGGLE_ACTIONS.SHOW : TOGGLE_ACTIONS.HIDE;
     this.toggleModal(toggleAction);
   }
