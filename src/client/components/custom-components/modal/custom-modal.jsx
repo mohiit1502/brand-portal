@@ -10,6 +10,8 @@ import CompanyBrandRegisteredTemplate from "./templates/company-brand-registered
 import NewBrandTemplate from "./templates/new-brand-template";
 import NewClaimTemplate from "./templates/new-claim-template";
 import NewClaimAddedTemplate from "./templates/new-claim-added-template";
+import ClaimDetailsTemplate from "./templates/claim-details-template";
+
 
 class CustomModal extends React.Component {
 
@@ -38,6 +40,7 @@ class CustomModal extends React.Component {
       case "NewBrandTemplate": return NewBrandTemplate;
       case "NewClaimTemplate": return NewClaimTemplate;
       case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
+      case "ClaimDetailsTemplate": return ClaimDetailsTemplate;
     }
     return null;
   }

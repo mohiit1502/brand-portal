@@ -265,7 +265,7 @@ class NewClaimTemplate extends React.Component {
     };
     return Http.post("/api/claims", payload)
       .then(res => {
-        const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body} };
+        const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       })
       .catch(err => {

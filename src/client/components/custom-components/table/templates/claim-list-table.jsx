@@ -2,12 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
+import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 
 
-const BrandListTable = function(props) {
-
+const ClaimListTable = function(props) {
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions } = templateProps;
+
+  const showClaimDetails = function (row) {
+    const meta = { templateName: "ClaimDetailsTemplate", data: row.original };
+    props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+  };
 
   return (
     <div className="table-responsive">
@@ -22,7 +27,7 @@ const BrandListTable = function(props) {
                   headerGroup.headers.map(header => {
                     return (
                       <th key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
+                        { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }
                       </th>
                     );
                   })
@@ -43,11 +48,7 @@ const BrandListTable = function(props) {
                   row.cells.map((cell, k) => {
                     return (<td key={`td${k}`}>
                       {
-                        Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
-                      }
-                      {
-                        cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
-                        <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions} data={row.original}/>&nbsp;&nbsp;</span>
+                        cell.column.id === "caseNumber" ? <a className="cursor-pointer text-primary" onClick={() => showClaimDetails(row)}>{cell.value}</a> : cell.value
                       }
                     </td>);
                   })
@@ -62,12 +63,17 @@ const BrandListTable = function(props) {
   );
 };
 
-BrandListTable.propTypes = {
+ClaimListTable.propTypes = {
   getTableBodyProps: PropTypes.func,
   headerGroups: PropTypes.array,
   rows: PropTypes.array,
   prepareRow: PropTypes.func,
-  templateProps: PropTypes.object
+  templateProps: PropTypes.object,
+  toggleModal: PropTypes.func
 };
 
-export default connect()(BrandListTable);
+const mapDispatchToProps = {
+  toggleModal
+};
+
+export default connect(null, mapDispatchToProps)(ClaimListTable);

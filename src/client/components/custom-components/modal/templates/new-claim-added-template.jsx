@@ -12,10 +12,6 @@ class NewClaimAddedTemplate extends React.Component {
     this.getHeaderString = this.getHeaderString.bind(this);
     this.getDescriptionString = this.getDescriptionString.bind(this);
     this.addNewClaim = this.addNewClaim.bind(this);
-
-    this.state = {
-
-    };
   }
 
   getHeaderString() {
@@ -23,7 +19,7 @@ class NewClaimAddedTemplate extends React.Component {
   }
 
   getDescriptionString() {
-    return `You will receive a confirmation email with your claim number (INC14092477) details shortly. You can also check your claim status in 'My claims`;
+    return `You will receive a confirmation email with your claim number (${this.props.data.caseNumber}) details shortly. You can also check your claim status in 'My claims`;
   }
 
   addNewClaim () {
@@ -78,7 +74,8 @@ class NewClaimAddedTemplate extends React.Component {
 
 NewClaimAddedTemplate.propTypes = {
   toggleModal: PropTypes.func,
-  modal: PropTypes.object
+  modal: PropTypes.object,
+  data: PropTypes.object
 };
 
 const mapStateToProps = state => {

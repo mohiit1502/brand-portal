@@ -34,10 +34,11 @@ const CustomTable = function (props) {
 //   //Element: PropTypes.element
 // };
 
-// CustomTable.propTypes = {
-//   // columns: PropTypes.array,
-//   // data: PropTypes.array,
-//   // template: PropTypes.element
-// };
+CustomTable.propTypes = {
+  columns: PropTypes.array,
+  data: PropTypes.array
+  // template: PropTypes.element,
+  // templateProps: PropTypes.object
+};
 
 export default CustomTable;
