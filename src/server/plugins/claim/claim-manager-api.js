@@ -6,6 +6,7 @@ class ClaimManagerApi {
     this.getClaims = this.getClaims.bind(this);
     this.createClaim = this.createClaim.bind(this);
     this.getClaimTypes = this.getClaimTypes.bind(this);
+    this.getSellers = this.getSellers.bind(this);
   }
 
   register(server) {
@@ -24,6 +25,11 @@ class ClaimManagerApi {
         method: "GET",
         path: "/api/claims/types",
         handler: this.getClaimTypes
+      },
+      {
+        method: "GET",
+        path: "/api/sellers",
+        handler: this.getSellers
       }
 
     ]);
@@ -36,6 +42,18 @@ class ClaimManagerApi {
       ROPRO_CLIENT_ID:	"abcd",
       ROPRO_CORRELATION_ID: "sdfsdf"
     };
+  }
+
+  async getSellers(request, h) {
+    try {
+      const staticData = [
+        {id: 1, value: "seller 1"},
+        {id: 2, value: "seller 2"}
+      ];
+      return h.response(staticData).code(200);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
   }
 
   async getClaimTypes(request, h) {

@@ -8,6 +8,7 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import ClientUtils from "../../../../utility/ClientUtils";
 
 class NewClaimTemplate extends React.Component {
 
@@ -22,6 +23,7 @@ class NewClaimTemplate extends React.Component {
     this.addToItemList = this.addToItemList.bind(this);
     this.removeFromItemList = this.removeFromItemList.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
+    this.onItemUrlBlur = this.onItemUrlBlur.bind(this);
 
     this.state = {
       form: {
@@ -77,6 +79,10 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: ""
+          },
+          signature: {
+            value: "",
+            required: true
           }
         },
         undertakingList: [
@@ -102,7 +108,6 @@ class NewClaimTemplate extends React.Component {
   }
 
   componentDidMount() {
-
     this.getClaimTypes();
     this.getBrands();
     this.addToItemList();
@@ -131,7 +136,7 @@ class NewClaimTemplate extends React.Component {
         value: "",
         type: "select",
         pattern: null,
-        disabled: false,
+        disabled: true,
         options: [],
         subtitle: "",
         error: ""
@@ -150,13 +155,23 @@ class NewClaimTemplate extends React.Component {
 
   setSelectInputValue (value, key) {
     if (value) {
+      let index = -1;
+      if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
+        index = Number(key.split("-")[1]);
+        key = key.split("-")[0];
+      }
       this.setState(state => {
         state = {...state};
-        state.form.inputData[key].value = value;
+        if (index > -1) {
+          state.form.inputData.itemList[index][key].value = value;
+        } else {
+          state.form.inputData[key].value = value;
+        }
+
         return {
           ...state
         };
-      });
+      }, this.checkToEnableSubmit);
     }
   }
 
@@ -165,7 +180,7 @@ class NewClaimTemplate extends React.Component {
       .then(res => {
         const form = {...this.state.form};
         form.inputData.claimType.options = res.body.data;
-        form.inputData.claimType.options.map(v => {v.value = v.claimType; });
+        form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
         this.setState({form});
       });
   }
@@ -175,7 +190,7 @@ class NewClaimTemplate extends React.Component {
       .then(res => {
         const form = {...this.state.form};
         form.inputData.brandName.options = res.body.brands;
-        form.inputData.brandName.options.map(v => {v.value = v.brandName; });
+        form.inputData.brandName.options = form.inputData.brandName.options.map(v => ({id: v.brandId, value: v.brandName}));
         this.setState({form});
       });
   }
@@ -205,14 +220,18 @@ class NewClaimTemplate extends React.Component {
   }
 
   checkToEnableSubmit() {
-    // const form = {...this.state.form};
-    // const bool = (form.isUpdateTemplate || form.inputData.trademarkNumber.isValid)  &&
-    //   form.inputData.trademarkNumber.value &&
-    //   form.inputData.brandName.value &&
-    //   form.undertaking.selected;
-    //
-    // form.isSubmitDisabled = !bool;
-    // this.setState({form});
+    const form = {...this.state.form};
+
+
+    const bool = form.inputData.claimType.value &&
+      form.inputData.brandName.value &&
+      form.inputData.copyrightNumber.value &&
+      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value), true) &&
+      form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
+      form.inputData.signature.value;
+
+    form.isSubmitDisabled = !bool;
+    this.setState({form});
   }
 
   undertakingtoggle (evt, undertaking, index) {
@@ -226,22 +245,28 @@ class NewClaimTemplate extends React.Component {
   async handleSubmit(evt) {
     evt.preventDefault();
 
-    const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
-    const name = this.state.form.inputData.brandName.value;
+    const claimType = this.state.form.inputData.claimType.value;
+    const registrationNumber = this.state.form.inputData.copyrightNumber.value;
+
+    const brandName = this.state.form.inputData.brandName.value;
+    const index = ClientUtils.where(this.state.form.inputData.brandName.options, {value: brandName});
+    const brandId = this.state.form.inputData.brandName.options[index].id;
+
     const comments = this.state.form.inputData.comments.value;
+    const digitalSignatureBy = this.state.form.inputData.signature.value;
 
-    const payload = { trademarkNumber, name, comments };
-
-
-    const url = "/api/claims";
-
-    return Http.post(url, payload)
+    const payload = {
+      claimType,
+      brandId,
+      registrationNumber,
+      comments,
+      digitalSignatureBy,
+      items: this.state.form.inputData.itemList.map(item => ({itemUrl: item.url.value, sellerName: item.sellerName.value}))
+    };
+    return Http.post("/api/claims", payload)
       .then(res => {
-        this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.request.name}’ added to your brand portfolio`);
-        this.resetTemplateStatus();
-        this.props.saveBrandInitiated();
-
-        this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+        const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body} };
+        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       })
       .catch(err => {
         console.log(err);
@@ -252,11 +277,27 @@ class NewClaimTemplate extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
   }
 
+  onItemUrlBlur (evt, item, i) {
+    if (evt && evt.target) {
+      const url = evt.target.value;
+      const query = {url};
+      Http.get("/api/sellers", query)
+        .then(res => {
+          const form = {...this.state.form};
+          form.inputData.itemList[i].sellerName.options = res.body;
+          form.inputData.itemList[i].sellerName.disabled = false;
+          //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
+          this.setState({form});
+        });
+    }
+
+  }
+
   render() {
     return (
       <div className="modal new-claim-modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
-          <div className="modal-content">
+          <form onSubmit={this.handleSubmit} className="modal-content">
             <div className="modal-header align-items-center">
               New Claim
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
@@ -264,7 +305,6 @@ class NewClaimTemplate extends React.Component {
               </button>
             </div>
             <div className="modal-body text-left">
-              <form onSubmit={this.handleSubmit} className="h-100 pt-3">
                 <div className="row">
                   <div className="col-4">
                     <CustomInput key={"claimType"}
@@ -305,7 +345,7 @@ class NewClaimTemplate extends React.Component {
                             inputId={`url-${i}`}
                             formId={this.state.form.id} label={item.url.label}
                             required={item.url.required} value={item.url.value}
-                            type={item.url.type} pattern={item.url.pattern}
+                            type={item.url.type} pattern={item.url.pattern} onBlurEvent={evt => {this.onItemUrlBlur(evt, item, i);}}
                             onChangeEvent={this.onInputChange} disabled={item.url.disabled}
                             dropdownOptions={item.url.options}/>
                         </div>
@@ -365,19 +405,24 @@ class NewClaimTemplate extends React.Component {
                   <div className="col">
                     <div className="form-group">
                       <label htmlFor="signature-name" className="font-weight-bold">Typing your full name in this box will act as your digital signature</label>
-                      <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" />
+                      <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true}
+                        onChange={evt => {
+                               const form = {...this.state.form};
+                               form.inputData.signature.value = evt.target.value;
+                               this.setState({form});
+                               this.checkToEnableSubmit();
+                             }}/>
                     </div>
                   </div>
                 </div>
-              </form>
             </div>
             <div className="modal-footer">
               <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
-              <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.submitDisabled}>
+              <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={false && this.state.form.isSubmitDisabled}>
                 Submit
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );

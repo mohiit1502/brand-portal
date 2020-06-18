@@ -30,6 +30,7 @@ class CustomInput extends React.Component {
       pattern: this.props.pattern,
       disabled: this.props.disabled,
       onChangeEvent: this.props.onChangeEvent,
+      onBlurEvent: this.props.onBlurEvent,
       radioOptions: this.props.radioOptions,
       dropdownOptions: this.props.dropdownOptions,
       subtitle: this.props.subtitle,
@@ -236,7 +237,7 @@ class CustomInput extends React.Component {
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
-          onChange={ e => { this.onInputChange(e, this.state.inputId); } }/>
+          onChange={ e => { this.onInputChange(e, this.state.inputId); } } onBlur={this.props.onBlurEvent}/>
 
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
@@ -292,6 +293,7 @@ CustomInput.propTypes = {
   pattern: PropTypes.string,
   disabled: PropTypes.bool,
   onChangeEvent: PropTypes.func,
+  onBlurEvent: PropTypes.func,
   radioOptions: PropTypes.array,
   dropdownOptions: PropTypes.array,
   subtitle: PropTypes.string,

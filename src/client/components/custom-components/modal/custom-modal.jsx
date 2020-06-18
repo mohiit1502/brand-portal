@@ -9,6 +9,7 @@ import NewUserAddedTemplate from "./templates/new-user-added-template";
 import CompanyBrandRegisteredTemplate from "./templates/company-brand-registered-template";
 import NewBrandTemplate from "./templates/new-brand-template";
 import NewClaimTemplate from "./templates/new-claim-template";
+import NewClaimAddedTemplate from "./templates/new-claim-added-template";
 
 class CustomModal extends React.Component {
 
@@ -23,6 +24,7 @@ class CustomModal extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log("update");
     const toggleAction = this.props.modal.enable ? TOGGLE_ACTIONS.SHOW : TOGGLE_ACTIONS.HIDE;
     this.toggleModal(toggleAction);
   }
@@ -35,6 +37,7 @@ class CustomModal extends React.Component {
       case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
       case "NewBrandTemplate": return NewBrandTemplate;
       case "NewClaimTemplate": return NewClaimTemplate;
+      case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
     }
     return null;
   }
@@ -42,6 +45,9 @@ class CustomModal extends React.Component {
   toggleModal(toggleAction) {
     const modalElements = $(".modal");
     const backdrop = $(".modal-backdrop");
+    if (backdrop.length) {
+      backdrop.remove();
+    }
     const options = {
       backdrop: "static",
       show: toggleAction.toLowerCase() === "show"

@@ -15,9 +15,13 @@ $dropdown-select-background: rgb(178, 216, 237);
   font-size: 16px;
   color: $input-placeholder-color;
   background: transparent;
+  position: relative;
+  z-index: 2;
 }
 
 @mixin custom-label-css {
+  position: relative;
+  z-index: 7;
   margin: 0;
   top: -47px;
   position: relative;
@@ -161,8 +165,10 @@ $dropdown-select-background: rgb(178, 216, 237);
   }
 
   .custom-input-element{
-
+    position: relative;
+    z-index: 5;
     height: 34px;
+    background: transparent;
     font-size: 14px;
     padding-left: 20px;
     border : 1px solid $input-border;
@@ -184,9 +190,14 @@ $dropdown-select-background: rgb(178, 216, 237);
       & + .custom-input-label {
         color : $disabled-font;
         background: white;
-
+        z-index: 7;
         .label-lower-bg {
           background: $disabled-background;
+        }
+      }
+      &:active + .custom-input-label-placeholder{
+        .label-upper-bg {
+          background: white;
         }
       }
 

@@ -40,11 +40,7 @@ html,body {
   }
 }
 
-input[type="checkbox"] {
-  box-shadow: none;
-}
-
-input[type="text"] {
+input[type="checkbox"], input[type="text"], input[type="select"] {
   box-shadow: none;
 }
 
