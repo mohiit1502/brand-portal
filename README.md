@@ -1,16 +1,16 @@
-# RoPro [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# brand-portal
 > IP Dispute Portal for Brands
 
 ## Installation
 
 ```sh
-$ npm install --save RoPro
+$ npm install --save brand-portal
 ```
 
 ## Usage
 
 ```js
-var roPro = require('RoPro');
+var roPro = require('brand-portal');
 
 roPro('Rainbow');
 ```
@@ -25,3 +25,5 @@ roPro('Rainbow');
 [travis-url]: https://travis-ci.org//RoPro
 [daviddm-image]: https://david-dm.org//RoPro.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org//RoPro
+
+
