@@ -14,51 +14,59 @@ const ClaimListTable = function(props) {
     props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   };
 
+  const classColMap = {
+    sequence: "col-1",
+    brandName: "col-2",
+    createdBy: "col-3"
+  };
+
   return (
     <div className="table-responsive">
-      <table className="custom-table table table-sm">
+      <div className="custom-table">
 
-        <thead>
-        {
-          headerGroups.map((headerGroup, j) => {
-            return (
-              <tr key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
-                {
-                  headerGroup.headers.map(header => {
-                    return (
-                      <th key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                        { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }
-                      </th>
-                    );
-                  })
-                }
-              </tr>
-            );
-          })
-        }
-        </thead>
+        <div className="table-header">
+          {
+            headerGroups.map((headerGroup, j) => {
+              return (
+                <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
+                  {
+                    headerGroup.headers.map(header => {
+                      return (
+                        <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
+                          { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }
+                        </div>
+                      );
+                    })
+                  }
+                </div>
+              );
+            })
+          }
+        </div>
 
-        <tbody {...getTableBodyProps()}>
-        {
-          rows.map(row => {
-            prepareRow(row);
-            return (
-              <tr key={`tr${row.id}`} {...row.getRowProps()}>
-                {
-                  row.cells.map((cell, k) => {
-                    return (<td key={`td${k}`}>
-                      {
-                        cell.column.id === "caseNumber" ? <a className="cursor-pointer text-primary" onClick={() => showClaimDetails(row)}>{cell.value}</a> : cell.value
-                      }
-                    </td>);
-                  })
-                }
-              </tr>
-            );
-          })
-        }
-        </tbody>
-      </table>
+        <div className="table-body" {...getTableBodyProps()}>
+          {
+            rows.map(row => {
+              prepareRow(row);
+              return (
+                <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
+                  {
+                    row.cells.map((cell, k) => {
+                      return (
+                        <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
+                          {
+                            cell.column.id === "caseNumber" ? <a className="cursor-pointer text-primary" onClick={() => showClaimDetails(row)}>{cell.value}</a> : cell.value
+                          }
+                        </div>
+                      );
+                    })
+                  }
+                </div>
+              );
+            })
+          }
+        </div>
+      </div>
     </div>
   );
 };

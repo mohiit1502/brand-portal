@@ -2,8 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
-import CustomTable from "../../../custom-components/table/custom-table";
-import UserListTable from "../../../custom-components/table/templates/user-list-table";
 import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
@@ -13,6 +11,8 @@ import filterIcon from "../../../../images/filter-sc.svg";
 import burgerIcon from "../../../../images/group-23.svg";
 import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
+import CustomTable from "../../../custom-components/table/custom-table";
+import UserListTable from "../../../custom-components/table/templates/user-list-table";
 
 class UserList extends React.Component {
 
@@ -342,14 +342,14 @@ class UserList extends React.Component {
     return (
       <div className="row user-list-content h-100">
         <div className="col h-100">
-          <div className="row content-header-row p-4 h-10">
+          <div className="row content-header-row p-4 h-10 mx-0">
             <div className="col">
               <h3>User List</h3>
             </div>
           </div>
           <div className="row content-row p-4 h-90">
             <div className="col content-col h-100;">
-              <div className="row action-row align-items-center">
+              <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>
                     Invite User
@@ -434,7 +434,7 @@ class UserList extends React.Component {
                     </div>
                   </div>
 
-                  <div className="row user-list-table-manage-row h-10 align-items-center mx-0">
+                  <div className="row user-list-table-manage-row h-10 align-items-center mx-4">
                     <div className="col">
                       { viewerShip() }
                     </div>

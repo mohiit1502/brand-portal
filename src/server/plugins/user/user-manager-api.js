@@ -269,7 +269,7 @@ class UserManagerApi {
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_SELF_INFO_PATH = request.app.ccmGet("USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
-
+      return {organization: true};
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -313,7 +313,7 @@ class UserManagerApi {
   async loginSuccessRedirect (request, h) {
     try {
       const query = request.query;
-      const ttl = 30 * 60 * 1000;
+      const ttl = 12 * 60 * 60 * 1000;
       // eslint-disable-next-line camelcase
       const {id_token} = await this.getAccessToken(request, query.code);
       const user = await ServerUtils.decryptToken(id_token);

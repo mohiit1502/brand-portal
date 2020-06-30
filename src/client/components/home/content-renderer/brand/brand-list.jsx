@@ -2,8 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/brand/brand-list.scss";
 import PropTypes from "prop-types";
-import CustomTable from "../../../custom-components/table/custom-table";
-import brandListTable from "../../../custom-components/table/templates/brand-list-table";
 import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
@@ -14,6 +12,8 @@ import burgerIcon from "../../../../images/group-23.svg";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import CustomTable from "../../../custom-components/table/custom-table";
+import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
 
 class BrandList extends React.Component {
 
@@ -295,14 +295,14 @@ class BrandList extends React.Component {
       <div className="row user-list-content h-100">
         <div className="col h-100">
 
-          <div className="row content-header-row p-4 h-10">
+          <div className="row content-header-row p-4 h-10 mx-0">
             <div className="col">
               <h3>Your Brands</h3>
             </div>
           </div>
           <div className="row content-row p-4 h-90">
             <div className="col content-col h-100;">
-              <div className="row action-row align-items-center">
+              <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.addNewBrand}>
                     New Brand
@@ -381,12 +381,12 @@ class BrandList extends React.Component {
                     <div className="col h-100 overflow-auto">
                       {
                         this.state.filteredList.length > 0 &&
-                        <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={brandListTable}
+                        <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
                       }
                     </div>
                   </div>
-                  <div className="row user-list-table-manage-row h-10 align-items-center mx-0">
+                  <div className="row user-list-table-manage-row h-10 align-items-center mx-4">
                     <div className="col">
                       { viewerShip() }
                     </div>

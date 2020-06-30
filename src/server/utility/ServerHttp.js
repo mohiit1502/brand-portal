@@ -5,27 +5,30 @@ import ServerHttpError from "./ServerHttpError";
 export default class ServerHttp {
 
   static async get(url, options, queryParams) {
+    try{
+      const urlString = queryString.stringifyUrl({url, query: queryParams});
 
-    const urlString = queryString.stringifyUrl({url, query: queryParams});
+      const res = await fetch(urlString, {
+        method: "GET",
+        ...options
+      });
 
-    const res = await fetch(urlString, {
-      method: "GET",
-      ...options
-    });
+      const {ok, status, headers} = res;
 
-    const {ok, status, headers} = res;
-
-    if (ok) {
-      if (headers.get("content-type") === "application/json") {
-        return {status, body: await res.json()};
+      if (ok) {
+        if (headers.get("content-type") === "application/json") {
+          return {status, body: await res.json()};
+        }
+        return res;
       }
-      return res;
+      console.log(res);
+      const err = await res.json();
+      console.log(err);
+      throw new ServerHttpError(status, err.error, err.message);
     }
-
-    const err = await res.json();
-    console.log(err);
-    throw new ServerHttpError(status, err.error, err.message);
-
+    catch(err) {
+      console.log(err);
+    }
   }
 
   static async post(url, options, data) {
