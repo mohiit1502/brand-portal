@@ -9,9 +9,11 @@ import ProgressBar from "../../custom-components/progress-bar/progress-bar";
 import {Redirect} from "react-router";
 import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
+import $ from "jquery";
+import Tooltip from "../../custom-components/tooltip/tooltip";
+import infoIcon from "../../../images/question.svg";
 
 class CompanyProfileRegistration extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -113,8 +115,34 @@ class CompanyProfileRegistration extends React.Component {
           selected: false,
           label: "I have read and agree to the Terms Of Use."
         }
+      },
+      tooltip: {
+        docContent: (
+          <div>
+            <ol className="m-0 p-0">
+              <ul className="m-0 pl-3 text-left font-size-12">
+                <li>Upload an official copy of Business Registration Certificate</li>
+                <li>Supported Documents: PDF, DOC, DOCX | Max : 2MB</li>
+              </ul>
+            </ol>
+          </div>
+        ),
+        additionalDocContent: (
+          <div>
+            <ol className="m-0 p-0">
+              <ul className="m-0 pl-3 text-left font-size-12">
+                <li>Upload IP Registration Documents or Letter of Authorization</li>
+                <li>Supported Documents: PDF, DOC, DOCX | Max : 2MB</li>
+              </ul>
+            </ol>
+          </div>
+        )
       }
     };
+  }
+
+  componentDidMount() {
+    $("[data-toggle='tooltip']").tooltip();
   }
 
   undertakingtoggle () {
@@ -124,7 +152,6 @@ class CompanyProfileRegistration extends React.Component {
       ...state
     }, this.checkToEnableSubmit);
   }
-
 
   checkToEnableSubmit () {
     const form = {...this.state.form};
@@ -303,6 +330,8 @@ class CompanyProfileRegistration extends React.Component {
     if (this.state.redirectToBrands) {
       return <Redirect to={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER} />;
     }
+
+
     return (
       <div className="row justify-content-center">
         <div className="col-lg-6 col-md-8 col-12">
@@ -401,7 +430,7 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row primary-file-upload mb-3">
                       <div className="col">
                         <div className="file-upload-title mb-2">
-                          Please provide business registration documents if you are a corporation
+                          Please provide business registration documents if you are a corporation <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
                         </div>
                         {
                           !this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
@@ -427,7 +456,7 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row additional-file-upload mb-3">
                       <div className="col">
                         <div className="file-upload-title mb-2">
-                          Additonal document (optional)
+                          Additonal document (optional) <Tooltip placement={"right"} content={this.state.tooltip.additionalDocContent} icon={infoIcon}/>
                         </div>
                         {
                           !this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&

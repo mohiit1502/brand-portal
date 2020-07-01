@@ -12,7 +12,7 @@ class UserRegistration extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
 
     this.state = {
-      loginRedirectLink: "/api/login/falcon-redirect",
+      loginRedirectLink: "/api/falcon/login",
       form: {
         id: "user-reg-form",
         inputData: {

@@ -10,7 +10,7 @@ class LoginHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loginRedirectLink: "/api/login/falcon-redirect"
+      loginRedirectLink: "/api/falcon/login"
     };
   }
 

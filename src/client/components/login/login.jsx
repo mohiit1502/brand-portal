@@ -8,7 +8,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      registerUserLink: "/register-user"
+      registerRedirectLink: "/api/falcon/register"
     };
   }
 
@@ -23,7 +23,7 @@ class Login extends React.Component {
         </div>
         <div className="row mt-5 registration-row">
           <div className="col text-center">
-            <div className="register-btn btn btn-primary no-border-radius px-4"> Register Now </div>
+            <a className="register-btn btn btn-primary no-border-radius px-4" href={this.state.registerRedirectLink}> Register Now </a>
           </div>
         </div>
       </div>

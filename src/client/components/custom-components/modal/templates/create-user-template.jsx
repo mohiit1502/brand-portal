@@ -146,13 +146,14 @@ class CreateUserTemplate extends React.Component {
   }
 
   getPopulatedBrands (brands) {
+    console.log(brands)
     if (brands.options.length) {
       if (this.props.data && this.props.data.brands) {
         brands.value = this.props.data.brands.map(brand => brand.name).join(", ");
       }
 
       brands.options = brands.options.map(brand => {
-        brand.value = brand.name;
+        brand.value = brand.name || brand.brandName;
         let selected = false;
         if (this.props.data && this.props.data.brands) {
           selected = ClientUtils.where(this.props.data.brands, {id: brand.id}) > -1;
@@ -307,8 +308,9 @@ class CreateUserTemplate extends React.Component {
     return Http.get("/api/newUser/brands")
       .then(res => {
         const form = {...this.state.form};
-        form.inputData.brands.options = res.body;
-        // form.inputData.brands.options.map(v => {v.value = v.name; v.selected = false;});
+        form.inputData.brands.options = res.body.brands;
+        form.inputData.brands.options = form.inputData.brands.options.map(v => {console.log(v.brandName); v.value = v.brandName; v.selected = false; return v;});
+        console.log(form.inputData.brands.options);
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
         this.setState({form});
       });

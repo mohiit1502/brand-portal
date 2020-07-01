@@ -4,11 +4,11 @@ import queryString from "query-string";
 
 class Falcon {
 
-  generateLoginURL(request) {
+  generateFalconRedirectURL(request, action) {
     try {
+
+      let baseUrl;
       const IAM = request.app.ccmGet("IAM");
-      const baseUrl = IAM.FALCON_LOGIN_URL;
-      const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
       const clientId = IAM.CLIENT_ID;
       const nonce = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
       const clientType = IAM.CLIENT_TYPE;
@@ -16,6 +16,14 @@ class Falcon {
       const scope = IAM.SCOPE;
       const responseType = IAM.RESPONSE_TYPE;
       const isInternal = IAM.IS_INTERNAL;
+
+      if (action.toLowerCase() === "login") {
+        baseUrl = IAM.FALCON_LOGIN_URL;
+      } else {
+        baseUrl = IAM.FALCON_REGISTER_URL;
+      }
+
+      const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
 
       return queryString.stringifyUrl({
         url: baseUrl,

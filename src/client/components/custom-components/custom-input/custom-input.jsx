@@ -169,9 +169,9 @@ class CustomInput extends React.Component {
 
         <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
           {
-            this.state.dropdownOptions.map(option => {
+            this.state.dropdownOptions.map((option, i) => {
               return (
-                <a key={option.id} className="dropdown-item">
+                <a key={option.id || i} className="dropdown-item">
                   <div className="form-check pl-0">
                     <input className="cursor-pointer" type="checkbox" autoComplete="off" value={option.value}
                       id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}

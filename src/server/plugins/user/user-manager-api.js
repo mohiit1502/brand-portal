@@ -48,7 +48,7 @@ class UserManagerApi {
     return server.route([
       {
         method: "GET",
-        path: "/api/login/falcon-redirect",
+        path: "/api/falcon/{action}",
         handler: this.redirectToFalcon
       },
       {
@@ -237,8 +237,8 @@ class UserManagerApi {
 
   async getNewUserBrands (request, h) {
     try {
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
       const url = `${BASE_URL}${ASSIGNABLE_BRANDS_PATH}`;
 
       const headers = this.getHeaders(request);
@@ -269,7 +269,6 @@ class UserManagerApi {
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_SELF_INFO_PATH = request.app.ccmGet("USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
-      return {organization: true};
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -359,7 +358,7 @@ class UserManagerApi {
 
   async redirectToFalcon (request, h) {
     try {
-      return h.redirect(falcon.generateLoginURL(request));
+      return h.redirect(falcon.generateFalconRedirectURL(request, request.params.action));
     } catch (e) {
       console.log(e);
       throw e;

@@ -6,7 +6,7 @@ export default function initTop() {
     reducer,
     initialState: {
       // login: {
-      //   loginRedirect: falcon.generateLoginURL()
+      //   loginRedirect: falcon.generateFalconRedirectURL()
       // }
     }
   };
