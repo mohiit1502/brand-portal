@@ -1,0 +1,9 @@
+@import "../../override/variables";
+
+$stepper-row-height: 106px;
+
+.content-page-onboard {
+  display: inline-block;
+  height: calc(100% - #{$nav-max-height} - #{$stepper-row-height});
+  overflow: hidden;
+}

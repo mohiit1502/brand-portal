@@ -1,0 +1,82 @@
+{
+  "name": "ro-pro",
+  "version": "0.0.1",
+  "description": "IP Dispute Portal for Brands",
+  "homepage": "",
+  "author": {
+    "name": "Shubhansh Sahai",
+    "email": "shubhansh.sahai@walmartlabs.com",
+    "url": ""
+  },
+  "contributors": [],
+  "files": [
+    "config",
+    "src",
+    "lib",
+    "dist"
+  ],
+  "main": "lib/server/index.js",
+  "keywords": [
+    "RoPro",
+    "IP Portal",
+    "Brand Portal"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gecgithub01.walmart.com/s0s075q/ro-pro"
+  },
+  "engines": {
+    "node": ">= 8",
+    "npm": ">= 5"
+  },
+  "scripts": {
+    "build": "clap build",
+    "prod-start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 clap -n -x electrode/build prod",
+    "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
+    "test": "clap check",
+    "coverage": "clap check",
+    "prod": "echo 'Starting standalone server in PROD mode'; NODE_ENV=production node ./lib/server/",
+    "heroku-postbuild": "clap build",
+    "cdn-publish": "clap cdn/publish",
+    "wml-release": "clap wml-build/release"
+  },
+  "dependencies": {
+    "@loadable/component": "^5.7.0",
+    "@loadable/server": "^5.9.0",
+    "@walmart/electrode-ccm-client": "^3.1.0",
+    "@walmart/electrode-quimby-client": "^2.0.2",
+    "@walmart/electrode-ui-config": "^3.7.0",
+    "@walmart/electrode-wml-app": "^3.3.2",
+    "bluebird": "^2.11.0",
+    "bootstrap": "4.4.1",
+    "electrode-archetype-react-app": "^6.3.1",
+    "electrode-cookies": "^1.0.0",
+    "form-data": "^3.0.0",
+    "generator-electrode": "^6.0.2",
+    "good": "^8.1.1",
+    "good-console": "^7.1.0",
+    "hapi": "^17.0.0",
+    "inert": "^5.1.2",
+    "jquery": "^3.4.1",
+    "milligram": "^1.3.0",
+    "node-fetch": "^2.6.0",
+    "node-jose": "^1.1.4",
+    "popper.js": "^1.16.1",
+    "query-string": "^6.11.1",
+    "react-notify-toast": "^0.5.0",
+    "react-router": "^5.1.2",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-table": "^7.0.4",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@loadable/babel-plugin": "^5.10.0",
+    "@loadable/webpack-plugin": "^5.7.1",
+    "@walmart/electrode-build-utils": "^1.1.0",
+    "electrode-archetype-react-app-dev": "^6.3.1",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "node-sass": "4.5.3"
+  },
+  "private": true
+}

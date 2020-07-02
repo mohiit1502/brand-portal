@@ -1,0 +1,17 @@
+@import "../../override/variables";
+
+$item-color : #2B3339;
+.custom-dropdown {
+  .dropdown-toggle-btn {
+    padding: 5px;
+  }
+
+  .dropdown-menu {
+    .dropdown-item {
+      &:active, &:focus {
+        background: transparent;
+        color : $item-color;
+      }
+    }
+  }
+}

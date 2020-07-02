@@ -1,0 +1,42 @@
+@import "../../override/variables";
+
+$stepper-row-height: 106px;
+
+.stepper-row {
+
+  height: $stepper-row-height;
+
+  .stepper-col {
+    .step-box {
+      display: inline-block;
+      margin-right: 49px;
+      width: 200px;
+
+      .bg-stepper-gray {
+        background: #C8C8C8;
+      }
+
+      .step-title {
+        font-size: 14px;
+        font-family: MyriadPro-Regular, sans-serif;
+      }
+
+      .stepper-circle {
+        position: relative;
+        top: 15px;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        margin: auto;
+      }
+
+      .connect-bar {
+        width: 235px;
+        height: 5px;
+        margin-left: -142px;
+        margin-top: 5px;
+      }
+    }
+  }
+}
+

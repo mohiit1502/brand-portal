@@ -1,0 +1,26 @@
+@import "../../override/variables";
+
+.toast {
+
+}
+
+.custom-toast {
+  position: absolute;
+  top: 70px;
+  right: 15px;
+  max-width: 650px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
+
+  &.custom-toast-success {
+    background: #E8F5E5;
+  }
+
+  &.custom-toast-error {
+
+  }
+
+  .toast-body {
+    font-family: MyriadPro-Regular, sans-serif;
+    font-size: 14px;
+  }
+}

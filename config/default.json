@@ -1,0 +1,117 @@
+{
+  "APP_CONFIG" : {
+    "IAM": {
+      "IdTokenEncryptionKey": "{\"kty\":\"oct\",\"use\":\"enc\",\"kid\":\"9a7392d7-dfdc-4af9-b829-bcdd1b3e1aad\",\"k\":\"5hKE_Lgai-24Y5c4bU-60aRGmZ-7cGJxlBuCtCvZGmM\"}",
+      "IAM_TOKEN_URL": "https://idp.stg.sso.platform.prod.walmart.com/platform-sso-server/token",
+      "FALCON_LOGIN_URL": "https://retaillink.login.stg.wal-mart.com/authorize",
+      "BASE_URL": "http://localhost:3000",
+      "REDIRECT_PATH" : "/login-redirect",
+      "CLIENT_ID" : "a0e15a47-ce50-4416-9514-0641afab1fc2",
+      "CLIENT_SECRET" : "LT_TOzrO7TI2mKS_NFdqtqOco-rZ_L_WgrdRjdA8j3T7Q5gTOddC_pK81VVVD9ypvSysiDe7bugSvuMB9nN4Ig",
+      "NONCE_STRING_LENGTH" : 8,
+      "CLIENT_TYPE" : "supplier",
+      "SCOPE" : "openId",
+      "RESPONSE_TYPE" : "code",
+      "IS_INTERNAL" : true,
+      "GRANT_TYPE" : "authorization_code",
+      "ENCODING" : "base64"
+    }
+  },
+
+  "services": {
+    "consumerId": "91e1b78e-261b-4676-8317-4cf5bfa24a42",
+    "privateKey": {
+      "file": "config/private-key-qa.pem",
+      "version": 2,
+      "algorithm": "RSA",
+      "encoding": "PKCS#8"
+    },
+    "providers": {
+      "@walmart/electrode-ccm-client": {
+        "options": {
+          "environment": "dev"
+        }
+      },
+      "@walmart/electrode-quimby-client": {}
+    }
+  },
+  "ccm": {
+    "autoLoad": true,
+    "uiFilter": {
+      "$.ui": [ ".*"]
+    },
+    "keys":{
+      "root": {
+        "profiles": {
+          "default": {
+            "environment": "dev"
+          }
+        },
+        "data": {
+          "ui": {
+            "serviceName": "ro-pro",
+            "+configNames": ["ui"]
+          },
+          "IAM": {
+            "serviceName": "ro-pro",
+            "+configNames": ["IAM"]
+          },
+          "USER_CONFIG": {
+            "serviceName": "ro-pro",
+            "+configNames": ["USER_CONFIG"]
+          },
+          "BRAND_CONFIG": {
+            "serviceName": "ro-pro",
+            "+configNames": ["BRAND_CONFIG"]
+          },
+          "CLAIM_CONFIG": {
+            "serviceName": "ro-pro",
+            "+configNames": ["CLAIM_CONFIG"]
+          }
+        }
+      }
+    }
+  },
+  "plugins": {
+    "inert": {
+      "enable": true
+    },
+    "electrodeStaticPaths": {
+      "enable": true,
+      "options": {
+        "pathPrefix": "dist"
+      }
+    },
+    "user-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/user/user-manager-api"
+    },
+    "company-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/company/company-manager-api"
+    },
+    "brand-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/brand/brand-manager-api"
+    },
+    "claim-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/claim/claim-manager-api"
+    },
+    "webapp": {
+      "module": "@walmart/electrode-index-page",
+      "options": {
+        "pageTitle": "Ro Pro",
+        "paths": {
+          "/{args*}": {
+            "content": {
+              "module": "./{{env.APP_SRC_DIR}}/server/views/index-view"
+            }
+          }
+        },
+        "serverSideRendering": false,
+
+        "cdn": {
+          "enabled": false,
+          "mapping": "config/assets.json"
+        }
+      }
+    }
+  }
+}
