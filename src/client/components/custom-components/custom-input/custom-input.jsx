@@ -18,6 +18,7 @@ class CustomInput extends React.Component {
     this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
     this.setMultiSelectValueFromDropdownOptions = this.setMultiSelectValueFromDropdownOptions.bind(this);
     this.getSubtitleAndError = this.getSubtitleAndError.bind(this);
+    this.onBlur = this.onBlur.bind(this);
 
     this.state = {
       label: this.props.label,
@@ -88,6 +89,16 @@ class CustomInput extends React.Component {
     return false;
   }
 
+  onBlur (evt) {
+    if (this.props.pattern && !this.props.pattern.test(evt.target.value)) {
+      this.setState({error: this.props.patternErrorMessage});
+    } else {
+      this.setState({error: ""});
+    }
+    if(this.props.onBlurEvent) {
+      this.props.onBlurEvent(evt);
+    }
+  }
 
   getSelectInput() {
 
@@ -237,7 +248,7 @@ class CustomInput extends React.Component {
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
-          onChange={ e => { this.onInputChange(e, this.state.inputId); } } onBlur={this.props.onBlurEvent}/>
+          onChange={ e => { this.onInputChange(e, this.state.inputId); } } onBlur={this.onBlur}/>
 
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
@@ -290,7 +301,7 @@ CustomInput.propTypes = {
   type: PropTypes.string,
   required: PropTypes.bool,
   value: PropTypes.string,
-  pattern: PropTypes.string,
+  pattern: PropTypes.object,
   disabled: PropTypes.bool,
   onChangeEvent: PropTypes.func,
   onBlurEvent: PropTypes.func,
@@ -298,7 +309,8 @@ CustomInput.propTypes = {
   dropdownOptions: PropTypes.array,
   subtitle: PropTypes.string,
   error: PropTypes.string,
-  rowCount: PropTypes.number
+  rowCount: PropTypes.number,
+  patternErrorMessage: PropTypes.string
 };
 
 const mapStateToProps = state => state;
