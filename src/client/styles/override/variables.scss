@@ -1,0 +1,26 @@
+/* This is an override file to customize the application theme.
+** The variables defined below will define the values throughout the application.
+*/
+
+/*
+** Color variables below;
+*/
+$navy-blue : #061E42;
+$blue : #007DC6;
+$left-nav-width : 230px;
+$nav-max-height : 61px;
+$theme-colors: (
+  "navy-blue" : $navy-blue,
+  "blue" : $blue
+);
+
+/*
+** Other Variables Below
+*/
+
+
+
+
+
+
+@import "../../../../node_modules/bootstrap/scss/bootstrap";

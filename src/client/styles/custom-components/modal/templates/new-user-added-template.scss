@@ -1,0 +1,17 @@
+@import "../../../override/variables";
+
+.modal {
+  .modal-dialog {
+    .modal-content {
+      .modal-body {
+        .status-header {
+          font-size: 24px;
+        }
+
+        .status-description {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
