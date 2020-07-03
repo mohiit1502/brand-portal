@@ -81,7 +81,8 @@ class CompanyProfileRegistration extends React.Component {
             required: true,
             value: "",
             type: "text",
-            pattern: null,
+            pattern: /^[0-9]{5}$/,
+            patternErrorMessage: "Invalid Zip Code",
             disabled: true,
             subtitle: "",
             error: ""
@@ -198,7 +199,6 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.state.disabled = false;
       form.inputData.zip.disabled = false;
       this.setState({form});
-      console.log(response);
     } catch (err) {
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = false;
@@ -355,7 +355,7 @@ class CompanyProfileRegistration extends React.Component {
           </div>
           <div className="row company-reg-form-row">
             <div className="col">
-              <form>
+              <form onSubmit={this.gotoBrandRegistration}>
                 <div className="form-row">
                   <div className="col-10">
                     <CustomInput key={"companyName"}
@@ -414,7 +414,7 @@ class CompanyProfileRegistration extends React.Component {
                           formId={this.state.form.id} label={this.state.form.inputData.zip.label}
                           required={this.state.form.inputData.zip.required} value={this.state.form.inputData.zip.value}
                           type={this.state.form.inputData.zip.type} pattern={this.state.form.inputData.zip.pattern}
-                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.zip.disabled}
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.zip.disabled} patternErrorMessage={this.state.form.inputData.zip.patternErrorMessage}
                           error={this.state.form.inputData.zip.error} subtitle={this.state.form.inputData.zip.subtitle}/>
                       </div>
                       <div className="col">
@@ -482,8 +482,7 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row mt-3">
                       <div className="col text-right">
                         <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetCompanyRegistration}>Cancel</div>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled}
-                          onClick={this.gotoBrandRegistration}> Next </button>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled} > Next </button>
                       </div>
                     </div>
                   </React.Fragment> ||
