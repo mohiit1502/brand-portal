@@ -53,8 +53,8 @@ const UserListTable = function(props) {
                             Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
                           }
                           {
-                            cell.column.id === "username" && cell.row.original.original.properties.companyName &&
-                            <span className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.original.properties.companyName}</span>
+                            cell.column.id === "username" && cell.row.original.original.companyName &&
+                            <span className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.original.companyName}</span>
                           }
                           {
                             cell.column.id === "status" && (cell.row.values.role === undefined || cell.row.values.role.toLowerCase() !== "super admin") &&
