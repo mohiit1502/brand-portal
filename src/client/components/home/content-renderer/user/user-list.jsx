@@ -130,15 +130,15 @@ class UserList extends React.Component {
 
   async fetchUserData () {
     let userList = (await Http.get("/api/users")).body;
-
-    userList = userList.records.map((user, i) => {
+    console.log(userList);
+    userList = userList.content.map((user, i) => {
       const newUser = {
-        id: user.id,
-        loginId: user.loginId,
+        id: user.email,
+        loginId: user.email,
         username: `${user.firstName} ${user.lastName}`,
         sequence: i + 1,
         brands: user.brands.map(brand => brand.name),
-        status: user.enabled ? "Active" : "Inactive",
+        status: user.status,
         original: user
       };
 
@@ -146,8 +146,8 @@ class UserList extends React.Component {
         newUser.role = user.role.name;
       }
 
-      if (user.properties && user.properties.isThirdParty) {
-        newUser.company = user.properties.companyName;
+      if (user.type.toLowerCase() === "thirdparty") {
+        newUser.company = user.companyName;
       }
       return newUser;
     });

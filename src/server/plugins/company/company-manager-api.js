@@ -1,5 +1,6 @@
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
+import ServerUtils from "../../utility/server-utils";
 
 class CompanyManagerApi {
   constructor() {
@@ -82,9 +83,10 @@ class CompanyManagerApi {
 
   async checkTrademarkValidity (request, h) {
     try {
+      const headers = ServerUtils.getHeaders(request);
+
       const options = {
-        ROPRO_CORRELATION_ID: "sdfsdf",
-        ROPRO_CLIENT_ID: "dsfasdf"
+        headers
       };
 
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
@@ -102,7 +104,11 @@ class CompanyManagerApi {
   async uploadAdditionalDocument (request, h) {
     try {
 
-      const options = {};
+      const headers = ServerUtils.getHeaders(request);
+
+      const options = {
+        headers
+      };
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const buffer = await file.read();
@@ -123,7 +129,11 @@ class CompanyManagerApi {
   async uploadBusinessDocument (request, h) {
     try {
 
-      const options = {};
+      const headers = ServerUtils.getHeaders(request);
+
+      const options = {
+        headers
+      };
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const buffer = await file.read();
@@ -143,10 +153,13 @@ class CompanyManagerApi {
   async checkCompanyNameAvailabililty (request, h) {
     try {
       const name = request.query.name;
+
+      const headers = ServerUtils.getHeaders(request);
+
       const options = {
-        ROPRO_CORRELATION_ID: "sdfsdf",
-        ROPRO_CLIENT_ID: "dsfasdf"
+        headers
       };
+
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const COMPANY_NAME_UNIQUENESS_PATH = request.app.ccmGet("BRAND_CONFIG.COMPANY_NAME_UNIQUENESS_PATH");
       const url = `${BASE_URL}${COMPANY_NAME_UNIQUENESS_PATH}`;

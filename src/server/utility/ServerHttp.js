@@ -56,7 +56,6 @@ export default class ServerHttp {
   }
 
   static async postAsFormData(url, options, data) {
-    options.headers = {};
     const response = await fetch(url, {
       method: "POST",
       body: data,

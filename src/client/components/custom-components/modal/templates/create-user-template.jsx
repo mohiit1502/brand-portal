@@ -146,7 +146,7 @@ class CreateUserTemplate extends React.Component {
   }
 
   getPopulatedBrands (brands) {
-    console.log(brands)
+    console.log(brands);
     if (brands.options.length) {
       if (this.props.data && this.props.data.brands) {
         brands.value = this.props.data.brands.map(brand => brand.name).join(", ");
@@ -241,27 +241,30 @@ class CreateUserTemplate extends React.Component {
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
     const firstName = this.state.form.inputData.firstName.value;
     const lastName = this.state.form.inputData.lastName.value;
+    console.log(this.state.form.inputData.role.options)
+    const selectedRole = this.state.form.inputData.role.options[ClientUtils.where(this.state.form.inputData.role.options, {value: this.state.form.inputData.role.value})];
     const role = {
-      id: this.state.form.inputData.role.options[ClientUtils.where(this.state.form.inputData.role.options, {value: this.state.form.inputData.role.value})].id
+      id: selectedRole.id,
+      name: selectedRole.name
     };
+
+    // TODO: third party values
 
     const payload = {
       user: {
-        loginId,
+        email: loginId,
         firstName,
         lastName,
         brands,
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        properties: {
-          isThirdPary: isThirdParty
-        }
+        type: isThirdParty ? "ThirdParty" : "Internal"
       }
     };
 
     if (isThirdParty) {
-      payload.user.properties.companyName = this.state.form.inputData.companyName.value;
+      payload.companyName = this.state.form.inputData.companyName.value;
     }
 
     const url = "/api/users";
@@ -308,7 +311,7 @@ class CreateUserTemplate extends React.Component {
     return Http.get("/api/newUser/brands")
       .then(res => {
         const form = {...this.state.form};
-        form.inputData.brands.options = res.body.brands;
+        form.inputData.brands.options = res.body;
         form.inputData.brands.options = form.inputData.brands.options.map(v => {console.log(v.brandName); v.value = v.brandName; v.selected = false; return v;});
         console.log(form.inputData.brands.options);
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);

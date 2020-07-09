@@ -126,7 +126,7 @@ class UserManagerApi {
   async updateUser (request, h) {
     try {
       const payload = request.payload.user;
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
@@ -143,7 +143,7 @@ class UserManagerApi {
 
   async getUsers(request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         method: "GET",
         headers
@@ -163,7 +163,7 @@ class UserManagerApi {
   async createUser(request, h) {
     try {
       const payload = request.payload;
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
@@ -181,7 +181,7 @@ class UserManagerApi {
 
   async updateUserStatus (request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
@@ -200,7 +200,7 @@ class UserManagerApi {
   async deleteUser (request, h) {
     try {
 
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         method: "DELETE",
         headers: { ...headers, "Content-Type": "text/plain" }
@@ -222,7 +222,7 @@ class UserManagerApi {
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const ROLE_PATH = request.app.ccmGet("USER_CONFIG.ROLE_PATH");
       const url = `${BASE_URL}${ROLE_PATH}`;
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
 
       const options = {
         headers
@@ -237,11 +237,11 @@ class UserManagerApi {
 
   async getNewUserBrands (request, h) {
     try {
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
       const url = `${BASE_URL}${ASSIGNABLE_BRANDS_PATH}`;
 
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
 
       const options = {
         headers
@@ -258,11 +258,8 @@ class UserManagerApi {
   async getUserInfo (request, h) {
 
     try {
-      const headers = {
-        ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-        ROPRO_USER_ID:	request.state.session_token_login_id,
-        ROPRO_CLIENT_ID:	"abcd"
-      };
+      const headers = ServerUtils.getHeaders(request);
+
       const options = {
         headers
       };
@@ -316,7 +313,7 @@ class UserManagerApi {
       // eslint-disable-next-line camelcase
       const {id_token} = await this.getAccessToken(request, query.code);
       const user = await ServerUtils.decryptToken(id_token);
-      const loginId = user.loginid;
+      const loginId = user.loginId;
       const authToken = user["iam-token"];
 
       //temporary login below
