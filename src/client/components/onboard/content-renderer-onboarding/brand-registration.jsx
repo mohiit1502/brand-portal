@@ -7,6 +7,8 @@ import CONSTANTS from "../../../constants/constants";
 import Http from "../../../utility/Http";
 import PropTypes from "prop-types";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
+import {updateUserProfile} from "../../../actions/user/user-actions";
+import StorageSrvc, {STORAGE_TYPES} from "../../../utility/StorageSrvc";
 
 class BrandRegistration extends React.Component {
 
@@ -17,6 +19,7 @@ class BrandRegistration extends React.Component {
     this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
+    this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
 
 
     this.state = {
@@ -103,13 +106,23 @@ class BrandRegistration extends React.Component {
     this.setState({redirectToCompanyReg: true});
   }
 
+  async updateProfileInfo () {
+    try {
+      const profile = (await Http.get("/api/userInfo")).body;
+      this.storageSrvc.setJSONItem("userProfile", profile);
+      this.props.updateUserProfile(profile);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   async submitOnboardingForm(evt) {
     evt.preventDefault();
     try {
       const brand = {
         trademarkNumber: this.state.form.inputData.trademarkNumber.value,
         name: this.state.form.inputData.brandName.value,
-        comments: "<Comments>"
+        comments: ""
       };
       if (this.state.form.inputData.comments.value) {
         brand.comments = this.state.form.inputData.comments.value;
@@ -120,9 +133,10 @@ class BrandRegistration extends React.Component {
       };
 
       const response = (await Http.post("/api/org/register", data)).body;
+
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      console.log(response);
+      this.updateProfileInfo();
     } catch (err) {
       console.log(err);
     }
@@ -248,16 +262,22 @@ class BrandRegistration extends React.Component {
 
 BrandRegistration.propTypes = {
   toggleModal: PropTypes.func,
+  updateUserProfile: PropTypes.func,
   org: PropTypes.PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
   ])
 };
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  return {
+    userProfile: state.userProfile
+  };
+};
 
 const mapDispatchToProps = {
-  toggleModal
+  toggleModal,
+  updateUserProfile
 };
 
 export  default  connect(mapStateToProps, mapDispatchToProps)(BrandRegistration);

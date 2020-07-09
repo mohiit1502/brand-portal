@@ -5,17 +5,17 @@ import CheckGreenIcon from "../../../../images/check-grn.svg";
 import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import {Redirect} from "react-router";
-import CONSTANTS from "../../../../constants/constants";
-import {Link} from "react-router-dom";
 
-class CompanyBrandRegisteredTemplate extends React.Component {
+class CompanyVerificationPendingTemplate extends React.Component {
 
   constructor (props) {
     super(props);
   }
 
   render() {
+    const baseUrl = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === "development" ? "http://localhost:3000" : "http://electrode-nodejs.dev.ro-pro.catdev.qa.walmart.com";
+    const logoutUrl = `https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=${baseUrl}/logout`;
+
     return (
       <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -29,20 +29,21 @@ class CompanyBrandRegisteredTemplate extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   <span className="status-header">
-                    Thank you for sharing your company and brand details
+                    Account verification in process
                   </span>
                 </div>
               </div>
               <div className="row mt-3">
                 <div className="col">
                   <span className="status-description">
-                    Your company and brand details are currently being verified. Once complete, you will receive a confirmation on your registred email ID. Please login using shared link.
+                    Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.
                   </span>
                 </div>
               </div>
               <div className="row mt-5">
                 <div className="col">
-                  <div className="btn btn-sm btn-outline-primary px-5" onClick={() => {return window.location.reload();}}>Okay</div>
+                  {/*<div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>*/}
+                  <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Okay</a>
                 </div>
               </div>
             </div>
@@ -54,7 +55,7 @@ class CompanyBrandRegisteredTemplate extends React.Component {
 }
 
 
-CompanyBrandRegisteredTemplate.propTypes = {
+CompanyVerificationPendingTemplate.propTypes = {
   toggleModal: PropTypes.func,
   modal: PropTypes.object
 };
@@ -67,4 +68,4 @@ const mapDispatchToProps = {
   toggleModal
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CompanyBrandRegisteredTemplate);
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyVerificationPendingTemplate);

@@ -7,6 +7,15 @@ class ServerUtils {
 
   }
 
+  getHeaders(request) {
+    return {
+      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
+      ROPRO_USER_ID:	request.state.session_token_login_id,
+      ROPRO_CLIENT_ID:	"temp-client-id",
+      ROPRO_CORRELATION_ID: this.randomStringGenerator(16)
+    };
+  }
+
   randomStringGenerator(len) {
     const random = [];
     const CharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
