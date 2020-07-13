@@ -189,7 +189,7 @@ class NewClaimTemplate extends React.Component {
     return Http.get("/api/brands")
       .then(res => {
         const form = {...this.state.form};
-        form.inputData.brandName.options = res.body.brands;
+        form.inputData.brandName.options = res.body.content;
         form.inputData.brandName.options = form.inputData.brandName.options.map(v => ({id: v.brandId, value: v.brandName}));
         this.setState({form});
       });

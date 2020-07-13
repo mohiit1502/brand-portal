@@ -54,7 +54,7 @@ class UserProfile extends React.Component {
           emailId: {
             label: "Email ID",
             required: true,
-            value: this.props.userProfile.loginId,
+            value: this.props.userProfile.email,
             type: "email",
             pattern: null,
             disabled: true
@@ -91,7 +91,7 @@ class UserProfile extends React.Component {
     form.inputData.firstName.disabled = true;
     form.inputData.lastName.value = obj.lastName;
     form.inputData.lastName.disabled = true;
-    form.inputData.companyName.value = obj.properties.companyName;
+    form.inputData.companyName.value = obj.type === "ThirdParty" ? obj.companyName : "";
     form.inputData.companyName.disabled = true;
     form.inputData.emailId.value = obj.loginId;
     form.inputData.emailId.disabled = true;
@@ -167,6 +167,7 @@ class UserProfile extends React.Component {
     return Http.put(`${url}/${payload.user.loginId}`, payload)
       .then(async res => {
         this.props.updateUserProfile(res.body);
+        // TODO check requirement of below
         this.storageSrvc.setJSONItem("userProfile", res.body);
         this.disableInput(true);
       });

@@ -81,7 +81,7 @@ class CompanyProfileRegistration extends React.Component {
             required: true,
             value: "",
             type: "text",
-            pattern: null,
+            pattern: "[0-9]{5}",
             patternErrorMessage: "Invalid Zip Code",
             disabled: true,
             subtitle: "",

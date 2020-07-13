@@ -14,6 +14,7 @@ import PaginationNav from "../../../custom-components/pagination/pagination-nav"
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
+import CONSTANTS from "../../../../constants/constants";
 
 class BrandList extends React.Component {
 
@@ -57,9 +58,9 @@ class BrandList extends React.Component {
             id: 2,
             value: "Suspend Brand",
             clickCallback: (evt, option, data) => {
-              const payload = {
-                status: "Suspend"
-              };
+              const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
+                                      ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
+              const payload = {status: outgoingStatus};
               const response = Http.put(`/api/brands/${data.brandId}`, payload);
               response.then(res => {
                 this.fetchBrands();
@@ -135,8 +136,8 @@ class BrandList extends React.Component {
 
     let brandList = [];
 
-    if (response.brands && response.brands.length) {
-      brandList = response.brands.map((brand, i) => {
+    if (response.content && response.content.length) {
+      brandList = response.content.map((brand, i) => {
         const newBrand = { ...brand, sequence: i + 1 };
         newBrand.original = brand;
         return newBrand;
