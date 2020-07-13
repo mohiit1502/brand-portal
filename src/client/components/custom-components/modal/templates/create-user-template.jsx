@@ -7,6 +7,7 @@ import "../../../../styles/custom-components/modal/templates/create-user-templat
 import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
+import CONSTANTS from "../../../../constants/constants";
 
 
 class CreateUserTemplate extends React.Component {
@@ -78,7 +79,21 @@ class CreateUserTemplate extends React.Component {
             value: "",
             type: "email",
             pattern: null,
-            disabled: false
+            disabled: false,
+            error: "",
+            onBlurEvent: e => {
+              Http.get('/api/users/checkUnique', {email: e.target.value}).then(res => {
+                if (!res.body.unique) {
+                  this.setState(state => {
+                    state = {...state};
+                    state.form.inputData.emailId.error = "Email is not Unique";
+                    return {
+                      ...state
+                    };
+                  });
+                }
+              });
+            }
           },
           phone: {
             label: "Mobile Number",
@@ -132,10 +147,11 @@ class CreateUserTemplate extends React.Component {
   prepopulateInputFields (data) {
     const form = {...this.state.form};
     form.inputData.firstName.value = data.firstName;
-    form.inputData.companyName.value = data.properties.isThirdPary ? data.properties.companyName : "";
-    form.inputData.userType.value = data.properties.isThirdPary ? "3rd Party" : "Internal";
+    // form.inputData.companyName.value = data.properties.isThirdPary ? data.properties.companyName : "";
+    form.inputData.companyName.value = data.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? data.companyName : "";
+    form.inputData.userType.value = data.type;
     form.inputData.lastName.value = data.lastName;
-    form.inputData.emailId.value = data.loginId;
+    form.inputData.emailId.value = data.email;
     form.inputData.emailId.disabled = true;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
@@ -259,18 +275,18 @@ class CreateUserTemplate extends React.Component {
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        type: isThirdParty ? "ThirdParty" : "Internal"
+        type: isThirdParty ? "ThirdParty" : "Internal",
       }
     };
 
     if (isThirdParty) {
-      payload.companyName = this.state.form.inputData.companyName.value;
+      payload.user.companyName = this.state.form.inputData.companyName.value;
     }
 
     const url = "/api/users";
 
     if (this.state.form.isUpdateTemplate) {
-      return Http.put(`${url}/${payload.user.loginId}`, payload)
+      return Http.put(`${url}/${payload.user.email}`, payload)
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -311,7 +327,7 @@ class CreateUserTemplate extends React.Component {
     return Http.get("/api/newUser/brands")
       .then(res => {
         const form = {...this.state.form};
-        form.inputData.brands.options = res.body;
+        form.inputData.brands.options = res.body.brands;
         form.inputData.brands.options = form.inputData.brands.options.map(v => {console.log(v.brandName); v.value = v.brandName; v.selected = false; return v;});
         console.log(form.inputData.brands.options);
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
@@ -388,6 +404,7 @@ class CreateUserTemplate extends React.Component {
                       formId={this.state.form.id} label={this.state.form.inputData.emailId.label}
                       required={this.state.form.inputData.emailId.required} value={this.state.form.inputData.emailId.value}
                       type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern}
+                      onBlurEvent={this.state.form.inputData.emailId.onBlurEvent} error={this.state.form.inputData.emailId.error}
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled} />
                   </div>
                   <div className="col-4">

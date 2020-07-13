@@ -13,6 +13,7 @@ import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
+import CONSTANTS from "../../../../constants/constants";
 
 class UserList extends React.Component {
 
@@ -47,16 +48,18 @@ class UserList extends React.Component {
         dropdownOptions: [
           {
             id: 1,
-            value: "Edit User Profile",
+            value: CONSTANTS.USER.OPTIONS.DISPLAY.EDIT,
             clickCallback: (evt, option, data) => {
               this.editUser(data.original);
             }
           },
           {
             id: 2,
-            value: "Suspend User Profile",
+            value: CONSTANTS.USER.OPTIONS.DISPLAY.SUSPEND,
             clickCallback: (evt, option, data) => {
-              const response = Http.put(`/api/users/${data.loginId}/status/SUSPEND`);
+              const outgoingStatus = data.status && data.status === CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND
+                                      ? CONSTANTS.USER.OPTIONS.PAYLOAD.ACTIVE : CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND;
+              const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`);
               response.then(res => {
                 this.fetchUserData();
               });
@@ -64,7 +67,7 @@ class UserList extends React.Component {
           },
           {
             id: 3,
-            value: "Delete User Profile",
+            value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
             clickCallback: (evt, option, data) => {
               const response = Http.delete(`/api/users/${data.loginId}`);
               response.then(res => {
@@ -74,7 +77,7 @@ class UserList extends React.Component {
           },
           {
             id: 4,
-            value: "Resend Invite",
+            value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
             clickCallback (evt) {
               console.log(4);
             }

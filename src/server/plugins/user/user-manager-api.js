@@ -17,6 +17,7 @@ class UserManagerApi {
     this.getNewUserBrands = this.getNewUserBrands.bind(this);
     this.createUser = this.createUser.bind(this);
     this.getUsers = this.getUsers.bind(this);
+    this.checkUnique = this.checkUnique.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
     this.updateUserStatus = this.updateUserStatus.bind(this);
     this.updateUser = this.updateUser.bind(this);
@@ -70,6 +71,11 @@ class UserManagerApi {
         method: "GET",
         path: "/api/users",
         handler: this.getUsers
+      },
+      {
+        method: "GET",
+        path: "/api/users/checkUnique",
+        handler: this.checkUnique
       },
       {
         method: "POST",
@@ -132,7 +138,7 @@ class UserManagerApi {
       };
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
-      const url = `${BASE_URL}${USER_PATH}/${payload.loginId}`;
+      const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
       const response = await ServerHttp.put(url, options, payload);
       return h.response(response.body).code(response.status);
@@ -151,6 +157,25 @@ class UserManagerApi {
 
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}`;
+
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async checkUnique(request, h) {
+    try {
+      // const payload = request.payload;
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
       const response = await ServerHttp.get(url, options);

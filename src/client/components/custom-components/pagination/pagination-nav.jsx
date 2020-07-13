@@ -72,7 +72,7 @@ class PaginationNav extends React.Component {
         <nav>
           <ul className="pagination pagination-sm justify-content-center align-items-center m-0">
             <li className="page-item"
-                onClick={() => {this.updatePage(this.state.list, this.state.page.offset - 1, this.state.page.size);}}>
+              onClick={() => {this.updatePage(this.state.list, this.state.page.offset - 1, this.state.page.size);}}>
               <a className="page-link" href="#" aria-label="Previous">
                 <span aria-hidden="true"> &lt; </span>
               </a>

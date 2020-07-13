@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-expressions */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
+import { data } from "jquery";
+import CONSTANTS from "../../../../constants/constants";
 
 
 const BrandListTable = function(props) {
@@ -10,6 +13,34 @@ const BrandListTable = function(props) {
   const { Dropdown, dropdownOptions } = templateProps;
   const classColMap = {
     sequence: "col-1"
+  };
+
+  const updateDDOptions = (index, values, ddOptions) => {
+    const statusPending = CONSTANTS.BRAND.STATUS.PENDING.toLowerCase();
+    const statusVerified = CONSTANTS.BRAND.STATUS.VERIFIED.toLowerCase();
+    const statusSuspended = CONSTANTS.BRAND.STATUS.SUSPENDED.toLowerCase();
+    if (index !== -1) {
+      const toggleStatusDropdown = ddOptions[index];
+      const incoming = values.brandStatus ? values.brandStatus.toLowerCase() : "";
+      const toggleStatusDropdownCloned = {...toggleStatusDropdown};
+      ddOptions[index] = toggleStatusDropdownCloned;
+      (incoming === statusVerified || incoming === statusPending) && (toggleStatusDropdownCloned.value = CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND);
+      incoming === statusSuspended && (toggleStatusDropdownCloned.value = CONSTANTS.BRAND.OPTIONS.DISPLAY.REACTIVATE);
+    }
+  };
+
+  const generateDropDownOptionsDynamic = (options, values) => {
+    const optionsCloned = {...options};
+    const dropDownOptionsCloned = [...optionsCloned.dropdownOptions];
+    optionsCloned.dropdownOptions = dropDownOptionsCloned;
+    const displaySuspended = CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND.toLowerCase();
+    const displayReactivate = CONSTANTS.BRAND.OPTIONS.DISPLAY.REACTIVATE.toLowerCase();
+    const toggleStatusDropdownIndex = dropDownOptionsCloned.findIndex(dropDownOption => {
+      const currentDDOption = dropDownOption.value.toLowerCase();
+      return currentDDOption === displaySuspended || currentDDOption === displayReactivate;
+    });
+    updateDDOptions(toggleStatusDropdownIndex, values, dropDownOptionsCloned);
+    return optionsCloned;
   };
 
   return (
@@ -40,6 +71,9 @@ const BrandListTable = function(props) {
           {
             rows.map(row => {
               prepareRow(row);
+              const status = row && row.original && row.original.brandStatus;
+              const negativeStatuses = [CONSTANTS.BRAND.STATUS.REJECTED.toLowerCase(), CONSTANTS.BRAND.STATUS.PENDING.toLowerCase()];
+              const {values} = row;
               return (
                 <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
                   {
@@ -51,7 +85,14 @@ const BrandListTable = function(props) {
                           }
                           {
                             cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
-                            <span className="float-right">&nbsp;&nbsp;<Dropdown options={dropdownOptions} data={row.original}/>&nbsp;&nbsp;</span>
+                            <span className="float-right">
+                              &nbsp;&nbsp;
+                              <Dropdown
+                                options={generateDropDownOptionsDynamic(dropdownOptions, values)}
+                                data={row.original}
+                                hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
+                              &nbsp;&nbsp;
+                            </span>
                           }
                         </div>
                       );

@@ -96,3 +96,7 @@ img {
 .dynamic-demo-fallback {
   align-self: center;
 }
+
+.hide {
+  display: none;
+}
