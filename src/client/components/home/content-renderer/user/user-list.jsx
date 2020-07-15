@@ -65,16 +65,17 @@ class UserList extends React.Component {
               });
             }
           },
-          {
-            id: 3,
-            value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
-            clickCallback: (evt, option, data) => {
-              const response = Http.delete(`/api/users/${data.loginId}`);
-              response.then(res => {
-                this.fetchUserData();
-              });
-            }
-          },
+          // TODO comment for MVP, uncomment for sprint 3
+          // {
+          //   id: 3,
+          //   value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
+          //   clickCallback: (evt, option, data) => {
+          //     const response = Http.delete(`/api/users/${data.loginId}`);
+          //     response.then(res => {
+          //       this.fetchUserData();
+          //     });
+          //   }
+          // },
           {
             id: 4,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
@@ -335,9 +336,9 @@ class UserList extends React.Component {
       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
       const total = this.state.userList.length;
       if (this.state.userList.length && to >= from) {
-        return `Viewing ${from} - ${to} of ${total} Users`;
+        return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.USER.SECTION_TITLE_PLURAL}`;
       } else if (this.state.userList.length && to <= from) {
-        return `Viewing 0 of ${total} Users`;
+        return `Viewing 0 of ${total} ${CONSTANTS.USER.SECTION_TITLE_PLURAL}`;
       }
       return "";
     };
@@ -449,7 +450,7 @@ class UserList extends React.Component {
                       {
                         !!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
-                          Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
+                          Show {this.state.page.size} {CONSTANTS.USER.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>
                       }
 
@@ -457,7 +458,7 @@ class UserList extends React.Component {
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
-                              onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
+                              onClick={() => {this.changePageSize(val);}}> Show {val} {CONSTANTS.USER.SECTION_TITLE_PLURAL} </a>);
                           })
                         }
                       </div>

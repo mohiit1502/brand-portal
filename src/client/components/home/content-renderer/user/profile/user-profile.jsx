@@ -6,6 +6,7 @@ import CustomInput from "../../../../custom-components/custom-input/custom-input
 import Http from "../../../../../utility/Http";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
 import StorageSrvc, {STORAGE_TYPES} from "../../../../../utility/StorageSrvc";
+import CONSTANTS from "../../../../../constants/constants";
 
 class UserProfile extends React.Component {
 
@@ -19,7 +20,7 @@ class UserProfile extends React.Component {
     this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
     this.saveUser = this.saveUser.bind(this);
     this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
-    console.log(this.props.userProfile)
+    // console.log(this.props.userProfile)
     this.state = {
       pageLoading: true,
       form: {
@@ -205,7 +206,7 @@ class UserProfile extends React.Component {
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.lastName.disabled} />
                       </div>
                     </div>
-                    <div className="row">
+                    {this.props.userProfile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY && <div className="row">
                       <div className="col-xl-3 col-5">
                         <CustomInput key={"companyName"}
                           inputId={"companyName"}
@@ -214,7 +215,7 @@ class UserProfile extends React.Component {
                           type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled} />
                       </div>
-                    </div>
+                    </div>}
                     <div className="row">
                       <div className="col-xl-3 col-5">
                         <CustomInput key={"emailId"}

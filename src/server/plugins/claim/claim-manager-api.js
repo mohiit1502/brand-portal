@@ -1,4 +1,5 @@
 import ServerHttp from "../../utility/ServerHttp";
+import {IQS_URL} from "./../../constants/server-constants";
 
 class ClaimManagerApi {
   constructor() {
@@ -44,13 +45,40 @@ class ClaimManagerApi {
     };
   }
 
+  getIQSHeaders() {
+    return {
+      "WM_SVC.VERSION": "0.0.1",
+      "WM_SVC.NAME": "item-setup-query-service-app",
+      "WM_QOS.CORRELATION_ID": "abcd",
+      "WM_SVC.ENV": "prod",
+      "WM_CONSUMER.ID": "6aa8057e-8795-450a-b349-4ba99b633d2e",
+      Accept: "application/json"
+    };
+  }
+
+  parseSellersFromResponse = response => {
+    const sellers = response && response.payload.indexData;
+    const sellersParsed = sellers.map(seller => seller.seller_id && {value: seller.partner_display_name, id: seller.seller_id}).filter(seller => seller);
+    return sellersParsed;
+  }
+
   async getSellers(request, h) {
     try {
-      const staticData = [
-        {id: 1, value: "seller 1"},
-        {id: 2, value: "seller 2"}
-      ];
-      return h.response(staticData).code(200);
+      const headers = this.getIQSHeaders(request);
+      const options = {
+        headers
+      };
+      // console.log("get seller options ======= ", JSON.stringify(request.query));
+      let url = IQS_URL;
+      url = url.replace("__itemId__", request.query.payload);
+
+      const response = await ServerHttp.get(url, options);
+      // console.log(JSON.stringify(response.body));
+      let sellers = [];
+      if (response && response.status === 200) {
+        sellers = this.parseSellersFromResponse(response.body);
+      }
+      return h.response(sellers).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);
     }

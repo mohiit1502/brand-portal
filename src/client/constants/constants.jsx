@@ -1,7 +1,56 @@
 const CONSTANTS = {
+
+  URL: {
+    LOGOUT: "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
+    DOMAIN: {
+      DEVELOPMENT: "http://localhost:3000",
+      STAGING: "http://brandportal.ropro.stg.walmart.com",
+      // TODO correct production URL below
+      PRODUCTION: "http://brandportal.ropro.walmart.com"
+    },
+    DOMAIN_SERVER: {
+      DEVELOPMENT: "http://localhost:2992",
+      STAGING: "",
+      PRODUCTION: ""
+    },
+    IMAGE: "/js"
+  },
+
+  TEMPLATE: {
+    PORTAL_REGISTRATION: {
+      CODE: 1
+    },
+    PORTAL_VERIFICATION: {
+      CODE: 2,
+      IMAGE: "YellowBGExclamation",
+      MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
+      TITLE: "Company Registration is Pending"
+    },
+    PORTAL_ACCESS_REVOKED: {
+      CODE: 8,
+      IMAGE: "Search",
+      MESSAGE: "Your company account access has been revoked for security reasons",
+      TITLE: "Access Denied"
+    },
+    USER_ACCESS_REVOKED: {
+      CODE: 16,
+      IMAGE: "GreenCircleCheck",
+      MESSAGE: "Your account access has been revoked for security reasons",
+      TITLE: "Access Denied"
+    },
+    USER_VERIFICATION: {
+      CODE: 32,
+      IMAGE: "GreenCircleCheck",
+      MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
+      TITLE: "Account verification in progress"
+    }
+  },
+
   ROUTES: {
     ROOT_PATH: "/",
-    DEFAULT_REDIRECT_PATH: "/user-management/user-list",
+    DEFAULT_REDIRECT_PATH_SUPERADMIN: "/user-management/user-list",
+    DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
+    DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
 
     ONBOARD: {
       COMPANY_REGISTER: "/onboard/register/company",
@@ -49,7 +98,7 @@ const CONSTANTS = {
       INTERNAL: "Internal"
     },
     ROLES: {
-      ADMIN: "Admin",
+      ADMIN: "Admininstrator",
       REPORTER: "Reporter",
       SUPERADMIN: "Super Admin"
     },

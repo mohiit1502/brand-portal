@@ -67,19 +67,20 @@ class BrandList extends React.Component {
               });
             }
           },
-          {
-            id: 3,
-            value: "Delete Brand",
-            clickCallback: (evt, option, data) => {
-              const payload = {
-                status: "Delete"
-              };
-              const response = Http.put(`/api/brands/${data.brandId}`, payload);
-              response.then(res => {
-                this.fetchBrands();
-              });
-            }
-          }
+          // TODO comment for MVP, uncomment for sprint 3
+          // {
+          //   id: 3,
+          //   value: "Delete Brand",
+          //   clickCallback: (evt, option, data) => {
+          //     const payload = {
+          //       status: "Delete"
+          //     };
+          //     const response = Http.put(`/api/brands/${data.brandId}`, payload);
+          //     response.then(res => {
+          //       this.fetchBrands();
+          //     });
+          //   }
+          // }
         ]
       },
       brandListColumns: [
@@ -285,9 +286,9 @@ class BrandList extends React.Component {
       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
       const total = this.state.brandList.length;
       if (this.state.brandList.length && to >= from) {
-        return `Viewing ${from} - ${to} of ${total} Users`;
+        return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}`;
       } else if (this.state.brandList.length && to <= from) {
-        return `Viewing 0 of ${total} Users`;
+        return `Viewing 0 of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}`;
       }
       return "";
     };
@@ -399,7 +400,7 @@ class BrandList extends React.Component {
                       {
                         !!this.state.brandList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
-                          Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
+                          Show {this.state.page.size} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>
                       }
 
@@ -407,7 +408,7 @@ class BrandList extends React.Component {
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
-                              onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
+                              onClick={() => {this.changePageSize(val);}}> Show {val} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} </a>);
                           })
                         }
                       </div>

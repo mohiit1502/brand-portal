@@ -38,16 +38,16 @@ const routes = [
         exact: true,
         component: Authenticator
       },
-      {
-        path: "/demo1",
-        exact: true,
-        component: Demo1
-      },
-      {
-        path: "/demo2",
-        exact: true,
-        component: Demo2
-      },
+      // {
+      //   path: "/demo1",
+      //   exact: true,
+      //   component: Demo1
+      // },
+      // {
+      //   path: "/demo2",
+      //   exact: true,
+      //   component: Demo2
+      // },
       {
         path: "/*",
         component: () => <Redirect to="/" />

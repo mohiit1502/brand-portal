@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-expressions */
 import ServerHttp from "../../utility/ServerHttp";
+import ServerUtils from "../../utility/server-utils";
 
 class BrandManagerApi {
   constructor() {
@@ -26,6 +28,11 @@ class BrandManagerApi {
         method: "PUT",
         path: "/api/brands/{brandId}",
         handler: this.updateBrand
+      },
+      {
+        method: "GET",
+        path: "/api/brands/checkUnique",
+        handler: this.checkUnique
       }
     ]);
   }
@@ -98,7 +105,26 @@ class BrandManagerApi {
     }
   }
 
+  async checkUnique(request, h) {
+    try {
+      // const payload = request.payload;
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
 
+      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      let UNIQUENESS_CHECK_PATH = request.app.ccmGet("BRAND_CONFIG.UNIQUENESS_CHECK_PATH");
+      // const UNIQUENSS_CHECK_PATH = `/ropro/umf/v1/brands/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
+      UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__brandName__", request.query.brandName));
+      const url = `${BASE_URL}${UNIQUENESS_CHECK_PATH}`;
+
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
 
 }
 
