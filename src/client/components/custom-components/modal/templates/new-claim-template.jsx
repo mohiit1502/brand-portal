@@ -323,7 +323,7 @@ class NewClaimTemplate extends React.Component {
                 <div className="row">
                   <div className="col-4">
                     <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
-                      value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.onInputChange}
+                      value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.setSelectInputValue}
                       disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} />
                   </div>
                   <div className="col-4">
