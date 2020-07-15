@@ -79,19 +79,40 @@ class Authenticator extends React.Component {
     return false;
   }
 
+  getCurrentUserDefaultPath = role => {
+    let path = "";
+    switch (role) {
+      case CONSTANTS.USER.ROLES.SUPERADMIN:
+        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_SUPERADMIN;
+        break;
+      case CONSTANTS.USER.ROLES.ADMIN:
+        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_ADMIN;
+        break;
+      case CONSTANTS.USER.ROLES.REPORTER:
+        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
+        break;
+    }
+    return path;
+  }
+
+  // eslint-disable-next-line complexity
   render () {
+    const role = this.props.userProfile && this.props.userProfile.role ? this.props.userProfile.role.name : "";
+    const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
+    console.log(CURRENT_USER_DEFAULT_PATH);
     if (this.state.isLoggedIn) {
       if (this.state.profileInformationLoaded) {
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
-            return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH}/>;
+            return <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
           } else {
             return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
           }
-        } else if (!this.state.isOnboarded && !this.isOnboardingPath(this.props.location.pathname)) {
+        // } else if (this.props.userProfile.workflow.code === 1) {
+        } else if (this.props.userProfile && this.props.userProfile.workflow.code === 1 && !this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
-        } else if (this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
-          return <Redirect to={CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH}/>;
+        } else if (this.props.userProfile && this.props.userProfile.workflow.code === 4 && this.isOnboardingPath(this.props.location.pathname)) {
+          return <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
         } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {

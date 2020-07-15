@@ -198,6 +198,7 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.city.disabled = false;
       form.inputData.state.disabled = false;
       form.inputData.zip.disabled = false;
+      form.inputData.companyName.requestAdministratorAccess = false;
       this.setState({form});
     } catch (err) {
       const form = {...this.state.form};

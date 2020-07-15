@@ -4,10 +4,11 @@ import HomeHeader from "../custom-components/headers/home-header";
 import Leftnav from "../custom-components/left-nav/left-nav";
 import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
-import "../../styles/home/home.scss";
 import StorageSrvc, {STORAGE_TYPES} from "../../utility/StorageSrvc";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
-
+import CONSTANTS from "../../constants/constants";
+import * as images from "./../../images";
+import "../../styles/home/home.scss";
 
 class Home extends React.Component {
   constructor(props) {
@@ -26,27 +27,57 @@ class Home extends React.Component {
 
   updateProfile (profile) {
     this.setState({profile}, () => {
-      if (!this.state.profile.isOrgEnabled) {
-        const meta = { templateName: "CompanyVerificationPendingTemplate" };
-        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      const workflowDecider = profile && profile.workflow;
+      const codes = Object.keys(CONSTANTS.TEMPLATE)
+        .filter(key => ["PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
+        .map(key => CONSTANTS.TEMPLATE[key].CODE);
+      if (workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code)) {
+        let template = {};
+        let image;
+        switch (workflowDecider.code) {
+          case CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE:
+            template = {...CONSTANTS.TEMPLATE.PORTAL_VERIFICATION};
+            image = images[CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.IMAGE];
+            break;
+          case CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.CODE:
+            template = {...CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED};
+            image = images[CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.IMAGE];
+            break;
+          case CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.CODE:
+            template = {...CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED};
+            image = images[CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.IMAGE];
+            break;
+          case CONSTANTS.TEMPLATE.USER_VERIFICATION.CODE:
+            template = {...CONSTANTS.TEMPLATE.USER_VERIFICATION};
+            image = images[CONSTANTS.TEMPLATE.USER_VERIFICATION.IMAGE];
+            break;
+          }
+
+          template = {templateName: "StatusModalTemplate", image, ...template};
+          // const meta = { ...template  };
+          this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
       }
     });
   }
 
   render () {
-    if (this.state.profile && this.state.profile.isOrgEnabled) {
-      return (
-        <div className="view-container home-container">
-          <HomeHeader {...this.props}/>
-          <div className="mx-n3">
-            <Leftnav {...this.props}/>
-            <ContentRenderer {...this.props}/>
-          </div>
-        </div>
-      );
-    }
-
-    return null;
+    const workflowDecider = this.state.profile && this.state.profile.workflow;
+      const codes = Object.keys(CONSTANTS.TEMPLATE)
+        .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
+        .map(key => CONSTANTS.TEMPLATE[key].CODE);
+    const disablePortalAccess = workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code);
+    return (
+      <div className="view-container home-container">
+        <HomeHeader {...this.props}/>
+        {
+          !disablePortalAccess &&
+            <div className="mx-n3">
+              <Leftnav {...this.props}/>
+              <ContentRenderer {...this.props}/>
+            </div>
+        }
+      </div>
+    );
   }
 }
 

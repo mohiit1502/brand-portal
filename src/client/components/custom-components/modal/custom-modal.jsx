@@ -12,6 +12,7 @@ import NewClaimTemplate from "./templates/new-claim-template";
 import NewClaimAddedTemplate from "./templates/new-claim-added-template";
 import ClaimDetailsTemplate from "./templates/claim-details-template";
 import CompanyVerificationPendingTemplate from "./templates/company-verification-pending-template";
+import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
 
 
 class CustomModal extends React.Component {
@@ -42,6 +43,7 @@ class CustomModal extends React.Component {
       case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
       case "ClaimDetailsTemplate": return ClaimDetailsTemplate;
       case "CompanyVerificationPendingTemplate": return CompanyVerificationPendingTemplate;
+      case "StatusModalTemplate": return StatusModalTemplate;
     }
     return null;
   }
@@ -49,11 +51,12 @@ class CustomModal extends React.Component {
   toggleModal(toggleAction) {
     const modalElements = $(".modal");
     const backdrop = $(".modal-backdrop");
-    if (backdrop.length) {
+    if (backdrop) {
       backdrop.remove();
     }
     const options = {
-      backdrop: "static",
+      backdrop: false,
+      keyboard: true,
       show: toggleAction.toLowerCase() === "show"
     };
     modalElements.modal(options);
@@ -64,9 +67,10 @@ class CustomModal extends React.Component {
   }
 
   render () {
-    const CustomComponent = this.fetchTemplate(this.props.modal.template);
+    const CustomComponent = this.fetchTemplate(this.props.modal.templateName);
+    const meta = {...this.props.modal};
     return (
-      CustomComponent && <CustomComponent  data={this.props.modal.data}/>
+      CustomComponent && <CustomComponent data={this.props.modal.data} meta={meta} />
     );
   }
 }

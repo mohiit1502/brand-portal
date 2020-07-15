@@ -14,6 +14,7 @@ import PaginationNav from "../../../custom-components/pagination/pagination-nav"
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import ClaimListTable from "../../../custom-components/table/templates/claim-list-table";
+import CONSTANTS from "../../../../constants/constants";
 
 class ClaimList extends React.Component {
 
@@ -268,9 +269,9 @@ class ClaimList extends React.Component {
       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
       const total = this.state.claimList.length;
       if (this.state.claimList.length && to >= from) {
-        return `Viewing ${from} - ${to} of ${total} Users`;
+        return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.CLAIM.SECTION_TITLE_PLURAL}`;
       } else if (this.state.claimList.length && to <= from) {
-        return `Viewing 0 of ${total} Users`;
+        return `Viewing 0 of ${total} ${CONSTANTS.CLAIM.SECTION_TITLE_PLURAL}`;
       }
       return "";
     };
@@ -389,8 +390,8 @@ class ClaimList extends React.Component {
 
                       {
                         !!this.state.claimList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                                                                 aria-haspopup="true" aria-expanded="false">
-                          Show {this.state.page.size} Users &nbsp;&nbsp;&nbsp;
+                          aria-haspopup="true" aria-expanded="false">
+                          Show {this.state.page.size} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>
                       }
 
@@ -398,7 +399,7 @@ class ClaimList extends React.Component {
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
-                                       onClick={() => {this.changePageSize(val);}}> Show {val} Users </a>);
+                              onClick={() => {this.changePageSize(val);}}> Show {val} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL} </a>);
                           })
                         }
                       </div>

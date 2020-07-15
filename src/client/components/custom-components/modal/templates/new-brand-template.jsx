@@ -48,7 +48,31 @@ class NewBrandTemplate extends React.Component {
             pattern: null,
             disabled: false,
             subtitle: "",
-            error: ""
+            error: "",
+            isUnique: false,
+            onBlurEvent: e => {
+              Http.get("/api/brands/checkUnique", {brandName: e.target.value}).then(res => {
+                if (!res.body.unique) {
+                  this.setState(state => {
+                    state = {...state};
+                    state.form.inputData.brandName.error = "Brand Name is not Unique";
+                    state.form.inputData.brandName.isUnique = false;
+                    return {
+                      ...state
+                    };
+                  }, this.checkToEnableSubmit);
+                } else {
+                  this.setState(state => {
+                    state = {...state};
+                    state.form.inputData.brandName.error = "";
+                    state.form.inputData.brandName.isUnique = true;
+                    return {
+                      ...state
+                    };
+                  }, this.checkToEnableSubmit);
+                }
+              });
+            }
           },
           comments: {
             label: "Comments",
@@ -116,7 +140,7 @@ class NewBrandTemplate extends React.Component {
     const form = {...this.state.form};
     const bool = (form.isUpdateTemplate || form.inputData.trademarkNumber.isValid)  &&
       form.inputData.trademarkNumber.value &&
-      form.inputData.brandName.value &&
+      form.inputData.brandName.value && form.inputData.brandName.isUnique &&
       form.undertaking.selected;
 
     form.isSubmitDisabled = !bool;
@@ -239,8 +263,8 @@ class NewBrandTemplate extends React.Component {
                       inputId={"brandName"}
                       formId={this.state.form.id} label={this.state.form.inputData.brandName.label}
                       required={this.state.form.inputData.brandName.required} value={this.state.form.inputData.brandName.value}
-                      type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.brandName.disabled}
+                      type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern} onChangeEvent={this.onInputChange}
+                      onBlurEvent={this.state.form.inputData.brandName.onBlurEvent} disabled={this.state.form.inputData.brandName.disabled}
                       error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
                   </div>
                 </div>

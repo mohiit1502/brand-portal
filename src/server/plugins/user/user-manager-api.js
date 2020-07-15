@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
@@ -175,8 +176,10 @@ class UserManagerApi {
       };
 
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
-      const url = `${BASE_URL}${USER_PATH}`;
+      let UNIQUENESS_CHECK_PATH = request.app.ccmGet("USER_CONFIG.UNIQUENESS_CHECK_PATH");
+      UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
+      // const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const url = `${BASE_URL}${UNIQUENESS_CHECK_PATH}`;
 
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
@@ -369,8 +372,18 @@ class UserManagerApi {
 
   async logout(request, h) {
     try {
-      h.unstate("auth_session_token");
-      h.unstate("session_token_login_id");
+      // h.unstate("auth_session_token");
+      h.state("auth_session_token", "", {
+        ttl: 1,
+        isSecure: false,
+        isHttpOnly: false
+      });
+      h.state("session_token_login_id", "", {
+        ttl: 1,
+        isSecure: false,
+        isHttpOnly: false
+      });
+      // console.log("hapi state ========= ", h.state("auth_sessio_token"));
       return h.redirect("/");
     } catch (err) {
       console.error(err);

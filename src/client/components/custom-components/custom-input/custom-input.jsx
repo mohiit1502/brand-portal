@@ -90,12 +90,13 @@ class CustomInput extends React.Component {
   }
 
   onBlur (evt) {
-    if (this.props.pattern && !this.props.pattern.test(evt.target.value)) {
+    const pattern = new RegExp(this.props.pattern);
+    if (this.props.pattern && !pattern.test(evt.target.value)) {
       this.setState({error: this.props.patternErrorMessage});
     } else {
       this.setState({error: ""});
     }
-    if(this.props.onBlurEvent) {
+    if (this.props.onBlurEvent) {
       this.props.onBlurEvent(evt);
     }
   }
@@ -109,7 +110,7 @@ class CustomInput extends React.Component {
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
-          data-toggle="dropdown"/>
+          data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
@@ -168,7 +169,7 @@ class CustomInput extends React.Component {
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
-          data-toggle="dropdown"/>
+          data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
@@ -226,8 +227,8 @@ class CustomInput extends React.Component {
     let subtitleClass = "text-muted";
     let errorClass = "";
 
-    if (this.state.error) {
-      subtitleText = this.state.error;
+    if (this.props.error) {
+      subtitleText = this.props.error;
       subtitleClass = "text-danger";
       errorClass = "has-error";
     } else if (this.state.subtitle) {
@@ -278,6 +279,7 @@ class CustomInput extends React.Component {
 
     switch (this.props.type) {
       case "text" :
+      case "url":
       case "email" :
         return this.getTextInputType();
       case "textarea" :

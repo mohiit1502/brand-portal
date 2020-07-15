@@ -4,16 +4,17 @@ export const TOGGLE_ACTIONS = {
 };
 
 export const toggleModal = (toggleAction, meta) => {
-  const action = {type: "TOGGLE_MODAL", value: toggleAction};
+  let action = {type: "TOGGLE_MODAL", value: toggleAction};
 
   if (meta) {
-    if (meta.templateName) {
-      action.templateName = meta.templateName;
-    }
+    action = {...action, ...meta};
+//     if (meta.templateName) {
+//       action.templateName = meta.templateName;
+//     }
 
-    if (meta.data) {
-      action.data = meta.data;
-    }
+    // if (meta.data) {
+    //   action.data = meta.data;
+    // }
   }
 
   return action;

@@ -3,8 +3,9 @@ import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
 
 import PropTypes from "prop-types";
-import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
-import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+// import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
+import {toggleModal} from "../../../../actions/modal-actions";
+import CONSTANTS from "../../../../constants/constants";
 
 class CompanyVerificationPendingTemplate extends React.Component {
 
@@ -13,8 +14,8 @@ class CompanyVerificationPendingTemplate extends React.Component {
   }
 
   render() {
-    const baseUrl = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === "development" ? "http://localhost:3000" : "http://electrode-nodejs.dev.ro-pro.catdev.qa.walmart.com";
-    const logoutUrl = `https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=${baseUrl}/logout`;
+    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase()];
+    const logoutUrl = CONSTANTS.URL.LOGOUT.replace("__domain__", baseUrl);
 
     return (
       <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
