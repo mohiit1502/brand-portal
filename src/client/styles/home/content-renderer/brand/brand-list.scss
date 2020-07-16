@@ -8,7 +8,7 @@ $dropdown-border : #BBCAD2;
 $filters-background : #F7F9FA;
 $filters-text-color : #333333;
 $filer-text-color : #424242;
-.user-list-content {
+.brand-list-content {
   .content-header-row {
     background: #FAFAFA;
   }
@@ -17,6 +17,9 @@ $filer-text-color : #424242;
       max-height: 100%;
       .action-row {
         height: $action-row-height;
+        .btn-primary.disabled {
+          cursor: default;
+        }
         .input-group {
           .input-group-text {
             border: $input-border;
@@ -94,15 +97,15 @@ $filer-text-color : #424242;
           }
         }
       }
-      .user-list-row {
+      .brand-list-row {
         margin-right: -40px;
         margin-left: -40px;
         height: calc(100% - #{$action-row-height});
 
-        .user-list-table-row {
+        .brand-list-table-row {
 
         }
-        .user-list-table-manage-row {
+        .brand-list-table-manage-row {
           .pagination {
             .page-item {
               width: 34px;
@@ -145,7 +148,7 @@ $filer-text-color : #424242;
             }
           }
 
-          .user-count-toggle-btn {
+          .brand-count-toggle-btn {
             border: 1px solid $dropdown-border;
             &:hover, &:focus, &:active {
               box-shadow: none;
@@ -153,7 +156,7 @@ $filer-text-color : #424242;
             }
           }
 
-          .user-count-dropdown-menu{
+          .brand-count-dropdown-menu{
 
           }
         }
@@ -161,5 +164,7 @@ $filer-text-color : #424242;
     }
 
   }
+
+
 
 }

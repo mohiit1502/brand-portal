@@ -11,10 +11,14 @@ import filterIcon from "../../../../images/filter-sc.svg";
 import burgerIcon from "../../../../images/group-23.svg";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
-import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import {showNotification} from "../../../../actions/notification/notification-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
 import CONSTANTS from "../../../../constants/constants";
+import authorizations from "./../../../../config/authorizations";
+import restConfig from "./../../../../config/rest.js";
+import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
+import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
 
 class BrandList extends React.Component {
 
@@ -32,6 +36,7 @@ class BrandList extends React.Component {
     this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.editBrand = this.editBrand.bind(this);
+    const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
 
     this.state = {
       page: {
@@ -44,12 +49,14 @@ class BrandList extends React.Component {
       filteredList: [],
       filters: [],
       showFilters: false,
+      userRole,
       dropdown: {
         buttonText: burgerIcon,
         dropdownOptions: [
           {
             id: 1,
             value: "Edit Brand Details",
+            disabled: !authorizations.BRANDS.EDIT_BRAND.includes(userRole),
             clickCallback: (evt, option, data) => {
               this.editBrand(data.original);
             }
@@ -57,6 +64,7 @@ class BrandList extends React.Component {
           {
             id: 2,
             value: "Suspend Brand",
+            disabled: !authorizations.BRANDS.SUSPEND_BRAND.includes(userRole),
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
@@ -67,20 +75,21 @@ class BrandList extends React.Component {
               });
             }
           },
-          // TODO comment for MVP, uncomment for sprint 3
-          // {
-          //   id: 3,
-          //   value: "Delete Brand",
-          //   clickCallback: (evt, option, data) => {
-          //     const payload = {
-          //       status: "Delete"
-          //     };
-          //     const response = Http.put(`/api/brands/${data.brandId}`, payload);
-          //     response.then(res => {
-          //       this.fetchBrands();
-          //     });
-          //   }
-          // }
+          // TODO disabled for MVP, enable for sprint 3
+          {
+            id: 3,
+            value: "Delete Brand",
+            disabled: restConfig.IS_MVP || !authorizations.BRANDS.DELETE_BRAND.includes(userRole),
+            clickCallback: (evt, option, data) => {
+              const payload = {
+                status: "Delete"
+              };
+              const response = Http.put(`/api/brands/${data.brandId}`, payload);
+              response.then(res => {
+                this.fetchBrands();
+              });
+            }
+          }
         ]
       },
       brandListColumns: [
@@ -293,8 +302,9 @@ class BrandList extends React.Component {
       return "";
     };
 
+    const disableBrandCreate = this.state.userRole && !authorizations.BRANDS.CREATE_BRAND.includes(this.state.userRole);
     return (
-      <div className="row user-list-content h-100">
+      <div className="row brand-list-content h-100">
         <div className="col h-100">
 
           <div className="row content-header-row p-4 h-10 mx-0">
@@ -306,7 +316,7 @@ class BrandList extends React.Component {
             <div className="col content-col h-100;">
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
-                  <div className="btn btn-primary btn-sm px-3" onClick={this.addNewBrand}>
+                  <div className={`btn btn-primary btn-sm px-3${disableBrandCreate ? " disabled" : ""}`} onClick={!disableBrandCreate && this.addNewBrand}>
                     New Brand
                   </div>
                 </div>
@@ -377,18 +387,18 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="row user-list-row align-items-start">
+              <div className="row brand-list-row align-items-start">
                 <div className="col pt-4 h-100">
-                  <div className="row user-list-table-row h-90">
+                  <div className="row brand-list-table-row h-90">
                     <div className="col h-100 overflow-auto">
                       {
-                        this.state.filteredList.length > 0 &&
+                        this.state.filteredList.length > 0 ?
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={BrandListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> : <NoRecordsMatch message="No Records Found matching search and filters provided." />
                       }
                     </div>
                   </div>
-                  <div className="row user-list-table-manage-row h-10 align-items-center mx-4">
+                  <div className="row brand-list-table-manage-row h-10 align-items-center mx-4">
                     <div className="col">
                       { viewerShip() }
                     </div>
@@ -398,13 +408,13 @@ class BrandList extends React.Component {
                     <div className="col text-right">
 
                       {
-                        !!this.state.brandList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                        !!this.state.brandList.length && <button type="button" className="btn btn-sm brand-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
                           Show {this.state.page.size} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>
                       }
 
-                      <div className="dropdown-menu user-count-dropdown-menu">
+                      <div className="dropdown-menu brand-count-dropdown-menu">
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
@@ -428,13 +438,15 @@ BrandList.propTypes = {
   toggleModal: PropTypes.func,
   saveBrandCompleted: PropTypes.func,
   brandEdit: PropTypes.object,
-  showNotification: PropTypes.func
+  showNotification: PropTypes.func,
+  userProfile: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
+    brandEdit: state.brandEdit,
     modal: state.modal,
-    brandEdit: state.brandEdit
+    userProfile: state.userProfile
   };
 };
 

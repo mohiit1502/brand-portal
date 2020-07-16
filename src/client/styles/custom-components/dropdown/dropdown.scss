@@ -2,6 +2,11 @@
 
 $item-color : #2B3339;
 .custom-dropdown {
+
+  a, a:not([href]) {
+    cursor: pointer;
+  }
+
   .dropdown-toggle-btn {
     padding: 5px;
   }

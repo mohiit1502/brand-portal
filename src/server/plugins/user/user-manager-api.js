@@ -362,7 +362,7 @@ class UserManagerApi {
       });
 
 
-      return h.redirect(`/user-management/user-list`);
+      return h.redirect("/");
     } catch (err) {
       console.error(err);
       throw err;

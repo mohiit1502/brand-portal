@@ -179,6 +179,18 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
+  enableForm() {
+    const form = {...this.state.form};
+    form.inputData.companyName.isUnique = true;
+    form.inputData.companyName.error = "";
+    form.inputData.address.disabled = false;
+    form.inputData.city.disabled = false;
+    form.inputData.state.disabled = false;
+    form.inputData.zip.disabled = false;
+    form.inputData.companyName.requestAdministratorAccess = false;
+    this.setState({form});
+  }
+
   async checkCompanyNameAvailability () {
     try {
       if (!this.state.form.inputData.companyName.value) {
@@ -186,27 +198,19 @@ class CompanyProfileRegistration extends React.Component {
       }
       const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
       if (!response.body.unique) {
+        // eslint-disable-next-line no-throw-literal
         throw {
           error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
         };
       }
-
-      const form = {...this.state.form};
-      form.inputData.companyName.isUnique = true;
-      form.inputData.companyName.error = "";
-      form.inputData.address.disabled = false;
-      form.inputData.city.disabled = false;
-      form.inputData.state.disabled = false;
-      form.inputData.zip.disabled = false;
-      form.inputData.companyName.requestAdministratorAccess = false;
-      this.setState({form});
+      this.enableForm();
     } catch (err) {
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = false;
       form.inputData.companyName.error = err.error;
       form.inputData.companyName.requestAdministratorAccess = true;
       this.setState({form});
-      console.log(err);
+      // console.log(err);
     }
   }
 

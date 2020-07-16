@@ -1,9 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import ClientUtils from "../../../utility/ClientUtils";
-import "../../../styles/custom-components/left-nav/left-nav.scss";
 import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
+import "../../../styles/custom-components/left-nav/left-nav.scss";
+import authorizations from "./../../../config/authorizations";
+import restConfig from "./../../../config/rest";
+import { Link } from "react-router-dom";
 
 class Leftnav extends React.Component {
   constructor (props) {
@@ -12,21 +15,29 @@ class Leftnav extends React.Component {
     this.constructNavigationPanel = this.constructNavigationPanel.bind(this);
 
     this.state = {
-      NAVIGATION_PANEL: this.constructNavigationPanel(CONSTANTS.NAVIGATION_PANEL, props.location.pathname)
+      NAVIGATION_PANEL: this.constructNavigationPanel(CONSTANTS.NAVIGATION_PANEL, props.location.pathname, authorizations)
     };
   }
 
   constructNavigationPanel (panel, pathname) {
-
-    panel = [...panel];
-
+    const {userProfile} = this.props;
+    const panelFiltered = [];
     for (const i in panel) {
-      panel[i].active = panel[i].href === pathname;
-      if (panel[i].hasOwnProperty("children")) {
-        panel[i].children = this.constructNavigationPanel(panel[i].children, pathname);
+      const currentPanel = panel[i].name;
+      const sectionAccessKey = authorizations[panel[i].name] && authorizations[currentPanel].SECTION_ACCESS;
+      if (!restConfig.AUTHORIZATIONS_INTRODUCED
+        || (currentPanel === CONSTANTS.SECTION.CLAIMS
+        || !sectionAccessKey
+        || (sectionAccessKey && sectionAccessKey.includes(userProfile && userProfile.role ? userProfile.role.name : "")))
+      ) {
+        panelFiltered[i] = {...panel[i]};
+        panelFiltered[i].active = panelFiltered[i].href === pathname;
+        if (panelFiltered[i].hasOwnProperty("children")) {
+          panelFiltered[i].children = this.constructNavigationPanel(panelFiltered[i].children, pathname);
+        }
       }
     }
-    return panel;
+    return panelFiltered;
   }
 
   updateNavigationPanel (panel, pathname) {
@@ -48,15 +59,15 @@ class Leftnav extends React.Component {
             this.state.NAVIGATION_PANEL.map((item => {
               return (
                 <li className={`nav-item main-nav-item ${item.active ? "active" : "inactive"}`} key={item.id}>
-                  <a className="nav-link" href={item.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, item.href);}}>{item.value}</a>
+                  <Link className="nav-link" to={item.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, item.href);}}>{item.value}</Link>
                   {
                     item.children && <ul className="nav flex-column">
                       {item.children.map(subItem => {
                         return (
                           <li className={`nav-item sub-nav-item pl-3 ${subItem.active ? "active" : "inactive"}`} key={subItem.id}>
-                            <a className="nav-link" href={subItem.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href);}}>
+                            <Link className="nav-link" to={subItem.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href);}}>
                               {subItem.value}
-                            </a>
+                            </Link>
                           </li>
                         );
                       })}
@@ -73,7 +84,8 @@ class Leftnav extends React.Component {
 }
 
 Leftnav.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
+  userProfile: PropTypes.object
 };
 
 
