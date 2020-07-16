@@ -14,7 +14,7 @@ class CompanyVerificationPendingTemplate extends React.Component {
   }
 
   render() {
-    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase()];
+    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
     const logoutUrl = CONSTANTS.URL.LOGOUT.replace("__domain__", baseUrl);
 
     return (
