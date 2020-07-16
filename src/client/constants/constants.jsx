@@ -6,7 +6,7 @@ const CONSTANTS = {
       DEVELOPMENT: "http://localhost:3000",
       STAGING: "http://brandportal.ropro.stg.walmart.com",
       // TODO correct production URL below
-      PRODUCTION: "http://brandportal.ropro.walmart.com"
+      PRODUCTION: "http://brandportal.ropro.stg.walmart.com"
     },
     DOMAIN_SERVER: {
       DEVELOPMENT: "http://localhost:2992",
