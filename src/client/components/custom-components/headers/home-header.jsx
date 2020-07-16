@@ -13,7 +13,7 @@ class HomeHeader extends React.Component {
   render() {
     //TODO: correct the config for logout;
 
-    const baseUrl = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === "development" ? "http://localhost:3000" : "http://electrode-nodejs.dev.ro-pro.catdev.qa.walmart.com";
+    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
     const logoutUrl = `https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=${baseUrl}/logout`;
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">

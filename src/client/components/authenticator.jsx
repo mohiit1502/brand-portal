@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import React from "react";
 import { connect } from "react-redux";
 import Login from "./login/login";
@@ -99,7 +100,7 @@ class Authenticator extends React.Component {
   render () {
     const role = this.props.userProfile && this.props.userProfile.role ? this.props.userProfile.role.name : "";
     const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
-    console.log(CURRENT_USER_DEFAULT_PATH);
+    const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     if (this.state.isLoggedIn) {
       if (this.state.profileInformationLoaded) {
         if (this.isRootPath(this.props.location.pathname)) {
@@ -109,11 +110,11 @@ class Authenticator extends React.Component {
             return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
           }
         // } else if (this.props.userProfile.workflow.code === 1) {
-        } else if (this.props.userProfile && this.props.userProfile.workflow.code === 1 && !this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
-        } else if (this.props.userProfile && this.props.userProfile.workflow.code === 4 && this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
-        } else if (!this.state.isOnboarded && this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {
           return <Home {...this.props} {...this.state}/>;

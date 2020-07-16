@@ -71,7 +71,7 @@ export default class Http {
     }
 
     const err = await response.json();
-    console.log(err);
+    // console.log(err);
     throw new ClientHttpError(status, err.error, err.message);
 
   }
@@ -98,7 +98,7 @@ export default class Http {
     }
 
     const err = await response.json();
-    console.log(err);
+    // console.log(err);
     throw new ClientHttpError(status, err.error, err.message);
   }
 

@@ -16,6 +16,14 @@ const CONSTANTS = {
     IMAGE: "/js"
   },
 
+  SECTION: {
+    CLAIMS: "CLAIMS",
+    USERS: "USERS",
+    BRANDS: "BRANDS",
+    USERLIST: "USERLIST",
+    APPROVALLIST: "APPROVALLIST"
+  },
+
   TEMPLATE: {
     PORTAL_REGISTRATION: {
       CODE: 1
@@ -25,6 +33,9 @@ const CONSTANTS = {
       IMAGE: "YellowBGExclamation",
       MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
       TITLE: "Company Registration is Pending"
+    },
+    PORTAL_DASHBOARD: {
+      CODE: 4
     },
     PORTAL_ACCESS_REVOKED: {
       CODE: 8,

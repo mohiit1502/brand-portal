@@ -14,6 +14,7 @@ import PaginationNav from "../../../custom-components/pagination/pagination-nav"
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
 import CONSTANTS from "../../../../constants/constants";
+import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
 
 class UserList extends React.Component {
 
@@ -431,9 +432,9 @@ class UserList extends React.Component {
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">
                       {
-                        this.state.filteredList.length > 0 &&
+                        this.state.filteredList.length > 0 ?
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.userListColumns} template={UserListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/>
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> : <NoRecordsMatch />
                       }
                     </div>
                   </div>

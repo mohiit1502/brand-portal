@@ -24,7 +24,7 @@ class CreateUserTemplate extends React.Component {
 
     this.state = {
       form: {
-        submitDisabled: false,
+        submitDisabled: true,
         isUpdateTemplate: false,
         templateUpdateComplete: false,
         isDisabled: false,
@@ -82,15 +82,33 @@ class CreateUserTemplate extends React.Component {
             disabled: false,
             error: "",
             onBlurEvent: e => {
-              Http.get('/api/users/checkUnique', {email: e.target.value}).then(res => {
+              Http.get("/api/users/checkUnique", {email: e.target.value}).then(res => {
+                this.setState(state => {
+                  state = {...state};
+                  state.form.inputData.emailId.error = "Email is not Unique";
+                  state.form.inputData.emailId.isUnique = false;
+                  return {
+                    ...state
+                  };
+                }, this.checkToEnableSubmit);
                 if (!res.body.unique) {
                   this.setState(state => {
                     state = {...state};
                     state.form.inputData.emailId.error = "Email is not Unique";
+                    state.form.inputData.emailId.isUnique = false;
                     return {
                       ...state
                     };
-                  });
+                  }, this.checkToEnableSubmit);
+                } else {
+                  this.setState(state => {
+                    state = {...state};
+                    state.form.inputData.emailId.error = "";
+                    state.form.inputData.emailId.isUnique = true;
+                    return {
+                      ...state
+                    };
+                  }, this.checkToEnableSubmit);
                 }
               });
             }
@@ -213,8 +231,18 @@ class CreateUserTemplate extends React.Component {
         return {
           ...state
         };
-      });
+      }, this.checkToEnableSubmit);
     }
+  }
+
+  checkToEnableSubmit() {
+    const form = {...this.state.form};
+    const bool = form.inputData.firstName.value && form.inputData.firstName.value &&
+      form.inputData.emailId.value && form.inputData.emailId.isUnique && form.inputData.emailId.isUnique &&
+      form.inputData.role.value && form.inputData.brands.value && form.undertaking.selected;
+
+    form.submitDisabled = !bool;
+    this.setState({form});
   }
 
   setSelectInputValue (value, key) {

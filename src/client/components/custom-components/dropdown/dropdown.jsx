@@ -20,7 +20,7 @@ class Dropdown extends React.Component {
           {
             options.dropdownOptions.map((option, i) => {
               return (
-                <a key={i} id={option.id}className="dropdown-item" onClick={e => {option.clickCallback(e, option, data);}}>{option.value}</a>
+                <a key={i} id={option.id} className={`dropdown-item${option.disabled ? " disabled" : ""}`} onClick={e => {option.clickCallback(e, option, data);}}>{option.value}</a>
               );
             })
           }

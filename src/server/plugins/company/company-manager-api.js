@@ -8,6 +8,7 @@ class CompanyManagerApi {
     this.register = this.register.bind(this);
     this.registerOrganization = this.registerOrganization.bind(this);
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
+    this.FILE_UPLOAD_SIZE_LIMIT = 1000 * 1000 * 10; // 10MB
   }
 
   register (server) {
@@ -23,6 +24,7 @@ class CompanyManagerApi {
         handler: this.uploadBusinessDocument,
         config: {
           payload: {
+            maxBytes: this.FILE_UPLOAD_SIZE_LIMIT,
             output: "stream",
             allow: "multipart/form-data"
           }
