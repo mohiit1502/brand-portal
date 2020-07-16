@@ -36,6 +36,7 @@ class CompanyManagerApi {
         handler: this.uploadAdditionalDocument,
         config: {
           payload: {
+            maxBytes: this.FILE_UPLOAD_SIZE_LIMIT,
             output: "stream",
             allow: "multipart/form-data"
           }
