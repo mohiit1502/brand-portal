@@ -5,6 +5,7 @@ import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import {dispatchClaims} from "../../../../actions/claim/claim-actions";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {showNotification} from "../../../../actions/notification/notification-actions";
@@ -17,6 +18,7 @@ class NewClaimTemplate extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
+    this.fetchClaims = this.fetchClaims.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getClaimTypes = this.getClaimTypes.bind(this);
     this.getBrands = this.getBrands.bind(this);
@@ -195,6 +197,21 @@ class NewClaimTemplate extends React.Component {
       });
   }
 
+  async fetchClaims () {
+    const response = (await Http.get("/api/claims")).body;
+
+    let claimList = [];
+
+    if (response.data.content && response.data.content) {
+      claimList = response.data.content.map((brand, i) => {
+        const newClaim = { ...brand, sequence: i + 1 };
+        newClaim.original = brand;
+        return newClaim;
+      });
+    }
+
+    this.props.dispatchClaims({claimList});
+  }
 
   onInputChange(evt, key) {
     if (evt && evt.target) {
@@ -269,6 +286,7 @@ class NewClaimTemplate extends React.Component {
       .then(res => {
         const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+        this.fetchClaims();
       })
       .catch(err => {
         console.log(err);
@@ -415,6 +433,7 @@ class NewClaimTemplate extends React.Component {
 }
 
 NewClaimTemplate.propTypes = {
+  dispatchClaims: PropTypes.func,
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
@@ -429,6 +448,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  dispatchClaims,
   toggleModal,
   saveBrandInitiated,
   showNotification

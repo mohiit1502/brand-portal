@@ -12,6 +12,7 @@ import ContentPasteIcon from "../../../../images/content-paste.svg";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import {dispatchClaims} from "./../../../../actions/claim/claim-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import ClaimListTable from "../../../custom-components/table/templates/claim-list-table";
 import CONSTANTS from "../../../../constants/constants";
@@ -101,7 +102,7 @@ class ClaimList extends React.Component {
       });
     }
 
-    this.setState({claimList});
+    this.props.dispatchClaims({claimList});
   }
 
   addNewClaim () {
@@ -267,10 +268,10 @@ class ClaimList extends React.Component {
     const viewerShip = () => {
       const from = this.state.page.offset * this.state.page.size + 1;
       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
-      const total = this.state.claimList.length;
-      if (this.state.claimList.length && to >= from) {
+      const total = this.props.claims && this.props.claims.length;
+      if (this.props.claims && this.props.claims.length && to >= from) {
         return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.CLAIM.SECTION_TITLE_PLURAL}`;
-      } else if (this.state.claimList.length && to <= from) {
+      } else if (this.props.claims && this.props.claims.length && to <= from) {
         return `Viewing 0 of ${total} ${CONSTANTS.CLAIM.SECTION_TITLE_PLURAL}`;
       }
       return "";
@@ -384,12 +385,12 @@ class ClaimList extends React.Component {
                       { viewerShip() }
                     </div>
                     <div className="col text-center">
-                      <PaginationNav list={this.state.claimList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
+                      <PaginationNav list={this.props.claims ? this.props.claims : []} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
                     </div>
                     <div className="col text-right">
 
                       {
-                        !!this.state.claimList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                        !!(this.props.claims && this.props.claims.length) && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
                           Show {this.state.page.size} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>
@@ -416,17 +417,21 @@ class ClaimList extends React.Component {
 }
 
 ClaimList.propTypes = {
+  claims: PropTypes.object,
+  dispatchClaims: PropTypes.func,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
+    claims: state.claims && state.claims.claimList,
     modal: state.modal
   };
 };
 
 const mapDispatchToProps = {
+  dispatchClaims,
   toggleModal,
   showNotification
 };
