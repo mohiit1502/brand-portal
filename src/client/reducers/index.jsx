@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import {modal} from "./modal-reducers";
 import {userEdit, userProfile} from "./user/user-reducers";
 import {brandEdit} from "./brand/brand-reducers";
+import claims from "./claim/claim-reducers";
 import {notification} from "./notification/notification-reducers";
 
 const userRegistration = (store, action) => {
@@ -26,5 +27,6 @@ export default combineReducers({
   userEdit,
   userProfile,
   brandEdit,
+  claims,
   notification
 });

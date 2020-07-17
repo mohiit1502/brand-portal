@@ -92,6 +92,8 @@ class Authenticator extends React.Component {
       case CONSTANTS.USER.ROLES.REPORTER:
         path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
         break;
+       default:
+        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
     }
     return path;
   }
@@ -110,11 +112,11 @@ class Authenticator extends React.Component {
             return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
           }
         // } else if (this.props.userProfile.workflow.code === 1) {
-        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_REGISTRATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
         } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
-        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_REGISTRATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {
           return <Home {...this.props} {...this.state}/>;

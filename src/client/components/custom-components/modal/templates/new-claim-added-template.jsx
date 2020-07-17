@@ -19,7 +19,7 @@ class NewClaimAddedTemplate extends React.Component {
   }
 
   getDescriptionString() {
-    return `You will receive a confirmation email with your claim number (${this.props.data.caseNumber}) details shortly. You can also check your claim status in 'My claims`;
+    return `You will receive a confirmation email with your claim number (${this.props.data.caseNumber}) details shortly. You can also check your claim status in 'My claims'`;
   }
 
   addNewClaim () {
