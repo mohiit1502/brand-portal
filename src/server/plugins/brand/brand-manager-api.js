@@ -37,19 +37,19 @@ class BrandManagerApi {
     ]);
   }
 
-  getHeaders(request) {
-    return {
-      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-      ROPRO_USER_ID:	request.state.session_token_login_id,
-      ROPRO_CLIENT_ID:	"abcd",
-      ROPRO_CORRELATION_ID: "sdfsdf"
-    };
-  }
+  // getHeaders(request) {
+  //   return {
+  //     ROPRO_AUTH_TOKEN: request.state.auth_session_token,
+  //     ROPRO_USER_ID:	request.state.session_token_login_id,
+  //     ROPRO_CLIENT_ID:	"abcd",
+  //     ROPRO_CORRELATION_ID: "sdfsdf"
+  //   };
+  // }
 
   async getBrands(request, h) {
 
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
@@ -68,7 +68,7 @@ class BrandManagerApi {
 
   async createBrand(request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const payload = request.payload;
       const options = {
         headers
@@ -88,7 +88,7 @@ class BrandManagerApi {
 
   async updateBrand(request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const payload = request.payload;
       const options = {
         headers

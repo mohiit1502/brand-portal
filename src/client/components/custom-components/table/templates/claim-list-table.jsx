@@ -6,8 +6,7 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 
 
 const ClaimListTable = function(props) {
-  const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
-  const { Dropdown, dropdownOptions } = templateProps;
+  const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
 
   const showClaimDetails = function (row) {
     const meta = { templateName: "ClaimDetailsTemplate", data: row.original };

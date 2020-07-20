@@ -25,7 +25,7 @@ class Leftnav extends React.Component {
     for (const i in panel) {
       const currentPanel = panel[i].name;
       const sectionAccessKey = authorizations[panel[i].name] && authorizations[currentPanel].SECTION_ACCESS;
-      if (!restConfig.AUTHORIZATIONS_INTRODUCED
+      if (!restConfig.AUTHORIZATIONS_ENABLED
         || (currentPanel === CONSTANTS.SECTION.CLAIMS
         || !sectionAccessKey
         || (sectionAccessKey && sectionAccessKey.includes(userProfile && userProfile.role ? userProfile.role.name : "")))

@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
 import CONSTANTS from "../../../../constants/constants";
-
+import AUTH_CONFIG from "./../../../../config/authorizations";
 
 const UserListTable = function(props) {
 
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
-  const { Dropdown, dropdownOptions } = templateProps;
+  const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     userName: "col-3",
     sequence: "col-1",
@@ -31,8 +31,18 @@ const UserListTable = function(props) {
     }
   };
 
+  const getOptionsConfigMap = () => {
+    return {
+        [CONSTANTS.USER.OPTIONS.DISPLAY.EDIT]: "EDIT",
+        [CONSTANTS.USER.OPTIONS.DISPLAY.SUSPEND]: "SUSPEND",
+        [CONSTANTS.USER.OPTIONS.DISPLAY.DELETE]: "DELETE",
+        [CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE]: "REINVITE"
+    };
+  };
+
   const generateDropDownOptionsDynamic = (options, values) => {
     const optionsCloned = {...options};
+    const optionsConfigMap = getOptionsConfigMap();
     const dropDownOptionsCloned = [...optionsCloned.dropdownOptions];
     optionsCloned.dropdownOptions = dropDownOptionsCloned;
     const displaySuspended = CONSTANTS.USER.OPTIONS.DISPLAY.SUSPEND.toLowerCase();
@@ -42,6 +52,17 @@ const UserListTable = function(props) {
       return currentDDOption === displaySuspended || currentDDOption === displayReactivate;
     });
     updateDDOptions(toggleStatusDropdownIndex, values, dropDownOptionsCloned);
+    dropDownOptionsCloned.forEach(option => {
+      const i = dropDownOptionsCloned.findIndex(opt => opt === option);
+      const optCloned = {...option};
+      dropDownOptionsCloned[i] = optCloned;
+      const operatableRoles = optionsConfigMap[optCloned.value] && AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]]
+        && AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]][userProfile.role.name]
+        && AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]][userProfile.role.name].map(role => role.toLowerCase());
+        if (operatableRoles) {
+          optCloned.disabled = optCloned.notMvp || !operatableRoles.includes(values.role ? values.role.toLowerCase() : "");
+        }
+    });
     return optionsCloned;
   };
 
@@ -76,6 +97,7 @@ const UserListTable = function(props) {
               const status = row && row.original && row.original.status;
               const negativeStatuses = [CONSTANTS.USER.STATUS.PENDING.toLowerCase(), CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
               const {values} = row;
+              let ddOptions;
               return (
                 <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
                   {
@@ -91,11 +113,14 @@ const UserListTable = function(props) {
                           }
                           {
                             cell.column.id === "status"
-                              && (values.role === undefined || values.role.toLowerCase() !== CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase())
-                              && <span className="float-right">
+                              && (values.role === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : ""))
+                              && CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase() !== values.role.toLowerCase()
+                              && (values.status === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.status.toLowerCase()))
+                              && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) && 
+                                <span className="float-right">
                                   &nbsp;&nbsp;
                                   <Dropdown
-                                    options={generateDropDownOptionsDynamic(dropdownOptions, values)}
+                                    options={ddOptions}
                                     data={row.original}
                                     hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
                                   &nbsp;&nbsp;
@@ -120,7 +145,8 @@ UserListTable.propTypes = {
   headerGroups: PropTypes.array,
   rows: PropTypes.array,
   prepareRow: PropTypes.func,
-  templateProps: PropTypes.object
+  templateProps: PropTypes.object,
+  userProfile: PropTypes.object
 };
 
 export default connect()(UserListTable);

@@ -3,14 +3,13 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
-import { data } from "jquery";
 import CONSTANTS from "../../../../constants/constants";
-
+import AUTH_CONFIG from "./../../../../config/authorizations";
 
 const BrandListTable = function(props) {
 
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
-  const { Dropdown, dropdownOptions } = templateProps;
+  const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     sequence: "col-1"
   };
@@ -84,15 +83,18 @@ const BrandListTable = function(props) {
                             Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
                           }
                           {
-                            cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
-                            <span className="float-right">
-                              &nbsp;&nbsp;
-                              <Dropdown
-                                options={generateDropDownOptionsDynamic(dropdownOptions, values)}
-                                data={row.original}
-                                hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
-                              &nbsp;&nbsp;
-                            </span>
+                            // cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
+                            cell.column.id === "brandStatus"
+                              && AUTH_CONFIG.BRANDS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : "")
+                              && (values.brandStatus === undefined || AUTH_CONFIG.BRANDS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.brandStatus.toLowerCase()))
+                              && <span className="float-right">
+                                &nbsp;&nbsp;
+                                <Dropdown
+                                  options={generateDropDownOptionsDynamic(dropdownOptions, values)}
+                                  data={row.original}
+                                  hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
+                                &nbsp;&nbsp;
+                              </span>
                           }
                         </div>
                       );
@@ -113,7 +115,8 @@ BrandListTable.propTypes = {
   headerGroups: PropTypes.array,
   rows: PropTypes.array,
   prepareRow: PropTypes.func,
-  templateProps: PropTypes.object
+  templateProps: PropTypes.object,
+  userProfile: PropTypes.object
 };
 
 export default connect()(BrandListTable);

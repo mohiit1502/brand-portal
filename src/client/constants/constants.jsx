@@ -30,7 +30,7 @@ const CONSTANTS = {
     },
     PORTAL_VERIFICATION: {
       CODE: 2,
-      IMAGE: "YellowBGExclamation",
+      IMAGE: "Alert",
       MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
       TITLE: "Company Registration is Pending"
     },
@@ -39,13 +39,13 @@ const CONSTANTS = {
     },
     PORTAL_ACCESS_REVOKED: {
       CODE: 8,
-      IMAGE: "Search",
+      IMAGE: "Alert",
       MESSAGE: "Your company account access has been revoked for security reasons",
       TITLE: "Access Denied"
     },
     USER_ACCESS_REVOKED: {
       CODE: 16,
-      IMAGE: "GreenCircleCheck",
+      IMAGE: "RedCircleCross",
       MESSAGE: "Your account access has been revoked for security reasons",
       TITLE: "Access Denied"
     },
@@ -109,7 +109,7 @@ const CONSTANTS = {
       INTERNAL: "Internal"
     },
     ROLES: {
-      ADMIN: "Admininstrator",
+      ADMIN: "Administrator",
       REPORTER: "Reporter",
       SUPERADMIN: "Super Admin"
     },
@@ -146,6 +146,7 @@ const CONSTANTS = {
     },
     OPTIONS: {
       DISPLAY: {
+        EDIT: "Edit Brand Details",
         SUSPEND: "Suspend Brand",
         REACTIVATE: "Reactivate Brand",
         DELETE: "Delete Brand"
@@ -172,6 +173,19 @@ const CONSTANTS = {
     STATUS: {
 
     }
+  },
+
+  ONGOING_CLAIM_TYPES: {
+    TRADEMARK: "trademark",
+    PATENT: "patent",
+    COUNTERFEIT: "counterfeit",
+    COPYRIGHT: "copyright"
+  },
+
+  REGEX: {
+    ZIP: "\\d{5}(?:[-\s]\\d{4})?$",
+    EMAIL: "\\S+@\\S+\.\\S+",
+    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
   }
 };
 

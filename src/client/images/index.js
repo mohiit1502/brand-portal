@@ -1,4 +1,7 @@
+import Access from "./access.svg";
+import Alert from "./alert.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
+import Confirm from "./confirm.svg";
 import Search from "./18-px-search.svg";
 import ArrowDown from "./arrow-down-dk.png";
 import CheckGreen from "./check-grn.svg";
@@ -21,7 +24,10 @@ import YellowBGExclamation from "./YellowBGExclamation.png";
 import YellowBGKey from "./YellowBGKey.png";
 
 export {
+    Access,
+    Alert,
     BlackBGCheck,
+    Confirm,
     Search,
     ArrowDown,
     CheckGreen,
