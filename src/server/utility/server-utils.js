@@ -9,6 +9,8 @@ class ServerUtils {
 
   getHeaders(request) {
     return {
+      "Content-Type": "application/json",
+      Accept: "application/json",
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"temp-client-id",

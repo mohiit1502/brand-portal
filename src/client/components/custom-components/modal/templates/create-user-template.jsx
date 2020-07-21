@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -8,7 +9,7 @@ import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
 import CONSTANTS from "../../../../constants/constants";
-
+import InputFormatter from "./../../../../utility/phoneOps";
 
 class CreateUserTemplate extends React.Component {
 
@@ -21,6 +22,8 @@ class CreateUserTemplate extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
+    this.onInvalidHandler = this.onInvalidHandler.bind(this);
+    this.invalid = {emailId: false, phone: false};
 
     this.state = {
       form: {
@@ -78,20 +81,14 @@ class CreateUserTemplate extends React.Component {
             required: true,
             value: "",
             type: "email",
-            pattern: null,
+            pattern: CONSTANTS.REGEX.EMAIL,
             disabled: false,
+            invalidError: "Email is not Valid",
             error: "",
+            isUnique: true,
             onBlurEvent: e => {
-              Http.get("/api/users/checkUnique", {email: e.target.value}).then(res => {
-                this.setState(state => {
-                  state = {...state};
-                  state.form.inputData.emailId.error = "Email is not Unique";
-                  state.form.inputData.emailId.isUnique = false;
-                  return {
-                    ...state
-                  };
-                }, this.checkToEnableSubmit);
-                if (!res.body.unique) {
+              if (!this.state.form.inputData.emailId.error) {
+                Http.get("/api/users/checkUnique", {email: e.target.value}).then(res => {
                   this.setState(state => {
                     state = {...state};
                     state.form.inputData.emailId.error = "Email is not Unique";
@@ -100,17 +97,27 @@ class CreateUserTemplate extends React.Component {
                       ...state
                     };
                   }, this.checkToEnableSubmit);
-                } else {
-                  this.setState(state => {
-                    state = {...state};
-                    state.form.inputData.emailId.error = "";
-                    state.form.inputData.emailId.isUnique = true;
-                    return {
-                      ...state
-                    };
-                  }, this.checkToEnableSubmit);
-                }
-              });
+                  if (!res.body.unique) {
+                    this.setState(state => {
+                      state = {...state};
+                      state.form.inputData.emailId.error = "Email is not Unique";
+                      state.form.inputData.emailId.isUnique = false;
+                      return {
+                        ...state
+                      };
+                    }, this.checkToEnableSubmit);
+                  } else {
+                    this.setState(state => {
+                      state = {...state};
+                      state.form.inputData.emailId.error = "";
+                      state.form.inputData.emailId.isUnique = true;
+                      return {
+                        ...state
+                      };
+                    }, this.checkToEnableSubmit);
+                  }
+                });
+              }
             }
           },
           phone: {
@@ -118,8 +125,10 @@ class CreateUserTemplate extends React.Component {
             required: false,
             value: "",
             type: "text",
-            pattern: null,
-            disabled: false
+            pattern: CONSTANTS.REGEX.PHONE,
+            disabled: false,
+            invalidError: "Phone number is not Valid",
+            maxLength: 17
           },
           role: {
             label: "Set Role",
@@ -154,6 +163,9 @@ class CreateUserTemplate extends React.Component {
     }
     this.fetchRolesForUser();
     this.fetchBrandsForUser();
+    const formatter = new InputFormatter();
+    const handlers = formatter.on("#user-profile-form-phone-custom-input");
+    this.customChangeHandler = handlers.inputHandler;
   }
 
   componentDidUpdate(prevProps) {
@@ -180,7 +192,7 @@ class CreateUserTemplate extends React.Component {
   }
 
   getPopulatedBrands (brands) {
-    console.log(brands);
+    // console.log(brands);
     if (brands.options.length) {
       if (this.props.data && this.props.data.brands) {
         brands.value = this.props.data.brands.map(brand => brand.name).join(", ");
@@ -224,10 +236,14 @@ class CreateUserTemplate extends React.Component {
 
   onInputChange (evt, key) {
     if (evt && evt.target) {
-      const targetVal = evt.target.value;
+      evt.target.checkValidity();
+      const target = evt.target;
       this.setState(state => {
+        const targetVal = target.value;
         state = {...state};
         state.form.inputData[key].value = targetVal;
+        state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
+        this.invalid[key] = false;
         return {
           ...state
         };
@@ -237,8 +253,8 @@ class CreateUserTemplate extends React.Component {
 
   checkToEnableSubmit() {
     const form = {...this.state.form};
-    const bool = form.inputData.firstName.value && form.inputData.firstName.value &&
-      form.inputData.emailId.value && form.inputData.emailId.isUnique && form.inputData.emailId.isUnique &&
+    const bool = form.inputData.firstName.value && form.inputData.lastName.value &&
+      form.inputData.emailId.value && form.inputData.emailId.isUnique !== false && !form.inputData.phone.error &&
       form.inputData.role.value && form.inputData.brands.value && form.undertaking.selected;
 
     form.submitDisabled = !bool;
@@ -274,7 +290,7 @@ class CreateUserTemplate extends React.Component {
     state.form.undertaking.selected = !state.form.undertaking.selected;
     this.setState({
       ...state
-    });
+    }, this.checkToEnableSubmit);
   }
 
   async handleSubmit(evt) {
@@ -361,7 +377,18 @@ class CreateUserTemplate extends React.Component {
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
         this.setState({form});
       });
+  }
 
+  onInvalidHandler (evt, key) {
+    const form = this.state.form;
+    const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
+    if (matchedField) {
+      const matchedObj = form.inputData[matchedField];
+      matchedObj.error = matchedObj.invalidError;
+      // matchedObj.error = true;
+      this.invalid[key] = true;
+      this.setState({form});
+    }
   }
 
   render() {
@@ -431,7 +458,7 @@ class CreateUserTemplate extends React.Component {
                       inputId={"emailId"}
                       formId={this.state.form.id} label={this.state.form.inputData.emailId.label}
                       required={this.state.form.inputData.emailId.required} value={this.state.form.inputData.emailId.value}
-                      type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern}
+                      type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern} onInvalidHandler={this.onInvalidHandler}
                       onBlurEvent={this.state.form.inputData.emailId.onBlurEvent} error={this.state.form.inputData.emailId.error}
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled} />
                   </div>
@@ -440,7 +467,8 @@ class CreateUserTemplate extends React.Component {
                       inputId={"phone"}
                       formId={this.state.form.id} label={this.state.form.inputData.phone.label}
                       required={this.state.form.inputData.phone.required} value={this.state.form.inputData.phone.value}
-                      type={this.state.form.inputData.phone.type} pattern={this.state.form.inputData.phone.pattern}
+                      type={this.state.form.inputData.phone.type} pattern={this.state.form.inputData.phone.pattern} customChangeHandler={this.customChangeHandler}
+                      onInvalidHandler={this.onInvalidHandler} error={this.state.form.inputData.phone.error} maxLength={this.state.form.inputData.phone.maxLength}
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} />
                   </div>
                 </div>

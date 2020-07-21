@@ -13,8 +13,10 @@ import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
-import CONSTANTS from "../../../../constants/constants";
 import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
+import CONSTANTS from "../../../../constants/constants";
+import restConfig from "../../../../config/rest";
+import AUTH_CONFIG from "../../../../config/authorizations";
 
 class UserList extends React.Component {
 
@@ -32,6 +34,7 @@ class UserList extends React.Component {
     this.paginationCallback = this.paginationCallback.bind(this);
     this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
+    const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
 
     this.state = {
       page: {
@@ -44,12 +47,14 @@ class UserList extends React.Component {
       filteredList: [],
       filters: [],
       showFilters: false,
+      userRole,
       dropdown: {
         buttonText: burgerIcon,
         dropdownOptions: [
           {
             id: 1,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.EDIT,
+            disabled: true,
             clickCallback: (evt, option, data) => {
               this.editUser(data.original);
             }
@@ -57,6 +62,7 @@ class UserList extends React.Component {
           {
             id: 2,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.SUSPEND,
+            disabled: true,
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.status && data.status === CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.USER.OPTIONS.PAYLOAD.ACTIVE : CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND;
@@ -67,19 +73,22 @@ class UserList extends React.Component {
             }
           },
           // TODO comment for MVP, uncomment for sprint 3
-          // {
-          //   id: 3,
-          //   value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
-          //   clickCallback: (evt, option, data) => {
-          //     const response = Http.delete(`/api/users/${data.loginId}`);
-          //     response.then(res => {
-          //       this.fetchUserData();
-          //     });
-          //   }
-          // },
+          {
+            id: 3,
+            value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
+            disabled: true,
+            notMvp: true,
+            clickCallback: (evt, option, data) => {
+              const response = Http.delete(`/api/users/${data.loginId}`);
+              response.then(res => {
+                this.fetchUserData();
+              });
+            }
+          },
           {
             id: 4,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
+            disabled: true,
             clickCallback (evt) {
               console.log(4);
             }
@@ -344,7 +353,10 @@ class UserList extends React.Component {
       return "";
     };
 
-    return (
+
+    const enableSectionAccess = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.USERS.SECTION_ACCESS.map(role => role.toLowerCase()).includes(this.state.userRole) : true;
+    const enableUserInvite = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && Object.keys(AUTH_CONFIG.USERS.INVITE).map(role => role.toLowerCase()).includes(this.state.userRole) : true;
+    return enableSectionAccess ? (
       <div className="row user-list-content h-100">
         <div className="col h-100">
           <div className="row content-header-row p-4 h-10 mx-0">
@@ -356,7 +368,7 @@ class UserList extends React.Component {
             <div className="col content-col h-100;">
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
-                  <div className="btn btn-primary btn-sm px-3" onClick={this.createNewUser}>
+                  <div className={`btn btn-primary btn-sm px-3${!enableUserInvite ? " disabled" : ""}`} onClick={enableUserInvite && this.createNewUser}>
                     Invite User
                   </div>
                 </div>
@@ -434,7 +446,7 @@ class UserList extends React.Component {
                       {
                         this.state.filteredList.length > 0 ?
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.userListColumns} template={UserListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> : <NoRecordsMatch />
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile}}/> : <NoRecordsMatch />
                       }
                     </div>
                   </div>
@@ -471,20 +483,22 @@ class UserList extends React.Component {
           </div>
         </div>
       </div>
-    );
+    ) : <p>Access Denied</p>;
   }
 }
 
 UserList.propTypes = {
   toggleModal: PropTypes.func,
   saveUserCompleted: PropTypes.func,
-  userEdit: PropTypes.object
+  userEdit: PropTypes.object,
+  userProfile: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     modal: state.modal,
-    userEdit: state.userEdit
+    userEdit: state.userEdit,
+    userProfile: state.userProfile
   };
 };
 

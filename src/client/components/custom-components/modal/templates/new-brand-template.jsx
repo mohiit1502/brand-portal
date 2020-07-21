@@ -147,8 +147,8 @@ class NewBrandTemplate extends React.Component {
   checkToEnableSubmit() {
     const form = {...this.state.form};
     const bool = (form.isUpdateTemplate || form.inputData.trademarkNumber.isValid)  &&
-      form.inputData.trademarkNumber.value &&
-      form.inputData.brandName.value && form.inputData.brandName.isUnique &&
+      form.inputData.trademarkNumber.value && form.inputData.brandName.value &&
+      (form.isUpdateTemplate || form.inputData.brandName.isUnique) &&
       form.undertaking.selected;
 
     form.isSubmitDisabled = !bool;

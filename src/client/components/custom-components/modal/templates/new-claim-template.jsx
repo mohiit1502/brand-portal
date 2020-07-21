@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 import React from "react";
 import {connect} from "react-redux";
 import PlusIcon from "../../../../images/plus.svg";
@@ -10,6 +11,7 @@ import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
+import Helper from "../../../../utility/helper";
 
 class NewClaimTemplate extends React.Component {
 
@@ -26,6 +28,7 @@ class NewClaimTemplate extends React.Component {
     this.removeFromItemList = this.removeFromItemList.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.onItemUrlBlur = this.onItemUrlBlur.bind(this);
+    this.claimsMap = {};
 
     this.state = {
       form: {
@@ -58,8 +61,8 @@ class NewClaimTemplate extends React.Component {
             subtitle: "",
             error: ""
           },
-          copyrightNumber: {
-            label: "Copyright Number",
+          claimTypeIdentifier: {
+            label: "Claim Type Identifier",
             required: true,
             value: "",
             type: "text",
@@ -177,12 +180,30 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
+  customChangeHandler (value) {
+    const form = this.state.form;
+    const claimTypeIdentifier = form.inputData.claimTypeIdentifier;
+    const claimTypesWithMeta = form.claimTypesWithMeta;
+    const matchedClaimTypeWithMeta = claimTypesWithMeta.find(claimTypeWithMeta => claimTypeWithMeta.label === value);
+    if (matchedClaimTypeWithMeta) {
+      claimTypeIdentifier.label = matchedClaimTypeWithMeta.claimTypeIdentifierLabel;
+      this.setState({form});
+    }
+  }
+
   getClaimTypes () {
     return Http.get("/api/claims/types")
       .then(res => {
         const form = {...this.state.form};
-        form.inputData.claimType.options = res.body.data;
-        form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
+        let options = [...res.body.data];
+        options = options.map(option => {
+          const displayVal = Helper.toCamelCaseIndividual(option.claimType);
+          option.label = displayVal;
+          option.claimTypeIdentifierLabel = `${displayVal} Number`;
+          return option;
+        });
+        form.inputData.claimType.options = options && options.map(v => ({value: v.label}));
+        form.claimTypesWithMeta = options;
         this.setState({form});
       });
   }
@@ -242,7 +263,7 @@ class NewClaimTemplate extends React.Component {
 
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
-      form.inputData.copyrightNumber.value &&
+      form.inputData.claimTypeIdentifier.value &&
       form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value), true) &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -265,7 +286,7 @@ class NewClaimTemplate extends React.Component {
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
-    const registrationNumber = inputData.copyrightNumber.value;
+    const registrationNumber = inputData.claimTypeIdentifier.value;
 
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
@@ -335,7 +356,7 @@ class NewClaimTemplate extends React.Component {
                   <div className="col-4">
                     <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
                       value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChangeEvent={this.setSelectInputValue}
-                      disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} />
+                      disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                   </div>
                 </div>
                 <div className="row">
@@ -345,10 +366,10 @@ class NewClaimTemplate extends React.Component {
                       disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} />
                   </div>
                   <div className="col-4">
-                    <CustomInput key={"copyrightNumber"} inputId={"copyrightNumber"} formId={form.id} label={inputData.copyrightNumber.label}
-                      required={inputData.copyrightNumber.required} value={inputData.copyrightNumber.value} type={inputData.copyrightNumber.type}
-                      pattern={inputData.copyrightNumber.pattern} onChangeEvent={this.onInputChange} disabled={inputData.copyrightNumber.disabled}
-                      dropdownOptions={inputData.copyrightNumber.options} />
+                    <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}
+                      required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
+                      pattern={inputData.claimTypeIdentifier.pattern} onChangeEvent={this.onInputChange} disabled={inputData.claimTypeIdentifier.disabled}
+                      dropdownOptions={inputData.claimTypeIdentifier.options} />
                   </div>
                 </div>
                 {

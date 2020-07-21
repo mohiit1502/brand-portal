@@ -8,6 +8,8 @@ class CompanyManagerApi {
     this.register = this.register.bind(this);
     this.registerOrganization = this.registerOrganization.bind(this);
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
+    this.uploadBusinessDocument = this.uploadBusinessDocument.bind(this);
+    this.uploadAdditionalDocument = this.uploadAdditionalDocument.bind(this);
     this.FILE_UPLOAD_SIZE_LIMIT = 1000 * 1000 * 10; // 10MB
   }
 
@@ -66,7 +68,7 @@ class CompanyManagerApi {
 
   async registerOrganization (request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         method: "POST",
         headers
@@ -107,7 +109,7 @@ class CompanyManagerApi {
   async uploadAdditionalDocument (request, h) {
     try {
 
-      const headers = ServerUtils.getHeaders(request);
+      const headers = this.getHeaders(request);
 
       const options = {
         headers
@@ -132,7 +134,7 @@ class CompanyManagerApi {
   async uploadBusinessDocument (request, h) {
     try {
 
-      const headers = ServerUtils.getHeaders(request);
+      const headers = this.getHeaders(request);
 
       const options = {
         headers

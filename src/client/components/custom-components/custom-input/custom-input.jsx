@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -62,6 +63,7 @@ class CustomInput extends React.Component {
       });
     }
 
+    this.props.customChangeHandler && this.props.customChangeHandler(evt);
     this.state.onChangeEvent(evt, key);
   }
 
@@ -71,6 +73,7 @@ class CustomInput extends React.Component {
         value
       });
     }
+    this.props.customChangeHandler && this.props.customChangeHandler(value);
     this.state.onChangeEvent(value, key);
   }
 
@@ -137,6 +140,14 @@ class CustomInput extends React.Component {
     if (evt && evt.target) {
       const state = {...this.state};
       const dropdownOptions = state.dropdownOptions;
+      if (evt.target.value.toLowerCase() === "all") {
+        dropdownOptions.forEach(opt => (opt.selected = evt.target.checked));
+      } else {
+        let allSelected = true;
+        dropdownOptions.forEach(opt => opt.name.toLowerCase() !== "all" && !opt.selected && (allSelected = false));
+        const optionsAll = dropdownOptions.find(opt => opt.name.toLowerCase() === "all");
+        optionsAll.selected = allSelected;
+      }
       this.setState({
         dropdownOptions
       });
@@ -146,7 +157,6 @@ class CustomInput extends React.Component {
   }
 
   setMultiSelectValueFromDropdownOptions (dropdownOptions) {
-
     const selectedList = [];
     for (const i in dropdownOptions) {
       if (dropdownOptions[i].selected) {
@@ -248,8 +258,8 @@ class CustomInput extends React.Component {
       <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
-          onChange={ e => { this.onInputChange(e, this.state.inputId); } } onBlur={this.onBlur}/>
+          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.props.maxLength}
+          onChange={ e => { this.onInputChange(e, this.state.inputId); }} onInvalid={e => this.props.onInvalidHandler(e, this.state.inputId)} />
 
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
@@ -296,23 +306,26 @@ class CustomInput extends React.Component {
 }
 
 CustomInput.propTypes = {
-  label: PropTypes.string,
-  key: PropTypes.string,
+  customChangeHandler: PropTypes.func,
+  disabled: PropTypes.bool,
+  dropdownOptions: PropTypes.array,
+  error: PropTypes.string,
   formId: PropTypes.string,
   inputId: PropTypes.string,
-  type: PropTypes.string,
-  required: PropTypes.bool,
-  value: PropTypes.string,
-  pattern: PropTypes.object,
-  disabled: PropTypes.bool,
-  onChangeEvent: PropTypes.func,
+  key: PropTypes.string,
+  label: PropTypes.string,
+  maxLength: PropTypes.number,
   onBlurEvent: PropTypes.func,
+  onChangeEvent: PropTypes.func,
+  onInvalidHandler: PropTypes.func,
+  pattern: PropTypes.object,
+  patternErrorMessage: PropTypes.string,
   radioOptions: PropTypes.array,
-  dropdownOptions: PropTypes.array,
-  subtitle: PropTypes.string,
-  error: PropTypes.string,
+  required: PropTypes.bool,
   rowCount: PropTypes.number,
-  patternErrorMessage: PropTypes.string
+  subtitle: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.string
 };
 
 const mapStateToProps = state => state;

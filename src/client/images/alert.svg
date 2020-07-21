@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="105px" height="105px" viewBox="0 0 105 105" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>alert</title>
+    <defs>
+        <filter x="-2.2%" y="-3.4%" width="104.4%" height="106.8%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Visual-Design:-Super-Admin" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2.17-verf-in-process" transform="translate(-668.000000, -352.000000)" fill-rule="nonzero">
+            <g id="Group-7" filter="url(#filter-1)" transform="translate(447.000000, 321.000000)">
+                <g id="alert" transform="translate(230.000000, 40.000000)">
+                    <path d="M4.00948985,33.8391085 L33.8391085,4.00948985 C39.1686581,-1.3200597 47.8100184,-1.3200597 53.1395679,4.00948985 L82.9691866,33.8391085 C88.2987362,39.1686581 88.2987362,47.8100184 82.9691866,53.1395679 L53.1395679,82.9691866 C47.8100184,88.2987362 39.1686581,88.2987362 33.8391085,82.9691866 L4.00948985,53.1395679 C-1.3200597,47.8100184 -1.3200597,39.1686581 4.00948985,33.8391085 Z" id="Path" fill="#FFDA6B"></path>
+                    <g id="Group" transform="translate(40.600000, 24.223529)" fill="#FFFFFF">
+                        <path d="M2.8880056,0.159926471 C4.3953125,0.159926471 5.61741736,1.38203116 5.61741736,2.88933824 L5.61741736,24.7246324 C5.61741736,26.2319394 4.3953125,27.4540441 2.8880056,27.4540441 C1.38069853,27.4540441 0.158593835,26.2319394 0.158593835,24.7246324 L0.158593835,2.88933824 C0.158593835,1.38203116 1.38069853,0.159926471 2.8880056,0.159926471 Z" id="Path"></path>
+                        <polygon id="Path" points="0.158593835 32.9128676 5.61741736 32.9128676 5.61741736 38.3716912 0.158593835 38.3716912"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

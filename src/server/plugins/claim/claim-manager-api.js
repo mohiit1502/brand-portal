@@ -1,5 +1,6 @@
 import ServerHttp from "../../utility/ServerHttp";
 import {IQS_URL} from "./../../constants/server-constants";
+import ServerUtils from "../../utility/server-utils";
 
 class ClaimManagerApi {
   constructor() {
@@ -36,14 +37,14 @@ class ClaimManagerApi {
     ]);
   }
 
-  getHeaders(request) {
-    return {
-      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-      ROPRO_USER_ID:	request.state.session_token_login_id,
-      ROPRO_CLIENT_ID:	"abcd",
-      ROPRO_CORRELATION_ID: "sdfsdf"
-    };
-  }
+  // getHeaders(request) {
+  //   return {
+  //     ROPRO_AUTH_TOKEN: request.state.auth_session_token,
+  //     ROPRO_USER_ID:	request.state.session_token_login_id,
+  //     ROPRO_CLIENT_ID:	"abcd",
+  //     ROPRO_CORRELATION_ID: "sdfsdf"
+  //   };
+  // }
 
   getIQSHeaders() {
     return {
@@ -86,7 +87,7 @@ class ClaimManagerApi {
 
   async getClaimTypes(request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
@@ -107,7 +108,7 @@ class ClaimManagerApi {
   async getClaims(request, h) {
 
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
@@ -127,7 +128,7 @@ class ClaimManagerApi {
 
   async createClaim(request, h) {
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getHeaders(request);
       const payload = request.payload;
       const options = {
         headers

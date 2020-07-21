@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="105px" height="105px" viewBox="0 0 105 105" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>confirm</title>
+    <defs>
+        <filter x="-1.9%" y="-3.4%" width="103.8%" height="106.8%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Visual-Design:-Super-Admin" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2.16-success-reg" transform="translate(-668.000000, -352.000000)" fill="#9CC618" fill-rule="nonzero">
+            <g id="Group-7" filter="url(#filter-1)" transform="translate(401.000000, 321.000000)">
+                <g id="confirm" transform="translate(276.000000, 40.000000)">
+                    <path d="M43.5007052,0 C19.515126,0 0,19.5133992 0,43.5 C0,67.4880113 19.515126,87 43.5007052,87 C67.4869897,87 87,67.4880113 87,43.5 C87,19.5133992 67.4862845,0 43.5007052,0 Z M63.6089368,37.1453276 L40.6651461,59.6323673 C40.1656904,60.1225442 39.2808391,60.1225442 38.7806749,59.6323673 L23.3882294,44.5465825 C23.1381473,44.3007997 23,43.9737837 23,43.6224671 C23.0007084,43.2725391 23.1388558,42.9434401 23.3882294,42.6962688 L25.355589,40.7688876 C25.605671,40.5244934 25.9400584,40.3904932 26.2992414,40.3904932 C26.6562991,40.3904932 26.991395,40.5244934 27.2407686,40.7688876 L39.2404576,52.5289678 C39.5061255,52.7921081 39.9382786,52.7921081 40.204655,52.5289678 L59.7563976,33.3676327 C60.2565618,32.8774558 61.14283,32.8774558 61.6415772,33.3676327 L63.6089368,35.2984854 C63.8590189,35.5414909 64,35.8719785 64,36.2198236 C64,36.5718345 63.8590189,36.8995448 63.6089368,37.1453276 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

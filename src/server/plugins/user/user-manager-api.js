@@ -122,13 +122,13 @@ class UserManagerApi {
 
   }
 
-  getHeaders(request) {
-    return {
-      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-      ROPRO_USER_ID:	request.state.session_token_login_id,
-      ROPRO_CLIENT_ID:	"abcd"
-    };
-  }
+  // getHeaders(request) {
+  //   return {
+  //     ROPRO_AUTH_TOKEN: request.state.auth_session_token,
+  //     ROPRO_USER_ID:	request.state.session_token_login_id,
+  //     ROPRO_CLIENT_ID:	"abcd"
+  //   };
+  // }
 
   async updateUser (request, h) {
     try {
@@ -343,12 +343,6 @@ class UserManagerApi {
       const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
-
-      //temporary login below
-      // const login = await this.loginStaticUser();
-      // const authToken = login.payload.authenticationToken.authToken;
-      // const loginId = login.payload.principal.loginId;
-      //temporary login above
 
       h.state("auth_session_token", authToken, {
         ttl,

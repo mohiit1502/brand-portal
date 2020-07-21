@@ -27,6 +27,8 @@ class CompanyProfileRegistration extends React.Component {
     this.cancelAdditionalDocumentSelection = this.cancelAdditionalDocumentSelection.bind(this);
     this.cancelDocumentSelection = this.cancelDocumentSelection.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
+    this.onInvalidHandler = this.onInvalidHandler.bind(this);
+    this.invalid = {zip: false};
 
     this.state = {
       isSubmitDisabled: true,
@@ -81,7 +83,7 @@ class CompanyProfileRegistration extends React.Component {
             required: true,
             value: "",
             type: "text",
-            pattern: "[0-9]{5}",
+            pattern: CONSTANTS.REGEX.ZIP,
             patternErrorMessage: "Invalid Zip Code",
             disabled: true,
             subtitle: "",
@@ -161,17 +163,20 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.city.value &&
       form.inputData.state.value &&
       form.inputData.zip.value &&
-      form.inputData.businessRegistrationDoc.id;
+      form.inputData.businessRegistrationDoc.id &&
+      !form.inputData.zip.error;
     this.setState({isSubmitDisabled: !bool});
   }
 
   onInputChange (evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
+      evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
         state.form.inputData[key].value = targetVal;
-        state.form.inputData[key].error = "";
+        state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
+        this.invalid[key] = false;
         return {
           ...state
         };
@@ -329,13 +334,22 @@ class CompanyProfileRegistration extends React.Component {
     this.setState({redirectToBrands: true});
   }
 
+  onInvalidHandler (evt, key) {
+    const form = this.state.form;
+    const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
+    if (matchedField) {
+      const matchedObj = form.inputData[matchedField];
+      matchedObj.error = matchedObj.invalidError;
+      this.invalid[key] = true;
+      this.setState({form});
+    }
+  }
+
 
   render() {
-
     if (this.state.redirectToBrands) {
       return <Redirect to={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER} />;
     }
-
 
     return (
       <div className="row justify-content-center">
@@ -418,7 +432,7 @@ class CompanyProfileRegistration extends React.Component {
                           inputId={"zip"}
                           formId={this.state.form.id} label={this.state.form.inputData.zip.label}
                           required={this.state.form.inputData.zip.required} value={this.state.form.inputData.zip.value}
-                          type={this.state.form.inputData.zip.type} pattern={this.state.form.inputData.zip.pattern}
+                          type={this.state.form.inputData.zip.type} pattern={this.state.form.inputData.zip.pattern} onInvalidHandler={this.onInvalidHandler}
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.zip.disabled} patternErrorMessage={this.state.form.inputData.zip.patternErrorMessage}
                           error={this.state.form.inputData.zip.error} subtitle={this.state.form.inputData.zip.subtitle}/>
                       </div>

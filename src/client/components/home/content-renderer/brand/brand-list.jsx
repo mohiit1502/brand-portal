@@ -15,7 +15,7 @@ import {showNotification} from "../../../../actions/notification/notification-ac
 import CustomTable from "../../../custom-components/table/custom-table";
 import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
 import CONSTANTS from "../../../../constants/constants";
-import authorizations from "./../../../../config/authorizations";
+import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
 import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
@@ -55,16 +55,16 @@ class BrandList extends React.Component {
         dropdownOptions: [
           {
             id: 1,
-            value: "Edit Brand Details",
-            disabled: !authorizations.BRANDS.EDIT_BRAND.includes(userRole),
+            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.EDIT,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDIT.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
               this.editBrand(data.original);
             }
           },
           {
             id: 2,
-            value: "Suspend Brand",
-            disabled: !authorizations.BRANDS.SUSPEND_BRAND.includes(userRole),
+            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.SUSPEND.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
@@ -78,8 +78,8 @@ class BrandList extends React.Component {
           // TODO disabled for MVP, enable for sprint 3
           {
             id: 3,
-            value: "Delete Brand",
-            disabled: restConfig.IS_MVP || !authorizations.BRANDS.DELETE_BRAND.includes(userRole),
+            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE,
+            disabled: restConfig.IS_MVP || (restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DELETE.map(role => role.toLocaleLowerCase()).includes(userRole ? userRole.toLowerCase() : "") : false),
             clickCallback: (evt, option, data) => {
               const payload = {
                 status: "Delete"
@@ -302,8 +302,9 @@ class BrandList extends React.Component {
       return "";
     };
 
-    const disableBrandCreate = this.state.userRole && !authorizations.BRANDS.CREATE_BRAND.includes(this.state.userRole);
-    return (
+    const enableSectionAccess = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.BRANDS.SECTION_ACCESS.map(role => role.toLowerCase()).includes(this.state.userRole.toLowerCase()) : true;
+    const enableBrandCreate = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.BRANDS.CREATE.map(role => role.toLowerCase()).includes(this.state.userRole.toLowerCase()) : true;
+    return enableSectionAccess ? (
       <div className="row brand-list-content h-100">
         <div className="col h-100">
 
@@ -316,7 +317,7 @@ class BrandList extends React.Component {
             <div className="col content-col h-100;">
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
-                  <div className={`btn btn-primary btn-sm px-3${disableBrandCreate ? " disabled" : ""}`} onClick={!disableBrandCreate && this.addNewBrand}>
+                  <div className={`btn btn-primary btn-sm px-3${!enableBrandCreate ? " disabled" : ""}`} onClick={enableBrandCreate && this.addNewBrand}>
                     New Brand
                   </div>
                 </div>
@@ -394,7 +395,7 @@ class BrandList extends React.Component {
                       {
                         this.state.filteredList.length > 0 ?
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={BrandListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> : <NoRecordsMatch message="No Records Found matching search and filters provided." />
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile}}/> : <NoRecordsMatch message="No Records Found matching search and filters provided." />
                       }
                     </div>
                   </div>
@@ -430,7 +431,7 @@ class BrandList extends React.Component {
           </div>
         </div>
       </div>
-    );
+    ) : <p>Access Denied</p>;
   }
 }
 

@@ -22,7 +22,7 @@ class NewUserAddedTemplate extends React.Component {
   }
 
   getDescriptionString() {
-    return `An email has been sent to ${this.props.modal.data.loginId}. The profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
+    return `An email has been sent to ${this.props.modal.data.email}. The profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
   }
 
   render() {
