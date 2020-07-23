@@ -49,6 +49,7 @@ class BrandManagerApi {
   async getBrands(request, h) {
 
     try {
+      const param = request.query && request.query.brandStatus;
       const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
@@ -56,7 +57,7 @@ class BrandManagerApi {
 
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
-      const url = `${BASE_URL}${BRANDS_PATH}`;
+      const url = param ? `${BASE_URL}${BRANDS_PATH}?brandStatus=${param}` : `${BASE_URL}${BRANDS_PATH}`;
 
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);

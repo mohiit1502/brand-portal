@@ -56,7 +56,7 @@ class BrandList extends React.Component {
           {
             id: 1,
             value: CONSTANTS.BRAND.OPTIONS.DISPLAY.EDIT,
-            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDIT.includes(userRole) : false,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDIT.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
               this.editBrand(data.original);
             }
@@ -64,7 +64,7 @@ class BrandList extends React.Component {
           {
             id: 2,
             value: CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND,
-            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.SUSPEND.includes(userRole) : false,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.SUSPEND.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
@@ -79,7 +79,8 @@ class BrandList extends React.Component {
           {
             id: 3,
             value: CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE,
-            disabled: restConfig.IS_MVP || (restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DELETE.map(role => role.toLocaleLowerCase()).includes(userRole ? userRole.toLowerCase() : "") : false),
+            disabled: restConfig.IS_MVP || (restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DELETE.ROLES.map(role => role.toLocaleLowerCase()).includes(userRole ? userRole.toLowerCase() : "") : false),
+            notMvp: true,
             clickCallback: (evt, option, data) => {
               const payload = {
                 status: "Delete"

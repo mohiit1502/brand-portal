@@ -6,10 +6,8 @@ import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
-import searchIcon from "../../../../images/18-px-search.svg";
-import filterIcon from "../../../../images/filter-sc.svg";
-import burgerIcon from "../../../../images/group-23.svg";
 import {saveUserCompleted} from "../../../../actions/user/user-actions";
+import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
@@ -17,6 +15,9 @@ import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsM
 import CONSTANTS from "../../../../constants/constants";
 import restConfig from "../../../../config/rest";
 import AUTH_CONFIG from "../../../../config/authorizations";
+import searchIcon from "../../../../images/18-px-search.svg";
+import filterIcon from "../../../../images/filter-sc.svg";
+import burgerIcon from "../../../../images/group-23.svg";
 
 class UserList extends React.Component {
 
@@ -89,8 +90,11 @@ class UserList extends React.Component {
             id: 4,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
             disabled: true,
-            clickCallback (evt) {
-              console.log(4);
+            clickCallback: (evt, option, data) => {
+              Http.post("/api/users/reinvite", {email: data.loginId})
+                .then(res => {
+                  this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
+                });
             }
           }
         ]
@@ -490,6 +494,7 @@ class UserList extends React.Component {
 UserList.propTypes = {
   toggleModal: PropTypes.func,
   saveUserCompleted: PropTypes.func,
+  showNotification: PropTypes.func,
   userEdit: PropTypes.object,
   userProfile: PropTypes.object
 };
@@ -504,7 +509,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   toggleModal,
-  saveUserCompleted
+  saveUserCompleted,
+  showNotification
 };
 
 export default connect(
