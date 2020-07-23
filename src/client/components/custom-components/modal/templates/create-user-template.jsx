@@ -83,7 +83,7 @@ class CreateUserTemplate extends React.Component {
             type: "email",
             pattern: CONSTANTS.REGEX.EMAIL,
             disabled: false,
-            invalidError: "Email is not Valid",
+            invalidError: CONSTANTS.REGEX.EMAILERROR,
             error: "",
             isUnique: true,
             onBlurEvent: e => {
@@ -127,7 +127,7 @@ class CreateUserTemplate extends React.Component {
             type: "text",
             pattern: CONSTANTS.REGEX.PHONE,
             disabled: false,
-            invalidError: "Phone number is not Valid",
+            invalidError: CONSTANTS.REGEX.PHONEERROR,
             maxLength: 17
           },
           role: {
@@ -153,7 +153,8 @@ class CreateUserTemplate extends React.Component {
           selected: false,
           label: "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law."
         }
-      }
+      },
+      allSelected: false
     };
   }
 
@@ -273,10 +274,12 @@ class CreateUserTemplate extends React.Component {
     }
   }
 
-  setMultiSelectInputValue (selectedList, key, optionId) {
+  // eslint-disable-next-line max-params
+  setMultiSelectInputValue (selectedList, key, optionId, allSelected) {
     if (selectedList && optionId) {
       this.setState(state => {
         state = {...state};
+        state.allSelected = allSelected;
         state.form.inputData[key].value = selectedList.join(", ");
         return {
           ...state
@@ -293,15 +296,21 @@ class CreateUserTemplate extends React.Component {
     }, this.checkToEnableSubmit);
   }
 
+  // eslint-disable-next-line max-statements
   async handleSubmit(evt) {
     evt.preventDefault();
 
+    let brands = this.state.form.inputData.brands.options.filter(v => v.selected);
+    const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
+    // eslint-disable-next-line no-unused-expressions
+    !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
+
     const loginId = this.state.form.inputData.emailId.value;
-    const brands = this.state.form.inputData.brands.options.filter(v => v.selected).map(v => ({id: v.id}));
+    brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
     const firstName = this.state.form.inputData.firstName.value;
     const lastName = this.state.form.inputData.lastName.value;
-    console.log(this.state.form.inputData.role.options)
+    // console.log(this.state.form.inputData.role.options);
     const selectedRole = this.state.form.inputData.role.options[ClientUtils.where(this.state.form.inputData.role.options, {value: this.state.form.inputData.role.value})];
     const role = {
       id: selectedRole.id,
@@ -319,7 +328,7 @@ class CreateUserTemplate extends React.Component {
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        type: isThirdParty ? "ThirdParty" : "Internal",
+        type: isThirdParty ? "ThirdParty" : "Internal"
       }
     };
 

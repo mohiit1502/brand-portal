@@ -246,6 +246,7 @@ class NewClaimTemplate extends React.Component {
       this.setState(state => {
         state = {...state};
         if (index > -1) {
+          state.form.inputData.itemList[index].sellerName.disabled = true;
           state.form.inputData.itemList[index][key].value = targetVal;
         } else {
           state.form.inputData[key].value = targetVal;
@@ -323,14 +324,29 @@ class NewClaimTemplate extends React.Component {
     if (evt && evt.target) {
       const url = evt.target.value;
       if (url) {
-        const payload = url.substring(url.lastIndexOf("/") + 1);
+        const slash = url.lastIndexOf("/");
+        const qMark = url.lastIndexOf("?") === -1 ? url.length : url.lastIndexOf("?");
+        
+        const payload = url.substring(slash + 1, qMark);
         const query = {payload};
         Http.get("/api/sellers", query)
           .then(res => {
             const form = {...this.state.form};
             form.inputData.itemList[i].sellerName.options = res.body;
             form.inputData.itemList[i].sellerName.disabled = false;
+            form.inputData.itemList[i].url.error = "";
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
+            this.setState({form});
+          })
+          .catch(err => {
+            const form = {...this.state.form};
+            if (err.status === 404) {
+              form.inputData.itemList[i].url.error = "Please check the URL and try again!";
+            }
+            if (err.status === 520) {
+              form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
+            }
+            form.inputData.itemList[i].sellerName.disabled = true;
             this.setState({form});
           });
       }
@@ -379,7 +395,7 @@ class NewClaimTemplate extends React.Component {
                         <div className="col-8">
                           <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
                             value={item.url.value} type={item.url.type} pattern={item.url.pattern} onBlurEvent={evt => {this.onItemUrlBlur(evt, item, i);}}
-                            onChangeEvent={this.onInputChange} disabled={item.url.disabled} dropdownOptions={item.url.options} />
+                            onChangeEvent={this.onInputChange} disabled={item.url.disabled} dropdownOptions={item.url.options} error={item.url.error} />
                         </div>
                         <div className="col-4">
                           <div className="row">

@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import ServerHttp from "../../utility/ServerHttp";
-import {IQS_URL} from "./../../constants/server-constants";
+import {CONSTANTS, IQS_URL} from "./../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 
 class ClaimManagerApi {
@@ -73,13 +74,16 @@ class ClaimManagerApi {
       let url = IQS_URL;
       url = url.replace("__itemId__", request.query.payload);
 
+      console.log("Making IQS API call to: ", url);
       const response = await ServerHttp.get(url, options);
-      // console.log(JSON.stringify(response.body));
-      let sellers = [];
-      if (response && response.status === 200) {
-        sellers = this.parseSellersFromResponse(response.body);
+      console.log("Response in ClaimsManagerApi.getSellers ==> from IQS: ", response);
+      let responseBody = [];
+      if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+        responseBody = this.parseSellersFromResponse(response.body);
+      } else if (response && response.status === CONSTANTS.STATUS_CODE_NOT_FOUND) {
+        responseBody = response;
       }
-      return h.response(sellers).code(response.status);
+      return h.response(responseBody).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);
     }

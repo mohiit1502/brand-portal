@@ -28,6 +28,23 @@ export default class Helper {
         return Helper.toCamelCaseIndividual(incoming);
     }
 
+    static toCamelCaseEach (incoming) {
+        if (!incoming) {
+            return "";
+        }
+
+        if (incoming.includes(" ")) {
+            const strParts = incoming.split(" ");
+            let accumulated = "";
+            const first = Helper.toCamelCaseIndividual(strParts[0]);
+            if (strParts.length > 1) {
+                accumulated = strParts.slice(1).reduce((acc, curr) => Helper.toCamelCaseIndividual(acc) + " " + Helper.toCamelCaseIndividual(curr));
+            }
+            return first + " " + accumulated;
+        }
+        return Helper.toCamelCaseIndividual(incoming);
+    }
+
     static toCamelCaseIndividual (part, isFirstLower) {
         if (!part) {
             return "";

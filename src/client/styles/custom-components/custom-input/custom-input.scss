@@ -84,8 +84,9 @@ $dropdown-select-background: rgb(178, 216, 237);
   }
 
   .dropdown-menu{
-    width : 100%;
+    width : 160%;
     max-height: 250px;
+    max-width: 300px;
     overflow: auto;
     box-shadow: 0 4px 4px 0 rgba(0,0,0,0.15);
     @extend .py-0;

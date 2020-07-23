@@ -83,11 +83,14 @@ class CompanyProfileRegistration extends React.Component {
             required: true,
             value: "",
             type: "text",
-            pattern: CONSTANTS.REGEX.ZIP,
+            // pattern: CONSTANTS.REGEX.ZIP,
+            pattern: "",
             patternErrorMessage: "Invalid Zip Code",
+            invalidError: CONSTANTS.REGEX.ZIPERROR,
             disabled: true,
             subtitle: "",
-            error: ""
+            error: "",
+            maxLength: 10
           },
           country: {
             label: "Country",
@@ -171,7 +174,7 @@ class CompanyProfileRegistration extends React.Component {
   onInputChange (evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
-      evt.target.checkValidity();
+      evt.target.pattern && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
         state.form.inputData[key].value = targetVal;
@@ -434,7 +437,7 @@ class CompanyProfileRegistration extends React.Component {
                           required={this.state.form.inputData.zip.required} value={this.state.form.inputData.zip.value}
                           type={this.state.form.inputData.zip.type} pattern={this.state.form.inputData.zip.pattern} onInvalidHandler={this.onInvalidHandler}
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.zip.disabled} patternErrorMessage={this.state.form.inputData.zip.patternErrorMessage}
-                          error={this.state.form.inputData.zip.error} subtitle={this.state.form.inputData.zip.subtitle}/>
+                          error={this.state.form.inputData.zip.error} subtitle={this.state.form.inputData.zip.subtitle} maxLength={this.state.form.inputData.zip.maxLength}/>
                       </div>
                       <div className="col">
                         <CustomInput key={"country"}
