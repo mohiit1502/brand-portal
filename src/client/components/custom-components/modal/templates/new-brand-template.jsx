@@ -53,7 +53,7 @@ class NewBrandTemplate extends React.Component {
             onBlurEvent: e => {
               this.setState(state => {
                 state = {...state};
-                state.form.inputData.brandName.error = "Brand Name is not Unique";
+                // state.form.inputData.brandName.error = "Brand Name is not Unique";
                 state.form.inputData.brandName.isUnique = false;
                 return {
                   ...state
