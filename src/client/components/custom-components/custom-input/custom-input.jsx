@@ -140,19 +140,21 @@ class CustomInput extends React.Component {
     if (evt && evt.target) {
       const state = {...this.state};
       const dropdownOptions = state.dropdownOptions;
+      let allSelected;
       if (evt.target.value.toLowerCase() === "all") {
+        allSelected = evt.target.checked;
         dropdownOptions.forEach(opt => (opt.selected = evt.target.checked));
       } else {
-        let allSelected = true;
-        dropdownOptions.forEach(opt => opt.name.toLowerCase() !== "all" && !opt.selected && (allSelected = false));
+        let shouldAllSelect = true;
+        dropdownOptions.forEach(opt => opt.name.toLowerCase() !== "all" && !opt.selected && (shouldAllSelect = false));
         const optionsAll = dropdownOptions.find(opt => opt.name.toLowerCase() === "all");
-        optionsAll.selected = allSelected;
+        optionsAll.selected = shouldAllSelect;
       }
       this.setState({
         dropdownOptions
       });
       const selectedList = this.setMultiSelectValueFromDropdownOptions(dropdownOptions);
-      this.state.onChangeEvent(selectedList, key, optionId);
+      this.state.onChangeEvent(selectedList, key, optionId, allSelected);
     }
   }
 

@@ -19,6 +19,7 @@ class Leftnav extends React.Component {
     };
   }
 
+  // eslint-disable-next-line complexity
   constructNavigationPanel (panel, pathname) {
     const {userProfile} = this.props;
     const panelFiltered = [];
@@ -30,10 +31,14 @@ class Leftnav extends React.Component {
         || !sectionAccessKey
         || (sectionAccessKey && sectionAccessKey.includes(userProfile && userProfile.role ? userProfile.role.name : "")))
       ) {
-        panelFiltered[i] = {...panel[i]};
-        panelFiltered[i].active = panelFiltered[i].href === pathname;
-        if (panelFiltered[i].hasOwnProperty("children")) {
-          panelFiltered[i].children = this.constructNavigationPanel(panelFiltered[i].children, pathname);
+        // TODO remove below two lines when approval list adds to MVP
+        const shouldRender = restConfig.IS_MVP ? currentPanel !== CONSTANTS.SECTION.APPROVALLIST : true;
+        if (shouldRender) {
+          panelFiltered[i] = {...panel[i]};
+          panelFiltered[i].active = panelFiltered[i].href === pathname;
+          if (panelFiltered[i].hasOwnProperty("children")) {
+            panelFiltered[i].children = this.constructNavigationPanel(panelFiltered[i].children, pathname);
+          }
         }
       }
     }

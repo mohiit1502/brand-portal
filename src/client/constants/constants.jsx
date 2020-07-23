@@ -185,7 +185,10 @@ const CONSTANTS = {
   REGEX: {
     ZIP: "\\d{5}(?:[-\s]\\d{4})?$",
     EMAIL: "\\S+@\\S+\.\\S+",
-    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
+    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
+    ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
+    EMAILERROR: "Please enter a valid Email ID.",
+    PHONEERROR: "Plase enter a valid phone number."
   }
 };
 

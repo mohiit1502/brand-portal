@@ -6,6 +6,7 @@ export default class ServerHttp {
 
   static async get(url, options, queryParams) {
     try{
+      !url && console.log("No URL!!");
       const urlString = queryString.stringifyUrl({url, query: queryParams});
 
       const res = await fetch(urlString, {
@@ -21,13 +22,12 @@ export default class ServerHttp {
         }
         return res;
       }
-      console.log(res);
       const err = await res.json();
-      console.log(err);
+      console.error("Error from ServerHttp.get: ", err);
       throw new ServerHttpError(status, err.error, err.message);
-    }
-    catch(err) {
-      console.log(err);
+    } catch (err) {
+      console.error("Caught in ServerHttp.get: ", err);
+      return err;
     }
   }
 
