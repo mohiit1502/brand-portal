@@ -135,6 +135,9 @@ class NewBrandTemplate extends React.Component {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       this.setState(state => {
+        if (key === "trademarkNumber") {
+          state.form.inputData[key].isValid = false;
+        }
         state = {...state};
         state.form.inputData[key].value = targetVal;
         return {
