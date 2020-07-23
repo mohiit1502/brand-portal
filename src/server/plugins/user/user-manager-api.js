@@ -21,6 +21,7 @@ class UserManagerApi {
     this.checkUnique = this.checkUnique.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
     this.updateUserStatus = this.updateUserStatus.bind(this);
+    this.reinviteUser = this.reinviteUser.bind(this);
     this.updateUser = this.updateUser.bind(this);
 
     this.name = "UserManagerApi";
@@ -99,6 +100,11 @@ class UserManagerApi {
         handler: this.updateUserStatus
       },
       {
+        method: "POST",
+        path: "/api/users/reinvite",
+        handler: this.reinviteUser
+      },
+      {
         method: "delete",
         path: "/api/users/{emailId}",
         handler: this.deleteUser,
@@ -142,6 +148,26 @@ class UserManagerApi {
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
       const response = await ServerHttp.put(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async reinviteUser (request, h) {
+    try {
+      const payload = request.payload;
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      let INVITE_USER_PATH = request.app.ccmGet("USER_CONFIG.USER_REINVITE");
+      INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
+      const url = `${BASE_URL}${INVITE_USER_PATH}`;
+
+      const response = await ServerHttp.post(url, options, payload);
       return h.response(response.body).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);

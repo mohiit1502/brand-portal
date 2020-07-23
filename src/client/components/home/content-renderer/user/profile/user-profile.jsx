@@ -7,6 +7,7 @@ import Http from "../../../../../utility/Http";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
 import StorageSrvc, {STORAGE_TYPES} from "../../../../../utility/StorageSrvc";
 import CONSTANTS from "../../../../../constants/constants";
+import restConfig from "./../../../../../config/rest";
 
 class UserProfile extends React.Component {
 
@@ -234,14 +235,14 @@ class UserProfile extends React.Component {
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} />
                       </div>
                     </div>
-                    <div className="row mb-5 password-reset-row">
+                    {!restConfig.IS_MVP && <div className="row mb-5 password-reset-row">
                       <div className="col-3">
                         <div className="btn btn-primary btn-sm no-border-radius px-3">
                           Password Reset
                         </div>
                         <span className="badge badge-pill bg-white text-blue ml-2 cursor-pointer"> ? </span>
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
                 <div className="row h-40">

@@ -61,7 +61,9 @@ const UserListTable = function(props) {
         && AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]][userProfile.role.name]
         && AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]][userProfile.role.name].map(role => role.toLowerCase());
         if (operatableRoles) {
-          optCloned.disabled = optCloned.notMvp || !operatableRoles.includes(values.role ? values.role.toLowerCase() : "");
+          const statusBasedEnable = !AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]].STATUS
+            || (AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]].STATUS && AUTH_CONFIG.USERS[optionsConfigMap[optCloned.value]].STATUS.includes(values.status));
+          optCloned.disabled = optCloned.notMvp || !operatableRoles.includes(values.role ? values.role.toLowerCase() : "") || !statusBasedEnable;
         }
     });
     return optionsCloned;

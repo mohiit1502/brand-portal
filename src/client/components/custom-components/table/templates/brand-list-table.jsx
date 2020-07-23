@@ -28,8 +28,18 @@ const BrandListTable = function(props) {
     }
   };
 
+  const getOptionsConfigMap = () => {
+    return {
+        [CONSTANTS.BRAND.OPTIONS.DISPLAY.EDIT]: "EDIT",
+        [CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND]: "SUSPEND",
+        [CONSTANTS.BRAND.OPTIONS.DISPLAY.REACTIVATE]: "REACTIVATE",
+        [CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE]: "DELETE"
+    };
+  };
+
   const generateDropDownOptionsDynamic = (options, values) => {
     const optionsCloned = {...options};
+    const optionsConfigMap = getOptionsConfigMap();
     const dropDownOptionsCloned = [...optionsCloned.dropdownOptions];
     optionsCloned.dropdownOptions = dropDownOptionsCloned;
     const displaySuspended = CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND.toLowerCase();
@@ -39,6 +49,14 @@ const BrandListTable = function(props) {
       return currentDDOption === displaySuspended || currentDDOption === displayReactivate;
     });
     updateDDOptions(toggleStatusDropdownIndex, values, dropDownOptionsCloned);
+    dropDownOptionsCloned.forEach(option => {
+      const i = dropDownOptionsCloned.findIndex(opt => opt === option);
+      const optCloned = {...option};
+      dropDownOptionsCloned[i] = optCloned;
+      const statusBasedEnable = !AUTH_CONFIG.BRANDS[optionsConfigMap[optCloned.value]].STATUS
+        || (AUTH_CONFIG.BRANDS[optionsConfigMap[optCloned.value]].STATUS && AUTH_CONFIG.BRANDS[optionsConfigMap[optCloned.value]].STATUS.includes(values.brandStatus));
+      optCloned.disabled = optCloned.notMvp || !statusBasedEnable;
+    });
     return optionsCloned;
   };
 

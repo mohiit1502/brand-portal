@@ -209,7 +209,7 @@ class NewClaimTemplate extends React.Component {
   }
 
   getBrands () {
-    return Http.get("/api/brands")
+    return Http.get("/api/brands?brandStatus=ACCEPTED")
       .then(res => {
         const form = {...this.state.form};
         form.inputData.brandName.options = res.body.content;
