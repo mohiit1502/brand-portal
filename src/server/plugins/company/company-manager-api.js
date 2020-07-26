@@ -10,7 +10,7 @@ class CompanyManagerApi {
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
     this.uploadBusinessDocument = this.uploadBusinessDocument.bind(this);
     this.uploadAdditionalDocument = this.uploadAdditionalDocument.bind(this);
-    this.FILE_UPLOAD_SIZE_LIMIT = 1000 * 1000 * 10; // 10MB
+    this.FILE_UPLOAD_SIZE_LIMIT = 1024 * 1024 * 10; // 10MB
   }
 
   register (server) {
@@ -59,6 +59,9 @@ class CompanyManagerApi {
 
   getHeaders(request) {
     return {
+      "transfer-encoding": "chunked",
+      "Accept-Encoding": "gzip, deflate, br",
+      Accept: "*/*",
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"abcd",
@@ -116,9 +119,8 @@ class CompanyManagerApi {
       };
       const file = request.payload.file;
       const filename = file.hapi.filename;
-      const buffer = await file.read();
       const fd = new FormData();
-      fd.append("file", buffer.toString("utf-8"), {filename});
+      fd.append("file", file, {filename});
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const ADDITIONAL_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.ADDITIONAL_DOC_PATH");
       const url = `${BASE_URL}${ADDITIONAL_DOC_PATH}`;
@@ -141,9 +143,8 @@ class CompanyManagerApi {
       };
       const file = request.payload.file;
       const filename = file.hapi.filename;
-      const buffer = await file.read();
       const fd = new FormData();
-      fd.append("file", buffer.toString("utf-8"), {filename});
+      fd.append("file", file, {filename});
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const BUSINESS_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.BUSINESS_DOC_PATH");
       const url = `${BASE_URL}${BUSINESS_DOC_PATH}`;

@@ -93,7 +93,11 @@ class UserList extends React.Component {
             clickCallback: (evt, option, data) => {
               Http.post("/api/users/reinvite", {email: data.loginId})
                 .then(res => {
-                  this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
+                  if (res.body === true) {
+                    this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
+                  } else {
+                    this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
+                  }
                 });
             }
           }
