@@ -19,19 +19,19 @@ class ContentRenderer extends React.Component {
       <div className="content-page d-inline-block">
         <Switch>
           <Route path={CONSTANTS.ROUTES.PROFILE.USER}>
-            <UserProfile/>
+            <UserProfile {...this.props}/>
           </Route>
           <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_LIST}>
-            <UserList/>
+            <UserList {...this.props}/>
           </Route>
           <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_APPROVAL}>
-            <UserApproval/>
+            <UserApproval {...this.props}/>
           </Route>
           <Route path={CONSTANTS.ROUTES.BRANDS.BRANDS_LIST}>
-            <BrandList/>
+            <BrandList {...this.props}/>
           </Route>
           <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIMS_LIST}>
-            <ClaimList/>
+            <ClaimList {...this.props}/>
           </Route>
         </Switch>
       </div>

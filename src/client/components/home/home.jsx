@@ -4,7 +4,7 @@ import HomeHeader from "../custom-components/headers/home-header";
 import Leftnav from "../custom-components/left-nav/left-nav";
 import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
-import StorageSrvc, {STORAGE_TYPES} from "../../utility/StorageSrvc";
+// import StorageSrvc, {STORAGE_TYPES} from "../../utility/StorageSrvc";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
 import CONSTANTS from "../../constants/constants";
 import * as images from "./../../images";
@@ -14,14 +14,15 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.updateProfile = this.updateProfile.bind(this);
-    this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
+    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     this.state = {
       profile: null
     };
   }
 
   componentDidMount() {
-    const profile = this.storageSrvc.getJSONItem("userProfile");
+    // const profile = this.storageSrvc.getJSONItem("userProfile");
+    const profile = this.props.userProfile;
     this.updateProfile(profile);
   }
 
@@ -84,7 +85,8 @@ class Home extends React.Component {
 Home.propTypes = {
   location: PropTypes.object,
   isOnboarded: PropTypes.bool,
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
+  userProfile: PropTypes.object
 };
 
 const mapStateToProps = state => state;

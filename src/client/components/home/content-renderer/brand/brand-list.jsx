@@ -76,21 +76,21 @@ class BrandList extends React.Component {
             }
           },
           // TODO disabled for MVP, enable for sprint 3
-          {
-            id: 3,
-            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE,
-            disabled: restConfig.IS_MVP || (restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DELETE.ROLES.map(role => role.toLocaleLowerCase()).includes(userRole ? userRole.toLowerCase() : "") : false),
-            notMvp: true,
-            clickCallback: (evt, option, data) => {
-              const payload = {
-                status: "Delete"
-              };
-              const response = Http.put(`/api/brands/${data.brandId}`, payload);
-              response.then(res => {
-                this.fetchBrands();
-              });
-            }
-          }
+          // {
+          //   id: 3,
+          //   value: CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE,
+          //   disabled: restConfig.IS_MVP || (restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DELETE.ROLES.map(role => role.toLocaleLowerCase()).includes(userRole ? userRole.toLowerCase() : "") : false),
+          //   notMvp: true,
+          //   clickCallback: (evt, option, data) => {
+          //     const payload = {
+          //       status: "Delete"
+          //     };
+          //     const response = Http.put(`/api/brands/${data.brandId}`, payload);
+          //     response.then(res => {
+          //       this.fetchBrands();
+          //     });
+          //   }
+          // }
         ]
       },
       brandListColumns: [
