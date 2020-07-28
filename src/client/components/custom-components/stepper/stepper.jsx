@@ -14,7 +14,7 @@ class Stepper extends React.Component {
       <div className="row stepper-row align-items-center">
         <div className="col text-center stepper-col">
           {
-            this.props.steps.map((step, i) => {
+            this.props.steps && this.props.steps.map((step, i) => {
               return (
                 <div className="step-box" key={step.order}>
                   <div className="step-title">Step {step.order}: {step.name}</div>
@@ -36,4 +36,4 @@ Stepper.propTypes = {
   steps: PropTypes.array
 };
 
-export  default  connect()(Stepper);
+export default connect()(Stepper);

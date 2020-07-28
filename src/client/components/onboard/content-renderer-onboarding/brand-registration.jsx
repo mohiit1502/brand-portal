@@ -1,13 +1,15 @@
+/* eslint-disable no-unused-expressions */
 import React from "react";
-import { connect } from "react-redux";
-import CustomInput from "../../custom-components/custom-input/custom-input";
-import CheckGreenIcon from "../../../images/check-grn.svg";
-import {Redirect} from "react-router";
-import CONSTANTS from "../../../constants/constants";
-import Http from "../../../utility/Http";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {Redirect} from "react-router";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "./../../../actions/company/company-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
+import Http from "../../../utility/Http";
+import CustomInput from "../../custom-components/custom-input/custom-input";
+import CheckGreenIcon from "../../../images/check-grn.svg";
+import CONSTANTS from "../../../constants/constants";
 // import StorageSrvc, {STORAGE_TYPES} from "../../../utility/StorageSrvc";
 
 class BrandRegistration extends React.Component {
@@ -22,7 +24,7 @@ class BrandRegistration extends React.Component {
     // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
 
 
-    this.state = {
+    this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       isSubmitDisabled: true,
       redirectToCompanyReg: !this.props.org,
       form: {
@@ -77,7 +79,8 @@ class BrandRegistration extends React.Component {
     const bool = form.inputData.trademarkNumber.isValid &&
       form.inputData.trademarkNumber.value &&
       form.inputData.brandName.value &&
-      form.undertaking.selected;
+      form.undertaking.selected &&
+      !form.shouldCheckTrademarkValid;
     this.setState({isSubmitDisabled: !bool});
   }
 
@@ -86,6 +89,9 @@ class BrandRegistration extends React.Component {
       const targetVal = evt.target.value;
       this.setState(state => {
         state = {...state};
+        if (key === "trademarkNumber") {
+          state.form.shouldCheckTrademarkValid = true;
+        }
         state.form.inputData[key].value = targetVal;
         return {
           ...state
@@ -103,6 +109,10 @@ class BrandRegistration extends React.Component {
   }
 
   gotoCompanyRegistration () {
+    const steps = this.props.steps ? [...this.props.steps] : [];
+    steps && steps[1] && (steps[1].complete = false);
+    this.props.dispatchBrandState(this.state);
+    this.props.dispatchSteps(steps);
     this.setState({redirectToCompanyReg: true});
   }
 
@@ -135,8 +145,9 @@ class BrandRegistration extends React.Component {
       const response = (await Http.post("/api/org/register", data)).body;
 
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       this.updateProfileInfo();
+      this.props.dispatchNewRequest(true);
+      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     } catch (err) {
       console.log(err);
     }
@@ -155,12 +166,14 @@ class BrandRegistration extends React.Component {
       const form = {...this.state.form};
       form.inputData.trademarkNumber.isValid = true;
       form.inputData.trademarkNumber.error = "";
+      form.shouldCheckTrademarkValid = false;
       this.setState({form}, this.checkToEnableSubmit);
     } catch (err) {
       console.log(err);
       const form = {...this.state.form};
       form.inputData.trademarkNumber.isValid = false;
       form.inputData.trademarkNumber.error = err.error;
+      form.shouldCheckTrademarkValid = true;
       this.setState({form}, this.checkToEnableSubmit);
     }
   }
@@ -205,9 +218,9 @@ class BrandRegistration extends React.Component {
                       error={this.state.form.inputData.trademarkNumber.error} subtitle={this.state.form.inputData.trademarkNumber.subtitle}/>
                   </div>
                   <div className="col-2">
-                    <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid ? "btn-success" : "btn-primary"}`}
+                    <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid && !this.state.form.shouldCheckTrademarkValid ? "btn-success" : "btn-primary"}`}
                       onClick={this.checkTrademarkValidity}>
-                      {this.state.form.inputData.trademarkNumber.isValid ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
+                      {this.state.form.inputData.trademarkNumber.isValid && !this.state.form.shouldCheckTrademarkValid ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
                     </div>
                   </div>
                 </div>
@@ -234,7 +247,7 @@ class BrandRegistration extends React.Component {
                   </div>
                 </div>
                 <div className="form-row mt-5">
-                  <div className="col text-right">
+                  <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
@@ -261,6 +274,11 @@ class BrandRegistration extends React.Component {
 }
 
 BrandRegistration.propTypes = {
+  brandState: PropTypes.object,
+  dispatchBrandState: PropTypes.func,
+  dispatchNewRequest: PropTypes.func,
+  dispatchSteps: PropTypes.func,
+  steps: PropTypes.array,
   toggleModal: PropTypes.func,
   updateUserProfile: PropTypes.func,
   org: PropTypes.PropTypes.oneOfType([
@@ -271,11 +289,16 @@ BrandRegistration.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    brandState: state.company && state.company.brandState,
+    steps: state.company && state.company.steps,
     userProfile: state.userProfile
   };
 };
 
 const mapDispatchToProps = {
+  dispatchBrandState,
+  dispatchNewRequest,
+  dispatchSteps,
   toggleModal,
   updateUserProfile
 };

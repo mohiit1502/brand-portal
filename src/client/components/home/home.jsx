@@ -32,31 +32,33 @@ class Home extends React.Component {
       const codes = Object.keys(CONSTANTS.TEMPLATE)
         .filter(key => ["PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
         .map(key => CONSTANTS.TEMPLATE[key].CODE);
-      if (workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code)) {
-        let template = {};
-        let image;
-        switch (workflowDecider.code) {
-          case CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE:
-            template = {...CONSTANTS.TEMPLATE.PORTAL_VERIFICATION};
-            image = images[CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.IMAGE];
-            break;
-          case CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.CODE:
-            template = {...CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED};
-            image = images[CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.IMAGE];
-            break;
-          case CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.CODE:
-            template = {...CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED};
-            image = images[CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.IMAGE];
-            break;
-          case CONSTANTS.TEMPLATE.USER_VERIFICATION.CODE:
-            template = {...CONSTANTS.TEMPLATE.USER_VERIFICATION};
-            image = images[CONSTANTS.TEMPLATE.USER_VERIFICATION.IMAGE];
-            break;
-          }
+      if (!this.props.isNew) {
+        if (workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code)) {
+          let template = {};
+          let image;
+          switch (workflowDecider.code) {
+            case CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE:
+              template = {...CONSTANTS.TEMPLATE.PORTAL_VERIFICATION};
+              image = images[CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.IMAGE];
+              break;
+            case CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.CODE:
+              template = {...CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED};
+              image = images[CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.IMAGE];
+              break;
+            case CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.CODE:
+              template = {...CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED};
+              image = images[CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.IMAGE];
+              break;
+            case CONSTANTS.TEMPLATE.USER_VERIFICATION.CODE:
+              template = {...CONSTANTS.TEMPLATE.USER_VERIFICATION};
+              image = images[CONSTANTS.TEMPLATE.USER_VERIFICATION.IMAGE];
+              break;
+            }
 
-          template = {templateName: "StatusModalTemplate", image, ...template};
-          // const meta = { ...template  };
-          this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+            template = {templateName: "StatusModalTemplate", image, ...template};
+            // const meta = { ...template  };
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+        }
       }
     });
   }
@@ -83,6 +85,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
+  isNew: PropTypes.bool,
   location: PropTypes.object,
   isOnboarded: PropTypes.bool,
   toggleModal: PropTypes.func,

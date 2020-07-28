@@ -4,10 +4,8 @@ import CheckGreenIcon from "../../../../images/check-grn.svg";
 
 import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
-import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import {Redirect} from "react-router";
+import {toggleModal} from "../../../../actions/modal-actions";
 import CONSTANTS from "../../../../constants/constants";
-import {Link} from "react-router-dom";
 
 class CompanyBrandRegisteredTemplate extends React.Component {
 
@@ -16,6 +14,8 @@ class CompanyBrandRegisteredTemplate extends React.Component {
   }
 
   render() {
+    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
+    const logoutUrl = CONSTANTS.URL.LOGOUT.replace("__domain__", baseUrl);
     return (
       <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -42,7 +42,7 @@ class CompanyBrandRegisteredTemplate extends React.Component {
               </div>
               <div className="row mt-5">
                 <div className="col">
-                  <div className="btn btn-sm btn-outline-primary px-5" onClick={() => {return window.location.reload();}}>Okay</div>
+                  <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Okay</a>
                 </div>
               </div>
             </div>

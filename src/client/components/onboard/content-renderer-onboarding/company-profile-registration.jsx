@@ -1,17 +1,18 @@
 import React from "react";
-import { connect } from "react-redux";
-import "../../../styles/onboard/content-renderer-onboarding/company-profile-registration.scss";
-import CustomInput from "../../custom-components/custom-input/custom-input";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {Redirect} from "react-router";
+import $ from "jquery";
+import {dispatchCompanyState} from "./../../../actions/company/company-actions";
 import Http from "../../../utility/Http";
+import CustomInput from "../../custom-components/custom-input/custom-input";
 import CheckGreenIcon from "../../../images/check-grn.svg";
 import {CustomInterval} from "../../../utility/timer-utils";
 import ProgressBar from "../../custom-components/progress-bar/progress-bar";
-import {Redirect} from "react-router";
-import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
-import $ from "jquery";
 import Tooltip from "../../custom-components/tooltip/tooltip";
 import infoIcon from "../../../images/question.svg";
+import "../../../styles/onboard/content-renderer-onboarding/company-profile-registration.scss";
 
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
@@ -30,11 +31,12 @@ class CompanyProfileRegistration extends React.Component {
     this.onInvalidHandler = this.onInvalidHandler.bind(this);
     this.invalid = {zip: false};
 
-    this.state = {
+    this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
       isSubmitDisabled: true,
       redirectToBrands: false,
       form: {
         id: "company-profile-reg",
+        shouldCheckCompanyUniqueness: true,
         inputData: {
           companyName: {
             label: "Company Name",
@@ -43,7 +45,7 @@ class CompanyProfileRegistration extends React.Component {
             type: "text",
             pattern: null,
             disabled: false,
-            isUnique: false,
+            isUnique: true,
             subtitle: "Please ensure the company name entered is correct and matches the official document records.",
             error: "",
             requestAdministratorAccess: false
@@ -128,7 +130,7 @@ class CompanyProfileRegistration extends React.Component {
             <ol className="m-0 p-0">
               <ul className="m-0 pl-3 text-left font-size-12">
                 <li>Upload an official copy of Business Registration Certificate</li>
-                <li>Supported Documents: PDF, DOC, DOCX | Max : 2MB</li>
+                <li>Supported Documents: PDF, DOC, DOCX | Max : 8MB</li>
               </ul>
             </ol>
           </div>
@@ -138,7 +140,7 @@ class CompanyProfileRegistration extends React.Component {
             <ol className="m-0 p-0">
               <ul className="m-0 pl-3 text-left font-size-12">
                 <li>Upload IP Registration Documents or Letter of Authorization</li>
-                <li>Supported Documents: PDF, DOC, DOCX | Max : 2MB</li>
+                <li>Supported Documents: PDF, DOC, DOCX | Max : 8MB</li>
               </ul>
             </ol>
           </div>
@@ -166,7 +168,9 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.city.value &&
       form.inputData.state.value &&
       form.inputData.zip.value &&
-      form.inputData.businessRegistrationDoc.id &&
+      !form.inputData.businessRegistrationDoc.uploading &&
+      !form.inputData.additionalDoc.uploading &&
+//       form.inputData.businessRegistrationDoc.id &&
       !form.inputData.zip.error;
     this.setState({isSubmitDisabled: !bool});
   }
@@ -174,9 +178,14 @@ class CompanyProfileRegistration extends React.Component {
   onInputChange (evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
+      // eslint-disable-next-line no-unused-expressions
       evt.target.pattern && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
+        if (key === "companyName") {
+          // state.form.inputData[key].isUnique = false;
+          this.toggleFormEnable(false, true, true);
+        }
         state.form.inputData[key].value = targetVal;
         state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
         this.invalid[key] = false;
@@ -187,15 +196,16 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
-  enableForm() {
+  toggleFormEnable(enable, isUnique, checkCompanyUniqueness) {
     const form = {...this.state.form};
-    form.inputData.companyName.isUnique = true;
-    form.inputData.companyName.error = "";
-    form.inputData.address.disabled = false;
-    form.inputData.city.disabled = false;
-    form.inputData.state.disabled = false;
-    form.inputData.zip.disabled = false;
-    form.inputData.companyName.requestAdministratorAccess = false;
+    form.inputData.companyName.isUnique = isUnique;
+    form.inputData.companyName.error = enable ? form.inputData.companyName.error : "";
+    form.inputData.address.disabled = !enable;
+    form.inputData.city.disabled = !enable;
+    form.inputData.state.disabled = !enable;
+    form.inputData.zip.disabled = !enable;
+    form.inputData.companyName.requestAdministratorAccess = !form.inputData.companyName.isUnique;
+    form.shouldCheckCompanyUniqueness = checkCompanyUniqueness;
     this.setState({form});
   }
 
@@ -211,7 +221,7 @@ class CompanyProfileRegistration extends React.Component {
           error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
         };
       }
-      this.enableForm();
+      this.toggleFormEnable(true, true, false);
     } catch (err) {
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = false;
@@ -222,7 +232,7 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
-  async uploadPrimaryDocument (evt) {
+  uploadPrimaryDocument (evt) {
     try {
       const file = evt.target.files[0];
       const filename = file.name;
@@ -238,25 +248,32 @@ class CompanyProfileRegistration extends React.Component {
       interval.start();
       const form = {...this.state.form};
       form.inputData.businessRegistrationDoc.uploading = true;
-      this.setState({form});
-
-      const formData = new FormData();
-      formData.append("file", file);
-      const uploadResponse = (await Http.postAsFormData("/api/company/uploadBusinessDocument", formData)).body;
-      interval.stop();
-      window.setTimeout(() => {
-        const updatedForm = {...this.state.form};
-        updatedForm.inputData.businessRegistrationDoc.uploading = false;
-        updatedForm.inputData.businessRegistrationDoc.id = uploadResponse.id;
-        this.setState({updatedForm}, this.checkToEnableSubmit);
-      }, 700);
-
+      this.setState(state => {
+        state = {...state};
+        state.form = form;
+        return state;
+      }, () => this.uploadDocument(file, interval, "businessRegistrationDoc"));
     } catch (err) {
       const form = {...this.state.form};
       form.inputData.businessRegistrationDoc.uploading = false;
       this.setState({form});
       console.log(err);
     }
+  }
+
+  async uploadDocument (file, interval, type) {
+    const urlMap = {businessRegistrationDoc: "/api/company/uploadBusinessDocument", additionalDoc: "/api/company/uploadAdditionalDocument"};
+    this.checkToEnableSubmit();
+    const formData = new FormData();
+    formData.append("file", file);
+    const uploadResponse = (await Http.postAsFormData(urlMap[type], formData)).body;
+    interval.stop();
+    window.setTimeout(() => {
+      const updatedForm = {...this.state.form};
+      updatedForm.inputData[type].uploading = false;
+      updatedForm.inputData[type].id = uploadResponse.id;
+      this.setState({updatedForm}, this.checkToEnableSubmit);
+    }, 700);
   }
 
   cancelDocumentSelection(docKey) {
@@ -293,19 +310,11 @@ class CompanyProfileRegistration extends React.Component {
       interval.start();
       const form = {...this.state.form};
       form.inputData.additionalDoc.uploading = true;
-      this.setState({form});
-
-      const formData = new FormData();
-      formData.append("file", file);
-      const uploadResponse = (await Http.postAsFormData("/api/company/uploadAdditionalDocument", formData)).body;
-      interval.stop();
-      window.setTimeout(() => {
-        const updatedForm = {...this.state.form};
-        updatedForm.inputData.additionalDoc.uploading = false;
-        updatedForm.inputData.additionalDoc.id = uploadResponse.id;
-        this.setState({updatedForm});
-      }, 700);
-
+      this.setState(state => {
+        state = {...state};
+        state.form = form;
+        return state;
+      }, await (() => this.uploadDocument(file, interval, "additionalDoc")));
     } catch (err) {
       const form = {...this.state.form};
       form.inputData.additionalDoc.uploading = false;
@@ -315,7 +324,23 @@ class CompanyProfileRegistration extends React.Component {
   }
 
   resetCompanyRegistration () {
+    const state = {...this.state};
+    const form = state.form = {...state.form};
+    const inputKeys = ["companyName", "address", "city", "state", "zip"];
+    const docKeys = ["businessRegistrationDoc", "additionalDoc"];
+    inputKeys.forEach(key => {
+      form.inputData[key].disabled = true;
+      form.inputData[key].error = "";
+      form.inputData[key].value = "";
+    });
+    docKeys.forEach(key => {form.inputData[key].id = "";});
+    form.inputData.companyName.isUnique = true;
+    form.inputData.companyName.disabled = false;
+    form.inputData.companyName.requestAdministratorAccess = false;
+    form.shouldCheckCompanyUniqueness = true;
+    state.isSubmitDisabled = true;
 
+    this.setState(state);
   }
 
 
@@ -335,6 +360,7 @@ class CompanyProfileRegistration extends React.Component {
     }
     this.props.updateOrgData(org);
     this.setState({redirectToBrands: true});
+    this.props.dispatchCompanyState(this.state);
   }
 
   onInvalidHandler (evt, key) {
@@ -389,9 +415,9 @@ class CompanyProfileRegistration extends React.Component {
                       error={this.state.form.inputData.companyName.error} subtitle={this.state.form.inputData.companyName.subtitle}/>
                   </div>
                   <div className="col-2">
-                    <div className={`btn btn-sm btn-block ${this.state.form.inputData.companyName.isUnique ? "btn-success" : "btn-primary"}`}
+                    <div className={`btn btn-sm btn-block ${this.state.form.inputData.companyName.isUnique && !this.state.form.shouldCheckCompanyUniqueness ? "btn-success" : "btn-primary"}${!this.state.form.inputData.companyName.value ? " disabled" : ""}`}
                       onClick={this.checkCompanyNameAvailability}>
-                      {this.state.form.inputData.companyName.isUnique ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
+                      {this.state.form.inputData.companyName.isUnique && !this.state.form.shouldCheckCompanyUniqueness ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
                     </div>
                   </div>
                 </div>
@@ -452,13 +478,13 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row primary-file-upload mb-3">
                       <div className="col">
                         <div className="file-upload-title mb-2">
-                          Please provide business registration documents if you are a corporation <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
+                          Please provide business registration documents if you are a corporation (optional) <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
                         </div>
                         {
                           !this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
-                          <label className="btn btn-sm btn-primary upload-btn mb-2">
+                          <label className={`btn btn-sm btn-primary upload-btn mb-2${this.state.isSubmitDisabled || this.state.form.shouldCheckCompanyUniqueness ? " disabled" : ""}`}>
                             Upload
-                            <input type="file" className="d-none" onChange={this.uploadPrimaryDocument}/>
+                            <input type="file" className="d-none" onChange={this.uploadPrimaryDocument} disabled={this.state.isSubmitDisabled || this.state.form.shouldCheckCompanyUniqueness} />
                           </label>
                         }
                         {
@@ -482,9 +508,9 @@ class CompanyProfileRegistration extends React.Component {
                         </div>
                         {
                           !this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&
-                          <label className="btn btn-sm btn-primary upload-btn mb-2">
+                          <label className={`btn btn-sm btn-primary upload-btn mb-2${this.state.isSubmitDisabled || this.state.form.shouldCheckCompanyUniqueness ? " disabled" : ""}`}>
                             Upload
-                            <input type="file" className="d-none" onChange={this.uploadAdditionalDocument}/>
+                            <input type="file" className="d-none" multiple={true} onChange={this.uploadAdditionalDocument} disabled={this.state.isSubmitDisabled || this.state.form.shouldCheckCompanyUniqueness } />
                           </label>
                         }
                         {
@@ -503,14 +529,14 @@ class CompanyProfileRegistration extends React.Component {
                     </div>
                     <div className="form-row mt-3">
                       <div className="col text-right">
-                        <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetCompanyRegistration}>Cancel</div>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled} > Next </button>
+                        <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetCompanyRegistration}>Clear</div>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.isSubmitDisabled || this.state.form.shouldCheckCompanyUniqueness } > Next </button>
                       </div>
                     </div>
                   </React.Fragment> ||
                   <React.Fragment>
                     <div className="form-row mt-5">
-                      <div className="col text-right">
+                      <div className="col">
                         <div className="form-check">
                           <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.requestAccessUndertaking.selected} required={true}
                             onChange={this.undertakingtoggle}/>
@@ -540,9 +566,21 @@ class CompanyProfileRegistration extends React.Component {
 }
 
 CompanyProfileRegistration.propTypes = {
+  companyState: PropTypes.object,
+  dispatchCompanyState: PropTypes.func,
   updateOrgData: PropTypes.func,
   modal: PropTypes.object
 };
 
+const mapStateToProps = state => {
+  return {
+    companyState: state.company && state.company.companyState
+  };
+};
 
-export  default  connect()(CompanyProfileRegistration);
+const mapDispatchToProps = {
+  dispatchCompanyState
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CompanyProfileRegistration);
