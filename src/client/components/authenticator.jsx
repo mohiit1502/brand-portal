@@ -9,18 +9,18 @@ import CONSTANTS from "../constants/constants";
 import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
 import {updateUserProfile} from "../actions/user/user-actions";
-import StorageSrvc, {STORAGE_TYPES} from "../utility/StorageSrvc";
+// import StorageSrvc, {STORAGE_TYPES} from "../utility/StorageSrvc";
 import Onboarder from "./onboard/onboarder";
 
 class Authenticator extends React.Component {
 
-  storageSrvc;
+  // storageSrvc;
 
   constructor (props) {
     super(props);
     const COOKIE_NAME = "auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
-    this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
+    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
 
     this.state = {
       isLoggedIn: !!sessionCookie,
@@ -49,13 +49,16 @@ class Authenticator extends React.Component {
 
   async getProfileInfo () {
     try {
-      let profile = this.storageSrvc.getJSONItem("userProfile");
-      if (!profile) {
+      // let profile = this.storageSrvc.getJSONItem("userProfile");
+      let profile = this.props.userProfile;
+      if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
-        this.storageSrvc.setJSONItem("userProfile", profile);
+        // profile.workflow.code=1;
+        this.props.updateUserProfile(profile);
+        // this.storageSrvc.setJSONItem("userProfile", profile);
       }
       this.setOnboardStatus(profile.organization);
-      this.props.updateUserProfile(profile);
+      // this.props.updateUserProfile(profile);
       this.setState({profileInformationLoaded: true});
 
     } catch (e) {
@@ -64,7 +67,8 @@ class Authenticator extends React.Component {
   }
 
   removeSessionProfile () {
-    this.storageSrvc.removeItem("userProfile");
+    // this.storageSrvc.removeItem("userProfile");
+    this.props.updateUserProfile(undefined);
   }
 
   isRootPath (pathname) {

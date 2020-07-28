@@ -74,18 +74,18 @@ class UserList extends React.Component {
             }
           },
           // TODO comment for MVP, uncomment for sprint 3
-          {
-            id: 3,
-            value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
-            disabled: true,
-            notMvp: true,
-            clickCallback: (evt, option, data) => {
-              const response = Http.delete(`/api/users/${data.loginId}`);
-              response.then(res => {
-                this.fetchUserData();
-              });
-            }
-          },
+          // {
+          //   id: 3,
+          //   value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
+          //   disabled: true,
+          //   notMvp: true,
+          //   clickCallback: (evt, option, data) => {
+          //     const response = Http.delete(`/api/users/${data.loginId}`);
+          //     response.then(res => {
+          //       this.fetchUserData();
+          //     });
+          //   }
+          // },
           {
             id: 4,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,

@@ -5,13 +5,13 @@ import PropTypes from "prop-types";
 import CustomInput from "../../../../custom-components/custom-input/custom-input";
 import Http from "../../../../../utility/Http";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
-import StorageSrvc, {STORAGE_TYPES} from "../../../../../utility/StorageSrvc";
+// import StorageSrvc, {STORAGE_TYPES} from "../../../../../utility/StorageSrvc";
 import CONSTANTS from "../../../../../constants/constants";
 import restConfig from "./../../../../../config/rest";
 
 class UserProfile extends React.Component {
 
-  storageSrvc;
+  // storageSrvc;
 
   constructor (props) {
     super(props);
@@ -20,7 +20,7 @@ class UserProfile extends React.Component {
     this.disableInput = this.disableInput.bind(this);
     this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
     this.saveUser = this.saveUser.bind(this);
-    this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
+    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     // console.log(this.props.userProfile)
     this.state = {
       pageLoading: true,
@@ -170,7 +170,8 @@ class UserProfile extends React.Component {
       .then(async res => {
         this.props.updateUserProfile(res.body);
         // TODO check requirement of below
-        this.storageSrvc.setJSONItem("userProfile", res.body);
+        // this.storageSrvc.setJSONItem("userProfile", res.body);
+        this.props.updateUserProfile(res.body);
         this.disableInput(true);
       });
   }
