@@ -18,7 +18,7 @@ class CreateUserTemplate extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
-    this.undertakingtoggle = this.undertakingtoggle.bind(this);
+    // this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
@@ -149,10 +149,10 @@ class CreateUserTemplate extends React.Component {
             options: []
           }
         },
-        undertaking: {
-          selected: false,
-          label: "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law."
-        }
+        // undertaking: {
+        //   selected: false,
+        //   label: "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law."
+        // }
       },
       allSelected: false
     };
@@ -256,7 +256,8 @@ class CreateUserTemplate extends React.Component {
     const form = {...this.state.form};
     const bool = form.inputData.firstName.value && form.inputData.lastName.value &&
       form.inputData.emailId.value && form.inputData.emailId.isUnique !== false && !form.inputData.phone.error &&
-      form.inputData.role.value && form.inputData.brands.value && form.undertaking.selected;
+      form.inputData.role.value && form.inputData.brands.value;
+      // && form.undertaking.selected;
 
     form.submitDisabled = !bool;
     this.setState({form});
@@ -288,13 +289,13 @@ class CreateUserTemplate extends React.Component {
     }
   }
 
-  undertakingtoggle () {
-    const state = {...this.state};
-    state.form.undertaking.selected = !state.form.undertaking.selected;
-    this.setState({
-      ...state
-    }, this.checkToEnableSubmit);
-  }
+  // undertakingtoggle () {
+  //   const state = {...this.state};
+  //   state.form.undertaking.selected = !state.form.undertaking.selected;
+  //   this.setState({
+  //     ...state
+  //   }, this.checkToEnableSubmit);
+  // }
 
   // eslint-disable-next-line max-statements
   async handleSubmit(evt) {
@@ -501,7 +502,7 @@ class CreateUserTemplate extends React.Component {
                       dropdownOptions={this.state.form.inputData.brands.options}/>
                   </div>
                 </div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
@@ -511,7 +512,7 @@ class CreateUserTemplate extends React.Component {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="row mt-3">
                   <div className="col text-right">
                     <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>

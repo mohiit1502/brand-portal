@@ -29,4 +29,8 @@ $subtitle-color: #6E7677;
       }
     }
   }
+
+  .btn-primary.disabled {
+    cursor: default
+  }
 }

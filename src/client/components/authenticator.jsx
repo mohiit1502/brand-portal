@@ -123,7 +123,7 @@ class Authenticator extends React.Component {
         } else if (WORKFLOW_CODE === CONSTANTS.TEMPLATE.PORTAL_REGISTRATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {
-          return <Home {...this.props} {...this.state}/>;
+          return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
         return <div> Loading... </div>;
@@ -137,6 +137,7 @@ class Authenticator extends React.Component {
 }
 
 Authenticator.propTypes = {
+  isNew: PropTypes.bool,
   location: PropTypes.object,
   updateUserProfile: PropTypes.func,
   userProfile: PropTypes.object
@@ -144,6 +145,7 @@ Authenticator.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    isNew: state.company.isNew,
     userProfile: state.userProfile
   };
 };

@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import {modal} from "./modal-reducers";
 import {userEdit, userProfile} from "./user/user-reducers";
 import {brandEdit} from "./brand/brand-reducers";
+import company from "./company/company-reducer";
 import claims from "./claim/claim-reducers";
 import {notification} from "./notification/notification-reducers";
 
@@ -27,6 +28,7 @@ export default combineReducers({
   userEdit,
   userProfile,
   brandEdit,
+  company,
   claims,
   notification
 });

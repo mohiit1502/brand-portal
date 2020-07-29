@@ -9,13 +9,13 @@ import Http from "../../../../utility/Http";
 import searchIcon from "../../../../images/18-px-search.svg";
 import filterIcon from "../../../../images/filter-sc.svg";
 import ContentPasteIcon from "../../../../images/content-paste.svg";
-import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
-import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchClaims} from "./../../../../actions/claim/claim-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import ClaimListTable from "../../../custom-components/table/templates/claim-list-table";
 import CONSTANTS from "../../../../constants/constants";
+import helper from "./../../../../utility/helper";
 
 class ClaimList extends React.Component {
 
@@ -64,7 +64,7 @@ class ClaimList extends React.Component {
         },
         {
           Header: "CLAIM BY",
-          accessor: "createdBy"
+          accessor: "createdByName"
         },
         {
           Header: "CLAIM DATE",
@@ -73,6 +73,10 @@ class ClaimList extends React.Component {
         {
           Header: "CLAIM STATUS",
           accessor: "claimStatus"
+        },
+        {
+          Header: "CLAIM STATUS DETAILS",
+          accessor: "statusDetails"
         }
       ]
     };
@@ -98,6 +102,10 @@ class ClaimList extends React.Component {
       claimList = response.data.content.map((brand, i) => {
         const newClaim = { ...brand, sequence: i + 1 };
         newClaim.original = brand;
+        const firstName = brand.firstName ? helper.toCamelCaseIndividual(brand.firstName) : "";
+        const lastName = brand.lastName ? helper.toCamelCaseIndividual(brand.lastName) : "";
+        newClaim.createdByName = firstName + " " + lastName;
+        newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
         return newClaim;
       });
     }

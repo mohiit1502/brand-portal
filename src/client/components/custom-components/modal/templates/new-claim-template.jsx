@@ -108,7 +108,9 @@ class NewClaimTemplate extends React.Component {
             label: "I understand that abuse of this tool will result in termination of my Walmart account."
           }
         ]
-      }
+      },
+      brands: [],
+      claimTypeSelected: false
     };
   }
 
@@ -139,6 +141,7 @@ class NewClaimTemplate extends React.Component {
         label: "Seller Name",
         required: true,
         value: "",
+        // type: "multiselect",
         type: "select",
         pattern: null,
         disabled: true,
@@ -167,6 +170,7 @@ class NewClaimTemplate extends React.Component {
       }
       this.setState(state => {
         state = {...state};
+        state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
         } else {
@@ -178,6 +182,29 @@ class NewClaimTemplate extends React.Component {
         };
       }, this.checkToEnableSubmit);
     }
+  }
+
+  selectHandlersLocal (key, state, value) {
+    if (key === "brandName" || key === "claimType") {
+      let claimType;
+      let brandName;
+      if (key === "brandName") {
+        claimType = state.form.inputData.claimType.value;
+        brandName = value;
+      } else if (key === "claimType") {
+        state.claimTypeSelected = true;
+        brandName = state.form.inputData.brandName.value;
+        claimType = value;
+      }
+      if (claimType === "Trademark") {
+        const brandObj = state.brands.find(brand => brand.brandName === brandName);
+        const trademarkNumber = brandObj && brandObj.trademarkNumber ? brandObj.trademarkNumber : "";
+        state.form.inputData.claimTypeIdentifier.value = trademarkNumber;
+      } else {
+        state.form.inputData.claimTypeIdentifier.value = "";
+      }
+    }
+    return state;
   }
 
   customChangeHandler (value) {
@@ -211,10 +238,10 @@ class NewClaimTemplate extends React.Component {
   getBrands () {
     return Http.get("/api/brands?brandStatus=ACCEPTED")
       .then(res => {
-        const form = {...this.state.form};
-        form.inputData.brandName.options = res.body.content;
-        form.inputData.brandName.options = form.inputData.brandName.options.map(v => ({id: v.brandId, value: v.brandName}));
-        this.setState({form});
+        const state = {...this.state};
+        state.brands = res.body.content;
+        state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName}));
+        this.setState(state);
       });
   }
 
@@ -227,6 +254,9 @@ class NewClaimTemplate extends React.Component {
       claimList = response.data.content.map((brand, i) => {
         const newClaim = { ...brand, sequence: i + 1 };
         newClaim.original = brand;
+        const firstName = brand.firstName ? Helper.toCamelCaseIndividual(brand.firstName) : "";
+        const lastName = brand.lastName ? Helper.toCamelCaseIndividual(brand.lastName) : "";
+        newClaim.createdByName = firstName + " " + lastName;
         return newClaim;
       });
     }
@@ -260,7 +290,6 @@ class NewClaimTemplate extends React.Component {
 
   checkToEnableSubmit() {
     const form = {...this.state.form};
-
 
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
@@ -368,99 +397,105 @@ class NewClaimTemplate extends React.Component {
               </button>
             </div>
             <div className="modal-body text-left">
-                <div className="row">
-                  <div className="col-4">
-                    <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
-                      value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChangeEvent={this.setSelectInputValue}
-                      disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
-                  </div>
+              <div className="row">
+                <div className="col-4">
+                  <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
+                    value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChangeEvent={this.setSelectInputValue}
+                    disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                 </div>
-                <div className="row">
-                  <div className="col-4">
-                    <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
-                      value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.setSelectInputValue}
-                      disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} />
-                  </div>
-                  <div className="col-4">
-                    <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}
-                      required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
-                      pattern={inputData.claimTypeIdentifier.pattern} onChangeEvent={this.onInputChange} disabled={inputData.claimTypeIdentifier.disabled}
-                      dropdownOptions={inputData.claimTypeIdentifier.options} />
-                  </div>
+              </div>
+          {this.state.claimTypeSelected && 
+            <React.Fragment>
+              <div className="row">
+                <div className="col-4">
+                  <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
+                    value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.setSelectInputValue}
+                    disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} />
                 </div>
-                {
-                  inputData.itemList.map((item, i) => {
-                    return (
-                      <div key={i} className="row">
-                        <div className="col-8">
-                          <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
-                            value={item.url.value} type={item.url.type} pattern={item.url.pattern} onBlurEvent={evt => {this.onItemUrlBlur(evt, item, i);}}
-                            onChangeEvent={this.onInputChange} disabled={item.url.disabled} dropdownOptions={item.url.options} error={item.url.error} />
-                        </div>
-                        <div className="col-4">
-                          <div className="row">
-                            <div className="col-8">
-                              <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} ormId={form.id} label={item.sellerName.label}
-                                required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                                onChangeEvent={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} />
-                            </div>
-                            <div className="col-4">
-                              {
-                                i === 0 && <div className="btn btn-sm btn-block btn-primary" onClick={this.addToItemList}>
-                                  <img src={PlusIcon} className="plus-icon make-it-white"/> Item </div> ||
-                                <div className="btn btn-sm btn-block cancel-btn text-primary" type="button" onClick={evt => {this.removeFromItemList(evt, i);}}>Remove</div>
-                              }
-                            </div>
+                <div className="col-4">
+                  <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}
+                    required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
+                    pattern={inputData.claimTypeIdentifier.pattern} onChangeEvent={this.onInputChange} disabled={inputData.claimTypeIdentifier.disabled}
+                    dropdownOptions={inputData.claimTypeIdentifier.options} />
+                </div>
+              </div>
+              {
+                inputData.itemList.map((item, i) => {
+                  return (
+                    <div key={i} className="row">
+                      <div className="col-8">
+                        <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
+                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onBlurEvent={evt => {this.onItemUrlBlur(evt, item, i);}}
+                          onChangeEvent={this.onInputChange} disabled={item.url.disabled} dropdownOptions={item.url.options} error={item.url.error} />
+                      </div>
+                      <div className="col-4">
+                        <div className="row">
+                          <div className="col-8">
+                            <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
+                              required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
+                              onChangeEvent={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} />
+                          </div>
+                          <div className="col-4">
+                            {
+                              i === 0 && <div className="btn btn-sm btn-block btn-primary" onClick={this.addToItemList}>
+                                <img src={PlusIcon} className="plus-icon make-it-white"/> Item </div> ||
+                              <div className="btn btn-sm btn-block cancel-btn text-primary" type="button" onClick={evt => {this.removeFromItemList(evt, i);}}>Remove</div>
+                            }
                           </div>
                         </div>
                       </div>
-                    );
-                  })
-                }
-                <div className="row mb-3">
-                  <div className="col">
-                    <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
-                      value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChangeEvent={this.onInputChange}
-                      disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} />
-                  </div>
-                </div>
-                {
-                  form.undertakingList.map((undertaking, i) => {
-                    return (
-                      <div key={i} className="row mb-2">
-                        <div className="col">
-                          <div className="form-check">
-                            <input type="checkbox" id={`user-undertaking-${i}`} className="form-check-input user-undertaking" checked={undertaking.selected} required={true}
-                              onChange={evt => {this.undertakingtoggle(evt, undertaking, i);}} />
-                            <label className="form-check-label user-undertaking-label" htmlFor={`user-undertaking-${i}`}>
-                              {undertaking.label}
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                }
-                <div className="row mt-3">
-                  <div className="col">
-                    <div className="form-group">
-                      <label htmlFor="signature-name" className="font-weight-bold">Typing your full name in this box will act as your digital signature</label>
-                      <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true}
-                        onChange={evt => {
-                               const formCloned = {...this.state.form};
-                               formCloned.inputData.signature.value = evt.target.value;
-                               this.setState({form: formCloned});
-                               this.checkToEnableSubmit();
-                             }}/>
                     </div>
+                  );
+                })
+              }
+              <div className="row mb-3">
+                <div className="col">
+                  <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
+                    value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChangeEvent={this.onInputChange}
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} />
+                </div>
+              </div>
+              {
+                form.undertakingList.map((undertaking, i) => {
+                  return (
+                    <div key={i} className="row mb-2">
+                      <div className="col">
+                        <div className="form-check">
+                          <input type="checkbox" id={`user-undertaking-${i}`} className="form-check-input user-undertaking" checked={undertaking.selected} required={true}
+                            onChange={evt => {this.undertakingtoggle(evt, undertaking, i);}} />
+                          <label className="form-check-label user-undertaking-label" htmlFor={`user-undertaking-${i}`}>
+                            {undertaking.label}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              }
+              <div className="row mt-3">
+                <div className="col">
+                  <div className="form-group">
+                    <label htmlFor="signature-name" className="font-weight-bold">Typing your full name in this box will act as your digital signature</label>
+                    <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true}
+                      onChange={evt => {
+                              const formCloned = {...this.state.form};
+                              formCloned.inputData.signature.value = evt.target.value;
+                              this.setState({form: formCloned});
+                              this.checkToEnableSubmit();
+                            }}/>
                   </div>
                 </div>
+              </div>
+            </React.Fragment>}
             </div>
             <div className="modal-footer">
               <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
-              <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={false && form.isSubmitDisabled}>
-                Submit
-              </button>
+              {
+                this.state.claimTypeSelected &&
+                <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={form.isSubmitDisabled}>
+                  Submit
+                </button>
+              }
             </div>
           </form>
         </div>
