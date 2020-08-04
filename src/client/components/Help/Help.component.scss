@@ -1,0 +1,16 @@
+.c-Help {
+    &.container {
+        margin-left: unset;
+        margin-right: unset;
+        max-width: unset;
+    }
+
+    .c-Help__header {
+        padding: 1.5rem 2.5rem;
+        background: #FAFAFA;
+    }
+
+    .c-Help__content {
+        padding: 3rem 2.5rem 1.5rem 2rem;
+    }
+}

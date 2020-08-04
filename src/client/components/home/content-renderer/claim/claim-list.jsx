@@ -73,11 +73,11 @@ class ClaimList extends React.Component {
         {
           Header: "CLAIM STATUS",
           accessor: "claimStatus"
-        },
-        {
-          Header: "CLAIM STATUS DETAILS",
-          accessor: "statusDetails"
         }
+        // {
+        //   Header: "CLAIM STATUS DETAILS",
+        //   accessor: "statusDetails"
+        // }
       ]
     };
   }

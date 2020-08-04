@@ -1,0 +1,36 @@
+.c-HelpSideBar {
+  border-right: 1px solid #CCCCCC;
+
+  .c-HelpSideBar__header {
+      padding-left: 0.5rem;
+      padding-bottom: 0.6rem;
+      margin-bottom: 0;
+  }
+
+  &.h-90 {
+    height: 90%;
+  }
+
+  .c-HelpSideBar__categories {
+    list-style: none;
+    padding-left: unset;
+  }
+
+  .c-HelpSideBar__category {
+    color: #8C8C8C;
+    line-height: 1.2;
+    padding: 0.95rem 0.5rem 0.95rem;
+    // margin-bottom: 1.85rem;
+    cursor: pointer;
+
+    &.active {
+        color: #000000;
+        font-weight: bolder;
+    }
+
+    &:hover {
+        background: #FAFAFA;
+        font-weight: bolder;
+    }
+  }
+}

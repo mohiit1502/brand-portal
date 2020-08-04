@@ -1,0 +1,43 @@
+.c-HelpMain {
+    // overflow-y: scroll;
+    // height: 79vh;
+    transition: left 4s ease-in-out;
+
+    &.relative {
+        position: relative;
+    }
+
+    .absolute {
+        position: absolute;
+    }
+
+    &.slideout {
+        left: -100%;
+        // opacity: 0;
+    }
+
+    &.slidein {
+        left: 0;
+        opacity: 1;
+    }
+
+    .c-HelpMain__header {
+        padding-left: 1.5rem;
+        padding-bottom: 1.125rem;
+        border-bottom: 1px solid #CCCCCC;
+        margin-bottom: 0;
+    }
+
+    .c-HelpMain__content {
+        overflow-y: scroll;
+        height: 75vh;
+
+        .c-HelpMain__content__qContainer {
+            padding-top: 1rem;
+        }
+    }
+
+    .c-HelpMain__partial {
+        padding-bottom: 1rem;
+    }
+}
