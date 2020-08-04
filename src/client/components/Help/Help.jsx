@@ -9,7 +9,7 @@ const ACTIVE_TAB = "faq";
 const Help = props => {
 
   const [activeTab, setActiveTab] = useState(ACTIVE_TAB);
-  const isSideAnimate = activeTab && activeTab === "claim";
+
   return (
     <div className="c-Help container h-100">
       <div className="c-Help__header row">
@@ -21,8 +21,8 @@ const Help = props => {
         <div className="col-2 h-100">
           <HelpSideBar categoryHeader={helpConfig.categoryHeader} categories={helpConfig.categories} activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
-        <div className={`col-10${isSideAnimate ? " relative" : ""}`}>
-          <HelpMain content={helpConfig.content} activeTab={activeTab} isSideAnimate={isSideAnimate} />
+        <div className="col-10">
+          <HelpMain content={helpConfig.content} activeTab={activeTab} />
         </div>
       </div>
     </div>

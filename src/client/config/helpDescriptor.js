@@ -1,3 +1,5 @@
+import CONSTANTS from "./../constants/constants";
+
 const HELPCONFIG = {
     header: "Welcome to Walmart Brand Portal help center",
     categoryHeader: "Help Topics",
@@ -218,7 +220,11 @@ const HELPCONFIG = {
                                     "First and last name",
                                     "Email address"
                                 ]
-                            }
+                            },
+                            image: [
+                                "",
+                                ""
+                            ]
                         },
                         {
                             main: "Company Information:",
@@ -230,7 +236,11 @@ const HELPCONFIG = {
                                     "Company address",
                                     "Business registration documents"
                                 ]
-                            }
+                            },
+                            image: [
+                                "",
+                                ""
+                            ]
                         },
                         {
                             main: "Brand Information:",
@@ -242,7 +252,11 @@ const HELPCONFIG = {
                                     "Registered Trademark Number associated with the brand",
                                     "Additional comments about the brand"
                                 ]
-                            }
+                            },
+                            image: [
+                                "",
+                                ""
+                            ]
                         }
                     ]
                 },
@@ -261,13 +275,16 @@ const HELPCONFIG = {
                     subType: "1",
                     steps: [
                         {
-                            main: "Login to your Brand Portal account"
+                            main: "Login to your Brand Portal account",
+                            image: [""]
                         },
                         {
-                            main: "Head to \"My Brands\" section"
+                            main: "Head to \"My Brands\" section",
+                            image: [""]
                         },
                         {
-                            main: "Click \"New Brand\""
+                            main: "Click \"New Brand\"",
+                            image: [""]
                         },
                         {
                             main: "Enter your brand information:",
@@ -279,7 +296,8 @@ const HELPCONFIG = {
                                     "Registered Trademark Number associated with the brand",
                                     "Additional comments about the brand"
                                 ]
-                            }
+                            },
+                            image: [""]
                         }
                     ]
                 }
@@ -290,6 +308,41 @@ const HELPCONFIG = {
             id: "query_user",
             simple: true,
             type: "listWithImages",
+            answer: {
+                para1: "In Walmart Brand Portal, you can add and manage multiple users to help represent your brand. Users can include agents, and you have the flexibility to assign users to particular brands and roles. To add additional users to your Brand Portal account, follow these steps:",
+                list: {
+                    type: "ol",
+                    subType: "1",
+                    steps: [
+                        {
+                            main: "Login to your Brand Portal account",
+                            image: [""]
+                        },
+                        {
+                            main: "Head to \"User List\" section",
+                            image: [""]
+                        },
+                        {
+                            main: "Click \"Invite User\"",
+                            image: [""]
+                        },
+                        {
+                            main: "Enter information about the user:",
+                            subList: {
+                                type: "ul",
+                                subType: "-",
+                                steps: [
+                                    "Select the type of user",
+                                    "First and last name",
+                                    "Email",
+                                    "Select role and assign brands"
+                                ]
+                            },
+                            image: [""]
+                        }
+                    ]
+                }
+            }
         },
         claim: {
             header: "Claim Management",

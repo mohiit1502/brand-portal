@@ -4,9 +4,20 @@ import PropTypes from "prop-types";
 import Accordion from "./../Accordion";
 import "./FaqSingle.component.scss";
 
-const FaqSingle = ({claimExpanded, data, expandPreState, isSideAnimate, setClaimExpanded}) => {
+const FaqSingle = ({data, expandPreState}) => {
 
   const [expanded, setExpanded] = useState(expandPreState ? expandPreState : false);
+
+  const insertImages = images => {
+    const colClass = images && images.length === 1 ? "col-8" : "col-6";
+    return images && images.map((image, key) => {
+    return (
+        <div className={colClass} key={key}>
+          {image ? <img href={image} /> : <i>Image PlaceHolder</i>}
+        </div>
+      );
+    });
+  };
 
   const processNodeDetails = nodeDetails => {
     return nodeDetails.steps.map((step, key) => {
@@ -17,6 +28,9 @@ const FaqSingle = ({claimExpanded, data, expandPreState, isSideAnimate, setClaim
           <li key={key}>
             {step.main}
             {step.subList && getListContent(step.subList)}
+            <div className="row">
+              {step.image && insertImages(step.image)}
+            </div>
           </li>
         );
       }
@@ -52,13 +66,16 @@ const FaqSingle = ({claimExpanded, data, expandPreState, isSideAnimate, setClaim
     }
   };
 
+  // eslint-disable-next-line complexity
   const generateContentDOM = () => {
     const accNode = document.getElementById(data.id);
     const accButtonNode = accNode && accNode.getElementsByClassName("c-Accordion__button-container");
     const accPanelNode = accButtonNode && accButtonNode.length > 0 && accButtonNode[0].nextElementSibling;
     const answer = data.answer;
+    const classes = `c-Accordion__panel${expanded ? " expanded" : ""}`;
+    const styles = {maxHeight: expandPreState ? "100%" : expanded && accPanelNode ? accPanelNode.scrollHeight + 24 : 0}
     return (
-      <div className={`c-Accordion__panel${expanded ? " expanded slideout" : ""}${isSideAnimate ? " absolute" : ""}`} style={{maxHeight: expandPreState ? "100%" : expanded && accPanelNode ? accPanelNode.scrollHeight + 24 : 0}}>
+      <div className={classes} style={styles}>
         {answer && Object.keys(answer).map(node => getAnswerContent(answer, node))}
       </div>
     );
@@ -66,17 +83,14 @@ const FaqSingle = ({claimExpanded, data, expandPreState, isSideAnimate, setClaim
 
   return (
     <div className="c-FaqSingle" id={data.id}>
-      <Accordion data={data} expanded={expanded} setExpanded={!isSideAnimate ? setExpanded : setClaimExpanded}>{generateContentDOM()}</Accordion>
+      <Accordion data={data} expanded={expanded} setExpanded={setExpanded}>{generateContentDOM()}</Accordion>
     </div>
   );
 };
 
 FaqSingle.propTypes = {
-  claimExpanded: PropTypes.bool,
   data: PropTypes.object,
-  expandPreState: PropTypes.bool,
-  isSideAnimate: PropTypes.bool,
-  setClaimExpanded: PropTypes.func
+  expandPreState: PropTypes.bool
 };
 
 export default FaqSingle;

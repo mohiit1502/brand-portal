@@ -54,15 +54,6 @@
         &.expanded {
             padding-bottom: 1.5rem;
             overflow: scroll;
-
-            &.slidein {
-
-            }
-
-            &.slideout {
-                left: -100%;
-                opacity: 0;;
-            }
         }
     }
 }
