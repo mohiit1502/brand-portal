@@ -59,18 +59,18 @@ const CONSTANTS = {
 
   ROUTES: {
     ROOT_PATH: "/",
-    DEFAULT_REDIRECT_PATH_SUPERADMIN: "/user-management/user-list",
+    DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users/user-list",
     DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
     DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
 
     ONBOARD: {
-      COMPANY_REGISTER: "/onboard/register/company",
-      BRAND_REGISTER: "/onboard/register/brand"
+      COMPANY_REGISTER: "/onboard/company",
+      BRAND_REGISTER: "/onboard/brand"
     },
 
     USER_MGMT: {
-      USER_LIST: "/user-management/user-list",
-      USER_APPROVAL: "/user-management/user-approval"
+      USER_LIST: "/users/user-list",
+      USER_APPROVAL: "/users/user-approval"
     },
 
     BRANDS: {
@@ -82,7 +82,11 @@ const CONSTANTS = {
     },
 
     PROFILE: {
-      USER: "/profile/user-profile"
+      USER: "/profile"
+    },
+
+    HELP: {
+      HELP: "/help"
     }
   },
 
@@ -95,8 +99,8 @@ const CONSTANTS = {
       value: "USERS",
       href: "users/user-list",
       children: [
-        { id: "31", name: "USERLIST", value: "User List", href: "/user-management/user-list", active: true},
-        { id: "32", name: "APPROVALLIST", value: "Approval List", href: "/user-management/user-approval", active: false}
+        { id: "31", name: "USERLIST", value: "User List", href: "/users/user-list", active: true},
+        { id: "32", name: "APPROVALLIST", value: "Approval List", href: "/users/user-approval", active: false}
       ]
     }
   ],

@@ -29,6 +29,16 @@ $dropdown-white : #F9F9F9;
           border : 1px solid $white;
           @extend .py-1;
         }
+        &.nav-help {
+          display: flex;
+          align-items: center;
+
+          .badge {
+            font-family: Arial Rounded MT Bold;
+            font-size: 1rem;
+            padding: 0.2em 0.42em;
+          }
+        }
       }
     }
   }

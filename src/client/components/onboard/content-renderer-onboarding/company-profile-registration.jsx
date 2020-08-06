@@ -57,7 +57,8 @@ class CompanyProfileRegistration extends React.Component {
             type: "text",
             pattern: null,
             disabled: true,
-            subtitle: "Autocomplete Powered by Google",
+            // subtitle: "Autocomplete Powered by Google",
+            subtitle: "",
             error: ""
           },
           city: {

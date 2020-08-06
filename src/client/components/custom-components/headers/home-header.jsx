@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import {Link} from "react-router-dom";
 import walmartLogo from "../../../images/wm-white-logo.png";
 import PropTypes from "prop-types";
 import "../../../styles/custom-components/headers/home-header.scss";
@@ -28,15 +29,15 @@ class HomeHeader extends React.Component {
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item nav-item-help mx-4">
-              <a className="nav-link" href="#">
+              <Link to="/help" className="nav-link nav-help" href="#">
                 <span className="badge badge-pill bg-white text-blue"> ? </span> &nbsp; Help
-              </a>
+              </Link>
             </li>
             <li className="nav-item dropdown nav-item-profile ml-4">
-              <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+              <Link to="#" className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                 aria-expanded="false">
                 {`${this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
-              </a>
+              </Link>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 {
                   this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>

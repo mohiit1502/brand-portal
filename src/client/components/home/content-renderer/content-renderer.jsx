@@ -8,6 +8,7 @@ import UserList from "./user/user-list";
 import UserApproval from "./user/user-approval";
 import BrandList from "./brand/brand-list";
 import ClaimList from "./claim/claim-list";
+import Help from "../../Help/Help";
 
 class ContentRenderer extends React.Component {
   constructor (props) {
@@ -32,6 +33,9 @@ class ContentRenderer extends React.Component {
           </Route>
           <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIMS_LIST}>
             <ClaimList {...this.props}/>
+          </Route>
+          <Route path={CONSTANTS.ROUTES.HELP.HELP}>
+            <Help {...this.props}/>
           </Route>
         </Switch>
       </div>

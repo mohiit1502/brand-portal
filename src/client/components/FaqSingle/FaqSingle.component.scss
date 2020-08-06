@@ -1,0 +1,22 @@
+.c-FaqSingle {
+    border-bottom: 1px solid #CCCCCC;
+
+    ol li {
+        padding-left: 0.5rem;
+    }
+
+    ul {
+        padding-left: 0.8rem;
+        &.dashed {
+            list-style-type: none;
+            & > li {
+                padding-left: 0;
+                &:before {
+                    content: "-";
+                    margin-right: 1rem;
+                    font-weight: bolder;
+                }
+            }
+        }
+    }
+}
