@@ -4,6 +4,7 @@ import {userEdit, userProfile} from "./user/user-reducers";
 import {brandEdit} from "./brand/brand-reducers";
 import company from "./company/company-reducer";
 import claims from "./claim/claim-reducers";
+import help from "./help/help-reducer";
 import {notification} from "./notification/notification-reducers";
 
 const userRegistration = (store, action) => {
@@ -30,5 +31,6 @@ export default combineReducers({
   brandEdit,
   company,
   claims,
+  help,
   notification
 });

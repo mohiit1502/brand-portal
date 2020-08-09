@@ -1,0 +1,78 @@
+.c-ImageViewer {
+    height: 100vh;
+
+    .modal-dialog {
+        width: 90%;
+        height: 100%;
+        max-width: unset;
+    }
+
+    .modal-content {
+        // height: 100%;
+
+        button.close {
+            font-size: 3rem;
+            background: #ccc;
+            border-radius: 5px;
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            z-index: 1000;
+        }
+
+        .modal-body {
+            padding: 0;
+        }
+    }
+
+    .c-ImageViewer__image {
+        width: 100%;
+    }
+
+    .c-ImageViewer-enter {
+        transform: scale(0, 0);
+    }
+    
+    .c-ImageViewer-enter-active {
+        animation: scaleup 0.4s ease-in-out;
+    }
+    
+    .c-ImageViewer-exit {
+        transform: scale(2, 2);
+    }
+    
+    .c-ImageViewer-exit-active {
+        animation: scaledown 0.4s ease-in-out;
+    }
+    
+    
+    @keyframes scaleup {
+        0% {
+            transform: scale(0);
+            -webkit-transform: scale(0);
+        }
+        60% {
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+    }
+    
+    @keyframes scaledown {
+        0% {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+        40% {
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+        }
+        100% {
+            transform: scale(0);
+            -webkit-transform: scale(0);
+        }
+    }
+}

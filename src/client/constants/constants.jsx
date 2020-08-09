@@ -31,7 +31,7 @@ const CONSTANTS = {
     PORTAL_VERIFICATION: {
       CODE: 2,
       IMAGE: "Alert",
-      MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
+      MESSAGE: "Your company details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
       TITLE: "Company Registration is Pending"
     },
     PORTAL_DASHBOARD: {
