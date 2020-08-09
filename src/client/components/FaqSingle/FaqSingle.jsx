@@ -1,10 +1,14 @@
+/* eslint-disable filenames/match-regex */
 /* eslint-disable no-use-before-define */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {toggleImageViewer} from "./../../actions/help/help-actions";
 import Accordion from "./../Accordion";
+import * as imagesAll from "./../../images";
 import "./FaqSingle.component.scss";
 
-const FaqSingle = ({data, expandPreState}) => {
+const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher}) => {
 
   const [expanded, setExpanded] = useState(expandPreState ? expandPreState : false);
 
@@ -13,7 +17,7 @@ const FaqSingle = ({data, expandPreState}) => {
     return images && images.map((image, key) => {
     return (
         <div className={colClass} key={key}>
-          {image ? <img href={image} /> : <i>Image PlaceHolder</i>}
+          {image ? <img className="c-FaqSingle__helpImage" src={imagesAll[image]} onClick={() => toggleImageViewerDispatcher({show: true, imageSrc: image})} /> : <i>Image PlaceHolder</i>}
         </div>
       );
     });
@@ -90,7 +94,12 @@ const FaqSingle = ({data, expandPreState}) => {
 
 FaqSingle.propTypes = {
   data: PropTypes.object,
-  expandPreState: PropTypes.bool
+  expandPreState: PropTypes.bool,
+  toggleImageViewerDispatcher: PropTypes.func
 };
 
-export default FaqSingle;
+const mapDispatchToProps = {
+  toggleImageViewerDispatcher: toggleImageViewer
+}
+
+export default connect(null, mapDispatchToProps)(FaqSingle);

@@ -222,8 +222,8 @@ const HELPCONFIG = {
                                 ]
                             },
                             image: [
-                                "",
-                                ""
+                                "FNameLName",
+                                "Email"
                             ]
                         },
                         {
@@ -238,8 +238,8 @@ const HELPCONFIG = {
                                 ]
                             },
                             image: [
-                                "",
-                                ""
+                                "Company1",
+                                "Company2"
                             ]
                         },
                         {
@@ -254,8 +254,8 @@ const HELPCONFIG = {
                                 ]
                             },
                             image: [
-                                "",
-                                ""
+                                "Brand1",
+                                "Brand2"
                             ]
                         }
                     ]
@@ -276,15 +276,15 @@ const HELPCONFIG = {
                     steps: [
                         {
                             main: "Login to your Brand Portal account",
-                            image: [""]
+                            image: ["Login"]
                         },
                         {
                             main: "Head to \"My Brands\" section",
-                            image: [""]
+                            image: ["BrandList"]
                         },
                         {
                             main: "Click \"New Brand\"",
-                            image: [""]
+                            image: ["CreateBrandButton"]
                         },
                         {
                             main: "Enter your brand information:",
@@ -297,7 +297,7 @@ const HELPCONFIG = {
                                     "Additional comments about the brand"
                                 ]
                             },
-                            image: [""]
+                            image: ["CreateBrandForm"]
                         }
                     ]
                 }
@@ -316,15 +316,15 @@ const HELPCONFIG = {
                     steps: [
                         {
                             main: "Login to your Brand Portal account",
-                            image: [""]
+                            image: ["Login"]
                         },
                         {
                             main: "Head to \"User List\" section",
-                            image: [""]
+                            image: ["UserList"]
                         },
                         {
                             main: "Click \"Invite User\"",
-                            image: [""]
+                            image: ["InviteUserButton"]
                         },
                         {
                             main: "Enter information about the user:",
@@ -338,7 +338,7 @@ const HELPCONFIG = {
                                     "Select role and assign brands"
                                 ]
                             },
-                            image: [""]
+                            image: ["InviteUserForm"]
                         }
                     ]
                 }

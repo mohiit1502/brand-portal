@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import HelpMain from "./../HelpMain";
 import HelpSideBar from "./../HelpSideBar";
+import ImageViewer from "../ImageViewer/ImageViewer";
 import helpConfig from "../../config/helpDescriptor";
 import "./Help.component.scss";
 
@@ -25,6 +26,7 @@ const Help = props => {
           <HelpMain content={helpConfig.content} activeTab={activeTab} />
         </div>
       </div>
+      <ImageViewer />
     </div>
   );
 };
