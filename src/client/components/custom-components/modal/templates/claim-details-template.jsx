@@ -99,6 +99,10 @@ class ClaimDetailsTemplate extends React.Component {
                   <span className="font-size-14">Status Detail</span>
                   <h6>{this.props.data.statusDetails}</h6>
                 </div>
+                {this.props.data.snNumber && <div className="col">
+                  <span className="font-size-14">Reference Number</span>
+                  <h6>{this.props.data.snNumber}</h6>
+                </div>}
               </div>
               <div className="row mt-3">
                 <div className="col text-right">
