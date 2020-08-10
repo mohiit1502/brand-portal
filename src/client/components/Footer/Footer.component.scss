@@ -1,0 +1,31 @@
+@import "./../../styles/override/variables.scss";
+
+.c-Footer {
+    padding: 1.75rem 2.5rem;
+    background: $blue;
+
+    .c-Footer__logoSocialContainer {
+        display: inline-block;
+        position: relative;
+        margin-bottom: 1.5rem;
+
+        .c-Footer__wmWhiteLogo {
+            width: 7.625rem;
+        }
+    
+        .c-Footer__logoText {
+            color: white;
+            bottom: -0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.125rem;
+            position: absolute;
+            right: 2.1rem;
+        }
+    }
+
+    .c-Footer__copyrightText, .c-Footer__privacyNav {
+        padding: 0.7rem 0 0.3rem;
+        color: #eee;
+    }
+
+}

@@ -1,5 +1,3 @@
-import CONSTANTS from "./../constants/constants";
-
 const HELPCONFIG = {
     header: "Welcome to Walmart Brand Portal help center",
     categoryHeader: "Help Topics",
@@ -187,7 +185,7 @@ const HELPCONFIG = {
                     question: "Is Walmart Brand Portal service available only in the United States?",
                     type: "simple",
                     answer: {
-                        para1: "Currently, walmart.com is providing its brand portal services to the united states."
+                        para1: "Currently, walmart.com is providing its brand portal services to the United States."
                     }
                 }
             ]

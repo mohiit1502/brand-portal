@@ -18,7 +18,7 @@ class NewUserAddedTemplate extends React.Component {
   }
 
   getHeaderString() {
-    return `${this.props.modal.data.firstName} ${this.props.modal.data.lastName} added as '${this.props.modal.data.role && this.props.modal.data.role.name}'`;
+    return `${this.props.modal.data.firstName} ${this.props.modal.data.lastName} added as "${this.props.modal.data.role && this.props.modal.data.role.name}"`;
   }
 
   getDescriptionString() {

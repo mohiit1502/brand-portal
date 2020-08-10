@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import {Link, animateScroll as scroll} from "react-scroll";
 
-import walmartLogo from "../../../images/wm-white-logo.png";
+import * as images from "./../../../images/index";
 import "../../../styles/custom-components/headers/login-header.scss";
 
 class LoginHeader extends React.Component {
@@ -17,9 +17,9 @@ class LoginHeader extends React.Component {
   render() {
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark login-header-nav">
+      <nav className="c-LoginHeader navbar navbar-expand-lg navbar-dark login-header-nav">
         <a className="navbar-brand walmart-brand" href="#">
-          <img src={walmartLogo} />
+          <img src={images.WMBlue} />
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
           aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,14 +28,14 @@ class LoginHeader extends React.Component {
 
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item mx-4">
+            {/* <li className="nav-item mx-4">
               <a className="nav-link" href="#">Home</a>
-            </li>
+            </li> */}
             <li className="nav-item mx-4">
-              <a className="nav-link" href="#">FAQ</a>
+              <Link className="nav-link" to="LoginFAQ" smooth={true} duration={1000}>FAQ</Link>
             </li>
             <li className="nav-item ml-4 d-flex align-items-center">
-              <a className="nav-link btn btn-navy-blue login-btn" href={this.state.loginRedirectLink}>Login</a>
+              <a className="nav-link btn login-btn" href={this.state.loginRedirectLink}>Login</a>
             </li>
           </ul>
         </div>

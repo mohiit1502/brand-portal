@@ -3,21 +3,37 @@
 $nav-max-height : 61px;
 .login-header-nav{
 
+  &.navbar {
+    padding: 1.75rem 2.5rem 0.5rem;
+  }
+
   max-height: $nav-max-height;
   .walmart-brand{
     img {
-      width: 122px;
+      width: 10.75rem;
     }
   }
   .navbar-collapsible-header{
     .nav-item {
       .nav-link {
-        font-size: 12px;
-        color : white;
+        font-size: 1rem;
+        color : $blue;
+        cursor: pointer;
         &.login-btn{
-          width : 90px;
-          border : 1px solid $white;
+          // width : 90px;
+          border : 1px solid $blue;
+          padding: 6px 25px;
           @extend .py-1;
+
+          &:hover {
+            background: $blue;
+            color: white;
+            border-color: white;
+          }
+        }
+        &:hover {
+          color: $blue;
+          font-weight: bolder;
         }
       }
     }

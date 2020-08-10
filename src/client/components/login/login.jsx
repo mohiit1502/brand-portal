@@ -1,7 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../styles/login/login.scss";
 import LoginHeader from "../custom-components/headers/login-header";
+import Hero from "../Hero";
+import TilesContainer from "../TilesContainer";
+import LoginFaq from "./../LoginFaq";
+import ContactUsPrompt from "../ContactUsPrompt";
+import Footer from "../Footer";
+import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
+import "../../styles/login/login.scss";
 
 class Login extends React.Component {
 
@@ -16,16 +22,11 @@ class Login extends React.Component {
     return (
       <div className="login-container view-container">
         <LoginHeader/>
-        <div className="row mt-5 tag-line-row">
-          <div className="col">
-            <div className="product-tag-line text-center text-white mx-auto mt-5">Helping you protect your brand on Walmart</div>
-          </div>
-        </div>
-        <div className="row mt-5 registration-row">
-          <div className="col text-center">
-            <a className="register-btn btn btn-primary no-border-radius px-4" href={this.state.registerRedirectLink}> Register Now </a>
-          </div>
-        </div>
+        <Hero registerRedirectLink={this.state.registerRedirectLink} />
+        <TilesContainer tiles={loginConfig.TILES} />
+        <LoginFaq faq={loginConfig.FAQ} />
+        <ContactUsPrompt />
+        <Footer />
       </div>
     );
   }
