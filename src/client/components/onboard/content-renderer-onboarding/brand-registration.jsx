@@ -1,3 +1,5 @@
+/* eslint-disable no-throw-literal */
+/* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
 import React from "react";
 import PropTypes from "prop-types";
@@ -8,10 +10,10 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import Http from "../../../utility/Http";
 import CustomInput from "../../custom-components/custom-input/custom-input";
-import CheckGreenIcon from "../../../images/check-grn.svg";
 import CONSTANTS from "../../../constants/constants";
 // import StorageSrvc, {STORAGE_TYPES} from "../../../utility/StorageSrvc";
 
+const console = window.console;
 class BrandRegistration extends React.Component {
 
   constructor(props) {
@@ -39,7 +41,8 @@ class BrandRegistration extends React.Component {
             disabled: false,
             isValid: false,
             subtitle: "Please input the correct number associated with your company trademark. Only USPTO registered trademarks will be accepted.",
-            error: ""
+            error: "",
+            onBlurEvent: this.checkTrademarkValidity
           },
           brandName: {
             label: "Brand Name",
@@ -49,7 +52,39 @@ class BrandRegistration extends React.Component {
             pattern: null,
             disabled: false,
             subtitle: "",
-            error: ""
+            error: "",
+            isUnique: false,
+            onBlurEvent: e => {
+              this.setState(state => {
+                state = {...state};
+                // state.form.inputData.brandName.error = "Brand Name is not Unique";
+                state.form.inputData.brandName.isUnique = false;
+                return {
+                  ...state
+                };
+              }, this.checkToEnableSubmit);
+              Http.get("/api/brands/checkUnique", {brandName: e.target.value}).then(res => {
+                if (!res.body.unique) {
+                  this.setState(state => {
+                    state = {...state};
+                    state.form.inputData.brandName.error = "Brand Name is not Unique";
+                    state.form.inputData.brandName.isUnique = false;
+                    return {
+                      ...state
+                    };
+                  }, this.checkToEnableSubmit);
+                } else {
+                  this.setState(state => {
+                    state = {...state};
+                    state.form.inputData.brandName.error = "";
+                    state.form.inputData.brandName.isUnique = true;
+                    return {
+                      ...state
+                    };
+                  }, this.checkToEnableSubmit);
+                }
+              });
+            }
           },
           comments: {
             label: "Comments",
@@ -68,10 +103,6 @@ class BrandRegistration extends React.Component {
         }
       }
     };
-  }
-
-  componentDidUpdate(prevProps) {
-
   }
 
   checkToEnableSubmit () {
@@ -142,7 +173,7 @@ class BrandRegistration extends React.Component {
         brand
       };
 
-      const response = (await Http.post("/api/org/register", data)).body;
+      await Http.post("/api/org/register", data);
 
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();
@@ -155,24 +186,17 @@ class BrandRegistration extends React.Component {
   }
 
   async checkTrademarkValidity () {
+    const form = {...this.state.form};
     try {
-      if (!this.state.form.inputData.trademarkNumber.value) {
-        return;
-      }
+      if (!this.state.form.inputData.trademarkNumber.value) return;
       const response = (await Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`)).body;
-      if (!response.valid) {
-        throw {error: `${response.ipNumber} is not a valid Trademark Number.`};
-      }
-      const form = {...this.state.form};
-      form.inputData.trademarkNumber.isValid = true;
-      form.inputData.trademarkNumber.error = "";
+      if (!response.valid) {throw {error: `${response.ipNumber} is not a valid Trademark Number.`};}
+      form.inputData.trademarkNumber = {...form.inputData.trademarkNumber, isValid: true, error: ""};
       form.shouldCheckTrademarkValid = false;
       this.setState({form}, this.checkToEnableSubmit);
     } catch (err) {
       console.log(err);
-      const form = {...this.state.form};
-      form.inputData.trademarkNumber.isValid = false;
-      form.inputData.trademarkNumber.error = err.error;
+      form.inputData.trademarkNumber = {...form.inputData.trademarkNumber, isValid: false, error: err.error};
       form.shouldCheckTrademarkValid = true;
       this.setState({form}, this.checkToEnableSubmit);
     }
@@ -208,21 +232,21 @@ class BrandRegistration extends React.Component {
             <div className="col">
               <form>
                 <div className="form-row">
-                  <div className="col-10">
+                  <div className="col-12">
                     <CustomInput key={"trademarkNumber"}
                       inputId={"trademarkNumber"}
                       formId={this.state.form.id} label={this.state.form.inputData.trademarkNumber.label}
                       required={this.state.form.inputData.trademarkNumber.required} value={this.state.form.inputData.trademarkNumber.value}
                       type={this.state.form.inputData.trademarkNumber.type} pattern={this.state.form.inputData.trademarkNumber.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled}
+                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled} onBlurEvent={this.state.form.inputData.trademarkNumber.onBlurEvent}
                       error={this.state.form.inputData.trademarkNumber.error} subtitle={this.state.form.inputData.trademarkNumber.subtitle}/>
                   </div>
-                  <div className="col-2">
+                  {/* <div className="col-2">
                     <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid && !this.state.form.shouldCheckTrademarkValid ? "btn-success" : "btn-primary"}`}
                       onClick={this.checkTrademarkValidity}>
                       {this.state.form.inputData.trademarkNumber.isValid && !this.state.form.shouldCheckTrademarkValid ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="form-row">
                   <div className="col">
@@ -231,7 +255,7 @@ class BrandRegistration extends React.Component {
                       formId={this.state.form.id} label={this.state.form.inputData.brandName.label}
                       required={this.state.form.inputData.brandName.required} value={this.state.form.inputData.brandName.value}
                       type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.brandName.disabled}
+                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.brandName.disabled} onBlurEvent={this.state.form.inputData.brandName.onBlurEvent}
                       error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
                   </div>
                 </div>

@@ -2,7 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {toggleModal} from "../../../../../actions/modal-actions";
 import CONSTANTS from "../../../../../constants/constants";
 import "./StatusModalTemplate.component.scss";
 
@@ -37,7 +36,6 @@ const StatusModalTemplate = props => {
             </div>
             <div className="row mt-5">
               <div className="col">
-                {/*<div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>*/}
                 <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Okay</a>
               </div>
             </div>
@@ -51,16 +49,11 @@ const StatusModalTemplate = props => {
 StatusModalTemplate.props = {
   data: PropTypes.object,
   meta: PropTypes.object,
-  modal: PropTypes.object,
-  toggleModal: PropTypes.func
+  modal: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return state;
 };
 
-const mapDispatchToProps = {
-  toggleModal
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(StatusModalTemplate);
+export default connect(mapStateToProps)(StatusModalTemplate);

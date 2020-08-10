@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {toggleModal} from "../../../actions/modal-actions";
+// import {toggleModal} from "../../../actions/modal-actions";
 import {saveBrandCompleted} from "../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
 import "../../../styles/custom-components/notification/notification.scss";
@@ -89,7 +89,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  toggleModal,
+  // toggleModal,
   saveBrandCompleted,
   hideNotification
 };

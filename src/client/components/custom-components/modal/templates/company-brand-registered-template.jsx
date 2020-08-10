@@ -4,7 +4,7 @@ import CheckGreenIcon from "../../../../images/check-grn.svg";
 
 import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
-import {toggleModal} from "../../../../actions/modal-actions";
+// import {toggleModal} from "../../../../actions/modal-actions";
 import CONSTANTS from "../../../../constants/constants";
 
 class CompanyBrandRegisteredTemplate extends React.Component {
@@ -55,7 +55,7 @@ class CompanyBrandRegisteredTemplate extends React.Component {
 
 
 CompanyBrandRegisteredTemplate.propTypes = {
-  toggleModal: PropTypes.func,
+  // toggleModal: PropTypes.func,
   modal: PropTypes.object
 };
 
@@ -64,7 +64,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  toggleModal
+  // toggleModal
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyBrandRegisteredTemplate);

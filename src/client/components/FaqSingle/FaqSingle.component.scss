@@ -3,6 +3,14 @@
 
     ol li {
         padding-left: 0.5rem;
+
+        .c-FaqSingle__helpImage {
+            cursor: pointer;
+            border: 1px solid #ccc;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            width: 100%;
+        }
     }
 
     ul {
