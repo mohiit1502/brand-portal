@@ -139,11 +139,16 @@ class CustomInput extends React.Component {
   setMultiSelectInputValue (evt, key, optionId) {
     if (evt && evt.target) {
       const state = {...this.state};
-      const dropdownOptions = state.dropdownOptions;
+      const dropdownOptions = [...state.dropdownOptions];
       let allSelected;
       if (evt.target.value.toLowerCase() === "all") {
         allSelected = evt.target.checked;
         dropdownOptions.forEach(opt => (opt.selected = evt.target.checked));
+      } else {
+        const optionAll = dropdownOptions.find(opt => opt.value.toLowerCase()  === "all");
+        optionAll.selected = true;
+        dropdownOptions.forEach(opt => !opt.selected  && (optionAll.selected = false));
+        if (!evt.target.checked && optionAll) optionAll.selected = false;
       }
       this.setState({
         dropdownOptions
@@ -173,8 +178,8 @@ class CustomInput extends React.Component {
     return (
 
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-4"}`}>
-        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
+        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
+          value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>

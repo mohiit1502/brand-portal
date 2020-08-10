@@ -141,8 +141,8 @@ class NewClaimTemplate extends React.Component {
         label: "Seller Name",
         required: true,
         value: "",
-        // type: "multiselect",
-        type: "select",
+        type: "multiselect",
+        // type: "select",
         pattern: null,
         disabled: true,
         options: [],
@@ -196,7 +196,7 @@ class NewClaimTemplate extends React.Component {
         brandName = state.form.inputData.brandName.value;
         claimType = value;
       }
-      if (claimType === "Trademark") {
+      if (claimType === "Trademark" || claimType === "Counterfeit") {
         const brandObj = state.brands.find(brand => brand.brandName === brandName);
         const trademarkNumber = brandObj && brandObj.trademarkNumber ? brandObj.trademarkNumber : "";
         state.form.inputData.claimTypeIdentifier.value = trademarkNumber;
@@ -325,13 +325,19 @@ class NewClaimTemplate extends React.Component {
     const comments = inputData.comments.value;
     const digitalSignatureBy = inputData.signature.value;
 
+    const getSellerNames = item => {
+      let sellerNames = item.sellerName.value && item.sellerName.value.reduce((acc, item1) => `${acc}${item1}, `, "");
+      sellerNames = sellerNames.endsWith(", ") && sellerNames.substring(0, sellerNames.lastIndexOf(", "));
+      return sellerNames;
+    };
+
     const payload = {
       claimType,
       brandId,
       registrationNumber,
       comments,
       digitalSignatureBy,
-      items: inputData.itemList.map(item => ({itemUrl: item.url.value, sellerName: item.sellerName.value}))
+      items: inputData.itemList.map(item => ({itemUrl: item.url.value, sellerName: getSellerNames(item)}))
     };
     return Http.post("/api/claims", payload)
       .then(res => {
@@ -355,12 +361,13 @@ class NewClaimTemplate extends React.Component {
       if (url) {
         const slash = url.lastIndexOf("/");
         const qMark = url.lastIndexOf("?") === -1 ? url.length : url.lastIndexOf("?");
-        
+
         const payload = url.substring(slash + 1, qMark);
         const query = {payload};
         Http.get("/api/sellers", query)
           .then(res => {
             const form = {...this.state.form};
+            if (res.body) res.body.unshift({value: "All", id: "_all"});
             form.inputData.itemList[i].sellerName.options = res.body;
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].url.error = "";
