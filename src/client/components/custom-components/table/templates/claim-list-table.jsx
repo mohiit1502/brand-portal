@@ -3,30 +3,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import Http from "../../../../utility/Http";
-import helper from "./../../../../utility/helper";
+
 
 const ClaimListTable = function(props) {
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
 
-  const showClaimDetails = async function (row) {
+  const showClaimDetails = function (row) {
     const meta = { templateName: "ClaimDetailsTemplate", data: row.original };
     props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-    const ticketId = row.original && row.original.ticketId;
-    const claimDetailsUrl = `/api/claims'${ticketId}`;
-    const response = (await Http.get(claimDetailsUrl)).body;
-
-    console.log(response);
-    // let claimList = [];
-
-    // if (response.data.content && response.data.content) {
-    //   claimList = response.data.content.map((brand, i) => {
-    //     const newClaim = { ...brand, sequence: i + 1 };
-    //     newClaim.original = brand;
-    //     newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
-    //     return newClaim;
-    //   });
-    // }
   };
 
   const classColMap = {

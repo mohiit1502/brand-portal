@@ -121,12 +121,12 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 .loader:before {
   display: block;
   content: ' ';
-  top: calc(50% - #{$loader-size/2});
-  left: calc(50% - #{$loader-size/2});
+  top: calc(50% - $loader-size/2);
+  left: calc(50% - $loader-size/2);
   background-image: url("./../images/Spinner.svg");
-  background-size: #{$loader-size} #{$loader-size};
-  height: #{$loader-size};
-  width: #{$loader-size};
+  background-size: $loader-size $loader-size;
+  height: $loader-size;
+  width: $loader-size;
 }
 
 .show {
