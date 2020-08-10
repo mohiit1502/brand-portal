@@ -3,7 +3,7 @@
 */
 
 @import "override/variables";
-@import "../../../node_modules/bootstrap/scss/bootstrap";
+// @import "../../../node_modules/bootstrap/scss/bootstrap";
 
 @font-face {
   font-family: BogleWeb-Regular;
@@ -118,6 +118,24 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   filter: grayscale(100%) brightness(100);
 }
 
+.loader:before {
+  display: block;
+  content: ' ';
+  top: calc(50% - $loader-size/2);
+  left: calc(50% - $loader-size/2);
+  background-image: url("./../images/Spinner.svg");
+  background-size: $loader-size $loader-size;
+  height: $loader-size;
+  width: $loader-size;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}
 /*
 ** Generic Classes End
 */
