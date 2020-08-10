@@ -327,7 +327,10 @@ CustomInput.propTypes = {
   rowCount: PropTypes.number,
   subtitle: PropTypes.string,
   type: PropTypes.string,
-  value: PropTypes.string
+  value: [
+    PropTypes.string,
+    PropTypes.object
+  ]
 };
 
 const mapStateToProps = state => state;
