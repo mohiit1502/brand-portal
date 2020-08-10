@@ -128,7 +128,7 @@ const CONSTANTS = {
       DISPLAY: {
         EDIT: "Edit User Profile",
         RESENDINVITE: "Resend Invite",
-        SUSPEND: "Suspend User Profile",
+        SUSPEND: "Deactivate User Profile",
         REACTIVATE: "Reactivate User",
         DELETE: "Delete User Profile"
       },
@@ -151,7 +151,7 @@ const CONSTANTS = {
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit Brand Details",
-        SUSPEND: "Suspend Brand",
+        SUSPEND: "Deactivate Brand",
         REACTIVATE: "Reactivate Brand",
         DELETE: "Delete Brand"
       },

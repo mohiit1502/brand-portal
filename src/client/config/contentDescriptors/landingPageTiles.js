@@ -1,6 +1,6 @@
 const LOGINCONFIG = {
   TILES: [{
-      svg: "GroupPeople",
+      svg: "ProblemSolving",
       header: "What is Brand Portal?",
       content: {
         para1: "Brand Portal helps you to:",
@@ -15,7 +15,7 @@ const LOGINCONFIG = {
       }
     },
     {
-      svg: "ProblemSolving",
+      svg: "GroupPeople",
       header: "Who is Brand Portal for?",
       content: {
         paraStyleClass: "",
