@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import HelpMain from "./../HelpMain";
 import HelpSideBar from "./../HelpSideBar";
 import ImageViewer from "../ImageViewer/ImageViewer";
-import helpConfig from "../../config/helpDescriptor";
+import helpConfig from "../../config/contentDescriptors/help";
 import "./Help.component.scss";
 
 const ACTIVE_TAB = "faq";

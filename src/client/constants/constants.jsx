@@ -179,6 +179,17 @@ const CONSTANTS = {
     }
   },
 
+  LOGIN: {
+    LANDING_PAGE_TEXT: "Helping you protect your intellectual property on Walmart.com",
+    REGISTER_TEXT: "Register Now",
+    IMAGE_WALMART_INTRO: "WalmartIntro",
+    CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
+    CONTACTEMAIL: "support@brandportal.com",
+    COPYRIGHTTEXT: "© 2020 Walmart. All rights reserved.",
+    PRIVACYTEXT: "Privacy Policy",
+    PRIVACYURL: ""
+  },
+
   ONGOING_CLAIM_TYPES: {
     TRADEMARK: "trademark",
     PATENT: "patent",

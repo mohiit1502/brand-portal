@@ -17,6 +17,7 @@ import Filter from "./filter-sc.svg";
 import FNameLName from "./FNameLName.png";
 import GreenCircleCheck from "./green-circle-check.svg";
 import Group from "./group-23.svg";
+import GroupPeople from "./001-group.svg";
 import Help from "./Help.png";
 import Info from "./info-sc.svg";
 import InviteUserButton from "./FNameLName.png";
@@ -24,6 +25,7 @@ import InviteUserForm from "./FNameLName.png";
 import Login from "./FNameLName.png";
 import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
+import ProblemSolving from "./001-problem-solving.svg";
 import Question from "./question.svg";
 import RedCircleCross from "./red-circle-cross.svg";
 import Search from "./18-px-search.svg";
@@ -32,6 +34,8 @@ import TimesSuccess from "./times-success.svg";
 import User from "./user.svg";
 import UserList from "./FNameLName.png";
 import Verified from "./verified.svg";
+import Verify from "./001-verify.svg";
+import WalmartIntro from "./Walmart_Intro_wide.png";
 import Warning from "./warning.svg";
 import WMBlue from "./BrandLogos_WMT blu.svg";
 import WMWhite from "./wm-white-logo.png";
@@ -58,6 +62,7 @@ export {
     FNameLName,
     GreenCircleCheck,
     Group,
+    GroupPeople,
     Help,
     Info,
     InviteUserButton,
@@ -65,6 +70,7 @@ export {
     Login,
     Paste,
     Plus,
+    ProblemSolving,
     Question,
     RedCircleCross,
     Search,
@@ -73,6 +79,8 @@ export {
     User,
     UserList,
     Verified,
+    Verify,
+    WalmartIntro,
     Warning,
     WMBlue,
     WMWhite,
