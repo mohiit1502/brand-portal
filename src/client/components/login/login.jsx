@@ -6,6 +6,7 @@ import TilesContainer from "../TilesContainer";
 import LoginFaq from "./../LoginFaq";
 import ContactUsPrompt from "../ContactUsPrompt";
 import Footer from "../Footer";
+import * as images from "./../../images";
 import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
 import "../../styles/login/login.scss";
 
@@ -20,7 +21,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="login-container view-container">
+      <div className="login-container view-container" style={{backgroundImage: `url(${images.LandingPageBG})`, backgroundSize: "100%", backgroundRepeat: "no-repeat", backgroundPosition: "center"}}>
         <LoginHeader/>
         <Hero registerRedirectLink={this.state.registerRedirectLink} />
         <TilesContainer tiles={loginConfig.TILES} />

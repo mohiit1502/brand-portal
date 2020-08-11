@@ -3,6 +3,7 @@
 .c-Footer {
     padding: 1.75rem 2.5rem;
     background: $blue;
+    color: white;
 
     .c-Footer__logoSocialContainer {
         display: inline-block;
@@ -14,7 +15,6 @@
         }
     
         .c-Footer__logoText {
-            color: white;
             bottom: -0.75rem;
             font-size: 0.8rem;
             line-height: 1.125rem;

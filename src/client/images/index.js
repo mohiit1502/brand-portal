@@ -9,6 +9,7 @@ import CheckGreen from "./check-grn.svg";
 import Company1 from "./FNameLName.png";
 import Company2 from "./FNameLName.png";
 import Confirm from "./confirm.svg";
+import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./FNameLName.png";
 import CreateBrandForm from "./FNameLName.png";
 import Email from "./FNameLName.png";
@@ -22,6 +23,7 @@ import Help from "./Help.png";
 import Info from "./info-sc.svg";
 import InviteUserButton from "./FNameLName.png";
 import InviteUserForm from "./FNameLName.png";
+import LandingPageBG from "./combined-shape.svg";
 import Login from "./FNameLName.png";
 import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
@@ -51,6 +53,7 @@ export {
     Brand2,
     BrandList,
     Confirm,
+    ContactUsBG,
     CreateBrandButton,
     CreateBrandForm,
     CheckGreen,
@@ -67,6 +70,7 @@ export {
     Info,
     InviteUserButton,
     InviteUserForm,
+    LandingPageBG,
     Login,
     Paste,
     Plus,
