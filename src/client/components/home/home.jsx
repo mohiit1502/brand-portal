@@ -29,35 +29,36 @@ class Home extends React.Component {
   updateProfile (profile) {
     this.setState({profile}, () => {
       const workflowDecider = profile && profile.workflow;
-      const codes = Object.keys(CONSTANTS.TEMPLATE)
-        .filter(key => ["PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
-        .map(key => CONSTANTS.TEMPLATE[key].CODE);
+      const statusTemplateCodes = Object.keys(CONSTANTS.CODES)
+        .filter(key => CONSTANTS.CODES[key].MESSAGE && CONSTANTS.CODES[key].TITLE)
+        .map(key => CONSTANTS.CODES[key].CODE);
       if (!this.props.isNew) {
-        if (workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code)) {
-          let template = {};
-          let image;
-          switch (workflowDecider.code) {
-            case CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE:
-              template = {...CONSTANTS.TEMPLATE.PORTAL_VERIFICATION};
-              image = images[CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.IMAGE];
-              break;
-            case CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.CODE:
-              template = {...CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED};
-              image = images[CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.IMAGE];
-              break;
-            case CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.CODE:
-              template = {...CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED};
-              image = images[CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.IMAGE];
-              break;
-            case CONSTANTS.TEMPLATE.USER_VERIFICATION.CODE:
-              template = {...CONSTANTS.TEMPLATE.USER_VERIFICATION};
-              image = images[CONSTANTS.TEMPLATE.USER_VERIFICATION.IMAGE];
-              break;
-            }
+        if (workflowDecider && workflowDecider.code && statusTemplateCodes.includes(workflowDecider.code)) {
+          const templateKey = Object.keys(CONSTANTS.CODES).find(item => CONSTANTS.CODES[item].CODE === workflowDecider.code);
+          let template = templateKey && CONSTANTS.CODES[templateKey];
+          const image = images[template.IMAGE];
+          // switch (workflowDecider.code) {
+          //   case CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE:
+          //     template = {...CONSTANTS.TEMPLATE.PORTAL_VERIFICATION};
+          //     image = images[CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.IMAGE];
+          //     break;
+          //   case CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.CODE:
+          //     template = {...CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED};
+          //     image = images[CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.IMAGE];
+          //     break;
+          //   case CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.CODE:
+          //     template = {...CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED};
+          //     image = images[CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.IMAGE];
+          //     break;
+          //   case CONSTANTS.TEMPLATE.USER_VERIFICATION.CODE:
+          //     template = {...CONSTANTS.TEMPLATE.USER_VERIFICATION};
+          //     image = images[CONSTANTS.TEMPLATE.USER_VERIFICATION.IMAGE];
+          //     break;
+          //   }
 
-            template = {templateName: "StatusModalTemplate", image, ...template};
-            // const meta = { ...template  };
-            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+          template = {templateName: "StatusModalTemplate", image, ...template};
+          // const meta = { ...template  };
+          this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
         }
       }
     });
@@ -65,9 +66,9 @@ class Home extends React.Component {
 
   render () {
     const workflowDecider = this.state.profile && this.state.profile.workflow;
-      const codes = Object.keys(CONSTANTS.TEMPLATE)
+      const codes = Object.keys(CONSTANTS.CODES)
         .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
-        .map(key => CONSTANTS.TEMPLATE[key].CODE);
+        .map(key => CONSTANTS.CODES[key].CODE);
     const disablePortalAccess = workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code);
     return (
       <div className="view-container home-container">
