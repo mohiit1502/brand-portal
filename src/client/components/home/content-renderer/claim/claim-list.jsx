@@ -44,6 +44,7 @@ class ClaimList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      loader: false,
       claimListColumns: [
         {
           Header: "#",
@@ -82,6 +83,14 @@ class ClaimList extends React.Component {
     };
   }
 
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
+  }
+
   componentDidMount() {
     this.fetchClaims();
   }
@@ -94,7 +103,8 @@ class ClaimList extends React.Component {
   }
 
   async fetchClaims () {
-    const response = (await Http.get("/api/claims")).body;
+    this.loader(true);
+    const response = (await Http.get("/api/claims", "", () => this.loader(false))).body;
 
     let claimList = [];
 
@@ -369,7 +379,7 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="row user-list-row align-items-start">
+              <div className={`row user-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">

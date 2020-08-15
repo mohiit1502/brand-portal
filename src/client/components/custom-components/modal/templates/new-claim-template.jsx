@@ -110,8 +110,18 @@ class NewClaimTemplate extends React.Component {
         ]
       },
       brands: [],
-      claimTypeSelected: false
+      claimTypeSelected: false,
+      loader: false,
+      fieldLoader: false
     };
+  }
+
+  loader (type, enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone[type] = enable;
+      return stateClone;
+    });
   }
 
   componentDidMount() {
@@ -219,9 +229,12 @@ class NewClaimTemplate extends React.Component {
   }
 
   getClaimTypes () {
+    this.loader("loader", true);
     return Http.get("/api/claims/types")
       .then(res => {
-        const form = {...this.state.form};
+        const state = {...this.state};
+        const form = {...state.form};
+        state.form = form;
         let options = [...res.body.data];
         options = options.map(option => {
           const displayVal = Helper.toCamelCaseIndividual(option.claimType);
@@ -231,22 +244,26 @@ class NewClaimTemplate extends React.Component {
         });
         form.inputData.claimType.options = options && options.map(v => ({value: v.label}));
         form.claimTypesWithMeta = options;
-        this.setState({form});
+        state.loader = false;
+        this.setState(state);
       });
   }
 
   getBrands () {
+    this.loader("loader", true);
     return Http.get("/api/brands?brandStatus=ACCEPTED")
       .then(res => {
         const state = {...this.state};
         state.brands = res.body.content;
         state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName}));
+        state.loader = false;
         this.setState(state);
       });
   }
 
   async fetchClaims () {
-    const response = (await Http.get("/api/claims")).body;
+    this.loader("loader", true);
+    const response = (await Http.get("/api/claims", () => this.loader("loader", false))).body;
 
     let claimList = [];
 
@@ -339,13 +356,16 @@ class NewClaimTemplate extends React.Component {
       digitalSignatureBy,
       items: inputData.itemList.map(item => ({itemUrl: item.url.value, sellerName: getSellerNames(item)}))
     };
+    this.loader("loader", true);
     return Http.post("/api/claims", payload)
       .then(res => {
         const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
         this.fetchClaims();
+        this.loader("loader", false);
       })
       .catch(err => {
+        this.loader("loader", false);
         console.log(err);
       });
   }
@@ -403,7 +423,7 @@ class NewClaimTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left">
+            <div className={`modal-body text-left${this.state.loader && " loader"}`}>
               <div className="row">
                 <div className="col-4">
                   <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
@@ -411,7 +431,7 @@ class NewClaimTemplate extends React.Component {
                     disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                 </div>
               </div>
-          {this.state.claimTypeSelected && 
+          {this.state.claimTypeSelected &&
             <React.Fragment>
               <div className="row">
                 <div className="col-4">

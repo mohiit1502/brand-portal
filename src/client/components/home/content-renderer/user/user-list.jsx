@@ -24,6 +24,7 @@ class UserList extends React.Component {
   constructor (props) {
     super(props);
 
+    this.loader = this.loader.bind(this);
     this.createNewUser = this.createNewUser.bind(this);
     this.editUser = this.editUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
@@ -48,6 +49,7 @@ class UserList extends React.Component {
       filteredList: [],
       filters: [],
       showFilters: false,
+      loader: false,
       userRole,
       dropdown: {
         buttonText: burgerIcon,
@@ -67,7 +69,8 @@ class UserList extends React.Component {
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.status && data.status === CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.USER.OPTIONS.PAYLOAD.ACTIVE : CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND;
-              const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`);
+              this.loader(true);
+              const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`, {}, "", () => this.loader(false));
               response.then(res => {
                 this.fetchUserData();
               });
@@ -91,7 +94,8 @@ class UserList extends React.Component {
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
             disabled: true,
             clickCallback: (evt, option, data) => {
-              Http.post("/api/users/reinvite", {email: data.loginId})
+              this.loader(true);
+              Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader(false))
                 .then(res => {
                   if (res.body === true) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
@@ -129,6 +133,14 @@ class UserList extends React.Component {
     };
   }
 
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
+  }
+
   async uiSearch (evt) {
     const searchText = evt.target.value && evt.target.value.toLowerCase();
     const allUsers = this.state.paginatedList;
@@ -151,8 +163,9 @@ class UserList extends React.Component {
   }
 
   async fetchUserData () {
-    let userList = (await Http.get("/api/users")).body;
-    console.log(userList);
+    this.loader(true);
+    let userList = (await Http.get("/api/users", "", () => this.loader(false))).body;
+    // console.log(userList);
     userList = userList.content.map((user, i) => {
       const newUser = {
         id: user.email,
@@ -447,7 +460,7 @@ class UserList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="row user-list-row align-items-start">
+              <div className={`row user-list-row align-items-start ${this.state.loader && "loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">

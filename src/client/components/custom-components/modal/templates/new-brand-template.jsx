@@ -21,6 +21,7 @@ class NewBrandTemplate extends React.Component {
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
 
     this.state = {
+      loader: false,
       form: {
         isSubmitDisabled: true,
         isUpdateTemplate: false,
@@ -99,6 +100,14 @@ class NewBrandTemplate extends React.Component {
         }
       }
     };
+  }
+
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
   }
 
   componentDidMount() {
@@ -201,27 +210,31 @@ class NewBrandTemplate extends React.Component {
     const url = "/api/brands";
 
     if (this.state.form.isUpdateTemplate) {
+      this.loader(true);
       return Http.put(`${url}/${this.props.data.brandId}`, {comments})
         .then(res => {
           this.resetTemplateStatus();
           this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
+          this.loader(false);
         })
         .catch(err => {
+          this.loader(false);
           console.log(err);
         });
     } else {
-
+      this.loader(true);
       return Http.post(url, payload)
         .then(res => {
           this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.request.name}’ added to your brand portfolio`);
           this.resetTemplateStatus();
           this.props.saveBrandInitiated();
-
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+          this.loader(false);
         })
         .catch(err => {
+          this.loader(false);
           console.log(err);
         });
     }
@@ -244,7 +257,7 @@ class NewBrandTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left">
+            <div className={`modal-body text-left${this.state.loader && " loader"}`}>
               <form onSubmit={this.handleSubmit} className="h-100 pt-3">
                 <div className="form-row">
                   <div className="col-8">

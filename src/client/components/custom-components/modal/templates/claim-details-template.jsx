@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React from "react";
 import {connect} from "react-redux";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
@@ -11,11 +12,40 @@ class ClaimDetailsTemplate extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loader: false
+    };
+  }
+
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
   }
 
   render() {
-    const firstName = this.props.data.firstName ? helper.toCamelCaseIndividual(this.props.data.firstName) : "";
-    const lastName = this.props.data.lastName ? helper.toCamelCaseIndividual(this.props.data.lastName) : "";
+    let firstName = "";
+    let lastName = "";
+    let reformattedItems = [];
+
+    if (this.props.data) {
+      this.state.loader && this.loader(false);
+      firstName = this.props.data.firstName && helper.toCamelCaseIndividual(this.props.data.firstName);
+      lastName = this.props.data.lastName && helper.toCamelCaseIndividual(this.props.data.lastName);
+      reformattedItems = this.props.data.items && this.props.data.items;
+      // this.props.data.items && this.props.data.items.map(item => {
+      //   if (item.sellerName.includes(",")) {
+      //     const sellers = item.sellerName.split(",");
+      //     sellers.forEach(seller => reformattedItems.push({...item, sellerName: seller}));
+      //   } else {
+      //     reformattedItems.push({...item});
+      //   }
+      // });
+    } else {
+      !this.state.loader && this.loader(true);
+    }
     // const brandName = this.props.data.brandName ? helper.toCamelCaseEach(this.props.data.brandName) : "";
 
     return (
@@ -28,78 +58,81 @@ class ClaimDetailsTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left px-5">
-              <div className="row case-header-row">
-                <div className="col">
-                  <div className="case-header-text">{this.props.data.caseNumber}
-                    <div className=" case-status badge badge-pill badge-warning font-weight-normal">{this.props.data.claimStatus}</div>
-                  </div>
-                </div>
-              </div>
-              <div className="row claim-snapshots-row mt-4">
-                <div className="col">
-                  <div className="snapshot-header">Claim Type </div>
-                  <div className="snapshot-value"> {this.props.data.claimType} </div>
-                </div>
-                <div className="col">
-                  <div className="snapshot-header">Copyright Number </div>
-                  <div className="snapshot-value"> {this.props.data.registrationNumber} </div>
-                </div>
-                <div className="col">
-                  <div className="snapshot-header">Brand Name </div>
-                  <div className="snapshot-value"> {this.props.data.brandName} </div>
-                </div>
-                <div className="col">
-                  <div className="snapshot-header">Claim By </div>
-                  <div className="snapshot-value">{(firstName ? firstName.concat(" ") : "") + lastName}</div>
-                </div>
-                <div className="col">
-                  <div className="snapshot-header">Claim Date </div>
-                  <div className="snapshot-value"> {this.props.data.claimDate} </div>
-                </div>
-              </div>
-              <div className="row justify-content-center items-row mt-4">
-                <div className="col">
-                  <div className="row item-header-row py-2">
-                    <div className="col-3 pl-4">
-                      REPORTED SELLER
-                    </div>
-                    <div className="col-9">
-                      ITEM URL
+            <div className={`modal-body pl-4 pr-4 text-left px-5${this.state.loader && " loader"}`} style={{minHeight: "25rem"}}>
+            {this.props.data &&
+              <React.Fragment>
+                <div className="row case-header-row">
+                  <div className="col">
+                    <div className="case-header-text">{this.props.data.caseNumber}
+                      <div className=" case-status badge badge-pill badge-warning font-weight-normal">{this.props.data.claimStatus}</div>
                     </div>
                   </div>
-                  <div className="row item-data-container">
-                    <div className="col">
-                      {
-                        this.props.data.items.map((item, i) => {
-                          return (
-                            <div key={i} className="row item-data-row align-items-center">
-                              <div className="col-3 pl-4 text-capitalize">
-                                {item.sellerName}
+                </div>
+                <div className="row claim-snapshots-row mt-4">
+                  <div className="col">
+                    <div className="snapshot-header">Claim Type </div>
+                    <div className="snapshot-value"> {this.props.data.claimType} </div>
+                  </div>
+                  <div className="col">
+                    <div className="snapshot-header">Copyright Number </div>
+                    <div className="snapshot-value"> {this.props.data.registrationNumber} </div>
+                  </div>
+                  <div className="col">
+                    <div className="snapshot-header">Brand Name </div>
+                    <div className="snapshot-value"> {this.props.data.brandName} </div>
+                  </div>
+                  <div className="col">
+                    <div className="snapshot-header">Claim By </div>
+                    <div className="snapshot-value">{(firstName ? firstName.concat(" ") : "") + lastName}</div>
+                  </div>
+                  <div className="col">
+                    <div className="snapshot-header">Claim Date </div>
+                    <div className="snapshot-value"> {this.props.data.claimDate} </div>
+                  </div>
+                </div>
+                <div className="row justify-content-center items-row mt-4">
+                  <div className="col">
+                    <div className="row item-header-row py-2">
+                      <div className="col-3">
+                        REPORTED SELLER
+                      </div>
+                      <div className="col-9">
+                        ITEM URL
+                      </div>
+                    </div>
+                    <div className="row item-data-container">
+                      <div className="col">
+                        {
+                          reformattedItems.map((item, i) => {
+                            return (
+                              <div key={i} className="row item-data-row align-items-center">
+                                <div className="col-3 text-capitalize">
+                                  {item.sellerName}
+                                </div>
+                                <div className="col-9">
+                                  <a className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
+                                </div>
                               </div>
-                              <div className="col-9">
-                                <a className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
-                              </div>
-                            </div>
-                          );
-                        })
-                      }
+                            );
+                          })
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="row mt-4">
-                <div className="col">
-                  <span className="font-size-14">Comments</span>
-                  <p>{this.props.data.comments}</p>
+                <div className="row mt-4">
+                  <div className="col">
+                    <span className="font-size-14">Comments</span>
+                    <p>{this.props.data.comments}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="row mt-3">
-                <div className="col">
-                  <span className="font-size-14">Status Detail</span>
-                  <h6>{this.props.data.statusDetails}</h6>
+                <div className="row mt-3">
+                  <div className="col">
+                    <span className="font-size-14">Status Detail</span>
+                    <h6>{this.props.data.statusDetails}</h6>
+                  </div>
                 </div>
-              </div>
+              </React.Fragment>}
               <div className="row mt-3">
                 <div className="col text-right">
                   <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>
