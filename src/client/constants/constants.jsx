@@ -2,6 +2,8 @@ const CONSTANTS = {
 
   URL: {
     LOGOUT: "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
+    LOGIN_REDIRECT: "/api/falcon/login",
+    REGISTER_REDIRECT: "/api/falcon/register",
     DOMAIN: {
       DEVELOPMENT: "http://localhost:3000",
       STAGING: "http://brandportal.ropro.stg.walmart.com",
@@ -24,7 +26,7 @@ const CONSTANTS = {
     APPROVALLIST: "APPROVALLIST"
   },
 
-  TEMPLATE: {
+  CODES: {
     PORTAL_REGISTRATION: {
       CODE: 1
     },
@@ -49,8 +51,14 @@ const CONSTANTS = {
       MESSAGE: "Your account access has been revoked for security reasons",
       TITLE: "Access Denied"
     },
-    USER_VERIFICATION: {
+    REQUEST_ACCESS: {
       CODE: 32,
+      IMAGE: "GreenCircleCheck",
+      MESSAGE: "Access Request, awaiting approval.",
+      TITLE: "Access requested"
+    },
+    USER_VERIFICATION: {
+      CODE: 64,
       IMAGE: "GreenCircleCheck",
       MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
       TITLE: "Account verification in progress"
