@@ -6,6 +6,7 @@ import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
 // import StorageSrvc, {STORAGE_TYPES} from "../../utility/StorageSrvc";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
+import Tooltip from "./../../utility/tooltiplib";
 import CONSTANTS from "../../constants/constants";
 import * as images from "./../../images";
 import "../../styles/home/home.scss";
@@ -22,6 +23,8 @@ class Home extends React.Component {
 
   componentDidMount() {
     // const profile = this.storageSrvc.getJSONItem("userProfile");
+    Tooltip.register();
+    Tooltip.showTooltip(document.getElementById("nav-item-3-31"));
     const profile = this.props.userProfile;
     this.updateProfile(profile);
   }
@@ -65,9 +68,9 @@ class Home extends React.Component {
 
   render () {
     const workflowDecider = this.state.profile && this.state.profile.workflow;
-      const codes = Object.keys(CONSTANTS.TEMPLATE)
-        .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
-        .map(key => CONSTANTS.TEMPLATE[key].CODE);
+      const codes = Object.keys(CONSTANTS.CODES)
+        .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "REQUEST_ACCESS", "USER_VERIFICATION"].includes(key))
+        .map(key => CONSTANTS.CODES[key].CODE);
     const disablePortalAccess = workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code);
     return (
       <div className="view-container home-container">

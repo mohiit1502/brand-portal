@@ -52,12 +52,13 @@ const LOGINCONFIG = {
   FAQ: {
     header: "Frequently Asked Questions",
     id: "LoginFAQ",
-    items: [{
+    items: [
+      {
         question: "How do I get access to Walmart Brand Portal?",
         type: "list",
         answer: {
           partial1: {
-            chunk1: "Walmart Brand Portal is built for rights owners who would like to protect their intellectual property on ",
+            chunk1: "Brand Portal is built for rights owners who would like to protect their intellectual property on ",
             anchor1: {
               href: "https://www.walmart.com",
               text: "Walmart.com."
@@ -104,7 +105,14 @@ const LOGINCONFIG = {
               }
             ]
           },
-          para2: "You will be granted access to Brand Portal to protect your intellectual property once we have verified the information you submit in your application."
+          para2: "You will be granted access to Brand Portal to protect your intellectual property once we have verified the information you submit in your application. "
+        }
+      },
+      {
+        question: "How can I check the status of my Brand Portal application?",
+        type: "simple",
+        answer: {
+          para1: "To see the status of your application, please log into your Brand Portal account. You will see a message with the current application status upon login."
         }
       },
       {
@@ -115,17 +123,10 @@ const LOGINCONFIG = {
         }
       },
       {
-        question: "Can agents that represent a brand get access to Walmart Brand Portal?",
+        question: "Can agents or third party vendors that represent a brand get access to Brand Portal?",
         type: "simple",
         answer: {
-          para1: "Yes. Rights owners can add additional users, including agents, to their Brand Portal account. Users can request to be added to a rights owner's Brand Portal account, or a rights owner can invite new users and assign specific roles and brands to their users."
-        }
-      },
-      {
-        question: "How can I check the status of my Brand Portal application?",
-        type: "simple",
-        answer: {
-          para1: "Brand Portal will provide real-time status updates, use your brand portal account information to log in to your account, your application status will be displayed for you."
+          para1: "Yes. Rights owners can add additional users, including agents, to their Brand Portal account by inviting a new user and assigning specific roles and brands to the new user."
         }
       },
       {
@@ -147,17 +148,17 @@ const LOGINCONFIG = {
         }
       },
       {
-        question: "What type of issues can I use Brand Portal to report?",
+        question: "What type of claims can I use Brand Portal to report?",
         type: "simple",
         answer: {
-          para1: "Intellectual property rights can be submitted through your brand portal account, TM, Copyright, Patent and counterfeit items"
+          para1: "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit."
         }
       },
       {
         question: "Is Walmart Brand Portal service available only in the United States?",
         type: "simple",
         answer: {
-          para1: "Currently, walmart.com is providing its brand portal services to the United States."
+          para1: "Yes, Brand Portal services are currently offered only for the United States Walmart.com marketplace."
         }
       }
     ]

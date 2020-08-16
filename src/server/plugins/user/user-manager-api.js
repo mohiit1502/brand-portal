@@ -51,6 +51,11 @@ class UserManagerApi {
     return server.route([
       {
         method: "GET",
+        path: "/health",
+        handler: this.checkHealth
+      },
+      {
+        method: "GET",
         path: "/api/falcon/{action}",
         handler: this.redirectToFalcon
       },
@@ -135,6 +140,22 @@ class UserManagerApi {
   //     ROPRO_CLIENT_ID:	"abcd"
   //   };
   // }
+
+  async checkHealth (request, h) {
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const USER_SELF_INFO_PATH = request.app.ccmGet("USER_CONFIG.USER_SELF_INFO_PATH");
+      const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
+      const response = await ServerHttp.get(url, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
 
   async updateUser (request, h) {
     try {
