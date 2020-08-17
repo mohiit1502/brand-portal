@@ -1,11 +1,11 @@
 {
-  "name": "ro-pro",
+  "name": "ropro-brandportal",
   "version": "0.0.2",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
-    "name": "Shubhansh Sahai",
-    "email": "shubhansh.sahai@walmartlabs.com",
+    "name": "Mohit Nagar",
+    "email": "mohit.nagar@walmartlabs.com",
     "url": ""
   },
   "contributors": [],
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://gecgithub01.walmart.com/s0s075q/ro-pro"
+    "url": "https://gecgithub01.walmart.com/RET-Marketplace/brand-portal"
   },
   "engines": {
     "node": ">= 8",
@@ -70,7 +70,6 @@
     "react-router": "^5.1.2",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
-    "react-scroll": "^1.8.0",
     "react-table": "^7.0.4",
     "react-transition-group": "^4.4.1",
     "redux-thunk": "^2.3.0",

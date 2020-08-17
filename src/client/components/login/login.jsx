@@ -21,9 +21,9 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="login-container view-container" style={{backgroundImage: `url(${images.LandingPageBG})`, backgroundSize: "100%", backgroundRepeat: "no-repeat", backgroundPosition: "center"}}>
+      <div className="login-container view-container" style={{backgroundImage: `url(${images.LandingPageBG})`, backgroundSize: "100%", backgroundRepeat: "no-repeat", backgroundPosition: "center 120%"}}>
         <LoginHeader/>
-        <Hero registerRedirectLink={this.state.registerRedirectLink} />
+        <Hero />
         <TilesContainer tiles={loginConfig.TILES} />
         <LoginFaq faq={loginConfig.FAQ} />
         <ContactUsPrompt />
