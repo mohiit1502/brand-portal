@@ -59,7 +59,7 @@ const CONSTANTS = {
     },
     USER_VERIFICATION: {
       CODE: 64,
-      IMAGE: "GreenCircleCheck",
+      IMAGE: "Alert",
       MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
       TITLE: "Account verification in progress"
     }
