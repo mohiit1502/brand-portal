@@ -5,6 +5,7 @@ import falcon from "../../components/auth/falcon";
 import CONSTANTS from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
 import ServerUtils from "../../utility/server-utils";
+// const fs = require("fs");
 
 
 class UserManagerApi {
@@ -49,6 +50,11 @@ class UserManagerApi {
 
   register(server) {
     return server.route([
+      {
+        method: "GET",
+        path: "/ping",
+        handler: this.checkHealth
+      },
       {
         method: "GET",
         path: "/api/falcon/{action}",
@@ -135,6 +141,18 @@ class UserManagerApi {
   //     ROPRO_CLIENT_ID:	"abcd"
   //   };
   // }
+
+  async checkHealth (request, h) {
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {headers};
+      const HEALTHCHECK_PATH = request.app.ccmGet("USER_CONFIG.HEALTHCHECK_URL");
+      const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
 
   async updateUser (request, h) {
     try {
@@ -423,7 +441,8 @@ class UserManagerApi {
   async getAccessToken(request, authorizationCode) {
     try {
       const IAM = request.app.ccmGet("IAM");
-
+      // const secrets = fs.readFileSync("/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets");
+      // console.log(secrets);
       const url = IAM.IAM_TOKEN_URL;
       const clientId = IAM.CLIENT_ID;
       const clientSecret = IAM.CLIENT_SECRET;

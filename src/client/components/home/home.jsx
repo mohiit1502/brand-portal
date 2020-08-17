@@ -67,7 +67,7 @@ class Home extends React.Component {
   render () {
     const workflowDecider = this.state.profile && this.state.profile.workflow;
       const codes = Object.keys(CONSTANTS.CODES)
-        .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "USER_VERIFICATION"].includes(key))
+        .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "REQUEST_ACCESS", "USER_VERIFICATION"].includes(key))
         .map(key => CONSTANTS.CODES[key].CODE);
     const disablePortalAccess = workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code);
     return (

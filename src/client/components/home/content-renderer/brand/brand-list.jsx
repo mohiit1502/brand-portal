@@ -204,11 +204,11 @@ class BrandList extends React.Component {
       statusSet.add(brand.brandStatus);
     });
 
-    const brandsFilter = {
-      id: "brandName",
-      name: "Brands",
-      filterOptions: Array.from(brandsSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
-    };
+    // const brandsFilter = {
+    //   id: "brandName",
+    //   name: "Brands",
+    //   filterOptions: Array.from(brandsSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+    // };
 
     const statusFilter = {
       id: "brandStatus",
@@ -216,7 +216,7 @@ class BrandList extends React.Component {
       filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
-    const filters = [ brandsFilter, statusFilter];
+    const filters = [ statusFilter];
     filters.forEach(filter => {
       if (filter.filterOptions.length) {
         const all = {
