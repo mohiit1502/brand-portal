@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import {Link, animateScroll as scroll} from "react-scroll";
 
 import * as images from "./../../../images/index";
 import "../../../styles/custom-components/headers/login-header.scss";
@@ -12,6 +11,11 @@ class LoginHeader extends React.Component {
     this.state = {
       loginRedirectLink: "/api/falcon/login"
     };
+  }
+
+  scrollAction() {
+    $("#LoginFAQ").addClass("scrolled");
+    setTimeout(() => $("#LoginFAQ").removeClass("scrolled"), 1000);
   }
 
   render() {
@@ -32,7 +36,8 @@ class LoginHeader extends React.Component {
               <a className="nav-link" href="#">Home</a>
             </li> */}
             <li className="nav-item mx-4">
-              <Link className="nav-link" to="LoginFAQ" smooth={true} duration={1000}>FAQ</Link>
+              {/* <Link className="nav-link" to="LoginFAQ" smooth={true} duration={500} activeClass="active" spy={true} offset={-700}>FAQ</Link> */}
+              <a className="nav-link" href="#LoginFAQ" onClick={this.scrollAction}>FAQ</a>
             </li>
             <li className="nav-item ml-4 d-flex align-items-center">
               <a className="nav-link btn login-btn" href={this.state.loginRedirectLink}>Login</a>
