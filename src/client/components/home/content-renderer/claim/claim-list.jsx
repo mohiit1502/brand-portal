@@ -44,6 +44,7 @@ class ClaimList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      searchText: "",
       claimListColumns: [
         {
           Header: "#",
@@ -118,13 +119,22 @@ class ClaimList extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
-  async uiSearch (evt) {
-    const searchText = evt.target.value && evt.target.value.toLowerCase();
-    const allClaims = this.state.paginatedList;
+  async uiSearch (evt, isFilter, filteredClaims) {
+    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
+    const allClaims = filteredClaims ? filteredClaims : this.state.paginatedList;
     const filteredList = allClaims.filter(claim => {
-      return claim.caseNumber.toLowerCase().indexOf(searchText) !== -1;
+      return claim.caseNumber.toLowerCase().indexOf(searchText) !== -1
+        || claim.claimType.toLowerCase().indexOf(searchText) !== -1
+        || claim.brandName.toLowerCase().indexOf(searchText) !== -1
+        || claim.createdByName.toLowerCase().indexOf(searchText) !== -1
+        || claim.claimDate.toLowerCase().indexOf(searchText) !== -1
+        || claim.claimStatus.toLowerCase().indexOf(searchText) !== -1;
     });
-    this.setState({filteredList});
+    if (isFilter) {
+      this.setState({filteredList, searchText});
+    } else {
+      this.setState({filteredList, searchText}, () => this.applyFilters(true, filteredList));
+    }
   }
 
   toggleFilterVisibility () {
@@ -143,7 +153,7 @@ class ClaimList extends React.Component {
       });
     });
     const filteredList = [...this.state.paginatedList];
-    this.setState({filters, filteredList});
+    this.setState({filters, filteredList}, this.uiSearch);
     this.toggleFilterVisibility();
   }
 
@@ -202,9 +212,9 @@ class ClaimList extends React.Component {
     this.setState({filters});
   }
 
-  applyFilters() {
+  applyFilters(isSearch, filteredList) {
 
-    let paginatedList = [...this.state.paginatedList];
+    let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
@@ -221,8 +231,12 @@ class ClaimList extends React.Component {
       }
     });
 
-    this.setState({filteredList: paginatedList});
-    this.toggleFilterVisibility();
+    if (isSearch) {
+      this.setState({filteredList: paginatedList});
+    } else {
+      this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
+      this.toggleFilterVisibility();
+    }
   }
 
   onFilterChange (filterId, optionId) {
@@ -310,7 +324,7 @@ class ClaimList extends React.Component {
                       </div>
                     </div>
                     <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by Claim Number"
-                           onChange={this.uiSearch}/>
+                           onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
@@ -330,7 +344,7 @@ class ClaimList extends React.Component {
                       </div>
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={this.applyFilters}>Apply Filters </div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
