@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/user/user-list.scss";
@@ -47,6 +48,7 @@ class UserList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      searchText: "",
       showFilters: false,
       userRole,
       dropdown: {
@@ -129,13 +131,20 @@ class UserList extends React.Component {
     };
   }
 
-  async uiSearch (evt) {
-    const searchText = evt.target.value && evt.target.value.toLowerCase();
-    const allUsers = this.state.paginatedList;
+  async uiSearch (evt, isFilter, filteredUsers) {
+    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
+    const allUsers = filteredUsers ? filteredUsers : this.state.paginatedList;
     const filteredList = allUsers.filter(user => {
-      return user.username.toLowerCase().indexOf(searchText) !== -1;
+      return user.username.toLowerCase().indexOf(searchText) !== -1
+        || user.role.toLowerCase().indexOf(searchText) !== -1
+        || user.status.toLowerCase().indexOf(searchText) !== -1
+        || user.brands.join(",").toLowerCase().indexOf(searchText) !== -1;
     });
-    this.setState({filteredList});
+    if (isFilter) {
+      this.setState({filteredList, searchText});
+    } else {
+      this.setState({filteredList, searchText}, () => this.applyFilters(true, filteredList));
+    }
   }
 
 
@@ -185,13 +194,13 @@ class UserList extends React.Component {
       });
     });
     const filteredList = [...this.state.paginatedList];
-    this.setState({filters, filteredList});
+    this.setState({filters, filteredList}, this.uiSearch);
     this.toggleFilterVisibility();
   }
 
-  applyFilters() {
+  applyFilters(isSearch, filteredList) {
 
-    let paginatedList = [...this.state.paginatedList];
+    let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
@@ -201,9 +210,7 @@ class UserList extends React.Component {
           paginatedList = paginatedList.filter(user => {
             let bool = false;
             filterOptionsSelected.map(filterOption => {
-              user[filterId].map(brand => {
-                bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1;
-              });
+              user[filterId].map(brand => bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
             });
             return bool;
           });
@@ -219,8 +226,13 @@ class UserList extends React.Component {
       }
     });
 
-    this.setState({filteredList: paginatedList});
-    this.toggleFilterVisibility();
+    if (isSearch) {
+      this.setState({filteredList: paginatedList});
+    } else {
+      this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
+      // this.setState({filteredList: paginatedList});
+      this.toggleFilterVisibility();
+    }
   }
 
   createFilters(paginatedList) {
@@ -266,7 +278,7 @@ class UserList extends React.Component {
     const statusFilter = {
       id: "status",
       name: "Profile Status",
-      filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+      filterOptions: Array.from(Object.values(CONSTANTS.USER.STATUS), (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
     const filters = [companyFilter, rolesFilter, brandsFilter, statusFilter];
@@ -361,7 +373,15 @@ class UserList extends React.Component {
       return "";
     };
 
-
+    // let useFilter = false;
+    // this.state.filters.every(filter => {
+    //   const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
+    //   useFilter = filterOptionsSelected.length > 0;
+    //   return !useFilter;
+    // });
+    // useFilter = this.state.searchText || useFilter;
+    // const pageList = useFilter ? this.state.filteredList : this.state.userList;
+    const pageList = this.state.userList;
     const enableSectionAccess = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.USERS.SECTION_ACCESS.map(role => role.toLowerCase()).includes(this.state.userRole) : true;
     const enableUserInvite = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && Object.keys(AUTH_CONFIG.USERS.INVITE).map(role => role.toLowerCase()).includes(this.state.userRole) : true;
     return enableSectionAccess ? (
@@ -387,8 +407,7 @@ class UserList extends React.Component {
                         <img src={searchIcon} className="Group-23" />
                       </div>
                     </div>
-                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name"
-                      onChange={this.uiSearch}/>
+                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name" onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
@@ -408,7 +427,7 @@ class UserList extends React.Component {
                       </div>
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={this.applyFilters}>Apply Filters </div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
@@ -428,7 +447,7 @@ class UserList extends React.Component {
                                       <li key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                            onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
+                                            onChange={() => {this.onFilterChange(filter.id, option.id);}}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>
@@ -464,17 +483,13 @@ class UserList extends React.Component {
                       { viewerShip() }
                     </div>
                     <div className="col text-center">
-                      <PaginationNav list={this.state.userList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
+                      <PaginationNav list={pageList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
                     </div>
                     <div className="col text-right">
-
-                      {
-                        !!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
+                      {!!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                           Show {this.state.page.size} {CONSTANTS.USER.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
-                        </button>
-                      }
-
+                        </button>}
                       <div className="dropdown-menu user-count-dropdown-menu">
                         {
                           this.state.page.sizeOptions.map(val => {

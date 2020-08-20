@@ -48,6 +48,7 @@ class BrandList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      searchText: "",
       showFilters: false,
       userRole,
       dropdown: {
@@ -120,14 +121,20 @@ class BrandList extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
-  async uiSearch (evt) {
+  async uiSearch (evt, isFilter, filteredBrands) {
 
-    const searchText = evt.target.value && evt.target.value.toLowerCase();
-    const allBrands = this.state.paginatedList;
+    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
+    const allBrands = filteredBrands ? filteredBrands : this.state.paginatedList;
     const filteredList = allBrands.filter(brand => {
-      return brand.brandName.toLowerCase().indexOf(searchText) !== -1;
+      return brand.brandName && brand.brandName.toLowerCase().indexOf(searchText) !== -1
+        || brand.dateAdded && brand.dateAdded.toLowerCase().indexOf(searchText) !== -1
+        || brand.brandStatus && brand.brandStatus.toLowerCase().indexOf(searchText) !== -1;
     });
-    this.setState({filteredList});
+    if (isFilter) {
+      this.setState({filteredList, searchText});
+    } else {
+      this.setState({filteredList, searchText}, () => this.applyFilters(true, filteredList));
+    }
   }
 
   paginationCallback (page) {
@@ -166,19 +173,19 @@ class BrandList extends React.Component {
       });
     });
     const filteredList = [...this.state.paginatedList];
-    this.setState({filters, filteredList});
+    this.setState({filters, filteredList}, this.uiSearch);
     this.toggleFilterVisibility();
   }
 
-  applyFilters() {
+  applyFilters(isSearch, filteredList) {
 
-    let paginatedList = [...this.state.paginatedList];
+    let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        console.log(filterId);
+        // console.log(filterId);
         paginatedList = paginatedList.filter(user => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
@@ -190,8 +197,12 @@ class BrandList extends React.Component {
       }
     });
 
-    this.setState({filteredList: paginatedList});
-    this.toggleFilterVisibility();
+    if (isSearch) {
+      this.setState({filteredList: paginatedList});
+    } else {
+      this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
+      this.toggleFilterVisibility();
+    }
   }
 
   createFilters(paginatedList) {
@@ -213,7 +224,8 @@ class BrandList extends React.Component {
     const statusFilter = {
       id: "brandStatus",
       name: "Profile Status",
-      filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+      // filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
+      filterOptions: Array.from(Object.values(CONSTANTS.BRAND.STATUS), (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
     const filters = [ statusFilter];
@@ -330,7 +342,7 @@ class BrandList extends React.Component {
                       </div>
                     </div>
                     <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by Brand Name"
-                      onChange={this.uiSearch}/>
+                      onChange={(evt) => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
@@ -350,7 +362,7 @@ class BrandList extends React.Component {
                       </div>
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={this.applyFilters}>Apply Filters </div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
