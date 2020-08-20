@@ -102,7 +102,7 @@ const UserListTable = function(props) {
               const {values} = row;
               let ddOptions;
               return (
-                <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
+                <div className="table-row row" key={`tr${row.id}`} {...row.getRowProps()}>
                   {
                     row.cells.map((cell, k) => {
                       return (

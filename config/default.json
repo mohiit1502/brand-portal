@@ -97,7 +97,7 @@
     "webapp": {
       "module": "@walmart/electrode-index-page",
       "options": {
-        "pageTitle": "Ro Pro",
+        "pageTitle": "Brand Portal",
         "paths": {
           "/{args*}": {
             "content": {

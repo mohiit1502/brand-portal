@@ -342,10 +342,10 @@ class NewClaimTemplate extends React.Component {
     const comments = inputData.comments.value;
     const digitalSignatureBy = inputData.signature.value;
 
-    const getSellerNames = item => {
-      let sellerNames = item.sellerName.value && item.sellerName.value.reduce((acc, item1) => `${acc}${item1}, `, "");
-      sellerNames = sellerNames.endsWith(", ") && sellerNames.substring(0, sellerNames.lastIndexOf(", "));
-      return sellerNames;
+    const getItems = items => {
+      const itemList = [];
+      items.forEach(item => item.sellerName.value && item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName})));
+      return itemList;
     };
 
     const payload = {
@@ -354,7 +354,7 @@ class NewClaimTemplate extends React.Component {
       registrationNumber,
       comments,
       digitalSignatureBy,
-      items: inputData.itemList.map(item => ({itemUrl: item.url.value, sellerName: getSellerNames(item)}))
+      items: getItems(inputData.itemList)
     };
     this.loader("loader", true);
     return Http.post("/api/claims", payload)

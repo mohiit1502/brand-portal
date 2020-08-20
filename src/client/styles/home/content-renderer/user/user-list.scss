@@ -100,7 +100,13 @@ $filer-text-color : #424242;
         height: calc(100% - #{$action-row-height});
 
         .user-list-table-row {
-
+          .table-body {
+            .table-row {
+              padding-top: 1rem;
+              padding-bottom: 1rem;
+              line-height: 1rem;
+            }
+          }
         }
         .user-list-table-manage-row {
           .pagination {
