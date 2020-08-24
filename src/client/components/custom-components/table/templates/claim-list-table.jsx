@@ -3,13 +3,18 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import Http from "../../../../utility/Http";
 
 
 const ClaimListTable = function(props) {
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
 
-  const showClaimDetails = function (row) {
-    const meta = { templateName: "ClaimDetailsTemplate", data: row.original };
+  const showClaimDetails = async function (row) {
+    props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate"});
+    const ticketId = row.original && row.original.ticketId;
+    const claimDetailsUrl = `/api/claims/${ticketId}`;
+    const response = (await Http.get(claimDetailsUrl)).body;
+    const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
     props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   };
 
