@@ -70,8 +70,7 @@ class ClaimManagerApi {
       const options = {
         headers
       };
-      // console.log("get seller options ======= ", JSON.stringify(request.query));
-      let url = IQS_URL;
+      let url = request.app.ccmGet("IQS_CONFIG.IQS_URL");
       url = url.replace("__itemId__", request.query.payload);
 
       console.log("Making IQS API call to: ", url);

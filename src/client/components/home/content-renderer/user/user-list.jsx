@@ -161,7 +161,6 @@ class UserList extends React.Component {
 
   async fetchUserData () {
     let userList = (await Http.get("/api/users")).body;
-    console.log(userList);
     userList = userList.content.map((user, i) => {
       const newUser = {
         id: user.email,

@@ -14,14 +14,12 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.updateProfile = this.updateProfile.bind(this);
-    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     this.state = {
       profile: null
     };
   }
 
   componentDidMount() {
-    // const profile = this.storageSrvc.getJSONItem("userProfile");
     const profile = this.props.userProfile;
     this.updateProfile(profile);
   }
@@ -37,27 +35,7 @@ class Home extends React.Component {
           const templateKey = Object.keys(CONSTANTS.CODES).find(item => CONSTANTS.CODES[item].CODE === workflowDecider.code);
           let template = templateKey && CONSTANTS.CODES[templateKey];
           const image = images[template.IMAGE];
-          // switch (workflowDecider.code) {
-          //   case CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.CODE:
-          //     template = {...CONSTANTS.TEMPLATE.PORTAL_VERIFICATION};
-          //     image = images[CONSTANTS.TEMPLATE.PORTAL_VERIFICATION.IMAGE];
-          //     break;
-          //   case CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.CODE:
-          //     template = {...CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED};
-          //     image = images[CONSTANTS.TEMPLATE.USER_ACCESS_REVOKED.IMAGE];
-          //     break;
-          //   case CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.CODE:
-          //     template = {...CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED};
-          //     image = images[CONSTANTS.TEMPLATE.PORTAL_ACCESS_REVOKED.IMAGE];
-          //     break;
-          //   case CONSTANTS.TEMPLATE.USER_VERIFICATION.CODE:
-          //     template = {...CONSTANTS.TEMPLATE.USER_VERIFICATION};
-          //     image = images[CONSTANTS.TEMPLATE.USER_VERIFICATION.IMAGE];
-          //     break;
-          //   }
-
           template = {templateName: "StatusModalTemplate", image, ...template};
-          // const meta = { ...template  };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
         }
       }
