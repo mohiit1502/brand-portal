@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
@@ -10,7 +11,7 @@ const ClaimListTable = function(props) {
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
 
   const showClaimDetails = async function (row) {
-    props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate"});
+    props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
     const ticketId = row.original && row.original.ticketId;
     const claimDetailsUrl = `/api/claims/${ticketId}`;
     const response = (await Http.get(claimDetailsUrl)).body;
@@ -59,7 +60,7 @@ const ClaimListTable = function(props) {
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            cell.column.id === "caseNumber" ? <a className="cursor-pointer text-primary" onClick={() => showClaimDetails(row)}>{cell.value}</a> : cell.value
+                            cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value
                           }
                         </div>
                       );

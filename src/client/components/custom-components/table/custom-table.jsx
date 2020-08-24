@@ -37,7 +37,7 @@ const CustomTable = function (props) {
 CustomTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
-  template: PropTypes.element,
+  template: PropTypes.func,
   templateProps: PropTypes.object
 };
 

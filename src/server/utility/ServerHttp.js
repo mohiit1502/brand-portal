@@ -24,7 +24,7 @@ export default class ServerHttp {
       }
       const err = await res.json();
       console.error("Error from ServerHttp.get: ", err);
-      throw new ServerHttpError(status, err.error, err.message);
+      throw new ServerHttpError(status, err.error, err.message, err.code);
     } catch (err) {
       console.error("Caught in ServerHttp.get: ", err);
       return err;
