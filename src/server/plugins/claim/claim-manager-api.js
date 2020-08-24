@@ -20,6 +20,11 @@ class ClaimManagerApi {
         handler: this.getClaims
       },
       {
+        method: "GET",
+        path: "/api/claims/{ticketId}",
+        handler: this.getClaim
+      },
+      {
         method: "POST",
         path: "/api/claims",
         handler: this.createClaim
@@ -123,6 +128,30 @@ class ClaimManagerApi {
 
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async getClaim(request, h) {
+
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+
+      const BASE_URL = request.app.ccmGet("CLAIM_CONFIG.BASE_URL");
+      const CLAIMS_PATH = `${request.app.ccmGet("CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
+      const url = `${BASE_URL}${CLAIMS_PATH}`;
+
+      const response = await ServerHttp.get(url, options);
+      if (response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+        return h.response(response.body).code(response.status);
+      } else {
+        return h.response(response).code(response.status);
+      }
     } catch (err) {
       console.log(err);
       return h.response(err).code(err.status);
