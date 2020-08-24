@@ -86,7 +86,8 @@ const CONSTANTS = {
     },
 
     CLAIMS: {
-      CLAIMS_LIST: "/claims"
+      CLAIMS_LIST: "/claims",
+      CLAIM_DETAILS: "/claims/:claim_id"
     },
 
     PROFILE: {
@@ -105,7 +106,7 @@ const CONSTANTS = {
       id: "3",
       name: "USERS",
       value: "USERS",
-      href: "users/user-list",
+      href: "/user-management",
       children: [
         { id: "31", name: "USERLIST", value: "User List", href: "/users/user-list", active: true},
         { id: "32", name: "APPROVALLIST", value: "Approval List", href: "/users/user-approval", active: false}

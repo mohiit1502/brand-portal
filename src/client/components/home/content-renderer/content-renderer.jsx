@@ -34,6 +34,9 @@ class ContentRenderer extends React.Component {
           <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIMS_LIST}>
             <ClaimList {...this.props}/>
           </Route>
+          <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIM_DETAILS}>
+            <ClaimList {...this.props}/>
+          </Route>
           <Route path={CONSTANTS.ROUTES.HELP.HELP}>
             <Help {...this.props}/>
           </Route>
