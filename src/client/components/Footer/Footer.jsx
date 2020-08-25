@@ -31,7 +31,7 @@ const Footer = props => {
                   <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT}>Login</a>
                 </li>
                 <li className="nav-item ml-4">
-                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} smooth={true}>Register</a>
+                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT}>Register</a>
                 </li>
               </ul>
             </div>

@@ -9,18 +9,14 @@ import CONSTANTS from "../constants/constants";
 import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
 import {updateUserProfile} from "../actions/user/user-actions";
-// import StorageSrvc, {STORAGE_TYPES} from "../utility/StorageSrvc";
 import Onboarder from "./onboard/onboarder";
 
 class Authenticator extends React.Component {
-
-  // storageSrvc;
 
   constructor (props) {
     super(props);
     const COOKIE_NAME = "auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
-    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
 
     this.state = {
       isLoggedIn: !!sessionCookie,
@@ -49,16 +45,13 @@ class Authenticator extends React.Component {
 
   async getProfileInfo () {
     try {
-      // let profile = this.storageSrvc.getJSONItem("userProfile");
       let profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
         // profile.workflow.code=1;
         this.props.updateUserProfile(profile);
-        // this.storageSrvc.setJSONItem("userProfile", profile);
       }
       this.setOnboardStatus(profile.organization);
-      // this.props.updateUserProfile(profile);
       this.setState({profileInformationLoaded: true});
 
     } catch (e) {
@@ -73,6 +66,10 @@ class Authenticator extends React.Component {
 
   isRootPath (pathname) {
     return pathname === CONSTANTS.ROUTES.ROOT_PATH;
+  }
+
+  isOneOfRedirectPaths (pathname) {
+    return new RegExp(CONSTANTS.REGEX.REDIRECTALLOWEDPATHS).test(pathname);
   }
 
   isOnboardingPath (pathname) {
@@ -111,7 +108,9 @@ class Authenticator extends React.Component {
       if (this.state.profileInformationLoaded) {
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
-            return <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
+            const redirectURI = localStorage.getItem("redirectURI");
+            localStorage.removeItem("redirectURI");
+            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
           } else {
             return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
           }
@@ -128,8 +127,13 @@ class Authenticator extends React.Component {
       } else {
         return <div> Loading... </div>;
       }
-    } else  if (this.isRootPath(this.props.location.pathname)) {
+    } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
+    } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
+      localStorage.setItem("redirectURI", this.props.location.pathname);
+      window.location.pathname = "/api/falcon/login";
+      return null;
+      // return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
     } else {
       return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
     }
