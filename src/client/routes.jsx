@@ -1,7 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import Demo1 from "./components/temp-delete-later/demo1";
-// import Demo2 from "./components/temp-delete-later/demo2";
 import Modal from "./components/custom-components/modal/custom-modal";
 import Authenticator from "./components/authenticator";
 import { withRouter } from "react-router-dom";
@@ -38,16 +36,6 @@ const routes = [
         exact: true,
         component: Authenticator
       },
-      // {
-      //   path: "/demo1",
-      //   exact: true,
-      //   component: Demo1
-      // },
-      // {
-      //   path: "/demo2",
-      //   exact: true,
-      //   component: Demo2
-      // },
       {
         path: "/*",
         component: () => <Redirect to="/" />

@@ -29,7 +29,7 @@ export default class Http {
     const err = await response.json();
     callback && typeof callback === "function" && callback();
     console.log(err);
-    throw new ClientHttpError(status, err.error, err.message);
+    throw new ClientHttpError(status, err.error, err.message, err.code);
   }
 
   static async post(url, data, queryParams, callback) {

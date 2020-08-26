@@ -147,7 +147,11 @@ class ClaimManagerApi {
       const url = `${BASE_URL}${CLAIMS_PATH}`;
 
       const response = await ServerHttp.get(url, options);
-      return h.response(response.body).code(response.status);
+      if (response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+        return h.response(response.body).code(response.status);
+      } else {
+        return h.response(response).code(response.status);
+      }
     } catch (err) {
       console.log(err);
       return h.response(err).code(err.status);

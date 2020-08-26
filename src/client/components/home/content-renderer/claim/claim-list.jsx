@@ -93,14 +93,39 @@ class ClaimList extends React.Component {
   }
 
   componentDidMount() {
+    const location = this.props.history.location.pathname;
+    const isClaimDetailPath = new RegExp("^\/claims\/[a-zA-Z0-9]*$").test(location);
+    if (isClaimDetailPath) {
+      const ticketId = location.substring(location.indexOf("/claims/") + 8);
+      this.showClaimDetails(ticketId);
+    }
     this.fetchClaims();
   }
 
-  componentDidUpdate() {
-    // if (this.props.brandEdit.save) {
-    //   this.fetchClaims();
-    //   this.props.saveBrandCompleted();
-    // }
+  async showClaimDetails (ticketId) {
+    try {
+      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
+      const claimDetailsUrl = `/api/claims/${ticketId}`; 
+      const response = (await Http.get(claimDetailsUrl)).body;
+      const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
+      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    } catch (e) {
+      if (e.status === 404) {
+        const meta = { templateName: "ClaimDetailsTemplate", data: {error: true, ticketId} };
+        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.history.location.pathname !== this.props.history.location.pathname) {
+      const location = this.props.history.location.pathname;
+      const isClaimDetailPath = new RegExp("^\/claims\/[a-zA-Z0-9]*$").test(location);
+      if (isClaimDetailPath) {
+        const ticketId = location.substring(location.indexOf("/claims/") + 8);
+        this.showClaimDetails(ticketId);
+      }
+    }
   }
 
   async fetchClaims () {
@@ -449,8 +474,9 @@ class ClaimList extends React.Component {
 }
 
 ClaimList.propTypes = {
-  claims: PropTypes.object,
+  claims: PropTypes.array,
   dispatchClaims: PropTypes.func,
+  history: PropTypes.object,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func
 };

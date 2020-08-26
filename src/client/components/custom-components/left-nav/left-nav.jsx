@@ -35,7 +35,8 @@ class Leftnav extends React.Component {
         const shouldRender = restConfig.IS_MVP ? currentPanel !== CONSTANTS.SECTION.APPROVALLIST : true;
         if (shouldRender) {
           panelFiltered[i] = {...panel[i]};
-          panelFiltered[i].active = panelFiltered[i].href === pathname;
+          // panelFiltered[i].active = panelFiltered[i].href === pathname;
+          panelFiltered[i].active = pathname && new RegExp(panelFiltered[i].href).test(pathname);
           if (panelFiltered[i].hasOwnProperty("children")) {
             panelFiltered[i].children = this.constructNavigationPanel(panelFiltered[i].children, pathname);
           }
