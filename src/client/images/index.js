@@ -23,7 +23,7 @@ import GroupPeople from "./001-group.svg";
 import Help from "./Help.png";
 import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.png";
-import InviteUserForm from "./FNameLName.png";
+import InviteUserForm from "./AddUser.png";
 import LandingPageBG from "./combined-shape.svg";
 import Login from "./Login.png";
 import Paste from "./content-paste.svg";
