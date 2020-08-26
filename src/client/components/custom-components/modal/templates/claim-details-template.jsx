@@ -55,7 +55,7 @@ class ClaimDetailsTemplate extends React.Component {
       <div className="modal claim-details-modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
           <div className="modal-content">
-            <div className="modal-header align-items-center px-5">
+            <div className="modal-header align-items-center px-4">
               Claim Details
               <button type="button" className="close text-white" aria-label="Close" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>
                 <span aria-hidden="true">&times;</span>
