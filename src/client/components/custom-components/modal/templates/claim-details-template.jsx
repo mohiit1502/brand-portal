@@ -26,6 +26,7 @@ class ClaimDetailsTemplate extends React.Component {
     });
   }
 
+  // eslint-disable-next-line complexity
   render() {
     let firstName = "";
     let lastName = "";
@@ -123,22 +124,22 @@ class ClaimDetailsTemplate extends React.Component {
                         </div>
                       </div>
                     </div>
-                    <div className="row mt-4">
-                      <div className="col">
-                        <span className="font-size-14">Comments</span>
-                        <p>{this.props.data.comments}</p>
-                      </div>
+                  </div>
+                  <div className="row mt-4">
+                    <div className="col">
+                      <span className="font-size-14">Comments</span>
+                      <p>{this.props.data.comments}</p>
                     </div>
-                    <div className="row mt-3">
-                      <div className="col">
-                        <span className="font-size-14">Status Detail</span>
-                        <h6>{this.props.data.statusDetails}</h6>
-                      </div>
+                  </div>
+                  <div className="row mt-3">
+                    <div className="col">
+                      <span className="font-size-14">Status Detail</span>
+                      <h6>{this.props.data.statusDetails}</h6>
                     </div>
-                    <div className="row mt-3">
-                      <div className="col text-right">
-                        <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>
-                      </div>
+                  </div>
+                  <div className="row mt-3">
+                    <div className="col text-right">
+                      <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>
                     </div>
                   </div>
                 </React.Fragment>
