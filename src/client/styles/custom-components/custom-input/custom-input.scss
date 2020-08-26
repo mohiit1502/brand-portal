@@ -132,6 +132,12 @@ $dropdown-select-background: rgb(178, 216, 237);
     }
   }
 
+  &.field-loader {
+    .custom-input-element {
+      padding-right: 2.7rem;
+    }
+  }
+
   .custom-input-label{
     @include custom-label-css();
 

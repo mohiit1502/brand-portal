@@ -29,7 +29,7 @@
     "providers": {
       "@walmart/electrode-ccm-client": {
         "options": {
-          "environment": "dev"
+          "environment": "stg"
         }
       },
       "@walmart/electrode-quimby-client": {}

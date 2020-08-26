@@ -12,6 +12,7 @@ import Http from "../../../../utility/Http";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Helper from "../../../../utility/helper";
+import CONSTANTS from "../../../../constants/constants";
 
 class NewClaimTemplate extends React.Component {
 
@@ -27,7 +28,8 @@ class NewClaimTemplate extends React.Component {
     this.addToItemList = this.addToItemList.bind(this);
     this.removeFromItemList = this.removeFromItemList.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
-    this.onItemUrlBlur = this.onItemUrlBlur.bind(this);
+    this.onItemUrlChange = this.onItemUrlChange.bind(this);
+    this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
 
     this.state = {
@@ -110,8 +112,19 @@ class NewClaimTemplate extends React.Component {
         ]
       },
       brands: [],
-      claimTypeSelected: false
+      claimTypeSelected: false,
+      currentItem: 0,
+      loader: false,
+      fieldLoader: false
     };
+  }
+
+  loader (type, enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone[type] = enable;
+      return stateClone;
+    });
   }
 
   componentDidMount() {
@@ -219,9 +232,12 @@ class NewClaimTemplate extends React.Component {
   }
 
   getClaimTypes () {
+    this.loader("loader", true);
     return Http.get("/api/claims/types")
       .then(res => {
-        const form = {...this.state.form};
+        const state = {...this.state};
+        const form = {...state.form};
+        state.form = form;
         let options = [...res.body.data];
         options = options.map(option => {
           const displayVal = Helper.toCamelCaseIndividual(option.claimType);
@@ -231,22 +247,26 @@ class NewClaimTemplate extends React.Component {
         });
         form.inputData.claimType.options = options && options.map(v => ({value: v.label}));
         form.claimTypesWithMeta = options;
-        this.setState({form});
+        state.loader = false;
+        this.setState(state);
       });
   }
 
   getBrands () {
+    this.loader("loader", true);
     return Http.get("/api/brands?brandStatus=ACCEPTED")
       .then(res => {
         const state = {...this.state};
         state.brands = res.body.content;
         state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName}));
+        state.loader = false;
         this.setState(state);
       });
   }
 
   async fetchClaims () {
-    const response = (await Http.get("/api/claims")).body;
+    this.loader("loader", true);
+    const response = (await Http.get("/api/claims", () => this.loader("loader", false))).body;
 
     let claimList = [];
 
@@ -278,6 +298,7 @@ class NewClaimTemplate extends React.Component {
         if (index > -1) {
           state.form.inputData.itemList[index].sellerName.disabled = true;
           state.form.inputData.itemList[index][key].value = targetVal;
+          state.currentItem = index;
         } else {
           state.form.inputData[key].value = targetVal;
         }
@@ -285,6 +306,10 @@ class NewClaimTemplate extends React.Component {
           ...state
         };
       }, this.checkToEnableSubmit);
+      evt.persist();
+      if (index > -1) {
+        this.itemUrlDebounce(evt, index);
+      }
     }
   }
 
@@ -339,13 +364,16 @@ class NewClaimTemplate extends React.Component {
       digitalSignatureBy,
       items: getItems(inputData.itemList)
     };
+    this.loader("loader", true);
     return Http.post("/api/claims", payload)
       .then(res => {
         const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
         this.fetchClaims();
+        this.loader("loader", false);
       })
       .catch(err => {
+        this.loader("loader", false);
         console.log(err);
       });
   }
@@ -354,38 +382,38 @@ class NewClaimTemplate extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
   }
 
-  onItemUrlBlur (evt, item, i) {
-    // console.log(evt);
-    if (evt && evt.target) {
-      const url = evt.target.value;
-      if (url) {
-        const slash = url.lastIndexOf("/");
-        const qMark = url.lastIndexOf("?") === -1 ? url.length : url.lastIndexOf("?");
+  onItemUrlChange (event, i) {
+    const url = event && event.target.value;
+    if (url) {
+      this.loader("fieldLoader", true);
+      const slash = url.lastIndexOf("/");
+      const qMark = url.lastIndexOf("?") === -1 ? url.length : url.lastIndexOf("?");
 
-        const payload = url.substring(slash + 1, qMark);
-        const query = {payload};
-        Http.get("/api/sellers", query)
-          .then(res => {
-            const form = {...this.state.form};
-            if (res.body) res.body.unshift({value: "All", id: "_all"});
-            form.inputData.itemList[i].sellerName.options = res.body;
-            form.inputData.itemList[i].sellerName.disabled = false;
-            form.inputData.itemList[i].url.error = "";
-            //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
-            this.setState({form});
-          })
-          .catch(err => {
-            const form = {...this.state.form};
-            if (err.status === 404) {
-              form.inputData.itemList[i].url.error = "Please check the URL and try again!";
-            }
-            if (err.status === 520) {
-              form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
-            }
-            form.inputData.itemList[i].sellerName.disabled = true;
-            this.setState({form});
-          });
-      }
+      const payload = url.substring(slash + 1, qMark);
+      const query = {payload};
+      Http.get("/api/sellers", query)
+        .then(res => {
+          this.loader("fieldLoader", false);
+          const form = {...this.state.form};
+          if (res.body) res.body.unshift({value: "All", id: "_all"});
+          form.inputData.itemList[i].sellerName.options = res.body;
+          form.inputData.itemList[i].sellerName.disabled = false;
+          form.inputData.itemList[i].url.error = "";
+          //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
+          this.setState({form});
+        })
+        .catch(err => {
+          this.loader("fieldLoader", false);
+          const form = {...this.state.form};
+          if (err.status === 404) {
+            form.inputData.itemList[i].url.error = "Please check the URL and try again!";
+          }
+          if (err.status === 520) {
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
+          }
+          form.inputData.itemList[i].sellerName.disabled = true;
+          this.setState({form});
+        });
     }
 
   }
@@ -403,7 +431,7 @@ class NewClaimTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left">
+            <div className={`modal-body text-left${this.state.loader && " loader"}`}>
               <div className="row">
                 <div className="col-4">
                   <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
@@ -411,7 +439,7 @@ class NewClaimTemplate extends React.Component {
                     disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                 </div>
               </div>
-          {this.state.claimTypeSelected && 
+          {this.state.claimTypeSelected &&
             <React.Fragment>
               <div className="row">
                 <div className="col-4">
@@ -432,8 +460,8 @@ class NewClaimTemplate extends React.Component {
                     <div key={i} className="row">
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
-                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onBlurEvent={evt => {this.onItemUrlBlur(evt, item, i);}}
-                          onChangeEvent={this.onInputChange} disabled={item.url.disabled} dropdownOptions={item.url.options} error={item.url.error} />
+                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChangeEvent={this.onInputChange} disabled={item.url.disabled}
+                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i} />
                       </div>
                       <div className="col-4">
                         <div className="row">

@@ -51,7 +51,9 @@ $header-gray: rgb(164, 172, 178);
             overflow: auto;
             .item-data-row {
               border-bottom: 1px solid $border-color;
-              height: 48px;
+              // height: 48px;
+              padding-top: 1rem;
+              padding-bottom: 1rem;
               font-size: 14px;
               position: relative;
             }

@@ -23,15 +23,15 @@ class ClaimList extends React.Component {
     super(props);
 
     this.addNewClaim = this.addNewClaim.bind(this);
-    this.uiSearch = this.uiSearch.bind(this);
-    this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
-    this.resetFilters = this.resetFilters.bind(this);
     this.applyFilters = this.applyFilters.bind(this);
-    this.paginationCallback = this.paginationCallback.bind(this);
     this.changePageSize = this.changePageSize.bind(this);
-    this.onFilterChange = this.onFilterChange.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.fetchClaims = this.fetchClaims.bind(this);
+    this.onFilterChange = this.onFilterChange.bind(this);
+    this.paginationCallback = this.paginationCallback.bind(this);
+    this.resetFilters = this.resetFilters.bind(this);
+    this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
+    this.uiSearch = this.uiSearch.bind(this);
 
     this.state = {
       page: {
@@ -44,6 +44,7 @@ class ClaimList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      loader: false,
       searchText: "",
       claimListColumns: [
         {
@@ -83,6 +84,14 @@ class ClaimList extends React.Component {
     };
   }
 
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
+  }
+
   componentDidMount() {
     const location = this.props.history.location.pathname;
     const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
@@ -108,19 +117,20 @@ class ClaimList extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.history.location.pathname !== this.props.history.location.pathname) {
-      const location = this.props.history.location.pathname;
-      const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
-      if (isClaimDetailPath) {
-        const ticketId = location.substring(location.indexOf("/claims/") + 8);
-        this.showClaimDetails(ticketId);
-      }
-    }
+  componentDidUpdate() {
+    // if (prevProps.history.location.pathname !== this.props.history.location.pathname) {
+    //   const location = this.props.history.location.pathname;
+    //   const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
+    //   if (isClaimDetailPath) {
+    //     const ticketId = location.substring(location.indexOf("/claims/") + 8);
+    //     this.showClaimDetails(ticketId);
+    //   }
+    // }
   }
 
   async fetchClaims () {
-    const response = (await Http.get("/api/claims")).body;
+    this.loader(true);
+    const response = (await Http.get("/api/claims", "", () => this.loader(false))).body;
 
     let claimList = [];
 
@@ -408,7 +418,7 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="row user-list-row align-items-start">
+              <div className={`row user-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90">
                     <div className="col h-100 overflow-auto">

@@ -154,8 +154,17 @@ class CreateUserTemplate extends React.Component {
         //   label: "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law."
         // }
       },
+      loader: false,
       allSelected: false
     };
+  }
+
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
   }
 
   componentDidMount() {
@@ -338,15 +347,17 @@ class CreateUserTemplate extends React.Component {
     }
 
     const url = "/api/users";
-
+    this.loader(true);
     if (this.state.form.isUpdateTemplate) {
       return Http.put(`${url}/${payload.user.email}`, payload)
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
+          this.loader(false);
         })
         .catch(err => {
+          this.loader(false);
           console.log(err);
         });
     } else {
@@ -365,27 +376,28 @@ class CreateUserTemplate extends React.Component {
   }
 
   async fetchRolesForUser () {
-
-
+    this.loader(true);
     return Http.get("/api/newUser/roles")
       .then(res => {
         const form = {...this.state.form};
         form.inputData.role.options = res.body.roles;
         form.inputData.role.options.map(v => {v.value = v.name; });
         this.setState({form});
-
+        this.loader(false);
       });
   }
 
   async fetchBrandsForUser () {
+    this.loader(true);
     return Http.get("/api/newUser/brands")
       .then(res => {
         const form = {...this.state.form};
         form.inputData.brands.options = res.body.brands;
         form.inputData.brands.options = form.inputData.brands.options.map(v => {console.log(v.brandName); v.value = v.brandName; v.selected = false; return v;});
-        console.log(form.inputData.brands.options);
+        // console.log(form.inputData.brands.options);
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
         this.setState({form});
+        this.loader(false);
       });
   }
 
@@ -414,7 +426,7 @@ class CreateUserTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left">
+            <div className={`modal-body text-left ${this.state.loader && "loader"}`}>
               <form onSubmit={this.handleSubmit} className="h-100 pt-3">
                 <div className="row">
                   <div className="col">

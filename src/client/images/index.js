@@ -14,6 +14,7 @@ import CreateBrandButton from "./FNameLName.png";
 import CreateBrandForm from "./FNameLName.png";
 import Email from "./FNameLName.png";
 import Exclamation from "./exclamation.svg";
+import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
 import FNameLName from "./FNameLName.png";
 import GreenCircleCheck from "./green-circle-check.svg";
@@ -61,6 +62,7 @@ export {
     Company2,
     Email,
     Exclamation,
+    FieldLoader,
     Filter,
     FNameLName,
     GreenCircleCheck,

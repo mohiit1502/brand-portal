@@ -134,13 +134,17 @@ class UserManagerApi {
 
   }
 
-  // getHeaders(request) {
-  //   return {
-  //     ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-  //     ROPRO_USER_ID:	request.state.session_token_login_id,
-  //     ROPRO_CLIENT_ID:	"abcd"
-  //   };
-  // }
+  async checkHealth (request, h) {
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {headers};
+      const HEALTHCHECK_PATH = request.app.ccmGet("USER_CONFIG.HEALTHCHECK_URL");
+      const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
 
   async checkHealth (request, h) {
     try {
