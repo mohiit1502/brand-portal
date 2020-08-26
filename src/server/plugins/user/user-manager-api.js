@@ -150,7 +150,7 @@ class UserManagerApi {
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {headers};
-      const HEALTHCHECK_PATH = request.app.ccmGet("USER_CONFIG.HEALTHCHECK_URL");
+      const HEALTHCHECK_PATH = request.app.ccmGet("HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
       return h.response(response.body).code(response.status);
     } catch (err) {

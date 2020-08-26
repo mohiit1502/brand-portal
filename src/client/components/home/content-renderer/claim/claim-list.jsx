@@ -94,7 +94,7 @@ class ClaimList extends React.Component {
 
   componentDidMount() {
     const location = this.props.history.location.pathname;
-    const isClaimDetailPath = new RegExp("^\/claims\/[a-zA-Z0-9]*$").test(location);
+    const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
     if (isClaimDetailPath) {
       const ticketId = location.substring(location.indexOf("/claims/") + 8);
       this.showClaimDetails(ticketId);
@@ -104,7 +104,7 @@ class ClaimList extends React.Component {
 
   async showClaimDetails (ticketId) {
     try {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
+      // this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
       const claimDetailsUrl = `/api/claims/${ticketId}`; 
       const response = (await Http.get(claimDetailsUrl)).body;
       const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
@@ -120,7 +120,7 @@ class ClaimList extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.history.location.pathname !== this.props.history.location.pathname) {
       const location = this.props.history.location.pathname;
-      const isClaimDetailPath = new RegExp("^\/claims\/[a-zA-Z0-9]*$").test(location);
+      const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
       if (isClaimDetailPath) {
         const ticketId = location.substring(location.indexOf("/claims/") + 8);
         this.showClaimDetails(ticketId);
