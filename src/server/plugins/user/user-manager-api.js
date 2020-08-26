@@ -146,7 +146,7 @@ class UserManagerApi {
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {headers};
-      const HEALTHCHECK_PATH = request.app.ccmGet("USER_CONFIG.HEALTHCHECK_URL");
+      const HEALTHCHECK_PATH = request.app.ccmGet("HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -382,8 +382,11 @@ class UserManagerApi {
     try {
       const query = request.query;
       const ttl = 12 * 60 * 60 * 1000;
+      // let secrets = fs.readFileSync("/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets/secrets.json", {encoding: "utf8", flag: "r"});
+      // secrets = secrets ? JSON.parse(secrets) : {};
       // eslint-disable-next-line camelcase
       const {id_token} = await this.getAccessToken(request, query.code);
+      // const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
       const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginId;
       const authToken = user["iam-token"];

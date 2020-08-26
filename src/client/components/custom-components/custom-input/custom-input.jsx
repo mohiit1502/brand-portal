@@ -187,6 +187,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
+        <img src={ArrowDown} className="dropdown-arrow"/>
         <small className={`form-text custom-input-help-text ${subtitleClass}`}>
           { subtitleText }
         </small>

@@ -11,7 +11,7 @@ const ClaimListTable = function(props) {
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
 
   const showClaimDetails = async function (row) {
-    props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
+    // props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
     const ticketId = row.original && row.original.ticketId;
     const claimDetailsUrl = `/api/claims/${ticketId}`;
     const response = (await Http.get(claimDetailsUrl)).body;
