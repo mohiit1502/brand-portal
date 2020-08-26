@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import PlusIcon from "../../../../images/plus.svg";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
-import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {dispatchClaims} from "../../../../actions/claim/claim-actions";
 import CustomInput from "../../custom-input/custom-input";
@@ -13,6 +12,7 @@ import {showNotification} from "../../../../actions/notification/notification-ac
 import ClientUtils from "../../../../utility/ClientUtils";
 import Helper from "../../../../utility/helper";
 import CONSTANTS from "../../../../constants/constants";
+import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
 
 class NewClaimTemplate extends React.Component {
 
@@ -112,7 +112,9 @@ class NewClaimTemplate extends React.Component {
         ]
       },
       brands: [],
+      itemUrlId: 0,
       claimTypeSelected: false,
+      disableAddItem: true,
       currentItem: 0,
       loader: false,
       fieldLoader: false
@@ -139,6 +141,7 @@ class NewClaimTemplate extends React.Component {
 
   addToItemList () {
     const item = {
+      id: `item-${this.state.itemUrlId}`,
       url: {
         label: "Item URL",
         required: true,
@@ -163,9 +166,11 @@ class NewClaimTemplate extends React.Component {
         error: ""
       }
     };
-    const form = {...this.state.form};
-    form.inputData.itemList.unshift(item);
-    this.setState({form});
+    const state = {...this.state};
+    state.itemUrlId++;
+    state.form.inputData.itemList.unshift(item);
+    state.disableAddItem = true;
+    this.setState(state);
   }
 
   removeFromItemList (evt, index) {
@@ -185,6 +190,14 @@ class NewClaimTemplate extends React.Component {
         state = {...state};
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
+          const itemList = state.form.inputData.itemList;
+          const allSellerFieldsSelected = itemList && itemList.length > 0 ? itemList.reduce((final, item) => {
+            const indexInner = item.id && item.id.split("-").length > 1 && Number(item.id.split("-")[1]);
+            if (indexInner === index) return true;
+            const valueInner = item.sellerName && item.sellerName.value;
+            return !!(final && valueInner && typeof valueInner !== "string" && valueInner.length && valueInner.length > 0);
+          }, true) : true;
+          state.disableAddItem = !(allSellerFieldsSelected && value && value.length && value.length > 0);
           state.form.inputData.itemList[index][key].value = value;
         } else {
           state.form.inputData[key].value = value;
@@ -432,6 +445,7 @@ class NewClaimTemplate extends React.Component {
               </button>
             </div>
             <div className={`modal-body text-left${this.state.loader && " loader"}`}>
+              <p>Select the type of infringement you are reporting</p>
               <div className="row">
                 <div className="col-4">
                   <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
@@ -441,7 +455,8 @@ class NewClaimTemplate extends React.Component {
               </div>
           {this.state.claimTypeSelected &&
             <React.Fragment>
-              <div className="row">
+              <p>Please fill the following details to submit your claim</p>
+              <div className="row brand-and-patent">
                 <div className="col-4">
                   <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
                     value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.setSelectInputValue}
@@ -457,7 +472,7 @@ class NewClaimTemplate extends React.Component {
               {
                 inputData.itemList.map((item, i) => {
                   return (
-                    <div key={i} className="row">
+                    <div key={i} className="row item-url-list">
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
                           value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChangeEvent={this.onInputChange} disabled={item.url.disabled}
@@ -472,7 +487,8 @@ class NewClaimTemplate extends React.Component {
                           </div>
                           <div className="col-4">
                             {
-                              i === 0 && <div className="btn btn-sm btn-block btn-primary" onClick={this.addToItemList}>
+                              i === 0 &&
+                              <div className={`btn btn-sm btn-block btn-primary${this.state.disableAddItem && " disabled" || ""}`} onClick={this.addToItemList}>
                                 <img src={PlusIcon} className="plus-icon make-it-white"/> Item </div> ||
                               <div className="btn btn-sm btn-block cancel-btn text-primary" type="button" onClick={evt => {this.removeFromItemList(evt, i);}}>Remove</div>
                             }
@@ -508,7 +524,7 @@ class NewClaimTemplate extends React.Component {
                 })
               }
               <div className="row mt-3">
-                <div className="col">
+                <div className="col-7">
                   <div className="form-group">
                     <label htmlFor="signature-name" className="font-weight-bold">Typing your full name in this box will act as your digital signature</label>
                     <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true}
