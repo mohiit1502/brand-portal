@@ -219,7 +219,9 @@ class CompanyProfileRegistration extends React.Component {
       if (!response.body.unique) {
         // eslint-disable-next-line no-throw-literal
         throw {
-          error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
+          // TODO CODE: USERAPPROVAL - toggle below two lines' comments once user approval workflow is ready
+          // error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
+          error: `${response.body.name} has already been registered as brand. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
         };
       }
       this.toggleFormEnable(true, true, false);
@@ -423,7 +425,8 @@ class CompanyProfileRegistration extends React.Component {
                   </div>
                 </div>
                 {
-                  !this.state.form.inputData.companyName.requestAdministratorAccess &&
+                  // TODO CODE: USERAPPROVAL - Uncomment below line once user approval flow is in progress
+                  // !this.state.form.inputData.companyName.requestAdministratorAccess &&
                   <React.Fragment>
                     <div className="form-row">
                       <div className="col">
