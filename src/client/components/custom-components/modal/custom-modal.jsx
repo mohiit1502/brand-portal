@@ -56,8 +56,8 @@ class CustomModal extends React.Component {
       backdrop.remove();
     }
     const options = {
-      backdrop: !statusModals.includes(this.props.modal.templateName),
-      keyboard: true,
+      backdrop: !statusModals.includes(this.props.modal.templateName) ? "static" : false,
+      keyboard: false,
       show: toggleAction.toLowerCase() === "show"
     };
     modalElements.modal(options);

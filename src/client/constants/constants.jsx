@@ -217,7 +217,8 @@ const CONSTANTS = {
     REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
   },
 
-  POPOVERSELECTOR: "tutorialPopover"
+  POPOVERSELECTOR: "tutorialPopover",
+  APIDEBOUNCETIMEOUT: 800
 };
 
 export default CONSTANTS;
