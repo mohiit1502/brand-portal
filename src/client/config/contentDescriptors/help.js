@@ -1,4 +1,5 @@
 /* eslint-disable quote-props */
+// =============== This file isn't used anymore and is only retained for reference, this configuration is now available in CCM ================
 const HELPCONFIG = {
     "header": "Welcome to Walmart Brand Portal help center",
     "categoryHeader": "Help Topics",
@@ -170,7 +171,7 @@ const HELPCONFIG = {
                                 },
                                 {
                                     "main": "Click \"Invite User\"",
-                                    "image": ["InviteUserButton"]
+                                    "image": ["InviteUser"]
                                 },
                                 {
                                     "main": "Enter information about the user:",

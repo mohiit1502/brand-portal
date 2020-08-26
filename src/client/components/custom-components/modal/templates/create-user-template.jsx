@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {saveUserInitiated} from "../../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
 import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
 import CONSTANTS from "../../../../constants/constants";
 import InputFormatter from "./../../../../utility/phoneOps";
+import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
 
 class CreateUserTemplate extends React.Component {
 
@@ -415,22 +415,22 @@ class CreateUserTemplate extends React.Component {
 
   render() {
     return (
-      <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
+      <div className="modal show create-user-modal" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
-                this.state.form.isUpdateTemplate ? "Edit User" : "Add a New User"
+                this.state.form.isUpdateTemplate ? "Edit User" : "Invite a New User"
               }
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className={`modal-body text-left ${this.state.loader && "loader"}`}>
-              <form onSubmit={this.handleSubmit} className="h-100 pt-3">
-                <div className="row">
+              <form onSubmit={this.handleSubmit} className="h-100 px-2" style={{paddingLeft: "0"}}>
+                <div className="row userType">
                   <div className="col">
-                    <div className="text-secondary font-size-14 mb-2">Select type of user</div>
+                    <div className="text-secondary font-size-14 mb-2">Select the type of user you are inviting</div>
                     <div>
                       <CustomInput key={"userType"}
                         inputId={"userType"} radioOptions={this.state.form.inputData.userType.options}
@@ -441,8 +441,13 @@ class CreateUserTemplate extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="row mt-4">
-                  <div className="col-4">
+                <div className="row form-prompt">
+                  <div className="col">
+                    <p>Please fill the following details to invite a new user.</p>
+                  </div>
+                </div>
+                <div className="row fname-lname">
+                  <div className="col-6">
                     <CustomInput key={"firstName"}
                       inputId={"firstName"}
                       formId={this.state.form.id} label={this.state.form.inputData.firstName.label}
@@ -450,7 +455,7 @@ class CreateUserTemplate extends React.Component {
                       type={this.state.form.inputData.firstName.type} pattern={this.state.form.inputData.firstName.pattern}
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.firstName.disabled} />
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <CustomInput key={"lastName"}
                       inputId={"lastName"}
                       formId={this.state.form.id} label={this.state.form.inputData.lastName.label}
@@ -461,8 +466,8 @@ class CreateUserTemplate extends React.Component {
                 </div>
                 {
                   this.state.form.inputData.userType.value && this.state.form.inputData.userType.value.toLowerCase() !== "internal" &&
-                  <div className="row">
-                    <div className="col-4">
+                  <div className="row company">
+                    <div className="col-6">
                       <CustomInput key={"companyName"}
                         inputId={"companyName"}
                         formId={this.state.form.id} label={this.state.form.inputData.companyName.label}
@@ -474,8 +479,8 @@ class CreateUserTemplate extends React.Component {
                   </div>
                 }
 
-                <div className="row">
-                  <div className="col-4">
+                <div className="row contact-details">
+                  <div className="col-6">
                     <CustomInput key={"emailId"}
                       inputId={"emailId"}
                       formId={this.state.form.id} label={this.state.form.inputData.emailId.label}
@@ -484,7 +489,7 @@ class CreateUserTemplate extends React.Component {
                       onBlurEvent={this.state.form.inputData.emailId.onBlurEvent} error={this.state.form.inputData.emailId.error}
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled} />
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <CustomInput key={"phone"}
                       inputId={"phone"}
                       formId={this.state.form.id} label={this.state.form.inputData.phone.label}
@@ -494,8 +499,8 @@ class CreateUserTemplate extends React.Component {
                       onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} />
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-4">
+                <div className="row role-and-brand">
+                  <div className="col-6">
                     <CustomInput key={"role"}
                       inputId={"role"}
                       formId={this.state.form.id} label={this.state.form.inputData.role.label}
@@ -504,7 +509,7 @@ class CreateUserTemplate extends React.Component {
                       onChangeEvent={this.setSelectInputValue} disabled={this.state.form.inputData.role.disabled}
                       dropdownOptions={this.state.form.inputData.role.options}/>
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <CustomInput key={"brands"}
                       inputId={"brands"}
                       formId={this.state.form.id} label={this.state.form.inputData.brands.label}
@@ -525,7 +530,7 @@ class CreateUserTemplate extends React.Component {
                     </div>
                   </div>
                 </div> */}
-                <div className="row mt-3">
+                <div className="row action-footer">
                   <div className="col text-right">
                     <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
                     <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.form.submitDisabled}>

@@ -14,10 +14,11 @@ $header-color : #EFF3F5;
         background: $header-background;
         color: $header-color;
         font-size: 20px;
+        padding: 1rem 1.5rem;
       }
 
       .modal-body {
-
+        padding: 1.125rem 1rem 1.5rem; 
         form {
           padding-left: 0.9rem;
 
@@ -30,6 +31,22 @@ $header-color : #EFF3F5;
             font-size: 16px;
           }
         }
+      }
+    }
+  }
+
+  &.create-user-modal {
+    .modal-dialog {
+      width: 35.725rem;
+      .modal-body form {
+        .row:nth-of-type(1) {
+          .col-6 .custom-input-form-group {
+            margin-bottom: 0;
+          }
+        }
+        // balancing col-6 15px padding to achieve designs 24px
+        .col-6:first-child {padding-right: 0.75rem;}
+        .col-6:last-child {padding-left: 0.75rem;}
       }
     }
   }

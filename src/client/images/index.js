@@ -4,14 +4,14 @@ import ArrowDown from "./arrow-down-dk.png";
 import BlackBGCheck from "./BlackBGCheck.png";
 import Brand1 from "./FNameLName.png";
 import Brand2 from "./FNameLName.png";
-import BrandList from "./FNameLName.png";
+import BrandList from "./BrandList.png";
 import CheckGreen from "./check-grn.svg";
 import Company1 from "./FNameLName.png";
 import Company2 from "./FNameLName.png";
 import Confirm from "./confirm.svg";
 import ContactUsBG from "./Group 52@2x.png";
-import CreateBrandButton from "./FNameLName.png";
-import CreateBrandForm from "./FNameLName.png";
+import CreateBrandButton from "./CreateBrandButton.png";
+import CreateBrandForm from "./CreateBrandForm.png";
 import Email from "./FNameLName.png";
 import Exclamation from "./exclamation.svg";
 import FieldLoader from "./field-loader.svg";
@@ -22,10 +22,10 @@ import Group from "./group-23.svg";
 import GroupPeople from "./001-group.svg";
 import Help from "./Help.png";
 import Info from "./info-sc.svg";
-import InviteUserButton from "./FNameLName.png";
-import InviteUserForm from "./FNameLName.png";
+import InviteUser from "./Invite User.png";
+import InviteUserForm from "./AddUser.png";
 import LandingPageBG from "./combined-shape.svg";
-import Login from "./FNameLName.png";
+import Login from "./Login.png";
 import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
 import ProblemSolving from "./001-problem-solving.svg";
@@ -70,7 +70,7 @@ export {
     GroupPeople,
     Help,
     Info,
-    InviteUserButton,
+    InviteUser,
     InviteUserForm,
     LandingPageBG,
     Login,

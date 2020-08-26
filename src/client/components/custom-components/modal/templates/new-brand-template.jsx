@@ -3,11 +3,11 @@ import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
-import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 
 class NewBrandTemplate extends React.Component {
 
@@ -96,7 +96,7 @@ class NewBrandTemplate extends React.Component {
         },
         undertaking: {
           selected: false,
-          label: "I have read and agree to the Terms Of Use."
+          label: "I have read and agree to the "
         }
       }
     };
@@ -246,7 +246,7 @@ class NewBrandTemplate extends React.Component {
 
   render() {
     return (
-      <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
+      <div className="modal show new-brand-modal" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
@@ -258,7 +258,12 @@ class NewBrandTemplate extends React.Component {
               </button>
             </div>
             <div className={`modal-body text-left${this.state.loader && " loader"}`}>
-              <form onSubmit={this.handleSubmit} className="h-100 pt-3">
+              <form onSubmit={this.handleSubmit} className="h-100 px-2">
+                <div className="row">
+                  <div className="col">
+                    <p>Please fill the following details to register your brand on the Brand Portal.</p>
+                  </div>
+                </div>
                 <div className="form-row">
                   <div className="col-8">
                     <CustomInput key={"trademarkNumber"}
@@ -280,7 +285,6 @@ class NewBrandTemplate extends React.Component {
                     </div>
                   }
                 </div>
-
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"brandName"}
@@ -303,14 +307,13 @@ class NewBrandTemplate extends React.Component {
                       error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
                   </div>
                 </div>
-
                 <div className="row">
                   <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
-                        {this.state.form.undertaking.label}
+                        {this.state.form.undertaking.label}<a href="#" target="#blank">Terms Of Use.</a>
                       </label>
                     </div>
                   </div>
