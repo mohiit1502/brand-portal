@@ -221,7 +221,7 @@ class CompanyProfileRegistration extends React.Component {
         throw {
           // TODO CODE: USERAPPROVAL - toggle below two lines' comments once user approval workflow is ready
           // error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
-          error: `${response.body.name} has already been registered as brand. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
+          error: `${response.body.name} has already been registered within Brand Portal. Please contact ipinvest@walmat.com for more information.`
         };
       }
       this.toggleFormEnable(true, true, false);
