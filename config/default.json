@@ -29,7 +29,7 @@
     "providers": {
       "@walmart/electrode-ccm-client": {
         "options": {
-          "environment": "dev"
+          "environment": "stg"
         }
       },
       "@walmart/electrode-quimby-client": {}
@@ -44,28 +44,24 @@
       "root": {
         "profiles": {
           "default": {
-            "environment": "dev"
+            "environment": "stg"
           }
         },
         "data": {
-          "ui": {
-            "serviceName": "ro-pro",
-            "+configNames": ["ui"]
-          },
           "IAM": {
-            "serviceName": "ro-pro",
-            "+configNames": ["IAM"]
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["IAM_CONFIG"]
           },
           "USER_CONFIG": {
-            "serviceName": "ro-pro",
+            "serviceName": "ropro-brandportal",
             "+configNames": ["USER_CONFIG"]
           },
           "BRAND_CONFIG": {
-            "serviceName": "ro-pro",
+            "serviceName": "ropro-brandportal",
             "+configNames": ["BRAND_CONFIG"]
           },
           "CLAIM_CONFIG": {
-            "serviceName": "ro-pro",
+            "serviceName": "ropro-brandportal",
             "+configNames": ["CLAIM_CONFIG"]
           }
         }
