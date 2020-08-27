@@ -98,7 +98,8 @@ const UserListTable = function(props) {
             rows.map(row => {
               prepareRow(row);
               const status = row && row.original && row.original.status;
-              const negativeStatuses = [CONSTANTS.USER.STATUS.PENDING.toLowerCase(), CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
+              // const negativeStatuses = [CONSTANTS.USER.STATUS.PENDING.toLowerCase(), CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
+              const negativeStatuses = [CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
               const {values} = row;
               let ddOptions;
               return (
