@@ -13,13 +13,14 @@ class Falcon {
       const state = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
       const scope = IAM.SCOPE;
       const responseType = IAM.RESPONSE_TYPE;
-      const isInternal = IAM.IS_INTERNAL;
+      // const isInternal = IAM.IS_INTERNAL;
       const baseUrl = action.toLowerCase() === "login" ? IAM.FALCON_LOGIN_URL : IAM.FALCON_REGISTER_URL;
       const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
 
       return queryString.stringifyUrl({
         url: baseUrl,
-        query: {redirectUri, clientId, nonce, clientType, state, scope, responseType, isInternal}
+        // query: {redirectUri, clientId, nonce, clientType, state, scope, responseType, isInternal}
+        query: {redirectUri, clientId, nonce, clientType, state, scope, responseType}
       }, {encode: false});
     } catch (err) {
       throw new Error(err);
