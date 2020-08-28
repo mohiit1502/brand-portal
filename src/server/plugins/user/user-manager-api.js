@@ -389,6 +389,9 @@ class UserManagerApi {
       // let secrets = fs.readFileSync("/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets/secrets.json", {encoding: "utf8", flag: "r"});
       // secrets = secrets ? JSON.parse(secrets) : {};
       // eslint-disable-next-line camelcase
+      if (!query.code) {
+        return h.redirect("/api/falcon/login");
+      }
       const {id_token} = await this.getAccessToken(request, query.code);
       // const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
       const user = await ServerUtils.decryptToken(id_token);
@@ -409,7 +412,7 @@ class UserManagerApi {
 
       return h.redirect("/");
     } catch (err) {
-      console.error(err);
+      console.error("got error in authroziation: ", err);
       throw err;
     }
 
