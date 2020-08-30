@@ -2,21 +2,15 @@ import Access from "./access.svg";
 import Alert from "./alert.svg";
 import ArrowDown from "./arrow-down-dk.png";
 import BlackBGCheck from "./BlackBGCheck.png";
-import Brand1 from "./FNameLName.png";
-import Brand2 from "./FNameLName.png";
 import BrandList from "./BrandList.png";
 import CheckGreen from "./check-grn.svg";
-import Company1 from "./FNameLName.png";
-import Company2 from "./FNameLName.png";
 import Confirm from "./confirm.svg";
 import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.png";
 import CreateBrandForm from "./CreateBrandForm.png";
-import Email from "./FNameLName.png";
 import Exclamation from "./exclamation.svg";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
-import FNameLName from "./FNameLName.png";
 import GreenCircleCheck from "./green-circle-check.svg";
 import Group from "./group-23.svg";
 import GroupPeople from "./001-group.svg";
@@ -35,7 +29,7 @@ import Search from "./18-px-search.svg";
 import Sort from "./sort.svg";
 import TimesSuccess from "./times-success.svg";
 import User from "./user.svg";
-import UserList from "./FNameLName.png";
+import UserList from "./User List.png";
 import Verified from "./verified.svg";
 import Verify from "./001-verify.svg";
 import WalmartIntro from "./Walmart_Intro_wide.png";
@@ -50,21 +44,15 @@ export {
     Alert,
     ArrowDown,
     BlackBGCheck,
-    Brand1,
-    Brand2,
     BrandList,
     Confirm,
     ContactUsBG,
     CreateBrandButton,
     CreateBrandForm,
     CheckGreen,
-    Company1,
-    Company2,
-    Email,
     Exclamation,
     FieldLoader,
     Filter,
-    FNameLName,
     GreenCircleCheck,
     Group,
     GroupPeople,
