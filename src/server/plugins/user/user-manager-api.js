@@ -52,7 +52,8 @@ class UserManagerApi {
     return server.route([
       {
         method: "GET",
-        path: "/ping",
+        // path: "/ping",
+        path: "/health",
         handler: this.checkHealth
       },
       {
