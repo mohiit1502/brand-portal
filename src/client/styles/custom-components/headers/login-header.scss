@@ -25,6 +25,13 @@ $nav-max-height : 61px;
           padding: 6px 25px;
           @extend .py-1;
 
+          &.disabled {
+            pointer-events: none;
+            background: #B2D8ED;
+            border-color: #B2D8ED;
+            color: white;
+          }
+
           &:hover {
             background: $blue;
             color: white;
