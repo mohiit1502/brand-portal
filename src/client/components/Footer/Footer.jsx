@@ -17,7 +17,7 @@ const Footer = props => {
           <nav className="navbar navbar-expand-lg login-footer-nav">
             <div className="c-Footer__logoSocialContainer">
               <img className="c-Footer__wmWhiteLogo" src={images.WMWhite} />
-              <span className="c-Footer__logoText">Brand Portal</span>
+              {/* <span className="c-Footer__logoText">Brand Portal</span> */}
             </div>
             <div className="collapse navbar-collapse navbar-collapsible-footer" id="collapsible-footer">
               <ul className="navbar-nav ml-auto">
