@@ -40,8 +40,8 @@ import Verified from "./verified.svg";
 import Verify from "./001-verify.svg";
 import WalmartIntro from "./Walmart_Intro_wide.png";
 import Warning from "./warning.svg";
-import WMBlue from "./BrandLogos_WMT blu.svg";
-import WMWhite from "./wm-white-logo.png";
+import WMBlue from "./Walmart Brand Portal-alpha.svg";
+import WMWhite from "./Walmart Brand Portal-blue-trimmed.png";
 import YellowBGExclamation from "./YellowBGExclamation.png";
 import YellowBGKey from "./YellowBGKey.png";
 
