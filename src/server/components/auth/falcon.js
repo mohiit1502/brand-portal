@@ -15,7 +15,7 @@ class Falcon {
       const responseType = IAM.RESPONSE_TYPE;
       // const isInternal = IAM.IS_INTERNAL;
       const baseUrl = action.toLowerCase() === "login" ? IAM.FALCON_LOGIN_URL : IAM.FALCON_REGISTER_URL;
-      const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
+      const redirectUri = IAM.BASE_URL + IAM.REDIRECT_PATH;
 
       return queryString.stringifyUrl({
         url: baseUrl,
