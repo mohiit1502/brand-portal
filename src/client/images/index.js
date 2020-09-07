@@ -34,7 +34,7 @@ import Verified from "./verified.svg";
 import Verify from "./001-verify.svg";
 import WalmartIntro from "./Walmart_Intro_wide.png";
 import Warning from "./warning.svg";
-import WMBlue from "./Walmart-Brand-Portal-alpha.png";
+import WMBlue from "./Walmart-Brand-Portal-for-white-bg---236x80.png";
 import WMWhite from "./Walmart Brand Portal-blue-trimmed.png";
 import YellowBGExclamation from "./YellowBGExclamation.png";
 import YellowBGKey from "./YellowBGKey.png";
