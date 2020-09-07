@@ -122,7 +122,7 @@ class CompanyProfileRegistration extends React.Component {
         },
         requestAccessUndertaking: {
           selected: false,
-          label: "I have read and agree to the Terms Of Use."
+          label: "I have read and agree to the Brand Portal Terms of Use."
         }
       },
       tooltip: {
@@ -398,7 +398,7 @@ class CompanyProfileRegistration extends React.Component {
               <div className="row">
                 <div className="col">
                   <div className="company-registration-subtitle">
-                    Provide the information in the form below to create your company profile .
+                    Please provide the information in the form below to create your company profile.
                   </div>
                 </div>
               </div>
@@ -482,7 +482,7 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row primary-file-upload mb-3">
                       <div className="col">
                         <div className="file-upload-title mb-2">
-                          Please provide business registration documents if you are a corporation (optional) <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
+                          Please provide business registration documents if this is a corporation (optional) <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
                         </div>
                         {
                           !this.state.form.inputData.businessRegistrationDoc.uploading && !this.state.form.inputData.businessRegistrationDoc.id &&
@@ -508,7 +508,7 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row additional-file-upload mb-3">
                       <div className="col">
                         <div className="file-upload-title mb-2">
-                          Additonal document (optional) <Tooltip placement={"right"} content={this.state.tooltip.additionalDocContent} icon={infoIcon}/>
+                          Additional documents (optional) <Tooltip placement={"right"} content={this.state.tooltip.additionalDocContent} icon={infoIcon}/>
                         </div>
                         {
                           !this.state.form.inputData.additionalDoc.uploading && !this.state.form.inputData.additionalDoc.id &&

@@ -77,7 +77,7 @@ class CreateUserTemplate extends React.Component {
             disabled: false
           },
           emailId: {
-            label: "Email ID",
+            label: "Email",
             required: true,
             value: "",
             type: "email",
@@ -443,7 +443,7 @@ class CreateUserTemplate extends React.Component {
                 </div>
                 <div className="row form-prompt">
                   <div className="col">
-                    <p>Please fill the following details to invite a new user.</p>
+                    <p>Please complete the following fields to invite a new user.</p>
                   </div>
                 </div>
                 <div className="row fname-lname">

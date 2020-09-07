@@ -33,7 +33,7 @@ const CONSTANTS = {
     PORTAL_VERIFICATION: {
       CODE: 2,
       IMAGE: "Alert",
-      MESSAGE: "Your company details are currently being verified. Once complete, you will receive a confirmation on your registered email. Please log in using the shared link.",
+      MESSAGE: "Your company and brand details are currently being verified. Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
       TITLE: "Company Registration is Pending"
     },
     PORTAL_DASHBOARD: {
@@ -60,7 +60,7 @@ const CONSTANTS = {
     USER_VERIFICATION: {
       CODE: 64,
       IMAGE: "Alert",
-      MESSAGE: "Your account details need to be verified. A verification email has been sent on the registered mail account. Please verify using the link provided.",
+      MESSAGE: "Your account details need to be verified. A verification email has been sent to your email address. Please verify using the link provided.",
       TITLE: "Account verification in progress"
     }
   },
@@ -137,8 +137,8 @@ const CONSTANTS = {
       DISPLAY: {
         EDIT: "Edit User Profile",
         RESENDINVITE: "Resend Invite",
-        SUSPEND: "Deactivate User Profile",
-        REACTIVATE: "Reactivate User",
+        SUSPEND: "Suspend User Profile",
+        REACTIVATE: "Unsuspend User",
         DELETE: "Delete User Profile"
       },
       PAYLOAD: {
@@ -160,8 +160,8 @@ const CONSTANTS = {
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit Brand Details",
-        SUSPEND: "Deactivate Brand",
-        REACTIVATE: "Reactivate Brand",
+        SUSPEND: "Suspend Brand",
+        REACTIVATE: "Unsuspend Brand",
         DELETE: "Delete Brand"
       },
       PAYLOAD: {

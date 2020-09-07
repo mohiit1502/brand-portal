@@ -31,7 +31,7 @@ class NewBrandTemplate extends React.Component {
         id: "brand-addition-form",
         inputData: {
           trademarkNumber: {
-            label: "Brand Trademark Number",
+            label: "Trademark Number",
             required: true,
             value: "",
             type: "text",
@@ -54,7 +54,7 @@ class NewBrandTemplate extends React.Component {
             onBlurEvent: e => {
               this.setState(state => {
                 state = {...state};
-                // state.form.inputData.brandName.error = "Brand Name is not Unique";
+                // state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
                 state.form.inputData.brandName.isUnique = false;
                 return {
                   ...state
@@ -64,7 +64,7 @@ class NewBrandTemplate extends React.Component {
                 if (!res.body.unique) {
                   this.setState(state => {
                     state = {...state};
-                    state.form.inputData.brandName.error = "Brand Name is not Unique";
+                    state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
                     state.form.inputData.brandName.isUnique = false;
                     return {
                       ...state
@@ -93,11 +93,12 @@ class NewBrandTemplate extends React.Component {
             subtitle: "",
             error: ""
           }
-        },
-        undertaking: {
-          selected: false,
-          label: "I have read and agree to the "
         }
+        // },
+        // undertaking: {
+        //   selected: false,
+        //   label: "I have read and agree to the Brand Portal Terms of Use."
+        // }
       }
     };
   }
@@ -261,7 +262,7 @@ class NewBrandTemplate extends React.Component {
               <form onSubmit={this.handleSubmit} className="h-100 px-2">
                 <div className="row">
                   <div className="col">
-                    <p>Please fill the following details to register your brand on the Brand Portal.</p>
+                    <p>Please complete the following fields to register your brand.</p>
                   </div>
                 </div>
                 <div className="form-row">
