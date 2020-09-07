@@ -137,8 +137,8 @@ const CONSTANTS = {
       DISPLAY: {
         EDIT: "Edit User Profile",
         RESENDINVITE: "Resend Invite",
-        SUSPEND: "Deactivate User Profile",
-        REACTIVATE: "Reactivate User",
+        SUSPEND: "Suspend User Profile",
+        REACTIVATE: "Unsuspend User",
         DELETE: "Delete User Profile"
       },
       PAYLOAD: {
@@ -160,8 +160,8 @@ const CONSTANTS = {
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit Brand Details",
-        SUSPEND: "Deactivate Brand",
-        REACTIVATE: "Reactivate Brand",
+        SUSPEND: "Suspend Brand",
+        REACTIVATE: "Unsuspend Brand",
         DELETE: "Delete Brand"
       },
       PAYLOAD: {

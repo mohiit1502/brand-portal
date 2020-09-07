@@ -54,7 +54,7 @@ class UserProfile extends React.Component {
             disabled: true
           },
           emailId: {
-            label: "Email ID",
+            label: "Email",
             required: true,
             value: this.props.userProfile.email,
             type: "email",

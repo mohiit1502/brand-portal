@@ -455,7 +455,7 @@ class NewClaimTemplate extends React.Component {
               </div>
           {this.state.claimTypeSelected &&
             <React.Fragment>
-              <p>Please fill the following details to submit your claim</p>
+              <p>Please complete the following fields and click submit to submit your claim.</p>
               <div className="row brand-and-patent">
                 <div className="col-4">
                   <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}

@@ -31,7 +31,7 @@ class NewBrandTemplate extends React.Component {
         id: "brand-addition-form",
         inputData: {
           trademarkNumber: {
-            label: "Brand Trademark Number",
+            label: "Trademark Number",
             required: true,
             value: "",
             type: "text",
@@ -262,7 +262,7 @@ class NewBrandTemplate extends React.Component {
               <form onSubmit={this.handleSubmit} className="h-100 px-2">
                 <div className="row">
                   <div className="col">
-                    <p>Please fill the following details to register your brand on the Brand Portal.</p>
+                    <p>Please complete the following fields to register your brand.</p>
                   </div>
                 </div>
                 <div className="form-row">
