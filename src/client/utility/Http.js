@@ -1,9 +1,12 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable max-params */
+/* eslint-disable max-statements */
 import fetch from "node-fetch";
 import queryString from "query-string";
 import ClientHttpError from "./ClientHttpError";
 export default class Http {
 
-  static async get(url, queryParams) {
+  static async get(url, queryParams, callback) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
 
     const options = {
@@ -15,18 +18,21 @@ export default class Http {
     if (ok) {
       if (headers.get("content-type").indexOf("application/json") !== -1) {
         const body = await response.json();
+        callback && typeof callback === "function" && callback();
         return {status, body};
       }
       const body = await response.text();
+      callback && typeof callback === "function" && callback();
       return {status, body};
     }
 
     const err = await response.json();
+    callback && typeof callback === "function" && callback();
     console.log(err);
     throw new ClientHttpError(status, err.error, err.message, err.code);
   }
 
-  static async post(url, data, queryParams) {
+  static async post(url, data, queryParams, callback) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
     const options = {
       method: "POST",
@@ -40,19 +46,22 @@ export default class Http {
     if (ok) {
       if (headers.get("content-type").indexOf("application/json") !== -1) {
         const body = await response.json();
+        callback && typeof callback === "function" && callback();
         return {status, body};
       }
       const body = await response.text();
+      callback && typeof callback === "function" && callback();
       return {status, body};
     }
 
     const err = await response.json();
+    callback && typeof callback === "function" && callback();
     console.log(err);
     throw new ClientHttpError(status, err.error, err.message);
 
   }
 
-  static async postAsFormData(url, data, queryParams) {
+  static async postAsFormData(url, data, queryParams, callback) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
     const options = {
       method: "POST",
@@ -64,19 +73,22 @@ export default class Http {
     if (ok) {
       if (headers.get("content-type").indexOf("application/json") !== -1) {
         const body = await response.json();
+        callback && typeof callback === "function" && callback();
         return {status, body};
       }
       const body = await response.text();
+      callback && typeof callback === "function" && callback();
       return {status, body};
     }
 
     const err = await response.json();
-    // console.log(err);
+    callback && typeof callback === "function" && callback();
+    console.log(err);
     throw new ClientHttpError(status, err.error, err.message);
 
   }
 
-  static async put(url, data, queryParams) {
+  static async put(url, data, queryParams, callback) {
     const urlString = queryString.stringifyUrl({url, query: queryParams});
     const options = {
       method: "PUT",
@@ -91,14 +103,17 @@ export default class Http {
     if (ok) {
       if (headers.get("content-type").indexOf("application/json") !== -1) {
         const body = await response.json();
+        callback && typeof callback === "function" && callback();
         return {status, body};
       }
       const body = await response.text();
+      callback && typeof callback === "function" && callback();
       return {status, body};
     }
 
     const err = await response.json();
-    // console.log(err);
+    callback && typeof callback === "function" && callback();
+    console.log(err);
     throw new ClientHttpError(status, err.error, err.message);
   }
 

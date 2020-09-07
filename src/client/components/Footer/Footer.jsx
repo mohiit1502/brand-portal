@@ -17,7 +17,7 @@ const Footer = props => {
           <nav className="navbar navbar-expand-lg login-footer-nav">
             <div className="c-Footer__logoSocialContainer">
               <img className="c-Footer__wmWhiteLogo" src={images.WMWhite} />
-              <span className="c-Footer__logoText">Brand Portal</span>
+              {/* <span className="c-Footer__logoText">Brand Portal</span> */}
             </div>
             <div className="collapse navbar-collapse navbar-collapsible-footer" id="collapsible-footer">
               <ul className="navbar-nav ml-auto">
@@ -31,7 +31,7 @@ const Footer = props => {
                   <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT}>Login</a>
                 </li>
                 <li className="nav-item ml-4">
-                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} smooth={true}>Register</a>
+                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT}>Register</a>
                 </li>
               </ul>
             </div>

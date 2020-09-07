@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 export default class Helper {
     static toCamelCaseFirstUpper (incoming) {
         if (!incoming) {
@@ -56,5 +57,17 @@ export default class Helper {
         const strFirst = isFirstLower ? part.substring(0, 1).toLowerCase() : part.substring(0, 1).toUpperCase();
         const strRest = part.substring(1).toLowerCase();
         return strFirst + strRest;
+    }
+
+    static debounce (func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            timeout = null;
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
     }
 }

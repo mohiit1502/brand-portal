@@ -4,10 +4,8 @@ import queryString from "query-string";
 
 class Falcon {
 
-  generateFalconRedirectURL(request, action) {
+  generateFalconRedirectURL (request, action) {
     try {
-
-      let baseUrl;
       const IAM = request.app.ccmGet("IAM");
       const clientId = IAM.CLIENT_ID;
       const nonce = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
@@ -15,28 +13,15 @@ class Falcon {
       const state = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
       const scope = IAM.SCOPE;
       const responseType = IAM.RESPONSE_TYPE;
-      const isInternal = IAM.IS_INTERNAL;
-
-      if (action.toLowerCase() === "login") {
-        baseUrl = IAM.FALCON_LOGIN_URL;
-      } else {
-        baseUrl = IAM.FALCON_REGISTER_URL;
-      }
-
-      const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
+      // const isInternal = IAM.IS_INTERNAL;
+      const baseUrl = action.toLowerCase() === "login" ? IAM.FALCON_LOGIN_URL : IAM.FALCON_REGISTER_URL;
+      const redirectUri = IAM.BASE_URL + IAM.REDIRECT_PATH;
 
       return queryString.stringifyUrl({
         url: baseUrl,
-        query: {
-          redirectUri,
-          clientId,
-          nonce,
-          clientType,
-          state,
-          scope,
-          responseType,
-          isInternal
-        }}, {encode: false});
+        // query: {redirectUri, clientId, nonce, clientType, state, scope, responseType, isInternal}
+        query: {redirectUri, clientId, nonce, clientType, state, scope, responseType}
+      }, {encode: false});
     } catch (err) {
       throw new Error(err);
     }

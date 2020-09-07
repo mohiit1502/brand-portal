@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable max-params */
 import React from "react";
 import * as imagesAll from "./../images";

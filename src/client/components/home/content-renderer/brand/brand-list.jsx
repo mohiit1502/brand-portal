@@ -50,6 +50,7 @@ class BrandList extends React.Component {
       filters: [],
       searchText: "",
       showFilters: false,
+      loader: false,
       userRole,
       dropdown: {
         buttonText: burgerIcon,
@@ -70,7 +71,8 @@ class BrandList extends React.Component {
               const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
               const payload = {status: outgoingStatus};
-              const response = Http.put(`/api/brands/${data.brandId}`, payload);
+              this.loader(true);
+              const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader(false));
               response.then(res => {
                 this.fetchBrands();
               });
@@ -116,6 +118,14 @@ class BrandList extends React.Component {
     };
   }
 
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
+  }
+
   editBrand (brandData) {
     const meta = { templateName: "NewBrandTemplate", data: {...brandData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
@@ -150,7 +160,8 @@ class BrandList extends React.Component {
   }
 
   async fetchBrands () {
-    const response = (await Http.get("/api/brands")).body;
+    this.loader(true);
+    const response = (await Http.get("/api/brands", "", () => this.loader(false))).body;
 
     let brandList = [];
 
@@ -401,7 +412,7 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="row brand-list-row align-items-start">
+              <div className={`row brand-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row brand-list-table-row h-90">
                     <div className="col h-100 overflow-auto">

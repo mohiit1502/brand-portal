@@ -52,7 +52,8 @@ class UserManagerApi {
     return server.route([
       {
         method: "GET",
-        path: "/ping",
+        // path: "/ping",
+        path: "/health",
         handler: this.checkHealth
       },
       {
@@ -134,20 +135,13 @@ class UserManagerApi {
 
   }
 
-  // getHeaders(request) {
-  //   return {
-  //     ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-  //     ROPRO_USER_ID:	request.state.session_token_login_id,
-  //     ROPRO_CLIENT_ID:	"abcd"
-  //   };
-  // }
-
   async checkHealth (request, h) {
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {headers};
-      const HEALTHCHECK_PATH = request.app.ccmGet("USER_CONFIG.HEALTHCHECK_URL");
+      const HEALTHCHECK_PATH = request.app.ccmGet("HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
+      console.log("Health check response: ", response);
       return h.response(response.body).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);
@@ -349,8 +343,14 @@ class UserManagerApi {
     try {
       const query = request.query;
       const ttl = 12 * 60 * 60 * 1000;
+      // let secrets = fs.readFileSync("/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets/secrets.json", {encoding: "utf8", flag: "r"});
+      // secrets = secrets ? JSON.parse(secrets) : {};
       // eslint-disable-next-line camelcase
+      if (!query.code) {
+        return h.redirect("/api/falcon/login");
+      }
       const {id_token} = await this.getAccessToken(request, query.code);
+      // const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
       const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
@@ -369,7 +369,7 @@ class UserManagerApi {
 
       return h.redirect("/");
     } catch (err) {
-      console.error(err);
+      console.error("got error in authroziation: ", err);
       throw err;
     }
 

@@ -3,11 +3,11 @@ import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
-import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 
 class NewBrandTemplate extends React.Component {
 
@@ -21,6 +21,7 @@ class NewBrandTemplate extends React.Component {
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
 
     this.state = {
+      loader: false,
       form: {
         isSubmitDisabled: true,
         isUpdateTemplate: false,
@@ -100,6 +101,14 @@ class NewBrandTemplate extends React.Component {
         // }
       }
     };
+  }
+
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
   }
 
   componentDidMount() {
@@ -202,27 +211,31 @@ class NewBrandTemplate extends React.Component {
     const url = "/api/brands";
 
     if (this.state.form.isUpdateTemplate) {
+      this.loader(true);
       return Http.put(`${url}/${this.props.data.brandId}`, {comments})
         .then(res => {
           this.resetTemplateStatus();
           this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
+          this.loader(false);
         })
         .catch(err => {
+          this.loader(false);
           console.log(err);
         });
     } else {
-
+      this.loader(true);
       return Http.post(url, payload)
         .then(res => {
           this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.request.name}’ added to your brand portfolio`);
           this.resetTemplateStatus();
           this.props.saveBrandInitiated();
-
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+          this.loader(false);
         })
         .catch(err => {
+          this.loader(false);
           console.log(err);
         });
     }
@@ -234,7 +247,7 @@ class NewBrandTemplate extends React.Component {
 
   render() {
     return (
-      <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
+      <div className="modal show new-brand-modal" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
@@ -245,8 +258,13 @@ class NewBrandTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left">
-              <form onSubmit={this.handleSubmit} className="h-100 pt-3">
+            <div className={`modal-body text-left${this.state.loader && " loader"}`}>
+              <form onSubmit={this.handleSubmit} className="h-100 px-2">
+                <div className="row">
+                  <div className="col">
+                    <p>Please fill the following details to register your brand on the Brand Portal.</p>
+                  </div>
+                </div>
                 <div className="form-row">
                   <div className="col-8">
                     <CustomInput key={"trademarkNumber"}
@@ -268,7 +286,6 @@ class NewBrandTemplate extends React.Component {
                     </div>
                   }
                 </div>
-
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"brandName"}
@@ -291,14 +308,13 @@ class NewBrandTemplate extends React.Component {
                       error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
                   </div>
                 </div>
-
                 <div className="row">
                   <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
-                        {this.state.form.undertaking.label}
+                        {this.state.form.undertaking.label}<a href="#" target="#blank">Terms Of Use.</a>
                       </label>
                     </div>
                   </div>

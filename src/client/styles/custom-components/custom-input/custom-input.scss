@@ -81,6 +81,7 @@ $dropdown-select-background: rgb(178, 216, 237);
     right: 5px;
     top: 5px;
     height: 24px;
+    z-index: 10;
   }
 
   .dropdown-menu{
@@ -132,6 +133,12 @@ $dropdown-select-background: rgb(178, 216, 237);
     }
   }
 
+  &.field-loader {
+    .custom-input-element {
+      padding-right: 2.7rem;
+    }
+  }
+
   .custom-input-label{
     @include custom-label-css();
 
@@ -174,6 +181,11 @@ $dropdown-select-background: rgb(178, 216, 237);
     font-size: 14px;
     padding-left: 20px;
     border : 1px solid $input-border;
+
+    &[type="multiselect"] {
+      padding-right: 1.5rem;
+    }
+    
     &.custom-input-element-textarea {
       height: unset;
     }

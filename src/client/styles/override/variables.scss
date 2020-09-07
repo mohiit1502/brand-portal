@@ -10,7 +10,8 @@ $black: #081C3A;
 $blue : #007DC6;
 $left-nav-width : 230px;
 $nav-max-height : 61px;
-$loader-size: 28px;
+$loader-size: 5rem;
+$size-max: 100%;
 $theme-colors: (
   "navy-blue" : $navy-blue,
   "blue" : $blue
@@ -21,8 +22,4 @@ $theme-colors: (
 */
 
 
-
-
-
-
-@import "../../../../node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";

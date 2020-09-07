@@ -10,7 +10,7 @@ $nav-max-height : 61px;
   max-height: $nav-max-height;
   .walmart-brand{
     img {
-      width: 10.75rem;
+      width: 8.75rem;
     }
   }
   .navbar-collapsible-header{
@@ -24,6 +24,13 @@ $nav-max-height : 61px;
           border : 1px solid $blue;
           padding: 6px 25px;
           @extend .py-1;
+
+          &.disabled {
+            pointer-events: none;
+            background: #B2D8ED;
+            border-color: #B2D8ED;
+            color: white;
+          }
 
           &:hover {
             background: $blue;

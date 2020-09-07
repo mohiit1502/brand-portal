@@ -40,7 +40,7 @@ class LoginHeader extends React.Component {
               <a className="nav-link" href="#LoginFAQ" onClick={this.scrollAction}>FAQ</a>
             </li>
             <li className="nav-item ml-4 d-flex align-items-center">
-              <a className="nav-link btn login-btn" href={this.state.loginRedirectLink}>Login</a>
+              <a className="nav-link btn login-btn" href={this.state.loginRedirectLink} onClick={() => $("a.nav-link.btn.login-btn").addClass("disabled")}>Login</a>
             </li>
           </ul>
         </div>

@@ -212,8 +212,13 @@ const CONSTANTS = {
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
     EMAILERROR: "Please enter a valid Email ID.",
-    PHONEERROR: "Plase enter a valid phone number."
-  }
+    PHONEERROR: "Plase enter a valid phone number.",
+    CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
+    REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
+  },
+
+  POPOVERSELECTOR: "tutorialPopover",
+  APIDEBOUNCETIMEOUT: 800
 };
 
 export default CONSTANTS;

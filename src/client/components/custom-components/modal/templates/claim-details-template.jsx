@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-nested-ternary */
 import React from "react";
 import {connect} from "react-redux";
@@ -12,25 +13,55 @@ class ClaimDetailsTemplate extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      loader: false
+    };
   }
 
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
+  }
+
+  // eslint-disable-next-line complexity
   render() {
-    const firstName = this.props.data.firstName ? helper.toCamelCaseIndividual(this.props.data.firstName) : "";
-    const lastName = this.props.data.lastName ? helper.toCamelCaseIndividual(this.props.data.lastName) : "";
+    let firstName = "";
+    let lastName = "";
+    let reformattedItems = [];
     const dataLoaded = this.props.data && Object.keys(this.props.data).length > 0;
+
+    if (this.props.data) {
+      this.state.loader && this.loader(false);
+      firstName = this.props.data.firstName && helper.toCamelCaseIndividual(this.props.data.firstName);
+      lastName = this.props.data.lastName && helper.toCamelCaseIndividual(this.props.data.lastName);
+      reformattedItems = this.props.data.items && this.props.data.items;
+      // this.props.data.items && this.props.data.items.map(item => {
+      //   if (item.sellerName.includes(",")) {
+      //     const sellers = item.sellerName.split(",");
+      //     sellers.forEach(seller => reformattedItems.push({...item, sellerName: seller}));
+      //   } else {
+      //     reformattedItems.push({...item});
+      //   }
+      // });
+    } else {
+      !this.state.loader && this.loader(true);
+    }
     // const brandName = this.props.data.brandName ? helper.toCamelCaseEach(this.props.data.brandName) : "";
 
     return (
       <div className="modal claim-details-modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
           <div className="modal-content">
-            <div className="modal-header align-items-center px-5">
+            <div className="modal-header align-items-center px-4">
               Claim Details
               <button type="button" className="close text-white" aria-label="Close" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body text-left px-5" style={{minHeight: "25rem"}}>
+            <div className={`modal-body pl-4 pr-4 text-left px-5${this.state.loader && " loader"}`} style={{minHeight: "25rem"}}>
             {dataLoaded ?
               !this.props.data.error ?
               (
@@ -67,7 +98,7 @@ class ClaimDetailsTemplate extends React.Component {
                   <div className="row justify-content-center items-row mt-4">
                     <div className="col">
                       <div className="row item-header-row py-2">
-                        <div className="col-3 pl-4">
+                        <div className="col-3">
                           REPORTED SELLER
                         </div>
                         <div className="col-9">
@@ -77,10 +108,10 @@ class ClaimDetailsTemplate extends React.Component {
                       <div className="row item-data-container">
                         <div className="col">
                           {
-                            this.props.data.items && this.props.data.items.map((item, i) => {
+                            reformattedItems.map((item, i) => {
                               return (
                                 <div key={i} className="row item-data-row align-items-center">
-                                  <div className="col-3 pl-4 text-capitalize">
+                                  <div className="col-3 text-capitalize">
                                     {item.sellerName}
                                   </div>
                                   <div className="col-9">

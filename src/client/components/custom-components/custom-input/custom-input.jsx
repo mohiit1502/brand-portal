@@ -187,6 +187,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
+        <img src={ArrowDown} className="dropdown-arrow"/>
         <small className={`form-text custom-input-help-text ${subtitleClass}`}>
           { subtitleText }
         </small>
@@ -257,7 +258,7 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
+      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}${this.props.loader && " field-loader"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.props.maxLength}
@@ -316,6 +317,7 @@ CustomInput.propTypes = {
   inputId: PropTypes.string,
   key: PropTypes.string,
   label: PropTypes.string,
+  loader: PropTypes.bool,
   maxLength: PropTypes.number,
   onBlurEvent: PropTypes.func,
   onChangeEvent: PropTypes.func,

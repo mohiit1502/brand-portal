@@ -118,15 +118,55 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   filter: grayscale(100%) brightness(100);
 }
 
+.loader {
+  position: relative;
+}
+
 .loader:before {
   display: block;
-  content: ' ';
-  top: calc(50% - #{$loader-size}/2);
-  left: calc(50% - #{$loader-size}/2);
-  background-image: url("./../images/Spinner.svg");
-  background-size: #{$loader-size} #{$loader-size};
-  height: #{$loader-size};
-  width: #{$loader-size};
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  background-image: url("./../images/Spinner Transparent BG.svg");
+  background-size: #{$loader-size};
+  background-repeat: no-repeat;
+  background-position: center;
+  height: $size-max;
+  width: $size-max;
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+  z-index: 1050;
+}
+
+.loader:after {
+  content: "";
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  z-index: 1040;
+}
+
+.field-loader {
+  position: relative;
+}
+
+.field-loader:before {
+  display: block;
+    content: "";
+    position: absolute;
+    top: 0.7rem;
+    right: 0rem;
+    width: 40px;
+    height: 40px;
+    background-image: url("./../images/field-loader.svg");
+    background-repeat: no-repeat;
+    z-index: 10;
 }
 
 .show {
@@ -135,6 +175,35 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .hide {
   display: none;
+}
+
+@-webkit-keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 /*
 ** Generic Classes End

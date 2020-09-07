@@ -1,4 +1,6 @@
-import React from "react";
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-console */
+import React, {useState} from "react";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
@@ -9,14 +11,22 @@ import Http from "../../../../utility/Http";
 
 const ClaimListTable = function(props) {
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
+  const [loader, setLoader] = useState(false);
 
   const showClaimDetails = async function (row) {
-    props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
-    const ticketId = row.original && row.original.ticketId;
-    const claimDetailsUrl = `/api/claims/${ticketId}`;
-    const response = (await Http.get(claimDetailsUrl)).body;
-    const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
-    props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    // props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
+    setLoader(true);
+    try {
+      const ticketId = row.original && row.original.ticketId;
+      const claimDetailsUrl = `/api/claims/${ticketId}`;
+      const response = (await Http.get(claimDetailsUrl)).body;
+      const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
+      props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    } catch (e) {
+      // eslint-disable-next-line no-undef
+      console.log(e);
+    }
+    setLoader(false);
   };
 
   const classColMap = {
@@ -26,7 +36,7 @@ const ClaimListTable = function(props) {
   };
 
   return (
-    <div className="table-responsive">
+    <div className={`table-responsive${loader && " loader"}`}>
       <div className="custom-table">
 
         <div className="table-header">
