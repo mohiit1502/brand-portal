@@ -53,7 +53,7 @@ class NewBrandTemplate extends React.Component {
             onBlurEvent: e => {
               this.setState(state => {
                 state = {...state};
-                // state.form.inputData.brandName.error = "Brand Name is not Unique";
+                // state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
                 state.form.inputData.brandName.isUnique = false;
                 return {
                   ...state
@@ -63,7 +63,7 @@ class NewBrandTemplate extends React.Component {
                 if (!res.body.unique) {
                   this.setState(state => {
                     state = {...state};
-                    state.form.inputData.brandName.error = "Brand Name is not Unique";
+                    state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
                     state.form.inputData.brandName.isUnique = false;
                     return {
                       ...state
@@ -92,11 +92,12 @@ class NewBrandTemplate extends React.Component {
             subtitle: "",
             error: ""
           }
-        },
-        undertaking: {
-          selected: false,
-          label: "I have read and agree to the Terms Of Use."
         }
+        // },
+        // undertaking: {
+        //   selected: false,
+        //   label: "I have read and agree to the Brand Portal Terms of Use."
+        // }
       }
     };
   }

@@ -345,39 +345,6 @@ class UserManagerApi {
     }
   }
 
-  async loginStaticUser() {
-    try {
-      const headers = {
-        "WM_SVC.NAME": "platform-iam-server",
-        "WM_SVC.ENV": "stg",
-        "WM_CONSUMER.ID":	"c57c1b08-77a7-48bc-9789-f7176fa1e454",
-        "WM_QOS.CORRELATION_ID":	"SOMECORRELATIONID",
-        "WM_SVC.VERSION":	"1.0.0",
-        "WM_CONSUMER.NAME": "seller-portal-app"
-      };
-      const options = {
-        headers
-      };
-
-      const payload = {
-        payload: {
-          password: "Password@1234",
-          realmId: "62b2aca3-dd67-4c05-9089-e7e538bb36e0",
-          tenantId: "YumaSupplierExperience_ROOT",
-          userId: " administratornew@cocacola.com"
-        }
-      };
-
-      const url = "https://stg.iam.platform.prod.walmart.com/platform-iam-server/iam/authnService";
-
-      const response = await ServerHttp.post(url, options, payload);
-      return response.body;
-    } catch (e) {
-      throw e;
-    }
-
-  }
-
   async loginSuccessRedirect (request, h) {
     try {
       const query = request.query;

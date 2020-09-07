@@ -40,7 +40,7 @@ class BrandRegistration extends React.Component {
             pattern: null,
             disabled: false,
             isValid: false,
-            subtitle: "Please input the correct number associated with your company trademark. Only USPTO registered trademarks will be accepted.",
+            subtitle: "Please input the trademark registration number. Only USPTO registered trademarks are accepted.",
             error: "",
             onBlurEvent: this.checkTrademarkValidity
           },
@@ -57,7 +57,7 @@ class BrandRegistration extends React.Component {
             onBlurEvent: e => {
               this.setState(state => {
                 state = {...state};
-                // state.form.inputData.brandName.error = "Brand Name is not Unique";
+                // state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
                 state.form.inputData.brandName.isUnique = false;
                 return {
                   ...state
@@ -67,7 +67,7 @@ class BrandRegistration extends React.Component {
                 if (!res.body.unique) {
                   this.setState(state => {
                     state = {...state};
-                    state.form.inputData.brandName.error = "Brand Name is not Unique";
+                    state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
                     state.form.inputData.brandName.isUnique = false;
                     return {
                       ...state
@@ -99,7 +99,7 @@ class BrandRegistration extends React.Component {
         },
         undertaking: {
           selected: false,
-          label: "I have read and agree to the Terms Of Use."
+          label: "I have read and agree to the Brand Portal Terms of Use."
         }
       }
     };
@@ -215,14 +215,14 @@ class BrandRegistration extends React.Component {
               <div className="row">
                 <div className="col">
                   <div className="company-registration-title">
-                    Thank you for sharing your company info.
+                    Thank you for sharing your company information.
                   </div>
                 </div>
               </div>
               <div className="row">
                 <div className="col">
                   <div className="company-registration-subtitle">
-                    Now tell us about your brand
+                    Now please tell us about your brand. If you own multiple brands, please choose one example brand under your company for sign-up purposes.
                   </div>
                 </div>
               </div>
