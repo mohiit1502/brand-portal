@@ -15,7 +15,7 @@ class NewBrandTemplate extends React.Component {
     super(props);
     this.onInputChange = this.onInputChange.bind(this);
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
-    this.undertakingtoggle = this.undertakingtoggle.bind(this);
+    // this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
@@ -161,20 +161,20 @@ class NewBrandTemplate extends React.Component {
     const form = {...this.state.form};
     const bool = (form.isUpdateTemplate || form.inputData.trademarkNumber.isValid)  &&
       form.inputData.trademarkNumber.value && form.inputData.brandName.value &&
-      (form.isUpdateTemplate || form.inputData.brandName.isUnique) &&
-      form.undertaking.selected;
+      (form.isUpdateTemplate || form.inputData.brandName.isUnique);
+      // && form.undertaking.selected;
 
     form.isSubmitDisabled = !bool;
     this.setState({form});
   }
 
-  undertakingtoggle () {
-    const state = {...this.state};
-    state.form.undertaking.selected = !state.form.undertaking.selected;
-    this.setState({
-      ...state
-    }, this.checkToEnableSubmit);
-  }
+  // undertakingtoggle () {
+  //   const state = {...this.state};
+  //   state.form.undertaking.selected = !state.form.undertaking.selected;
+  //   this.setState({
+  //     ...state
+  //   }, this.checkToEnableSubmit);
+  // }
 
   async checkTrademarkValidity () {
     try {
@@ -308,7 +308,7 @@ class NewBrandTemplate extends React.Component {
                       error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
                   </div>
                 </div>
-                <div className="row">
+                {/* {this.state.form.undertaking && <div className="row">
                   <div className="col">
                     <div className="form-check">
                       <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
@@ -318,7 +318,7 @@ class NewBrandTemplate extends React.Component {
                       </label>
                     </div>
                   </div>
-                </div>
+                </div>} */}
                 <div className="row mt-3">
                   <div className="col text-right">
                     <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
