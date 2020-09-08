@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 import walmartLogo from "../../../images/wm-white-logo.png";
 import PropTypes from "prop-types";
-import "../../../styles/custom-components/headers/home-header.scss";
 import CONSTANTS from "../../../constants/constants";
+// import * as images from "./../../../images/index";
+import "../../../styles/custom-components/headers/home-header.scss";
 
 class HomeHeader extends React.Component {
   constructor (props) {
@@ -20,6 +21,7 @@ class HomeHeader extends React.Component {
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <a className="navbar-brand walmart-brand" href="#">
           <img src={walmartLogo} />
+          {/* <img src={images.WMWhite} /> */}
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
           aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">

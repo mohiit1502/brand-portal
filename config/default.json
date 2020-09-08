@@ -44,7 +44,7 @@
       "root": {
         "profiles": {
           "default": {
-            "environment": "prod"
+            "environment": "stg"
           }
         },
         "data": {
@@ -72,9 +72,9 @@
             "serviceName": "ropro-brandportal",
             "+configNames": ["HEALTH_CONFIG"]
           },
-          "HELP_CONFIG": {
+          "CONTENT_CONFIG": {
             "serviceName": "ropro-brandportal",
-            "+configNames": ["HELP_CONFIG"]
+            "+configNames": ["CONTENT_CONFIG"]
           }
         }
       }
@@ -101,6 +101,9 @@
     },
     "claim-manager-api": {
       "module": "./{{env.APP_SRC_DIR}}/server/plugins/claim/claim-manager-api"
+    },
+    "content-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/content/content-manager-api"
     },
     "webapp": {
       "module": "@walmart/electrode-index-page",
