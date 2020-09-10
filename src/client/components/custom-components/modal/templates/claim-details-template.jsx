@@ -32,6 +32,14 @@ class ClaimDetailsTemplate extends React.Component {
     let lastName = "";
     let reformattedItems = [];
     const dataLoaded = this.props.data && Object.keys(this.props.data).length > 0;
+    // const statusDetailsMap = {
+    //   Submitted: "Your claim was submitted, and is pending review.",
+    //   "Work in Progress": "Your claim is currently under review.",
+    //   // Closed: "Your claim is closed. The claim details were shared by email to Reporter@email.com"
+    //   Closed: "Your claim has been closed."
+    // };
+
+    // const statusDetails = this.props.data && this.props.data.claimStatus && statusDetailsMap[this.props.data.claimStatus];
 
     if (this.props.data) {
       this.state.loader && this.loader(false);

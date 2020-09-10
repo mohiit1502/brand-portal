@@ -1,12 +1,14 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
-import CONSTANTS from "../../constants/server-constants";
+import CONSTANTS, {CONSTANTS as VARS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
 import ServerUtils from "../../utility/server-utils";
-// const fs = require("fs");
 
+const secrets = require(VARS.PATH);
+const ttl = 12 * 60 * 60 * 1000;
 
 class UserManagerApi {
 
@@ -342,37 +344,24 @@ class UserManagerApi {
   async loginSuccessRedirect (request, h) {
     try {
       const query = request.query;
-      const ttl = 12 * 60 * 60 * 1000;
-      // let secrets = fs.readFileSync("/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets/secrets.json", {encoding: "utf8", flag: "r"});
-      // secrets = secrets ? JSON.parse(secrets) : {};
       // eslint-disable-next-line camelcase
       if (!query.code) {
         return h.redirect("/api/falcon/login");
       }
       const {id_token} = await this.getAccessToken(request, query.code);
-      // const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
-      const user = await ServerUtils.decryptToken(id_token);
+      const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
+      // const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
 
-      h.state("auth_session_token", authToken, {
-        ttl,
-        isSecure: false,
-        isHttpOnly: false
-      });
-      h.state("session_token_login_id", loginId, {
-        ttl,
-        isSecure: false,
-        isHttpOnly: false
-      });
-
+      h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false});
+      h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false});
 
       return h.redirect("/");
     } catch (err) {
-      console.error("got error in authroziation: ", err);
+      console.error("got error in authorization: ", err);
       throw err;
     }
-
   }
 
   async logout(request, h) {
@@ -408,32 +397,28 @@ class UserManagerApi {
   async getAccessToken(request, authorizationCode) {
     try {
       const IAM = request.app.ccmGet("IAM");
-      // const secrets = fs.readFileSync("/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets");
-      // console.log(secrets);
-      const url = IAM.IAM_TOKEN_URL;
-      const clientId = IAM.CLIENT_ID;
-      const clientSecret = IAM.CLIENT_SECRET;
-      const encoding = IAM.ENCODING;
-
+      const url = secrets.IAM_TOKEN_URL;
+      const clientId = secrets.CLIENT_ID;
+      const clientSecret = secrets.CLIENT_SECRET;
+      const encoding = secrets.ENCODING;
       const payload =   {
         code: authorizationCode,
-        redirect_uri: CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH,
-        grant_type: IAM.GRANT_TYPE
+        // redirect_uri: CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH,
+        redirect_uri: IAM.BASE_URL + IAM.REDIRECT_PATH,
+        grant_type: secrets.GRANT_TYPE
       };
 
       const base64 = Buffer.from(`${clientId}:${clientSecret}`).toString(encoding);
       const headers = {
         Authorization: `Basic ${base64}`,
-        "WM_SVC.ENV": IAM["WM_SVC.ENV"],
-        "WM_CONSUMER.ID": IAM["WM_CONSUMER.ID"],
-        "WM_QOS.CORRELATION_ID": IAM["WM_QOS.CORRELATION_ID"],
-        "WM_SVC.NAME": IAM["WM_SVC.NAME"],
-        "WM_SVC.VERSION": IAM["WM_SVC.VERSION"],
-        "WM_CONSUMER.NAME": IAM["WM_CONSUMER.NAME"]
+        "WM_SVC.ENV": secrets["WM_SVC.ENV"],
+        "WM_CONSUMER.ID": secrets["WM_CONSUMER.ID"],
+        "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(VARS.CORRELATION_ID_LENGTH).toUpperCase(),
+        "WM_SVC.NAME": secrets["WM_SVC.NAME"],
+        "WM_SVC.VERSION": secrets["WM_SVC.VERSION"],
+        "WM_CONSUMER.NAME": secrets["WM_CONSUMER.NAME"]
       };
-      const options = {
-        headers
-      };
+      const options = {headers};
 
       const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
       return response.body;

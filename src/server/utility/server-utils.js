@@ -1,5 +1,6 @@
 import nj from "node-jose";
-import CONSTANTS from "../constants/server-constants";
+import {CONSTANTS} from "../constants/server-constants";
+const secrets = require(CONSTANTS.PATH);
 
 class ServerUtils {
 
@@ -14,7 +15,7 @@ class ServerUtils {
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"temp-client-id",
-      ROPRO_CORRELATION_ID: this.randomStringGenerator(16)
+      ROPRO_CORRELATION_ID: this.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
     };
   }
 
@@ -29,9 +30,10 @@ class ServerUtils {
     return random.join("");
   }
 
-  decryptToken(idToken) {
+  decryptToken(idToken, idTokenEncryptionKey) {
 
-    const falconSSOTokenKey = JSON.parse(CONSTANTS.IAM.IdTokenEncryptionKey);
+    // const falconSSOTokenKey = JSON.parse(CONSTANTS.IAM.IdTokenEncryptionKey);
+    const falconSSOTokenKey = JSON.parse(idTokenEncryptionKey);
     const keystore = nj.JWK.createKeyStore();
     let jwtt;
     let obj = null;
@@ -43,7 +45,7 @@ class ServerUtils {
             const { payload: bufferArray } = result;
             jwtt = String.fromCharCode(...[...bufferArray]);
             const payload = jwtt.split(".")[1];
-            const decodedData = Buffer(payload, CONSTANTS.IAM.ENCODING).toString();
+            const decodedData = Buffer(payload, secrets.ENCODING).toString();
             obj = JSON.parse(decodedData);
             return resolve(obj);
           });

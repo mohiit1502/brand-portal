@@ -105,6 +105,8 @@ class UserList extends React.Component {
                 .then(res => {
                   if (res.body === true) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
+                  } else if (res.body === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+                    this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} is not invited, as the user has already been activated.`);
                   } else {
                     this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
                   }
