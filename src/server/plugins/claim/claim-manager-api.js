@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import ServerHttp from "../../utility/ServerHttp";
-import {CONSTANTS, IQS_URL} from "./../../constants/server-constants";
+import {CONSTANTS} from "./../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
+const secrets = require(CONSTANTS.PATH);
 
 class ClaimManagerApi {
   constructor() {
@@ -56,7 +57,7 @@ class ClaimManagerApi {
     return {
       "WM_SVC.VERSION": "0.0.1",
       "WM_SVC.NAME": "item-setup-query-service-app",
-      "WM_QOS.CORRELATION_ID": "abcd",
+      "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH),
       "WM_SVC.ENV": "prod",
       "WM_CONSUMER.ID": "6aa8057e-8795-450a-b349-4ba99b633d2e",
       Accept: "application/json"
@@ -75,12 +76,11 @@ class ClaimManagerApi {
       const options = {
         headers
       };
-      let url = request.app.ccmGet("IQS_CONFIG.IQS_URL");
+      // let url = request.app.ccmGet("IQS_CONFIG.IQS_URL");
+      let url = secrets.IQS_URL;
       url = url.replace("__itemId__", request.query.payload);
 
-      console.log("Making IQS API call to: ", url);
       const response = await ServerHttp.get(url, options);
-      console.log("Response in ClaimsManagerApi.getSellers ==> from IQS: ", response);
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         responseBody = this.parseSellersFromResponse(response.body);
