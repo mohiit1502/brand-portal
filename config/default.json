@@ -44,7 +44,7 @@
       "root": {
         "profiles": {
           "default": {
-            "environment": "stg"
+            "environment": "prod"
           }
         },
         "data": {
