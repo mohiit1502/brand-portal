@@ -11,6 +11,7 @@ import {CustomInterval} from "../../../utility/timer-utils";
 import ProgressBar from "../../custom-components/progress-bar/progress-bar";
 import CONSTANTS from "../../../constants/constants";
 import Tooltip from "../../custom-components/tooltip/tooltip";
+import Helper from "../../../utility/helper";
 import infoIcon from "../../../images/question.svg";
 import "../../../styles/onboard/content-renderer-onboarding/company-profile-registration.scss";
 
@@ -29,6 +30,7 @@ class CompanyProfileRegistration extends React.Component {
     this.cancelDocumentSelection = this.cancelDocumentSelection.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.onInvalidHandler = this.onInvalidHandler.bind(this);
+    this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.invalid = {zip: false};
 
     this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
