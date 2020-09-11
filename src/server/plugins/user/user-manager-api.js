@@ -3,11 +3,11 @@
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
-import CONSTANTS, {CONSTANTS as VARS} from "../../constants/server-constants";
+import {CONSTANTS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
 import ServerUtils from "../../utility/server-utils";
 
-const secrets = require(VARS.PATH);
+const secrets = require(CONSTANTS.PATH);
 const ttl = 12 * 60 * 60 * 1000;
 
 class UserManagerApi {
@@ -403,8 +403,8 @@ class UserManagerApi {
       const encoding = secrets.ENCODING;
       const payload =   {
         code: authorizationCode,
-        // redirect_uri: CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH,
-        redirect_uri: IAM.BASE_URL + IAM.REDIRECT_PATH,
+        redirect_uri: `${process.env.NODE_ENV === "development" ? CONSTANTS.BASE_URL : IAM.BASE_URL}${IAM.REDIRECT_PATH}`,
+        // redirect_uri: IAM.BASE_URL + IAM.REDIRECT_PATH,
         grant_type: secrets.GRANT_TYPE
       };
 
@@ -413,7 +413,7 @@ class UserManagerApi {
         Authorization: `Basic ${base64}`,
         "WM_SVC.ENV": secrets["WM_SVC.ENV"],
         "WM_CONSUMER.ID": secrets["WM_CONSUMER.ID"],
-        "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(VARS.CORRELATION_ID_LENGTH).toUpperCase(),
+        "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH).toUpperCase(),
         "WM_SVC.NAME": secrets["WM_SVC.NAME"],
         "WM_SVC.VERSION": secrets["WM_SVC.VERSION"],
         "WM_CONSUMER.NAME": secrets["WM_CONSUMER.NAME"]
