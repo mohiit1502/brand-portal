@@ -9,6 +9,7 @@ import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
 import CONSTANTS from "../../../../constants/constants";
 import InputFormatter from "./../../../../utility/phoneOps";
+import Helper from "../../../../utility/helper";
 import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
 
 class CreateUserTemplate extends React.Component {
@@ -23,6 +24,7 @@ class CreateUserTemplate extends React.Component {
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
     this.onInvalidHandler = this.onInvalidHandler.bind(this);
+    // this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.invalid = {emailId: false, phone: false};
 
     this.state = {
@@ -43,11 +45,13 @@ class CreateUserTemplate extends React.Component {
             options: [
               {
                 id: 1,
-                value: "Internal"
+                value: "Internal",
+                label: "Internal"
               },
               {
                 id: 2,
-                value: "3rd Party"
+                value: "ThirdParty",
+                label: "3rd Party"
               }
             ],
             disabled: false
@@ -193,6 +197,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.lastName.value = data.lastName;
     form.inputData.emailId.value = data.email;
     form.inputData.emailId.disabled = true;
+    form.inputData.phone.value = data.phoneNumber;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
     form.templateUpdateComplete = true;
