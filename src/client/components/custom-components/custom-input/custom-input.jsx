@@ -225,7 +225,7 @@ class CustomInput extends React.Component {
                   className="custom-control-input" value={option.value} checked={this.props.value === option.value}
                   onChange={ e => { this.onInputChange(e, this.state.inputId); }}/>
                 <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
-                  {option.value}
+                  {option.label || option.value}
                 </label>
               </div>
             );
