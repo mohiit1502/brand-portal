@@ -37,6 +37,10 @@ const routes = [
         component: Authenticator
       },
       {
+        path: "/user-management",
+        component: () => <Redirect to="/users/user-list" />
+      },
+      {
         path: "/*",
         component: () => <Redirect to="/" />
       }
