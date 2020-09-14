@@ -120,7 +120,7 @@ class CustomInput extends React.Component {
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
@@ -188,7 +188,7 @@ class CustomInput extends React.Component {
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
@@ -269,7 +269,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
       </div>
@@ -329,6 +329,7 @@ CustomInput.propTypes = {
   rowCount: PropTypes.number,
   subtitle: PropTypes.string,
   type: PropTypes.string,
+  unpadSubtitle: PropTypes.bool,
   value: [
     PropTypes.string,
     PropTypes.object

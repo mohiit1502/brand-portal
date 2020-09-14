@@ -123,7 +123,7 @@ export default class InputFormatter {
     };
 
     const keydownHandler = event => {
-      if ((event.which < 48 || event.which > 57) && event.which !== 8) {
+      if ((event.which < 48 || event.which > 57) && event.which !== 8 && event.which !== 9 && event.which !== 16) {
         event.preventDefault();
       }
       const digitChars = this.getDigitChars(event.target);

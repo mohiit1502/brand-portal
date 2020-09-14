@@ -7,6 +7,8 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import Helper from "../../../../utility/helper";
+import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 
 class NewBrandTemplate extends React.Component {
@@ -19,9 +21,11 @@ class NewBrandTemplate extends React.Component {
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
-
+    this.onBrandChange = this.onBrandChange.bind(this);
+    this.brandDebounce = Helper.debounce(this.onBrandChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.state = {
       loader: false,
+      fieldLoader: false,
       form: {
         isSubmitDisabled: true,
         isUpdateTemplate: false,
@@ -52,35 +56,7 @@ class NewBrandTemplate extends React.Component {
             error: "",
             isUnique: false,
             onBlurEvent: e => {
-              this.setState(state => {
-                state = {...state};
-                // state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
-                state.form.inputData.brandName.isUnique = false;
-                return {
-                  ...state
-                };
-              }, this.checkToEnableSubmit);
-              Http.get("/api/brands/checkUnique", {brandName: e.target.value}).then(res => {
-                if (!res.body.unique) {
-                  this.setState(state => {
-                    state = {...state};
-                    state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
-                    state.form.inputData.brandName.isUnique = false;
-                    return {
-                      ...state
-                    };
-                  }, this.checkToEnableSubmit);
-                } else {
-                  this.setState(state => {
-                    state = {...state};
-                    state.form.inputData.brandName.error = "";
-                    state.form.inputData.brandName.isUnique = true;
-                    return {
-                      ...state
-                    };
-                  }, this.checkToEnableSubmit);
-                }
-              });
+              
             }
           },
           comments: {
@@ -103,10 +79,10 @@ class NewBrandTemplate extends React.Component {
     };
   }
 
-  loader (enable) {
+  loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
-      stateClone.loader = enable;
+      stateClone[type] = enable;
       return stateClone;
     });
   }
@@ -115,13 +91,6 @@ class NewBrandTemplate extends React.Component {
     if (this.props.data && !this.state.form.templateUpdateComplete) {
       this.prepopulateInputFields(this.props.data);
     }
-  }
-
-  componentDidUpdate(prevProps) {
-
-    // if (this.props.data && this.props.data !== prevProps.data && !this.state.form.templateUpdateComplete) {
-    //   this.prepopulateInputFields(this.props.data);
-    // }
   }
 
   prepopulateInputFields (data) {
@@ -148,13 +117,46 @@ class NewBrandTemplate extends React.Component {
         if (key === "trademarkNumber") {
           state.form.inputData[key].isValid = false;
         }
+        if (key === "brandName") {
+          state.form.inputData.brandName.isUnique = false;
+          state.form.inputData.brandName.error = "";
+        }
         state = {...state};
         state.form.inputData[key].value = targetVal;
         return {
           ...state
         };
       }, this.checkToEnableSubmit);
+      if (key === "brandName") {
+        evt.persist();
+        this.brandDebounce(evt);
+      }
     }
+  }
+
+  onBrandChange(e) {
+    this.loader("fieldLoader", true);
+    Http.get("/api/brands/checkUnique", {brandName: e.target.value}).then(res => {
+      this.loader("fieldLoader", false);
+      let error;
+      let isUnique;
+      if (!res.body.unique) {
+        error = "This brand is already registered in Brand Portal.";
+        isUnique = false;
+      } else {
+        error = "";
+        isUnique = true;
+      }
+      this.setState(state => {
+        state = {...state};
+        state.form.inputData.brandName.error = error;
+        state.form.inputData.brandName.isUnique = isUnique;
+        return {
+          ...state
+        };
+      }, this.checkToEnableSubmit);
+    })
+    .catch(err => this.loader("fieldLoader", false));
   }
 
   checkToEnableSubmit() {
@@ -211,31 +213,31 @@ class NewBrandTemplate extends React.Component {
     const url = "/api/brands";
 
     if (this.state.form.isUpdateTemplate) {
-      this.loader(true);
+      this.loader("loader", true);
       return Http.put(`${url}/${this.props.data.brandId}`, {comments})
         .then(res => {
           this.resetTemplateStatus();
           this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
-          this.loader(false);
+          this.loader("loader", false);
         })
         .catch(err => {
-          this.loader(false);
+          this.loader("loader", false);
           console.log(err);
         });
     } else {
-      this.loader(true);
+      this.loader("loader", true);
       return Http.post(url, payload)
         .then(res => {
           this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.request.name}’ added to your brand portfolio`);
           this.resetTemplateStatus();
           this.props.saveBrandInitiated();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-          this.loader(false);
+          this.loader("loader", false);
         })
         .catch(err => {
-          this.loader(false);
+          this.loader("loader", false);
           console.log(err);
         });
     }
@@ -293,7 +295,7 @@ class NewBrandTemplate extends React.Component {
                       formId={this.state.form.id} label={this.state.form.inputData.brandName.label}
                       required={this.state.form.inputData.brandName.required} value={this.state.form.inputData.brandName.value}
                       type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern} onChangeEvent={this.onInputChange}
-                      onBlurEvent={this.state.form.inputData.brandName.onBlurEvent} disabled={this.state.form.inputData.brandName.disabled}
+                      disabled={this.state.form.inputData.brandName.disabled} loader={this.state.fieldLoader}
                       error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
                   </div>
                 </div>
