@@ -26,6 +26,7 @@ class NewBrandTemplate extends React.Component {
     this.state = {
       loader: false,
       fieldLoader: false,
+      checkLoader: false,
       form: {
         isSubmitDisabled: true,
         isUpdateTemplate: false,
@@ -178,25 +179,37 @@ class NewBrandTemplate extends React.Component {
   //   }, this.checkToEnableSubmit);
   // }
 
+  // eslint-disable-next-line max-statements
   async checkTrademarkValidity () {
     try {
       if (!this.state.form.inputData.trademarkNumber.value) {
         return;
       }
+      this.setState(state => {
+        state = {...state};
+        state.checkLoader = true;
+        return state;
+      });
       const response = (await Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`)).body;
       if (!response.valid) {
         throw {error: `${response.ipNumber} is not a valid Trademark Number.`};
       }
-      const form = {...this.state.form};
+      const state = {...this.state};
+      const form = {...state.form};
+      state.form = form;
       form.inputData.trademarkNumber.isValid = true;
+      state.checkLoader = false;
       form.inputData.trademarkNumber.error = "";
-      this.setState({form}, this.checkToEnableSubmit);
+      this.setState(state, this.checkToEnableSubmit);
     } catch (err) {
       console.log(err);
-      const form = {...this.state.form};
+      const state = {...this.state};
+      const form = {...state.form};
+      state.form = form;
       form.inputData.trademarkNumber.isValid = false;
+      state.checkLoader = false;
       form.inputData.trademarkNumber.error = err.error;
-      this.setState({form}, this.checkToEnableSubmit);
+      this.setState(state, this.checkToEnableSubmit);
     }
   }
 
@@ -248,13 +261,15 @@ class NewBrandTemplate extends React.Component {
   }
 
   render() {
+    const form = this.state.form;
+    const inputData = form.inputData;
     return (
       <div className="modal show new-brand-modal" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
-                this.state.form.isUpdateTemplate ? "Edit Brand Details" : "Register a Brand"
+                form.isUpdateTemplate ? "Edit Brand Details" : "Register a Brand"
               }
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
@@ -271,18 +286,18 @@ class NewBrandTemplate extends React.Component {
                   <div className="col-8">
                     <CustomInput key={"trademarkNumber"}
                       inputId={"trademarkNumber"}
-                      formId={this.state.form.id} label={this.state.form.inputData.trademarkNumber.label}
-                      required={this.state.form.inputData.trademarkNumber.required} value={this.state.form.inputData.trademarkNumber.value}
-                      type={this.state.form.inputData.trademarkNumber.type} pattern={this.state.form.inputData.trademarkNumber.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled}
-                      error={this.state.form.inputData.trademarkNumber.error} subtitle={this.state.form.inputData.trademarkNumber.subtitle}/>
+                      formId={form.id} label={inputData.trademarkNumber.label}
+                      required={inputData.trademarkNumber.required} value={inputData.trademarkNumber.value}
+                      type={inputData.trademarkNumber.type} pattern={inputData.trademarkNumber.pattern}
+                      onChangeEvent={this.onInputChange} disabled={inputData.trademarkNumber.disabled}
+                      error={inputData.trademarkNumber.error} subtitle={inputData.trademarkNumber.subtitle}/>
                   </div>
                   {
-                    !this.state.form.isUpdateTemplate && <div className="col-4">
-                      <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid ? "btn-success" : "btn-primary"}`}
+                    !form.isUpdateTemplate && <div className="col-4">
+                      <div className={`btn btn-sm btn-block ${inputData.trademarkNumber.isValid ? "btn-success" : this.state.checkLoader ? "btn-dark loader-small" : "btn-primary"}`}
                         onClick={this.checkTrademarkValidity}>
                         {
-                          this.state.form.inputData.trademarkNumber.isValid ? <React.Fragment><img className="check-green-icon-white-bg" src={CheckGreenIcon} /> &nbsp;&nbsp;Valid </React.Fragment> : "Check"
+                          inputData.trademarkNumber.isValid ? <React.Fragment><img className="check-green-icon-white-bg" src={CheckGreenIcon} /> &nbsp;&nbsp;Valid </React.Fragment> : !this.state.checkLoader && "Check"
                         }
                       </div>
                     </div>
@@ -292,31 +307,31 @@ class NewBrandTemplate extends React.Component {
                   <div className="col">
                     <CustomInput key={"brandName"}
                       inputId={"brandName"}
-                      formId={this.state.form.id} label={this.state.form.inputData.brandName.label}
-                      required={this.state.form.inputData.brandName.required} value={this.state.form.inputData.brandName.value}
-                      type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern} onChangeEvent={this.onInputChange}
-                      disabled={this.state.form.inputData.brandName.disabled} loader={this.state.fieldLoader}
-                      error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
+                      formId={form.id} label={inputData.brandName.label}
+                      required={inputData.brandName.required} value={inputData.brandName.value}
+                      type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.onInputChange}
+                      disabled={inputData.brandName.disabled} loader={this.state.fieldLoader}
+                      error={inputData.brandName.error} subtitle={inputData.brandName.subtitle}/>
                   </div>
                 </div>
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"comments"}
                       inputId={"comments"}
-                      formId={this.state.form.id} label={this.state.form.inputData.comments.label}
-                      required={this.state.form.inputData.comments.required} value={this.state.form.inputData.comments.value}
-                      type={this.state.form.inputData.comments.type} pattern={this.state.form.inputData.comments.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.comments.disabled}
-                      error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
+                      formId={form.id} label={inputData.comments.label}
+                      required={inputData.comments.required} value={inputData.comments.value}
+                      type={inputData.comments.type} pattern={inputData.comments.pattern}
+                      onChangeEvent={this.onInputChange} disabled={inputData.comments.disabled}
+                      error={inputData.comments.error} subtitle={inputData.comments.subtitle}/>
                   </div>
                 </div>
-                {/* {this.state.form.undertaking && <div className="row">
+                {/* {form.undertaking && <div className="row">
                   <div className="col">
                     <div className="form-check">
-                      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
+                      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={form.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
-                        {this.state.form.undertaking.label}<a href="#" target="#blank">Terms Of Use.</a>
+                        {form.undertaking.label}<a href="#" target="#blank">Terms Of Use.</a>
                       </label>
                     </div>
                   </div>
@@ -324,7 +339,7 @@ class NewBrandTemplate extends React.Component {
                 <div className="row mt-3">
                   <div className="col text-right">
                     <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
-                    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.form.isSubmitDisabled}>
+                    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={form.isSubmitDisabled}>
                       Submit
                     </button>
                   </div>
