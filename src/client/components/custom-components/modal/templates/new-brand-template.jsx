@@ -23,9 +23,11 @@ class NewBrandTemplate extends React.Component {
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
     this.onBrandChange = this.onBrandChange.bind(this);
     this.brandDebounce = Helper.debounce(this.onBrandChange, CONSTANTS.APIDEBOUNCETIMEOUT);
+    this.trademarkDebounce = Helper.debounce(this.checkTrademarkValidity, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.state = {
       loader: false,
-      fieldLoader: false,
+      brandFieldLoader: false,
+      trademarkFieldLoader: false,
       checkLoader: false,
       form: {
         isSubmitDisabled: true,
@@ -114,50 +116,53 @@ class NewBrandTemplate extends React.Component {
   onInputChange(evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
+      // if (key === "trademarkNumber" && ((evt.which < 48 || evt.which > 57) && !CONSTANTS.ALLOWED_KEY_CODES.includes(evt.which))) {
+      //   evt.preventDefault();
+      //   return;
+      // }
       this.setState(state => {
         if (key === "trademarkNumber") {
           state.form.inputData[key].isValid = false;
+          state.form.inputData[key].error = "";
+          this.trademarkDebounce();
         }
         if (key === "brandName") {
-          state.form.inputData.brandName.isUnique = false;
-          state.form.inputData.brandName.error = "";
+          state.form.inputData[key].isUnique = false;
+          state.form.inputData[key].error = "";
+          this.brandDebounce();
         }
         state = {...state};
         state.form.inputData[key].value = targetVal;
-        return {
-          ...state
-        };
+        return state;
       }, this.checkToEnableSubmit);
-      if (key === "brandName") {
-        evt.persist();
-        this.brandDebounce(evt);
-      }
     }
   }
 
-  onBrandChange(e) {
-    this.loader("fieldLoader", true);
-    Http.get("/api/brands/checkUnique", {brandName: e.target.value}).then(res => {
-      this.loader("fieldLoader", false);
-      let error;
-      let isUnique;
-      if (!res.body.unique) {
-        error = "This brand is already registered in Brand Portal.";
-        isUnique = false;
-      } else {
-        error = "";
-        isUnique = true;
-      }
-      this.setState(state => {
-        state = {...state};
-        state.form.inputData.brandName.error = error;
-        state.form.inputData.brandName.isUnique = isUnique;
-        return {
-          ...state
-        };
-      }, this.checkToEnableSubmit);
-    })
-    .catch(err => this.loader("fieldLoader", false));
+  onBrandChange() {
+    if (this.state.form.inputData.brandName.value) {
+      this.loader("brandFieldLoader", true);
+      Http.get("/api/brands/checkUnique", {brandName: this.state.form.inputData.brandName.value}).then(res => {
+        this.loader("brandFieldLoader", false);
+        let error;
+        let isUnique;
+        if (!res.body.unique) {
+          error = "This brand is already registered in Brand Portal.";
+          isUnique = false;
+        } else {
+          error = "";
+          isUnique = true;
+        }
+        this.setState(state => {
+          state = {...state};
+          state.form.inputData.brandName.error = error;
+          state.form.inputData.brandName.isUnique = isUnique;
+          return {
+            ...state
+          };
+        }, this.checkToEnableSubmit);
+      })
+      .catch(err => this.loader("brandFieldLoader", false));
+    }
   }
 
   checkToEnableSubmit() {
@@ -181,10 +186,9 @@ class NewBrandTemplate extends React.Component {
 
   // eslint-disable-next-line max-statements
   async checkTrademarkValidity () {
+    if (!this.state.form.inputData.trademarkNumber.value) return;
     try {
-      if (!this.state.form.inputData.trademarkNumber.value) {
-        return;
-      }
+      this.loader("trademarkFieldLoader", true);
       this.setState(state => {
         state = {...state};
         state.checkLoader = true;
@@ -211,6 +215,7 @@ class NewBrandTemplate extends React.Component {
       form.inputData.trademarkNumber.error = err.error;
       this.setState(state, this.checkToEnableSubmit);
     }
+    this.loader("trademarkFieldLoader", false);
   }
 
   async handleSubmit(evt) {
@@ -283,16 +288,13 @@ class NewBrandTemplate extends React.Component {
                   </div>
                 </div>
                 <div className="form-row">
-                  <div className="col-8">
+                  <div className="col">
                     <CustomInput key={"trademarkNumber"}
-                      inputId={"trademarkNumber"}
-                      formId={form.id} label={inputData.trademarkNumber.label}
-                      required={inputData.trademarkNumber.required} value={inputData.trademarkNumber.value}
-                      type={inputData.trademarkNumber.type} pattern={inputData.trademarkNumber.pattern}
-                      onChangeEvent={this.onInputChange} disabled={inputData.trademarkNumber.disabled}
-                      error={inputData.trademarkNumber.error} subtitle={inputData.trademarkNumber.subtitle}/>
+                      inputId={"trademarkNumber"} formId={form.id} label={inputData.trademarkNumber.label} required={inputData.trademarkNumber.required} value={inputData.trademarkNumber.value}
+                      type={inputData.trademarkNumber.type} pattern={inputData.trademarkNumber.pattern} onChangeEvent={this.onInputChange} disabled={inputData.trademarkNumber.disabled}
+                      loader={this.state.trademarkFieldLoader} error={inputData.trademarkNumber.error} subtitle={inputData.trademarkNumber.subtitle}/>
                   </div>
-                  {
+                  {/* {
                     !form.isUpdateTemplate && <div className="col-4">
                       <div className={`btn btn-sm btn-block ${inputData.trademarkNumber.isValid ? "btn-success" : this.state.checkLoader ? "btn-dark loader-small" : "btn-primary"}`}
                         onClick={this.checkTrademarkValidity}>
@@ -301,27 +303,21 @@ class NewBrandTemplate extends React.Component {
                         }
                       </div>
                     </div>
-                  }
+                  } */}
                 </div>
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"brandName"}
-                      inputId={"brandName"}
-                      formId={form.id} label={inputData.brandName.label}
-                      required={inputData.brandName.required} value={inputData.brandName.value}
-                      type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.onInputChange}
-                      disabled={inputData.brandName.disabled} loader={this.state.fieldLoader}
-                      error={inputData.brandName.error} subtitle={inputData.brandName.subtitle}/>
+                      inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required} value={inputData.brandName.value}
+                      type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.onInputChange} disabled={inputData.brandName.disabled}
+                      loader={this.state.brandFieldLoader} error={inputData.brandName.error} subtitle={inputData.brandName.subtitle}/>
                   </div>
                 </div>
                 <div className="form-row">
                   <div className="col">
                     <CustomInput key={"comments"}
-                      inputId={"comments"}
-                      formId={form.id} label={inputData.comments.label}
-                      required={inputData.comments.required} value={inputData.comments.value}
-                      type={inputData.comments.type} pattern={inputData.comments.pattern}
-                      onChangeEvent={this.onInputChange} disabled={inputData.comments.disabled}
+                      inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required} value={inputData.comments.value}
+                      type={inputData.comments.type} pattern={inputData.comments.pattern} onChangeEvent={this.onInputChange} disabled={inputData.comments.disabled}
                       error={inputData.comments.error} subtitle={inputData.comments.subtitle}/>
                   </div>
                 </div>

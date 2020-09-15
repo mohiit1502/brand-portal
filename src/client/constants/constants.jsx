@@ -1,7 +1,7 @@
 const CONSTANTS = {
 
   URL: {
-    LOGOUT: "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
+    LOGOUT: "https://retaillink.login.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
     LOGIN_REDIRECT: "/api/falcon/login",
     REGISTER_REDIRECT: "/api/falcon/register",
     DOMAIN: {
@@ -211,8 +211,8 @@ const CONSTANTS = {
     EMAIL: "\\S+@\\S+\.\\S+",
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
-    EMAILERROR: "Please enter a valid Email ID.",
-    PHONEERROR: "Plase enter a valid phone number.",
+    EMAILERROR: "Please enter a valid Email ID",
+    PHONEERROR: "Plase enter a valid phone number",
     CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
     REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
   },
@@ -220,7 +220,14 @@ const CONSTANTS = {
   POPOVERSELECTOR: "tutorialPopover",
   APIDEBOUNCETIMEOUT: 800,
   STATUS_CODE_SUCCESS: 200,
-  STATUS_CODE_NOT_FOUND: 404
+  STATUS_CODE_NOT_FOUND: 404,
+  KEY_CODE_BACKSPACE: 8,
+  KEY_CODE_TAB: 9,
+  KEY_CODE_SHIFT: 16,
+  KEY_CODE_END: 35,
+  KEY_CODE_HOME: 36,
+  KEY_CODE_DELETE: 46,
+  ALLOWED_KEY_CODES: [8, 9, 16, 35, 36, 46]
 };
 
 export default CONSTANTS;
