@@ -140,29 +140,31 @@ class CreateUserTemplate extends React.Component {
     });
   }
 
-  onEmailChange(e) {
-    this.loader("fieldLoader", true);
-    Http.get("/api/users/checkUnique", {email: e.target.value}).then(res => {
-      this.loader("fieldLoader", false);
-      let error;
-      let isUnique;
-      if (!res.body.unique) {
-        error = "This email already exists in the Brand Portal.";
-        isUnique = false;
-      } else {
-        error = "";
-        isUnique = true;
-      }
-      this.setState(state => {
-        state = {...state};
-        state.form.inputData.emailId.error = error;
-        state.form.inputData.emailId.isUnique = isUnique;
-        return {
-          ...state
-        };
-      }, this.checkToEnableSubmit);
-    })
-    .catch(err => this.loader("fieldLoader", false));
+  onEmailChange() {
+    const emailId = this.state.form.inputData.emailId;
+    if (emailId.value && emailId.error !== emailId.invalidError) {
+      this.loader("fieldLoader", true);
+      Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
+        this.loader("fieldLoader", false);
+        let error;
+        let isUnique;
+        if (!res.body.unique) {
+          error = "This email already exists in the Brand Portal.";
+          isUnique = false;
+        } else {
+          error = "";
+          isUnique = true;
+        }
+        this.setState(state => {
+          state = {...state};
+          const emailIdInner = state.form.inputData.emailId;
+          (emailIdInner.error !== emailIdInner.invalidError) && (emailIdInner.error = error);
+          emailIdInner.isUnique = isUnique;
+          return state;
+        }, this.checkToEnableSubmit);
+      })
+      .catch(err => this.loader("fieldLoader", false));
+    }
   }
 
   componentDidMount() {
@@ -250,21 +252,19 @@ class CreateUserTemplate extends React.Component {
       this.setState(state => {
         const targetVal = target.value;
         state = {...state};
-        state.form.inputData[key].value = targetVal;
-        state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
+        const inputData = state.form.inputData;
+        inputData[key].value = targetVal;
+        inputData[key].error = !this.invalid[key] ? "" : inputData[key].error;
         if (key === "emailId") {
-          state.form.inputData.emailId.isUnique = false;
-          state.form.inputData.emailId.error = "";
+          inputData.emailId.isUnique = false;
+          (inputData.emailId.error !== inputData.emailId.invalidError) && (inputData.emailId.error = "");
+          this.emailDebounce();
         }
         this.invalid[key] = false;
         return {
           ...state
         };
       }, this.checkToEnableSubmit);
-      if (key === "emailId") {
-        evt.persist();
-        this.emailDebounce(evt);
-      }
     }
   }
 
@@ -287,7 +287,7 @@ class CreateUserTemplate extends React.Component {
         return {
           ...state
         };
-      });
+      }, this.checkToEnableSubmit);
     }
   }
 
@@ -301,7 +301,7 @@ class CreateUserTemplate extends React.Component {
         return {
           ...state
         };
-      });
+      }, this.checkToEnableSubmit);
     }
   }
 
@@ -414,7 +414,6 @@ class CreateUserTemplate extends React.Component {
     if (matchedField) {
       const matchedObj = form.inputData[matchedField];
       matchedObj.error = matchedObj.invalidError;
-      // matchedObj.error = true;
       this.invalid[key] = true;
       this.setState({form});
     }
