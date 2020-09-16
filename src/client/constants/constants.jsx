@@ -1,14 +1,14 @@
 const CONSTANTS = {
 
   URL: {
-    LOGOUT: "https://retaillink.login.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
+    LOGOUT: "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
     LOGIN_REDIRECT: "/api/falcon/login",
     REGISTER_REDIRECT: "/api/falcon/register",
     DOMAIN: {
       DEVELOPMENT: "http://localhost:3000",
       STAGING: "http://brandportal.ropro.stg.walmart.com",
       // TODO correct production URL below
-      PRODUCTION: "https://brandportal.walmart.com"
+      PRODUCTION: "https://brandportal.ropro.stg.walmart.com"
     },
     DOMAIN_SERVER: {
       DEVELOPMENT: "http://localhost:2992",
@@ -100,8 +100,8 @@ const CONSTANTS = {
   },
 
   NAVIGATION_PANEL: [
-    { id: "1", name: "CLAIMS", value: "CLAIMS", href: "/claims", active: false},
-    { id: "2", name: "BRANDS", value: "BRANDS", href: "/brands", active: false},
+    { id: "1", name: "CLAIMS", value: "MY CLAIMS", href: "/claims", active: false},
+    { id: "2", name: "BRANDS", value: "MY BRANDS", href: "/brands", active: false},
     {
       id: "3",
       name: "USERS",
