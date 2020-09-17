@@ -6,6 +6,7 @@ import $ from "jquery";
 import {dispatchCompanyState} from "./../../../actions/company/company-actions";
 import Http from "../../../utility/Http";
 import CustomInput from "../../custom-components/custom-input/custom-input";
+import {showNotification} from "../../../actions/notification/notification-actions";
 import CheckGreenIcon from "../../../images/check-grn.svg";
 import {CustomInterval} from "../../../utility/timer-utils";
 import ProgressBar from "../../custom-components/progress-bar/progress-bar";
@@ -215,7 +216,9 @@ class CompanyProfileRegistration extends React.Component {
       if (!this.state.form.inputData.companyName.value) {
         return;
       }
+      this.loader("fieldLoader", true);
       const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
+      // const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}, null, this.props.showNotification));
       if (!response.body.unique) {
         // eslint-disable-next-line no-throw-literal
         throw {
@@ -270,6 +273,7 @@ class CompanyProfileRegistration extends React.Component {
     const formData = new FormData();
     formData.append("file", file);
     const uploadResponse = (await Http.postAsFormData(urlMap[type], formData)).body;
+    // const uploadResponse = (await Http.postAsFormData(urlMap[type], formData), null, null, this.props.showNotification).body;
     interval.stop();
     window.setTimeout(() => {
       const updatedForm = {...this.state.form};
@@ -572,6 +576,7 @@ class CompanyProfileRegistration extends React.Component {
 CompanyProfileRegistration.propTypes = {
   companyState: PropTypes.object,
   dispatchCompanyState: PropTypes.func,
+  showNotification: PropTypes.func,
   updateOrgData: PropTypes.func,
   modal: PropTypes.object
 };
@@ -583,7 +588,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  dispatchCompanyState
+  dispatchCompanyState,
+  showNotification
 };
 
 
