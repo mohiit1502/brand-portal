@@ -334,7 +334,7 @@ class BrandList extends React.Component {
 
           <div className="row content-header-row p-4 h-10 mx-0">
             <div className="col">
-              <h3>Your Brands</h3>
+              <h3>My Brands</h3>
             </div>
           </div>
           <div className="row content-row p-4 h-90">

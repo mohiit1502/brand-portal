@@ -110,7 +110,8 @@ class Authenticator extends React.Component {
           if (this.state.isOnboarded) {
             const redirectURI = localStorage.getItem("redirectURI");
             localStorage.removeItem("redirectURI");
-            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
+            // return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
+            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to="/claims" />;
           } else {
             return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
           }
@@ -125,7 +126,7 @@ class Authenticator extends React.Component {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
-        return <div> Loading... </div>;
+        return <div className="fill-parent loader" />;
       }
     } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;

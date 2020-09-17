@@ -120,7 +120,7 @@ class CustomInput extends React.Component {
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
@@ -188,7 +188,7 @@ class CustomInput extends React.Component {
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
@@ -225,7 +225,7 @@ class CustomInput extends React.Component {
                   className="custom-control-input" value={option.value} checked={this.props.value === option.value}
                   onChange={ e => { this.onInputChange(e, this.state.inputId); }}/>
                 <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
-                  {option.value}
+                  {option.label || option.value}
                 </label>
               </div>
             );
@@ -258,7 +258,7 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}${this.props.loader && " field-loader"}`}>
+      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}${this.props.loader ? " field-loader" : ""}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.props.maxLength}
@@ -269,7 +269,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
       </div>
@@ -329,6 +329,7 @@ CustomInput.propTypes = {
   rowCount: PropTypes.number,
   subtitle: PropTypes.string,
   type: PropTypes.string,
+  unpadSubtitle: PropTypes.bool,
   value: [
     PropTypes.string,
     PropTypes.object

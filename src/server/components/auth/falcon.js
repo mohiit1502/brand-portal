@@ -1,25 +1,27 @@
-import CONSTANTS from "../../constants/server-constants";
+import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import queryString from "query-string";
+
+const secrets = require(CONSTANTS.PATH);
 
 class Falcon {
 
   generateFalconRedirectURL (request, action) {
     try {
       const IAM = request.app.ccmGet("IAM");
-      const clientId = IAM.CLIENT_ID;
-      const nonce = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
-      const clientType = IAM.CLIENT_TYPE;
-      const state = ServerUtils.randomStringGenerator(IAM.NONCE_STRING_LENGTH).toUpperCase();
-      const scope = IAM.SCOPE;
-      const responseType = IAM.RESPONSE_TYPE;
-      const isInternal = IAM.IS_INTERNAL;
+      const clientId = secrets.CLIENT_ID;
+      const nonce = ServerUtils.randomStringGenerator(secrets.NONCE_STRING_LENGTH).toUpperCase();
+      const clientType = secrets.CLIENT_TYPE;
+      const state = ServerUtils.randomStringGenerator(secrets.NONCE_STRING_LENGTH).toUpperCase();
+      const scope = secrets.SCOPE;
+      const responseType = secrets.RESPONSE_TYPE;
       const baseUrl = action.toLowerCase() === "login" ? IAM.FALCON_LOGIN_URL : IAM.FALCON_REGISTER_URL;
-      const redirectUri = CONSTANTS.IAM.BASE_URL + IAM.REDIRECT_PATH;
+      const redirectUri = `${process.env.NODE_ENV === "development" ? CONSTANTS.BASE_URL : IAM.BASE_URL}${IAM.REDIRECT_PATH}`;
 
       return queryString.stringifyUrl({
         url: baseUrl,
-        query: {redirectUri, clientId, nonce, clientType, state, scope, responseType, isInternal}
+        // query: {redirectUri, clientId, nonce, clientType, state, scope, responseType, isInternal}
+        query: {redirectUri, clientId, nonce, clientType, state, scope, responseType}
       }, {encode: false});
     } catch (err) {
       throw new Error(err);

@@ -118,8 +118,33 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   filter: grayscale(100%) brightness(100);
 }
 
-.loader {
+.fill-parent {
+  width: 100%;
+  height: 100%;
+}
+
+.loader, .loader-small {
   position: relative;
+  padding: 0;
+}
+
+.loader-small:before {
+  display: block;
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  background-image: url("./../images/Spinner Transparent BG.svg");
+  background-size: #{$loader-small-size};
+  background-repeat: no-repeat;
+  background-position: center;
+  height: $size-max;
+  width: $size-max;
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+  z-index: 1050;
 }
 
 .loader:before {

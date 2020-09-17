@@ -60,7 +60,7 @@ class NewClaimTemplate extends React.Component {
             pattern: null,
             disabled: false,
             options: [],
-            subtitle: "",
+            subtitle: "To add a brand to this list, please submit a brand registration request first by visiting the \"Brands\" section. Please note that brand registration requests can only be submitted by super admin or admin level users.",
             error: ""
           },
           claimTypeIdentifier: {
@@ -210,6 +210,7 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
+  // eslint-disable-next-line max-statements
   selectHandlersLocal (key, state, value) {
     if (key === "brandName" || key === "claimType") {
       let claimType;
@@ -218,6 +219,7 @@ class NewClaimTemplate extends React.Component {
         claimType = state.form.inputData.claimType.value;
         brandName = value;
       } else if (key === "claimType") {
+        state.form.inputData.claimTypeIdentifier.required = true;
         state.claimTypeSelected = true;
         brandName = state.form.inputData.brandName.value;
         claimType = value;
@@ -226,8 +228,14 @@ class NewClaimTemplate extends React.Component {
         const brandObj = state.brands.find(brand => brand.brandName === brandName);
         const trademarkNumber = brandObj && brandObj.trademarkNumber ? brandObj.trademarkNumber : "";
         state.form.inputData.claimTypeIdentifier.value = trademarkNumber;
+        state.form.inputData.claimTypeIdentifier.disabled = true;
       } else {
         state.form.inputData.claimTypeIdentifier.value = "";
+        state.form.inputData.claimTypeIdentifier.disabled = false;
+      }
+
+      if (claimType === "Copyright") {
+        state.form.inputData.claimTypeIdentifier.required = false;
       }
     }
     return state;
@@ -255,7 +263,7 @@ class NewClaimTemplate extends React.Component {
         options = options.map(option => {
           const displayVal = Helper.toCamelCaseIndividual(option.claimType);
           option.label = displayVal;
-          option.claimTypeIdentifierLabel = `${displayVal} Number`;
+          option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
           return option;
         });
         form.inputData.claimType.options = options && options.map(v => ({value: v.label}));
@@ -331,7 +339,7 @@ class NewClaimTemplate extends React.Component {
 
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
-      form.inputData.claimTypeIdentifier.value &&
+      (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
       form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value), true) &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -455,12 +463,12 @@ class NewClaimTemplate extends React.Component {
               </div>
           {this.state.claimTypeSelected &&
             <React.Fragment>
-              <p>Please fill the following details to submit your claim</p>
+              <p>Please complete the following fields and click submit to submit your claim.</p>
               <div className="row brand-and-patent">
                 <div className="col-4">
                   <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
                     value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.setSelectInputValue}
-                    disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} />
+                    disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
                 </div>
                 <div className="col-4">
                   <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}

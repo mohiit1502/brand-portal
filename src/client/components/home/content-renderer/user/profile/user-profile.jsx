@@ -18,7 +18,7 @@ class UserProfile extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.setFormData = this.setFormData.bind(this);
     this.disableInput = this.disableInput.bind(this);
-    this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
+    // this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
     this.saveUser = this.saveUser.bind(this);
     // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
     // console.log(this.props.userProfile)
@@ -26,7 +26,7 @@ class UserProfile extends React.Component {
       pageLoading: true,
       form: {
         isDisabled: true,
-        underwritingChecked: false,
+        // underwritingChecked: false,
         id: "user-profile-form",
         inputData: {
           firstName: {
@@ -54,7 +54,7 @@ class UserProfile extends React.Component {
             disabled: true
           },
           emailId: {
-            label: "Email ID",
+            label: "Email",
             required: true,
             value: this.props.userProfile.email,
             type: "email",
@@ -138,11 +138,11 @@ class UserProfile extends React.Component {
 
   }
 
-  toggleUnderwritingCheck () {
-    const form = {...this.state.form};
-    form.underwritingChecked = !form.underwritingChecked;
-    this.setState({form});
-  }
+  // toggleUnderwritingCheck () {
+  //   const form = {...this.state.form};
+  //   form.underwritingChecked = !form.underwritingChecked;
+  //   this.setState({form});
+  // }
 
   async saveUser (evt) {
     evt.preventDefault();
@@ -248,7 +248,7 @@ class UserProfile extends React.Component {
                 </div>
                 <div className="row h-40">
                   <div className="col h-100">
-                    <div className="row pt-5">
+                    {/* <div className="row pt-5">
                       <div className="col-xl-6 col-10">
                         {
                           this.state.form.isDisabled ? <div><br/><br/></div> :
@@ -259,7 +259,7 @@ class UserProfile extends React.Component {
 
                         }
                       </div>
-                    </div>
+                    </div> */}
                     <div className="row pt-5">
                         <div className="col-xl-3 col-5" />
                       <div className="col-xl-3 col-5 text-right">
@@ -273,7 +273,8 @@ class UserProfile extends React.Component {
                             (
                               <span>
                                 <div className="btn btn-link font-size-14 px-4 mr-3" onClick={() => this.disableInput(true)}>Cancel</div>
-                                <button type="submit" className="btn btn-primary btn-sm no-border-radius px-4 font-size-14" disabled={!this.state.form.underwritingChecked}>
+                                {/* <button type="submit" className="btn btn-primary btn-sm no-border-radius px-4 font-size-14" disabled={!this.state.form.underwritingChecked}> */}
+                                <button type="submit" className="btn btn-primary btn-sm no-border-radius px-4 font-size-14">
                                   Save
                                 </button>
                               </span>

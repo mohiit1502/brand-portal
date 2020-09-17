@@ -36,13 +36,13 @@ class CompanyBrandRegisteredTemplate extends React.Component {
               <div className="row mt-3">
                 <div className="col">
                   <span className="status-description">
-                    Your company and brand details are currently being verified. Once complete, you will receive a confirmation on your registred email ID. Please login using shared link.
+                    Your company and brand details are currently being verified. Once complete, we will send a confirmation to your registered email. Please login using the shared link.
                   </span>
                 </div>
               </div>
               <div className="row mt-5">
                 <div className="col">
-                  <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Okay</a>
+                  <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Logout</a>
                 </div>
               </div>
             </div>

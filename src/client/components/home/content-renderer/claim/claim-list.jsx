@@ -431,7 +431,7 @@ class ClaimList extends React.Component {
                             <img src={ContentPasteIcon} height={80}/>
                             <br/><br/>
                             <div className="h4">No Claim History</div>
-                            <div>You can register a claim by clicking New Claim button</div>
+                            <div>You can submit a claim by clicking the "New Claim" button</div>
                           </div>
                         </div>
                       }

@@ -33,7 +33,7 @@ const CONSTANTS = {
     PORTAL_VERIFICATION: {
       CODE: 2,
       IMAGE: "Alert",
-      MESSAGE: "Your company details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
+      MESSAGE: "Your company and brand details are currently being verified. Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
       TITLE: "Company Registration is Pending"
     },
     PORTAL_DASHBOARD: {
@@ -60,7 +60,7 @@ const CONSTANTS = {
     USER_VERIFICATION: {
       CODE: 64,
       IMAGE: "Alert",
-      MESSAGE: "Your account details are currently being verified. Once complete, you will receive a confirmation on your registered email id. Please log in using the shared link.",
+      MESSAGE: "Your account details need to be verified. A verification email has been sent to your email address. Please verify using the link provided.",
       TITLE: "Account verification in progress"
     }
   },
@@ -102,8 +102,8 @@ const CONSTANTS = {
   },
 
   NAVIGATION_PANEL: [
-    { id: "1", name: "CLAIMS", value: "CLAIMS", href: "/claims", active: false},
-    { id: "2", name: "BRANDS", value: "BRANDS", href: "/brands", active: false},
+    { id: "1", name: "CLAIMS", value: "MY CLAIMS", href: "/claims", active: false},
+    { id: "2", name: "BRANDS", value: "MY BRANDS", href: "/brands", active: false},
     {
       id: "3",
       name: "USERS",
@@ -139,8 +139,8 @@ const CONSTANTS = {
       DISPLAY: {
         EDIT: "Edit User Profile",
         RESENDINVITE: "Resend Invite",
-        SUSPEND: "Deactivate User Profile",
-        REACTIVATE: "Reactivate User",
+        SUSPEND: "Suspend User Profile",
+        REACTIVATE: "Activate User",
         DELETE: "Delete User Profile"
       },
       PAYLOAD: {
@@ -162,8 +162,8 @@ const CONSTANTS = {
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit Brand Details",
-        SUSPEND: "Deactivate Brand",
-        REACTIVATE: "Reactivate Brand",
+        SUSPEND: "Suspend Brand",
+        REACTIVATE: "Activate Brand",
         DELETE: "Delete Brand"
       },
       PAYLOAD: {
@@ -213,14 +213,23 @@ const CONSTANTS = {
     EMAIL: "\\S+@\\S+\.\\S+",
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
-    EMAILERROR: "Please enter a valid Email ID.",
-    PHONEERROR: "Plase enter a valid phone number.",
+    EMAILERROR: "Please enter a valid Email ID",
+    PHONEERROR: "Plase enter a valid phone number",
     CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
     REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
   },
 
   POPOVERSELECTOR: "tutorialPopover",
-  APIDEBOUNCETIMEOUT: 800
+  APIDEBOUNCETIMEOUT: 800,
+  STATUS_CODE_SUCCESS: 200,
+  STATUS_CODE_NOT_FOUND: 404,
+  KEY_CODE_BACKSPACE: 8,
+  KEY_CODE_TAB: 9,
+  KEY_CODE_SHIFT: 16,
+  KEY_CODE_END: 35,
+  KEY_CODE_HOME: 36,
+  KEY_CODE_DELETE: 46,
+  ALLOWED_KEY_CODES: [8, 9, 16, 35, 36, 46]
 };
 
 export default CONSTANTS;

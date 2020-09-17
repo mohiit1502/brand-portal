@@ -9,6 +9,7 @@ import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
 import CONSTANTS from "../../../../constants/constants";
 import InputFormatter from "./../../../../utility/phoneOps";
+import Helper from "../../../../utility/helper";
 import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
 
 class CreateUserTemplate extends React.Component {
@@ -23,6 +24,8 @@ class CreateUserTemplate extends React.Component {
     this.prepopulateInputFields = this.prepopulateInputFields.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
     this.onInvalidHandler = this.onInvalidHandler.bind(this);
+    this.onEmailChange = this.onEmailChange.bind(this);
+    this.emailDebounce = Helper.debounce(this.onEmailChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.invalid = {emailId: false, phone: false};
 
     this.state = {
@@ -43,11 +46,13 @@ class CreateUserTemplate extends React.Component {
             options: [
               {
                 id: 1,
-                value: "Internal"
+                value: "Internal",
+                label: "Internal"
               },
               {
                 id: 2,
-                value: "3rd Party"
+                value: "ThirdParty",
+                label: "3rd Party"
               }
             ],
             disabled: false
@@ -77,7 +82,7 @@ class CreateUserTemplate extends React.Component {
             disabled: false
           },
           emailId: {
-            label: "Email ID",
+            label: "Email",
             required: true,
             value: "",
             type: "email",
@@ -85,40 +90,7 @@ class CreateUserTemplate extends React.Component {
             disabled: false,
             invalidError: CONSTANTS.REGEX.EMAILERROR,
             error: "",
-            isUnique: true,
-            onBlurEvent: e => {
-              if (!this.state.form.inputData.emailId.error) {
-                Http.get("/api/users/checkUnique", {email: e.target.value}).then(res => {
-                  this.setState(state => {
-                    state = {...state};
-                    state.form.inputData.emailId.error = "Email is not Unique";
-                    state.form.inputData.emailId.isUnique = false;
-                    return {
-                      ...state
-                    };
-                  }, this.checkToEnableSubmit);
-                  if (!res.body.unique) {
-                    this.setState(state => {
-                      state = {...state};
-                      state.form.inputData.emailId.error = "Email is not Unique";
-                      state.form.inputData.emailId.isUnique = false;
-                      return {
-                        ...state
-                      };
-                    }, this.checkToEnableSubmit);
-                  } else {
-                    this.setState(state => {
-                      state = {...state};
-                      state.form.inputData.emailId.error = "";
-                      state.form.inputData.emailId.isUnique = true;
-                      return {
-                        ...state
-                      };
-                    }, this.checkToEnableSubmit);
-                  }
-                });
-              }
-            }
+            isUnique: true
           },
           phone: {
             label: "Mobile Number",
@@ -155,16 +127,44 @@ class CreateUserTemplate extends React.Component {
         // }
       },
       loader: false,
+      fieldLoader: false,
       allSelected: false
     };
   }
 
-  loader (enable) {
+  loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
-      stateClone.loader = enable;
+      stateClone[type] = enable;
       return stateClone;
     });
+  }
+
+  onEmailChange() {
+    const emailId = this.state.form.inputData.emailId;
+    if (emailId.value && emailId.error !== emailId.invalidError) {
+      this.loader("fieldLoader", true);
+      Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
+        this.loader("fieldLoader", false);
+        let error;
+        let isUnique;
+        if (!res.body.unique) {
+          error = "This email already exists in the Brand Portal.";
+          isUnique = false;
+        } else {
+          error = "";
+          isUnique = true;
+        }
+        this.setState(state => {
+          state = {...state};
+          const emailIdInner = state.form.inputData.emailId;
+          (emailIdInner.error !== emailIdInner.invalidError) && (emailIdInner.error = error);
+          emailIdInner.isUnique = isUnique;
+          return state;
+        }, this.checkToEnableSubmit);
+      })
+      .catch(err => this.loader("fieldLoader", false));
+    }
   }
 
   componentDidMount() {
@@ -193,6 +193,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.lastName.value = data.lastName;
     form.inputData.emailId.value = data.email;
     form.inputData.emailId.disabled = true;
+    form.inputData.phone.value = data.phoneNumber;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
     form.templateUpdateComplete = true;
@@ -251,8 +252,14 @@ class CreateUserTemplate extends React.Component {
       this.setState(state => {
         const targetVal = target.value;
         state = {...state};
-        state.form.inputData[key].value = targetVal;
-        state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
+        const inputData = state.form.inputData;
+        inputData[key].value = targetVal;
+        inputData[key].error = !this.invalid[key] ? "" : inputData[key].error;
+        if (key === "emailId") {
+          inputData.emailId.isUnique = false;
+          (inputData.emailId.error !== inputData.emailId.invalidError) && (inputData.emailId.error = "");
+          this.emailDebounce();
+        }
         this.invalid[key] = false;
         return {
           ...state
@@ -263,9 +270,9 @@ class CreateUserTemplate extends React.Component {
 
   checkToEnableSubmit() {
     const form = {...this.state.form};
-    const bool = form.inputData.firstName.value && form.inputData.lastName.value &&
+    const bool = !!(form.inputData.firstName.value && form.inputData.lastName.value &&
       form.inputData.emailId.value && form.inputData.emailId.isUnique !== false && !form.inputData.phone.error &&
-      form.inputData.role.value && form.inputData.brands.value;
+      form.inputData.role.value && form.inputData.brands.value);
       // && form.undertaking.selected;
 
     form.submitDisabled = !bool;
@@ -280,7 +287,7 @@ class CreateUserTemplate extends React.Component {
         return {
           ...state
         };
-      });
+      }, this.checkToEnableSubmit);
     }
   }
 
@@ -294,7 +301,7 @@ class CreateUserTemplate extends React.Component {
         return {
           ...state
         };
-      });
+      }, this.checkToEnableSubmit);
     }
   }
 
@@ -347,17 +354,17 @@ class CreateUserTemplate extends React.Component {
     }
 
     const url = "/api/users";
-    this.loader(true);
+    this.loader("loader", true);
     if (this.state.form.isUpdateTemplate) {
       return Http.put(`${url}/${payload.user.email}`, payload)
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
-          this.loader(false);
+          this.loader("loader", false);
         })
         .catch(err => {
-          this.loader(false);
+          this.loader("loader", false);
           console.log(err);
         });
     } else {
@@ -376,19 +383,19 @@ class CreateUserTemplate extends React.Component {
   }
 
   async fetchRolesForUser () {
-    this.loader(true);
+    this.loader("loader", true);
     return Http.get("/api/newUser/roles")
       .then(res => {
         const form = {...this.state.form};
         form.inputData.role.options = res.body.roles;
         form.inputData.role.options.map(v => {v.value = v.name; });
         this.setState({form});
-        this.loader(false);
+        this.loader("loader", false);
       });
   }
 
   async fetchBrandsForUser () {
-    this.loader(true);
+    this.loader("loader", true);
     return Http.get("/api/newUser/brands")
       .then(res => {
         const form = {...this.state.form};
@@ -397,7 +404,7 @@ class CreateUserTemplate extends React.Component {
         // console.log(form.inputData.brands.options);
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
         this.setState({form});
-        this.loader(false);
+        this.loader("loader", false);
       });
   }
 
@@ -407,7 +414,6 @@ class CreateUserTemplate extends React.Component {
     if (matchedField) {
       const matchedObj = form.inputData[matchedField];
       matchedObj.error = matchedObj.invalidError;
-      // matchedObj.error = true;
       this.invalid[key] = true;
       this.setState({form});
     }
@@ -443,7 +449,7 @@ class CreateUserTemplate extends React.Component {
                 </div>
                 <div className="row form-prompt">
                   <div className="col">
-                    <p>Please fill the following details to invite a new user.</p>
+                    <p>Please complete the following fields to invite a new user.</p>
                   </div>
                 </div>
                 <div className="row fname-lname">
@@ -486,8 +492,8 @@ class CreateUserTemplate extends React.Component {
                       formId={this.state.form.id} label={this.state.form.inputData.emailId.label}
                       required={this.state.form.inputData.emailId.required} value={this.state.form.inputData.emailId.value}
                       type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern} onInvalidHandler={this.onInvalidHandler}
-                      onBlurEvent={this.state.form.inputData.emailId.onBlurEvent} error={this.state.form.inputData.emailId.error}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled} />
+                      error={this.state.form.inputData.emailId.error} onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.emailId.disabled}
+                      loader={this.state.fieldLoader} />
                   </div>
                   <div className="col-6">
                     <CustomInput key={"phone"}
