@@ -96,7 +96,9 @@ const CONSTANTS = {
 
     HELP: {
       HELP: "/help"
-    }
+    },
+
+    DASHBOARD: "/dashboard"
   },
 
   NAVIGATION_PANEL: [
