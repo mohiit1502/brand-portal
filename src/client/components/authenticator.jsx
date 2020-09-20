@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 /* eslint-disable max-statements */
 import React from "react";
 import { connect } from "react-redux";
@@ -8,7 +9,7 @@ import PropTypes from "prop-types";
 import CONSTANTS from "../constants/constants";
 import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
-import {updateUserProfile} from "../actions/user/user-actions";
+import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions";
 import Onboarder from "./onboard/onboarder";
 
 class Authenticator extends React.Component {
@@ -28,6 +29,7 @@ class Authenticator extends React.Component {
   componentDidMount() {
     if (this.state.isLoggedIn) {
       this.getProfileInfo();
+      this.prepareLogoutEnvironment();
     } else {
       this.removeSessionProfile();
     }
@@ -57,6 +59,12 @@ class Authenticator extends React.Component {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  prepareLogoutEnvironment () {
+    fetch("/api/logoutProvider")
+      .then(res => res.text())
+      .then(res => this.props.dispatchLogoutUrl(res));
   }
 
   removeSessionProfile () {
@@ -108,10 +116,10 @@ class Authenticator extends React.Component {
       if (this.state.profileInformationLoaded) {
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
-            const redirectURI = localStorage.getItem("redirectURI");
-            localStorage.removeItem("redirectURI");
+            const redirectURI = window.localStorage.getItem("redirectURI");
+            window.localStorage.removeItem("redirectURI");
             // return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
-            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to="/claims" />;
+            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CONSTANTS.ROUTES.DASHBOARD} />;
           } else {
             return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
           }
@@ -131,8 +139,8 @@ class Authenticator extends React.Component {
     } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
-      localStorage.setItem("redirectURI", this.props.location.pathname);
-      window.location.pathname = "/api/falcon/login";
+      window.localStorage.setItem("redirectURI", this.props.location.pathname);
+      window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
       return null;
       // return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
     } else {
@@ -142,6 +150,7 @@ class Authenticator extends React.Component {
 }
 
 Authenticator.propTypes = {
+  dispatchLogoutUrl: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,
   updateUserProfile: PropTypes.func,
@@ -151,12 +160,13 @@ Authenticator.propTypes = {
 const mapStateToProps = state => {
   return {
     isNew: state.company.isNew,
-    userProfile: state.userProfile
+    userProfile: state.user.profile
   };
 };
 
 const mapDispatchToProps = {
-  updateUserProfile
+  updateUserProfile,
+  dispatchLogoutUrl
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authenticator);

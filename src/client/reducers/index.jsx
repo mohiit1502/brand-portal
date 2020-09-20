@@ -1,10 +1,11 @@
 import { combineReducers } from "redux";
 import {modal} from "./modal-reducers";
-import {userEdit, userProfile} from "./user/user-reducers";
+import {userEdit, user} from "./user/user-reducers";
 import {brandEdit} from "./brand/brand-reducers";
 import company from "./company/company-reducer";
 import claims from "./claim/claim-reducers";
 import help from "./help/help-reducer";
+import dashboard from "./dashboard/dashboard-reducers";
 import {notification} from "./notification/notification-reducers";
 
 const userRegistration = (store, action) => {
@@ -27,10 +28,11 @@ export default combineReducers({
   userRegistration,
   modal,
   userEdit,
-  userProfile,
+  user,
   brandEdit,
   company,
   claims,
   help,
+  dashboard,
   notification
 });

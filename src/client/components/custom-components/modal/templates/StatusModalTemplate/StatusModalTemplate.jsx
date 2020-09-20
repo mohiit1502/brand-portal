@@ -1,14 +1,15 @@
+/* eslint-disable react/prop-types */
 // eslint-disable-next-line filenames/match-regex
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import CONSTANTS from "../../../../../constants/constants";
 import "./StatusModalTemplate.component.scss";
 
 const StatusModalTemplate = props => {
 
-  const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
-  const logoutUrl = CONSTANTS.URL.LOGOUT.replace("__domain__", baseUrl);
+  // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
+  const baseUrl = window.location.origin;
+  const logoutUrl = props.logoutUrl && props.logoutUrl.replace("__domain__", baseUrl);
 
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
@@ -48,12 +49,15 @@ const StatusModalTemplate = props => {
 
 StatusModalTemplate.props = {
   data: PropTypes.object,
+  logoutUrl: PropTypes.string,
   meta: PropTypes.object,
   modal: PropTypes.object
 };
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    logoutUrl: state.user.logoutUrl
+  };
 };
 
 export default connect(mapStateToProps)(StatusModalTemplate);

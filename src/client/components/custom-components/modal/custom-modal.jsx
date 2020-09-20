@@ -13,6 +13,7 @@ import NewClaimAddedTemplate from "./templates/new-claim-added-template";
 import ClaimDetailsTemplate from "./templates/claim-details-template";
 import CompanyVerificationPendingTemplate from "./templates/company-verification-pending-template";
 import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
+import Alert from "../../Alert/Alert";
 
 
 class CustomModal extends React.Component {
@@ -44,6 +45,7 @@ class CustomModal extends React.Component {
       case "ClaimDetailsTemplate": return ClaimDetailsTemplate;
       case "CompanyVerificationPendingTemplate": return CompanyVerificationPendingTemplate;
       case "StatusModalTemplate": return StatusModalTemplate;
+      case "Alert": return Alert;
     }
     return null;
   }

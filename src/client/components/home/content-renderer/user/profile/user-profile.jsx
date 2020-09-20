@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import CustomInput from "../../../../custom-components/custom-input/custom-input";
 import Http from "../../../../../utility/Http";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
-// import StorageSrvc, {STORAGE_TYPES} from "../../../../../utility/StorageSrvc";
+import {dispatchDiscardChanges, TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
+import InputFormatter from "../../../../../utility/phoneOps";
 import CONSTANTS from "../../../../../constants/constants";
 import restConfig from "./../../../../../config/rest";
 
@@ -15,15 +16,20 @@ class UserProfile extends React.Component {
 
   constructor (props) {
     super(props);
+    this.isDirty = this.isDirty.bind(this);
+    this.loader = this.loader.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.setFormData = this.setFormData.bind(this);
     this.disableInput = this.disableInput.bind(this);
     // this.toggleUnderwritingCheck = this.toggleUnderwritingCheck.bind(this);
     this.saveUser = this.saveUser.bind(this);
-    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
-    // console.log(this.props.userProfile)
+    this.onInvalidHandler = this.onInvalidHandler.bind(this);
+    this.validateUser = this.validateUser.bind(this);
+    this.invalid = {firstName: false, lastName: false, companyName: false, phone: false};
+
     this.state = {
       pageLoading: true,
+      loader: false,
       form: {
         isDisabled: true,
         // underwritingChecked: false,
@@ -34,7 +40,8 @@ class UserProfile extends React.Component {
             required: true,
             value: this.props.userProfile.firstName,
             type: "text",
-            pattern: null,
+            pattern: CONSTANTS.REGEX.ONECHAR,
+            invalidError: "Please enter First Name",
             disabled: true
           },
           lastName: {
@@ -42,15 +49,17 @@ class UserProfile extends React.Component {
             required: true,
             value: this.props.userProfile.lastName,
             type: "text",
-            pattern: null,
+            pattern: CONSTANTS.REGEX.ONECHAR,
+            invalidError: "Please enter Last Name",
             disabled: true
           },
           companyName: {
             label: "Company Name",
             required: true,
             value: this.props.userProfile.organization.name,
+            invalidError: "Please enter the Company Name",
             type: "text",
-            pattern: null,
+            pattern: CONSTANTS.REGEX.ONECHAR,
             disabled: true
           },
           emailId: {
@@ -65,9 +74,11 @@ class UserProfile extends React.Component {
             label: "Mobile Number",
             required: false,
             value: this.props.userProfile.phoneNumber,
+            invalidError: "Please select a valid Phone Number",
             type: "text",
-            pattern: null,
-            disabled: true
+            pattern: CONSTANTS.REGEX.PHONE,
+            disabled: true,
+            maxLength: 17
           }
         }
       }
@@ -75,43 +86,72 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-
+    const formatter = new InputFormatter();
+    const handlers = formatter.on("#user-profile-form-phone-custom-input");
+    this.customChangeHandler = handlers.inputHandler;
   }
 
   componentDidUpdate(prevProps) {
-
-    console.log(prevProps , this.props);
     if (prevProps !== this.props) {
       this.setFormData(this.props.userProfile);
     }
   }
 
+  loader (enable) {
+    this.setState(state => {
+      const stateClone = {...state};
+      stateClone.loader = enable;
+      return stateClone;
+    });
+  }
+
+  isDirty () {
+    const {firstName: originalFName, lastName: originalLName, email: originalEmail, phoneNumber: originalPhone, companyName: originalCompany} = this.props.userProfile;
+    const {firstName: {value: currentFName}, lastName: {value: currentLName}, emailId: {value: currentEmail}, phone: {value: currentPhone}} = this.state.form.inputData;
+    const currentCompany = this.state.form.inputData.company ? this.state.form.inputData.company.value : "";
+
+    return originalFName !== currentFName || originalLName !== currentLName || originalEmail !== currentEmail || originalPhone !== currentPhone || (originalCompany && currentCompany && originalCompany !== currentCompany);
+      // || ((!originalCompany && currentCompany) || (originalCompany && !currentCompany) || (originalCompany !== currentCompany));
+  }
 
   setFormData(obj) {
-    const form = {...this.state.form};
-    form.inputData.firstName.value = obj.firstName;
-    form.inputData.firstName.disabled = true;
-    form.inputData.lastName.value = obj.lastName;
-    form.inputData.lastName.disabled = true;
-    form.inputData.companyName.value = obj.type === "ThirdParty" ? obj.companyName : "";
-    form.inputData.companyName.disabled = true;
-    form.inputData.emailId.value = obj.loginId;
-    form.inputData.emailId.disabled = true;
-    form.inputData.phone.value = obj.phoneNumber;
-    form.inputData.phone.disabled = true;
+    if (this.props.shouldDiscard) {
+      const form = {...this.state.form};
+      form.isDisabled = true;
+      form.inputData.firstName.value = obj.firstName;
+      form.inputData.lastName.value = obj.lastName;
+      form.inputData.companyName.value = obj.type === "ThirdParty" ? obj.companyName : "";
+      form.inputData.emailId.value = obj.email;
+      form.inputData.phone.value = obj.phoneNumber;
 
-    this.setState({
-      form,
-      pageLoading: false
-    });
+      Object.keys(form.inputData).forEach(key => {
+        if (key !== "emailId") {
+          const item = form.inputData[key];
+          item.disabled = true;
+          item.error = "";
+        }
+      });
+
+      this.setState({
+        form,
+        pageLoading: false
+      });
+      this.props.dispatchDiscardChanges(false);
+    }
   }
 
   onInputChange (evt, key) {
     if (evt && evt.target) {
+      if (evt.target.checkValidity()) {
+        this.invalid[key] = false;
+      }
       const targetVal = evt.target.value;
       this.setState(state => {
         state = {...state};
+        const inputData = state.form.inputData;
         state.form.inputData[key].value = targetVal;
+        inputData[key].error = !this.invalid[key] ? "" : inputData[key].error;
+        this.invalid[key] = false;
         return {
           ...state
         };
@@ -121,20 +161,27 @@ class UserProfile extends React.Component {
 
   disableInput (disable) {
     disable = !!disable;
+    if (disable && this.isDirty()) {
+      const meta = { templateName: "Alert" };
+      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    } else {
+      const form = {...this.state.form};
+      form.isDisabled = disable;
+      // form.inputData.firstName.disabled = disable;
+      // form.inputData.lastName.disabled = disable;
+      // form.inputData.companyName.disabled = disable;
+      //form.inputData.emailId.disabled = disable;
+      form.inputData.phone.disabled = disable;
+      Object.keys(form.inputData).forEach(key => {
+        if (key !== "emailId") {
+          const item = form.inputData[key];
+          item.disabled = disable;
+          item.error = "";
+        }
+      });
 
-    const form = {...this.state.form};
-
-    form.isDisabled = disable;
-
-    form.inputData.firstName.disabled = disable;
-    form.inputData.lastName.disabled = disable;
-    form.inputData.companyName.disabled = disable;
-    //form.inputData.emailId.disabled = disable;
-    form.inputData.phone.disabled = disable;
-
-    this.setState({
-      form
-    });
+      this.setState({form});
+    }
 
   }
 
@@ -147,38 +194,79 @@ class UserProfile extends React.Component {
   async saveUser (evt) {
     evt.preventDefault();
 
-    const loginId = this.state.form.inputData.emailId.value;
-    const firstName = this.state.form.inputData.firstName.value;
-    const lastName = this.state.form.inputData.lastName.value;
-    const phoneNumber = this.state.form.inputData.phone.value;
-    const payload = {
-      user: {
-        loginId,
-        firstName,
-        lastName,
-        phoneNumber,
-        properties: {
-          companyName: this.state.form.inputData.companyName.value
+    if (!this.validateUser()) {
+      this.loader(true);
+      const loginId = this.state.form.inputData.emailId.value;
+      const firstName = this.state.form.inputData.firstName.value;
+      const lastName = this.state.form.inputData.lastName.value;
+      const phoneNumber = this.state.form.inputData.phone.value;
+      const payload = {
+        user: {
+          loginId,
+          firstName,
+          lastName,
+          phoneNumber,
+          properties: {
+            companyName: this.state.form.inputData.companyName.value
+          }
         }
-      }
-    };
+      };
 
 
-    const url = "/api/users";
+      const url = "/api/users";
 
-    return Http.put(`${url}/${payload.user.loginId}`, payload)
-      .then(async res => {
-        this.props.updateUserProfile(res.body);
-        // TODO check requirement of below
-        // this.storageSrvc.setJSONItem("userProfile", res.body);
-        this.props.updateUserProfile(res.body);
+      if (this.isDirty()) {
+        return Http.put(`${url}/${payload.user.loginId}`, payload)
+          .then(async res => {
+            this.loader(false);
+            this.props.updateUserProfile(res.body);
+            this.disableInput(true);
+          })
+          .catch(() => this.loader(false));
+      } else {
+        this.loader(false);
         this.disableInput(true);
-      });
+      }
+    }
+
+    return null;
+  }
+
+  validateUser () {
+    const form = {...this.state.form};
+    let hasError = false;
+    Object.keys(form.inputData).forEach(key => {
+      const obj = {...form.inputData[key]};
+      form.inputData[key] = obj;
+      if (obj && obj.required && !obj.value) {
+        if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
+          return;
+        }
+        obj.error = obj.invalidError;
+        hasError = true;
+      } else {
+        obj.error = "";
+      }
+    });
+    this.setState({form});
+    return hasError;
+  }
+
+
+  onInvalidHandler (evt, key) {
+    const form = this.state.form;
+    const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
+    if (matchedField) {
+      const matchedObj = form.inputData[matchedField];
+      matchedObj.error = matchedObj.invalidError;
+      this.invalid[key] = true;
+      this.setState({form});
+    }
   }
 
   render () {
     return (
-      <div className="row user-profile-content h-100">
+      <div className={`row user-profile-content h-100${this.state.loader ? " loader" : ""}`}>
         <div className="col h-100">
           <div className="row content-header-row p-4 h-10">
             <div className="col">
@@ -193,16 +281,16 @@ class UserProfile extends React.Component {
                     <div className="row">
                       <div className="col-xl-3 col-5">
                         <CustomInput key={"firstName"}
-                          inputId={"firstName"}
-                          formId={this.state.form.id} label={this.state.form.inputData.firstName.label}
+                          inputId={"firstName"} pattern={this.state.form.inputData.firstName.pattern} onInvalidHandler={this.onInvalidHandler} preventHTMLRequiredValidation={true}
+                          formId={this.state.form.id} label={this.state.form.inputData.firstName.label} error={this.state.form.inputData.firstName.error}
                           required={this.state.form.inputData.firstName.required} value={this.state.form.inputData.firstName.value}
                           type={this.state.form.inputData.firstName.type} pattern={this.state.form.inputData.firstName.pattern}
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.firstName.disabled} />
                       </div>
                       <div className="col-xl-3 col-5">
                         <CustomInput key={"lastName"}
-                          inputId={"lastName"}
-                          formId={this.state.form.id} label={this.state.form.inputData.lastName.label}
+                          inputId={"lastName"} pattern={this.state.form.inputData.lastName.pattern} onInvalidHandler={this.onInvalidHandler} preventHTMLRequiredValidation={true}
+                          formId={this.state.form.id} label={this.state.form.inputData.lastName.label} error={this.state.form.inputData.lastName.error}
                           required={this.state.form.inputData.lastName.required} value={this.state.form.inputData.lastName.value}
                           type={this.state.form.inputData.lastName.type} pattern={this.state.form.inputData.lastName.pattern}
                           onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.lastName.disabled} />
@@ -211,11 +299,12 @@ class UserProfile extends React.Component {
                     {this.props.userProfile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY && <div className="row">
                       <div className="col-xl-3 col-5">
                         <CustomInput key={"companyName"}
-                          inputId={"companyName"}
-                          formId={this.state.form.id} label={this.state.form.inputData.companyName.label}
+                          inputId={"companyName"} pattern={this.state.form.inputData.companyName.pattern} onInvalidHandler={this.onInvalidHandler}
+                          formId={this.state.form.id} label={this.state.form.inputData.companyName.label} preventHTMLRequiredValidation={true}
                           required={this.state.form.inputData.companyName.required} value={this.state.form.inputData.companyName.value}
                           type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}
-                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled} />
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.companyName.disabled}
+                          error={this.state.form.inputData.companyName.error} />
                       </div>
                     </div>}
                     <div className="row">
@@ -229,11 +318,12 @@ class UserProfile extends React.Component {
                       </div>
                       <div className="col-xl-3 col-5">
                         <CustomInput key={"phone"}
-                          inputId={"phone"}
-                          formId={this.state.form.id} label={this.state.form.inputData.phone.label}
+                          inputId={"phone"} pattern={this.state.form.inputData.phone.pattern} onInvalidHandler={this.onInvalidHandler}
+                          formId={this.state.form.id} label={this.state.form.inputData.phone.label} customChangeHandler={this.customChangeHandler}
                           required={this.state.form.inputData.phone.required} value={this.state.form.inputData.phone.value}
                           type={this.state.form.inputData.phone.type} pattern={this.state.form.inputData.phone.pattern}
-                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} />
+                          onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.phone.disabled} preventHTMLRequiredValidation={true}
+                          error={this.state.form.inputData.phone.error}  maxLength={this.state.form.inputData.phone.maxLength} />
                       </div>
                     </div>
                     {!restConfig.IS_MVP && <div className="row mb-5 password-reset-row">
@@ -296,17 +386,23 @@ class UserProfile extends React.Component {
 }
 
 UserProfile.propTypes = {
+  dispatchDiscardChanges: PropTypes.bool,
+  shouldDiscard: PropTypes.bool,
+  toggleModal: PropTypes.func,
   userProfile: PropTypes.object,
   updateUserProfile: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
-    userProfile: state.userProfile
+    shouldDiscard: state.modal.shouldDiscard,
+    userProfile: state.user.profile
   };
 };
 
 const mapDispatchToProps = {
+  dispatchDiscardChanges,
+  toggleModal,
   updateUserProfile
 };
 

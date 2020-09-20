@@ -1,8 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
-// import walmartLogo from "../../../images/wm-white-logo.png";
-import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
 import * as images from "./../../../images/index";
 import "../../../styles/custom-components/headers/home-header.scss";
@@ -15,14 +14,15 @@ class HomeHeader extends React.Component {
   render() {
     //TODO: correct the config for logout;
 
-    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
-    const logoutUrl = CONSTANTS.URL.LOGOUT.replace("__domain__", baseUrl);
+    // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
+    const baseUrl = window.location.origin;
+    const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
-        <a className="navbar-brand walmart-brand" href="#">
+        <Link className="navbar-brand walmart-brand" to="/dashboard">
           {/* <img src={walmartLogo} /> */}
           <img src={images.WMWhite} />
-        </a>
+        </Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
           aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"/>
@@ -55,14 +55,16 @@ class HomeHeader extends React.Component {
 }
 
 HomeHeader.propTypes = {
-  userProfile: PropTypes.object,
-  isOnboarded: PropTypes.bool
+  isOnboarded: PropTypes.bool,
+  logoutUrl: PropTypes.string,
+  userProfile: PropTypes.object
 };
 
 
 const mapStateToProps = state => {
   return {
-    userProfile: state.userProfile
+    userProfile: state.user.profile,
+    logoutUrl: state.user.logoutUrl
   };
 };
 

@@ -1,11 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
-
-import PropTypes from "prop-types";
-// import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
-// import {toggleModal} from "../../../../actions/modal-actions";
-import CONSTANTS from "../../../../constants/constants";
 
 class CompanyVerificationPendingTemplate extends React.Component {
 
@@ -14,8 +10,9 @@ class CompanyVerificationPendingTemplate extends React.Component {
   }
 
   render() {
-    const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
-    const logoutUrl = CONSTANTS.URL.LOGOUT.replace("__domain__", baseUrl);
+    // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
+    const baseUrl = window.location.origin;
+    const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
 
     return (
       <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
@@ -58,11 +55,14 @@ class CompanyVerificationPendingTemplate extends React.Component {
 
 CompanyVerificationPendingTemplate.propTypes = {
   // toggleModal: PropTypes.func,
+  logoutUrl: PropTypes.string,
   modal: PropTypes.object
 };
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    logoutUrl: state.user.logoutUrl
+  };
 };
 
 const mapDispatchToProps = {

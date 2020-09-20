@@ -12,6 +12,7 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
+import {dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
@@ -202,6 +203,11 @@ class UserList extends React.Component {
       return newUser;
     });
 
+    if (this.props.widgetAction) {
+      this.createNewUser();
+      this.props.dispatchWidgetAction(false);
+    }
+
     this.setState({userList});
   }
 
@@ -259,6 +265,8 @@ class UserList extends React.Component {
     const rolesSet = new Set();
     const statusSet = new Set();
     const companySet = new Set();
+    const userStatuses = Object.values(CONSTANTS.USER.STATUS);
+    userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.REJECTED), 1);
 
     paginatedList.map(user => {
       user.brands.map(brand => {
@@ -297,7 +305,7 @@ class UserList extends React.Component {
     const statusFilter = {
       id: "status",
       name: "Profile Status",
-      filterOptions: Array.from(Object.values(CONSTANTS.USER.STATUS), (value, i) => ({id: i + 1, name: value, value, selected: false}))
+      filterOptions: Array.from(userStatuses, (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
     const filters = [companyFilter, rolesFilter, brandsFilter, statusFilter];
@@ -408,7 +416,7 @@ class UserList extends React.Component {
         <div className="col h-100">
           <div className="row content-header-row p-4 h-10 mx-0">
             <div className="col">
-              <h3>User List</h3>
+              <h3>Authorized User List</h3>
             </div>
           </div>
           <div className="row content-row p-4 h-90">
@@ -530,22 +538,26 @@ class UserList extends React.Component {
 }
 
 UserList.propTypes = {
+  dispatchWidgetAction: PropTypes.func,
   toggleModal: PropTypes.func,
   saveUserCompleted: PropTypes.func,
   showNotification: PropTypes.func,
   userEdit: PropTypes.object,
-  userProfile: PropTypes.object
+  userProfile: PropTypes.object,
+  widgetAction: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     modal: state.modal,
     userEdit: state.userEdit,
-    userProfile: state.userProfile
+    userProfile: state.user.profile,
+    widgetAction: state.dashboard.widgetAction
   };
 };
 
 const mapDispatchToProps = {
+  dispatchWidgetAction,
   toggleModal,
   saveUserCompleted,
   showNotification

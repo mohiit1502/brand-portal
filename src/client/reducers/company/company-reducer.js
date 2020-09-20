@@ -5,12 +5,14 @@ const initialState =  {
     {
       order: 1,
       name: "Company Profile",
-      complete: true
+      complete: true,
+      active: true
     },
     {
       order: 2,
       name: "Brand Details",
-      complete: false
+      complete: false,
+      active: false
     }
   ]
 };

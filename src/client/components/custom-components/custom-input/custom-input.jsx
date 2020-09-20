@@ -2,8 +2,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import $ from "jquery";
+import Tooltip from "../tooltip/tooltip";
+import * as images from "./../../../images";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
-import ArrowDown from "../../../images/arrow-down-dk.png";
 
 class CustomInput extends React.Component {
 
@@ -33,18 +35,27 @@ class CustomInput extends React.Component {
       disabled: this.props.disabled,
       onChangeEvent: this.props.onChangeEvent,
       onBlurEvent: this.props.onBlurEvent,
+      preventHTMLRequiredValidation: this.props.preventHTMLRequiredValidation,
       radioOptions: this.props.radioOptions,
       dropdownOptions: this.props.dropdownOptions,
       subtitle: this.props.subtitle,
-      error: this.props.error
+      error: this.props.error,
+      tooltipContent: this.props.tooltipContent
     };
   }
 
   componentDidMount() {
-
     if (this.props.type === "multiselect") {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
-    }
+      
+      $("[data-toggle='tooltip']")
+        .on("mouseleave", e => e.stopImmediatePropagation())
+        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
+        .tooltip();
+      $("body")
+        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
+        .on("mouseleave", ".tooltip, [data-toggle='tooltip']", () => $(".tooltip").addClass("move-beneath"));
+      }
   }
 
   componentDidUpdate(prevProps) {
@@ -110,6 +121,7 @@ class CustomInput extends React.Component {
 
     return (
       <div className={`form-group custom-input-form-group custom-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
+        {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={images.Question}/>}
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
@@ -119,7 +131,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <img src={ArrowDown} className="dropdown-arrow"/>
+        <img src={images.ArrowDown} className="dropdown-arrow"/>
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
@@ -187,7 +199,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <img src={ArrowDown} className="dropdown-arrow"/>
+        <img src={images.ArrowDown} className="dropdown-arrow"/>
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
@@ -261,7 +273,7 @@ class CustomInput extends React.Component {
       <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}${this.props.loader ? " field-loader" : ""}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.props.maxLength}
+          pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.props.maxLength}
           onChange={ e => { this.onInputChange(e, this.state.inputId); }} onInvalid={e => this.props.onInvalidHandler(e, this.state.inputId)} />
 
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
@@ -322,18 +334,20 @@ CustomInput.propTypes = {
   onBlurEvent: PropTypes.func,
   onChangeEvent: PropTypes.func,
   onInvalidHandler: PropTypes.func,
-  pattern: PropTypes.object,
+  pattern: PropTypes.string,
   patternErrorMessage: PropTypes.string,
+  preventHTMLRequiredValidation: PropTypes.bool,
   radioOptions: PropTypes.array,
   required: PropTypes.bool,
   rowCount: PropTypes.number,
   subtitle: PropTypes.string,
+  tooltipContent: PropTypes.object,
   type: PropTypes.string,
   unpadSubtitle: PropTypes.bool,
-  value: [
+  value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
-  ]
+  ])
 };
 
 const mapStateToProps = state => state;

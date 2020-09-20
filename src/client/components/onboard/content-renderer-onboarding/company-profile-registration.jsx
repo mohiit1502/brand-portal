@@ -7,7 +7,6 @@ import {dispatchCompanyState} from "./../../../actions/company/company-actions";
 import Http from "../../../utility/Http";
 import CustomInput from "../../custom-components/custom-input/custom-input";
 import {showNotification} from "../../../actions/notification/notification-actions";
-import CheckGreenIcon from "../../../images/check-grn.svg";
 import {CustomInterval} from "../../../utility/timer-utils";
 import ProgressBar from "../../custom-components/progress-bar/progress-bar";
 import CONSTANTS from "../../../constants/constants";
@@ -50,7 +49,7 @@ class CompanyProfileRegistration extends React.Component {
             pattern: null,
             disabled: false,
             isUnique: true,
-            subtitle: "Please ensure the company name entered is correct and matches the official document records.",
+            subtitle: "Please ensure that the company name you enter matches the official records.",
             error: "",
             requestAdministratorAccess: false
           },
@@ -126,7 +125,7 @@ class CompanyProfileRegistration extends React.Component {
         },
         requestAccessUndertaking: {
           selected: false,
-          label: "I have read and agree to the Brand Portal Terms of Use."
+          label: "I have read and agree to the Walmart Brand Portal Terms of Use."
         }
       },
       tooltip: {
@@ -225,20 +224,27 @@ class CompanyProfileRegistration extends React.Component {
     this.setState({form});
   }
 
+  // eslint-disable-next-line max-statements
   async checkCompanyNameAvailability () {
+    let inputData;
     try {
       if (!this.state.form.inputData.companyName.value) {
         return;
       }
+      inputData = {...this.state.form.inputData};
+      inputData.companyName.disabled = true;
+      this.setState({form: {inputData}});
       this.loader("fieldLoader", true);
       const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
       // const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}, null, this.props.showNotification));
+      inputData.companyName.disabled = false;
+      this.setState({form: {inputData}});
       if (!response.body.unique) {
         // eslint-disable-next-line no-throw-literal
         throw {
           // TODO CODE: USERAPPROVAL - toggle below two lines' comments once user approval workflow is ready
           // error: `${response.body.name} has already been registered as brand. You can request the administraor for access. However, If you feel your brand has been misrepresented, Please contact help.brand@walmart.com for further assitance.`
-          error: `${response.body.name} has already been registered within Brand Portal. Please contact ipinvest@walmat.com for more information.`
+          error: `${response.body.name} already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`
         };
       }
       this.loader("fieldLoader", false);
@@ -248,6 +254,7 @@ class CompanyProfileRegistration extends React.Component {
       const form = {...this.state.form};
       form.inputData.companyName.isUnique = false;
       form.inputData.companyName.error = err.error;
+      form.inputData.companyName.disabled = false;
       form.inputData.companyName.requestAdministratorAccess = true;
       this.setState({form});
       // console.log(err);
@@ -381,7 +388,7 @@ class CompanyProfileRegistration extends React.Component {
     if (this.state.form.inputData.additionalDoc.id) {
       org.additionalDocId = this.state.form.inputData.additionalDoc.id;
     }
-    this.props.updateOrgData(org);
+    this.props.updateOrgData(org, "company");
     this.setState({redirectToBrands: true});
     this.props.dispatchCompanyState(this.state);
   }
@@ -504,7 +511,7 @@ class CompanyProfileRegistration extends React.Component {
                     <div className="form-row primary-file-upload mb-3">
                       <div className="col">
                         <div className="file-upload-title mb-2">
-                          Please provide business registration documents if this is a corporation (optional) <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
+                          Business registration documents (optional) <Tooltip placement={"right"} content={this.state.tooltip.docContent} icon={infoIcon}/>
                         </div>
                         {
                           !inputData.businessRegistrationDoc.uploading && !inputData.businessRegistrationDoc.id &&

@@ -109,7 +109,17 @@ class CreateUserTemplate extends React.Component {
             type: "select",
             pattern: null,
             disabled: false,
-            options: []
+            options: [],
+            tooltipContent: (
+              <div className="py-2">
+                <p className="position-absolute text-white tooltip-close-button">x</p>
+                <ul className="m-0 pl-3 text-left font-size-12">
+                  <li>Option 1:<br />Admin: can invite reporter-level users, add new brands, submit claims, and view all submitted claims.<br/>
+                      Reporter: can submit claims and see submitted claims for their assigned brands.<br /></li>
+                  <li>Option 2:<br />See <a href="/help" target="_blank">"How to manage user roles and permissions"</a></li>
+                </ul>
+              </div>
+            )
           },
           brands: {
             label: "Assign Brand",
@@ -149,7 +159,7 @@ class CreateUserTemplate extends React.Component {
         let error;
         let isUnique;
         if (!res.body.unique) {
-          error = "This email already exists in the Brand Portal.";
+          error = "This email already exists in the Walmart Brand Portal.";
           isUnique = false;
         } else {
           error = "";
@@ -272,7 +282,7 @@ class CreateUserTemplate extends React.Component {
     const form = {...this.state.form};
     const bool = !!(form.inputData.firstName.value && form.inputData.lastName.value &&
       form.inputData.emailId.value && form.inputData.emailId.isUnique !== false && !form.inputData.phone.error &&
-      form.inputData.role.value && form.inputData.brands.value);
+      form.inputData.role.value && form.inputData.brands.value) && (form.inputData.userType && form.inputData.userType.value === "ThirdParty" ? !!form.inputData.companyName.value : true);
       // && form.undertaking.selected;
 
     form.submitDisabled = !bool;
@@ -400,7 +410,7 @@ class CreateUserTemplate extends React.Component {
       .then(res => {
         const form = {...this.state.form};
         form.inputData.brands.options = res.body.brands;
-        form.inputData.brands.options = form.inputData.brands.options.map(v => {console.log(v.brandName); v.value = v.brandName; v.selected = false; return v;});
+        form.inputData.brands.options = form.inputData.brands.options.map(v => {v.value = v.brandName; v.selected = false; return v;});
         // console.log(form.inputData.brands.options);
         form.inputData.brands = this.getPopulatedBrands(form.inputData.brands);
         this.setState({form});
@@ -508,12 +518,10 @@ class CreateUserTemplate extends React.Component {
                 <div className="row role-and-brand">
                   <div className="col-6">
                     <CustomInput key={"role"}
-                      inputId={"role"}
-                      formId={this.state.form.id} label={this.state.form.inputData.role.label}
-                      required={this.state.form.inputData.role.required} value={this.state.form.inputData.role.value}
-                      type={this.state.form.inputData.role.type} pattern={this.state.form.inputData.role.pattern}
-                      onChangeEvent={this.setSelectInputValue} disabled={this.state.form.inputData.role.disabled}
-                      dropdownOptions={this.state.form.inputData.role.options}/>
+                      inputId={"role"} formId={this.state.form.id} label={this.state.form.inputData.role.label} required={this.state.form.inputData.role.required}
+                      value={this.state.form.inputData.role.value} type={this.state.form.inputData.role.type} pattern={this.state.form.inputData.role.pattern}
+                      onChangeEvent={this.setSelectInputValue} disabled={this.state.form.inputData.role.disabled} dropdownOptions={this.state.form.inputData.role.options}
+                      tooltipContent={this.state.form.inputData.role.tooltipContent} />
                   </div>
                   <div className="col-6">
                     <CustomInput key={"brands"}

@@ -119,8 +119,9 @@ class BrandManagerApi {
       // const UNIQUENSS_CHECK_PATH = `/ropro/umf/v1/brands/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__brandName__", request.query.brandName));
       const url = `${BASE_URL}${UNIQUENESS_CHECK_PATH}`;
+      delete request.query.brandName; // appended already above to URL as different key
 
-      const response = await ServerHttp.get(url, options);
+      const response = await ServerHttp.get(url, options, request.query);
       return h.response(response.body).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);

@@ -19,13 +19,18 @@ class Onboarder extends React.Component {
     this.callback = this.callback.bind(this);
   }
 
-  callback(org) {
+  callback(data, section) {
     const state = {...this.state};
     const steps = [...this.props.steps];
     const brandStepIndex = ClientUtils.where(steps, {name: "Brand Details"});
-    steps[brandStepIndex].complete = true;
-    if (org) {
-      state.org = org;
+    const companyStepIndex = ClientUtils.where(steps, {name: "Company Profile"});
+    if (data) {
+      // eslint-disable-next-line no-unused-expressions
+      section === "company" ? state.org = data : state.brand = data;
+      steps[brandStepIndex].active = section === "company";
+      steps[companyStepIndex].active = section !== "company";
+      steps[companyStepIndex].complete = true;
+      steps[brandStepIndex].complete = true;
     }
     this.props.dispatchSteps(steps);
     this.setState({...state});

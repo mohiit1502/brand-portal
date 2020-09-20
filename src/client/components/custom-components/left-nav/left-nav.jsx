@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import ClientUtils from "../../../utility/ClientUtils";
 import PropTypes from "prop-types";
 import CONSTANTS from "../../../constants/constants";
-import "../../../styles/custom-components/left-nav/left-nav.scss";
+import { Link, withRouter } from "react-router-dom";
 import authorizations from "./../../../config/authorizations";
 import restConfig from "./../../../config/rest";
-import { Link } from "react-router-dom";
+import "../../../styles/custom-components/left-nav/left-nav.scss";
 
 class Leftnav extends React.Component {
   constructor (props) {
@@ -17,6 +17,16 @@ class Leftnav extends React.Component {
     this.state = {
       NAVIGATION_PANEL: this.constructNavigationPanel(CONSTANTS.NAVIGATION_PANEL, props.location.pathname, authorizations)
     };
+  }
+
+  componentDidMount() {
+    this.unlisten = this.props.history.listen(location => {
+      // console.log("on route change: ", location);
+      this.updateNavigationPanel(this.state.NAVIGATION_PANEL, location.pathname);
+    });
+  }
+  componentWillUnmount() {
+      this.unlisten();
   }
 
   // eslint-disable-next-line complexity
@@ -60,7 +70,7 @@ class Leftnav extends React.Component {
   render () {
     return (
       <div className="left-nav d-inline-block">
-        <ul className="nav flex-column">
+        <ul className="nav flex-column mt-3">
           {
             this.state.NAVIGATION_PANEL.map((item => {
               return (
@@ -70,7 +80,7 @@ class Leftnav extends React.Component {
                     item.children && <ul className="nav flex-column">
                       {item.children.map(subItem => {
                         return (
-                          <li className={`nav-item sub-nav-item pl-3 ${subItem.active ? "active" : "inactive"}`} key={subItem.id}>
+                          <li className={`nav-item sub-nav-item pl-3 ${subItem.active ? "active" : "inactive"}`} key={`${item.id}-${subItem.id}`}>
                             <Link className="nav-link" to={subItem.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href);}}>
                               {subItem.value}
                             </Link>
@@ -90,9 +100,10 @@ class Leftnav extends React.Component {
 }
 
 Leftnav.propTypes = {
+  history: PropTypes.object,
   location: PropTypes.object,
   userProfile: PropTypes.object
 };
 
 
-export  default  connect()(Leftnav);
+export  default  connect()(withRouter(Leftnav));

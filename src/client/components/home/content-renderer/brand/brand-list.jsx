@@ -12,6 +12,7 @@ import burgerIcon from "../../../../images/group-23.svg";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
+import {dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
 import CONSTANTS from "../../../../constants/constants";
@@ -173,6 +174,11 @@ class BrandList extends React.Component {
       });
     }
 
+    if (this.props.widgetAction) {
+      this.addNewBrand();
+      this.props.dispatchWidgetAction(false);
+    }
+
     this.setState({brandList});
   }
 
@@ -234,7 +240,7 @@ class BrandList extends React.Component {
 
     const statusFilter = {
       id: "brandStatus",
-      name: "Profile Status",
+      name: "Brand Status",
       // filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
       filterOptions: Array.from(Object.values(CONSTANTS.BRAND.STATUS), (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
@@ -312,6 +318,7 @@ class BrandList extends React.Component {
     });
   }
 
+  // eslint-disable-next-line complexity
   render () {
 
     const viewerShip = () => {
@@ -342,7 +349,7 @@ class BrandList extends React.Component {
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
                   <div className={`btn btn-primary btn-sm px-3${!enableBrandCreate ? " disabled" : ""}`} onClick={enableBrandCreate && this.addNewBrand}>
-                    New Brand
+                    Add New Brand
                   </div>
                 </div>
                 <div className="col-lg-4 col-6 text-right">
@@ -460,22 +467,26 @@ class BrandList extends React.Component {
 }
 
 BrandList.propTypes = {
+  dispatchWidgetAction: PropTypes.func,
   toggleModal: PropTypes.func,
   saveBrandCompleted: PropTypes.func,
   brandEdit: PropTypes.object,
   showNotification: PropTypes.func,
-  userProfile: PropTypes.object
+  userProfile: PropTypes.object,
+  widgetAction: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     brandEdit: state.brandEdit,
     modal: state.modal,
-    userProfile: state.userProfile
+    userProfile: state.user.profile,
+    widgetAction: state.dashboard.widgetAction
   };
 };
 
 const mapDispatchToProps = {
+  dispatchWidgetAction,
   toggleModal,
   saveBrandCompleted,
   showNotification

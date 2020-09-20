@@ -12,6 +12,7 @@ import Http from "../../../utility/Http";
 import CustomInput from "../../custom-components/custom-input/custom-input";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
+import * as staticContent from "./../../../images";
 // import StorageSrvc, {STORAGE_TYPES} from "../../../utility/StorageSrvc";
 
 const console = window.console;
@@ -73,7 +74,7 @@ class BrandRegistration extends React.Component {
         },
         undertaking: {
           selected: false,
-          label: "I have read and agree to the Brand Portal Terms of Use."
+          label: "I have read and agree to the Walmart Brand Portal "
         }
       },
       loader: false,
@@ -135,6 +136,7 @@ class BrandRegistration extends React.Component {
   gotoCompanyRegistration () {
     const steps = this.props.steps ? [...this.props.steps] : [];
     steps && steps[1] && (steps[1].complete = false);
+    this.props.updateOrgData(this.state, "brand");
     this.props.dispatchBrandState(this.state);
     this.props.dispatchSteps(steps);
     this.setState({redirectToCompanyReg: true});
@@ -185,7 +187,7 @@ class BrandRegistration extends React.Component {
       if (!res.body.unique) {
         this.setState(state => {
           state = {...state};
-          state.form.inputData.brandName.error = "This brand is already registered in Brand Portal.";
+          state.form.inputData.brandName.error = `${res.body.name} is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
           state.form.inputData.brandName.isUnique = false;
           return {
             ...state
@@ -214,7 +216,7 @@ class BrandRegistration extends React.Component {
       if (!this.state.form.inputData.trademarkNumber.value) return;
       this.loader("trademarkFieldLoader", true);
       const response = (await Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`)).body;
-      if (!response.valid) {throw {error: `${response.ipNumber} is not a valid Trademark Number.`};}
+      if (!response.valid) {throw {error: `${response.ipNumber} is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`};}
       form.inputData.trademarkNumber = {...form.inputData.trademarkNumber, isValid: true, error: ""};
       form.shouldCheckTrademarkValid = false;
       this.setState({form}, this.checkToEnableSubmit);
@@ -247,7 +249,7 @@ class BrandRegistration extends React.Component {
               <div className="row">
                 <div className="col">
                   <div className="company-registration-subtitle">
-                    Now please tell us about your brand. If you own multiple brands, please choose one example brand under your company for sign-up purposes.
+                    Now please tell us about your brand. If you own multiple brands, please select one which will be verified upon submission.
                   </div>
                 </div>
               </div>
@@ -298,6 +300,8 @@ class BrandRegistration extends React.Component {
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
                         {this.state.form.undertaking.label}
+                        {/* <span><a href="./../../../images/Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf" target="_blank">Terms of Use.</a></span> */}
+                        <span><a href={staticContent.TOU} target="_blank">Terms of Use.</a></span>
                       </label>
                     </div>
                   </div>
@@ -325,6 +329,7 @@ BrandRegistration.propTypes = {
   dispatchSteps: PropTypes.func,
   steps: PropTypes.array,
   toggleModal: PropTypes.func,
+  updateOrgData: PropTypes.func,
   updateUserProfile: PropTypes.func,
   org: PropTypes.PropTypes.oneOfType([
     PropTypes.string,
@@ -336,7 +341,7 @@ const mapStateToProps = state => {
   return {
     brandState: state.company && state.company.brandState,
     steps: state.company && state.company.steps,
-    userProfile: state.userProfile
+    userProfile: state.user.profile
   };
 };
 

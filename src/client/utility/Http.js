@@ -29,7 +29,7 @@ export default class Http {
       return {status, body};
     }
 
-    this.displayToast(status, toastcallback);
+    this.displayToast && typeof this.displayToast === "function" && this.displayToast(status, toastcallback);
     const err = await response.json();
     callback && typeof callback === "function" && callback();
     console.log(err);
@@ -58,7 +58,7 @@ export default class Http {
       return {status, body};
     }
 
-    this.displayToast(status, toastcallback);
+    this.displayToast && typeof this.displayToast === "function" && this.displayToast(status, toastcallback);
     const err = await response.json();
     callback && typeof callback === "function" && callback();
     console.log(err);
@@ -86,7 +86,7 @@ export default class Http {
       return {status, body};
     }
 
-    this.displayToast(status, toastcallback);
+    this.displayToast && typeof this.displayToast === "function" && this.displayToast(status, toastcallback);
     const err = await response.json();
     callback && typeof callback === "function" && callback();
     console.log(err);
@@ -117,7 +117,7 @@ export default class Http {
       return {status, body};
     }
 
-    this.displayToast(status, toastcallback);
+    this.displayToast && typeof this.displayToast === "function" && this.displayToast(status, toastcallback);
     const err = await response.json();
     callback && typeof callback === "function" && callback();
     console.log(err);
