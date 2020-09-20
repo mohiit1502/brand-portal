@@ -1,5 +1,4 @@
 export default require("electrode-confippet").config.$("APP_CONFIG");
-
 export const CONSTANTS = {
     STATUS_CODE_SUCCESS: 200,
     STATUS_CODE_NOT_FOUND: 404,
