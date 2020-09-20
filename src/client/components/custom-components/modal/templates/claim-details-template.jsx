@@ -31,29 +31,15 @@ class ClaimDetailsTemplate extends React.Component {
     let firstName = "";
     let lastName = "";
     let reformattedItems = [];
+    let claimTypeLabel = "";
     const dataLoaded = this.props.data && Object.keys(this.props.data).length > 0;
-    // const statusDetailsMap = {
-    //   Submitted: "Your claim was submitted, and is pending review.",
-    //   "Work in Progress": "Your claim is currently under review.",
-    //   // Closed: "Your claim is closed. The claim details were shared by email to Reporter@email.com"
-    //   Closed: "Your claim has been closed."
-    // };
-
-    // const statusDetails = this.props.data && this.props.data.claimStatus && statusDetailsMap[this.props.data.claimStatus];
 
     if (this.props.data) {
       this.state.loader && this.loader(false);
       firstName = this.props.data.firstName && helper.toCamelCaseIndividual(this.props.data.firstName);
       lastName = this.props.data.lastName && helper.toCamelCaseIndividual(this.props.data.lastName);
       reformattedItems = this.props.data.items && this.props.data.items;
-      // this.props.data.items && this.props.data.items.map(item => {
-      //   if (item.sellerName.includes(",")) {
-      //     const sellers = item.sellerName.split(",");
-      //     sellers.forEach(seller => reformattedItems.push({...item, sellerName: seller}));
-      //   } else {
-      //     reformattedItems.push({...item});
-      //   }
-      // });
+      claimTypeLabel = this.props.data.claimType ? this.props.data.claimType.toLowerCase() === "counterfeit" ? "Trademark Number" : `${this.props.data.claimType} Number` : "Trademark Number";
     } else {
       !this.state.loader && this.loader(true);
     }
@@ -87,7 +73,7 @@ class ClaimDetailsTemplate extends React.Component {
                       <div className="snapshot-value"> {this.props.data.claimType} </div>
                     </div>
                     <div className="col">
-                      <div className="snapshot-header">Copyright Number </div>
+                      <div className="snapshot-header">{claimTypeLabel} </div>
                       <div className="snapshot-value"> {this.props.data.registrationNumber} </div>
                     </div>
                     <div className="col">

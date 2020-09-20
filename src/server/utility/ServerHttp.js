@@ -61,17 +61,25 @@ export default class ServerHttp {
       body: data,
       ...options
     });
-
+    console.log("1. In ServerHttp - Capturing respnose for url ====== ", url);
+    console.log("2. In ServerHttp - Capturing response ====== ", response);
+    console.log("3. In ServerHttp - Capturing response ok ====== ", response.ok);
+    console.log("4. In ServerHttp - Capturing response status ====== ", response.status);
+    console.log("5. In ServerHttp - Capturing response header ====== ", response.headers);
     const {ok, status, headers} = response;
     if (ok) {
+      console.log("5.1. In ServerHttp - Response captured as OK")
       if (headers.get("content-type") === "application/json") {
-        return {status, body: await response.json()};
+        const responseBody = await response.json();
+        console.log("5.2 In ServerHttp - Capturing Resposne Body ====== ", responseBody);
+        return {status, body: responseBody};
       }
       return response;
     }
 
+    
     const err = await response.json();
-    console.log(err);
+    console.log("2. In ServerHttp - Capturing error for not Ok response ====== ", err);
     throw new ServerHttpError(status, err.error, err.message);
   }
 

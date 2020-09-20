@@ -16,8 +16,11 @@ import "../../../../styles/custom-components/modal/templates/new-claim-template.
 
 class NewClaimTemplate extends React.Component {
 
+  // eslint-disable-next-line max-statements
   constructor(props) {
     super(props);
+    this.checkToEnableItemButton = this.checkToEnableItemButton.bind(this);
+    this.enableButtonChecks = this.enableButtonChecks.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
@@ -60,7 +63,7 @@ class NewClaimTemplate extends React.Component {
             pattern: null,
             disabled: false,
             options: [],
-            subtitle: "To add a brand to this list, please submit a brand registration request first by visiting the \"Brands\" section. Please note that brand registration requests can only be submitted by super admin or admin level users.",
+            subtitle: "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
             error: ""
           },
           claimTypeIdentifier: {
@@ -168,15 +171,29 @@ class NewClaimTemplate extends React.Component {
     };
     const state = {...this.state};
     state.itemUrlId++;
-    state.form.inputData.itemList.unshift(item);
-    state.disableAddItem = true;
-    this.setState(state);
+    // state.form.inputData.itemList.unshift(item);
+    state.form.inputData.itemList.push(item);
+    this.setState(state, this.checkToEnableItemButton);
   }
 
   removeFromItemList (evt, index) {
     const form = {...this.state.form};
     form.inputData.itemList.splice(index, 1);
-    this.setState({form});
+    this.setState({form}, this.checkToEnableItemButton);
+  }
+
+  checkToEnableItemButton () {
+    const state = {...this.state};
+    let shouldDisable = false;
+    state.form.inputData.itemList.every(item => {
+      if (!item.url.value || !item.sellerName.value || (item.sellerName.value.length !== undefined && item.sellerName.value.length === 0) || item.url.error || item.sellerName.error) {
+        shouldDisable = true;
+        return false;
+      }
+      return true;
+    });
+    state.disableAddItem = shouldDisable;
+    this.setState(state);
   }
 
   setSelectInputValue (value, key) {
@@ -190,14 +207,6 @@ class NewClaimTemplate extends React.Component {
         state = {...state};
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
-          const itemList = state.form.inputData.itemList;
-          const allSellerFieldsSelected = itemList && itemList.length > 0 ? itemList.reduce((final, item) => {
-            const indexInner = item.id && item.id.split("-").length > 1 && Number(item.id.split("-")[1]);
-            if (indexInner === index) return true;
-            const valueInner = item.sellerName && item.sellerName.value;
-            return !!(final && valueInner && typeof valueInner !== "string" && valueInner.length && valueInner.length > 0);
-          }, true) : true;
-          state.disableAddItem = !(allSellerFieldsSelected && value && value.length && value.length > 0);
           state.form.inputData.itemList[index][key].value = value;
         } else {
           state.form.inputData[key].value = value;
@@ -206,8 +215,13 @@ class NewClaimTemplate extends React.Component {
         return {
           ...state
         };
-      }, this.checkToEnableSubmit);
+      }, this.enableButtonChecks);
     }
+  }
+
+  enableButtonChecks() {
+    this.checkToEnableSubmit();
+    this.checkToEnableItemButton();
   }
 
   // eslint-disable-next-line max-statements
@@ -319,6 +333,7 @@ class NewClaimTemplate extends React.Component {
         if (index > -1) {
           state.form.inputData.itemList[index].sellerName.disabled = true;
           state.form.inputData.itemList[index][key].value = targetVal;
+          state.disableAddItem = true;
           state.currentItem = index;
         } else {
           state.form.inputData[key].value = targetVal;
@@ -421,7 +436,7 @@ class NewClaimTemplate extends React.Component {
           form.inputData.itemList[i].sellerName.disabled = false;
           form.inputData.itemList[i].url.error = "";
           //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
-          this.setState({form});
+          this.setState({form}, this.checkToEnableItemButton);
         })
         .catch(err => {
           this.loader("fieldLoader", false);
@@ -433,7 +448,7 @@ class NewClaimTemplate extends React.Component {
             form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
           }
           form.inputData.itemList[i].sellerName.disabled = true;
-          this.setState({form});
+          this.setState({form}, this.checkToEnableItemButton);
         });
     }
 
@@ -463,7 +478,7 @@ class NewClaimTemplate extends React.Component {
               </div>
           {this.state.claimTypeSelected &&
             <React.Fragment>
-              <p>Please complete the following fields and click submit to submit your claim.</p>
+              <p>Please complete the following fields to submit claim.</p>
               <div className="row brand-and-patent">
                 <div className="col-4">
                   <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}

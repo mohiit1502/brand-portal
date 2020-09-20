@@ -76,7 +76,7 @@ class NewBrandTemplate extends React.Component {
         // },
         // undertaking: {
         //   selected: false,
-        //   label: "I have read and agree to the Brand Portal Terms of Use."
+        //   label: "I have read and agree to the Walmart Brand Portal Terms of Use."
         // }
       }
     };
@@ -141,12 +141,12 @@ class NewBrandTemplate extends React.Component {
   onBrandChange() {
     if (this.state.form.inputData.brandName.value) {
       this.loader("brandFieldLoader", true);
-      Http.get("/api/brands/checkUnique", {brandName: this.state.form.inputData.brandName.value}).then(res => {
+      Http.get("/api/brands/checkUnique", {brandName: this.state.form.inputData.brandName.value, wf: "BRAND_WORKFLOW"}).then(res => {
         this.loader("brandFieldLoader", false);
         let error;
         let isUnique;
         if (!res.body.unique) {
-          error = "This brand is already registered in Brand Portal.";
+          error = "This brand is already registered in your Walmart Brand Portal account";
           isUnique = false;
         } else {
           error = "";
@@ -196,7 +196,7 @@ class NewBrandTemplate extends React.Component {
       });
       const response = (await Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`)).body;
       if (!response.valid) {
-        throw {error: `${response.ipNumber} is not a valid Trademark Number.`};
+        throw {error: `${response.ipNumber} is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com`};
       }
       const state = {...this.state};
       const form = {...state.form};

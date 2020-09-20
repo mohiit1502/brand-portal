@@ -28,6 +28,11 @@ $stepper-row-height: 106px;
         width: 16px;
         border-radius: 50%;
         margin: auto;
+
+        &.bg-complete {
+          background: white !important;
+          border: 4px solid #007DC6;
+        }
       }
 
       .connect-bar {

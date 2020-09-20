@@ -1,5 +1,7 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import Alert from './Alert';
+import DashboardHeader from "./DashboardHeader";
 import LoginFaq from "./LoginFaq";
 import Footer from "./Footer";
 import ContactUsPrompt from "./ContactUsPrompt";
@@ -13,11 +15,13 @@ import FaqSingle from "./FaqSingle";
 import HelpMain from "./HelpMain";
 import HelpSideBar from "./HelpSideBar";
 import Help from "./Help";
-import NoRecordsMatch from "./NoRecordsMatch";
-import StatusModalTemplate from "./StatusModalTemplate";
+import NoRecordsMatch from "./custom-components/NoRecordsMatch";
+import StatusModalTemplate from "./custom-components/modal/templates/StatusModalTemplate";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	Alert,
+	DashboardHeader,
 	LoginFaq,
 	Footer,
 	ContactUsPrompt,

@@ -1,0 +1,90 @@
+.c-Widget {
+    .c-Widget__content {
+        &.widget-border {
+            border: 3px solid #ddd;
+            border-radius: 1rem;
+
+            .c-Widget__content__footer {
+                padding-bottom: 0 !important;
+
+                a {
+                    cursor: pointer;
+                    position: relative;
+                    transition: all 0.8s ease-in-out;
+
+                    &.disabled {
+                        cursor: default;
+                        color: #ddd !important;
+                        text-decoration-line: none !important;
+
+                        &:active {
+                            pointer-events: none;
+                        }
+                    }
+
+                    &.insufficiet-access-message {
+                        transition: all 0.8s ease-in-out;
+
+                        &:after {
+                            background: #fff;
+                            border: 2px solid #ddd;
+                            border-radius: 0.3rem;
+                            color: #777;
+                            content: "Reporter roles cannot perform this action. Please have the administrator of the account register a new brand.";
+                            display: block;
+                            font-size: 1rem;
+                            line-height: 1.4rem;
+                            // height: 0;
+                            left: 0;
+                            overflow: hidden;
+                            padding: 1rem;
+                            position: absolute;
+                            top: 1.5rem;
+                            visibility: hidden;
+                            width: 0;
+                            text-align: left;
+                        }
+                    }
+
+                    &.visible:after {
+                        box-shadow: 0px 13px 12px -2px #bbb;
+                        // height: 5.5rem;
+                        visibility: visible;
+                        width: 20rem;
+                    }
+                }
+
+                &.bottom-1 {
+                    bottom: 1rem;
+                } 
+
+                .c-Widget__content__footer__text {
+                    position: relative;
+                }
+
+                .c-Widget__content__footer__icon {
+                    margin-left: 1rem;
+                    margin-bottom: 1rem;
+                    font-size: 1rem;
+                    border: 3px solid;
+                    border-radius: 50%;
+                    padding: 0.1rem 0.6rem 0.2rem 0.4rem;
+                    position: absolute;
+                    bottom: -1rem;
+                }
+
+                .arrow {
+                    border: solid;
+                    border-width: 0 3px 3px 0;
+                    display: inline-block;
+                    padding: 3px;
+                }
+                  
+                .right {
+                    transform: rotate(-45deg);
+                    -webkit-transform: rotate(-45deg);
+                }
+            }
+        }
+    }
+}

@@ -132,6 +132,11 @@ class UserManagerApi {
         method: "GET",
         path: "/logout",
         handler: this.logout
+      },
+      {
+        method: "GET",
+        path: "/api/logoutProvider",
+        handler: this.getLogoutProvider
       }
     ]);
 
@@ -382,6 +387,16 @@ class UserManagerApi {
     } catch (err) {
       console.error(err);
       throw err;
+    }
+  }
+
+  getLogoutProvider(request, h) {
+    try {
+      const logoutProviderURL = request.app.ccmGet("IAM.FALCON_LOGOUT_URL");
+      return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
     }
   }
 

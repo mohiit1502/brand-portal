@@ -13,12 +13,14 @@ class Tooltip extends React.Component {
   render() {
 
     return (
-      <img alt="i" className="" src={this.props.icon} data-toggle="tooltip" data-placement={this.props.placement} data-html="true" title={ReactDOMServer.renderToString(this.props.content)}/>
+      <img alt="i" className={this.props.classes} src={this.props.icon} data-toggle="tooltip" data-placement={this.props.placement} data-html="true"
+        title={ReactDOMServer.renderToString(this.props.content)}/>
     );
   }
 }
 
 Tooltip.propTypes = {
+  classes: PropTypes.string,
   placement: PropTypes.string,
   content: PropTypes.node,
   icon: PropTypes.node

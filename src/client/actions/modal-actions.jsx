@@ -1,3 +1,4 @@
+export const DISCARD_CHANGES = "DISCARD_CHANGES";
 export const TOGGLE_ACTIONS = {
   SHOW: "show",
   HIDE: "hide"
@@ -18,5 +19,9 @@ export const toggleModal = (toggleAction, meta) => {
   }
 
   return action;
+};
+
+export const dispatchDiscardChanges = shouldDiscard => {
+  return {type: "DISCARD_CHANGES", value: {shouldDiscard}};
 };
 

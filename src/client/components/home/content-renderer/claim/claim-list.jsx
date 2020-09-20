@@ -11,6 +11,7 @@ import filterIcon from "../../../../images/filter-sc.svg";
 import ContentPasteIcon from "../../../../images/content-paste.svg";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
+import {dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import {dispatchClaims} from "./../../../../actions/claim/claim-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import ClaimListTable from "../../../custom-components/table/templates/claim-list-table";
@@ -93,7 +94,8 @@ class ClaimList extends React.Component {
   }
 
   componentDidMount() {
-    const location = this.props.history.location.pathname;
+    let location = this.props.history.location.pathname;
+    location = location.endsWith("/") ? location.substring(0, location.length - 1) : location;
     const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
     if (isClaimDetailPath) {
       const ticketId = location.substring(location.indexOf("/claims/") + 8);
@@ -144,6 +146,11 @@ class ClaimList extends React.Component {
         newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
         return newClaim;
       });
+    }
+
+    if (this.props.widgetAction) {
+      this.addNewClaim();
+      this.props.dispatchWidgetAction(false);
     }
 
     this.props.dispatchClaims({claimList});
@@ -476,19 +483,23 @@ class ClaimList extends React.Component {
 ClaimList.propTypes = {
   claims: PropTypes.array,
   dispatchClaims: PropTypes.func,
+  dispatchWidgetAction: PropTypes.func,
   history: PropTypes.object,
   toggleModal: PropTypes.func,
-  showNotification: PropTypes.func
+  showNotification: PropTypes.func,
+  widgetAction: PropTypes.bool
 };
 
 const mapStateToProps = state => {
   return {
     claims: state.claims && state.claims.claimList,
-    modal: state.modal
+    modal: state.modal,
+    widgetAction: state.dashboard.widgetAction
   };
 };
 
 const mapDispatchToProps = {
+  dispatchWidgetAction,
   dispatchClaims,
   toggleModal,
   showNotification
