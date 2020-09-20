@@ -344,8 +344,6 @@ class CreateUserTemplate extends React.Component {
       name: selectedRole.name
     };
 
-    // TODO: third party values
-
     const payload = {
       user: {
         email: loginId,
