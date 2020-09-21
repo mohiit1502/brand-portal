@@ -28,7 +28,7 @@ import RedCircleCross from "./red-circle-cross.svg";
 import Search from "./18-px-search.svg";
 import Sort from "./sort.svg";
 import TimesSuccess from "./times-success.svg";
-import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
+// import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
 import User from "./user.svg";
 import UserList from "./User List.png";
 import Verified from "./verified.svg";
@@ -71,7 +71,7 @@ export {
     Search,
     Sort,
     TimesSuccess,
-    TOU,
+    // TOU,
     User,
     UserList,
     Verified,
