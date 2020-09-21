@@ -301,7 +301,8 @@ class BrandRegistration extends React.Component {
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
                         {this.state.form.undertaking.label}
                         {/* <span><a href="./../../../images/Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf" target="_blank">Terms of Use.</a></span> */}
-                        <span><a href={staticContent.TOU} target="_blank">Terms of Use.</a></span>
+                        {/* <span><a href={staticContent.TOU} target="_blank">Terms of Use.</a></span> */}
+                        <span><a href="#" target="_blank">Terms of Use.</a></span>
                       </label>
                     </div>
                   </div>
