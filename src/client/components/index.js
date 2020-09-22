@@ -1,6 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
-import Alert from './Alert';
+import Alert from "./Alert";
 import DashboardHeader from "./DashboardHeader";
 import LoginFaq from "./LoginFaq";
 import Footer from "./Footer";
