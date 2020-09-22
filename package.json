@@ -1,12 +1,12 @@
 {
   "name": "ropro-brandportal",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
     "name": "Mohit Nagar",
     "email": "mohit.nagar@walmartlabs.com",
-    "url": ""
+    "url": "https://brandportal.walmart.com"
   },
   "contributors": [],
   "files": [

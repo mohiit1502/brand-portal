@@ -11,7 +11,7 @@ const WIDGETCONFIG = {
         },
         "body": {
             "contentLayout": "py-3",
-            "contentClasses": "h5 px-3 font-weight-bold"
+            "contentClasses": "h5 px-3 font-weight-bold override-body-style"
         },
         "footer": {
             "contentLayout": "border-top pb-0 position-absolute w-100 bottom-1",

@@ -143,13 +143,10 @@ class CompanyManagerApi {
       const filename = file.hapi.filename;
       const fd = new FormData();
 
-      console.log("1. In CMA - pre-request - incoming file ========= ", file);
-      console.log("2. In CMA - pre-request - incoming filename ========= ", filename);
       fd.append("file", file, {filename});
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const BUSINESS_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.BUSINESS_DOC_PATH");
       const url = `${BASE_URL}${BUSINESS_DOC_PATH}`;
-      console.log("3. In CMA - pre-request - Document upload URL ========= ", url);
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
       return h.response(response.body).code(response.status);
