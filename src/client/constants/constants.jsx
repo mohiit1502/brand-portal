@@ -215,7 +215,7 @@ const CONSTANTS = {
   },
 
   REGEX: {
-    ONECHAR: "[a-zA-Z0-9]+",
+    ONECHAR: "[a-zA-Z0-9 ]+",
     ZIP: "\\d{5}(?:[-\s]\\d{4})?$",
     EMAIL: "\\S+@\\S+\.\\S+",
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",

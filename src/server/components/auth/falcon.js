@@ -16,7 +16,6 @@ class Falcon {
       const scope = secrets.SCOPE;
       const responseType = secrets.RESPONSE_TYPE;
       const baseUrl = action.toLowerCase() === "login" ? IAM.FALCON_LOGIN_URL : IAM.FALCON_REGISTER_URL;
-      console.log("Falcon.generateFalconRedirectURL: request referrer", request.headers.referrer);
       const redirectUri = `${process.env.NODE_ENV === "development" ? CONSTANTS.BASE_URL : IAM.BASE_URL}${IAM.REDIRECT_PATH}`;
 
       return queryString.stringifyUrl({

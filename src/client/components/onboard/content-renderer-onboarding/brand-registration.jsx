@@ -13,7 +13,6 @@ import CustomInput from "../../custom-components/custom-input/custom-input";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
 import * as staticContent from "./../../../images";
-// import StorageSrvc, {STORAGE_TYPES} from "../../../utility/StorageSrvc";
 
 const console = window.console;
 class BrandRegistration extends React.Component {
@@ -300,9 +299,7 @@ class BrandRegistration extends React.Component {
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
                         {this.state.form.undertaking.label}
-                        {/* <span><a href="./../../../images/Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf" target="_blank">Terms of Use.</a></span> */}
-                        {/* <span><a href={staticContent.TOU} target="_blank">Terms of Use.</a></span> */}
-                        <span><a href="#" target="_blank">Terms of Use.</a></span>
+                        <span><a href={staticContent.TOU} target="_blank">Terms of Use.</a></span>
                       </label>
                     </div>
                   </div>
