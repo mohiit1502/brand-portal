@@ -112,12 +112,14 @@ class CreateUserTemplate extends React.Component {
             options: [],
             tooltipContent: (
               <div className="py-2">
-                <p className="position-absolute text-white tooltip-close-button">x</p>
-                <ul className="m-0 pl-3 text-left font-size-12">
+                <b className="position-absolute text-white tooltip-close-button">x</b>
+                {/* <ul className="m-0 pl-3 text-left font-size-12">
                   <li>Option 1:<br />Admin: can invite reporter-level users, add new brands, submit claims, and view all submitted claims.<br/>
                       Reporter: can submit claims and see submitted claims for their assigned brands.<br /></li>
                   <li>Option 2:<br />See <a href="/help" target="_blank">"How to manage user roles and permissions"</a></li>
-                </ul>
+                </ul> */}
+                <p className="mt-2 pl-2 text-left font-size-12"><b>Admin:</b> Can invite reporter-level users, add new brands, submit claims, and view all submitted claims.<br/>
+                      <br /><b>Reporter:</b> Can submit claims and see submitted claims for their assigned brands.<br /></p>
               </div>
             )
           },

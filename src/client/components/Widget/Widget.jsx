@@ -71,7 +71,7 @@ const Widget = props => {
           </div>
         </div>
         <div className={`c-Widget__content__footer${commonContentLayoutInferred}${commonFooterLayoutInferred}${footerLayoutInferred}`}>
-          <Link className={`${commonFooterContentClassesInferred}${footerContentClassesInferred}${hovered ? " visible" : ""}${isDisabled ? " disabled insufficiet-access-message" : ""}`} to={footer.href} onClick={() => widgetActionDispatcher(true)} onMouseOver={() => isDisabled && setHovered(true)} onMouseOut={() => isDisabled && setHovered(false)}>
+          <Link className={`${commonFooterContentClassesInferred}${footerContentClassesInferred}${hovered ? " visible" : ""}${isDisabled ? " disabled insufficiet-access-message" : ""}`} to={!isDisabled ? footer.href : ""} onClick={() => widgetActionDispatcher(true)} onMouseOver={() => isDisabled && setHovered(true)} onMouseOut={() => isDisabled && setHovered(false)}>
             <div className="c-Widget__content__footer__text">
               {footer.text}
               <span className="c-Widget__content__footer__icon"><span className="arrow right" /></span>
