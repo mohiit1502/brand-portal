@@ -22,7 +22,8 @@ class NewUserAddedTemplate extends React.Component {
   }
 
   getDescriptionString() {
-    return `An email has been sent to ${this.props.modal.data.email}. The email has limited validity and will expire in 24 hours. The profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
+    // return `An email has been sent to ${this.props.modal.data.email}. The email has limited validity and will expire in 24 hours. The profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
+    return `An invitation has been sent to ${this.props.modal.data.email} which will expire in 24 hours. The user profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
   }
 
   render() {
