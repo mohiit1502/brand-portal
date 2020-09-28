@@ -355,7 +355,7 @@ class ClaimList extends React.Component {
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.addNewClaim}>
-                    New Claim
+                    Submit New Claim
                   </div>
                 </div>
                 <div className="col-lg-4 col-6 text-right">
@@ -438,7 +438,7 @@ class ClaimList extends React.Component {
                             <img src={ContentPasteIcon} height={80}/>
                             <br/><br/>
                             <div className="h4">No Claim History</div>
-                            <div>You can submit a claim by clicking the "New Claim" button</div>
+                            <div>You can submit a claim by clicking the "Submit New Claim" button</div>
                           </div>
                         </div>
                       }
