@@ -70,7 +70,6 @@ export default class ServerHttp {
       return response;
     }
 
-    
     const err = await response.json();
     console.log("2. In ServerHttp - Capturing error for not Ok response ====== ", err);
     throw new ServerHttpError(status, err.error, err.message);

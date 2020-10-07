@@ -177,21 +177,27 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   z-index: 1040;
 }
 
-.field-loader {
+.field-loader, .field-ok {
   position: relative;
 }
 
-.field-loader:before {
+.field-loader:before, .field-ok:before {
   display: block;
-    content: "";
-    position: absolute;
-    top: 0.7rem;
-    right: 0rem;
-    width: 40px;
-    height: 40px;
-    background-image: url("./../images/field-loader.svg");
-    background-repeat: no-repeat;
-    z-index: 10;
+  content: "";
+  position: absolute;
+  top: 0.7rem;
+  right: -0.7rem;
+  width: 40px;
+  height: 40px;
+  background-image: url("./../images/field-loader.svg");
+  background-repeat: no-repeat;
+  z-index: 10;
+}
+
+.field-ok:before {
+  top: 0.5rem;
+  background-size: 1.2rem;
+  background-image: url("./../images/check-grn.svg");
 }
 
 .show {

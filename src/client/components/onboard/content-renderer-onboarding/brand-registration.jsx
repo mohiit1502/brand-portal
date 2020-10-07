@@ -13,81 +13,31 @@ import CustomInput from "../../custom-components/custom-input/custom-input";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
 import * as staticContent from "./../../../images";
+import FORMFIELDCONFIG from "../../../config/formsConfig/form-field-meta";
+import Validator from "../../../utility/validationUtil";
 
 const console = window.console;
 class BrandRegistration extends React.Component {
 
   constructor(props) {
     super(props);
-    this.loader = this.loader.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.gotoCompanyRegistration = this.gotoCompanyRegistration.bind(this);
-    this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
-    this.undertakingtoggle = this.undertakingtoggle.bind(this);
-    this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
-    this.checkBrandUniqueness = this.checkBrandUniqueness.bind(this);
-    this.trademarkDebounce = Helper.debounce(this.checkTrademarkValidity, CONSTANTS.APIDEBOUNCETIMEOUT);
-    this.brandDebounce = Helper.debounce(this.checkBrandUniqueness, CONSTANTS.APIDEBOUNCETIMEOUT);
-    // this.storageSrvc = new StorageSrvc(STORAGE_TYPES.SESSION_STORAGE);
-
-
+    const functions = ["onChangeEvent", "gotoCompanyRegistration", "submitOnboardingForm", "undertakingtoggle"];
+    const debounceFunctions = {"brandDebounce": "checkBrandUniqueness", "trademarkDebounce": "checkTrademarkValidity"};
+    functions.forEach(name => this[name] = this[name].bind(this));
+    Object.keys(debounceFunctions).forEach(name => {
+      const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
+      this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
+    });
+    this.loader = Helper.loader.bind(this);
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       isSubmitDisabled: true,
       redirectToCompanyReg: !this.props.org,
       form: {
-        id: "company-profile-reg",
-        inputData: {
-          trademarkNumber: {
-            label: "Trademark Number",
-            required: true,
-            value: "",
-            type: "text",
-            pattern: null,
-            disabled: false,
-            isValid: false,
-            subtitle: "Please input the trademark registration number. Only USPTO registered trademarks are accepted.",
-            error: "",
-            onBlurEvent: this.checkTrademarkValidity
-          },
-          brandName: {
-            label: "Brand Name",
-            required: true,
-            value: "",
-            type: "text",
-            pattern: null,
-            disabled: false,
-            subtitle: "",
-            error: "",
-            isUnique: false
-          },
-          comments: {
-            label: "Comments",
-            required: false,
-            value: "",
-            type: "textarea",
-            pattern: null,
-            disabled: false,
-            subtitle: "",
-            error: ""
-          }
-        },
-        undertaking: {
-          selected: false,
-          label: "I have read and agree to the Walmart Brand Portal "
-        }
-      },
-      loader: false,
-      trademarkFieldLoader: false,
-      brandFieldLoader: false
+        id: FORMFIELDCONFIG.SECTIONSCONFIG.BRANDREG.sectionConfig.name,
+        inputData: FORMFIELDCONFIG.SECTIONSCONFIG.BRANDREG.fields,
+        loader: FORMFIELDCONFIG.SECTIONSCONFIG.BRANDREG.loader
+      }
     };
-  }
-
-  loader (type, enable) {
-    this.setState(state => {
-      const stateClone = {...state};
-      stateClone[type] = enable;
-      return stateClone;
-    });
   }
 
   checkToEnableSubmit () {
@@ -96,12 +46,17 @@ class BrandRegistration extends React.Component {
       form.inputData.trademarkNumber.value &&
       form.inputData.brandName.value &&
       form.inputData.brandName.isUnique &&
-      form.undertaking.selected &&
-      !form.shouldCheckTrademarkValid;
+      form.inputData.undertaking.selected;
     this.setState({isSubmitDisabled: !bool});
   }
 
-  onInputChange (evt, key) {
+  onKeyPress(evt, key) {
+    if (key === "trademarkNumber" && ((evt.which < 48 || evt.which > 57) && !CONSTANTS.ALLOWED_KEY_CODES.includes(evt.which))) {
+      evt.preventDefault();
+    }
+  }
+
+  onChangeEvent (evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       this.setState(state => {
@@ -109,10 +64,10 @@ class BrandRegistration extends React.Component {
         if (key === "trademarkNumber") {
           this.trademarkDebounce();
           state.form.inputData.trademarkNumber.error = "";
-          state.form.shouldCheckTrademarkValid = true;
+          state.form.inputData.trademarkNumber.isValid = false;
         }
         if (key === "brandName") {
-          this.brandDebounce();
+          this.brandDebounce({brandName: targetVal});
           state.form.inputData.brandName.error = "";
           state.form.inputData.brandName.isUnique = false;
         }
@@ -126,7 +81,7 @@ class BrandRegistration extends React.Component {
 
   undertakingtoggle () {
     const state = {...this.state};
-    state.form.undertaking.selected = !state.form.undertaking.selected;
+    state.form.inputData.undertaking.selected = !state.form.inputData.undertaking.selected;
     this.setState({
       ...state
     }, this.checkToEnableSubmit);
@@ -153,14 +108,15 @@ class BrandRegistration extends React.Component {
   async submitOnboardingForm(evt) {
     evt.preventDefault();
     try {
-      this.loader("loader", true);
+      this.loader("form", true);
+      const inputData = this.state.form.inputData;
       const brand = {
-        trademarkNumber: this.state.form.inputData.trademarkNumber.value,
-        name: this.state.form.inputData.brandName.value,
+        trademarkNumber: inputData.trademarkNumber.value,
+        name: inputData.brandName.value,
         comments: ""
       };
-      if (this.state.form.inputData.comments.value) {
-        brand.comments = this.state.form.inputData.comments.value;
+      if (inputData.comments.value) {
+        brand.comments = inputData.comments.value;
       }
       const data = {
         org: this.props.org,
@@ -168,73 +124,40 @@ class BrandRegistration extends React.Component {
       };
 
       await Http.post("/api/org/register", data);
-      this.loader("loader", false);
+      this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();
       this.props.dispatchNewRequest(true);
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     } catch (err) {
-      console.log(err);
-      this.loader("loader", false);
-    }
-
-  }
-
-  checkBrandUniqueness() {
-    this.loader("brandFieldLoader", true);
-    Http.get("/api/brands/checkUnique", {brandName: this.state.form.inputData.brandName.value}).then(res => {
-      if (!res.body.unique) {
-        this.setState(state => {
-          state = {...state};
-          state.form.inputData.brandName.error = `${res.body.name} is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
-          state.form.inputData.brandName.isUnique = false;
-          return {
-            ...state
-          };
-        }, this.checkToEnableSubmit);
-      } else {
-        this.setState(state => {
-          state = {...state};
-          state.form.inputData.brandName.error = "";
-          state.form.inputData.brandName.isUnique = true;
-          return {
-            ...state
-          };
-        }, this.checkToEnableSubmit);
-      }
-      this.loader("brandFieldLoader", false);
-    })
-    .catch(e => {
-      this.loader("brandFieldLoader", false);
-    });
-  }
-
-  async checkTrademarkValidity () {
-    const form = {...this.state.form};
-    try {
-      if (!this.state.form.inputData.trademarkNumber.value) return;
-      this.loader("trademarkFieldLoader", true);
-      const response = (await Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`)).body;
-      if (!response.valid) {throw {error: `${response.ipNumber} is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`};}
-      form.inputData.trademarkNumber = {...form.inputData.trademarkNumber, isValid: true, error: ""};
-      form.shouldCheckTrademarkValid = false;
-      this.setState({form}, this.checkToEnableSubmit);
-      this.loader("trademarkFieldLoader", false);
-    } catch (err) {
-      form.inputData.trademarkNumber = {...form.inputData.trademarkNumber, isValid: false, error: err.error};
-      form.shouldCheckTrademarkValid = true;
-      this.setState({form}, this.checkToEnableSubmit);
-      this.loader("trademarkFieldLoader", false);
+      this.loader("form", false);
     }
   }
 
+  getFieldRenders() {
+    const {form} = this.state;
+    return form.inputData && Object.keys(form.inputData).map((id, key) => {
+      const fieldObj = form.inputData[id];
+      return fieldObj.inputId ? (
+        <div className="form-row" key={key}>
+          <div className="col">
+            <CustomInput formId={form.id} onChangeEvent={this.onChangeEvent} onKeyPress={this.onKeyPress} {...fieldObj} />
+          </div>
+        </div>
+      ) : null;
+    }).filter(item => item !== null);
+  }
 
   render() {
     if (this.state.redirectToCompanyReg) {
       return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
     }
+
+    const form = this.state.form;
+    const inputData = form.inputData;
+
     return (
-      <div className={`row justify-content-center ${this.state.loader && "loader"}`}>
+      <div className={`row justify-content-center ${this.state.form.loader && "loader"}`}>
         <div className="col-lg-6 col-md-8 col-12">
           <div className="row title-row mb-4">
             <div className="col">
@@ -257,48 +180,14 @@ class BrandRegistration extends React.Component {
           <div className="row company-reg-form-row">
             <div className="col">
               <form>
-                <div className="form-row">
-                  <div className="col-12">
-                    <CustomInput key={"trademarkNumber"}
-                      inputId={"trademarkNumber"} formId={this.state.form.id} label={this.state.form.inputData.trademarkNumber.label} required={this.state.form.inputData.trademarkNumber.required}
-                      value={this.state.form.inputData.trademarkNumber.value} type={this.state.form.inputData.trademarkNumber.type} pattern={this.state.form.inputData.trademarkNumber.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.trademarkNumber.disabled} error={this.state.form.inputData.trademarkNumber.error}
-                      subtitle={this.state.form.inputData.trademarkNumber.subtitle} loader={this.state.trademarkFieldLoader} />
-                  </div>
-                  {/* <div className="col-2">
-                    <div className={`btn btn-sm btn-block ${this.state.form.inputData.trademarkNumber.isValid && !this.state.form.shouldCheckTrademarkValid ? "btn-success" : "btn-primary"}`}
-                      onClick={this.checkTrademarkValidity}>
-                      {this.state.form.inputData.trademarkNumber.isValid && !this.state.form.shouldCheckTrademarkValid ? <img className="check-green-icon-white-bg" src={CheckGreenIcon} /> : "Check"}
-                    </div>
-                  </div> */}
-                </div>
-                <div className="form-row">
-                  <div className="col">
-                    <CustomInput key={"brandName"}
-                      inputId={"brandName"} formId={this.state.form.id} label={this.state.form.inputData.brandName.label} required={this.state.form.inputData.brandName.required}
-                      value={this.state.form.inputData.brandName.value} type={this.state.form.inputData.brandName.type} pattern={this.state.form.inputData.brandName.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.brandName.disabled} loader={this.state.brandFieldLoader}
-                      error={this.state.form.inputData.brandName.error} subtitle={this.state.form.inputData.brandName.subtitle}/>
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="col">
-                    <CustomInput key={"comments"}
-                      inputId={"comments"}
-                      formId={this.state.form.id} label={this.state.form.inputData.comments.label}
-                      required={this.state.form.inputData.comments.required} value={this.state.form.inputData.comments.value}
-                      type={this.state.form.inputData.comments.type} pattern={this.state.form.inputData.comments.pattern}
-                      onChangeEvent={this.onInputChange} disabled={this.state.form.inputData.comments.disabled}
-                      error={this.state.form.inputData.comments.error} subtitle={this.state.form.inputData.comments.subtitle}/>
-                  </div>
-                </div>
+                {this.getFieldRenders()}
                 <div className="form-row mt-5">
                   <div className="col">
                     <div className="form-check">
-                      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}
+                      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={inputData.undertaking.selected} required={true}
                         onChange={this.undertakingtoggle}/>
                       <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">
-                        {this.state.form.undertaking.label}
+                        {inputData.undertaking.label}
                         <span><a href={staticContent.TOU} target="_blank">Terms of Use.</a></span>
                       </label>
                     </div>

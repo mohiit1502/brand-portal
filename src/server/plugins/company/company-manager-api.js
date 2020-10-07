@@ -1,6 +1,7 @@
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
+import { CONSTANTS } from "../../constants/server-constants";
 
 class CompanyManagerApi {
   constructor() {
@@ -65,7 +66,7 @@ class CompanyManagerApi {
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"abcd",
-      ROPRO_CORRELATION_ID: "sdfsdf"
+      ROPRO_CORRELATION_ID: ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
     };
   }
 
