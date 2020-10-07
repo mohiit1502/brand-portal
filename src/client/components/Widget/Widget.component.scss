@@ -64,7 +64,7 @@
 
             &.bottom-1 {
                 bottom: 1rem;
-            } 
+            }
 
             .c-Widget__content__footer__text {
                 position: relative;
@@ -87,11 +87,39 @@
                 display: inline-block;
                 padding: 3px;
             }
-              
+
             .right {
                 transform: rotate(-45deg);
                 -webkit-transform: rotate(-45deg);
             }
+        }
+
+
+        @media only screen and (max-width: 1800px) {
+          .c-Widget__content__footer {
+            a {
+              font-size: 1.5rem;
+
+              .c-Widget__content__footer__icon {
+                margin-left: 0.6rem;
+                border: 2px solid;
+                padding: 0 .5rem .1rem .3rem;
+              }
+            }
+          }
+        }
+
+        @media only screen and (max-width: 1450px) {
+          .c-Widget__content__footer {
+            a {
+              font-size: 1.3rem;
+
+              .c-Widget__content__footer__icon {
+                margin-left: 0.3rem;
+                padding: 0 .4rem 0 .2rem;
+              }
+            }
+          }
         }
     }
 }

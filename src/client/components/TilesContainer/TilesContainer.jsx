@@ -17,7 +17,7 @@ const TilesContainer = props => {
   const tilesRenders = contentRenderer && props.tiles && props.tiles.map((tile, key) => <Tile key={key} data={tile} contentRenderer={contentRenderer} />);
 
   return (
-    <div className="c-TilesContainer row display-flex">
+    <div className="c-TilesContainer row display-flex px-4 mx-0">
       {tilesRenders}
     </div>
   );

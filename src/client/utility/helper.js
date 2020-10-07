@@ -12,6 +12,27 @@ export default class Helper {
         return Helper.toCamelCaseIndividual(incoming);
     }
 
+    static loader (path, enable) {
+      this.setState(state => {
+        const stateClone = {...state};
+        const fieldObj = Helper.search(path, stateClone);
+        fieldObj.loader = enable;
+        return stateClone;
+      });
+    }
+
+    static search (path, obj) {
+      if (!path) return obj;
+      const pathArr = path.split(".");
+      let recurredObject = obj;
+      let i = 0;
+      while (i < pathArr.length) {
+        recurredObject = recurredObject[pathArr[i]];
+        i++;
+      }
+      return recurredObject;
+    }
+
     static toCamelCase (incoming) {
         if (!incoming) {
             return "";

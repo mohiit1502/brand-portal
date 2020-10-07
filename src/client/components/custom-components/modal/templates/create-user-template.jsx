@@ -170,6 +170,7 @@ class CreateUserTemplate extends React.Component {
         this.setState(state => {
           state = {...state};
           const emailIdInner = state.form.inputData.emailId;
+          emailIdInner.value = emailIdInner.value ? emailIdInner.value.toLowerCase() : emailIdInner.value;
           (emailIdInner.error !== emailIdInner.invalidError) && (emailIdInner.error = error);
           emailIdInner.isUnique = isUnique;
           return state;

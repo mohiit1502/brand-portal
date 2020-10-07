@@ -1,5 +1,8 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import ButtonsPanel from './ButtonsPanel';
+import CheckBox from './CheckBox';
+import FileUploader from './FileUploader';
 import Alert from "./Alert";
 import DashboardHeader from "./DashboardHeader";
 import LoginFaq from "./LoginFaq";
@@ -20,6 +23,9 @@ import StatusModalTemplate from "./custom-components/modal/templates/StatusModal
 
 export {
   /* PLOP_INJECT_EXPORT */
+	ButtonsPanel,
+	CheckBox,
+	FileUploader,
 	Alert,
 	DashboardHeader,
 	LoginFaq,

@@ -64,6 +64,9 @@ const CONSTANTS = {
       IMAGE: "Alert",
       MESSAGE: "A verification email has been sent to your email address. Please verify using the link provided.",
       TITLE: "Email verification required"
+    },
+    ERRORCODES: {
+      SERVERERROR: "^[4,5]\\d{2}$"
     }
   },
 
@@ -228,6 +231,7 @@ const CONSTANTS = {
 
   POPOVERSELECTOR: "tutorialPopover",
   APIDEBOUNCETIMEOUT: 800,
+  ONCHANGEVALIDATIONTIMEOUT: 300,
   STATUS_CODE_SUCCESS: 200,
   STATUS_CODE_NOT_FOUND: 404,
   KEY_CODE_BACKSPACE: 8,

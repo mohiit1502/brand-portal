@@ -4,50 +4,28 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import $ from "jquery";
 import Tooltip from "../tooltip/tooltip";
+import Validator from "../../../utility/validationUtil";
 import * as images from "./../../../images";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
+import Helper from "../../../utility/helper";
+import CONSTANTS from "../../../constants/constants";
+import {ButtonsPanel, CheckBox, FileUploader} from "../../index";
 
 class CustomInput extends React.Component {
 
   constructor (props) {
     super(props);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.getRadioInputType = this.getRadioInputType.bind(this);
-    this.getTextInputType = this.getTextInputType.bind(this);
-    this.getTextAreaInputType = this.getTextAreaInputType.bind(this);
-    this.getSelectInput = this.getSelectInput.bind(this);
-    this.getMultiSelectInput = this.getMultiSelectInput.bind(this);
-    this.setSelectInputValue = this.setSelectInputValue.bind(this);
-    this.setMultiSelectInputValue = this.setMultiSelectInputValue.bind(this);
-    this.setMultiSelectValueFromDropdownOptions = this.setMultiSelectValueFromDropdownOptions.bind(this);
-    this.getSubtitleAndError = this.getSubtitleAndError.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-
-    this.state = {
-      label: this.props.label,
-      key: this.props.key,
-      formId: this.props.formId,
-      inputId: this.props.inputId,
-      type: this.props.type,
-      required: this.props.required,
-      value: this.props.value,
-      pattern: this.props.pattern,
-      disabled: this.props.disabled,
-      onChangeEvent: this.props.onChangeEvent,
-      onBlurEvent: this.props.onBlurEvent,
-      preventHTMLRequiredValidation: this.props.preventHTMLRequiredValidation,
-      radioOptions: this.props.radioOptions,
-      dropdownOptions: this.props.dropdownOptions,
-      subtitle: this.props.subtitle,
-      error: this.props.error,
-      tooltipContent: this.props.tooltipContent
-    };
+    const functions = ["changeHandlers", "onInputChange", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"]
+    functions.forEach(name => this[name] = this[name].bind(this));
+    this.validate = Validator.validate.bind(this);
+    this.changeHandlerDebounce = Helper.debounce(this.changeHandlers, CONSTANTS.ONCHANGEVALIDATIONTIMEOUT);
+    this.state = {...this.props};
   }
 
   componentDidMount() {
-    if (this.props.type === "multiselect") {
+    if (this.state.type === "multiselect") {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
-      
+
       $("[data-toggle='tooltip']")
         .on("mouseleave", e => e.stopImmediatePropagation())
         .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
@@ -58,25 +36,40 @@ class CustomInput extends React.Component {
       }
   }
 
-  componentDidUpdate(prevProps) {
-
+  componentDidUpdate(prevProps, prevState) {
     const changedProps = this.havePropsChanged(prevProps, this.props);
+    const changedState = this.havePropsChanged(prevState, this.state);
     if (changedProps) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState(changedProps);
     }
+    if (changedState) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState(changedState);
+    }
   }
 
   onInputChange(evt, key) {
+    evt.persist();
     if (evt && evt.target) {
       this.setState({
+//         error: "",
+        fieldOk: false,
         value: evt.target.value
       });
     }
-
-    this.props.customChangeHandler && this.props.customChangeHandler(evt);
-    this.state.onChangeEvent(evt, key);
+    this.changeHandlerDebounce(evt, key);
   }
+
+  changeHandlers (evt, key) {
+    this.state.customChangeHandler && this.state.customChangeHandler(evt);
+    if (!this.validate(evt)) {
+      this.state.onChangeEvent(evt, key);
+    }
+    // const preValidationPassed = !this.validate(evt);
+    // this.state.onChangeEvent(evt, key, preValidationPassed);
+  }
+
 
   setSelectInputValue (value, key) {
     if (value) {
@@ -84,12 +77,12 @@ class CustomInput extends React.Component {
         value
       });
     }
-    this.props.customChangeHandler && this.props.customChangeHandler(value);
+    this.state.customChangeHandler && this.state.customChangeHandler(value);
     this.state.onChangeEvent(value, key);
   }
 
   havePropsChanged(prevProps, newProps) {
-    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "radioOptions", "dropdownOptions", "error", "subtitle"];
+    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "loader", "fieldOk", "radioOptions", "dropdownOptions", "error", "subtitle"];
     const changedProps = {};
     for (const i in changeableProps) {
       if (prevProps[changeableProps[i]] !== newProps[changeableProps[i]]) {
@@ -104,14 +97,12 @@ class CustomInput extends React.Component {
   }
 
   onBlur (evt) {
-    const pattern = new RegExp(this.props.pattern);
-    if (this.props.pattern && !pattern.test(evt.target.value)) {
-      this.setState({error: this.props.patternErrorMessage});
-    } else {
-      this.setState({error: ""});
+    const pattern = new RegExp(this.state.pattern);
+    if (!this.state.error && this.state.pattern && !pattern.test(evt.target.value)) {
+      this.setState({error: this.state.patternErrorMessage});
     }
-    if (this.props.onBlurEvent) {
-      this.props.onBlurEvent(evt);
+    if (this.state.onBlurEvent) {
+      this.state.onBlurEvent(evt);
     }
   }
 
@@ -132,14 +123,14 @@ class CustomInput extends React.Component {
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={images.ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
 
         <div className="dropdown-menu">
           {
-            this.props.dropdownOptions.map((option, i) => {
+            this.state.dropdownOptions.map((option, i) => {
               return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value, this.state.inputId); } }>{option.value}</a>;
             })
           }
@@ -200,7 +191,7 @@ class CustomInput extends React.Component {
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={images.ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
@@ -230,11 +221,11 @@ class CustomInput extends React.Component {
     return (
       <div className="form-group custom-input-form-group form-group-radio">
         {
-          this.props.radioOptions.map((option, i) => {
+          this.state.radioOptions.map((option, i) => {
             return (
-              <div key={i}  className={`btn btn-sm radio-btn-box  p-0 ${this.props.value === option.value ? "active" : "inactive"}`}>
+              <div key={i}  className={`btn btn-sm radio-btn-box  p-0 ${this.state.value === option.value ? "active" : "inactive"}`}>
                 <input type="radio" id={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`} name={`${this.state.formId}-${this.state.inputId}-custom-input`}
-                  className="custom-control-input" value={option.value} checked={this.props.value === option.value}
+                  className="custom-control-input" value={option.value} checked={this.state.value === option.value}
                   onChange={ e => { this.onInputChange(e, this.state.inputId); }}/>
                 <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
                   {option.label || option.value}
@@ -252,8 +243,8 @@ class CustomInput extends React.Component {
     let subtitleClass = "text-muted";
     let errorClass = "";
 
-    if (this.props.error) {
-      subtitleText = this.props.error;
+    if (this.state.error) {
+      subtitleText = this.state.error;
       subtitleClass = "text-danger";
       errorClass = "has-error";
     } else if (this.state.subtitle) {
@@ -270,18 +261,18 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}${this.props.loader ? " field-loader" : ""}`}>
+      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"}${errorClass ? " " + errorClass : ""}${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : ""}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.props.maxLength}
-          onChange={ e => { this.onInputChange(e, this.state.inputId); }} onInvalid={e => this.props.onInvalidHandler(e, this.state.inputId)} />
+          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
+          pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.state.maxLength}
+          onChange={ e => { this.onInputChange(e, this.state.inputId); }} onInvalid={this.state.onInvalidHandler ? (e => this.state.parentRef[this.state.onInvalidHandler](e, this.state.inputId)) : null} />
 
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.props.unpadSubtitle && "0.3rem"}}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
       </div>
@@ -293,7 +284,7 @@ class CustomInput extends React.Component {
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
-        <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.props.rowCount || 4}
+        <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onInputChange(e, this.state.inputId); }} />
       </div>
@@ -302,7 +293,7 @@ class CustomInput extends React.Component {
 
   render () {
 
-    switch (this.props.type) {
+    switch (this.state.type) {
       case "text" :
       case "url":
       case "email" :
@@ -315,6 +306,12 @@ class CustomInput extends React.Component {
         return this.getSelectInput();
       case "multiselect" :
         return this.getMultiSelectInput();
+      case "_checkBox" :
+        return <CheckBox {...this.props}/>
+      case "_fileUploader" :
+        return <FileUploader {...this.props} />
+      case "_buttonsPanel" :
+        return <ButtonsPanel {...this.props} />
     }
     return null;
   }
