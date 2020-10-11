@@ -9,13 +9,13 @@ import * as images from "./../../../images";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CheckBox, FileUploader} from "../../index";
+import {ButtonsPanel, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent} from "../../index";
 
 class CustomInput extends React.Component {
 
   constructor (props) {
     super(props);
-    const functions = ["changeHandlers", "onInputChange", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"]
+    const functions = ["changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"]
     functions.forEach(name => this[name] = this[name].bind(this));
     this.validate = Validator.validate.bind(this);
     this.changeHandlerDebounce = Helper.debounce(this.changeHandlers, CONSTANTS.ONCHANGEVALIDATIONTIMEOUT);
@@ -49,8 +49,9 @@ class CustomInput extends React.Component {
     }
   }
 
-  onInputChange(evt, key) {
+  onChangeLocal(evt, key) {
     evt.persist();
+    this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
     if (evt && evt.target) {
       this.setState({
 //         error: "",
@@ -63,11 +64,14 @@ class CustomInput extends React.Component {
 
   changeHandlers (evt, key) {
     this.state.customChangeHandler && this.state.customChangeHandler(evt);
-    if (!this.validate(evt)) {
-      this.state.onChangeEvent(evt, key);
+    const error = this.validate(evt, this.state.parentRef);
+    if (!error) {
+      this.state.onChange(evt, key);
+    } else {
+      this.state.bubbleValue && this.state.bubbleValue(evt, key, error);
     }
     // const preValidationPassed = !this.validate(evt);
-    // this.state.onChangeEvent(evt, key, preValidationPassed);
+    // this.state.onChange(evt, key, preValidationPassed);
   }
 
 
@@ -78,7 +82,7 @@ class CustomInput extends React.Component {
       });
     }
     this.state.customChangeHandler && this.state.customChangeHandler(value);
-    this.state.onChangeEvent(value, key);
+    this.state.onChange(value, key);
   }
 
   havePropsChanged(prevProps, newProps) {
@@ -97,9 +101,13 @@ class CustomInput extends React.Component {
   }
 
   onBlur (evt) {
-    const pattern = new RegExp(this.state.pattern);
-    if (!this.state.error && this.state.pattern && !pattern.test(evt.target.value)) {
-      this.setState({error: this.state.patternErrorMessage});
+    const pattern = new RegExp(this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath));
+    const patternErrorMessage = this.state.patternErrorMessage ? this.state.patternErrorMessage : Helper.search(this.state.patternErrorMessagePath);
+
+    if (pattern && !pattern.test(evt.target.value)) {
+      this.setState({error: patternErrorMessage});
+    } else {
+      this.state.error === patternErrorMessage && this.setState({error: ""});
     }
     if (this.state.onBlurEvent) {
       this.state.onBlurEvent(evt);
@@ -157,7 +165,7 @@ class CustomInput extends React.Component {
         dropdownOptions
       });
       const selectedList = this.setMultiSelectValueFromDropdownOptions(dropdownOptions);
-      this.state.onChangeEvent(selectedList, key, optionId, allSelected);
+      this.state.onChange(selectedList, key, optionId, allSelected);
     }
   }
 
@@ -218,15 +226,18 @@ class CustomInput extends React.Component {
   }
 
   getRadioInputType () {
+    const options = [...this.state.radioOptions];
     return (
       <div className="form-group custom-input-form-group form-group-radio">
         {
-          this.state.radioOptions.map((option, i) => {
+          options.map((option, i) => {
             return (
               <div key={i}  className={`btn btn-sm radio-btn-box  p-0 ${this.state.value === option.value ? "active" : "inactive"}`}>
                 <input type="radio" id={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`} name={`${this.state.formId}-${this.state.inputId}-custom-input`}
                   className="custom-control-input" value={option.value} checked={this.state.value === option.value}
-                  onChange={ e => { this.onInputChange(e, this.state.inputId); }}/>
+                  onChange={ e => {
+                    this.onChangeLocal(e, this.state.inputId);
+                  }}/>
                 <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
                   {option.label || option.value}
                 </label>
@@ -259,14 +270,18 @@ class CustomInput extends React.Component {
   getTextInputType () {
 
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
-
+    const pattern = this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath);
     return (
-      <div className={`form-group custom-input-form-group form-group-text ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"}${errorClass ? " " + errorClass : ""}${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : ""}`}>
+      <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-3" : " mb-4"}${errorClass ? " " + errorClass : ""}
+        ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
+      >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
-          pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={this.onBlur} maxLength={this.state.maxLength}
-          onChange={ e => { this.onInputChange(e, this.state.inputId); }} onInvalid={this.state.onInvalidHandler ? (e => this.state.parentRef[this.state.onInvalidHandler](e, this.state.inputId)) : null} />
-
+          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlueValidation && this.onBlur} maxLength={this.state.maxLength}
+          onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
+        {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
+          <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
+          : <span className="icon-hide-password" onClick={() => this.setState({type: "password"})} />)}
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
@@ -286,7 +301,7 @@ class CustomInput extends React.Component {
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onInputChange(e, this.state.inputId); }} />
+          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} />
       </div>
     );
   }
@@ -297,6 +312,7 @@ class CustomInput extends React.Component {
       case "text" :
       case "url":
       case "email" :
+      case "password" :
         return this.getTextInputType();
       case "textarea" :
         return this.getTextAreaInputType();
@@ -312,12 +328,17 @@ class CustomInput extends React.Component {
         return <FileUploader {...this.props} />
       case "_buttonsPanel" :
         return <ButtonsPanel {...this.props} />
+      case "_error" :
+        return <ErrorComponent {...this.props} />
+      case "_formFieldsHeader" :
+        return <HeaderFormComponent {...this.props} />
     }
     return null;
   }
 }
 
 CustomInput.propTypes = {
+  bubbleValue: PropTypes.func,
   customChangeHandler: PropTypes.func,
   disabled: PropTypes.bool,
   dropdownOptions: PropTypes.array,
@@ -329,16 +350,21 @@ CustomInput.propTypes = {
   loader: PropTypes.bool,
   maxLength: PropTypes.number,
   onBlurEvent: PropTypes.func,
-  onChangeEvent: PropTypes.func,
-  onInvalidHandler: PropTypes.func,
+  onChange: PropTypes.func,
+  onInvalid: PropTypes.func,
+  parentRef: PropTypes.object,
   pattern: PropTypes.string,
+  patternPath: PropTypes.string,
   patternErrorMessage: PropTypes.string,
+  patternErrorMessagePath: PropTypes.string,
+  prebounceChangeHandler: PropTypes.func,
   preventHTMLRequiredValidation: PropTypes.bool,
   radioOptions: PropTypes.array,
   required: PropTypes.bool,
   rowCount: PropTypes.number,
   subtitle: PropTypes.string,
   tooltipContent: PropTypes.object,
+  tooltipContentKey: PropTypes.string,
   type: PropTypes.string,
   unpadSubtitle: PropTypes.bool,
   value: PropTypes.oneOfType([

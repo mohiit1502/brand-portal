@@ -4,7 +4,7 @@ import {userEdit, user} from "./user/user-reducers";
 import {brandEdit} from "./brand/brand-reducers";
 import company from "./company/company-reducer";
 import claims from "./claim/claim-reducers";
-import help from "./help/help-reducer";
+import content from "./content/content-reducer";
 import dashboard from "./dashboard/dashboard-reducers";
 import {notification} from "./notification/notification-reducers";
 
@@ -32,7 +32,7 @@ export default combineReducers({
   brandEdit,
   company,
   claims,
-  help,
+  content,
   dashboard,
   notification
 });

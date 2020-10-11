@@ -1,4 +1,6 @@
 /* eslint-disable no-undef */
+import CONSTANTS from "../constants/constants";
+
 export default class Helper {
     static toCamelCaseFirstUpper (incoming) {
         if (!incoming) {
@@ -14,23 +16,35 @@ export default class Helper {
 
     static loader (path, enable) {
       this.setState(state => {
-        const stateClone = {...state};
-        const fieldObj = Helper.search(path, stateClone);
-        fieldObj.loader = enable;
-        return stateClone;
+        try {
+            const stateClone = {...state};
+            const fieldObj = Helper.search(path, stateClone);
+            fieldObj.loader = enable;
+            return stateClone;
+        } catch (e) {}
       });
     }
 
     static search (path, obj) {
-      if (!path) return obj;
-      const pathArr = path.split(".");
-      let recurredObject = obj;
-      let i = 0;
-      while (i < pathArr.length) {
-        recurredObject = recurredObject[pathArr[i]];
-        i++;
+      try {
+        if (!path) return obj;
+        const pathArr = path.split(".");
+        if (!obj) {
+          obj = CONSTANTS;
+          if (pathArr[0] === "CONSTANTS") {
+            pathArr.splice(0, 1);
+          }
+        }
+        let recurredObject = obj;
+        let i = 0;
+        while (i < pathArr.length) {
+          recurredObject = recurredObject[pathArr[i]];
+          i++;
+        }
+        return recurredObject;
+      } catch (e) {
+        return "";
       }
-      return recurredObject;
     }
 
     static toCamelCase (incoming) {

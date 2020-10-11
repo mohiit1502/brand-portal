@@ -7,6 +7,7 @@ import ProgressBar from "../custom-components/progress-bar/progress-bar";
 
 const FileUploader = props => {
 
+  const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
   const [tooltipContent, setTooltipContent] = useState({
     "businessDocContent": <div>
       <ol className="m-0 p-0">
@@ -31,15 +32,15 @@ const FileUploader = props => {
       <div className="col">
         <div className="file-upload-title mb-2">
           {props.label} <Tooltip placement={"right"}
-                                 content={tooltipContent[props.content]}
+                                 content={tooltipContent[props.tooltipContentKey]}
                                  icon={images[props.icon]}/>
         </div>
         {
           !props.uploading && !props.id &&
           <label
             className={`btn btn-sm btn-primary upload-btn mb-2${props.disabled ? " disabled" : ""}`}>
-            Upload
-            <input type="file" className="d-none" onChange={props.parentRef[props.onChange]}
+            {props.buttonText}
+            <input type="file" className="d-none" onChange={props.onChange}
                    disabled={props.disabled}/>
           </label>
         }
@@ -47,7 +48,7 @@ const FileUploader = props => {
         {!props.uploading && props.id &&
           <div className={`uploaded-file-label form-control mb-2`}>{props.filename}
             <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer"
-                  onClick={props.parentRef[props.cancelSelection]}>&times;</span>
+                  onClick={cancelHandler}>&times;</span>
           </div>
         }
       </div>

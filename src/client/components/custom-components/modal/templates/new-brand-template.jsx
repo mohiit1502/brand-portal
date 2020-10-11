@@ -7,38 +7,38 @@ import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import Http from "../../../../utility/Http";
 import Helper from "../../../../utility/helper";
 import Validator from "../../../../utility/validationUtil";
-import CustomInput from "../../custom-input/custom-input";
+import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
-import FORMFIELDCONFIG from "../../../../config/formsConfig/form-field-meta";
 import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 
 class NewBrandTemplate extends React.Component {
 
   constructor(props) {
     super(props);
-    const functions = ["onChangeEvent", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
+    const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
     const debounceFunctions = {"brandDebounce": "checkBrandUniqueness", "trademarkDebounce": "checkTrademarkValidity"};
     functions.forEach(name => this[name] = this[name].bind(this));
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
+    console.log("constructing again")
+    this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
+    const newBrandConfiguration = this.props.newBrandConfiguration ? this.props.newBrandConfiguration : {}
     this.state = {
       checkLoader: false,
+      section: {...newBrandConfiguration.sectionConfig},
       form: {
-        isSubmitDisabled: true,
-        isUpdateTemplate: false,
-        templateUpdateComplete: false,
-        id: FORMFIELDCONFIG.SECTIONSCONFIG.NEWBRAND.sectionConfig.name,
-        inputData: FORMFIELDCONFIG.SECTIONSCONFIG.NEWBRAND.fields,
-        loader: FORMFIELDCONFIG.SECTIONSCONFIG.NEWBRAND.sectionConfig.loader
+        inputData: newBrandConfiguration.fields,
+        ...newBrandConfiguration.formConfig,
       }
     };
   }
 
   componentDidMount() {
     if (this.props.data && !this.state.form.templateUpdateComplete) {
+      console.log("updating template")
       this.prepopulateInputFields(this.props.data);
     }
   }
@@ -65,7 +65,22 @@ class NewBrandTemplate extends React.Component {
     }
   }
 
-  onChangeEvent(evt, key) {
+  bubbleValue (evt, key, error) {
+    console.log("bubbleValue")
+    console.log(this.state.form.inputData.trademarkNumber.fieldOk);
+    const targetVal = evt.target.value;
+    this.setState(state => {
+      state = {...state};
+      state.form.inputData[key].value = targetVal;
+      state.form.inputData[key].error = error;
+      console.log("bubble value state updated ", state.form.inputData.trademarkNumber.fieldOk);
+      return state;
+    }, this.checkToEnableSubmit);
+  }
+
+  onChange(evt, key) {
+    console.log("onChange parent");
+    console.log(this.state.form.inputData.trademarkNumber.fieldOk);
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       this.setState(state => {
@@ -81,20 +96,22 @@ class NewBrandTemplate extends React.Component {
         }
         state = {...state};
         state.form.inputData[key].value = targetVal;
+        console.log("onChange state updated ", state.form.inputData.trademarkNumber.fieldOk);
         return state;
       }, this.checkToEnableSubmit);
     }
   }
 
   checkToEnableSubmit() {
+    console.log("checkToEnableSubmit")
+    console.log(this.state.form.inputData.trademarkNumber.fieldOk);
     const form = {...this.state.form};
-    const bool = (form.isUpdateTemplate || form.inputData.trademarkNumber.isValid)  &&
+    const bool = form.isUpdateTemplate || (form.inputData.trademarkNumber.isValid  &&
       form.inputData.trademarkNumber.value && form.inputData.brandName.value &&
-      (form.isUpdateTemplate || form.inputData.brandName.isUnique);
-      // && form.undertaking.selected;
-
-    form.isSubmitDisabled = !bool;
+      form.inputData.brandName.isUnique);
+    form.inputData.brandCreateActions.buttons.submit.disabled = !bool;
     this.setState({form});
+    console.log(form.inputData.trademarkNumber.fieldOk);
   }
 
   async handleSubmit(evt) {
@@ -137,54 +154,54 @@ class NewBrandTemplate extends React.Component {
   }
 
   resetTemplateStatus () {
-    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-  }
+    const form = {...this.state.form};
+    form.inputData.trademarkNumber.value = "";
+    form.inputData.brandName.value = "";
+    form.inputData.comments.value = "";
 
-  getFieldRenders() {
-    const {form} = this.state;
-    return form.inputData && Object.keys(form.inputData).map((id, key) => {
-      const fieldObj = form.inputData[id];
-      return (
-        <div className="form-row" key={key}>
-          <div className="col">
-            <CustomInput formId={form.id} onChangeEvent={this.onChangeEvent} onKeyPress={this.onKeyPress} {...fieldObj} />
-          </div>
-        </div>
-      );
-    })
+    form.inputData.trademarkNumber.error = "";
+    form.inputData.brandName.error = "";
+    form.inputData.comments.error = "";
+
+    form.inputData.trademarkNumber.fieldOk = false;
+    form.inputData.brandName.fieldOk = false;
+
+    this.setState({form});
+    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
   }
 
   render() {
     const form = this.state.form;
-    const inputData = form.inputData;
+    const section = this.state.section;
+    console.log("rendering ... ", form.inputData.trademarkNumber.fieldOk);
     return (
       <div className="modal show new-brand-modal" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
-                form.isUpdateTemplate ? "Edit Brand Details" : "Register a Brand"
+                form.isUpdateTemplate ? section.sectionTitleEdit : section.sectionTitleNew
               }
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className={`modal-body text-left${this.state.form.loader && " loader"}`}>
+              <div className="row pl-2">
+                <div className="col">
+                  <p>{form.formHeading}</p>
+                </div>
+              </div>
               <form onSubmit={this.handleSubmit} className="h-100 px-2">
-                <div className="row">
-                  <div className="col">
-                    <p>{form.subTitle}</p>
-                  </div>
-                </div>
                 {this.getFieldRenders()}
-                <div className="row mt-3">
-                  <div className="col text-right">
-                    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
-                    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={form.isSubmitDisabled}>
-                      Submit
-                    </button>
-                  </div>
-                </div>
+                {/*<div className="row mt-3">*/}
+                {/*  <div className="col text-right">*/}
+                {/*    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>*/}
+                {/*    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={form.isSubmitDisabled}>*/}
+                {/*      Submit*/}
+                {/*    </button>*/}
+                {/*  </div>*/}
+                {/*</div>*/}
               </form>
             </div>
           </div>
@@ -204,6 +221,7 @@ NewBrandTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWBRAND,
     modal: state.modal
   };
 };

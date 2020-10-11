@@ -21,7 +21,7 @@ class NewClaimTemplate extends React.Component {
     super(props);
     this.checkToEnableItemButton = this.checkToEnableItemButton.bind(this);
     this.enableButtonChecks = this.enableButtonChecks.bind(this);
-    this.onInputChange = this.onInputChange.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
     this.fetchClaims = this.fetchClaims.bind(this);
@@ -319,7 +319,7 @@ class NewClaimTemplate extends React.Component {
     this.props.dispatchClaims({claimList});
   }
 
-  onInputChange(evt, key) {
+  onChange(evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       let index = -1;
@@ -472,7 +472,7 @@ class NewClaimTemplate extends React.Component {
               <div className="row">
                 <div className="col-4">
                   <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
-                    value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChangeEvent={this.setSelectInputValue}
+                    value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
                     disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                 </div>
               </div>
@@ -482,13 +482,13 @@ class NewClaimTemplate extends React.Component {
               <div className="row brand-and-patent">
                 <div className="col-4">
                   <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
-                    value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChangeEvent={this.setSelectInputValue}
+                    value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue}
                     disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
                 </div>
                 <div className="col-4">
                   <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}
                     required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
-                    pattern={inputData.claimTypeIdentifier.pattern} onChangeEvent={this.onInputChange} disabled={inputData.claimTypeIdentifier.disabled}
+                    pattern={inputData.claimTypeIdentifier.pattern} onChange={this.onChange} disabled={inputData.claimTypeIdentifier.disabled}
                     dropdownOptions={inputData.claimTypeIdentifier.options} />
                 </div>
               </div>
@@ -498,7 +498,7 @@ class NewClaimTemplate extends React.Component {
                     <div key={i} className="row item-url-list">
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
-                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChangeEvent={this.onInputChange} disabled={item.url.disabled}
+                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={this.onChange} disabled={item.url.disabled}
                           dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i} />
                       </div>
                       <div className="col-4">
@@ -506,7 +506,7 @@ class NewClaimTemplate extends React.Component {
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChangeEvent={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} />
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} />
                           </div>
                           <div className="col-4">
                             {
@@ -525,7 +525,7 @@ class NewClaimTemplate extends React.Component {
               <div className="row mb-3">
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
-                    value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChangeEvent={this.onInputChange}
+                    value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
                     disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} />
                 </div>
               </div>

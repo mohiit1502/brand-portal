@@ -11,6 +11,10 @@
   max-width: 650px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
 
+  &.show {
+    z-index: 1051;
+  }
+
   &.custom-toast-success {
     background: #E8F5E5;
   }

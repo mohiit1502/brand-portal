@@ -81,7 +81,7 @@ $dropdown-select-background: rgb(178, 216, 237);
     top: -1.5rem;
     right: 0;
   }
-  
+
   .dropdown-arrow {
     position: absolute;
     right: 5px;
@@ -191,7 +191,7 @@ $dropdown-select-background: rgb(178, 216, 237);
     &[type="multiselect"] {
       padding-right: 1.5rem;
     }
-    
+
     &.custom-input-element-textarea {
       height: unset;
     }

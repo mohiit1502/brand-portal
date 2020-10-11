@@ -1,16 +1,18 @@
 import Http from "./Http";
+import Helper from "./helper";
+import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
 
 export default class Validator {
 
   static errorPrefix = "Error: ";
 
 
-  static validate(evt, errorOutDelayed) {
+  static validate(evt, parentRef) {
     const {validators} = this.props;
     let errorMsg;
     validators && Object.keys(validators).every(validation => {
-      errorMsg = Validator[validation](evt.target, validators[validation])
-      !errorOutDelayed && this.setState({error: errorMsg})
+      errorMsg = Validator[validation](evt.target, validators[validation], parentRef)
+      this.setState({error: errorMsg})
       return !errorMsg;
     });
     return errorMsg;
@@ -77,6 +79,35 @@ export default class Validator {
     }
   }
 
+  static validatePasswordMatch(target, validationObj, parentRef) {
+    const form = parentRef.state.form;
+    const sibling = Helper.search(validationObj.siblingField, parentRef);
+    if (sibling && sibling.isDirty) {
+      form.passwordsDifferent = target.value !== sibling.value;
+      parentRef.setState({form});
+    }
+  }
+
+  static validateState () {
+    const form = {...this.state.form};
+    let hasError = false;
+    Object.keys(form.inputData).forEach(key => {
+      const obj = {...form.inputData[key]};
+      form.inputData[key] = obj;
+      if (obj && obj.required && !obj.value) {
+        if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
+          return;
+        }
+        obj.error = obj.invalidError;
+        hasError = true;
+      } else {
+        obj.error = "";
+      }
+    });
+    this.setState({form});
+    return hasError;
+  }
+
   static validateForm (props, formMeta, toIgnoreKeys, isPreLoadValidatoin) {
     let error = false
     const formErrorsClone = Object.assign({}, props.formErrors)
@@ -138,6 +169,7 @@ export default class Validator {
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
+        console.log("making brand api call ", inputData)
         this.setState(state, this.checkToEnableSubmit);
       })
       .catch(err => console.log(err));
@@ -162,6 +194,7 @@ export default class Validator {
         inputData.trademarkNumber.fieldOk = !error;
         inputData.trademarkNumber.disabled = false;
         inputData.trademarkNumber.loader = false;
+        console.log("making trademark api call ", inputData)
         this.setState(state, this.checkToEnableSubmit);
       })
       .catch (err => console.log(err));
@@ -180,29 +213,74 @@ export default class Validator {
     inputData.companyOnboardingActions.buttons.clear.disabled = true;
     this.setState(state);
     // const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
-    Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}, null, this.props.showNotification)
+    Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value})
       .then(response => {
-      const error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
-      inputData.companyName.disabled = false;
-      inputData.companyName.error = error;
-      inputData.companyName.isUnique = !error;
-      inputData.companyName.fieldOk = !error;
-      inputData.companyName.loader = false;
-      inputData.companyOnboardingActions.buttons.clear.disabled = false;
-      this.setState(state, () => {
-        this.toggleFormEnable(!error, !error, false)
-        this.checkToEnableSubmit();
+        const error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
+        inputData.companyName.disabled = false;
+        inputData.companyName.error = error;
+        inputData.companyName.isUnique = !error;
+        inputData.companyName.fieldOk = !error;
+        inputData.companyName.loader = false;
+        inputData.companyOnboardingActions.buttons.clear.disabled = false;
+        this.setState(state, () => {
+          this.toggleFormEnable(!error, !error, false)
+          this.checkToEnableSubmit();
+        });
+      }).catch (err => {
+        inputData.companyName.disabled = false;
+        inputData.companyName.error = err.error;
+        inputData.companyName.isUnique = false;
+        inputData.companyName.fieldOk = false;
+        inputData.companyName.loader = false;
+        inputData.companyName.requestAdministratorAccess = true;
+        inputData.companyOnboardingActions.buttons.clear.disabled = false;
+        if (error) {
+          this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
+        }
+        this.setState(state);
+        // console.log(err);
+      })
+  }
+
+  static onEmailChange() {
+    const form = {...this.state.form};
+    const inputData = {...this.state.form.inputData};
+    const emailId = inputData.emailId;
+    if (!emailId.value || emailId.error) return;
+    form.inputData = inputData;
+    emailId.disabled = true;
+    emailId.loader = true;
+    this.setState({form});
+    if (emailId.value && emailId.error !== emailId.invalidError) {
+      this.loader("fieldLoader", true);
+      Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
+        emailId.disabled = false;
+        emailId.loader = false;
+        let error;
+        let isUnique;
+        error = !res.body.unique ? "This email already exists in the Walmart Brand Portal." : "";
+        emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
+        emailId.error = emailId.error !== emailId.invalidError && error;
+        emailId.isUnique = res.body.unique;
+        emailId.fieldOk = !error;
+        this.setState({form}, this.checkToEnableSubmit);
+      }).catch(err => {
+        emailId.disabled = false;
+        emailId.loader = false;
+        emailId.fieldOk = false;
+        this.setState({form});
       });
-    }).catch (err => {
-      inputData.companyName.disabled = false;
-      inputData.companyName.error = err.error;
-      inputData.companyName.isUnique = false;
-      inputData.companyName.fieldOk = false;
-      inputData.companyName.loader = false;
-      inputData.companyName.requestAdministratorAccess = true;
-      inputData.companyOnboardingActions.buttons.clear.disabled = false;
-      this.setState(state);
-      // console.log(err);
-    })
+    }
+  }
+
+  static onInvalid (evt, key) {
+    const form = this.state.form;
+    const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
+    if (matchedField) {
+      const matchedObj = form.inputData[matchedField];
+      matchedObj.error = matchedObj.invalidError ? matchedObj.invalidError : Helper.search(matchedObj.invalidErrorPath);
+      this.invalid[key] = true;
+      this.setState({form});
+    }
   }
 }

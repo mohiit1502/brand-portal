@@ -75,7 +75,7 @@ const UserApprovalTable = function(props) {
                                        formId={`${row.original.id}`} label={row.original.role.label}
                                        required={row.original.role.required} value={row.original.role.value}
                                        type={row.original.role.type} pattern={row.original.role.pattern}
-                                       onChangeEvent={setSelectInputValue} disabled={row.original.role.disabled}
+                                       onChange={setSelectInputValue} disabled={row.original.role.disabled}
                                        dropdownOptions={row.original.role.options}/>
                         </div>
                         <div className="col-4">
@@ -84,7 +84,7 @@ const UserApprovalTable = function(props) {
                                        formId={`${row.original.id}`} label={row.original.brands.label}
                                        required={row.original.brands.required} value={row.original.brands.value}
                                        type={row.original.brands.type} pattern={row.original.brands.pattern}
-                                       onChangeEvent={setMultiSelectInputValue} disabled={row.original.brands.disabled}
+                                       onChange={setMultiSelectInputValue} disabled={row.original.brands.disabled}
                                        dropdownOptions={row.original.brands.options}/>
                         </div>
                       </div>
