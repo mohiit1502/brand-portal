@@ -15,6 +15,7 @@ import GreenCircleCheck from "./green-circle-check.svg";
 import Group from "./group-23.svg";
 import GroupPeople from "./001-group.svg";
 import Help from "./Help.png";
+import HidePassword from "./hidePassword.svg";
 import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.png";
 import InviteUserForm from "./AddUser.png";
@@ -26,6 +27,7 @@ import ProblemSolving from "./001-problem-solving.svg";
 import Question from "./question.svg";
 import RedCircleCross from "./red-circle-cross.svg";
 import Search from "./18-px-search.svg";
+import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
@@ -58,6 +60,7 @@ export {
     Group,
     GroupPeople,
     Help,
+    HidePassword,
     Info,
     InviteUser,
     InviteUserForm,
@@ -69,6 +72,7 @@ export {
     Question,
     RedCircleCross,
     Search,
+    ShowPassword,
     Sort,
     TimesSuccess,
     TOU,

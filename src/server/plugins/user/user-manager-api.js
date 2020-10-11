@@ -13,20 +13,8 @@ const ttl = 12 * 60 * 60 * 1000;
 class UserManagerApi {
 
   constructor() {
-    this.register = this.register.bind(this);
-    this.loginSuccessRedirect = this.loginSuccessRedirect.bind(this);
-    this.getUserInfo = this.getUserInfo.bind(this);
-    this.logout = this.logout.bind(this);
-    this.getNewUserRoles = this.getNewUserRoles.bind(this);
-    this.getNewUserBrands = this.getNewUserBrands.bind(this);
-    this.createUser = this.createUser.bind(this);
-    this.getUsers = this.getUsers.bind(this);
-    this.checkUnique = this.checkUnique.bind(this);
-    this.deleteUser = this.deleteUser.bind(this);
-    this.updateUserStatus = this.updateUserStatus.bind(this);
-    this.reinviteUser = this.reinviteUser.bind(this);
-    this.updateUser = this.updateUser.bind(this);
-
+    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus"]
+    functions.forEach(name => this[name] = this[name].bind(this));
     this.name = "UserManagerApi";
   }
 
@@ -114,6 +102,11 @@ class UserManagerApi {
         handler: this.reinviteUser
       },
       {
+        method: "POST",
+        path: "/api/users/resetPassword",
+        handler: this.resetPassword
+      },
+      {
         method: "delete",
         path: "/api/users/{emailId}",
         handler: this.deleteUser,
@@ -180,11 +173,30 @@ class UserManagerApi {
       const options = {
         headers
       };
-
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       let INVITE_USER_PATH = request.app.ccmGet("USER_CONFIG.USER_REINVITE");
       INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
       const url = `${BASE_URL}${INVITE_USER_PATH}`;
+
+      const response = await ServerHttp.post(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async resetPassword (request, h) {
+    try {
+      const payload = request.payload;
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+
+      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      console.log(payload);
+      let RESET_PASSWORD_PATH = request.app.ccmGet("USER_CONFIG.RESET_PASSWORD");
+      const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
       return h.response(response.body).code(response.status);
@@ -200,7 +212,6 @@ class UserManagerApi {
         method: "GET",
         headers
       };
-
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
@@ -219,7 +230,6 @@ class UserManagerApi {
       const options = {
         headers
       };
-
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       let UNIQUENESS_CHECK_PATH = request.app.ccmGet("USER_CONFIG.UNIQUENESS_CHECK_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
@@ -240,7 +250,6 @@ class UserManagerApi {
       const options = {
         headers
       };
-
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
@@ -258,7 +267,6 @@ class UserManagerApi {
       const options = {
         headers
       };
-
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
@@ -272,13 +280,10 @@ class UserManagerApi {
 
   async deleteUser (request, h) {
     try {
-
       const headers = ServerUtils.getHeaders(request);
       const options = {
-        method: "DELETE",
         headers: { ...headers, "Content-Type": "text/plain" }
       };
-
       const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
       const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
@@ -300,7 +305,6 @@ class UserManagerApi {
       const options = {
         headers
       };
-
       const response = await ServerHttp.get(url, options);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -332,7 +336,6 @@ class UserManagerApi {
 
     try {
       const headers = ServerUtils.getHeaders(request);
-
       const options = {
         headers
       };

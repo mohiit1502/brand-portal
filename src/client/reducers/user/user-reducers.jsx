@@ -1,4 +1,10 @@
-import {DISPATCH_LOGOUT_URL, SAVE_USER_COMPLETED, SAVE_USER_INITIATED, UPDATE_PROFILE} from "./../../actions/user/user-actions";
+import {DISPATCH_LOGOUT_URL, SAVE_USER_COMPLETED, SAVE_USER_INITIATED, UPDATE_PROFILE, UPDATE_FORM_ERRORS, UPDATE_FORM_VALUES} from "./../../actions/user/user-actions";
+import Immutable from "immutable"
+
+const initialState = Immutable.Map({
+  formErrors: {},
+  formValues: {}
+});
 
 export const user = (store, action) => {
   const storeData = action.value;
@@ -12,8 +18,11 @@ export const user = (store, action) => {
   }
 };
 
-export const userEdit = (store, action) => {
+export const userEdit = (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_FORM_ERRORS:
+    case UPDATE_FORM_VALUES:
+      return state.mergeDeep(action.payload);
     case SAVE_USER_INITIATED: {
       return { save: true };
     }
@@ -21,7 +30,7 @@ export const userEdit = (store, action) => {
       return { save: false };
     }
     default: {
-      return store ||  {
+      return state ||  {
         save: false
       };
     }

@@ -3,7 +3,7 @@ import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {CSSTransition} from "react-transition-group";
-import {toggleImageViewer} from "./../../actions/help/help-actions";
+import {toggleImageViewer} from "../../actions/content/content-actions";
 import * as imagesAll from "./../../images";
 import "./ImageViewer.component.scss";
 
@@ -63,7 +63,7 @@ ImageViewer.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    viewerState: state.help.viewerState
+    viewerState: state.content.viewerState
   };
 };
 

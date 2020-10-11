@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {toggleImageViewer} from "./../../actions/help/help-actions";
+import {toggleImageViewer} from "../../actions/content/content-actions";
 import Accordion from "./../Accordion";
 import ContentRenderer from "../../utility/ContentRenderer";
 import "./FaqSingle.component.scss";

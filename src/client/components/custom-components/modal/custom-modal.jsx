@@ -14,6 +14,7 @@ import ClaimDetailsTemplate from "./templates/claim-details-template";
 import CompanyVerificationPendingTemplate from "./templates/company-verification-pending-template";
 import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
 import Alert from "../../Alert/Alert";
+import {ResetPasswordTemplate} from "../../index";
 
 
 class CustomModal extends React.Component {
@@ -36,16 +37,17 @@ class CustomModal extends React.Component {
 
   fetchTemplate(key) {
     switch (key) {
-      case "CreateUserTemplate": return CreateUserTemplate;
-      case "NewUserAddedTemplate": return NewUserAddedTemplate;
-      case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
-      case "NewBrandTemplate": return NewBrandTemplate;
-      case "NewClaimTemplate": return NewClaimTemplate;
-      case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
-      case "ClaimDetailsTemplate": return ClaimDetailsTemplate;
-      case "CompanyVerificationPendingTemplate": return CompanyVerificationPendingTemplate;
-      case "StatusModalTemplate": return StatusModalTemplate;
       case "Alert": return Alert;
+      case "ResetPasswordTemplate": return ResetPasswordTemplate;
+      case "ClaimDetailsTemplate": return ClaimDetailsTemplate;
+      case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
+      case "CompanyVerificationPendingTemplate": return CompanyVerificationPendingTemplate;
+      case "CreateUserTemplate": return CreateUserTemplate;
+      case "NewBrandTemplate": return NewBrandTemplate;
+      case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
+      case "NewClaimTemplate": return NewClaimTemplate;
+      case "NewUserAddedTemplate": return NewUserAddedTemplate;
+      case "StatusModalTemplate": return StatusModalTemplate;
     }
     return null;
   }

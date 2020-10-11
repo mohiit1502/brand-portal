@@ -1,5 +1,8 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import HeaderFormComponent from './HeaderFormComponent';
+import ErrorComponent from './ErrorComponent';
+import ResetPasswordTemplate from './custom-components/modal/templates/ResetPasswordTemplate';
 import ButtonsPanel from './ButtonsPanel';
 import CheckBox from './CheckBox';
 import FileUploader from './FileUploader';
@@ -23,6 +26,9 @@ import StatusModalTemplate from "./custom-components/modal/templates/StatusModal
 
 export {
   /* PLOP_INJECT_EXPORT */
+	HeaderFormComponent,
+	ErrorComponent,
+	ResetPasswordTemplate,
 	ButtonsPanel,
 	CheckBox,
 	FileUploader,

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./CheckBox.component.scss";
+import * as staticContent from "../../images";
 
 const CheckBox = props => {
   return (
@@ -8,8 +9,11 @@ const CheckBox = props => {
       <div className={`col${props.colClasses ? " " + props.colClasses : ""}`}>
         <div className="form-check">
           <input type="checkbox" id={props.id} className={`form-check-input${props.checkBoxClasses ? " " + props.checkBoxClasses : ""}`} checked={props.selected}
-                 required={props.required} onChange={props.parentRef[props.onChange]}/>
-          <label className={`form-check-label${props.labelClasses ? " " + props.labelClasses : ""}`} htmlFor={props.id}>{props.label}</label>
+                 required={props.required} onChange={props.onChange}/>
+          <label className={`form-check-label${props.labelClasses ? " " + props.labelClasses : ""}`} htmlFor={props.id}>
+            {props.label}
+            {props.tou && <span><a href={staticContent.TOU} target="_blank">{props.touLink}</a></span>}
+          </label>
         </div>
       </div>
     </div>

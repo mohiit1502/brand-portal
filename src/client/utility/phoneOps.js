@@ -132,7 +132,7 @@ export default class InputFormatter {
     };
 
     // inputEl.addEventListener("input", inputHandler);
-    inputEl.addEventListener("keydown", keydownHandler);
+    inputEl && inputEl.addEventListener("keydown", keydownHandler);
 
     return {inputHandler, keydownHandler};
   }

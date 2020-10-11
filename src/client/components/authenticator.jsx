@@ -10,7 +10,9 @@ import CONSTANTS from "../constants/constants";
 import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
 import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions";
+import {dispatchMetadata} from "../actions/content/content-actions";
 import Onboarder from "./onboard/onboarder";
+import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
 
 class Authenticator extends React.Component {
 
@@ -28,6 +30,7 @@ class Authenticator extends React.Component {
 
   componentDidMount() {
     if (this.state.isLoggedIn) {
+      this.initMetaData();
       this.getProfileInfo();
       this.prepareLogoutEnvironment();
     } else {
@@ -41,6 +44,22 @@ class Authenticator extends React.Component {
     }
   }
 
+  initMetaData() {
+    Http.get("/api/formConfig")
+      .then(response => {
+        if (response.body) {
+          try {
+            response = JSON.parse(response.body);
+            // response = FORMFIELDCONFIG;
+            this.props.dispatchMetadata(response);
+          } catch (e) {
+            this.props.dispatchMetadata(FORMFIELDCONFIG);
+          }
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   setOnboardStatus (status) {
     return this.setState({isOnboarded: !!status});
   }
@@ -51,6 +70,7 @@ class Authenticator extends React.Component {
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
         // profile.workflow.code=1;
+        // profile = JSON.stringify("{\"firstName\":\"Test\",\"lastName\":\"Mohsin\",\"phoneCountry\":\"1\",\"phoneNumber\":\"(234) 567-8901\",\"emailVerified\":true,\"isUserEnabled\":true,\"organization\":{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\",\"status\":\"Accepted\"},\"role\":{\"id\":\"6a429471-3675-4490-93db-5aadf5412a8b\",\"name\":\"Super Admin\",\"description\":\"Brand Rights Owner\"},\"brands\":[{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\"}],\"type\":\"Internal\",\"registrationMode\":\"SelfRegistered\",\"email\":\"wm.ropro+testbike@gmail.com\",\"status\":\"Active\",\"statusDetails\":\"Status updated by: system\",\"createdBy\":\"wm.ropro+testbike@gmail.com\",\"createTs\":\"2020-09-15T07:15:18.965Z\",\"lastUpdatedBy\":\"wm.ropro+testbike@gmail.com\",\"lastUpdateTs\":\"2020-09-21T10:06:07.633Z\",\"isOrgEnabled\":true,\"workflow\":{\"code\":4,\"workflow\":\"portal_dashboard\",\"defaultView\":\"portal-view-users\",\"roleCode\":1,\"roleView\":\"SUPER_ADMIN\"}}");
         this.props.updateUserProfile(profile);
       }
       this.setOnboardStatus(profile.organization);
@@ -151,6 +171,7 @@ class Authenticator extends React.Component {
 
 Authenticator.propTypes = {
   dispatchLogoutUrl: PropTypes.func,
+  dispatchMetadata: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,
   updateUserProfile: PropTypes.func,
@@ -165,6 +186,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  dispatchMetadata,
   updateUserProfile,
   dispatchLogoutUrl
 };

@@ -18,6 +18,11 @@ class ContentManagerApi {
         method: "GET",
         path: "/api/loginConfig",
         handler: this.getLandingPageConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/formConfig",
+        handler: this.getFormFieldConfiguration
       }
     ]);
   }
@@ -35,6 +40,16 @@ class ContentManagerApi {
   async getLandingPageConfiguration(request, h) {
     try {
       const configuration = request.app.ccmGet("CONTENT_CONFIG.LANDINGPAGEDESCRIPTOR");
+      return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async getFormFieldConfiguration(request, h) {
+    try {
+      const configuration = request.app.ccmGet("CONTENT_CONFIG.FORMFIELDCONFIG");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);

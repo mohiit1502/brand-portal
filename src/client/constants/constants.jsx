@@ -66,6 +66,8 @@ const CONSTANTS = {
       TITLE: "Email verification required"
     },
     ERRORCODES: {
+      FORBIDDEN: "403",
+      FOURNOTFOUR: "404",
       SERVERERROR: "^[4,5]\\d{2}$"
     }
   },
@@ -218,15 +220,22 @@ const CONSTANTS = {
   },
 
   REGEX: {
-    ONECHAR: "[a-zA-Z0-9 ]+",
+    NAMES: "[a-zA-Z0-9. ]+",
+    COMPANY: "[a-zA-Z0-9., ]+",
     ZIP: "\\d{5}(?:[-\s]\\d{4})?$",
     EMAIL: "\\S+@\\S+\.\\S+",
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
-    ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
-    EMAILERROR: "Please enter a valid Email ID",
-    PHONEERROR: "Plase enter a valid phone number",
     CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
     REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
+  },
+
+  ERRORMESSAGES: {
+    PASSWORDMISMATCH: "Password did not match.",
+    PASSWORDPOLICYMESSAGE: "The specified password does not meet defined policy",
+    SAMEPASSWORD: "New password matches old password.",
+    ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
+    EMAILERROR: "Please enter a valid Email ID",
+    PHONEERROR: "Please enter a valid phone number"
   },
 
   POPOVERSELECTOR: "tutorialPopover",
@@ -234,6 +243,7 @@ const CONSTANTS = {
   ONCHANGEVALIDATIONTIMEOUT: 300,
   STATUS_CODE_SUCCESS: 200,
   STATUS_CODE_NOT_FOUND: 404,
+  STATUS_CODE_400: 400,
   KEY_CODE_BACKSPACE: 8,
   KEY_CODE_TAB: 9,
   KEY_CODE_SHIFT: 16,
