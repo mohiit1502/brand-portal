@@ -41,10 +41,11 @@ class ResetPasswordTemplate extends Component {
       const targetVal = evt.target.value;
       this.setState(state => {
         state = {...state};
-        if (key === "currentPassword" && (state.form.error === state.form.incorrectPasswordError || state.form.error === state.form.old5PasswordsError || state.form.error === state.form.passwordPolicyMessage)) {
+        if (key === "currentPassword" && state.form.error === state.form.incorrectPasswordError) {
           state.form.error = false;
         }
         if (key === "newPassword" || key === "confirmNewPassword") {
+          (state.form.error === state.form.old5PasswordsError || state.form.error === state.form.passwordPolicyMessage) && (state.form.error = false);
           state.form.inputData.errorSub.error = state.form.passwordsDifferent ? state.form.passwordMismatchError : "";
         }
         state.form.inputData[key].value = targetVal;

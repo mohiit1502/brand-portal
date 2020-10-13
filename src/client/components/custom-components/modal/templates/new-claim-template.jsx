@@ -20,7 +20,7 @@ class NewClaimTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.checkToEnableItemButton = this.checkToEnableItemButton.bind(this);
-    this.enableButtonChecks = this.enableButtonChecks.bind(this);
+    // this.enableButtonChecks = this.enableButtonChecks.bind(this);
     this.onChange = this.onChange.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
@@ -173,13 +173,13 @@ class NewClaimTemplate extends React.Component {
     state.itemUrlId++;
     // state.form.inputData.itemList.unshift(item);
     state.form.inputData.itemList.push(item);
-    this.setState(state, this.checkToEnableItemButton);
+    this.setState(state, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
   }
 
   removeFromItemList (evt, index) {
     const form = {...this.state.form};
     form.inputData.itemList.splice(index, 1);
-    this.setState({form}, this.checkToEnableItemButton);
+    this.setState({form}, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
   }
 
   checkToEnableItemButton () {
@@ -215,14 +215,14 @@ class NewClaimTemplate extends React.Component {
         return {
           ...state
         };
-      }, this.enableButtonChecks);
+      }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
     }
   }
 
-  enableButtonChecks() {
-    this.checkToEnableSubmit();
-    this.checkToEnableItemButton();
-  }
+  // enableButtonChecks() {
+  //   this.checkToEnableSubmit();
+  //   // this.checkToEnableItemButton();
+  // }
 
   // eslint-disable-next-line max-statements
   selectHandlersLocal (key, state, value) {
@@ -349,7 +349,7 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
-  checkToEnableSubmit() {
+  checkToEnableSubmit(callback) {
     const form = {...this.state.form};
 
     const bool = form.inputData.claimType.value &&
@@ -360,7 +360,7 @@ class NewClaimTemplate extends React.Component {
       form.inputData.signature.value;
 
     form.isSubmitDisabled = !bool;
-    this.setState({form});
+    this.setState({form}, callback && callback());
   }
 
   undertakingtoggle (evt, undertaking, index) {
