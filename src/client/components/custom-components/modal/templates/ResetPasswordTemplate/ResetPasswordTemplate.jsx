@@ -85,7 +85,7 @@ class ResetPasswordTemplate extends Component {
       const url = form.apiPath;
 
       this.loader("form", true);
-      return Http.post(url, payload, null, null, this.props.showNotification, this.state.form.passwordChangedMessage)
+      return Http.post(url, payload, null, null, this.props.showNotification, this.state.form.passwordChangedMessage, this.state.form.failureMessage)
         .then(res => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);

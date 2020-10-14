@@ -80,8 +80,12 @@ export default class Http {
   }
 
   static displayToast(status, toastCallback, toastMessageSuccess, toastMessageFailure) {
-    if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
-      toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Requested Resource could not be found.");
+    if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERDOWNWRAPPER).test(status)) {
+      toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
+    } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERDOWN).test(status)) {
+      toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
+    } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
+      toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
       setTimeout( () => window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT, 1000);
