@@ -68,6 +68,8 @@ const CONSTANTS = {
     ERRORCODES: {
       FORBIDDEN: "403",
       FOURNOTFOUR: "404",
+      SERVERDOWN: 500,
+      SERVERDOWNWRAPPER: 520,
       SERVERERROR: "^[4,5]\\d{2}$"
     }
   },

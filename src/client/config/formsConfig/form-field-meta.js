@@ -623,6 +623,7 @@ const FORMFIELDCONFIG = {
         "old5PasswordsError": "New password can not be 1 of your previous 5 passwords",
         "passwordsDifferent": false,
         "passwordChangedMessage": "Password Changed Successfully!",
+        "failureMessage": "Unable to process your request, please try in sometime",
         "passwordGuidance": "Password should contain a combination of upper case, lower case, numeric and special characters and should be between 8 and 16 characters long.",
         "passwordMismatchError": "New Password and Confirm Password fields do not match.",
         "passwordPolicyMessage": "Selected password doesn't adhere to Walmart Brand Portal's Security policy, please refer the note above.",
