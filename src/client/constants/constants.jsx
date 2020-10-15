@@ -214,6 +214,14 @@ const CONSTANTS = {
     PRIVACYURL: ""
   },
 
+  NOTIFICATIONPOPUP: {
+    DATADELAY: 5000,
+    SUCCESSIMAGE: "Verified",
+    FAILUREIMAGE: "RedCircleCross",
+    CLOSEBUTTONSUCCESS: "TimesSuccess",
+    CLOSEBUTTONFAILURE: "TimesFailure"
+  },
+
   ONGOING_CLAIM_TYPES: {
     TRADEMARK: "trademark",
     PATENT: "patent",

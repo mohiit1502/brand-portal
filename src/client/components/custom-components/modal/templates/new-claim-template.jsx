@@ -20,7 +20,6 @@ class NewClaimTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.checkToEnableItemButton = this.checkToEnableItemButton.bind(this);
-    // this.enableButtonChecks = this.enableButtonChecks.bind(this);
     this.onChange = this.onChange.bind(this);
     this.undertakingtoggle = this.undertakingtoggle.bind(this);
     this.resetTemplateStatus = this.resetTemplateStatus.bind(this);
@@ -219,12 +218,6 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
-  // enableButtonChecks() {
-  //   this.checkToEnableSubmit();
-  //   // this.checkToEnableItemButton();
-  // }
-
-  // eslint-disable-next-line max-statements
   selectHandlersLocal (key, state, value) {
     if (key === "brandName" || key === "claimType") {
       let claimType;

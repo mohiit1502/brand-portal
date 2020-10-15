@@ -29,6 +29,7 @@ import RedCircleCross from "./red-circle-cross.svg";
 import Search from "./18-px-search.svg";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
+import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
 import User from "./user.svg";
@@ -74,6 +75,7 @@ export {
     Search,
     ShowPassword,
     Sort,
+    TimesFailure,
     TimesSuccess,
     TOU,
     User,

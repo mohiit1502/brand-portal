@@ -1,15 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
-// import {toggleModal} from "../../../actions/modal-actions";
-import {saveBrandCompleted} from "../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
-import "../../../styles/custom-components/notification/notification.scss";
-import NotificationSuccessImg from "../../../images/verified.svg";
-import NotificationFailureImg from "../../../images/red-circle-cross.svg";
-import TimesSuccess from "../../../images/times-success.svg";
-import TimesFailure from "../../../images/times-failure.svg";
-import {hideNotification, NOTIFICATION_TYPE} from "../../../actions/notification/notification-actions";
+import { connect } from "react-redux";
 import $ from "jquery";
+import {saveBrandCompleted} from "../../../actions/brand/brand-actions";
+import {hideNotification, NOTIFICATION_TYPE} from "../../../actions/notification/notification-actions";
+import CONSTANTS from "../../../constants/constants";
+import * as images from "./../../../images";
+import "../../../styles/custom-components/notification/notification.scss";
 
 
 class Notification extends React.Component {
@@ -40,22 +37,24 @@ class Notification extends React.Component {
 
   updateNotification(notification) {
     const action = notification.show ? "show" : "hide";
+    const toastElement = $(".toast");
     this.setState({type: notification.notificationType, message: notification.message});
-    $(".toast").toast(action);
+    toastElement.toast({delay: CONSTANTS.NOTIFICATIONPOPUP.DATADELAY});
+    toastElement.toast(action);
     this.props.hideNotification();
   }
 
 
   render() {
     const statusClass = this.state.type === NOTIFICATION_TYPE.SUCCESS ? this.statusClassOptions.SUCCESS : this.statusClassOptions.ERROR;
-    const notificatioImage = this.state.type === NOTIFICATION_TYPE.SUCCESS ? NotificationSuccessImg : NotificationFailureImg;
-    const closeIcon = this.state.type === NOTIFICATION_TYPE.SUCCESS ? TimesSuccess : TimesFailure;
+    const notificationImage = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.SUCCESSIMAGE] : images[CONSTANTS.NOTIFICATIONPOPUP.FAILUREIMAGE];
+    const closeIcon = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONSUCCESS] : images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONFAILURE];
     return (
-      <div className={`toast custom-toast ${statusClass}`} role="alert" aria-live="assertive" aria-atomic="true" data-delay={2500}>
+      <div className={`toast custom-toast ${statusClass}`} role="alert" aria-live="assertive" aria-atomic="true" data-delay={CONSTANTS.NOTIFICATIONPOPUP.DATADELAY}>
         <div className="toast-body">
           <div className="row align-items-center justify-content-center">
             <div className="col-2 text-center">
-              <img src={notificatioImage}/>
+              <img src={notificationImage}/>
             </div>
             <div className="col-8 text-left">
               <div className="ml-3">
