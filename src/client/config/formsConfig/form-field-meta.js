@@ -1,12 +1,9 @@
-// import CONSTANTS from "../../constants/constants";
-
-/* eslint-disable quote-props */
 const FORMFIELDCONFIG = {
   "SECTIONSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
         "sectionTitle": "Create Company Profile",
-        "sectionSubTitle": "Please provide the information in the form below to create your company profile.",
+        "sectionSubTitle": "Please provide the information in the form below to create your company profile."
         // "conditionalRenders": {
         //   "render1": {
         //     "id": "doesNotRequireAccess",
@@ -18,8 +15,7 @@ const FORMFIELDCONFIG = {
         //     "complyingFields": ["companyRequestApprovalActions", "undertakingToggle"],
         //     "condition": {"flag": "requestAdministratorAccess", "locator": "form", "value": true}
         //   }
-        // },
-
+        // }
       },
       "formConfig": {
         "id": "companyreg",
@@ -57,7 +53,6 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "text",
-          // subtitle: "Autocomplete Powered by Google",
           "value": ""
         },
         "city": {
@@ -104,7 +99,6 @@ const FORMFIELDCONFIG = {
           "subtitle": "",
           "type": "text",
           "value": ""
-          // pattern: "",
         },
         "country": {
           "colClasses": "col-6",
@@ -180,7 +174,7 @@ const FORMFIELDCONFIG = {
               "type": "submit"
             }
           }
-        },
+        }
         // "undertakingToggle": {
         //   "checkBoxClasses": "user-undertaking",
         //   "containerClasses": "mt-5",
@@ -219,11 +213,11 @@ const FORMFIELDCONFIG = {
     "BRANDREG": {
       "sectionConfig": {
         "sectionTitle": " Thank you for sharing your company information.",
-        "sectionSubTitle": "Now please tell us about your brand. If you own multiple brands, please select one which will be verified upon submission.",
+        "sectionSubTitle": "Now please tell us about your brand. If you own multiple brands, please select one which will be verified upon submission."
       },
       "formConfig": {
         "id": "brandreg",
-        "loader": false,
+        "loader": false
       },
       "fields": {
         "trademarkNumber": {
@@ -262,7 +256,7 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "text",
-          "value": "",
+          "value": ""
         },
         "comments": {
           "disabled": false,
@@ -318,15 +312,11 @@ const FORMFIELDCONFIG = {
       }
     },
     "DASHBOARD": {
-      "sectionConfig": {
-
-      },
+      "sectionConfig": {},
       "formConfig": {
         "id": "dashboard"
       },
-      "fields": {
-
-      }
+      "fields": {}
     },
     "NEWUSER": {
       "sectionConfig": {
@@ -341,7 +331,7 @@ const FORMFIELDCONFIG = {
         "loader": false,
         "submitDisabled": true,
         "templateUpdateComplete": false,
-        "underwritingChecked": false,
+        "underwritingChecked": false
       },
       "fields": {
         "userType": {
@@ -373,7 +363,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "Please complete the following fields to invite a new user.",
           "layout": "2.1.0",
-          "type": "_formFieldsHeader",
+          "type": "_formFieldsHeader"
         },
         "firstName": {
           "containerClasses": "fname-lname",
@@ -513,7 +503,7 @@ const FORMFIELDCONFIG = {
     "NEWBRAND": {
       "sectionConfig": {
         "sectionTitleNew": "Register a Brand",
-        "sectionTitleEdit": "Edit Brand Details",
+        "sectionTitleEdit": "Edit Brand Details"
       },
       "formConfig": {
         "formHeading": "Please complete the following fields to register your brand.",
@@ -521,7 +511,7 @@ const FORMFIELDCONFIG = {
         "isSubmitDisabled": true,
         "isUpdateTemplate": false,
         "loader": false,
-        "templateUpdateComplete": false,
+        "templateUpdateComplete": false
       },
       "fields": {
         "trademarkNumber": {
@@ -595,7 +585,7 @@ const FORMFIELDCONFIG = {
               "type": "submit"
             }
           }
-        },
+        }
       }
     },
     "NEWCLAIM": {
@@ -605,9 +595,7 @@ const FORMFIELDCONFIG = {
       "formConfig": {
         "id": "newclaim"
       },
-      "fields": {
-
-      }
+      "fields": {}
     },
     "RESETPASSWORD": {
       "sectionConfig": {
@@ -624,7 +612,8 @@ const FORMFIELDCONFIG = {
         "passwordsDifferent": false,
         "passwordChangedMessage": "Password Changed Successfully!",
         "failureMessage": "Unable to process your request, please try in sometime",
-        "passwordGuidance": "Password should contain a combination of upper case, lower case, numeric and special characters and should be between 8 and 16 characters long.",
+        // "passwordGuidance": "Password should contain a combination of upper case, lower case, numeric and special characters and should be between 8 and 16 characters long.",
+        "passwordGuidance": "",
         "passwordMismatchError": "New Password and Confirm Password fields do not match.",
         "passwordPolicyMessage": "Selected password doesn't adhere to Walmart Brand Portal's Security policy, please refer the note above.",
         "toastMessageExistingErrors": "Please resolve existing errors before proceeding!"
@@ -701,7 +690,7 @@ const FORMFIELDCONFIG = {
           "errorClasses": "form-text custom-input-help-text text-danger",
           "id": "errorSub",
           "layout": "1.1.12",
-          "type": "_error",
+          "type": "_error"
         },
         "resetPasswordAction": {
           "containerClasses": "px-0 text-right",
@@ -721,7 +710,7 @@ const FORMFIELDCONFIG = {
               "type": "submit"
             }
           }
-        },
+        }
       }
     },
     "USERPROFILE": {
@@ -870,6 +859,5 @@ const FORMFIELDCONFIG = {
       }
     }
   }
-};
-
+}
 export default FORMFIELDCONFIG;
