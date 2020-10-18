@@ -1,5 +1,12 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import ChartsContainer from "./ChartsContainer";
+import StackedBarChart from './StackedBarChart';
+import GroupedBarChart from './GroupedBarChart';
+import FilterController from './FilterController';
+import MemoizedTable from './MemoizedTable';
+import ClaimTabular from './ClaimTabular';
+import WidgetSectionContainer from './WidgetSectionContainer';
 import HeaderFormComponent from './HeaderFormComponent';
 import ErrorComponent from './ErrorComponent';
 import ResetPasswordTemplate from './custom-components/modal/templates/ResetPasswordTemplate';
@@ -26,6 +33,13 @@ import StatusModalTemplate from "./custom-components/modal/templates/StatusModal
 
 export {
   /* PLOP_INJECT_EXPORT */
+  ChartsContainer,
+	StackedBarChart,
+	GroupedBarChart,
+	FilterController,
+	MemoizedTable,
+	ClaimTabular,
+	WidgetSectionContainer,
 	HeaderFormComponent,
 	ErrorComponent,
 	ResetPasswordTemplate,
