@@ -5,6 +5,7 @@ import {Redirect} from "react-router";
 import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "./../../../actions/company/company-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
+import {showNotification} from "../../../actions/notification/notification-actions";
 import Http from "../../../utility/Http";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
@@ -179,6 +180,7 @@ BrandRegistration.propTypes = {
   dispatchBrandState: PropTypes.func,
   dispatchNewRequest: PropTypes.func,
   dispatchSteps: PropTypes.func,
+  showNotification: PropTypes.func,
   steps: PropTypes.array,
   toggleModal: PropTypes.func,
   updateOrgData: PropTypes.func,
@@ -202,6 +204,7 @@ const mapDispatchToProps = {
   dispatchBrandState,
   dispatchNewRequest,
   dispatchSteps,
+  showNotification,
   toggleModal,
   updateUserProfile
 };
