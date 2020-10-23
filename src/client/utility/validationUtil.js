@@ -160,7 +160,7 @@ export default class Validator {
     inputData.brandName.loader = true;
     inputData.brandName.disabled = true;
     this.setState(state);
-    Http.get("/api/brands/checkUnique", params)
+    Http.get("/api/brands/checkUnique", params, null, this.props.showNotification, null, inputData.brandName.ERROR5XX)
       .then(res => {
         const error = res.body.unique ? "" : "This brand is already registered in your Walmart Brand Portal account";
         inputData.brandName.isUnique = res.body.unique;
@@ -197,11 +197,13 @@ export default class Validator {
         Validator.processTMUniquenessAPIResponse.call(this, res, state, inputData.trademarkNumber);
       })
       .catch (err => {
-        inputData.trademarkNumber.isValid = false;
+        inputData.trademarkNumber.isValid = true;
         inputData.trademarkNumber.error = false;
         inputData.trademarkNumber.fieldOk = false;
         inputData.trademarkNumber.disabled = false;
         inputData.trademarkNumber.loader = false;
+        inputData.trademarkNumber.usptoUrl = "";
+        inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
         console.log(err)
         this.setState(state, this.checkToEnableSubmit);
       });
@@ -301,11 +303,13 @@ export default class Validator {
         error = error.replace("__trademarkNumber__", res.body.ipNumber);
       }
     }
-    tmMeta.isValid = res.body.usptoVerification === "VALID";
+    tmMeta.isValid = res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED";
     tmMeta.error = error;
     tmMeta.fieldOk = !error;
     tmMeta.disabled = false;
     tmMeta.loader = false;
+    tmMeta.usptoUrl = res.body.usptoUrl;
+    tmMeta.usptoVerification = res.body.usptoVerification;
     this.setState(state, this.checkToEnableSubmit);
   }
 }

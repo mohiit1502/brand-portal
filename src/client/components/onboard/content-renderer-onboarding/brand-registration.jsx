@@ -13,7 +13,6 @@ import Validator from "../../../utility/validationUtil";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
 import ContentRenderer from "../../../utility/ContentRenderer";
 
-const console = window.console;
 class BrandRegistration extends React.Component {
 
   constructor(props) {
@@ -123,6 +122,8 @@ class BrandRegistration extends React.Component {
       const inputData = this.state.form.inputData;
       const brand = {
         trademarkNumber: inputData.trademarkNumber.value,
+        usptoUrl: inputData.trademarkNumber.usptoUrl,
+        usptoVerification: inputData.trademarkNumber.usptoVerification,
         name: inputData.brandName.value,
         comments: ""
       };

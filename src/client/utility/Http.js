@@ -80,9 +80,9 @@ export default class Http {
   }
 
   static displayToast(status, toastCallback, toastMessageSuccess, toastMessageFailure) {
-    if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERDOWNWRAPPER).test(status)) {
+    if (CONSTANTS.CODES.ERRORCODES.SERVERDOWNWRAPPER === status) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
-    } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERDOWN).test(status)) {
+    } else if (CONSTANTS.CODES.ERRORCODES.SERVERDOWN === status) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);

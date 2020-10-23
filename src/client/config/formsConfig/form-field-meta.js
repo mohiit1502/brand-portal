@@ -237,6 +237,8 @@ const FORMFIELDCONFIG = {
           "subtitle": "Please input the trademark registration number. Only USPTO registered trademarks are accepted.",
           "required": true,
           "type": "text",
+          "usptoUrl": "",
+          "usptoVerification": "",
           "value": "",
           "validators": {
             "validateLength": {
@@ -534,6 +536,8 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "text",
+          "usptoUrl": "",
+          "usptoVerification": "",
           "value": "",
           "validators": {
             "validateLength": {
