@@ -164,8 +164,6 @@ export default class ContentRenderer {
   }
 
   static getCustomComponent (field, id) {
-    if (field.key === "brandName")
-    console.log("get custom component ", field.fieldOk);
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
     return <CustomInput formId={id}
               customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}

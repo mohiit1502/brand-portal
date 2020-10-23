@@ -160,7 +160,7 @@ export default class Validator {
     inputData.brandName.loader = true;
     inputData.brandName.disabled = true;
     this.setState(state);
-    Http.get("/api/brands/checkUnique", params)
+    Http.get("/api/brands/checkUnique", params, null, this.props.showNotification, null, inputData.brandName.ERROR5XX)
       .then(res => {
         const error = res.body.unique ? "" : "This brand is already registered in your Walmart Brand Portal account";
         inputData.brandName.isUnique = res.body.unique;

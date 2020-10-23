@@ -26,7 +26,6 @@ class NewBrandTemplate extends React.Component {
     this.loader = Helper.loader.bind(this);
     const newBrandConfiguration = this.props.newBrandConfiguration ? this.props.newBrandConfiguration : {};
     this.state = {
-      checkLoader: false,
       section: {...newBrandConfiguration.sectionConfig},
       form: {
         inputData: newBrandConfiguration.fields,
