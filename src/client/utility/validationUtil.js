@@ -6,7 +6,6 @@ export default class Validator {
 
   static errorPrefix = "Error: ";
 
-
   static validate(evt, parentRef) {
     const {validators} = this.props;
     let errorMsg;
@@ -169,10 +168,17 @@ export default class Validator {
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
-        console.log("making brand api call ", inputData)
         this.setState(state, this.checkToEnableSubmit);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        inputData.brandName.isUnique = false;
+        inputData.brandName.error = false;
+        inputData.brandName.fieldOk = false;
+        inputData.brandName.disabled = false;
+        inputData.brandName.loader = false;
+        console.log(err);
+        this.setState(state, this.checkToEnableSubmit);
+      });
   }
 
   static checkTrademarkValidity () {
@@ -186,18 +192,19 @@ export default class Validator {
     inputData.trademarkNumber.disabled = true;
     inputData.trademarkNumber.fieldOk = false;
     this.setState(state);
-    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`)
+    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
       .then (res => {
-        const error = res.body.valid ? "" : `${res.body.ipNumber} is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com`;
-        inputData.trademarkNumber.isValid = res.body.valid;
-        inputData.trademarkNumber.error = error;
-        inputData.trademarkNumber.fieldOk = !error;
+        Validator.processTMUniquenessAPIResponse.call(this, res, state, inputData.trademarkNumber);
+      })
+      .catch (err => {
+        inputData.trademarkNumber.isValid = false;
+        inputData.trademarkNumber.error = false;
+        inputData.trademarkNumber.fieldOk = false;
         inputData.trademarkNumber.disabled = false;
         inputData.trademarkNumber.loader = false;
-        console.log("making trademark api call ", inputData)
+        console.log(err)
         this.setState(state, this.checkToEnableSubmit);
-      })
-      .catch (err => console.log(err));
+      });
   }
 
   static checkCompanyNameAvailability () {
@@ -282,5 +289,23 @@ export default class Validator {
       this.invalid[key] = true;
       this.setState({form});
     }
+  }
+
+  static processTMUniquenessAPIResponse(res, state, tmMeta) {
+    let error;
+    if (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED") {
+      error = "";
+    } else {
+      error = tmMeta[res.body.usptoVerification];
+      if (error && error.indexOf("__trademarkNumber__") !== -1) {
+        error = error.replace("__trademarkNumber__", res.body.ipNumber);
+      }
+    }
+    tmMeta.isValid = res.body.usptoVerification === "VALID";
+    tmMeta.error = error;
+    tmMeta.fieldOk = !error;
+    tmMeta.disabled = false;
+    tmMeta.loader = false;
+    this.setState(state, this.checkToEnableSubmit);
   }
 }

@@ -1,11 +1,11 @@
 import React from "react";
-import { connect } from "react-redux";
-import ClientUtils from "../../../utility/ClientUtils";
 import PropTypes from "prop-types";
-import CONSTANTS from "../../../constants/constants";
+import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import ClientUtils from "../../../utility/ClientUtils";
 import authorizations from "./../../../config/authorizations";
 import restConfig from "./../../../config/rest";
+import CONSTANTS from "../../../constants/constants";
 import "../../../styles/custom-components/left-nav/left-nav.scss";
 
 class Leftnav extends React.Component {

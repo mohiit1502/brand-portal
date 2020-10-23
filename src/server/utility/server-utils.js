@@ -32,7 +32,6 @@ class ServerUtils {
 
   decryptToken(idToken, idTokenEncryptionKey) {
 
-    // const falconSSOTokenKey = JSON.parse(CONSTANTS.IAM.IdTokenEncryptionKey);
     const falconSSOTokenKey = JSON.parse(idTokenEncryptionKey);
     const keystore = nj.JWK.createKeyStore();
     let jwtt;
