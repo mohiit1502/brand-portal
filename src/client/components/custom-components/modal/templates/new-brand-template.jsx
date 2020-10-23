@@ -105,9 +105,11 @@ class NewBrandTemplate extends React.Component {
   async handleSubmit(evt) {
     evt.preventDefault();
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
+    const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
+    const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
     const name = this.state.form.inputData.brandName.value;
     const comments = this.state.form.inputData.comments.value;
-    const payload = { trademarkNumber, name, comments };
+    const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification };
     const url = "/api/brands";
 
     if (this.state.form.isUpdateTemplate) {
