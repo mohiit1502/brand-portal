@@ -6,6 +6,7 @@ import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
 // import StorageSrvc, {STORAGE_TYPES} from "../../utility/StorageSrvc";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
+// import Tooltip from "./../../utility/tooltiplib";
 import CONSTANTS from "../../constants/constants";
 import * as images from "./../../images";
 import "../../styles/home/home.scss";
@@ -20,6 +21,9 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
+    // const profile = this.storageSrvc.getJSONItem("userProfile");
+    // Tooltip.register();
+    // Tooltip.showTooltip(document.getElementById("nav-item-3-31"));
     const profile = this.props.userProfile;
     this.updateProfile(profile);
   }

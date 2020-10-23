@@ -60,6 +60,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   border-radius: 0;
 }
 
+.shadowed-box {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -74,6 +78,70 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .mb-2rem {
   margin-bottom: 2rem;
+}
+
+.p-25 {
+  padding: 2.5rem;
+}
+
+.m-25 {
+  margin: 2.5rem;
+}
+
+.mb-25 {
+  margin-bottom: 2.5rem;
+}
+
+.pb-25 {
+  padding-bottom: 2.5rem;
+}
+
+.mt-25 {
+  margin-top: 2.5rem;
+}
+
+.pt-25 {
+  padding-top: 2.5rem;
+}
+
+.pl-25 {
+  padding-left: 2.5rem;
+}
+
+.mx-25 {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+.px-25 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.my-25 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.py-25 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.pr-12 {
+  padding-right: 12px;
+}
+
+.pl-12 {
+  padding-left: 12px;
+}
+
+.mr-12 {
+  margin-right: 12px;
+}
+
+.ml-12 {
+  margin-left: 12px;
 }
 
 .h-10 {
@@ -114,6 +182,18 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .font-size-15 {
   font-size: 15px;
+}
+
+.list-horizontal {
+  float: left;
+  text-align: left;
+}
+
+.rounded {
+  height: 0.5rem;
+  width: 0.5rem;
+  display: inline-block;
+  margin-right: 0.3rem;
 }
 
 .btn-sm {

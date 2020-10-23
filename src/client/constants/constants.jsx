@@ -230,13 +230,14 @@ const CONSTANTS = {
   },
 
   REGEX: {
-    NAMES: "[a-zA-Z0-9. ]+",
-    COMPANY: "[a-zA-Z0-9., ]+",
-    ZIP: "\\d{5}(?:[-\s]\\d{4})?$",
-    EMAIL: "\\S+@\\S+\.\\S+",
-    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
-    REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
+    COMPANY: "[a-zA-Z0-9., ]+",
+    EMAIL: "\\S+@\\S+\.\\S+",
+    NAMES: "[a-zA-Z0-9. ]+",
+    PASSWORD: "^(?=.*[A-Z]{1,})(?=.*[a-z]{1,})(?=.*[0-9]{1,})(?=.*[~!@#$%^&*()\\-_=+{};:,<.>]{1,}).{8,}$",
+    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
+    REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$",
+    ZIP: "\\d{5}(?:[-\s]\\d{4})?$"
   },
 
   ERRORMESSAGES: {

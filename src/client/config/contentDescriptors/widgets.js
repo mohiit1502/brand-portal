@@ -1,95 +1,162 @@
-/* eslint-disable quote-props */
 const WIDGETCONFIG = {
-    "WIDGETCOMMON": {
-        "layoutClasses": "mx-auto",
-        "widgetClasses": "widget-border position-relative py-2 h-100 text-center color-555",
-        "widgetStyle": {"flex": "0 0 30%", "maxWidth": "30%", "minHeight": "15rem"},
-        "contentLayout": "py-2",
-        "header": {
-            "contentLayout": "",
-            "contentClasses": "h3 font-weight-bold"
+  "SECTIONS": {
+    "CLAIM": {
+      "API": "/api/claims",
+      "ID": "section-claim-widgets",
+      "SECTIONCLASSES": "h-claims",
+      "SECTIONTITLE": "Claim Summary",
+      "SECTIONTITLECLASSES": "h4 mb-3",
+      "WIDGETS": [
+        {
+          "DATAMAPPER": "claim",
+          "DETAILS": {
+            "layoutClasses": "pr-12",
+            "footer": {
+              "contentLayout": "text-right",
+              "text": "View all claims",
+              "href": "/claims"
+            }
+          },
+          "ID": "widget-tabular-claim-summary",
+          "PLACEMENT": "1.1.8", // row.order.span
+          "TYPE": "CLAIMTABULAR"
         },
-        "body": {
-            "contentLayout": "py-3",
-            "contentClasses": "h5 px-3 font-weight-bold override-body-style"
-        },
-        "footer": {
-            "contentLayout": "border-top pb-0 position-absolute w-100 bottom-1",
-            "contentClasses": "h3 mb-0 text-primary font-weight-bold"
+        {
+          "DATAMAPPER": "claim",
+          "DETAILS": {
+            "layoutClasses": "pl-12",
+            "widgetClasses": "px-4 pb-4 pt-3 mb-4",
+            "header": {
+              "title": "Reported Claim Types"
+            },
+            "legend": {
+              "indicatorClasses": "rounded mt-3",
+              "liClasses": "list-horizontal",
+              "ulClasses": "list-unstyled",
+              "legendItems": [
+                {
+                  "name": "Claims",
+                  "color": "#007CC6",
+                },
+                {
+                  "name": "Items",
+                  "color": "#FFB61A",
+                }
+              ]
+            }
+          },
+          "ID": "widget-claim-types-grouped-bar",
+          "PLACEMENT": "1.2.4", // row.order.span
+          "SUBTYPE": "GroupedBarChart",
+          "TYPE": "CLAIMTYPEBAR"
         }
+      ]
     },
-    "WIDGETS": [
+    "BRAND": {
+      "API": "/api/brands",
+      "ID": "section-brand-widgets",
+      "SECTIONCLASSES": "h-brands",
+      "SECTIONTITLE": "Brand Summary",
+      "SECTIONTITLECLASSES": "h4 mb-3",
+      "WIDGETS": [
         {
-            "item": "CLAIMS",
+          "DATAMAPPER": "brand",
+          "DETAILS": {
             "layoutClasses": "",
-            "widgetClasses": "",
-            "widgetStyle": {},
-            "placement": "1.1.3", // row.order.span
-            "header": {
-                "title": "My Claims",
-                "contentClasses": ""
-            },
             "body": {
-                "content": "Report Walmart.com listings for alleged intellectual property infringement",
-                "contentClasses": ""
+              "content": "Report Walmart.com listings for alleged intellectual property infringement",
             },
             "footer": {
-                "text": "Submit a New Claim",
-                "contentClasses": "",
-                "icon": "",
-                "href": "/claims",
-                "position": "right"
+              "text": "View all brands",
+              "href": "/brands"
             }
-        },
-        {
-            "actionEnabler": "enableBrandCreate",
-            "item": "BRANDS",
-            "action": "CREATE",
-            "layoutClasses": "",
-            "widgetClasses": "",
-            "widgetStyle": {},
-            "placement": "1.2.3", // row.order.span
-            "header": {
-                "title": "My Brands",
-                "contentClasses": ""
-            },
-            "body": {
-                "content": "Add more brands to your Walmart Brand Portal account",
-                "contentClasses": ""
-            },
-            "footer": {
-                "text": "Register a New Brand",
-                "contentClasses": "",
-                "icon": "",
-                "href": "/brands",
-                "position": "right"
-            }
-        },
-        {
-            "actionEnabler": "enableUserInvite",
-            "item": "USERS",
-            "action": "INVITE",
-            "layoutClasses": "",
-            "widgetClasses": "",
-            "widgetStyle": {},
-            "placement": "1.3.3", // row.order.span
-            "header": {
-                "title": "Users",
-                "contentClasses": ""
-            },
-            "body": {
-                "content": "Invite authorized users to your Walmart Brand Portal account",
-                "contentClasses": ""
-            },
-            "footer": {
-                "text": "Invite a New User",
-                "contentClasses": "",
-                "icon": "",
-                "href": "/users",
-                "position": "right"
-            }
+          },
+          "ID": "widget-claim-types-stacked-bar",
+          "PLACEMENT": "1.1.12", // row.order.span
+          "SUBTYPE": "StackedBarChart",
+          "TYPE": "BRANDHORIZONTALBAR"
         }
-    ]
-};
+      ]
+    }
+  },
+  "WIDGETCOMMON": {
+    "layoutClasses": "",
+    "widgetClasses": "widget-border h-100 color-555 shadowed-box",
+    // "widgetStyle": {"flex": "0 0 30%", "maxWidth": "30%", "minHeight": "15rem"},
+    "widgetStyle": {},
+    "contentLayout": "",
+    "header": {
+      "contentLayout": "",
+      "contentClasses": "font-weight-bold"
+    },
+    "body": {
+      "contentLayout": "py-3",
+      "contentClasses": "h5 px-3 font-weight-bold override-body-style"
+    },
+    "footer": {
+      "contentLayout": "mx-4 py-3",
+      "contentClasses": "font-weight-bold"
+    }
+  },
+  "WIDGETSALL": {
+    "CLAIMTABULAR": {
+      "body": {
+        "contentClasses": ""
+      },
+      "footer": {
+        "contentClasses": "",
+        "icon": "",
+        "position": "right",
+      },
+      "header": {
+        "contentClasses": ""
+      },
+      "tabContainerClasses": "list-unstyled mb-0",
+      "tabClasses": "list-horizontal px-4 pt-4 pb-1",
+      "tabs": [{"active": true, "id": "open", "label": "Open Claims"}, {"id": "closed", "label": "Closed Claims"}, {"id": "submitted", "label": "Submitted Claims"}],
+      "widgetClasses": "",
+      "widgetStyle": {}
+    },
+    "CLAIMTYPEBAR": {
+      "actionEnabler": "enableBrandCreate",
+      "layoutClasses": "",
+      "widgetClasses": "",
+      "widgetStyle": {},
+      "header": {
+        "title": "My Brands",
+        "contentClasses": "h5"
+      },
+      "body": {
+        "content": "Add more brands to your Walmart Brand Portal account",
+        "contentClasses": ""
+      },
+      "footer": {
+        "text": "Register a New Brand",
+        "contentClasses": "",
+        "icon": "",
+        "href": "/brands",
+        "position": "right"
+      }
+    },
+    "BRANDHORIZONTALBAR": {
+      "actionEnabler": "enableUserInvite",
+      "item": "BRANDS",
+      "widgetClasses": "",
+      "widgetStyle": {},
+      "header": {
+        "contentClasses": ""
+      },
+      "body": {
+        "contentClasses": ""
+      },
+      "footer": {
+        "contentClasses": "",
+        "icon": "",
+        "href": "/brands",
+        "position": "right"
+      }
+    }
+  }
+}
 
 export default WIDGETCONFIG;

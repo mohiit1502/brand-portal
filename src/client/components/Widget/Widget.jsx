@@ -6,8 +6,9 @@ import "./Widget.component.scss";
 const contentComponentMap = {
   BRANDHORIZONTALBAR: ChartsContainer,
   CLAIMTABULAR: ClaimTabular,
-  CLAIMTYPEBAR: ChartsContainer,
+  CLAIMTYPEBAR: ChartsContainer
 }
+
 const Widget = props => {
   const {
     tableMeta,
@@ -18,17 +19,19 @@ const Widget = props => {
       widgetStyle: commonWidgetStyle = {},
     },
     widget: {
-      TYPE,
+      ID,
       DETAILS: {
         colClass = "",
         layoutClasses = "",
         widgetStyle = {}
-      }
+      },
+      SUBTYPE,
+      TYPE
     },
     widgetStackItem
   } = props;
 
-  const opts = {data, fetchComplete, widgetCommon: props.widgetCommon, widgetStackItem, widget: props.widget};
+  const opts = {data, fetchComplete, widgetCommon: props.widgetCommon, widgetStackItem, SUBTYPE, widget: props.widget};
   tableMeta !== undefined && (opts.tableMeta = tableMeta);
 
   const ContentComponent = contentComponentMap[TYPE];
@@ -37,7 +40,7 @@ const Widget = props => {
   const colClassInferred = `${colClass ? ` ${colClass}` : ""}`;
 
   return (
-    <div className={`c-Widget${commonLayoutClassesInferred}${layoutClassesInferred}${colClassInferred}`} style={{...commonWidgetStyle, ...widgetStyle}}>
+    <div id={ID} className={`c-Widget${commonLayoutClassesInferred}${layoutClassesInferred}${colClassInferred}`} style={{...commonWidgetStyle, ...widgetStyle}}>
       <ContentComponent {...opts} />
     </div>
   );
