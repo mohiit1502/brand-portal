@@ -1,0 +1,44 @@
+.c-LoginFaq {
+  background: white;
+  padding-top: 1.5rem;
+  position: relative;
+
+  &.scrolled:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    animation: blink 1s;
+  }
+
+  @keyframes blink {
+    0% {
+      background: rgba(255,255,255,0.2);
+    }
+    50% {
+      background: rgba(255,255,255,0.8);
+      // display: block;
+    }
+    100% {
+      background: none;
+      // display: none;
+    }
+  }
+
+  .c-LoginFaq__header {
+      padding: 0 2.5rem 1.125rem;
+      border-bottom: 1px solid #CCCCCC;
+  }
+
+  .c-Accordion__button {
+    padding: 1.4rem 3rem 1.4rem 2.5rem;
+  }
+
+  .c-Accordion__panel {
+      padding: 0 3rem 0 2.5rem;
+
+      &.expanded {
+        padding-bottom: 1.5rem;
+      }
+  }
+}

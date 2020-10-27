@@ -1,0 +1,22 @@
+.c-HelpMain {
+
+    .c-HelpMain__header {
+        padding-left: 1.5rem;
+        padding-bottom: 1.125rem;
+        border-bottom: 1px solid #CCCCCC;
+        margin-bottom: 0;
+    }
+
+    .c-HelpMain__content {
+        overflow-y: scroll;
+        height: 75vh;
+
+        .c-HelpMain__content__qContainer {
+            // padding-top: 1rem;
+        }
+    }
+
+    .c-HelpMain__partial {
+        padding-bottom: 1rem;
+    }
+}

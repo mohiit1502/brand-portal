@@ -1,0 +1,36 @@
+@import "../../override/variables";
+
+$subtitle-color: #6E7677;
+
+.title-row {
+  font-family: MyriadPro-Regular, sans-serif;
+  .company-registration-title {
+
+    font-size: 32px;
+  }
+
+  .company-registration-subtitle {
+    font-size: 16px;
+    color: $subtitle-color;
+  }
+}
+
+.company-reg-form {
+  .primary-file-upload, .additional-file-upload {
+    .upload-btn {
+      width: 100px;
+    }
+    .uploaded-file-label{
+      height: 31px;
+      line-height: 16px;
+      .cancel-file-selection-btn {
+        font-size: 32px;
+        line-height: 16px;
+      }
+    }
+  }
+
+  .btn-primary.disabled {
+    cursor: default
+  }
+}

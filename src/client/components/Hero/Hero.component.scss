@@ -1,0 +1,25 @@
+.c-Hero {
+  padding: 0 2.5rem;
+
+  .c-Hero__tag-line-container {
+    margin-top: 4.7rem;
+    margin-left: 11.6rem;
+    font-family: BogleWeb-Regular, sans-serif;
+    position: relative;
+
+    .c-Hero__tag-line {
+    //   width: 400px;
+      font-size: 2.3rem;
+      font-weight: normal;
+      margin-bottom: 1.5rem;
+    }
+
+    .c-Hero__register-btn {
+        padding: 0.5rem 3.5rem;
+    }
+  }
+
+  .c-Hero__introImage {
+    padding: 2rem 3.25rem;
+  }
+}

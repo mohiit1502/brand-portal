@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="105px" height="105px" viewBox="0 0 105 105" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>key</title>
+    <defs>
+        <filter x="-2.2%" y="-3.1%" width="104.4%" height="106.2%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Visual-Design:-Super-Admin" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2.20-Company-Access-Request-Set" transform="translate(-668.000000, -352.000000)" fill-rule="nonzero">
+            <g id="Group-7" filter="url(#filter-1)" transform="translate(447.000000, 321.000000)">
+                <g id="key" transform="translate(230.000000, 40.000000)">
+                    <circle id="Oval" fill="#FFD05B" cx="43.5" cy="43.5" r="43.5"></circle>
+                    <path d="M46.2645959,42.3985251 C51.2210129,45.419224 57.7390407,44.7460397 61.9995224,40.4134943 C67.0408096,35.2869367 67.0408096,26.9843299 61.9995224,21.8750334 C56.9582353,16.7657369 48.7937265,16.7484758 43.7694134,21.8750334 C39.5089317,26.2075787 38.8469445,32.8358553 41.8173999,37.8761072 L20.1585366,59.8840567 L24.6057326,64.4064745 L24.6057326,64.4064745 L29.0868768,68.9634146 L30.886124,67.1337341 L29.1717469,65.3903593 L30.8182279,63.716029 L32.532605,65.4594039 L34.3318523,63.6297234 L32.6174752,61.9036097 L34.2639562,60.2292794 L35.9783333,61.9726542 L37.7775805,60.1429737 L33.2964364,55.6032947 L46.2645959,42.3985251 Z" id="Path" fill="#FFFFFF"></path>
+                    <circle id="Oval" fill="#FFD05B" cx="58.3536585" cy="26.5243902" r="3.18292683"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

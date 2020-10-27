@@ -1,0 +1,50 @@
+@import "../../override/variables";
+
+$nav-grey: #3D454C;
+
+$nav-selected-grey : #2B3339;
+$nav-left-border-color : #F7F9FA;
+.left-nav {
+  position: absolute;
+  background: $nav-grey;
+  width: $left-nav-width;
+  height: calc(100% - #{$nav-max-height});
+  overflow: hidden;
+
+
+
+  .nav-item {
+    @extend .py-2;
+
+    .nav-link {
+      color : $white;
+    }
+
+    &.main-nav-item {
+      background: $nav-grey;
+      &.active{
+        .nav-link {
+          background: $nav-selected-grey;
+          border-left: 6px solid $nav-left-border-color;
+        }
+        .sub-nav-item {
+          .nav-link {
+            background: transparent;
+            border-left: 0;
+          }
+        }
+      }
+    }
+
+    .sub-nav-item {
+      line-height: 0;
+      border-left: 6px solid transparent;
+      &.active {
+        background: $nav-selected-grey;
+        border-left: 6px solid $nav-left-border-color;
+      }
+    }
+  }
+
+
+}

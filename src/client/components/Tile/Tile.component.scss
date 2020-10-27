@@ -1,0 +1,60 @@
+.c-Tile {
+
+  color: #2E2E2E;
+
+  .c-Tile__content {
+    box-shadow: 0 2px 4px;
+    padding: 1.875rem;
+    height: 100%;
+    background: white;
+
+    .c-Tile__content__symbol {
+      margin-bottom: 1.4rem;
+    }
+
+    .c-Tile__content__header {
+      // font-family: "Myriad Pro";
+      font-size: 1.4rem;
+      font-weight: bolder;
+      line-height: 1.875rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .c-Tile__content__body {
+
+      ul {
+        padding-left: 1rem;
+        li {
+            margin-bottom: 0.75rem;
+            // line-height: 1.15rem;
+        }
+      }
+
+      ol {
+        list-style: none;
+        counter-reset: item;
+        font-weight: bolder;
+        padding-left: 0;
+
+        li {
+          counter-increment: item;
+          margin-bottom: 0.75rem;
+        }
+
+        li:before {
+            background: #F2AF36;
+            border-radius: 100%;
+            color: black;
+            content: counter(item);
+            font-size: 0.9rem;
+            // font-weight: bolder;
+            display: inline-block;
+            margin-right: 10px;
+            padding: 0.1rem 0.3rem;
+            text-align: center;
+            width: 1.5rem;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "APP_CONFIG" : {},
+  "connections": {
+    "default": {
+      "routes": {
+        "cors": false
+      }
+    }
+  }
+}

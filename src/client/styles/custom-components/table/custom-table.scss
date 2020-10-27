@@ -1,0 +1,77 @@
+@import "../../override/variables";
+
+$table-header-color : #A2ACB2;
+$table-content-color : #2B3339;
+$table-border-color : #E2E5E7;
+$effective-padding: 40px;
+$header-row-height: 30px;
+$row-height: 48px;
+.custom-table {
+  font-family: MyriadPro-Regular, sans-serif;
+  margin: 0;
+  thead, .table-header {
+    padding: 0 15px;
+    tr, .table-row {
+      height: $header-row-height;
+      border-bottom: 1px solid $table-border-color;
+      th, .table-head-cell {
+        color : $table-header-color;
+        font-size: 12px;
+        font-weight: normal;
+        vertical-align: middle;
+        border: 1px solid $table-border-color;
+        border-top : 0;
+        border-bottom: 0;
+        padding: 6px 15px;
+        &:first-child {
+          border-left: 0;
+          padding-left: $effective-padding;
+        }
+
+        &:last-child {
+          border-right: 0;
+          padding-right: $effective-padding;
+        }
+
+        .sort-icon {
+          height: 18px;
+          margin-top: -2px;
+        }
+      }
+    }
+  }
+
+  tbody, .table-body {
+    height: calc(100% - #{$header-row-height});
+    overflow: auto;
+    padding: 0 15px;
+    tr, .table-row {
+      min-height: $row-height;
+      border-bottom: 1px solid $table-border-color;
+
+      td, .table-body-cell {
+        font-size: 14px;
+        font-weight: normal;
+        vertical-align: middle;
+        color : $table-content-color;
+
+        .company-name {
+          font-size: 10px;
+          display: inline-block;
+          height: 15px;
+          padding: 0 2px !important;
+          color: #6D7278;
+          border-radius: 2px;
+        }
+
+        &:first-child {
+          padding-left: $effective-padding;
+        }
+
+        &:last-child {
+          padding-right: $effective-padding;
+        }
+      }
+    }
+  }
+}

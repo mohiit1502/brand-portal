@@ -1,0 +1,109 @@
+{
+  "APP_CONFIG" : {
+    "IAM": {}
+  },
+
+  "services": {
+    "consumerId": "91e1b78e-261b-4676-8317-4cf5bfa24a42",
+    "privateKey": {
+      "file": "config/private-key-qa.pem",
+      "version": 2,
+      "algorithm": "RSA",
+      "encoding": "PKCS#8"
+    },
+    "providers": {
+      "@walmart/electrode-ccm-client": {
+        "options": {
+          "environment": "stg"
+        }
+      },
+      "@walmart/electrode-quimby-client": {}
+    }
+  },
+  "ccm": {
+    "autoLoad": true,
+    "uiFilter": {
+      "$.ui": [ ".*"]
+    },
+    "keys":{
+      "root": {
+        "profiles": {
+          "default": {
+            "environment": "prod"
+          }
+        },
+        "data": {
+          "IAM": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["IAM_CONFIG"]
+          },
+          "USER_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["USER_CONFIG"]
+          },
+          "BRAND_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["BRAND_CONFIG"]
+          },
+          "CLAIM_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["CLAIM_CONFIG"]
+          },
+          "HEALTH_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["HEALTH_CONFIG"]
+          },
+          "CONTENT_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["CONTENT_CONFIG"]
+          }
+        }
+      }
+    }
+  },
+  "plugins": {
+    "inert": {
+      "enable": true
+    },
+    "electrodeStaticPaths": {
+      "enable": true,
+      "options": {
+        "pathPrefix": "dist"
+      }
+    },
+    "user-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/user/user-manager-api"
+    },
+    "company-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/company/company-manager-api"
+    },
+    "brand-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/brand/brand-manager-api"
+    },
+    "claim-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/claim/claim-manager-api"
+    },
+    "content-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/content/content-manager-api"
+    },
+    "webapp": {
+      "module": "@walmart/electrode-index-page",
+      "options": {
+        "pageTitle": "Walmart Brand Portal",
+        "paths": {
+          "/{args*}": {
+            "content": {
+              "module": "./{{env.APP_SRC_DIR}}/server/views/index-view"
+            }
+          }
+        },
+        "serverSideRendering": false,
+
+        "cdn": {
+          "enabled": false,
+          "mapping": "config/assets.json"
+        }
+      }
+    }
+  }
+}

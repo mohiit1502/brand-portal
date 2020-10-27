@@ -1,0 +1,45 @@
+@import "../../override/variables";
+
+$dropdown-white : #F9F9F9;
+
+
+.home-header-nav{
+  background: $blue;
+  height: $nav-max-height;
+  max-height: $nav-max-height;
+  margin: 0 -15px;
+
+  .walmart-brand{
+    img {
+      width: 122px;
+    }
+  }
+  .navbar-collapsible-header{
+    .nav-item {
+      &.nav-item-profile {
+        .dropdown-menu {
+          background: $dropdown-white;
+        }
+      }
+      .nav-link {
+        font-size: 16px;
+        color : white;
+        &.login-btn{
+          width : 90px;
+          border : 1px solid $white;
+          @extend .py-1;
+        }
+        &.nav-help {
+          display: flex;
+          align-items: center;
+
+          .badge {
+            font-family: Arial Rounded MT Bold;
+            font-size: 1rem;
+            padding: 0.2em 0.42em;
+          }
+        }
+      }
+    }
+  }
+}

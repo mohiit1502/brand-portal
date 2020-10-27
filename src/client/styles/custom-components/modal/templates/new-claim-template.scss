@@ -1,0 +1,65 @@
+@import "../../../override/variables";
+
+.modal.new-claim-modal {
+  .modal-dialog {
+    height: 80%;
+    .modal-content {
+      height: 100%;
+      .modal-header{
+        height: 65px;
+      }
+
+      .modal-body {
+        height: calc(100% - 130px);
+        overflow: auto;
+        padding: 1.5rem;
+
+        .brand-and-patent {
+          .col-4:first-of-type {padding-right: 0.75rem;}
+          .col-4:last-of-type {padding-left: 0.75rem;}
+        }
+
+        .item-url-list {
+          .col-8 {padding-right: 0.75rem;}
+          .col-4 {
+            padding-left: 0.75rem;
+            .row {
+              .col-8 {padding-right: 0.375rem;}
+              .col-4 {padding-left: 0.375rem;}
+            }
+          }
+          div.btn.disabled {
+            pointer-events: none;
+            background: #B2D8ED;
+            border-color: #B2D8ED;
+            color: white;
+          }
+        }
+
+        .plus-icon {
+          position: relative;
+          top: -1px;
+        }
+
+        .status-header {
+          font-size: 24px;
+        }
+
+        .status-description {
+          font-size: 14px;
+        }
+      }
+
+      .modal-footer{
+        height: 65px;
+        //box-shadow: 0px -4px 4px 0px rgba(0,0,0,0.15);
+
+        .btn-primary:disabled {
+          background: #B2D8ED;
+          color: white;
+          border-color: #B2D8ED;
+        }
+      }
+    }
+  }
+}

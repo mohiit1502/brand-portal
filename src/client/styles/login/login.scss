@@ -1,0 +1,25 @@
+@import "../override/variables";
+
+.login-container{
+  // background: $navy-blue;
+  // padding: 15px;
+  scroll-behavior: smooth;
+
+  .tag-line-row{
+    .product-tag-line{
+      font-family: BogleWeb-Regular, sans-serif;
+      position: relative;
+      width: 400px;
+      font-size: 34px;
+      font-weight: normal;
+    }
+  }
+
+  .registration-row {
+    .register-btn {
+      font-size: 13px;
+      width : 200px;
+    }
+  }
+}
+

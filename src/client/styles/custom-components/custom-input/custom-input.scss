@@ -1,0 +1,243 @@
+@import "../../override/variables";
+
+$input-blue: #017DC6;
+$disabled-background : #F7F7F7;
+$disabled-font : #A3A8A9;
+$input-border : 1px solid #979797;
+$radio-color : #017DC6;
+$radio-border-color : #E2E5E7;
+// $input-placeholder-color : #2C333A;
+$input-placeholder-color : #6E7677;
+$textarea-label: #41484F;
+$dropdown-select-background: rgb(178, 216, 237);
+
+@mixin custom-placeholderCSS {
+  top : -28px;
+  font-size: 16px;
+  color: $input-placeholder-color;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+}
+
+@mixin custom-label-css {
+  position: relative;
+  z-index: 7;
+  margin: 0;
+  top: -47px;
+  position: relative;
+  left: 15px;
+  background: white;
+  font-size: 12px;
+  color: $input-placeholder-color;
+  transition: top 100ms, font-size 100ms, background 100ms;
+}
+
+.form-group-radio {
+  margin: 0;
+
+  .radio-btn-box {
+    color : $radio-color;
+    border-radius: 0;
+    height: 38px;
+    width: 106px;
+    border: 1px solid $radio-border-color;
+
+    &:first-child {
+      border-bottom-left-radius: 5px;
+      border-top-left-radius: 5px;
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    label {
+      width: 100%;
+      height: 100%;
+      line-height: 38px;
+      cursor: pointer;
+    }
+
+    &.active {
+      background : $radio-color;
+      color : white;
+    }
+  }
+}
+
+.custom-select-form-group {
+  input[readonly] {
+    background: white;
+  }
+
+  .positioned-top-right {
+    position: absolute;
+    top: -1.5rem;
+    right: 0;
+  }
+
+  .dropdown-arrow {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    height: 24px;
+    z-index: 10;
+  }
+
+  .dropdown-menu{
+    width : 160%;
+    max-height: 250px;
+    max-width: 300px;
+    overflow: auto;
+    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.15);
+    @extend .py-0;
+    .dropdown-item {
+      cursor: pointer;
+      height: 38px;
+      line-height: 32px;
+
+      &:active, &:focus, &:hover {
+        background: $dropdown-select-background;
+      }
+    }
+  }
+}
+
+.custom-multi-select-form-group{
+  @extend .custom-select-form-group;
+  .dropdown-menu{
+    max-height: 250px;
+    overflow: auto;
+    .dropdown-item {
+      cursor: default;
+      .overlay-hidden-checkbox {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.custom-input-form-group {
+
+  min-height: 58px;
+  font-family: MyriadPro-Regular, sans-serif;
+
+  &.disabled {
+    .custom-input-label-placeholder {
+      .label-upper-bg {
+        background: $disabled-background;
+      }
+    }
+  }
+
+  &.field-loader {
+    .custom-input-element {
+      padding-right: 2.7rem;
+    }
+  }
+
+  .custom-input-label{
+    @include custom-label-css();
+
+    &.custom-input-label-placeholder {
+      @include custom-placeholderCSS();
+      //top : -28px;
+      //font-size: 16px;
+      //color: $input-placeholder-color;
+      //background: transparent;
+    }
+
+    .label-upper-bg{
+      z-index: 1;
+    }
+
+    .label-lower-bg {
+      top : 50%;
+      z-index: 1;
+    }
+
+    .label-text {
+      position: relative;
+      z-index: 2;
+      margin: 0 5px;
+    }
+
+    &.custom-input-label-textarea {
+      top: 0;
+      left: 0;
+      font-size: 14px;
+    }
+
+  }
+
+  .custom-input-element{
+    position: relative;
+    z-index: 5;
+    height: 34px;
+    background: transparent;
+    font-size: 14px;
+    padding-left: 20px;
+    border : 1px solid $input-border;
+
+    &[type="multiselect"] {
+      padding-right: 1.5rem;
+    }
+
+    &.custom-input-element-textarea {
+      height: unset;
+    }
+    &:focus, &:active{
+      box-shadow: none;
+      border : 1px solid $input-blue;
+
+      & + .custom-input-label {
+        @include custom-label-css();
+        color : $input-blue;
+      }
+    }
+
+    &[disabled]{
+      color : $disabled-font;
+      & + .custom-input-label {
+        color : $disabled-font;
+        background: white;
+        z-index: 7;
+        .label-lower-bg {
+          background: $disabled-background;
+        }
+      }
+      &:active + .custom-input-label-placeholder{
+        .label-upper-bg {
+          background: white;
+        }
+      }
+
+      background: $disabled-background;
+    }
+  }
+
+  .custom-input-help-text{
+    position: relative;
+    top: -26px;
+    padding-left: 20px;
+    font-size: 12px;
+
+  }
+
+  &.has-error {
+    .custom-input-element, .custom-input-label {
+      @extend .text-danger;
+      @extend .border-danger;
+    }
+  }
+}
+
