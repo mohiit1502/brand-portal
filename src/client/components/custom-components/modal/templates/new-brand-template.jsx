@@ -22,23 +22,20 @@ class NewBrandTemplate extends React.Component {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
-    console.log("constructing again")
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const newBrandConfiguration = this.props.newBrandConfiguration ? this.props.newBrandConfiguration : {}
+    const newBrandConfiguration = this.props.newBrandConfiguration ? this.props.newBrandConfiguration : {};
     this.state = {
-      checkLoader: false,
       section: {...newBrandConfiguration.sectionConfig},
       form: {
         inputData: newBrandConfiguration.fields,
-        ...newBrandConfiguration.formConfig,
+        ...newBrandConfiguration.formConfig
       }
     };
   }
 
   componentDidMount() {
     if (this.props.data && !this.state.form.templateUpdateComplete) {
-      console.log("updating template")
       this.prepopulateInputFields(this.props.data);
     }
   }
@@ -66,21 +63,16 @@ class NewBrandTemplate extends React.Component {
   }
 
   bubbleValue (evt, key, error) {
-    console.log("bubbleValue")
-    console.log(this.state.form.inputData.trademarkNumber.fieldOk);
     const targetVal = evt.target.value;
     this.setState(state => {
       state = {...state};
       state.form.inputData[key].value = targetVal;
       state.form.inputData[key].error = error;
-      console.log("bubble value state updated ", state.form.inputData.trademarkNumber.fieldOk);
       return state;
     }, this.checkToEnableSubmit);
   }
 
   onChange(evt, key) {
-    console.log("onChange parent");
-    console.log(this.state.form.inputData.trademarkNumber.fieldOk);
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       this.setState(state => {
@@ -96,30 +88,28 @@ class NewBrandTemplate extends React.Component {
         }
         state = {...state};
         state.form.inputData[key].value = targetVal;
-        console.log("onChange state updated ", state.form.inputData.trademarkNumber.fieldOk);
         return state;
       }, this.checkToEnableSubmit);
     }
   }
 
   checkToEnableSubmit() {
-    console.log("checkToEnableSubmit")
-    console.log(this.state.form.inputData.trademarkNumber.fieldOk);
     const form = {...this.state.form};
     const bool = form.isUpdateTemplate || (form.inputData.trademarkNumber.isValid  &&
       form.inputData.trademarkNumber.value && form.inputData.brandName.value &&
       form.inputData.brandName.isUnique);
     form.inputData.brandCreateActions.buttons.submit.disabled = !bool;
     this.setState({form});
-    console.log(form.inputData.trademarkNumber.fieldOk);
   }
 
   async handleSubmit(evt) {
     evt.preventDefault();
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
+    const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
+    const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
     const name = this.state.form.inputData.brandName.value;
     const comments = this.state.form.inputData.comments.value;
-    const payload = { trademarkNumber, name, comments };
+    const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification };
     const url = "/api/brands";
 
     if (this.state.form.isUpdateTemplate) {
@@ -173,7 +163,6 @@ class NewBrandTemplate extends React.Component {
   render() {
     const form = this.state.form;
     const section = this.state.section;
-    console.log("rendering ... ", form.inputData.trademarkNumber.fieldOk);
     return (
       <div className="modal show new-brand-modal" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
@@ -187,7 +176,7 @@ class NewBrandTemplate extends React.Component {
               </button>
             </div>
             <div className={`modal-body text-left${this.state.form.loader && " loader"}`}>
-              <div className="row pl-2">
+              <div className="row">
                 <div className="col">
                   <p>{form.formHeading}</p>
                 </div>
@@ -212,11 +201,12 @@ class NewBrandTemplate extends React.Component {
 }
 
 NewBrandTemplate.propTypes = {
-  modal: PropTypes.object,
-  saveBrandInitiated: PropTypes.func,
-  toggleModal: PropTypes.func,
   data: PropTypes.object,
-  showNotification: PropTypes.func
+  modal: PropTypes.object,
+  newBrandConfiguration: PropTypes.object,
+  saveBrandInitiated: PropTypes.func,
+  showNotification: PropTypes.func,
+  toggleModal: PropTypes.func
 };
 
 const mapStateToProps = state => {

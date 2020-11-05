@@ -223,8 +223,11 @@ const FORMFIELDCONFIG = {
         "trademarkNumber": {
           "disabled": false,
           "error": "",
+          "ERROR5XX": "Unable to reach our services!",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
+          "INVALID": "Please provide a valid trademark number to proceed.",
           "isValid": false,
           "key": "trademarkNumber",
           "label": "Trademark Number",
@@ -234,6 +237,8 @@ const FORMFIELDCONFIG = {
           "subtitle": "Please input the trademark registration number. Only USPTO registered trademarks are accepted.",
           "required": true,
           "type": "text",
+          "usptoUrl": "",
+          "usptoVerification": "",
           "value": "",
           "validators": {
             "validateLength": {
@@ -517,8 +522,11 @@ const FORMFIELDCONFIG = {
         "trademarkNumber": {
           "disabled": false,
           "error": "",
+          "ERROR5XX": "Unable to reach our services!",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
+          "INVALID": "Please provide a valid trademark number to proceed.",
           "isValid": false,
           "key": "trademarkNumber",
           "label": "Trademark Number",
@@ -528,6 +536,8 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "text",
+          "usptoUrl": "",
+          "usptoVerification": "",
           "value": "",
           "validators": {
             "validateLength": {
@@ -631,6 +641,7 @@ const FORMFIELDCONFIG = {
           "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
+          "tooltipText": "Password must contain between eight and thirty alphanumeric characters, one uppercase letter, and one number.",
           "type": "password",
           "value": "",
           "validators": {
@@ -650,6 +661,7 @@ const FORMFIELDCONFIG = {
           "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
+          "tooltipText": "Password must contain between eight and thirty alphanumeric characters, one uppercase letter, and one number.",
           "type": "password",
           "value": "",
           "validators": {

@@ -5,6 +5,7 @@ import {Redirect} from "react-router";
 import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "./../../../actions/company/company-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
+import {showNotification} from "../../../actions/notification/notification-actions";
 import Http from "../../../utility/Http";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
@@ -12,7 +13,6 @@ import Validator from "../../../utility/validationUtil";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
 import ContentRenderer from "../../../utility/ContentRenderer";
 
-const console = window.console;
 class BrandRegistration extends React.Component {
 
   constructor(props) {
@@ -122,6 +122,8 @@ class BrandRegistration extends React.Component {
       const inputData = this.state.form.inputData;
       const brand = {
         trademarkNumber: inputData.trademarkNumber.value,
+        usptoUrl: inputData.trademarkNumber.usptoUrl,
+        usptoVerification: inputData.trademarkNumber.usptoVerification,
         name: inputData.brandName.value,
         comments: ""
       };
@@ -179,6 +181,7 @@ BrandRegistration.propTypes = {
   dispatchBrandState: PropTypes.func,
   dispatchNewRequest: PropTypes.func,
   dispatchSteps: PropTypes.func,
+  showNotification: PropTypes.func,
   steps: PropTypes.array,
   toggleModal: PropTypes.func,
   updateOrgData: PropTypes.func,
@@ -202,6 +205,7 @@ const mapDispatchToProps = {
   dispatchBrandState,
   dispatchNewRequest,
   dispatchSteps,
+  showNotification,
   toggleModal,
   updateUserProfile
 };
