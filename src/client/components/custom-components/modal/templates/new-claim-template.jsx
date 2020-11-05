@@ -286,7 +286,7 @@ class NewClaimTemplate extends React.Component {
       .then(res => {
         const state = {...this.state};
         state.brands = res.body.content;
-        state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName}));
+        state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
         state.loader = false;
         this.setState(state);
       });
@@ -375,6 +375,8 @@ class NewClaimTemplate extends React.Component {
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
     const brandId = inputData.brandName.options[index].id;
+    const usptoUrl = inputData.brandName.options[index].usptoUrl;
+    const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
     const comments = inputData.comments.value;
     const digitalSignatureBy = inputData.signature.value;
@@ -391,7 +393,9 @@ class NewClaimTemplate extends React.Component {
       registrationNumber,
       comments,
       digitalSignatureBy,
-      items: getItems(inputData.itemList)
+      items: getItems(inputData.itemList),
+      usptoUrl,
+      usptoVerification
     };
     this.loader("loader", true);
     return Http.post("/api/claims", payload)
