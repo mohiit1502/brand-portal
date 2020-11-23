@@ -37,7 +37,7 @@ export default class ServerHttp {
     options.headers = { "Content-Type": "application/json", ...options.headers };
     const response = await fetch(url, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: typeof data === "string" ? data : JSON.stringify(data),
       ...options
     });
 

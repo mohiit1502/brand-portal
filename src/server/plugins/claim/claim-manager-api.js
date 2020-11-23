@@ -58,15 +58,15 @@ class ClaimManagerApi {
       "WM_SVC.VERSION": "0.0.1",
       "WM_SVC.NAME": "item-setup-query-service-app",
       "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH),
-      "WM_SVC.ENV": "prod",
-      "WM_CONSUMER.ID": "6aa8057e-8795-450a-b349-4ba99b633d2e",
+      "WM_SVC.ENV": "stg",
+      "WM_CONSUMER.ID": "d3f2b7d1-f86f-4ec0-98be-3c2a45e7e743",
       Accept: "application/json"
     };
   }
 
   parseSellersFromResponse = response => {
-    const sellers = response && response.payload.indexData;
-    const sellersParsed = sellers.map(seller => seller.seller_id && {value: seller.partner_display_name, id: seller.seller_id}).filter(seller => seller);
+    const sellers = response
+    const sellersParsed = sellers.map(seller => seller['offer.sellerId'] && {value: seller['rollupoffer.partnerDisplayName'], id: seller['offer.sellerId']}).filter(seller => seller);
     return sellersParsed;
   }
 
@@ -76,16 +76,15 @@ class ClaimManagerApi {
       const options = {
         headers
       };
-      // let url = request.app.ccmGet("IQS_CONFIG.IQS_URL");
-      let url = secrets.IQS_URL;
-      url = url.replace("__itemId__", request.query.payload);
+      let payload = request.app.ccmGet("CLAIM_CONFIG.IQS_QUERY");
+      payload = payload.replace("__itemId__", request.query.payload);
 
-      const response = await ServerHttp.get(url, options);
+      let url = secrets.IQS_URL;
+
+      const response = await ServerHttp.post(url, options, payload);
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-        responseBody = this.parseSellersFromResponse(response.body);
-      } else if (response && response.status === CONSTANTS.STATUS_CODE_NOT_FOUND) {
-        responseBody = response;
+        responseBody = this.parseSellersFromResponse(response.body.docs);
       }
       return h.response(responseBody).code(response.status);
     } catch (err) {
