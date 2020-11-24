@@ -102,7 +102,7 @@ const FilterController = props => {
     return <div key={key1} className={filter.classes}>
         <div className={`${containerState.className}`}>
         <input type={fieldState[filter.name] && fieldState[filter.name].type} className={fieldState[filter.name] && fieldState[filter.name].className}
-               id={fieldState[filter.name] && fieldState[filter.name].id} value={fieldState[filter.name].value}
+               id={fieldState[filter.name] && fieldState[filter.name].id} value={fieldState[filter.name].value} onChange={() => {}}
                data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label${!fieldState[filter.name].value ? " custom-input-label-placeholder" : ""}`} htmlFor="claim-type-widget-filter-controller">
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
