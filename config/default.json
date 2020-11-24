@@ -56,6 +56,10 @@
           "CONTENT_CONFIG": {
             "serviceName": "ropro-brandportal",
             "+configNames": ["CONTENT_CONFIG"]
+          },
+          "DASHBOARD_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["DASHBOARD_CONFIG"]
           }
         }
       }
@@ -85,6 +89,9 @@
     },
     "content-manager-api": {
       "module": "./{{env.APP_SRC_DIR}}/server/plugins/content/content-manager-api"
+    },
+    "dashboard-manager-api": {
+      "module": "./{{env.APP_SRC_DIR}}/server/plugins/dashboard/dashboard-manager-api"
     },
     "webapp": {
       "module": "@walmart/electrode-index-page",

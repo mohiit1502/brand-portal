@@ -27,7 +27,7 @@ WidgetSectionContainer.propTypes = {
   data: PropTypes.object,
   fetchComplete: PropTypes.bool,
   sections: PropTypes.object,
-  tableMeta: PropTypes.object,
+  // tableMeta: PropTypes.object,
   userProfile: PropTypes.object,
   widgetCommon: PropTypes.object,
   widgetStack: PropTypes.object

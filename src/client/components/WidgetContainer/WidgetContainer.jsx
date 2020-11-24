@@ -3,10 +3,12 @@ import React, {memo} from "react";
 import PropTypes from "prop-types";
 import Widget from "./../Widget";
 import "./WidgetContainer.component.scss";
+import AUTH_CONFIG from "../../config/authorizations";
+import widgetConfig from "../../config/contentDescriptors/widgets";
 
 const WidgetContainer = props => {
 
-  const {authConfig, data, fetchComplete, tableMeta, userProfile, widgetCommon, widgets, widgetStack} = props;
+  const {authConfig, data, fetchComplete, userProfile, widgetCommon, widgets, widgetStack} = props;
 
   const layoutWidgets = () => {
     const laidoutWidgets = [];
@@ -34,18 +36,18 @@ const WidgetContainer = props => {
     return laidoutWidgets && laidoutWidgets.map((widgetRow, key1) => {
       return widgetRow && widgetRow.map((widgetMeta, key2) => {
         const widget = widgetMeta.widget;
-        const widgetData = data[widget.DATAMAPPER]
+        const widgetData = data[widget.DATAMAPPER];
         const widgetStackItem = widgetStack[widget.TYPE];
-        const opts = {key: `${key1}-${key2}`, data: widgetData, fetchComplete, widgetCommon, widgetStackItem, widget}
+        const opts = {authConfig, key: `widget-${key1}-${key2}`, data: widgetData, fetchComplete, userProfile, widgetCommon, widgetStackItem, widget}
         widget.DETAILS.colClass = widgetMeta.span ? `col-${widgetMeta.span}` : "";
-        widget.TYPE === "CLAIMTABULAR" && (opts.tableMeta = tableMeta.CLAIM)
+        // widget.TYPE === "CLAIMTABULAR" && (opts.tableMeta = tableMeta.CLAIM)
         return <Widget {...opts} />;
       });
     });
   };
 
   return (
-    <div className="c-WidgetContainer row mb-3 h-100">
+    <div className="c-WidgetContainer row my-4 px-25">
       {layoutWidgets()}
     </div>
   );
@@ -55,7 +57,6 @@ WidgetContainer.propTypes = {
   authConfig: PropTypes.object,
   data: PropTypes.object,
   fetchComplete: PropTypes.bool,
-  tableMeta: PropTypes.object,
   userProfile: PropTypes.object,
   widgets: PropTypes.array,
   widgetCommon: PropTypes.object,

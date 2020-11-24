@@ -1,24 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {ChartsContainer, ClaimTabular} from "../index";
+import {ChartsContainer, Summary} from "../index";
 import "./Widget.component.scss";
 
 const contentComponentMap = {
-  BRANDHORIZONTALBAR: ChartsContainer,
-  CLAIMTABULAR: ClaimTabular,
-  CLAIMTYPEBAR: ChartsContainer
+  VERTICALGROUPEDBAR: ChartsContainer,
+  SUMMARY: Summary,
+  HORIZONTALSTACKEDBAR: ChartsContainer
 }
 
 const Widget = props => {
   const {
-    tableMeta,
     data,
     fetchComplete,
+    userProfile,
     widgetCommon: {
       layoutClasses: commonLayoutClasses = "",
       widgetStyle: commonWidgetStyle = {},
     },
     widget: {
+      API,
+      DATAKEY,
       ID,
       DETAILS: {
         colClass = "",
@@ -31,8 +33,8 @@ const Widget = props => {
     widgetStackItem
   } = props;
 
-  const opts = {data, fetchComplete, widgetCommon: props.widgetCommon, widgetStackItem, SUBTYPE, widget: props.widget};
-  tableMeta !== undefined && (opts.tableMeta = tableMeta);
+  const opts = {API, data, DATAKEY, ID, fetchComplete, widgetCommon: props.widgetCommon, userProfile, widgetStackItem, SUBTYPE, widget: props.widget};
+  // tableMeta !== undefined && (opts.tableMeta = tableMeta);
 
   const ContentComponent = contentComponentMap[TYPE];
   const commonLayoutClassesInferred = `${commonLayoutClasses ? ` ${commonLayoutClasses}` : ""}`;
@@ -48,9 +50,11 @@ const Widget = props => {
 
 Widget.propTypes = {
   authConfig: PropTypes.object,
-  data: PropTypes.array,
+  data: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
   fetchComplete: PropTypes.bool,
-  tableMeta: PropTypes.object,
   userProfile: PropTypes.object,
   widget: PropTypes.object,
   widgetCommon: PropTypes.object,

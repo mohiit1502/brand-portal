@@ -1,114 +1,113 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 import "./GroupedBarChart.component.scss";
+import useResizeObserver from "../../hooks/useResizeObserver";
+import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackOrderAscending} from "d3";
 
 const GroupedBarChart = props => {
+  const {chart, classes, data, keys, colors} = props;
+  const svgRef = useRef();
+  const wrapperRef = useRef();
+  const dimensions = useResizeObserver(wrapperRef);
 
   useEffect(() => {
+    const svg = select(svgRef.current);
+    const {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
+    const margin = {top: 0, right: 20, bottom: 30, left: 20};
+    const barPadding = .2;
+    const axisTicks = {qty: 5, outerSize: 0, dateFormat: '%m-%d'};
+    const xScale0 = d3.scaleBand().range([margin.left, width - margin.left - margin.right]).padding(barPadding);
+    const xScale1 = d3.scaleBand();
+    const yScale = d3.scaleLinear().range([height - margin.top - margin.bottom, 0]);
 
-    (async function() {
-      const width = 500;
-      // const data = Object.assign(d3.csvParse(await fetch("./data.csv").text(), d3.autoType), {y: "Population"})
-      const data = await fetch("./data.csv");
-      console.log(data.body);
-      const legend = svg => {
-        const g = svg
-          .attr("transform", `translate(${width},0)`)
-          .attr("text-anchor", "end")
-          .attr("font-family", "sans-serif")
-          .attr("font-size", 10)
-          .selectAll("g")
-          .data(color.domain().slice().reverse())
-          .join("g")
-          .attr("transform", (d, i) => `translate(0,${i * 20})`);
+    const tooltip = select("body").append("div")
+      .style("position", "absolute")
+      .style("background", "#f4f4f4")
+      .style("padding", "5 15px")
+      .style("border", "1px #333 solid")
+      .style("border-radius", "5px")
+      .style("opacity", "0");
 
-        g.append("rect")
-          .attr("x", -19)
-          .attr("width", 19)
-          .attr("height", 19)
-          .attr("fill", color);
+    const xAxis = d3.axisBottom(xScale0).tickSizeOuter(axisTicks.outerSize);
+    const yAxis = d3.axisLeft(yScale).ticks(axisTicks.qty).tickSizeOuter(axisTicks.outerSize);
 
-        g.append("text")
-          .attr("x", -24)
-          .attr("y", 9.5)
-          .attr("dy", "0.35em")
-          .text(d => d);
-      };
+    xScale0.domain(data.map(d => d[chart.key]));
+    xScale1.domain(chart && chart.group && chart.group.length > 0 && chart.group.map(groupItem => groupItem.name)).range([0, xScale0.bandwidth()]);
+    yScale.domain([0, d3.max(data,
+      d => {
+        let max = -1;
+        Object.keys(d).forEach(key => typeof d[key] === "number" && d[key] > max && (max = d[key]));
+        return max;
+      })
+    ]);
 
-      const svg = d3.select(props.chartWrapper.current);
+    const root = svg.selectAll(`.${chart.key}`)
+      .data(data)
+      .enter().append("g")
+      .attr("class", chart.key)
+      .attr("transform", d => `translate(${xScale0(d[chart.key])},0)`);
 
-      const x0 = d3.scaleBand()
-        .domain(data.map(d => d[groupKey]))
-        .rangeRound([margin.left, width - margin.right])
-        .paddingInner(0.1)
+    chart && chart.group && chart.group.length > 0 && chart.group.forEach(groupItem => {
+      const rootInner = root.selectAll(`.bar.${groupItem.name}`)
+        .data(d => [d])
+        .enter()
+        .append("rect")
+        .attr("class", `bar ${groupItem.name}`)
+        .style("fill", colors[groupItem.colorMapper])
+        .attr("x", d => xScale1(groupItem.name))
+        .attr("y", d => yScale(d[groupItem.name]))
+        .attr("width", xScale1.bandwidth())
+        .attr("height", d => height - margin.top - margin.bottom - yScale(d[groupItem.name]))
+        .on("mouseover", function(event, d) {
+          tooltip.transition()
+            .style("opacity", 1)
+          tooltip.html(d.claimsCount)
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY) + "px")
+          select(this).style("opacity", 0.5)
+        })
+        .on("mouseout", function(event, d) {
+          tooltip.transition()
+            .style("opacity", 0)
+          select(this).style("opacity", 1);
+        });
+      rootInner.transition()
+        .attr("height", d => height - margin.top - margin.bottom - yScale(d[groupItem.name]))
+        .attr("x", d => xScale1(groupItem.name));
+    })
 
-      const x1 = d3.scaleBand()
-        .domain(keys)
-        .rangeRound([0, x0.bandwidth()])
-        .padding(0.05);
+// Add the X Axis
+    svg
+      .select(".x-axis")
+      .attr("transform", `translate(0, ${height - margin.top - margin.bottom})`)
+      .call(xAxis);
 
-      const y = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d3.max(keys, key => d[key]))]).nice()
-        .rangeRound([height - margin.bottom, margin.top]);
-
-      const color = d3.scaleOrdinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-      const xAxis = g => g
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x0).tickSizeOuter(0))
-        .call(g => g.select(".domain").remove());
-
-      const yAxis = g => g
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y).ticks(null, "s"))
-        .call(g => g.select(".domain").remove())
-        .call(g => g.select(".tick:last-of-type text").clone()
-          .attr("x", 3)
-          .attr("text-anchor", "start")
-          .attr("font-weight", "bold")
-          .text(data.y));
-
-      const groupKey = data.columns[0];
-      const keys = data.columns.slice(1);
-      const margin = ({top: 10, right: 10, bottom: 20, left: 40});
-      const height = 500;
-
-      svg.append("g")
-        .selectAll("g")
-        .data(data)
-        .join("g")
-        .attr("transform", d => `translate(${x0(d[groupKey])},0)`)
-        .selectAll("rect")
-        .data(d => keys.map(key => ({key, value: d[key]})))
-        .join("rect")
-        .attr("x", d => x1(d.key))
-        .attr("y", d => y(d.value))
-        .attr("width", x1.bandwidth())
-        .attr("height", d => y(0) - y(d.value))
-        .attr("fill", d => color(d.key));
-
-      svg.append("g")
-        .call(xAxis);
-
-      svg.append("g")
-        .call(yAxis);
-
-      svg.append("g")
-        .call(legend);
-    })();
-  }, []);
+// Add the Y Axis
+    svg.select(".y-axis")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+      .call(yAxis)
+  }, [colors, data, dimensions, keys]);
 
   return (
-    <div className="c-GroupedBarChart">
-      In Component GroupedBarChart
+    <div className={`c-GroupedBarChart${classes ? " " + classes : ""}`} ref={wrapperRef}>
+      <svg ref={svgRef} style={{width: "100%", height: "100%"}}>
+        <g className="x-axis" />
+        <g className="y-axis" />
+      </svg>
     </div>
   );
 };
 
 GroupedBarChart.propTypes = {
-  chartWrapper: PropTypes.object
+  chart: PropTypes.object,
+  chartWrapper: PropTypes.object,
+  classes: PropTypes.string,
+  colors: PropTypes.object,
+  data: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ])
 };
 
 export default GroupedBarChart;

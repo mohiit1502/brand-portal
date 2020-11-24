@@ -5,9 +5,11 @@ import Alert from "./Alert";
 import ButtonsPanel from "./ButtonsPanel";
 import CheckBox from "./CheckBox";
 import ClaimTabular from "./ClaimTabular";
+import ChartsContainer from "./ChartsContainer"; // Moved out of alphabetic order to enable dependent imports of GroupedBarChart and StackedBarChart
 import ContactUsPrompt from "./ContactUsPrompt";
 import Dashboard from "./Dashboard";
 import DashboardHeader from "./DashboardHeader";
+import DateSelector from './DateSelector';
 import ErrorComponent from "./ErrorComponent";
 import FaqContainer from "./FaqContainer";
 import FaqSingle from "./FaqSingle";
@@ -27,8 +29,8 @@ import MemoizedTable from "./MemoizedTable";
 import NoRecordsMatch from "./custom-components/NoRecordsMatch";
 import ResetPasswordTemplate from "./custom-components/modal/templates/ResetPasswordTemplate";
 import StackedBarChart from "./StackedBarChart";
-import ChartsContainer from "./ChartsContainer"; // Moved out of alphabetic order to enable dependent imports of GroupedBarChart and StackedBarChart
 import StatusModalTemplate from "./custom-components/modal/templates/StatusModalTemplate";
+import Summary from "./Summary";
 import Tile from "./Tile";
 import TilesContainer from "./TilesContainer";
 import Widget from "./Widget";
@@ -46,6 +48,7 @@ export {
   ContactUsPrompt,
   Dashboard,
   DashboardHeader,
+	DateSelector,
   ErrorComponent,
   FaqContainer,
   FaqSingle,
@@ -66,6 +69,7 @@ export {
   ResetPasswordTemplate,
   StackedBarChart,
   StatusModalTemplate,
+  Summary,
   Tile,
   TilesContainer,
   Widget,
