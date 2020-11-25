@@ -1,0 +1,21 @@
+@import "./../../styles/override/variables";
+
+.c-FilterType {
+  border: 1px solid $blue;
+  border-radius: 2px;
+  display: inline-block;
+  color: $blue;
+  background: #f3f9fc;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  .c-FilterType__closeButton {
+    color: $blue;
+    cursor: pointer;
+
+    &:hover {
+      color: $navy-blue;
+      text-decoration: underline;
+    }
+  }
+}
