@@ -12,7 +12,7 @@ import burgerIcon from "../../../../images/group-23.svg";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
-import {dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
+import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
 import CONSTANTS from "../../../../constants/constants";
@@ -20,6 +20,7 @@ import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
 import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
+import {FilterType} from "../../../index";
 
 class BrandList extends React.Component {
 
@@ -38,6 +39,7 @@ class BrandList extends React.Component {
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.editBrand = this.editBrand.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
+    this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
 
     this.state = {
       page: {
@@ -180,6 +182,7 @@ class BrandList extends React.Component {
     }
 
     this.setState({brandList});
+    return brandList;
   }
 
   resetFilters() {
@@ -194,7 +197,7 @@ class BrandList extends React.Component {
     this.toggleFilterVisibility();
   }
 
-  applyFilters(isSearch, filteredList) {
+  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
     let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     this.state.filters.map(filter => {
@@ -218,7 +221,11 @@ class BrandList extends React.Component {
       this.setState({filteredList: paginatedList});
     } else {
       this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
-      this.toggleFilterVisibility();
+      this.toggleFilterVisibility(showFilter);
+    }
+
+    if (buttonClickAction) {
+      this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
     }
   }
 
@@ -261,7 +268,23 @@ class BrandList extends React.Component {
   }
 
   async componentDidMount() {
-    this.fetchBrands();
+    const brandList = await this.fetchBrands();
+    this.checkAndApplyDashboardFilter(brandList);
+  }
+
+  checkAndApplyDashboardFilter(brandList) {
+    if (this.props.filter && this.props.filter["widget-brand-summary"]) {
+      const filterValue = this.filterMap[this.props.filter["widget-brand-summary"]]
+      this.createFilters(brandList);
+      this.setState(state => {
+        state = {...state};
+        const brandStatusFilter = state.filters.length > 0 && state.filters.find(filter => filter.id === "brandStatus")
+        const dashboardFilter = brandStatusFilter && brandStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
+        dashboardFilter && (dashboardFilter.selected = true);
+        return state;
+      }, () => this.applyFilters(false, brandList, false))
+      // })
+    }
   }
 
   componentDidUpdate() {
@@ -310,10 +333,10 @@ class BrandList extends React.Component {
 
   }
 
-  toggleFilterVisibility () {
+  toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
       state = {...state};
-      state.showFilters = !state.showFilters;
+      state.showFilters = explicitToggle !== undefined && typeof explicitToggle !== "object" ? explicitToggle : !state.showFilters;
       return state;
     });
   }
@@ -371,6 +394,9 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
+              {this.props.filter && this.props.filter["widget-brand-summary"] &&
+              <FilterType filterText={`Brand is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-brand-summary"
+                          clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -380,7 +406,7 @@ class BrandList extends React.Component {
                       </div>
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false)}>Apply Filters </div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
@@ -479,6 +505,7 @@ BrandList.propTypes = {
 const mapStateToProps = state => {
   return {
     brandEdit: state.brandEdit,
+    filter: state.dashboard.filter,
     modal: state.modal,
     userProfile: state.user.profile,
     widgetAction: state.dashboard.widgetAction
@@ -486,6 +513,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  dispatchFilter,
   dispatchWidgetAction,
   toggleModal,
   saveBrandCompleted,

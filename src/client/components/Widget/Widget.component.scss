@@ -1,19 +1,23 @@
 .c-Widget {
     .c-Widget__content {
         &.widget-border {
-            border: 3px solid #ddd;
-            border-radius: 1rem;
+            border: 0.5px solid #d7d7d7;
+            border-radius: 0.25rem;
+        }
+
+        .c-Widget__content__header {
+          color: #2b3339;
         }
 
         .c-Widget__content__body {
             .override-body-style {
                 line-height: 1.8rem;
-                font-size: 1.2rem;
+                //font-size: 1.2rem;
             }
         }
 
         .c-Widget__content__footer {
-            padding-bottom: 0 !important;
+            //padding-bottom: 0 !important;
 
             a {
                 cursor: pointer;
@@ -30,7 +34,7 @@
                     }
                 }
 
-                &.insufficiet-access-message {
+                &.insufficient-access-message {
                     transition: all 0.8s ease-in-out;
 
                     &:after {
@@ -98,7 +102,7 @@
         @media only screen and (max-width: 1800px) {
           .c-Widget__content__footer {
             a {
-              font-size: 1.5rem;
+              //font-size: 1.5rem;
 
               .c-Widget__content__footer__icon {
                 margin-left: 0.6rem;
@@ -112,7 +116,7 @@
         @media only screen and (max-width: 1450px) {
           .c-Widget__content__footer {
             a {
-              font-size: 1.3rem;
+              //font-size: 1.3rem;
 
               .c-Widget__content__footer__icon {
                 margin-left: 0.3rem;

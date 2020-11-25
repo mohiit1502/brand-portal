@@ -12,7 +12,7 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
-import {dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
+import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
@@ -23,6 +23,7 @@ import AUTH_CONFIG from "../../../../config/authorizations";
 import searchIcon from "../../../../images/18-px-search.svg";
 import filterIcon from "../../../../images/filter-sc.svg";
 import burgerIcon from "../../../../images/group-23.svg";
+import {FilterType} from "../../../index";
 
 class UserList extends React.Component {
 
@@ -42,6 +43,7 @@ class UserList extends React.Component {
     this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
+    this.filterMap = {"pending": "Pending Activation", "active": "Active"};
 
     this.state = {
       page: {
@@ -209,6 +211,7 @@ class UserList extends React.Component {
     }
 
     this.setState({userList});
+    return userList;
   }
 
   resetFilters() {
@@ -223,7 +226,7 @@ class UserList extends React.Component {
     this.toggleFilterVisibility();
   }
 
-  applyFilters(isSearch, filteredList) {
+  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
     let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     this.state.filters.map(filter => {
@@ -256,7 +259,11 @@ class UserList extends React.Component {
     } else {
       this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
       // this.setState({filteredList: paginatedList});
-      this.toggleFilterVisibility();
+      this.toggleFilterVisibility(showFilter);
+    }
+
+    if (buttonClickAction) {
+      this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
     }
   }
 
@@ -324,7 +331,23 @@ class UserList extends React.Component {
   }
 
   async componentDidMount() {
-    this.fetchUserData();
+    const userList = await this.fetchUserData();
+    this.checkAndApplyDashboardFilter(userList);
+  }
+
+  checkAndApplyDashboardFilter(userList) {
+    if (this.props.filter && this.props.filter["widget-user-summary"]) {
+      const filterValue = this.filterMap[this.props.filter["widget-user-summary"]]
+      this.createFilters(userList);
+      this.setState(state => {
+        state = {...state};
+        const userStatusFilter = state.filters.length > 0 && state.filters.find(filter => filter.id === "status")
+        const dashboardFilter = userStatusFilter && userStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
+        dashboardFilter && (dashboardFilter.selected = true);
+        return state;
+      }, () => this.applyFilters(false, userList, false))
+      // })
+    }
   }
 
   componentDidUpdate() {
@@ -378,10 +401,10 @@ class UserList extends React.Component {
 
   }
 
-  toggleFilterVisibility () {
+  toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
       state = {...state};
-      state.showFilters = !state.showFilters;
+      state.showFilters = explicitToggle !== undefined && typeof explicitToggle !== "object" ? explicitToggle : !state.showFilters;
       return state;
     });
   }
@@ -445,6 +468,9 @@ class UserList extends React.Component {
                   </div>
                 </div>
               </div>
+              {this.props.filter && this.props.filter["widget-user-summary"] &&
+              <FilterType filterText={`User is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"
+                          clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -454,7 +480,7 @@ class UserList extends React.Component {
                       </div>
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false)}>Apply Filters </div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
@@ -538,7 +564,9 @@ class UserList extends React.Component {
 }
 
 UserList.propTypes = {
+  dispatchFilter: PropTypes.func,
   dispatchWidgetAction: PropTypes.func,
+  filter: PropTypes.object,
   toggleModal: PropTypes.func,
   saveUserCompleted: PropTypes.func,
   showNotification: PropTypes.func,
@@ -549,6 +577,7 @@ UserList.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    filter: state.dashboard.filter,
     modal: state.modal,
     userEdit: state.userEdit,
     userProfile: state.user.profile,
@@ -557,6 +586,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  dispatchFilter,
   dispatchWidgetAction,
   toggleModal,
   saveUserCompleted,

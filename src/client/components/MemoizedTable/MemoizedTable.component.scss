@@ -1,0 +1,45 @@
+.c-MemoizedTable {
+  height: 16.8rem;
+  //overflow: hidden;
+
+  .custom-table {
+    overflow: hidden;
+    .table-body {
+      overflow-y: scroll;
+
+      .table-row {
+        min-height: 2.5rem;
+        border: none;
+
+        .table-body-cell:first-child {
+          padding-left: 1.5rem;
+        }
+
+        .table-body-cell:last-child {
+          padding-right: 1.5rem;
+          text-align: right;
+        }
+
+        &:last-child {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+    .table-header {
+      .table-row {
+        .table-head-cell {
+          border: none;
+
+          &:first-child {
+            padding-left: 1.5rem;
+          }
+
+          &:last-child {
+            padding-right: 1.5rem;
+            text-align: right;
+          }
+        }
+      }
+    }
+  }
+}
