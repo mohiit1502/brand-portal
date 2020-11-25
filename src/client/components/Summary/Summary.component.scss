@@ -1,0 +1,33 @@
+@import "../../styles/override/variables";
+
+.c-Summary {
+  .item-status {
+    color: #868c94;
+    font-weight: bold;
+    text-transform: lowercase;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  .item-count {
+    color: #017dc6;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: $navy-blue;
+    }
+  }
+
+  .footer-text {
+    cursor: pointer;
+    text-decoration: none;
+    color: $blue;
+
+    &:hover {
+      color: $navy-blue;
+    }
+  }
+}

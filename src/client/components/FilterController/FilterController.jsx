@@ -2,8 +2,10 @@ import React, {memo, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {dispatchFilter} from "./../../actions/dashboard/dashboard-actions";
+import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions"
 import * as images from "../../images";
 import "./FilterController.component.scss";
+import {showNotification} from "../../actions/notification/notification-actions";
 
 const FilterController = props => {
   const {dispatchFilter , currentFilters, filters: filterMeta, updateChart, widgetId} = props;
@@ -59,8 +61,9 @@ const FilterController = props => {
     }
   })
 
-  const dispatchDateSelector = () => {
-
+  function dispatchDateSelector () {
+    const meta = { templateName: "DateSelectorTemplate" };
+    props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
   function onChangeHandler (option, filter) {
@@ -129,7 +132,8 @@ FilterController.propTypes = {
 };
 
 const mapDispatchToProps = {
-  dispatchFilter
+  dispatchFilter,
+  toggleModal
 }
 
 export default memo(connect(null, mapDispatchToProps)(FilterController));
