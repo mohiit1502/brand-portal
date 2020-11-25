@@ -12,6 +12,7 @@ const contentComponentMap = {
 const Widget = props => {
   const {
     data,
+    currentFilters,
     fetchComplete,
     userProfile,
     widgetCommon: {
@@ -33,7 +34,7 @@ const Widget = props => {
     widgetStackItem
   } = props;
 
-  const opts = {API, data, DATAKEY, ID, fetchComplete, widgetCommon: props.widgetCommon, userProfile, widgetStackItem, SUBTYPE, widget: props.widget};
+  const opts = {API, currentFilters, data, DATAKEY, ID, fetchComplete, widgetCommon: props.widgetCommon, userProfile, widgetStackItem, SUBTYPE, widget: props.widget};
   // tableMeta !== undefined && (opts.tableMeta = tableMeta);
 
   const ContentComponent = contentComponentMap[TYPE];
@@ -50,6 +51,7 @@ const Widget = props => {
 
 Widget.propTypes = {
   authConfig: PropTypes.object,
+  currentFilters: PropTypes.object,
   data: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array

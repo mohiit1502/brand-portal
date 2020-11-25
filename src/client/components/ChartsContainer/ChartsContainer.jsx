@@ -12,8 +12,10 @@ const ChartTypes = {
 const ChartsContainer = props => {
   const {
     API,
+    currentFilters,
     data,
     DATAKEY,
+    fetchComplete,
     ID,
     SUBTYPE,
     userProfile,
@@ -35,7 +37,10 @@ const ChartsContainer = props => {
   const [loader, setLoader] = useState(false);
   const [dataLocal, setDataLocal] = useState([]);
   const D3Chart = ChartTypes[SUBTYPE];
-  useEffect(() => setDataLocal(data),[data]);
+  useEffect(() => {
+    setDataLocal(data)
+    setLoader(!fetchComplete)
+  },[data, fetchComplete]);
   // window["StackedBarChart"] = [
   //   {
   //     brandName: "Nike",
@@ -175,8 +180,8 @@ const ChartsContainer = props => {
     <div className={`c-ChartsContainer c-Widget__content${commonWidgetClasses ? " " + commonWidgetClasses : ""}${loader ? " loader" : ""}`}>
       <h5 className={headerLayoutClasses}>{header ? header.title : ""}</h5>
       <div className={bodyLayoutClasses}>
-        <FilterController filters={filters} widgetId={ID} updateChart={updateChart}/>
-        {SUBTYPE && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={dataLocal} keys={keys} colors={colors} />}
+        <FilterController filters={filters} widgetId={ID} updateChart={updateChart} currentFilters={currentFilters}/>
+        {SUBTYPE && !loader && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={dataLocal} keys={keys} colors={colors} />}
         {/*{SUBTYPE && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={window[SUBTYPE]} keys={keys} colors={colors} />}*/}
         {legend.legendItems && <Legend />}
       </div>
@@ -186,6 +191,7 @@ const ChartsContainer = props => {
 
 ChartsContainer.propTypes = {
   API: PropTypes.string,
+  currentFilters: PropTypes.object,
   data: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array

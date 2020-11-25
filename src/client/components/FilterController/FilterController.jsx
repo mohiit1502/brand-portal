@@ -21,7 +21,7 @@ const FilterController = props => {
         ],
         monthWise: [
           {id: "monthtodate", value: "monthtodate", label: "Month to Date", handler: onChangeHandler},
-          {id: "lastmonth", value: "lastmonth", label: "Last Month", handler: onChangeHandler}
+          {id: "lastmonth", value: "lastmonth", label: "Last 30 Days", handler: onChangeHandler}
         ],
         quarterWise: [
           {id: "quartertodate", value: "quartertodate", label: "Quarter to Date", handler: onChangeHandler},
@@ -40,7 +40,7 @@ const FilterController = props => {
       id: "date-filter-controller",
       subTitle: "",
       type: "select",
-      value: "All Time"
+      value: "Last 30 Days"
     },
     claimType: {
       className: `form-control form-control-filter-controller custom-input-element`,
@@ -72,7 +72,7 @@ const FilterController = props => {
     currentWidgetFilters[filter.name] = option.value
     currentWidgetFilters.orgId = currentFilters.orgId;
     updateChart(currentWidgetFilters);
-    dispatchFilter(currentFilters);
+    // dispatchFilter(currentFilters);
   }
 
   const onClickHandler = (option, filter) => {
@@ -132,8 +132,4 @@ const mapDispatchToProps = {
   dispatchFilter
 }
 
-const mapStateToProps = state => {
-  return {currentFilters: state.dashboard.filter}
-}
-
-export default memo(connect(mapStateToProps, mapDispatchToProps)(FilterController));
+export default memo(connect(null, mapDispatchToProps)(FilterController));

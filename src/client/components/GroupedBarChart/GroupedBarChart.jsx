@@ -1,9 +1,8 @@
-import React, {useEffect, useRef} from "react";
+import React, {memo, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
-import * as d3 from "d3";
-import "./GroupedBarChart.component.scss";
-import useResizeObserver from "../../hooks/useResizeObserver";
 import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackOrderAscending} from "d3";
+import useResizeObserver from "../../hooks/useResizeObserver";
+import "./GroupedBarChart.component.scss";
 
 const GroupedBarChart = props => {
   const {chart, classes, data, keys, colors} = props;
@@ -17,9 +16,9 @@ const GroupedBarChart = props => {
     const margin = {top: 0, right: 20, bottom: 30, left: 20};
     const barPadding = .2;
     const axisTicks = {qty: 5, outerSize: 0, dateFormat: '%m-%d'};
-    const xScale0 = d3.scaleBand().range([margin.left, width - margin.left - margin.right]).padding(barPadding);
-    const xScale1 = d3.scaleBand();
-    const yScale = d3.scaleLinear().range([height - margin.top - margin.bottom, 0]);
+    const xScale0 = scaleBand().range([margin.left, width - margin.left - margin.right]).padding(barPadding);
+    const xScale1 = scaleBand();
+    const yScale = scaleLinear().range([height - margin.top - margin.bottom, 0]);
 
     const tooltip = select("body").append("div")
       .style("position", "absolute")
@@ -29,12 +28,12 @@ const GroupedBarChart = props => {
       .style("border-radius", "5px")
       .style("opacity", "0");
 
-    const xAxis = d3.axisBottom(xScale0).tickSizeOuter(axisTicks.outerSize);
-    const yAxis = d3.axisLeft(yScale).ticks(axisTicks.qty).tickSizeOuter(axisTicks.outerSize);
+    const xAxis = axisBottom(xScale0).tickSizeOuter(axisTicks.outerSize);
+    const yAxis = axisLeft(yScale).ticks(axisTicks.qty).tickSizeOuter(axisTicks.outerSize);
 
     xScale0.domain(data.map(d => d[chart.key]));
     xScale1.domain(chart && chart.group && chart.group.length > 0 && chart.group.map(groupItem => groupItem.name)).range([0, xScale0.bandwidth()]);
-    yScale.domain([0, d3.max(data,
+    yScale.domain([0, max(data,
       d => {
         let max = -1;
         Object.keys(d).forEach(key => typeof d[key] === "number" && d[key] > max && (max = d[key]));
@@ -56,9 +55,9 @@ const GroupedBarChart = props => {
         .attr("class", `bar ${groupItem.name}`)
         .style("fill", colors[groupItem.colorMapper])
         .attr("x", d => xScale1(groupItem.name))
-        .attr("y", d => yScale(d[groupItem.name]))
+        .attr("y", height)
         .attr("width", xScale1.bandwidth())
-        .attr("height", d => height - margin.top - margin.bottom - yScale(d[groupItem.name]))
+        .attr("height", 0)
         .on("mouseover", function(event, d) {
           tooltip.transition()
             .style("opacity", 1)
@@ -74,7 +73,7 @@ const GroupedBarChart = props => {
         });
       rootInner.transition()
         .attr("height", d => height - margin.top - margin.bottom - yScale(d[groupItem.name]))
-        .attr("x", d => xScale1(groupItem.name));
+        .attr("y", d => yScale(d[groupItem.name]));
     })
 
 // Add the X Axis
@@ -101,13 +100,13 @@ const GroupedBarChart = props => {
 
 GroupedBarChart.propTypes = {
   chart: PropTypes.object,
-  chartWrapper: PropTypes.object,
   classes: PropTypes.string,
   colors: PropTypes.object,
   data: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
-  ])
+  ]),
+  keys: PropTypes.array
 };
 
-export default GroupedBarChart;
+export default memo(GroupedBarChart);

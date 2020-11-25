@@ -8,7 +8,7 @@ import widgetConfig from "../../config/contentDescriptors/widgets";
 
 const WidgetContainer = props => {
 
-  const {authConfig, data, fetchComplete, userProfile, widgetCommon, widgets, widgetStack} = props;
+  const {authConfig, currentFilters, data, fetchComplete, userProfile, widgetCommon, widgets, widgetStack} = props;
 
   const layoutWidgets = () => {
     const laidoutWidgets = [];
@@ -38,7 +38,7 @@ const WidgetContainer = props => {
         const widget = widgetMeta.widget;
         const widgetData = data[widget.DATAMAPPER];
         const widgetStackItem = widgetStack[widget.TYPE];
-        const opts = {authConfig, key: `widget-${key1}-${key2}`, data: widgetData, fetchComplete, userProfile, widgetCommon, widgetStackItem, widget}
+        const opts = {authConfig, currentFilters, key: `widget-${key1}-${key2}`, data: widgetData, fetchComplete, userProfile, widgetCommon, widgetStackItem, widget}
         widget.DETAILS.colClass = widgetMeta.span ? `col-${widgetMeta.span}` : "";
         // widget.TYPE === "CLAIMTABULAR" && (opts.tableMeta = tableMeta.CLAIM)
         return <Widget {...opts} />;
@@ -55,6 +55,7 @@ const WidgetContainer = props => {
 
 WidgetContainer.propTypes = {
   authConfig: PropTypes.object,
+  currentFilters: PropTypes.object,
   data: PropTypes.object,
   fetchComplete: PropTypes.bool,
   userProfile: PropTypes.object,

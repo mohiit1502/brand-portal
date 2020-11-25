@@ -1,7 +1,6 @@
-import React, {useEffect, useRef} from "react";
+import React, {memo, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import {
-  event,
   select,
   scaleBand,
   axisBottom,
@@ -74,7 +73,7 @@ const StackedBarChart = props => {
           .style("top", (event.pageY) + "px")
         select(this).style("opacity", 0.5)
       })
-      .on("mouseout", function(event, d) {
+      .on("mouseout", function() {
         tooltip.transition()
           .style("opacity", 0)
         select(this).style("opacity", 1);
@@ -110,13 +109,13 @@ const StackedBarChart = props => {
 
 StackedBarChart.propTypes = {
   chart: PropTypes.object,
+  classes: PropTypes.string,
+  colors: PropTypes.object,
   data: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array
   ]),
-  keys: PropTypes.array,
-  classes: PropTypes.string,
-  colors: PropTypes.object
+  keys: PropTypes.array
 };
 
-export default StackedBarChart;
+export default memo(StackedBarChart);

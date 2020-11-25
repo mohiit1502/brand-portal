@@ -5,6 +5,7 @@ export const dispatchWidgetAction = widgetAction => {
     return {type: DISPATCH_WIDGET_ACTION, value: {widgetAction}};
 };
 
-export const dispatchFilter = filter => {
-  return {type: DISPATCH_FILTER, value: {filter}}
+export const dispatchFilter = filter => dispatch => {
+  dispatch({type: DISPATCH_FILTER, value: {filter}});
+  return Promise.resolve();
 }

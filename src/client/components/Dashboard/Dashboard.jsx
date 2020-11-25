@@ -57,6 +57,7 @@ class Dashboard extends React.PureComponent {
         <DashboardHeader userInfo={this.props.userProfile}/>
         <WidgetContainer
           authConfig={AUTH_CONFIG}
+          currentFilters={this.props.currentFilters}
           data={this.state.data}
           fetchComplete={this.state.fetchComplete}
           widgets={widgetConfig.WIDGETS}

@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import FilterType from './FilterType';
 import Accordion from "./Accordion";
 import Alert from "./Alert";
 import ButtonsPanel from "./ButtonsPanel";
@@ -39,6 +40,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	FilterType,
   Accordion,
   Alert,
   ButtonsPanel,

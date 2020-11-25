@@ -11,12 +11,13 @@ import filterIcon from "../../../../images/filter-sc.svg";
 import ContentPasteIcon from "../../../../images/content-paste.svg";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
-import {dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
+import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import {dispatchClaims} from "./../../../../actions/claim/claim-actions";
 import CustomTable from "../../../custom-components/table/custom-table";
 import ClaimListTable from "../../../custom-components/table/templates/claim-list-table";
 import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
+import {FilterType} from "../../../index";
 
 class ClaimList extends React.Component {
 
@@ -33,6 +34,8 @@ class ClaimList extends React.Component {
     this.resetFilters = this.resetFilters.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.uiSearch = this.uiSearch.bind(this);
+    this.checkAndApplyDashboardFilter = this.checkAndApplyDashboardFilter.bind(this);
+    this.filterMap = {"inprogress": "Work in Progress", "closed": "Closed"};
 
     this.state = {
       page: {
@@ -93,7 +96,7 @@ class ClaimList extends React.Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let location = this.props.history.location.pathname;
     location = location.endsWith("/") ? location.substring(0, location.length - 1) : location;
     const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
@@ -101,13 +104,29 @@ class ClaimList extends React.Component {
       const ticketId = location.substring(location.indexOf("/claims/") + 8);
       this.showClaimDetails(ticketId);
     }
-    this.fetchClaims();
+    const claimList = await this.fetchClaims();
+    this.checkAndApplyDashboardFilter(claimList);
+  }
+
+  checkAndApplyDashboardFilter(claimList) {
+    if (this.props.filter && this.props.filter["widget-claim-summary"]) {
+      const filterValue = this.filterMap[this.props.filter["widget-claim-summary"]]
+      this.createFilters(claimList);
+      this.setState(state => {
+        state = {...state};
+        const claimStatusFilter = state.filters.length > 0 && state.filters.find(filter => filter.id === "claimStatus")
+        const dashboardFilter = claimStatusFilter && claimStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
+        dashboardFilter && (dashboardFilter.selected = true);
+        return state;
+      }, () => this.applyFilters(false, claimList, false))
+      // })
+    }
   }
 
   async showClaimDetails (ticketId) {
     try {
       // this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
-      const claimDetailsUrl = `/api/claims/${ticketId}`; 
+      const claimDetailsUrl = `/api/claims/${ticketId}`;
       const response = (await Http.get(claimDetailsUrl)).body;
       const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
@@ -154,6 +173,8 @@ class ClaimList extends React.Component {
     }
 
     this.props.dispatchClaims({claimList});
+
+    return claimList;
   }
 
   addNewClaim () {
@@ -179,10 +200,10 @@ class ClaimList extends React.Component {
     }
   }
 
-  toggleFilterVisibility () {
+  toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
       state = {...state};
-      state.showFilters = !state.showFilters;
+      state.showFilters = explicitToggle !== undefined && typeof explicitToggle !== "object" ? explicitToggle : !state.showFilters;
       return state;
     });
   }
@@ -254,7 +275,7 @@ class ClaimList extends React.Component {
     this.setState({filters});
   }
 
-  applyFilters(isSearch, filteredList) {
+  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
     let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     this.state.filters.map(filter => {
@@ -277,7 +298,11 @@ class ClaimList extends React.Component {
       this.setState({filteredList: paginatedList});
     } else {
       this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
-      this.toggleFilterVisibility();
+      this.toggleFilterVisibility(showFilter);
+    }
+
+    if (buttonClickAction) {
+      this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""})
     }
   }
 
@@ -377,6 +402,9 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
+              {this.props.filter && this.props.filter["widget-claim-summary"] &&
+              <FilterType filterText={`Claim is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
+                          clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -386,7 +414,7 @@ class ClaimList extends React.Component {
                       </div>
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false)}>Apply Filters </div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
@@ -483,7 +511,9 @@ class ClaimList extends React.Component {
 ClaimList.propTypes = {
   claims: PropTypes.array,
   dispatchClaims: PropTypes.func,
+  dispatchFilter: PropTypes.func,
   dispatchWidgetAction: PropTypes.func,
+  filter: PropTypes.string,
   history: PropTypes.object,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func,
@@ -493,6 +523,7 @@ ClaimList.propTypes = {
 const mapStateToProps = state => {
   return {
     claims: state.claims && state.claims.claimList,
+    filter: state.dashboard.filter,
     modal: state.modal,
     widgetAction: state.dashboard.widgetAction
   };
@@ -501,6 +532,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   dispatchWidgetAction,
   dispatchClaims,
+  dispatchFilter,
   toggleModal,
   showNotification
 };

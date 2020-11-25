@@ -12,16 +12,19 @@ const WIDGETCONFIG = {
           "href": "/claims",
           "items": [
             {
-              "name": "All",
+              "name": "all",
+              "label": "All",
               "mapper": "totalItemsFetched"
             },
             {
-              "name": "In Progress",
+              "name": "inprogress",
+              "label": "In Progress",
               "mapper": "workFlowCounts.status",
               "value": "NEW"
             },
             {
-              "name": "Closed",
+              "name": "closed",
+              "label": "Closed",
               "mapper": "workFlowCounts.status",
               "value": "REJECTED"
             }
@@ -49,16 +52,19 @@ const WIDGETCONFIG = {
           "href": "/brands",
           "items": [
             {
-              "name": "All",
+              "name": "all",
+              "label": "All",
               "mapper": "totalItemsFetched"
             },
             {
-              "name": "Pending",
+              "name": "pending",
+              "label": "Pending",
               "mapper": "workFlowCounts.status",
               "value": "NEW"
             },
             {
-              "name": "Verified",
+              "name": "verified",
+              "label": "Verified",
               "mapper": "workFlowCounts.status",
               "value": "ACCEPTED"
             }
@@ -86,16 +92,19 @@ const WIDGETCONFIG = {
           "href": "/users",
           "items": [
             {
-              "name": "All",
+              "name": "all",
+              "label": "All",
               "mapper": "totalItemsFetched"
             },
             {
-              "name": "Pending",
+              "name": "pending",
+              "label": "Pending",
               "mapper": "workFlowCounts.status",
               "value": "INVITED"
             },
             {
-              "name": "Active",
+              "name": "active",
+              "label": "Active",
               "mapper": "workFlowCounts.status",
               "value": "ACTIVE"
             }
@@ -148,11 +157,11 @@ const WIDGETCONFIG = {
           "legendItems": [
             {
               "name": "Claims",
-              "color": "#e68677",
+              "color": "#1bc5ef",
             },
             {
               "name": "Items",
-              "color": "#bbb",
+              "color": "#d44928",
             }
           ]
         }
