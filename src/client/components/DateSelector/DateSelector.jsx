@@ -15,27 +15,12 @@ const DateSelector = props => {
 
   }
 
-  const [inStartDate, setinStartDate] = useState(new Date());
-  const [inEndDate, setinEndDate] = useState(new Date());
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-
-  function handleChange(e) {
-    // $('#org');
-    // console.log($(this));
-}
-
-  function handleStartDate(date) {
-    console.log(date);
-    const a = date != null ? moment(date).format("yyyy-MM-DD") : subDays(new Date(), 15);
-    setStartDate(a);
-
-}
-function handleEndDate(date) {
-    console.log(date)
-    const a = date != null ? moment(date).format("yyyy-MM-DD") : subDays(new Date(), 0);
-    setEndDate(a);
-}
+  const Example = () => {
+    const [startDate, setStartDate] = useState(new Date());
+    return (
+      <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+    );
+  };
 
 
   return (
@@ -44,39 +29,7 @@ function handleEndDate(date) {
         <div className="modal-content">
           <div className="modal-header align-items-center">
             Custom Date Range Trial
-                                            <DatePicker
-                                                selected={inStartDate}
-                                                // onChange={date => setStartDate(date)}
-                                                onChange={(date) => { handleStartDate(date); setinStartDate(date) }}
-                                                selectsStart
-                                                // startDate={startDate}
-                                                // endDate={endDate}
-                                                dateFormat="yyyy/MM/dd"
-                                                fixedHeight
-                                                minDate={subDays(new Date(), 15)}
-                                                maxDate={subDays(new Date(), 0)}
-                                                showDisabledMonthNavigation
-                                                // dateFormat="yyyy h:mm aa"
-                                                // showTimeInput
-                                                isClearable
-
-                                            />
-                                            <DatePicker
-                                                selected={inEndDate}
-                                                onChange={date => { handleEndDate(date); setinEndDate(date) }}
-                                                selectsEnd
-                                                // startDate={startDate}
-                                                // endDate={endDate}
-                                                // minDate={startDate}
-                                                dateFormat="yyyy/MM/dd"
-                                                fixedHeight
-                                                minDate={subDays(new Date(), 15)}
-                                                maxDate={subDays(new Date(), 0)}
-                                                // showTimeInput
-                                                showDisabledMonthNavigation
-                                                // disabled
-                                                isClearable
-                                            />
+            <DatePicker selected={startdate} onChange={date => setStartDate(date)} />
             <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
               <span aria-hidden="true">&times;</span>
             </button>
