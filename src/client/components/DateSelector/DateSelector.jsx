@@ -1,9 +1,6 @@
-import React, { Component,useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import "./DateSelector.component.scss";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import subDays from "date-fns/subDays";
 
 const DateSelector = props => {
 
@@ -15,12 +12,7 @@ const DateSelector = props => {
 
   }
 
-  const Example = () => {
-    const [startDate, setStartDate] = useState(new Date());
-    return (
-      <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-    );
-  };
+
 
 
   return (
@@ -29,7 +21,6 @@ const DateSelector = props => {
         <div className="modal-content">
           <div className="modal-header align-items-center">
             Custom Date Range Trial
-            <DatePicker selected={startdate} onChange={date => setStartDate(date)} />
             <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
               <span aria-hidden="true">&times;</span>
             </button>
