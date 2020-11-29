@@ -94,7 +94,15 @@ import "react-datepicker/dist/react-datepicker.css";
           </div>
           <div className="modal-body text-center p-5">
               <span>Start Date:</span>
+              <span>Start Date:</span>
+              <DatePicker selected={this.state.startDate}
+               onChange={this.handleStartDateChanged}
+               /> 
               <span style={{"paddingLeft": "20px"}}>End Date:</span>
+              <DatePicker
+                  selected={this.state.endDate}
+                  onChange={this.handleEndDateChanged}
+                />
               <form onSubmit={handleSubmit} className="h-100 px-2">
               </form>
             </div>
