@@ -2,14 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
 
   class DateSelector extends React.Component {
     constructor () {
       super();
       this.state = {
-        startDate: moment().add(-7, 'days'),
-        endDate: moment()
+       // startDate: moment().add(-7, 'days'),
+        //endDate: moment()
       }
       this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
       this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
@@ -41,7 +40,7 @@ import moment from "moment";
         if (startDate >= endDate)
         {
             console.log ('startDate more than end date');
-            endDate = moment(date).add(1, 'days');
+           // endDate = moment(date).add(1, 'days');
         }
         this.setState({
           startDate: startDate,
@@ -54,7 +53,7 @@ import moment from "moment";
           if (startDate >= endDate)
           {
             console.log ('startDate more than end date');
-            startDate = moment(date).add(-1, 'days');
+            //startDate = moment(date).add(-1, 'days');
           }
           this.setState({
             startDate: startDate,
@@ -63,12 +62,7 @@ import moment from "moment";
         }
     
     render () {
-      const searchBoxStyle = {
-          "borderColor": "darkgray",
-          "padding": "10px",
-          "background": "lightgray",
-          "margin": "10px"
-      }
+
 
       const statsTableStyle =
       {
@@ -100,15 +94,7 @@ import moment from "moment";
           </div>
           <div className="modal-body text-center p-5">
               <span>Start Date:</span>
-              <DatePicker
-               selected={this.state.startDate}
-               onChange={this.handleStartDateChanged}
-               />
               <span style={{"paddingLeft": "20px"}}>End Date:</span>
-              <DatePicker
-                  selected={this.state.endDate}
-                  onChange={this.handleEndDateChanged}
-                />
               <form onSubmit={handleSubmit} className="h-100 px-2">
               </form>
             </div>
