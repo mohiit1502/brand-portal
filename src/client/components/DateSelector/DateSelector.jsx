@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./DateSelector.component.scss";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const DateSelector = props => {
 
@@ -21,6 +22,8 @@ const DateSelector = props => {
         <div className="modal-content">
           <div className="modal-header align-items-center">
             Custom Date Range Trial
+            <span>Start Date:</span>
+            <span style={{"paddingLeft": "20px"}}>End Date:</span>
             <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
               <span aria-hidden="true">&times;</span>
             </button>
