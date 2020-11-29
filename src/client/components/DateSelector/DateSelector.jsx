@@ -21,18 +21,18 @@ const DateSelector = props => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header align-items-center">
-            Custom Date Range Trial
-            <span>Start Date:</span>
-            <span style={{"paddingLeft": "20px"}}>End Date:</span>
+            Custom Date Range
             <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body text-left">
-            <form onSubmit={handleSubmit} className="h-100 px-2">
+          <div className="modal-body text-center p-5">
+              <span>Start Date:</span>
+              <span style={{"paddingLeft": "20px"}}>End Date:</span>
+              <form onSubmit={handleSubmit} className="h-100 px-2">
+              </form>
+            </div>
 
-            </form>
-          </div>
         </div>
       </div>
     </div>
