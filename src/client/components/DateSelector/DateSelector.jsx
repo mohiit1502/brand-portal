@@ -20,6 +20,11 @@ const DateSelector = props => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
 
+  function handleChange(e) {
+    // $('#org');
+    // console.log($(this));
+}
+
   function handleStartDate(date) {
     console.log(date);
     const a = date != null ? moment(date).format("yyyy-MM-DD") : subDays(new Date(), 15);
@@ -39,10 +44,6 @@ function handleEndDate(date) {
         <div className="modal-content">
           <div className="modal-header align-items-center">
             Custom Date Range Trial
-            <Form>
-                <Form.Group widths='equal'>
-                                        <Form.Field>
-                                            {/* <label>Start Date</label> */}
                                             <DatePicker
                                                 selected={inStartDate}
                                                 // onChange={date => setStartDate(date)}
@@ -60,9 +61,6 @@ function handleEndDate(date) {
                                                 isClearable
 
                                             />
-                                        </Form.Field>
-                                        <Form.Field>
-                                            {/* <label>End Date</label> */}
                                             <DatePicker
                                                 selected={inEndDate}
                                                 onChange={date => { handleEndDate(date); setinEndDate(date) }}
@@ -79,9 +77,6 @@ function handleEndDate(date) {
                                                 // disabled
                                                 isClearable
                                             />
-                                        </Form.Field>
-                                    </Form.Group>
-              </Form>
             <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
               <span aria-hidden="true">&times;</span>
             </button>
