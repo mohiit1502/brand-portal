@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Component,useState } from "react";
 import PropTypes from "prop-types";
 import "./DateSelector.component.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import subDays from "date-fns/subDays";
 
 const DateSelector = props => {
 
@@ -49,7 +50,6 @@ function handleEndDate(date) {
                                                 selectsStart
                                                 // startDate={startDate}
                                                 // endDate={endDate}
-                                                className="customDropdown"
                                                 dateFormat="yyyy/MM/dd"
                                                 fixedHeight
                                                 minDate={subDays(new Date(), 15)}
@@ -70,7 +70,6 @@ function handleEndDate(date) {
                                                 // startDate={startDate}
                                                 // endDate={endDate}
                                                 // minDate={startDate}
-                                                className="customDropdown"
                                                 dateFormat="yyyy/MM/dd"
                                                 fixedHeight
                                                 minDate={subDays(new Date(), 15)}
