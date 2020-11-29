@@ -17,7 +17,7 @@ const DateSelector = props => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header align-items-center">
-            Custom Date Range
+            Custom Date Range Trial
             <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
               <span aria-hidden="true">&times;</span>
             </button>
