@@ -2,19 +2,91 @@ import React from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 
-const DateSelector = props => {
+  class DateSelector extends React.Component {
+    constructor () {
+      super();
+      this.state = {
+        startDate: moment().add(-7, 'days'),
+        endDate: moment()
+      }
+      this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
+      this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
+      this.getStats = this.getStats.bind(this);
+      this.getStatsFromServer = this.getStatsFromServer.bind(this);
+    }
 
-  const resetTemplateStatus = () => {
+    componentDidMount(){
+      const self = this;
+      self.getStatsFromServer();
+    }
 
-  }
+    getStatsFromServer()
+    {
+      const startDate = this.state.startDate.format('L');
+      const endDate = this.state.endDate.format('L');
+      console.log("Get Stats for dates" + startDate + " and " + endDate );
 
-  const handleSubmit = () => {
+    }
 
-  }
+    getStats(e){
+        e.preventDefault();
+        this.getStatsFromServer();
+    }
 
+    handleStartDateChanged(date) {
+        let startDate = date;
+        let endDate = this.state.endDate;
+        if (startDate >= endDate)
+        {
+            console.log ('startDate more than end date');
+            endDate = moment(date).add(1, 'days');
+        }
+        this.setState({
+          startDate: startDate,
+          endDate: endDate
+        });
+    }
+    handleEndDateChanged(date) {
+          let startDate = this.state.startDate;
+          let endDate = date;
+          if (startDate >= endDate)
+          {
+            console.log ('startDate more than end date');
+            startDate = moment(date).add(-1, 'days');
+          }
+          this.setState({
+            startDate: startDate,
+            endDate: endDate
+          });   
+        }
+    
+    render () {
+      const searchBoxStyle = {
+          "borderColor": "darkgray",
+          "padding": "10px",
+          "background": "lightgray",
+          "margin": "10px"
+      }
 
+      const statsTableStyle =
+      {
+        "margin": "10px"
+      }
 
+      const numberColStyle = 
+      {
+        "padding-left": "10px"
+      }
+
+      const resetTemplateStatus = () => {
+
+      }
+    
+      const handleSubmit = () => {
+    
+      }
 
   return (
     <div className="c-DateSelector modal fade show" id="singletonModal" tabIndex="-1" role="dialog">
@@ -28,7 +100,15 @@ const DateSelector = props => {
           </div>
           <div className="modal-body text-center p-5">
               <span>Start Date:</span>
+              <DatePicker
+               selected={this.state.startDate}
+               onChange={this.handleStartDateChanged}
+               />
               <span style={{"paddingLeft": "20px"}}>End Date:</span>
+              <DatePicker
+                  selected={this.state.endDate}
+                  onChange={this.handleEndDateChanged}
+                />
               <form onSubmit={handleSubmit} className="h-100 px-2">
               </form>
             </div>
@@ -37,7 +117,8 @@ const DateSelector = props => {
       </div>
     </div>
   );
-};
+}
+}
 
 DateSelector.propTypes = {
 
