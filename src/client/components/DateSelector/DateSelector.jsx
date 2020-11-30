@@ -5,15 +5,15 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
 class DateSelector extends React.Component {
-  constructor () {
+  constructor() {
     super();
     this.state = {
       //startDate: Date.now(),
       //endDate: Date.now()
-        //startDate: moment().add(-7, 'days'),
-         //endDate: moment()
-         startDate: '',
-         endDate: ''
+      //startDate: moment().add(-7, 'days'),
+      //endDate: moment()
+      startDate: '',
+      endDate: ''
     }
     this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
     this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
@@ -21,22 +21,21 @@ class DateSelector extends React.Component {
     this.getStatsFromServer = this.getStatsFromServer.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const self = this;
     self.getStatsFromServer();
   }
 
-  getStatsFromServer()
-  {
+  getStatsFromServer() {
     console.log("This is get stats")
 
     const startDate = this.state.startDate;
     const endDate = this.state.endDate;
-    console.log("Get Stats for dates" + startDate + " and " + endDate );
+    console.log("Get Stats for dates" + startDate + " and " + endDate);
 
   }
 
-  getStats(e){
+  getStats(e) {
     e.preventDefault();
     this.getStatsFromServer();
   }
@@ -44,10 +43,9 @@ class DateSelector extends React.Component {
   handleStartDateChanged(date) {
     let startDate = date;
     let endDate = this.state.endDate;
-    if (startDate >= endDate)
-    {
-      console.log ('startDate more than end date');
-       endDate = moment(date).add(1, 'days');
+    if (startDate >= endDate) {
+      console.log('startDate more than end date');
+      endDate = moment(date).add(1, 'days');
     }
     this.setState({
       startDate: startDate,
@@ -57,9 +55,8 @@ class DateSelector extends React.Component {
   handleEndDateChanged(date) {
     let startDate = this.state.startDate;
     let endDate = date;
-    if (startDate >= endDate)
-    {
-      console.log ('startDate more than end date');
+    if (startDate >= endDate) {
+      console.log('startDate more than end date');
       startDate = moment(date).add(-1, 'days');
     }
     this.setState({
@@ -68,18 +65,18 @@ class DateSelector extends React.Component {
     });
   }
 
-  render () {
+  render() {
 
 
     const statsTableStyle =
-      {
-        "margin": "10px"
-      }
+    {
+      "margin": "10px"
+    }
 
     const numberColStyle =
-      {
-        "padding-left": "10px"
-      }
+    {
+      "padding-left": "10px"
+    }
 
     const resetTemplateStatus = () => {
 
@@ -95,31 +92,36 @@ class DateSelector extends React.Component {
           <div className="modal-content">
             <div className="modal-header align-items-center">
               Custom Date Range
-              <button type="button" className="close text-white" aria-label="Close" onClick={resetTemplateStatus}>
+              <button type="button" className="close text-white" aria-label="Close" data-dismiss="modal">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div className="modal-body text-center p-5">
               <span>Start Date:</span>
-              {/* <span>Start Date:</span> */}
-              <DatePicker 
-                          placeholderText="Select Start Date"
-                          selected={this.state.startDate}
-                          onChange={this.handleStartDateChanged}
-              />
-              <br></br>
-              <span>End Date:</span>
-              <DatePicker
-                placeholderText="Select End Date"
-                selected={this.state.endDate}
-                onChange={this.handleEndDateChanged}
-              />
-              <button style={{"marginLeft": "20px"}} onClick={(e) => {this.getStats(e)}}>Apply</button>
-              <button style={{"marginLeft": "10px"}} onClick={this.resetTemplateStatus}>Cancel</button>
-              <form onSubmit={handleSubmit} className="h-100 px-2">
-              </form>
+              <Form>
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    {/* <span>Start Date:</span> */}
+                    <DatePicker
+                      placeholderText="Select Start Date"
+                      selected={this.state.startDate}
+                      onChange={this.handleStartDateChanged}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <DatePicker
+                      placeholderText="Select End Date"
+                      selected={this.state.endDate}
+                      onChange={this.handleEndDateChanged}
+                    />
+                  </Form.Field>
+                </Form.Group>
+              </Form>
             </div>
-
+            <div class="modal-footer">
+              <button type="button" className="btn btn-sm cancel-btn text-primary" data-dismiss="modal" onClick={this.resetTemplateStatus}>Cancel</button>
+              <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={(e) => { this.getStats(e) }}>Apply</button>
+            </div>
           </div>
         </div>
       </div>
