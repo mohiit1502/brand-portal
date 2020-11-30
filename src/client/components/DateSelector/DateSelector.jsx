@@ -10,8 +10,10 @@ class DateSelector extends React.Component {
     this.state = {
       //startDate: Date.now(),
       //endDate: Date.now()
-        startDate: moment().add(-7, 'days'),
-         endDate: moment()
+        //startDate: moment().add(-7, 'days'),
+         //endDate: moment()
+         startDate: '',
+         endDate: ''
     }
     this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
     this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
@@ -101,15 +103,19 @@ class DateSelector extends React.Component {
               <span>Start Date:</span>
               {/* <span>Start Date:</span> */}
               <DatePicker 
+                          placeholderText="Select Start Date"
                           selected={this.state.startDate}
                           onChange={this.handleStartDateChanged}
               />
+              <br></br>
               <span>End Date:</span>
               <DatePicker
+                placeholderText="Select End Date"
                 selected={this.state.endDate}
                 onChange={this.handleEndDateChanged}
               />
               <button style={{"marginLeft": "20px"}} onClick={(e) => {this.getStats(e)}}>Apply</button>
+              <button style={{"marginLeft": "10px"}} onClick={this.resetTemplateStatus}>Cancel</button>
               <form onSubmit={handleSubmit} className="h-100 px-2">
               </form>
             </div>
