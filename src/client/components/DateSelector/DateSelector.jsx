@@ -100,15 +100,8 @@ class DateSelector extends React.Component {
             <div className="modal-body text-center p-5">
               <span>Start Date:</span>
               {/* <span>Start Date:</span> */}
-              <DatePicker selected={this.state.startDate}
-                          onChange={this.handleStartDateChanged}
-              />
-              <span style={{"paddingLeft": "20px"}}>End Date:</span>
-              <DatePicker
-                selected={this.state.endDate}
-                onChange={this.handleEndDateChanged}
-              />
-              <button style={{"marginLeft": "20px"}} onClick={(e) => {this.getStats(e)}}>Get Stats</button>
+              <span>End Date:</span>
+              <button style={{"marginLeft": "20px"}} onClick={(e) => {this.getStats(e)}}>Apply</button>
               <form onSubmit={handleSubmit} className="h-100 px-2">
               </form>
             </div>
