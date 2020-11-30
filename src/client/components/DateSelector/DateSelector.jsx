@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import DatePicker from "react-datepicker";
-// import moment from "moment";
+import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
 class DateSelector extends React.Component {
   constructor () {
     super();
     this.state = {
-      startDate: Date.now(),
-      endDate: Date.now()
-      //  startDate: moment().add(-7, 'days'),
-      //   endDate: moment()
+      //startDate: Date.now(),
+      //endDate: Date.now()
+        startDate: moment().add(-7, 'days'),
+         endDate: moment()
     }
     this.handleStartDateChanged = this.handleStartDateChanged.bind(this);
     this.handleEndDateChanged = this.handleEndDateChanged.bind(this);
@@ -45,7 +45,7 @@ class DateSelector extends React.Component {
     if (startDate >= endDate)
     {
       console.log ('startDate more than end date');
-      //  endDate = moment(date).add(1, 'days');
+       endDate = moment(date).add(1, 'days');
     }
     this.setState({
       startDate: startDate,
@@ -58,7 +58,7 @@ class DateSelector extends React.Component {
     if (startDate >= endDate)
     {
       console.log ('startDate more than end date');
-      // startDate = moment(date).add(-1, 'days');
+      startDate = moment(date).add(-1, 'days');
     }
     this.setState({
       startDate: startDate,
@@ -100,7 +100,15 @@ class DateSelector extends React.Component {
             <div className="modal-body text-center p-5">
               <span>Start Date:</span>
               {/* <span>Start Date:</span> */}
+              <DatePicker 
+                          selected={this.state.startDate}
+                          onChange={this.handleStartDateChanged}
+              />
               <span>End Date:</span>
+              <DatePicker
+                selected={this.state.endDate}
+                onChange={this.handleEndDateChanged}
+              />
               <button style={{"marginLeft": "20px"}} onClick={(e) => {this.getStats(e)}}>Apply</button>
               <form onSubmit={handleSubmit} className="h-100 px-2">
               </form>
