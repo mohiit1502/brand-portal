@@ -97,26 +97,24 @@ class DateSelector extends React.Component {
               </button>
             </div>
             <div className="modal-body text-center p-5">
-              <span>Start Date:</span>
-              <Form>
-                <Form.Group widths='equal'>
-                  <Form.Field>
-                    {/* <span>Start Date:</span> */}
-                    <DatePicker
-                      placeholderText="Select Start Date"
-                      selected={this.state.startDate}
-                      onChange={this.handleStartDateChanged}
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <DatePicker
-                      placeholderText="Select End Date"
-                      selected={this.state.endDate}
-                      onChange={this.handleEndDateChanged}
-                    />
-                  </Form.Field>
-                </Form.Group>
-              </Form>
+              <div className="row  mt-4">
+                <div className="col">
+                  {/* <span>Start Date:</span> */}
+
+                  <DatePicker
+                    placeholderText="Select Start Date"
+                    selected={this.state.startDate}
+                    onChange={this.handleStartDateChanged}
+                  />
+                </div>
+                <div className="col">
+                  <DatePicker
+                    placeholderText="Select End Date"
+                    selected={this.state.endDate}
+                    onChange={this.handleEndDateChanged}
+                  />
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" className="btn btn-sm cancel-btn text-primary" data-dismiss="modal" onClick={this.resetTemplateStatus}>Cancel</button>
