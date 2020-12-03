@@ -1,3 +1,22 @@
 .c-DateSelector {
   
 }
+
+.customDatePickerWidth, 
+.customDatePickerWidth > div.react-datepicker-wrapper, 
+.customDatePickerWidth > div > div.react-datepicker__input-container
+.customDatePickerWidth > div > div.react-datepicker__input-container  {
+   width: 365px !important;
+   height: 100%;
+   color: #3a3a3d;
+
+}
+
+.customDatePickerWidth{
+   display: flex;
+   border-color:rgba(34, 109, 170, 0.23);
+   border: 0.6px solid;
+   //font-size: 1rem;
+    //font-family: 'Roboto', sans-serif 
+
+}

@@ -1,14 +1,15 @@
-import React, {memo, useState} from "react";
+import React, { memo, useState } from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {dispatchFilter} from "./../../actions/dashboard/dashboard-actions";
-import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions"
+import { connect } from "react-redux";
+import { dispatchFilter } from "./../../actions/dashboard/dashboard-actions";
+import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions"
 import * as images from "../../images";
 import "./FilterController.component.scss";
-import {showNotification} from "../../actions/notification/notification-actions";
+import { showNotification } from "../../actions/notification/notification-actions";
+import DateSelector from '../DateSelector';
 
 const FilterController = props => {
-  const {dispatchFilter , currentFilters, filters: filterMeta, updateChart, widgetId} = props;
+  const { dispatchFilter, currentFilters, filters: filterMeta, updateChart, widgetId} = props;
   const [containerState, setContainerState] = useState({
     className: "form-group custom-input-form-group custom-select-form-group dropdown mb-0"
   });
@@ -17,25 +18,25 @@ const FilterController = props => {
       className: `form-control form-control-filter-controller custom-input-element`,
       dropdownOptions: {
         weekWise: [
-          {id: "yesterday", value: "yesterday", label: "Yesterday", handler: onChangeHandler},
-          {id: "lastweek", value: "lastweek", label: "Last Week", handler: onChangeHandler},
-          {id: "weektodate", value: "weektodate", label: "Week to Date", handler: onChangeHandler}
+          { id: "yesterday", value: "yesterday", label: "Yesterday", handler: onChangeHandler },
+          { id: "lastweek", value: "lastweek", label: "Last Week", handler: onChangeHandler },
+          { id: "weektodate", value: "weektodate", label: "Week to Date", handler: onChangeHandler }
         ],
         monthWise: [
-          {id: "monthtodate", value: "monthtodate", label: "Month to Date", handler: onChangeHandler},
-          {id: "lastmonth", value: "lastmonth", label: "Last 30 Days", handler: onChangeHandler}
+          { id: "monthtodate", value: "monthtodate", label: "Month to Date", handler: onChangeHandler },
+          { id: "lastmonth", value: "lastmonth", label: "Last 30 Days", handler: onChangeHandler }
         ],
         quarterWise: [
-          {id: "quartertodate", value: "quartertodate", label: "Quarter to Date", handler: onChangeHandler},
-          {id: "lastquarter", value: "lastquarter", label: "Last Quarter", handler: onChangeHandler}
+          { id: "quartertodate", value: "quartertodate", label: "Quarter to Date", handler: onChangeHandler },
+          { id: "lastquarter", value: "lastquarter", label: "Last Quarter", handler: onChangeHandler }
         ],
         yearWise: [
-          {id: "yeartodate", value: "yeartodate", label: "Year to Date", handler: onChangeHandler},
-          {id: "lastyear", value: "lastyear", label: "Last Year", handler: onChangeHandler},
-          {id: "alltime", value: "alltime", label: "All time", handler: onChangeHandler}
+          { id: "yeartodate", value: "yeartodate", label: "Year to Date", handler: onChangeHandler },
+          { id: "lastyear", value: "lastyear", label: "Last Year", handler: onChangeHandler },
+          { id: "alltime", value: "alltime", label: "All time", handler: onChangeHandler }
         ],
         custom: [
-          {id: "customdate", value: "customdate", label: "Custom Date", handler: dispatchDateSelector}
+          { id: "customdate", value: "customdate", label: "Custom Date", handler: dispatchDateSelector }
         ]
       },
       error: "",
@@ -47,11 +48,11 @@ const FilterController = props => {
     claimType: {
       className: `form-control form-control-filter-controller custom-input-element`,
       dropdownOptions: [
-        {id: "all", value: "all", label: "All", handler: onChangeHandler},
-        {id: "trademark", value: "trademark", label: "Trademark", handler: onChangeHandler},
-        {id: "patent", value: "patent", label: "Patent", handler: onChangeHandler},
-        {id: "counterfeit", value: "counterfeit", label: "Counterfeit", handler: onChangeHandler},
-        {id: "copyright", value: "copyright", label: "Copyright", handler: onChangeHandler}
+        { id: "all", value: "all", label: "All", handler: onChangeHandler },
+        { id: "trademark", value: "trademark", label: "Trademark", handler: onChangeHandler },
+        { id: "patent", value: "patent", label: "Patent", handler: onChangeHandler },
+        { id: "counterfeit", value: "counterfeit", label: "Counterfeit", handler: onChangeHandler },
+        { id: "copyright", value: "copyright", label: "Copyright", handler: onChangeHandler }
       ],
       error: "",
       id: "claim-type-filter-controller",
@@ -61,12 +62,28 @@ const FilterController = props => {
     }
   })
 
-  function dispatchDateSelector () {
-    const meta = { templateName: "DateSelectorTemplate" };
-    props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+  //serialized function for update chart
+  //doesnt send state
+  const serializeFunction = updateChart.toString();
+
+  function dispatchDateSelector() {
+    console.log("dispatchDateSelector");
+
+    //Pass the org Id
+    let currentWidgetFilters = currentFilters[widgetId];
+    if (!currentWidgetFilters) {
+      currentWidgetFilters = {};
+      currentFilters[widgetId] = currentWidgetFilters
+    }
+    let orgIdValue = currentFilters.orgId;
+    const meta = { templateName: "DateSelectorTemplate", orgId: orgIdValue, clickMe: serializeFunction };
+
+    props.toggleModal(TOGGLE_ACTIONS.SHOW, { ...meta });
+    console.log("dispatchDateSelector-End");
+
   }
 
-  function onChangeHandler (option, filter) {
+  function onChangeHandler(option, filter) {
     let currentWidgetFilters = currentFilters[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
@@ -80,7 +97,7 @@ const FilterController = props => {
 
   const onClickHandler = (option, filter) => {
     setFieldState(fieldState => {
-      const fieldStateCloned = {...fieldState};
+      const fieldStateCloned = { ...fieldState };
       fieldStateCloned[filter.name].value = option.label;
       return fieldStateCloned;
     })
@@ -103,15 +120,15 @@ const FilterController = props => {
       }
     }
     return <div key={key1} className={filter.classes}>
-        <div className={`${containerState.className}`}>
+      <div className={`${containerState.className}`}>
         <input type={fieldState[filter.name] && fieldState[filter.name].type} className={fieldState[filter.name] && fieldState[filter.name].className}
-               id={fieldState[filter.name] && fieldState[filter.name].id} value={fieldState[filter.name].value} onChange={() => {}}
-               data-toggle="dropdown" autoComplete="off" />
+          id={fieldState[filter.name] && fieldState[filter.name].id} value={fieldState[filter.name].value} onChange={() => { }}
+          data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label${!fieldState[filter.name].value ? " custom-input-label-placeholder" : ""}`} htmlFor="claim-type-widget-filter-controller">
-          <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
+          <div className="label-lower-bg position-absolute w-100 h-50 d-block" />
           <span className="label-text"> {filter.placeholder} </span>
         </label>
-        <img src={images.ArrowDown} alt="image-arrow-down" className="dropdown-arrow"/>
+        <img src={images.ArrowDown} alt="image-arrow-down" className="dropdown-arrow" />
         <div className="dropdown-menu">{ddOptions}</div>
       </div>
     </div>
