@@ -1,11 +1,15 @@
 import React, {memo, useEffect, useRef} from "react";
+import { renderToString } from 'react-dom/server'
 import PropTypes from "prop-types";
-import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackOrderAscending} from "d3";
+import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackOrderAscending, tip} from "d3";
+import d3Tip from "d3-tip"
 import useResizeObserver from "../../hooks/useResizeObserver";
 import "./GroupedBarChart.component.scss";
+import Tooltip from "../custom-components/tooltip/tooltip";
+import ReportedClaimsTooltip from "../custom-components/tooltip/templates/reported-claims-tooltip";
 
 const GroupedBarChart = props => {
-  const {chart, classes, data, keys, colors} = props;
+  const {chart, classes, data, keys, colors, currentFilter} = props;
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -20,13 +24,20 @@ const GroupedBarChart = props => {
     const xScale1 = scaleBand();
     const yScale = scaleLinear().range([height - margin.top - margin.bottom, 0]);
 
-    const tooltip = select("body").append("div")
+    const tooltip = d3Tip()
+      .attr('class','d3-tip')
+      .offset([-10, 0])
       .style("position", "absolute")
-      .style("background", "#f4f4f4")
+      .style("background", "#485465")
+      .style("color","white")
+      .style("font-size","11")
       .style("padding", "5 15px")
       .style("border", "1px #333 solid")
       .style("border-radius", "5px")
-      .style("opacity", "0");
+      .style("opacity", "0")
+      .html(function (event,d) {
+        return renderToString(<Tooltip data={{d,colors,currentFilter}} template={ReportedClaimsTooltip} />);
+      });
 
     const xAxis = axisBottom(xScale0).tickSizeOuter(axisTicks.outerSize);
     const yAxis = axisLeft(yScale).ticks(axisTicks.qty).tickSizeOuter(axisTicks.outerSize);
@@ -47,6 +58,7 @@ const GroupedBarChart = props => {
       .attr("class", chart.key)
       .attr("transform", d => `translate(${xScale0(d[chart.key])},0)`);
 
+    root.call(tooltip)
     chart && chart.group && chart.group.length > 0 && chart.group.forEach(groupItem => {
       const rootInner = root.selectAll(`.bar.${groupItem.name}`)
         .data(d => [d])
@@ -58,20 +70,16 @@ const GroupedBarChart = props => {
         .attr("y", height)
         .attr("width", xScale1.bandwidth())
         .attr("height", 0)
-        .on("mouseover", function(event, d) {
-          tooltip.transition()
-            .style("opacity", 1)
-          tooltip.html(d.claimsCount)
-            .style("left", (event.pageX) + "px")
-            .style("top", (event.pageY) + "px")
-          select(this).style("opacity", 0.5)
-        })
-        .on("mouseout", function(event, d) {
-          tooltip.transition()
-            .style("opacity", 0)
-          select(this).style("opacity", 1);
+        .on("mouseover", function (event, d){
+          select(this).style("opacity",0.5)
+          tooltip.show(event, d, this);
+        }
+          )
+        .on("mouseout", function() {
+          select(this).style("opacity",1);
+          tooltip.hide(this)
         });
-      rootInner.transition()
+        rootInner.transition()
         .attr("height", d => height - margin.top - margin.bottom - yScale(d[groupItem.name]))
         .attr("y", d => yScale(d[groupItem.name]));
     })

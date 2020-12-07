@@ -20,13 +20,13 @@ const WIDGETCONFIG = {
               "name": "inprogress",
               "label": "In Progress",
               "mapper": "workFlowCounts.status",
-              "value": "NEW"
+              "value": "NEW,CREATED"
             },
             {
               "name": "closed",
               "label": "Closed",
               "mapper": "workFlowCounts.status",
-              "value": "REJECTED"
+              "value": "REJECTED,ACCEPTED"
             }
           ]
         },

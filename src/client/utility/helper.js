@@ -114,12 +114,14 @@ export default class Helper {
   static wrap(text, width) {
     text.each(function () {
       const text = d3.select(this),
-        words = text.text().split(/s+/).reverse(),
-        lineHeight = 0.5,
+        words = text.text().match(/.{1,6}/g).reverse(),
+        lineHeight = 0.75,
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy"));
-      let word, line = [], lineNumber = 0, tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+      let word, line = [], lineNumber = 0, tspan = text.text(null).append("tspan").attr("x", -8).attr("y", y).attr("dy", ((words.length > 1) ? (dy - 0.25 ) : dy) + "em");
       while (word = words.pop()) {
+        if(lineNumber === 1)
+          break;
         line.push(word);
         tspan.text(line.join(" "));
         // console.log("computed", tspan.node().getComputedTextLength())
