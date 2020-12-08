@@ -81,7 +81,7 @@ class NewClaimTemplate extends React.Component {
           ],
           comments: {
             label: "Comments",
-            required: false,
+            required: true,
             value: "",
             type: "textarea",
             pattern: null,
@@ -349,6 +349,7 @@ class NewClaimTemplate extends React.Component {
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
       form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value), true) &&
+      form.inputData.comments.value &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
 
@@ -424,26 +425,27 @@ class NewClaimTemplate extends React.Component {
 
       const payload = url.substring(slash + 1, qMark);
       const query = {payload};
-      Http.get("/api/sellers", query)
+      Http.get("/api/sellers", query,null, this.props.showNotification, null, "Request failed, please try again.")
         .then(res => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
-          if (res.body) res.body.unshift({value: "All", id: "_all"});
-          form.inputData.itemList[i].sellerName.options = res.body;
-          form.inputData.itemList[i].sellerName.disabled = false;
-          form.inputData.itemList[i].url.error = "";
-          //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
-          this.setState({form}, this.checkToEnableItemButton);
+          if(res.body.length != 0){
+            res.body.unshift({value: "All", id: "_all"});
+            form.inputData.itemList[i].sellerName.options = res.body;
+            form.inputData.itemList[i].sellerName.disabled = false;
+            form.inputData.itemList[i].url.error = "";
+            //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
+            this.setState({form}, this.checkToEnableItemButton);
+          } else if(res.body.length == 0){
+            form.inputData.itemList[i].sellerName.disabled = true;
+            form.inputData.itemList[i].url.error = "Please check the URL and try again!";
+            this.setState({form}, this.checkToEnableItemButton);
+          }
         })
         .catch(err => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
-          if (err.status === 404) {
-            form.inputData.itemList[i].url.error = "Please check the URL and try again!";
-          }
-          if (err.status === 520) {
-            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
-          }
+          form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
           form.inputData.itemList[i].sellerName.disabled = true;
           this.setState({form}, this.checkToEnableItemButton);
         });
