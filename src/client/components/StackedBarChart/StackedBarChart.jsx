@@ -1,4 +1,5 @@
 import React, {memo, useEffect, useRef} from "react";
+import { renderToString } from 'react-dom/server'
 import PropTypes from "prop-types";
 import {
   select,
@@ -10,12 +11,17 @@ import {
   axisLeft,
   stackOrderAscending
 } from "d3";
+import d3Tip from "d3-tip"
 import useResizeObserver from "./../../hooks/useResizeObserver";
 import "./StackedBarChart.component.scss";
 import Helper from "../../utility/helper";
+import Tooltip from "../custom-components/tooltip/tooltip";
+import TopBrandsTooltip from "../custom-components/tooltip/templates/top-brand-tooltip";
+import TopReporterTooltip from "../custom-components/tooltip/templates/top-reporters";
+
 
 const StackedBarChart = props => {
-  const {chart, classes, data, keys, colors} = props;
+  const {chart, classes, data, keys, colors, currentFilter,subType} = props;
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -27,13 +33,20 @@ const StackedBarChart = props => {
     width = width - margin.left - margin.right;
     height = height - margin.top - margin.bottom;
 
-    const tooltip = select("body").append("div")
+    const tooltip = d3Tip().attr('class','d3-tip')
+      .offset([-10, 0])
       .style("position", "absolute")
-      .style("background", "#f4f4f4")
+      .style("background", "#485465")
+      .style("color","white")
+      .style("font-size","11")
       .style("padding", "5 15px")
       .style("border", "1px #333 solid")
       .style("border-radius", "5px")
-      .style("opacity", "0");
+      .style("opacity", "0")
+      .html(function (event,d) {
+        let Template = (props.chart.layerKey === "brandName") ? TopBrandsTooltip : TopReporterTooltip;
+        return renderToString(<Tooltip data={{d,colors,currentFilter}} template={Template} />);
+      });
 
     const stackGenerator = stack()
       .keys(keys)
@@ -42,13 +55,15 @@ const StackedBarChart = props => {
     const extent = [0, max(layers, layer => max(layer, sequence => sequence[1]))];
 
     const y = scaleBand()
-      .domain(data.map(d => chart.layerKey.includes(",") ? chart.layerKey.split(",").reduce((a, b) => d[a] + " " + d[b], "") : d[chart.layerKey]))
+      .domain(data.map(d => chart.layerKey.includes(",") ? chart.layerKey.split(",").reduce((a, b) => d[a] + " " + d[b]) : d[chart.layerKey]))
       .rangeRound([height, 0])
       .padding(0.25);
 
     const x = scaleLinear()
       .domain(extent)
       .range([0, width - margin.left - margin.right]);
+
+    svg.call(tooltip)
 
     const sbChart = svg
       .selectAll(".layer")
@@ -60,23 +75,17 @@ const StackedBarChart = props => {
       .selectAll("rect")
       .data(layer => layer)
       .join("rect")
-      .attr("y", d => y(chart.layerKey.includes(",") ? chart.layerKey.split(",").reduce((a, b) => d.data[a] + " " + d.data[b], "") : d.data[chart.layerKey]))
+      .attr("y", d => y(chart.layerKey.includes(",") ? chart.layerKey.split(",").reduce((a, b) => d.data[a] + " " + d.data[b]) : d.data[chart.layerKey]))
       .attr("x", 0)
       .attr("width", 0)
       .attr("height", y.bandwidth())
       .on("mouseover", function(event, d) {
-        tooltip.transition()
-          .style("opacity", 1)
-
-        tooltip.html(d)
-          .style("left", (event.pageX) + "px")
-          .style("top", (event.pageY) + "px")
-        select(this).style("opacity", 0.5)
+        select(this).style("opacity",0.5);
+        tooltip.show(event, d, this)
       })
       .on("mouseout", function() {
-        tooltip.transition()
-          .style("opacity", 0)
-        select(this).style("opacity", 1);
+        select(this).style("opacity",1);
+        tooltip.hide(this)
       });
 
     sbChart.transition()
@@ -93,8 +102,8 @@ const StackedBarChart = props => {
     svg.select(".y-axis")
       .attr("transform", `translate(${margin.left}, ${margin.top})`)
       .call(yAxis)
-      // .selectAll(".tick text")
-      // .call(Helper.wrap, margin.left);
+      .selectAll(".tick text")
+      .call(Helper.wrap, margin.left);
   }, [colors, data, dimensions, keys]);
 
   return (
