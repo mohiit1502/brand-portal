@@ -394,7 +394,7 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.props.filter && this.props.filter["widget-brand-summary"] &&
+              {this.props.filter && this.props.filter["widget-brand-summary"] && this.props.filter["widget-brand-summary"] !== "all" &&
               <FilterType filterText={`Brand is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-brand-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">

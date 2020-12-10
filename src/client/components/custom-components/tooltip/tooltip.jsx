@@ -4,9 +4,6 @@ import '../../../styles/custom-components/tooltip/tooltip.scss';
 import PropTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
 
-// const TooltipContainer = function({data, Template}){
-//   return <Template data={data} />
-// }
 
 const Tooltip = function (props){
 

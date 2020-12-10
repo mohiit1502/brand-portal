@@ -468,7 +468,7 @@ class UserList extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.props.filter && this.props.filter["widget-user-summary"] &&
+              {this.props.filter && this.props.filter["widget-user-summary"] && this.props.filter["widget-user-summary"] !== "all" &&
               <FilterType filterText={`User is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">

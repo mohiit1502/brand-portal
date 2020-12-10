@@ -402,7 +402,7 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.props.filter && this.props.filter["widget-claim-summary"] &&
+              {this.props.filter && this.props.filter["widget-claim-summary"] && this.props.filter["widget-claim-summary"] !== "all" &&
               <FilterType filterText={`Claim is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">

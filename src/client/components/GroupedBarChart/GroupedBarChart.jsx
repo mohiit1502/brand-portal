@@ -27,6 +27,7 @@ const GroupedBarChart = props => {
     const tooltip = d3Tip()
       .attr('class','d3-tip')
       .offset([-10, 0])
+      .style("filter","opacity(0.95)")
       .style("position", "absolute")
       .style("background", "#485465")
       .style("color","white")
@@ -34,7 +35,6 @@ const GroupedBarChart = props => {
       .style("padding", "5 15px")
       .style("border", "1px #333 solid")
       .style("border-radius", "5px")
-      .style("opacity", "0")
       .html(function (event,d) {
         return renderToString(<Tooltip data={{d,colors,currentFilter}} template={ReportedClaimsTooltip} />);
       });
