@@ -58,7 +58,7 @@ class ClaimManagerApi {
       "WM_SVC.VERSION": "0.0.1",
       "WM_SVC.NAME": "item-setup-query-service-app",
       "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH),
-      "WM_SVC.ENV": "stg",
+      "WM_SVC.ENV": "prod",
       "WM_CONSUMER.ID": "6aa8057e-8795-450a-b349-4ba99b633d2e",
       Accept: "application/json"
     };
