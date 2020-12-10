@@ -1,6 +1,6 @@
 {
   "name": "ropro-brandportal",
-  "version": "1.2.40",
+  "version": "4.0.40",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
@@ -67,7 +67,7 @@
     "node-jose": "^1.1.4",
     "popper.js": "^1.16.1",
     "query-string": "^6.11.1",
-    "react-datepicker": "^3.3.0",
+    "react-datepicker": "^1.8.0",
     "moment-timezone": "^0.5.23",
     "react-notify-toast": "^0.5.0",
     "react-router": "^5.1.2",
@@ -82,8 +82,7 @@
     "@material-ui/core": "^3.0.2",
     "@material-ui/icons": "^2.0.3",
     "@material-ui/system": "^3.0.0-alpha.2",
-    "resize-observer-polyfill": "^1.5.1",
-    "styled-components": "^5.0.1"
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "@loadable/babel-plugin": "^5.10.0",
@@ -92,7 +91,7 @@
     "electrode-archetype-react-app-dev": "^6.3.1",
     "eslint-plugin-react-hooks": "^3.0.0",
     "node-sass": "^4.14.1",
-    "plop": "^2.7.4"
+    "plop": "^2.7.1"
   },
   "private": true
 }
