@@ -65,8 +65,8 @@ class ClaimManagerApi {
   }
 
   parseSellersFromResponse = response => {
-    const sellers = response && response.payload.indexData;
-    const sellersParsed = sellers.map(seller => seller.seller_id && {value: seller.partner_display_name, id: seller.seller_id}).filter(seller => seller);
+    const sellers = response
+    const sellersParsed = sellers.map(seller => seller['offer.sellerId'] && {value: seller['rollupoffer.partnerDisplayName'], id: seller['offer.sellerId']}).filter(seller => seller);
     return sellersParsed;
   }
 
@@ -76,16 +76,15 @@ class ClaimManagerApi {
       const options = {
         headers
       };
-      // let url = request.app.ccmGet("IQS_CONFIG.IQS_URL");
-      let url = secrets.IQS_URL;
-      url = url.replace("__itemId__", request.query.payload);
+      let payload = request.app.ccmGet("CLAIM_CONFIG.IQS_QUERY");
+      payload = payload.replace("__itemId__", request.query.payload);
 
-      const response = await ServerHttp.get(url, options);
+      let url = secrets.IQS_URL;
+
+      const response = await ServerHttp.post(url, options, payload);
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-        responseBody = this.parseSellersFromResponse(response.body);
-      } else if (response && response.status === CONSTANTS.STATUS_CODE_NOT_FOUND) {
-        responseBody = response;
+        responseBody = this.parseSellersFromResponse(response.body.docs);
       }
       return h.response(responseBody).code(response.status);
     } catch (err) {

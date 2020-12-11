@@ -89,7 +89,7 @@ export default class Http {
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
       setTimeout( () => window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT, 1000);
-    } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(status)) {
+    } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(status.toString())) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Request failed, please try again.");
     } else if (status === CONSTANTS.STATUS_CODE_SUCCESS) {
       toastMessageSuccess && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.SUCCESS, toastMessageSuccess);
