@@ -5,7 +5,6 @@ import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackO
 import d3Tip from "d3-tip"
 import useResizeObserver from "../../hooks/useResizeObserver";
 import "./GroupedBarChart.component.scss";
-import Tooltip from "../custom-components/tooltip/tooltip";
 import ReportedClaimsTooltip from "../custom-components/tooltip/templates/reported-claims-tooltip";
 
 const GroupedBarChart = props => {
@@ -36,7 +35,7 @@ const GroupedBarChart = props => {
       .style("border", "1px #333 solid")
       .style("border-radius", "5px")
       .html(function (event,d) {
-        return renderToString(<Tooltip data={{d,colors,currentFilter}} template={ReportedClaimsTooltip} />);
+        return renderToString(<ReportedClaimsTooltip data={{d,colors,currentFilter}}/>);
       });
 
     const xAxis = axisBottom(xScale0).tickSizeOuter(axisTicks.outerSize);

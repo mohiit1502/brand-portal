@@ -15,7 +15,6 @@ import d3Tip from "d3-tip"
 import useResizeObserver from "./../../hooks/useResizeObserver";
 import "./StackedBarChart.component.scss";
 import Helper from "../../utility/helper";
-import Tooltip from "../custom-components/tooltip/tooltip";
 import TopBrandsTooltip from "../custom-components/tooltip/templates/top-brand-tooltip";
 import TopReporterTooltip from "../custom-components/tooltip/templates/top-reporters";
 
@@ -45,7 +44,7 @@ const StackedBarChart = props => {
       .style("border-radius", "5px")
       .html(function (event,d) {
         let Template = (props.chart.layerKey === "brandName") ? TopBrandsTooltip : TopReporterTooltip;
-        return renderToString(<Tooltip data={{d,colors,currentFilter}} template={Template} />);
+        return renderToString(<Template data={{d,colors,currentFilter}}/>);
       });
 
     const stackGenerator = stack()
