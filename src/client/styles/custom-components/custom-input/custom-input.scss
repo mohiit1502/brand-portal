@@ -1,17 +1,16 @@
 @import "../../override/variables";
 
-$input-blue: #017DC6;
+$input-blue: #7AC4E4;
 $disabled-background : #F7F7F7;
 $disabled-font : #A3A8A9;
-$input-border : 1px solid #979797;
+$input-border : 1px solid #286697;
 $radio-color : #017DC6;
 $radio-border-color : #E2E5E7;
-// $input-placeholder-color : #2C333A;
-$input-placeholder-color : #6E7677;
+$input-placeholder-color : $headings-color;
 $textarea-label: #41484F;
-$dropdown-select-background: rgb(178, 216, 237);
+$dropdown-select-background: #E7F3F8;
 
-@mixin custom-placeholderCSS {
+@mixin custom-placeholderCSS { //Place holder whe no data is available
   top : -28px;
   font-size: 16px;
   color: $input-placeholder-color;
@@ -20,7 +19,7 @@ $dropdown-select-background: rgb(178, 216, 237);
   z-index: 2;
 }
 
-@mixin custom-label-css {
+@mixin custom-label-css { //This is the top label on clicking the input field
   position: relative;
   z-index: 7;
   margin: 0;
@@ -186,7 +185,9 @@ $dropdown-select-background: rgb(178, 216, 237);
     background: transparent;
     font-size: 14px;
     padding-left: 20px;
-    border : 1px solid $input-border;
+    border-radius: 42px;
+    border : $input-border;
+    color: $input-placeholder-color;
 
     &[type="multiselect"] {
       padding-right: 1.5rem;
@@ -196,12 +197,12 @@ $dropdown-select-background: rgb(178, 216, 237);
       height: unset;
     }
     &:focus, &:active{
-      box-shadow: none;
+      box-shadow: 0px 3px 18px #7AC4E433;
       border : 1px solid $input-blue;
 
       & + .custom-input-label {
         @include custom-label-css();
-        color : $input-blue;
+        //color : $input-blue;
       }
     }
 

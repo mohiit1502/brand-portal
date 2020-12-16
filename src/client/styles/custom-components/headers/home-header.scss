@@ -4,14 +4,16 @@ $dropdown-white : #F9F9F9;
 
 
 .home-header-nav{
-  background: $blue;
+  background: #235882;
   height: $nav-max-height;
   max-height: $nav-max-height;
   margin: 0 -15px;
 
   .walmart-brand{
     img {
-      width: 122px;
+      width: 235px;
+      height: 28px;
+      margin-left: 27px;
     }
   }
   .navbar-collapsible-header{

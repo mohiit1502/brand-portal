@@ -28,6 +28,9 @@
               .col-4 {padding-left: 0.375rem;}
             }
           }
+          div.btn{
+            border-radius: 42px;
+          }
           div.btn.disabled {
             pointer-events: none;
             background: #B2D8ED;

@@ -6,8 +6,8 @@
 // @import "../../../node_modules/bootstrap/scss/bootstrap";
 
 @font-face {
-  font-family: BogleWeb-Regular;
-  src: url('../assets/fonts/bogle/BogleWeb-Regular.ttf');
+  font-family: Bogle, serif;
+  //src: url('../assets/fonts/bogle');
 }
 
 @font-face {
@@ -31,7 +31,7 @@ html,body {
         margin: 0;
         height: 100%;
         width: 100%;
-        font-family: BogleWeb-Regular, sans-serif;
+        font-family: Bogle, sans-serif;
         min-width: $min-viewport-width;
         min-height: $min-viewport-height;
         overflow: auto;
