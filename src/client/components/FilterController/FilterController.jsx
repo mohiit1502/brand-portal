@@ -16,29 +16,14 @@ const FilterController = props => {
   const [fieldState, setFieldState] = useState({
     dateRange: {
       className: `form-control form-control-filter-controller custom-input-element`,
-      dropdownOptions: {
-        weekWise: [
-          { id: "yesterday", value: "yesterday", label: "Yesterday", handler: onChangeHandler },
-          { id: "lastweek", value: "lastweek", label: "Last Week", handler: onChangeHandler },
-          { id: "weektodate", value: "weektodate", label: "Week to Date", handler: onChangeHandler }
-        ],
-        monthWise: [
-          { id: "monthtodate", value: "monthtodate", label: "Month to Date", handler: onChangeHandler },
-          { id: "lastmonth", value: "lastmonth", label: "Last 30 Days", handler: onChangeHandler }
-        ],
-        quarterWise: [
-          { id: "quartertodate", value: "quartertodate", label: "Quarter to Date", handler: onChangeHandler },
-          { id: "lastquarter", value: "lastquarter", label: "Last Quarter", handler: onChangeHandler }
-        ],
-        yearWise: [
-          { id: "yeartodate", value: "yeartodate", label: "Year to Date", handler: onChangeHandler },
-          { id: "lastyear", value: "lastyear", label: "Last Year", handler: onChangeHandler },
-          { id: "alltime", value: "alltime", label: "All time", handler: onChangeHandler }
-        ],
-        custom: [
-          { id: "customdate", value: "customdate", label: "Custom Date", handler: dispatchDateSelector }
-        ]
-      },
+      dropdownOptions: [
+        { id: "last7days", value: "last7days", label: "Last 7 days", handler: onChangeHandler },
+        { id: "last30days", value: "last30days", label: "Last 30 Days", handler: onChangeHandler },
+        { id: "last60days", value: "last60days", label: "Last 60 days", handler: onChangeHandler },
+        { id: "last90days", value: "last90days", label: "Last 90 days", handler: onChangeHandler },
+        { id: "alltime", value: "alltime", label: "All time", handler: onChangeHandler },
+        { id: "customdate", value: "customdate", label: "Custom Date", handler: dispatchDateSelector }
+      ],
       error: "",
       id: "date-filter-controller",
       subTitle: "",

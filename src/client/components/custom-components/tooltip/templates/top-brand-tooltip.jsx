@@ -7,19 +7,10 @@ const TopBrandsTooltip = function(props) {
 
   const [dateFilterMap,setDateFilterMap] = useState({
     alltime:"All Time",
-    yesterday:"Yesterday",
-    lastweek:"Last Week",
-    weektodate:"Week To Date",
-    monthtodate:"Month To Date",
-    lastmonth:"Last Month",
-    quartertodate:"Quarter To Date",
-    lastquarter:"Last Quarter",
-    yeartodate:"Year To Date",
-    lastyear:"Last Year",
-    customDate: {
-      toDate:'',
-      fromDate:''
-    }
+    last30days:"Last 30 Days",
+    last7days:"Last 7 days",
+    last60days:"Last 60 Days",
+    last90days:"Last 90 Days"
   })
 
  const mapUtil ={

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {GroupedBarChart, StackedBarChart, FilterController} from "../index";
 import "./ChartsContainer.component.scss";
 import Http from "../../utility/Http";
+import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
 
 const ChartTypes = {
   GroupedBarChart: GroupedBarChart,
@@ -40,6 +41,9 @@ const ChartsContainer = props => {
   useEffect(() => {
     setDataLocal(data)
     setLoader(!fetchComplete)
+    return () => {
+      dispatchFilter(currentFilters[ID] = '');
+    }
   },[data, fetchComplete]);
   // window["StackedBarChart"] = [
   //   {
