@@ -10,7 +10,7 @@ import DateSelector from '../DateSelector';
 import Helper from "../../utility/helper";
 
 const FilterController = props => {
-  const { dispatchFilter, currentFilters, filters: filterMeta, updateChartMeta, widgetId} = props;
+  const { dispatchFilter, customDate, currentFilters, filters: filterMeta, updateChartMeta, widgetId} = props;
   const [containerState, setContainerState] = useState({
     className: "form-group custom-input-form-group custom-select-form-group dropdown mb-0"
   });
@@ -67,7 +67,7 @@ const FilterController = props => {
     const fieldStateCloned = {...fieldState};
     fieldStateCloned.dateRange.value =  currentFilters[widgetId] && currentFilters[widgetId].value ? currentFilters[widgetId].viewValue : fieldStateCloned.dateRange.value;
     setFieldState(fieldStateCloned);
-  }, [currentFilters[widgetId]])
+  }, [currentFilters[widgetId], customDate])
 
   //serialized function for update chart
   //doesnt send state
@@ -87,18 +87,15 @@ const FilterController = props => {
   }
 
   function onChangeHandler(option, filter) {
-    const currentFiltersCloned = {...currentFilters};
-    let currentWidgetFilters = {...currentFiltersCloned[widgetId]};
+    let currentWidgetFilters = currentFilters[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
-      currentFiltersCloned[widgetId] = currentWidgetFilters
-    } else {
-      currentFiltersCloned[widgetId] = currentWidgetFilters;
+      currentFilters[widgetId] = currentWidgetFilters
     }
     currentWidgetFilters[filter.name] = option.value
-    currentWidgetFilters.orgId = currentFiltersCloned.orgId;
+    currentWidgetFilters.orgId = currentFilters.orgId;
     Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: filterMeta} );
-    dispatchFilter(currentFiltersCloned);
+    // dispatchFilter(currentFilters);
   }
 
   const onClickHandler = (option, filter) => {
@@ -148,6 +145,7 @@ const FilterController = props => {
 };
 
 FilterController.propTypes = {
+  customDate: PropTypes.object,
   currentFilters: PropTypes.object,
   dispatchFilter: PropTypes.func,
   updateChartMeta: PropTypes.object,
@@ -159,4 +157,10 @@ const mapDispatchToProps = {
   toggleModal
 }
 
-export default memo(connect(null, mapDispatchToProps)(FilterController));
+const mapStateToProps = state => {
+  return {
+    customDate: state.dashboard.customDate
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterController);

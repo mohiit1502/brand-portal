@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import moment from "moment";
 import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions"
-import { dispatchFilter } from "../../actions/dashboard/dashboard-actions";
+import { dispatchCustomDate, dispatchFilter } from "../../actions/dashboard/dashboard-actions";
 import {DatePickerWrapper} from "../index";
 
 import "react-dates/lib/css/_datepicker.css";
@@ -12,6 +12,7 @@ import "./DateSelector.component.scss";
 import Helper from "../../utility/helper";
 
 const propTypes = {
+  currentFilters: PropTypes.object,
   dispatchFilter: PropTypes.func,
   updateChart: PropTypes.func,
   toggleModal: PropTypes.func,
@@ -58,7 +59,7 @@ class DateSelector extends React.Component {
 
   getStats(e) {
     e.preventDefault();
-    const currentFilters = {...this.props.meta.currentFilters};
+    const currentFilters = this.props.currentFilters;
     const updateChartMeta = {...this.props.meta.updateChartMeta};
     const widgetId = this.props.meta.widgetId;
     const startValueDate = moment(this.state.startDate).format('YYYY-MM-DD');
@@ -69,14 +70,11 @@ class DateSelector extends React.Component {
 
     const dateConcatenatedToView = "(" + startDateView + " to " + endDateView + ")";
     const dateConcatenatedToSubmit = startValueDate + "-to-" + endValueDate;
-    // this.props.dispatchCustomDate({[widgetId]: dateConcatenatedToView});
+    this.props.dispatchCustomDate({[widgetId]: dateConcatenatedToView});
     let currentWidgetFilters = currentFilters[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
       currentFilters[widgetId] = currentWidgetFilters
-    } else {
-      currentWidgetFilters = {...currentWidgetFilters}
-      currentFilters[widgetId] = currentWidgetFilters;
     }
     currentWidgetFilters.value = dateConcatenatedToSubmit
     currentWidgetFilters.viewValue = dateConcatenatedToView
@@ -165,7 +163,10 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = state => {
-  return state;
+  return {
+    currentFilters: state.dashboard.filter,
+    modal: state.modal
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DateSelector);
