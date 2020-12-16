@@ -68,7 +68,7 @@ class DateSelector extends React.Component {
     const startDateView = moment.utc(this.state.startDate, [ldf]).format('MMM DD, YYYY');
     const endDateView = moment(this.state.endDate, [ldf]).format('MMM DD, YYYY');
 
-    const dateConcatenatedToView = "(" + startDateView + " to " + endDateView + ")";
+    const dateConcatenatedToView = startDateView + " to " + endDateView;
     const dateConcatenatedToSubmit = startValueDate + "-to-" + endValueDate;
     this.props.dispatchCustomDate({[widgetId]: dateConcatenatedToView});
     let currentWidgetFilters = currentFilters[widgetId];
