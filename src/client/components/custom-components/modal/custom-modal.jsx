@@ -55,13 +55,17 @@ class CustomModal extends React.Component {
 
   toggleModal(toggleAction) {
     const modalElements = $(".modal");
-    const statusModals = ["NewUserAddedTemplate", "StatusModalTemplate"];
+    const backdropModals = {
+      "NewUserAddedTemplate": false,
+      "StatusModalTemplate": false,
+      "DateSelectorTemplate": true,
+    };
     const backdrop = $(".modal-backdrop");
     if (backdrop) {
       backdrop.remove();
     }
     const options = {
-      backdrop: !statusModals.includes(this.props.modal.templateName) ? "static" : false,
+      backdrop: backdropModals[this.props.modal.templateName] !== undefined ? backdropModals[this.props.modal.templateName] : "static",
       keyboard: false,
       show: toggleAction.toLowerCase() === "show"
     };

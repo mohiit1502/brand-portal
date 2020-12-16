@@ -1,6 +1,6 @@
 {
   "name": "ropro-brandportal",
-  "version": "4.0.40",
+  "version": "4.0.42",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
@@ -54,6 +54,7 @@
     "bluebird": "^2.11.0",
     "bootstrap": "4.4.1",
     "d3": "^6.2.0",
+    "d3-tip": "^0.9.1",
     "date-fns": "^2.16.1",
     "electrode-archetype-react-app": "^6.3.1",
     "electrode-cookies": "^1.0.0",

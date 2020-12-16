@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {GroupedBarChart, StackedBarChart, FilterController} from "../index";
 import "./ChartsContainer.component.scss";
@@ -33,9 +33,10 @@ const ChartsContainer = props => {
       },
     }
   } = props;
-  // const chartWrapper = useRef(null);
+
   const [loader, setLoader] = useState(false);
   const [dataLocal, setDataLocal] = useState([]);
+  const updateChartMeta = {API, dataLocal, DATAKEY, setLoader, setDataLocal};
   const D3Chart = ChartTypes[SUBTYPE];
   useEffect(() => {
     setDataLocal(data)
@@ -180,7 +181,7 @@ const ChartsContainer = props => {
     <div className={`c-ChartsContainer c-Widget__content${commonWidgetClasses ? " " + commonWidgetClasses : ""}${loader ? " loader" : ""}`}>
       <h5 className={headerLayoutClasses}>{header ? header.title : ""}</h5>
       <div className={bodyLayoutClasses}>
-        <FilterController filters={filters} widgetId={ID} updateChart={updateChart} currentFilters={currentFilters}/>
+        <FilterController filters={filters} widgetId={ID} updateChartMeta={updateChartMeta} currentFilters={currentFilters}/>
         {SUBTYPE && !loader && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={dataLocal} keys={keys} colors={colors} currentFilter={currentFilters} subType = {SUBTYPE}/>}
         {/*{SUBTYPE && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={window[SUBTYPE]} keys={keys} colors={colors} />}*/}
         {legend.legendItems && <Legend />}
@@ -202,4 +203,4 @@ ChartsContainer.propTypes = {
   userProfile: PropTypes.object
 };
 
-export default ChartsContainer;
+export default memo(ChartsContainer);

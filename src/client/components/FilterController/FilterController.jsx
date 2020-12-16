@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, {memo, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { dispatchFilter } from "./../../actions/dashboard/dashboard-actions";
@@ -7,9 +7,10 @@ import * as images from "../../images";
 import "./FilterController.component.scss";
 import { showNotification } from "../../actions/notification/notification-actions";
 import DateSelector from '../DateSelector';
+import Helper from "../../utility/helper";
 
 const FilterController = props => {
-  const { dispatchFilter, currentFilters, filters: filterMeta, updateChart, widgetId} = props;
+  const { dispatchFilter, currentFilters, filters: filterMeta, updateChartMeta, widgetId} = props;
   const [containerState, setContainerState] = useState({
     className: "form-group custom-input-form-group custom-select-form-group dropdown mb-0"
   });
@@ -62,37 +63,42 @@ const FilterController = props => {
     }
   })
 
+  useEffect(() => {
+    const fieldStateCloned = {...fieldState};
+    fieldStateCloned.dateRange.value =  currentFilters[widgetId] && currentFilters[widgetId].value ? currentFilters[widgetId].viewValue : fieldStateCloned.dateRange.value;
+    setFieldState(fieldStateCloned);
+  }, [currentFilters[widgetId]])
+
   //serialized function for update chart
   //doesnt send state
-  const serializeFunction = updateChart.toString();
+  // const serializeFunction = updateChart.toString();
 
   function dispatchDateSelector() {
-    console.log("dispatchDateSelector");
-
-    //Pass the org Id
-    let currentWidgetFilters = currentFilters[widgetId];
-    if (!currentWidgetFilters) {
-      currentWidgetFilters = {};
-      currentFilters[widgetId] = currentWidgetFilters
-    }
-    let orgIdValue = currentFilters.orgId;
-    const meta = { templateName: "DateSelectorTemplate", orgId: orgIdValue, clickMe: serializeFunction };
+    // //Pass the org Id
+    // let currentWidgetFilters = currentFilters[widgetId];
+    // if (!currentWidgetFilters) {
+    //   currentWidgetFilters = {};
+    //   currentFilters[widgetId] = currentWidgetFilters
+    // }
+    // let orgIdValue = currentFilters.orgId;
+    const meta = { templateName: "DateSelectorTemplate", updateChartMeta: {...updateChartMeta, filters: filterMeta}, orgId: currentFilters.orgId, currentFilters, widgetId };
 
     props.toggleModal(TOGGLE_ACTIONS.SHOW, { ...meta });
-    console.log("dispatchDateSelector-End");
-
   }
 
   function onChangeHandler(option, filter) {
-    let currentWidgetFilters = currentFilters[widgetId];
+    const currentFiltersCloned = {...currentFilters};
+    let currentWidgetFilters = {...currentFiltersCloned[widgetId]};
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
-      currentFilters[widgetId] = currentWidgetFilters
+      currentFiltersCloned[widgetId] = currentWidgetFilters
+    } else {
+      currentFiltersCloned[widgetId] = currentWidgetFilters;
     }
     currentWidgetFilters[filter.name] = option.value
-    currentWidgetFilters.orgId = currentFilters.orgId;
-    updateChart(currentWidgetFilters);
-    // dispatchFilter(currentFilters);
+    currentWidgetFilters.orgId = currentFiltersCloned.orgId;
+    Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: filterMeta} );
+    dispatchFilter(currentFiltersCloned);
   }
 
   const onClickHandler = (option, filter) => {
@@ -144,7 +150,7 @@ const FilterController = props => {
 FilterController.propTypes = {
   currentFilters: PropTypes.object,
   dispatchFilter: PropTypes.func,
-  updateChart: PropTypes.func,
+  updateChartMeta: PropTypes.object,
   widgetId: PropTypes.string
 };
 

@@ -15,6 +15,12 @@ export default class Helper {
       let month = date.getMonth();
       const day = date.getDay();
       let fromDate, toDate, numberOfDays, quarter;
+      if (dateKey.includes("-to-")) {
+        const parts = dateKey.split("-to-");
+        fromDate = parts[0];
+        toDate = parts[1];
+        return {fromDate, toDate};
+      }
       switch (dateKey) {
         case "yesterday":
           toDate = JSON.stringify(date).substring(1, 11);
@@ -85,8 +91,6 @@ export default class Helper {
           date.setMonth(11);
           toDate = JSON.stringify(date).substring(1, 11);
           return {fromDate, toDate};
-        case "customdate":
-          break;
         case "alltime":
         default:
           fromDate = "1970-01-01";

@@ -56,8 +56,8 @@ const Summary = props => {
           } else {
             if (item.value) {
               if (item.value.indexOf(",") > -1) {
-                const itemsInPayload = item.value.split(",").map(selector => Helper.search(item.mapper, data, selector));
-                itemCount = itemsInPayload && itemsInPayload.length > 0 && itemsInPayload.reduce((total, itemInPayload) => total + itemInPayload.count, 0);
+                const itemsInPayload = item.value.split(",").map(selector => Helper.search(item.mapper, data, selector)).filter(item => item);
+                itemCount = itemsInPayload && itemsInPayload.length > 0 ? itemsInPayload.reduce((total, itemInPayload) => total + itemInPayload.count, 0) : 0;
                 itemCount = itemCount > 0 ? itemCount.toString() : "-"
               } else {
                 const itemInPayload = Helper.search(item.mapper, data, item.value);
@@ -67,7 +67,7 @@ const Summary = props => {
               itemCount = "-"
             }
           }
-          return <li key={key} className="list-unstyled d-inline-block col-3">
+          return <li key={key} className={`list-unstyled d-inline-block col-${12/body.items.length}`}>
             <div className="font-size-12 pb-625 item-status">{item.label}</div>
             {fetchComplete ? itemCount !== "-"
               ? <span onClick={() => onClickHandler(item.name)} className="font-size-28 item-count">{itemCount}</span>
