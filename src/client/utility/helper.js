@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import CONSTANTS from "../constants/constants";
 import * as d3 from "d3";
+import Http from "./Http";
 
 export default class Helper {
   static toCamelCaseFirstUpper(incoming) {
@@ -134,5 +135,31 @@ export default class Helper {
         }
       }
     });
+  }
+
+  static updateChart (filterData, chartsContainerMeta) {
+    let interpolatedApi = chartsContainerMeta.API;
+    chartsContainerMeta.setLoader(true);
+    try {
+      filterData && Object.keys(filterData).forEach(filter => {
+        const filterMeta = chartsContainerMeta.filters.find(filterItem => filterItem.name === filter);
+        let filterValue = filterMeta && filterMeta.backendMapper ? filterMeta.backendMapper[filterData[filter]] : filterData[filter];
+        if (filter === "dateRange" && filterValue === "customDate") {
+          filterValue = filterData.value;
+        }
+        interpolatedApi = interpolatedApi.replace(`__${filter}__`, filterValue)
+      })
+      Http.get(interpolatedApi)
+        .then(response => {
+          chartsContainerMeta.setDataLocal(response.body.data && response.body.data[chartsContainerMeta.DATAKEY] ? response.body.data[chartsContainerMeta.DATAKEY] : chartsContainerMeta.dataLocal);
+          chartsContainerMeta.setLoader(false);
+        })
+        .catch(err => {
+          console.log(err)
+          chartsContainerMeta.setLoader(false);
+        });
+    } catch (e) {
+      chartsContainerMeta.setLoader(false)
+    }
   }
 }

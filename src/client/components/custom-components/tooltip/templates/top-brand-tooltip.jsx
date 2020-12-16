@@ -1,26 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from "prop-types";
 import '../../../../styles/custom-components/tooltip/tooltip.scss'
 
 const TopBrandsTooltip = function(props) {
   const {d,colors,currentFilter}= props.data
-
-  const [dateFilterMap,setDateFilterMap] = useState({
-    alltime:"All Time",
-    yesterday:"Yesterday",
-    lastweek:"Last Week",
-    weektodate:"Week To Date",
-    monthtodate:"Month To Date",
-    lastmonth:"Last Month",
-    quartertodate:"Quarter To Date",
-    lastquarter:"Last Quarter",
-    yeartodate:"Year To Date",
-    lastyear:"Last Year",
-    customDate: {
-      toDate:'',
-      fromDate:''
-    }
-  })
+  const dateFilterMap = props.dateFilterMap
 
  const mapUtil ={
     trademark:"Trademark",
@@ -65,11 +49,9 @@ const TopBrandsTooltip = function(props) {
     tooltipDescriptor = dateFilterMap[currentFilter["widget-claims-by-brand"].dateRange]
   }
   return (
-    <div className={`tooltip-container m-2 mr-4`}>
-      <div className={`tooltip-reported-claims`}>
-        <div className={`tooltip-header m-0 p-0`}>{d.data.brandName}<br/><span className={`tooltip-descriptor`}>({tooltipDescriptor})</span></div>
-        <div className={`mt-2 tooltip-data`}>{getTable()}</div>
-      </div>
+    <div className={`tooltip-reported-claims`}>
+      <div className={`tooltip-header m-0 p-0`}>{d.data.brandName}<br/><span className={`tooltip-descriptor`}>({tooltipDescriptor})</span></div>
+      <div className={`mt-2 tooltip-data`}>{getTable()}</div>
     </div>
   );
 
