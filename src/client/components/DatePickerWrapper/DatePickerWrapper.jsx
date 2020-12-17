@@ -6,7 +6,6 @@ import {SingleDatePicker} from "react-dates";
 import {isInclusivelyAfterDay, isInclusivelyBeforeDay} from "react-dates/esm";
 import moment from "moment";
 import {SingleDatePickerPhrases} from "react-dates/esm/defaultPhrases";
-import {Event} from "./../../images";
 import './DatePickerWrapper.component.scss';
 
 const defaultProps = {
