@@ -73,7 +73,6 @@
     "node-jose": "^1.1.4",
     "popper.js": "^1.16.1",
     "query-string": "^6.11.1",
-    "react-datepicker": "^1.8.0",
     "react-dates": "^21.8.0",
     "react-notify-toast": "^0.5.0",
     "react-router": "^5.1.2",
