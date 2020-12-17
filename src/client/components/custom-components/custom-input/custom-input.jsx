@@ -119,15 +119,15 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group custom-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
+      <div className={`form-group custom-input-form-group custom-select-form-group dropdown${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
         {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={images.Question}/>}
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
-          <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
-          <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
+          {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
+          {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={images.ArrowDown} className="dropdown-arrow"/>

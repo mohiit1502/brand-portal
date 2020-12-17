@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import DatePickerWrapper from './DatePickerWrapper';
 import FilterType from './FilterType';
 import Accordion from "./Accordion";
 import Alert from "./Alert";
@@ -40,6 +41,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	DatePickerWrapper,
 	FilterType,
   Accordion,
   Alert,

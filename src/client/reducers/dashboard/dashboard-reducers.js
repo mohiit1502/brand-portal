@@ -1,4 +1,8 @@
-import {DISPATCH_FILTER, DISPATCH_WIDGET_ACTION} from "./../../actions/dashboard/dashboard-actions";
+import {
+  DISPATCH_CUSTOM_DATE,
+  DISPATCH_FILTER,
+  DISPATCH_WIDGET_ACTION
+} from "./../../actions/dashboard/dashboard-actions";
 
 const initialState = {
   filter: {},
@@ -10,6 +14,8 @@ const dashboardReducer = (store = initialState, action) => {
     case DISPATCH_WIDGET_ACTION:
       return {...store, ...action.value};
     case DISPATCH_FILTER:
+      return {...store, ...action.value};
+    case DISPATCH_CUSTOM_DATE:
       return {...store, ...action.value};
     default:
       return store || { };
