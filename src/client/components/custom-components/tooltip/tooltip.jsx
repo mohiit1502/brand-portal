@@ -1,29 +1,41 @@
-import React from "react";
+import React,{useState} from "react";
 import { connect } from "react-redux";
-import "../../../styles/custom-components/stepper/stepper.scss";
+import '../../../styles/custom-components/tooltip/tooltip.scss';
 import PropTypes from "prop-types";
 import ReactDOMServer from "react-dom/server";
 
-class Tooltip extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
+const Tooltip = function (props){
 
-  render() {
+  const Template = props.template
 
-    return (
-      <img alt="i" className={this.props.classes} src={this.props.icon} data-toggle="tooltip" data-placement={this.props.placement} data-html="true"
-           title={ReactDOMServer.renderToString(this.props.content)}/>
-    );
-  }
+  const [dateFilterMap,setDateFilterMap] = useState({
+    alltime:"All Time",
+    yesterday:"Yesterday",
+    lastweek:"Last Week",
+    weektodate:"Week To Date",
+    monthtodate:"Month To Date",
+    lastmonth:"Last Month",
+    quartertodate:"Quarter To Date",
+    lastquarter:"Last Quarter",
+    yeartodate:"Year To Date",
+    lastyear:"Last Year",
+    customDate: {
+      toDate:'',
+      fromDate:''
+    }
+  })
+
+  return (
+
+    <div className={`tooltip-container m-2 mr-4`}>
+      <Template data={props.data} dateFilterMap={dateFilterMap}/>
+    </div>
+  );
 }
-
+//
 Tooltip.propTypes = {
-  classes: PropTypes.string,
-  placement: PropTypes.string,
-  content: PropTypes.node,
-  icon: PropTypes.node
+  template: PropTypes.func
 };
 
-export  default  connect()(Tooltip);
+export default Tooltip;

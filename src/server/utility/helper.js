@@ -11,7 +11,16 @@ export default class Helper {
     static getDateRange(dateKey) {
       let date = new Date();
       const dateInMonth = date.getDate();
-      let fromDate, toDate;
+      const year = date.getFullYear();
+      let month = date.getMonth();
+      const day = date.getDay();
+      let fromDate, toDate, numberOfDays, quarter;
+      if (dateKey.includes("-to-")) {
+        const parts = dateKey.split("-to-");
+        fromDate = parts[0];
+        toDate = parts[1];
+        return {fromDate, toDate};
+      }
       switch (dateKey) {
         case "last7days":
           date.setDate(dateInMonth + 1)
@@ -37,8 +46,6 @@ export default class Helper {
           date.setDate(date.getDate() - 90);
           fromDate = JSON.stringify(date).substring(1, 11);
           return {fromDate, toDate};
-        case "customdate":
-          break;
         case "alltime":
         default:
           fromDate = "1970-01-01";

@@ -1,7 +1,7 @@
 import React, {memo, useEffect, useRef} from "react";
 import { renderToString } from 'react-dom/server'
 import PropTypes from "prop-types";
-import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select, stack, stackOrderAscending, tip} from "d3";
+import {axisBottom, axisLeft, max, scaleBand, scaleLinear, select} from "d3";
 import d3Tip from "d3-tip"
 import useResizeObserver from "../../hooks/useResizeObserver";
 import "./GroupedBarChart.component.scss";

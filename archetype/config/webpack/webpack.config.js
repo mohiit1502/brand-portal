@@ -16,6 +16,7 @@ const config = {
       }
     ]
   },
+  node: { global: true },
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",

@@ -8,6 +8,7 @@ import Confirm from "./confirm.svg";
 import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.png";
 import CreateBrandForm from "./CreateBrandForm.png";
+import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
@@ -54,6 +55,7 @@ export {
     CreateBrandButton,
     CreateBrandForm,
     CheckGreen,
+    Event,
     Exclamation,
     FieldLoader,
     Filter,
