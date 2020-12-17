@@ -7,6 +7,7 @@ import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions"
 import { dispatchCustomDate, dispatchFilter } from "../../actions/dashboard/dashboard-actions";
 import {DatePickerWrapper} from "../index";
 
+import "react-dates/lib/css/_datepicker.css";
 import "./DateSelector.component.scss";
 import Helper from "../../utility/helper";
 
