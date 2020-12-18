@@ -7,7 +7,7 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import searchIcon from "../../../../images/18-px-search.svg";
-import filterIcon from "../../../../images/filter-sc.svg";
+import filterIcon from "../../../../images/filterIcon.svg";
 import burgerIcon from "../../../../images/group-23.svg";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
@@ -377,16 +377,16 @@ class BrandList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right">
                   <div className="input-group input-group-sm">
-                    <div className="input-group-prepend bg-transparent">
-                      <div className="input-group-text bg-transparent">
-                        <img src={searchIcon} className="Group-23" />
-                      </div>
-                    </div>
-                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by Brand Name"
+                    {/*<div className="input-group-prepend bg-transparent">*/}
+                    {/*  <div className="input-group-text bg-transparent">*/}
+                    {/*    <img src={searchIcon} className="Group-23" />*/}
+                    {/*  </div>*/}
+                    {/*</div>*/}
+                    <input id="search-box" className="form-control form-control-sm" type="search" placeholder="Search by Brand Name"
                       onChange={(evt) => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
-                        <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
+                        <div className="filter-btn pl-4 pr-2" >
                           <img src={filterIcon} height="20px"/> Filter
                         </div>
                       </div>

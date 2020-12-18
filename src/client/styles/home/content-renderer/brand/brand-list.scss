@@ -1,7 +1,11 @@
 @import "../../../override/variables";
 
-$input-border : 1px solid #cccccc;
-$filter-color : #3F484E;
+$text-color:#0b1e40;
+$input-border-radius : 42px;
+$active-border: 1px solid #7AC4E4;
+$button-color: #006799;
+$input-border : 1px solid #006799;
+$filter-color : #286799;
 $action-row-height : 50px;
 $pagination-inactive-color : #627282;
 $dropdown-border : #BBCAD2;
@@ -10,25 +14,40 @@ $filters-text-color : #333333;
 $filer-text-color : #424242;
 .brand-list-content {
   .content-header-row {
-    background: #FAFAFA;
+    .col {
+      h3 {
+        font-weight: bold;
+        font-size: 29px;
+        color: $text-color;
+      }
+    }
   }
   .content-row {
     .content-col{
       max-height: 100%;
       .action-row {
         height: $action-row-height;
+        .btn{
+          border-radius: $input-border-radius;
+          background: $button-color;
+          font-weight: bold;
+          font-size: 15px;
+        }
         .btn-primary.disabled {
           cursor: default;
         }
         .input-group {
-          .input-group-text {
-            border: $input-border;
-          }
 
           #search-box {
             border: $input-border;
+            border-radius: $input-border-radius;
+            background: url("../../../../images/18-px-search.svg") no-repeat left 10px center;
+            padding-left: 39px;
+            color: $text-color;
+            height: 34px;
             &:focus, &:active {
-              border: $input-border;
+              border: $active-border;
+              box-shadow: 0px 3px 18px #7AC4E433;
             }
           }
         }
@@ -38,7 +57,7 @@ $filer-text-color : #424242;
           line-height: 28px;
           img {
             margin-top: -4px;
-            height: 24px;
+            height: 21px;
           }
         }
       }

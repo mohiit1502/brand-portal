@@ -52,7 +52,9 @@ const TopBrandsTooltip = function(props) {
   let tooltipDescriptor = "";
   if((currentFilter["widget-claims-by-brand"] === undefined) || (currentFilter["widget-claims-by-brand"].dateRange === undefined)){
     tooltipDescriptor = "All Time";
-  }else{
+  } else if (currentFilter["widget-claims-by-brand"].dateRange && currentFilter["widget-claims-by-brand"].dateRange === "customDate") {
+    tooltipDescriptor = currentFilter["widget-claims-by-brand"].viewValue;
+  } else {
     tooltipDescriptor = dateFilterMap[currentFilter["widget-claims-by-brand"].dateRange]
   }
   return (

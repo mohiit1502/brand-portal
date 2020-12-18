@@ -52,7 +52,9 @@ const TopReporterTooltip = function(props){
   let tooltipDescriptor = "";
   if((currentFilter["widget-claims-by-user"] === undefined) || (currentFilter["widget-claims-by-user"].dateRange === undefined)){
     tooltipDescriptor = "All Time";
-  }else{
+  } else if (currentFilter["widget-claims-by-user"].dateRange && currentFilter["widget-claims-by-user"].dateRange === "customDate") {
+    tooltipDescriptor = currentFilter["widget-claims-by-user"].viewValue;
+  } else {
     tooltipDescriptor = dateFilterMap[currentFilter["widget-claims-by-user"].dateRange]
   }
   return (

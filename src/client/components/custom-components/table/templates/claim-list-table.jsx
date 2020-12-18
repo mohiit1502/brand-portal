@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sort.svg";
+import sortIcon from "../../../../images/group-778.svg";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import Http from "../../../../utility/Http";
 

@@ -101,15 +101,18 @@ $dropdown-select-background: #E7F3F8;
     max-height: 250px;
     max-width: 300px;
     overflow: auto;
-    box-shadow: 0 4px 4px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.15);
     @extend .py-0;
     .dropdown-item {
       cursor: pointer;
       height: 38px;
       line-height: 32px;
 
-      &:active, &:focus, &:hover {
+      &:focus, &:hover {
         background: $dropdown-select-background;
+      }
+      &:active{
+        background: #7ac4e4;
       }
     }
   }

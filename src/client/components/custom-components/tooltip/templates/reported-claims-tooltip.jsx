@@ -30,7 +30,9 @@ const ReportedClaimsTooltip = function (props){
   let tooltipDescriptor = "";
   if((currentFilter["widget-claims-by-type"] === undefined) || (currentFilter["widget-claims-by-type"].dateRange === undefined)){
     tooltipDescriptor = "All Time";
-  }else{
+  } else if (currentFilter["widget-claims-by-type"].dateRange && currentFilter["widget-claims-by-type"].dateRange === "customDate") {
+    tooltipDescriptor = currentFilter["widget-claims-by-type"].viewValue;
+  } else {
     tooltipDescriptor = dateFilterMap[currentFilter["widget-claims-by-type"].dateRange]
   }
   return (
