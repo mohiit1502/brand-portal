@@ -7,13 +7,27 @@
 */
 $market-place-blue:#006799;
 $heading-blue:#0B1E40;
+$ozark-noir-blue: #0B1E40;
 $background-blue:#E6F2F7;
 $navy-blue : #061E42;
+
+
+$dropdown-hover-background : #e7f3f8;
+$dropdown-active-background : #7ac4e4;
+
+$button-disabled-color : #a3a8a9;
+$default-input-border : solid 1px #006799;
+$selected-input-border : solid 1px #7ac4e4;;
+$selected-input-border-shadow : 0 3px 18px 0 rgba(122, 196, 228, 0.2);
+$deactivated-input-border : solid 1px #a3a8a9;
+$deactivated-input-background-color : #f7f9fa;
+
+
 $black: #081C3A;
 $blue : #017DC6;
 // $blue : #0071dc;
 $input-border-radius : 42px;
-$left-nav-width : 218px;
+$left-nav-width : 232px;
 $nav-max-height : 61px;
 $loader-size: 5rem;
 $loader-small-size: 1.7rem;

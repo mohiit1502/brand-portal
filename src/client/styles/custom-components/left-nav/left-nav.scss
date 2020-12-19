@@ -15,11 +15,19 @@ $nav-selected-white : #FFFFFF;
 
   .nav-item {
     @extend .py-2;
-    text-align: center;
 
     .nav-link {
       color : $nav-link-color;
-      font: normal normal bold 17px/22px Bogle;
+      font-weight: bold;
+      font-size: 16px;
+      .nav-link-image{
+        margin-top:-2px;
+      }
+      //img{
+      //  //margin-top: -1px;
+      //  width: 26px;
+      //  height: 26px;
+      //}
     }
 
     &.main-nav-item {
@@ -28,12 +36,14 @@ $nav-selected-white : #FFFFFF;
         .nav-link {
           color : $active-nav-link-color;
           background: $nav-selected-white;
-          //border-left: 6px solid $nav-left-border-color;
+
         }
         .sub-nav-item {
           .nav-link {
             background: transparent;
             border-left: 0;
+
+            //height: 24px;
           }
         }
       }
@@ -44,7 +54,6 @@ $nav-selected-white : #FFFFFF;
       border-left: 6px solid transparent;
       &.active {
         background: $nav-selected-white;
-        //border-left: 6px solid $nav-left-border-color;
       }
     }
   }

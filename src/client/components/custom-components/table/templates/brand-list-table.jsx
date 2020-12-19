@@ -2,7 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sort.svg";
+import sortIcon from "../../../../images/sortIcon.svg";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
 
@@ -62,7 +62,7 @@ const BrandListTable = function(props) {
 
   return (
     <div className="table-responsive h-100">
-      <div className="custom-table h-100">
+      <div className="custom-table px-0">
 
         <div className="table-header">
           {

@@ -2,7 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sort.svg";
+import sortIcon from "../../../../images/sortIcon.svg";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
 
@@ -71,7 +71,7 @@ const UserListTable = function(props) {
 
   return (
     <div className="table-responsive h-100">
-      <div className="custom-table h-100">
+      <div className="custom-table px-0">
 
         <div className="table-header">
           {
@@ -120,7 +120,7 @@ const UserListTable = function(props) {
                               && (values.role === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : ""))
                               && values.role && CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase() !== values.role.toLowerCase()
                               && (values.status === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.status.toLowerCase()))
-                              && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) && 
+                              && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) &&
                                 <span className="float-right">
                                   &nbsp;&nbsp;
                                   <Dropdown

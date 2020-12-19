@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import "../../../styles/custom-components/pagination/pagination-nav.scss"
 import leftCaret from "../../../images/caret_left.svg"
 import rightCaret from "../../../images/caret_right.svg"
 

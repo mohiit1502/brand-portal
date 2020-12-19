@@ -1,3 +1,7 @@
+import dashboardImage from "../images/dashboard.png";
+import myClaimsImage from "../images/claims.png";
+import myBrandsImage from "../images/brands.png";
+import usersImage from "../images/users.png";
 const CONSTANTS = {
 
   URL: {
@@ -113,9 +117,9 @@ const CONSTANTS = {
   },
 
   NAVIGATION_PANEL: [
-    { id: "1", name: "DASHBOARD", value: "HOME", href: "/dashboard", active: false},
-    { id: "2", name: "CLAIMS", value: "MY CLAIMS", href: "/claims", active: false},
-    { id: "3", name: "BRANDS", value: "MY BRANDS", href: "/brands", active: false},
+    { id: "1", name: "DASHBOARD", value: "My Dashboard", href: "/dashboard", active: false, image: dashboardImage},
+    { id: "2", name: "CLAIMS", value: "My Claims", href: "/claims", active: false, image: myClaimsImage},
+    { id: "3", name: "BRANDS", value: "My Brands", href: "/brands", active: false, image: myBrandsImage},
     // {
     //   id: "3",
     //   name: "USERS",
@@ -126,7 +130,7 @@ const CONSTANTS = {
     //     { id: "32", name: "APPROVALLIST", value: "Approval List", href: "/users/user-approval", active: false}
     //   ]
     // }
-    { id: "4", name: "USERS", value: "USERS", href: "/users", active: false}
+    { id: "4", name: "USERS", value: "Users", href: "/users", active: false, image: usersImage}
   ],
 
   USER: {

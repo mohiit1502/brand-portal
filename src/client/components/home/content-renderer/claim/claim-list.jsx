@@ -8,7 +8,6 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import filterIcon from "../../../../images/filterIcon.svg";
 import emptyClaims from "../../../../images/empty-claim.png";
-import filterCloseButton from "../../../../images/close-icon-blue.png"
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
@@ -283,10 +282,10 @@ class ClaimList extends React.Component {
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        paginatedList = paginatedList.filter(user => {
+        paginatedList = paginatedList.filter(claim => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
-            bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
+            bool = bool || (!!claim[filterId] && claim[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
           });
           return bool;
         });
@@ -367,7 +366,7 @@ class ClaimList extends React.Component {
     };
 
     return (
-      <div className="row user-list-content h-100">
+      <div className="row claim-list-content h-100">
         <div className="col h-100">
 
           <div className="row content-header-row p-4 h-10 mx-0">
@@ -375,15 +374,15 @@ class ClaimList extends React.Component {
               <h3>My Claims</h3>
             </div>
           </div>
-          <div className="row content-row p-4 h-90">
-            <div className="col content-col h-100;">
+          <div className="row content-row p-4 h-90 mx-0">
+            <div className="col content-col h-100">
               <div className="row action-row align-items-center mx-0">
-                <div className="col-lg-8 col-6">
+                <div className="col-lg-8 col-6 pl-0">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.addNewClaim}>
                     Submit New Claim
                   </div>
                 </div>
-                <div className="col-lg-4 col-6 text-right">
+                <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Number"
                            onChange={evt => this.uiSearch(evt, false)}/>
@@ -401,7 +400,7 @@ class ClaimList extends React.Component {
               <FilterType filterText={`Claim is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
-                <div className={`col-12 ml-4 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
+                <div className={`col-12 ml-4 pr-0 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
                     <div className="row filter-headers-row align-items-center py-3">
                       <div className="col">
@@ -410,7 +409,7 @@ class ClaimList extends React.Component {
                       <div className="col text-right">
                         <div className="btn filter-btns clear-btn text-primary mx-4 font-weight-bold" onClick={this.resetFilters}>Clear All Filters</div>
                         <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3 font-weight-bold" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
-                        <span  className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility} >&times;</span>
+                        <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility} >&times;</span>
                       </div>
                     </div>
                     <div className="row filter-content-row py-3">
@@ -448,9 +447,9 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className={`row user-list-row align-items-start${this.state.loader && " loader"}`}>
+              <div className={`row claim-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
-                  <div className="row user-list-table-row p-4 h-90">
+                  <div className="row claim-list-table-row px-4 h-90">
                     <div className="col h-100 overflow-auto">
                       {
                         this.state.filteredList.length > 0 &&
@@ -467,7 +466,7 @@ class ClaimList extends React.Component {
                       }
                     </div>
                   </div>
-                  <div className="row user-list-table-manage-row h-10 align-items-center mx-4">
+                  <div className="row claim-list-table-manage-row px-4 h-10 align-items-center">
                     <div className="col">
                       { viewerShip() }
                     </div>
@@ -479,13 +478,13 @@ class ClaimList extends React.Component {
                         !!(this.props.claims && this.props.claims.length) && <span className="showing-content pr-2">Showing</span>
                       }
                       {
-                        !!(this.props.claims && this.props.claims.length) && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
+                        !!(this.props.claims && this.props.claims.length) && <button type="button" className="btn btn-sm claim-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
                           aria-haspopup="true" aria-expanded="false">
                           {this.state.page.size} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>
                       }
 
-                      <div className="dropdown-menu user-count-dropdown-menu">
+                      <div className="dropdown-menu claim-count-dropdown-menu">
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
