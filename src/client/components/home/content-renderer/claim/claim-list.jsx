@@ -513,7 +513,7 @@ ClaimList.propTypes = {
   dispatchClaims: PropTypes.func,
   dispatchFilter: PropTypes.func,
   dispatchWidgetAction: PropTypes.func,
-  filter: PropTypes.string,
+  filter: PropTypes.object,
   history: PropTypes.object,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func,

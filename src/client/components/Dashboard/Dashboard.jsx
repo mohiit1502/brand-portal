@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
 import {DashboardHeader, WidgetContainer} from "../index";
+import {showNotification} from "../../actions/notification/notification-actions";
 import Http from "../../utility/Http";
 import widgetConfig from "./../../config/contentDescriptors/widgets";
 import AUTH_CONFIG from "../../config/authorizations";
@@ -27,7 +28,7 @@ class Dashboard extends React.PureComponent {
   }
 
   componentDidMount() {
-    Http.get(widgetConfig.API.replace("__orgId__", this.props.userProfile.organization.id))
+    Http.get(widgetConfig.API.replace("__orgId__", this.props.userProfile.organization.id), null, null, this.props.showNotification, null, "Unable to complete request!")
       .then(response => {
         console.log(response);
         if (response.body && response.body.errors && response.body.errors.length > 0) {
@@ -48,7 +49,12 @@ class Dashboard extends React.PureComponent {
         this.props.currentFilters["orgId"] = this.props.userProfile.organization.id;
         this.props.dispatchFilter(this.props.currentFilters);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        console.log(e)
+        this.setState({
+          fetchComplete: true
+        })
+      });
   }
 
   render() {
@@ -73,11 +79,13 @@ class Dashboard extends React.PureComponent {
 Dashboard.propTypes = {
   currentFilters: PropTypes.object,
   dispatchFilter: PropTypes.func,
+  showNotification: PropTypes.func,
   userProfile: PropTypes.object
 };
 
 const mapDispatchToProps = {
-  dispatchFilter
+  dispatchFilter,
+  showNotification
 }
 
 const mapStateToProps = state => {
