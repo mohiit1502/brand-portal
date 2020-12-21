@@ -1,8 +1,8 @@
 @import "../../override/variables";
 
 $input-blue: #7AC4E4;
-$disabled-background : #F7F7F7;
-$disabled-font : #A3A8A9;
+$disabled-background : #f7f9fa;
+$disabled-font : #a3a8a9;
 $input-border : 1px solid #286697;
 $radio-color : #017DC6;
 $radio-border-color : #E2E5E7;
@@ -77,9 +77,15 @@ $dropdown-select-background: #E7F3F8;
     &[readonly] {
       background: white;
     }
-    &.form-control:focus {
-      background: transparent;
+    &.form-control{
+      color: $ozark-noir-blue;
+      :focus{
+        background: transparent;
+      }
     }
+    //&.form-control:focus {
+    //  background: transparent;
+    //}
   }
 
   .positioned-top-right {
@@ -102,6 +108,7 @@ $dropdown-select-background: #E7F3F8;
     max-width: 300px;
     overflow: auto;
     box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.15);
+    color: $ozark-noir-blue;
     @extend .py-0;
     .dropdown-item {
       cursor: pointer;
@@ -137,8 +144,12 @@ $dropdown-select-background: #E7F3F8;
 
 .custom-input-form-group {
 
+
   min-height: 58px;
-  font-family: MyriadPro-Regular, sans-serif;
+  //font-family: MyriadPro-Regular, sans-serif;
+  .form-control{
+    color: $ozark-noir-blue;
+  }
 
   &.disabled {
     .custom-input-label-placeholder {
@@ -178,6 +189,7 @@ $dropdown-select-background: #E7F3F8;
       position: relative;
       z-index: 2;
       margin: 0 5px;
+      color: $ozark-noir-blue;
     }
 
     &.custom-input-label-textarea {
@@ -205,6 +217,7 @@ $dropdown-select-background: #E7F3F8;
 
     &.custom-input-element-textarea {
       height: unset;
+      border-radius: 0px;
     }
     &:focus, &:active{
       box-shadow: 0px 3px 18px #7AC4E433;
@@ -217,6 +230,7 @@ $dropdown-select-background: #E7F3F8;
     }
 
     &[disabled]{
+      border: 1px solid $disabled-font;
       color : $disabled-font;
       & + .custom-input-label {
         color : $disabled-font;

@@ -4,9 +4,12 @@
   .modal-dialog {
     height: 80%;
     .modal-content {
-      height: 100%;
+      height:  100%;
       .modal-header{
         height: 65px;
+        font-size: 27px;
+        background-color: $modal-header-background-color;
+
       }
 
       .modal-body {
@@ -30,12 +33,19 @@
           }
           div.btn{
             border-radius: 42px;
+            background: #006799;
+            color: white;
+            font-weight: bold;
+            &.cancel-btn{
+              font-weight: bold;
+              background: none;
+              text-decoration: underline;
+            }
           }
           div.btn.disabled {
             pointer-events: none;
-            background: #B2D8ED;
-            border-color: #B2D8ED;
-            color: white;
+            background: #a3a8a9;
+            border-color: #a3a8a9;
           }
         }
 
@@ -54,13 +64,27 @@
       }
 
       .modal-footer{
-        height: 65px;
+        height: 80px;
+        background: $background-blue;
+        border-bottom: 9px solid #7ac4e4;
         //box-shadow: 0px -4px 4px 0px rgba(0,0,0,0.15);
 
-        .btn-primary:disabled {
-          background: #B2D8ED;
-          color: white;
-          border-color: #B2D8ED;
+
+        .btn-primary{
+          font-weight: bold;
+          background: #006799;
+          border-radius: 42px;
+        }
+        .btn-primary:disabled{
+            background: #a3a8a9;
+            border-color: #a3a8a9;
+
+        }
+        .cancel-btn{
+          font-size: 18px;
+          font-weight: bold;
+          background: none;
+          text-decoration: underline;
         }
       }
     }
