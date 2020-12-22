@@ -3,14 +3,36 @@
     border: none;
   }
 
+  .modal-header{
+    font-size: 27px;
+    font-weight: bold;
+    background: #235882;
+    color: white;
+
+  }
+
   .modal-footer {
     border-top: none;
+    border-bottom: 9px solid #7ac4e4;;
     padding: 0.75rem 1.5rem 1.5rem;
     button {
       margin: 0;
+      border-radius: 42px;
+    }
+      .submit-btn{
+        background: #235882;
+        border: none;
+      }
+      .submit-btn:disabled{
+        background: #a3a8a9;
+        border-color: #a3a8a9;
+      }
+      .cancel-btn{
+        font-size: 16px;
+        text-decoration: underline;
+      }
     }
   }
-}
 
 .customDatePickerWidth,
 .customDatePickerWidth > div.react-datepicker-wrapper,

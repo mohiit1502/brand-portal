@@ -144,8 +144,8 @@ class DateSelector extends React.Component {
               <DatePickerWrapper id="end_date" date={this.state.endDate} startDate={this.state.startDate} label="Select End Date" focusedLabel="End Date" setDate={date => this.setState({endDate: date})} />
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-sm cancel-btn text-primary" data-dismiss="modal" onClick={this.resetTemplateStatus}>Cancel</button>
-              <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={this.getStats} disabled={!(this.state.startDate && this.state.endDate)}>Apply</button>
+              <button type="button" className="btn btn-sm cancel-btn text-primary font-weight-bold" data-dismiss="modal" onClick={this.resetTemplateStatus}>Cancel</button>
+              <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3 font-size-15 font-weight-bold" onClick={this.getStats} disabled={!(this.state.startDate && this.state.endDate)}>Apply</button>
             </div>
           </div>
         </div>

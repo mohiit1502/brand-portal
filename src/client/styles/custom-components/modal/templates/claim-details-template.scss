@@ -10,6 +10,7 @@ $modal-header-background-color: #235882;
     .modal-dialog {
       max-height: 80%;
       .modal-content {
+        border-bottom: 9px solid #7ac4e4;
         height: 100%;
         .modal-header{
           font-weight: bold;
