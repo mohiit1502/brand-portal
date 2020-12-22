@@ -4,8 +4,8 @@ $input-blue: #7AC4E4;
 $disabled-background : #f7f9fa;
 $disabled-font : #a3a8a9;
 $input-border : 1px solid #286697;
-$radio-color : #017DC6;
-$radio-border-color : #E2E5E7;
+$radio-color : #006799;
+$radio-border-color : #006799;
 $input-placeholder-color : $headings-color;
 $textarea-label: #41484F;
 $dropdown-select-background: #E7F3F8;
@@ -41,15 +41,18 @@ $dropdown-select-background: #E7F3F8;
     height: 38px;
     width: 106px;
     border: 1px solid $radio-border-color;
+    font-weight: bold;
 
     &:first-child {
-      border-bottom-left-radius: 5px;
-      border-top-left-radius: 5px;
+      border-bottom-left-radius: 42px;
+      border-top-left-radius: 42px;
+
+
     }
 
     &:last-child {
-      border-bottom-right-radius: 5px;
-      border-top-right-radius: 5px;
+      border-bottom-right-radius: 42px;
+      border-top-right-radius: 42px;
     }
 
     input[type="radio"] {
@@ -255,6 +258,7 @@ $dropdown-select-background: #E7F3F8;
     top: -26px;
     padding-left: 20px;
     font-size: 12px;
+    color: #8797a5;
 
   }
 

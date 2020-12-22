@@ -9,6 +9,7 @@
         height: 65px;
         font-size: 27px;
         background-color: $modal-header-background-color;
+        color: white;
 
       }
 
@@ -74,6 +75,7 @@
           font-weight: bold;
           background: #006799;
           border-radius: 42px;
+          font-size: 15px;
         }
         .btn-primary:disabled{
             background: #a3a8a9;
