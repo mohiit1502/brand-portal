@@ -1,6 +1,33 @@
-.c-StatusModalTemplate {
-    top: 61px;
+.modal {
+    //top: 61px;
     // .modal-content {
     //     box-shadow: 0 3px 3px 1px #bbb;
     // }
+  .modal-dialog{
+    .modal-content{
+      .modal-header{
+
+      }
+      .modal-body{
+        .btn-primary {
+          background: #235882;
+          font-weight: bold;
+          border-radius: 42px;
+          border: none;
+          font-size: 15px;
+        }
+
+        .btn-primary:disabled {
+          background: #a3a8a9;
+          border: none;
+        }
+        .btn-danger{
+          font-weight: bold;
+          border-radius: 42px;
+          border: none;
+          font-size: 15px;
+        }
+      }
+    }
+  }
 }

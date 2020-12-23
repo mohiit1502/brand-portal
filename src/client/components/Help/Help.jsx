@@ -27,7 +27,7 @@ const Help = props => {
       <div className="c-Help container h-100">
         <div className="c-Help__header row">
           <div className="col-12">
-            <div className="h3">{helpConfig.header}</div>
+            <div className="h3 help-header">{helpConfig.header}</div>
           </div>
         </div>
         <div className="c-Help__content row h-100">

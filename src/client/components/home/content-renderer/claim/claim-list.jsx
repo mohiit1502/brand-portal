@@ -6,9 +6,8 @@ import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
-import searchIcon from "../../../../images/18-px-search.svg";
-import filterIcon from "../../../../images/filter-sc.svg";
-import ContentPasteIcon from "../../../../images/content-paste.svg";
+import filterIcon from "../../../../images/filterIcon.svg";
+import emptyClaims from "../../../../images/empty-claim.png";
 import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
@@ -268,10 +267,10 @@ class ClaimList extends React.Component {
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        paginatedList = paginatedList.filter(user => {
+        paginatedList = paginatedList.filter(claim => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
-            bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
+            bool = bool || (!!claim[filterId] && claim[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
           });
           return bool;
         });
@@ -324,33 +323,28 @@ class ClaimList extends React.Component {
   render () {
     const claims = this.state.filteredList && this.state.filteredList.length ? this.state.filteredList : this.props.claims;
     return (
-      <div className="row user-list-content h-100">
+      <div className="row claim-list-content h-100">
         <div className="col h-100">
           <div className="row content-header-row p-4 h-10 mx-0">
             <div className="col">
               <h3>My Claims</h3>
             </div>
           </div>
-          <div className="row content-row p-4 h-90">
-            <div className="col content-col h-100;">
+          <div className="row content-row p-4 h-90 mx-0">
+            <div className="col content-col h-100">
               <div className="row action-row align-items-center mx-0">
-                <div className="col-lg-8 col-6">
+                <div className="col-lg-8 col-6 pl-0">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.addNewClaim}>
                     Submit New Claim
                   </div>
                 </div>
-                <div className="col-lg-4 col-6 text-right">
+                <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    <div className="input-group-prepend bg-transparent">
-                      <div className="input-group-text bg-transparent">
-                        <img src={searchIcon} className="Group-23" />
-                      </div>
-                    </div>
-                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by Claim Number"
+                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Number"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
-                        <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
+                        <div className="filter-btn pl-4 " >
                           <img src={filterIcon} height="20px"/> Filter
                         </div>
                       </div>
@@ -362,16 +356,16 @@ class ClaimList extends React.Component {
               <FilterType filterText={`Claim is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
-                <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
+                <div className={`col-12 ml-4 pr-0 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
-                    <div className="row filter-headers-row align-items-center border-bottom py-3">
+                    <div className="row filter-headers-row align-items-center py-3">
                       <div className="col">
-                        <span className="filters-header-text">Filters</span>
+                        <span className="filters-header-text font-weight-bold font-size-20">Filters</span>
                       </div>
                       <div className="col text-right">
-                        <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
-                        <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
+                        <div className="btn filter-btns clear-btn text-primary mx-4 font-weight-bold" onClick={this.resetFilters}>Clear All Filters</div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3 font-weight-bold" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
+                        <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility} >&times;</span>
                       </div>
                     </div>
                     <div className="row filter-content-row py-3">
@@ -380,7 +374,7 @@ class ClaimList extends React.Component {
 
                           return (
                             <div key={filter.id} className={`col ${filter.id}-col`}>
-                              <div className="filter-col-header">
+                              <div className="filter-col-header font-weight-bold">
                                 {filter.name}
                               </div>
                               <ul className="filter-col-list pl-0 mt-2">
@@ -409,9 +403,9 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className={`row user-list-row align-items-start${this.state.loader && " loader"}`}>
+              <div className={`row claim-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
-                  <div className="row user-list-table-row h-90">
+                  <div className="row claim-list-table-row px-4 h-90">
                     <div className="col h-100 overflow-auto">
                       {
                         this.state.paginatedList.length > 0 &&
@@ -419,7 +413,7 @@ class ClaimList extends React.Component {
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> ||
                         <div className="row align-items-center h-100">
                           <div className="col text-center">
-                            <img src={ContentPasteIcon} height={80}/>
+                            <img src={emptyClaims} height={95}/>
                             <br/><br/>
                             <div className="h4">No Claim History</div>
                             <div>You can submit a claim by clicking the "Submit New Claim" button</div>

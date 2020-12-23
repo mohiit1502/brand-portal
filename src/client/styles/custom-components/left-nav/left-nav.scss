@@ -1,12 +1,12 @@
 @import "../../override/variables";
 
-$nav-grey: #3D454C;
-
-$nav-selected-grey : #2B3339;
-$nav-left-border-color : #F7F9FA;
+$nav-blue: $background-blue;
+$active-nav-link-color:#0B1E40;
+$nav-link-color:#286799;
+$nav-selected-white : #FFFFFF;
 .left-nav {
   position: absolute;
-  background: $nav-grey;
+  background: $nav-blue;
   width: $left-nav-width;
   height: calc(100% - #{$nav-max-height});
   overflow: hidden;
@@ -17,20 +17,33 @@ $nav-left-border-color : #F7F9FA;
     @extend .py-2;
 
     .nav-link {
-      color : $white;
+      color : $nav-link-color;
+      font-weight: bold;
+      font-size: 16px;
+      .nav-link-image{
+        margin-top:-2px;
+      }
+      //img{
+      //  //margin-top: -1px;
+      //  width: 26px;
+      //  height: 26px;
+      //}
     }
 
     &.main-nav-item {
-      background: $nav-grey;
+      background: $nav-blue;
       &.active{
         .nav-link {
-          background: $nav-selected-grey;
-          border-left: 6px solid $nav-left-border-color;
+          color : $active-nav-link-color;
+          background: $nav-selected-white;
+
         }
         .sub-nav-item {
           .nav-link {
             background: transparent;
             border-left: 0;
+
+            //height: 24px;
           }
         }
       }
@@ -40,8 +53,7 @@ $nav-left-border-color : #F7F9FA;
       line-height: 0;
       border-left: 6px solid transparent;
       &.active {
-        background: $nav-selected-grey;
-        border-left: 6px solid $nav-left-border-color;
+        background: $nav-selected-white;
       }
     }
   }

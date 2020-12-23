@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import "../../../styles/custom-components/pagination/pagination-nav.scss"
+import leftCaret from "../../../images/caret_left.svg"
+import rightCaret from "../../../images/caret_right.svg"
 
 class PaginationNav extends React.Component {
 
@@ -67,15 +69,17 @@ class PaginationNav extends React.Component {
       paginationButtons.push(navItem);
     }
 
+
+
     const previousButton = <li className="page-item" onClick={() => {this.updatePage(this.state.list, this.state.page.offset - 1, this.state.page.size);}}>
-      <a className="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true"> &lt; </span>
+      <a className="page-link left" href="#" aria-label="Previous">
+        <img className="arrow left" src={leftCaret}/>
       </a>
     </li>;
 
     const nextButton = <li className="page-item" onClick={() => {this.updatePage(this.state.list, this.state.page.offset + 1, this.state.page.size);}}>
-      <a className="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true"> &gt; </span>
+      <a className="page-link right" href="#" aria-label="Next">
+        <img className="arrow right" src={rightCaret}/>
       </a>
     </li>
 

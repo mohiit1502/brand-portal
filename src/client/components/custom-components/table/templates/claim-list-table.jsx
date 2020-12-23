@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sort.svg";
+import sortIcon from "../../../../images/sortIcon.svg";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import Http from "../../../../utility/Http";
 
@@ -37,7 +37,7 @@ const ClaimListTable = function(props) {
 
   return (
     <div className={`table-responsive${loader && " loader"}`}>
-      <div className="custom-table">
+      <div className="custom-table px-0">
 
         <div className="table-header">
           {
@@ -70,7 +70,7 @@ const ClaimListTable = function(props) {
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value
+                            cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value
                           }
                         </div>
                       );

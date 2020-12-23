@@ -7,7 +7,7 @@ import authorizations from "./../../../config/authorizations";
 import restConfig from "./../../../config/rest";
 import CONSTANTS from "../../../constants/constants";
 import "../../../styles/custom-components/left-nav/left-nav.scss";
-
+import "../../../images/dashboard.png"
 class Leftnav extends React.Component {
   constructor (props) {
     super(props);
@@ -75,7 +75,9 @@ class Leftnav extends React.Component {
             this.state.NAVIGATION_PANEL.map((item => {
               return (
                 <li className={`nav-item main-nav-item ${item.active ? "active" : "inactive"}`} key={item.id}>
-                  <Link className="nav-link" to={item.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, item.href);}}>{item.value}</Link>
+                  <Link className="nav-link" to={item.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, item.href);}}>
+                    <img className="nav-link-image pl-3 pr-1" src={item.image} width="46px"/>{item.value}
+                  </Link>
                   {
                     item.children && <ul className="nav flex-column">
                       {item.children.map(subItem => {

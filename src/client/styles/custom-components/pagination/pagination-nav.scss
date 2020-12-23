@@ -1,0 +1,59 @@
+@import "../../override/variables";
+
+$pagination-inactive-color : #627282;
+.pagination {
+  position: sticky;
+  .page-item {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    //border: 1px solid white;
+    .page-link{
+      border: 2px solid white;
+      background: #e7f3f8;
+      border-radius: 10px;
+
+    }
+    &:first-child > a {
+      border-left: 0;
+      background: none;
+      padding: 4px 0px;
+      margin-left: 17px;
+    }
+
+    &:last-child > a{
+      border-right: 0;
+      background: none;
+      padding: 4px 0px;
+      margin-right: 17px;
+    }
+
+    &:first-child, &:last-child {
+      a {
+        border-top: 0;
+        border-bottom: 0;
+
+        &:hover, &:focus, &:active {
+          background: transparent;
+        }
+      }
+    }
+    &.active {
+      a {
+        color : $white;
+        font-weight: bold;
+        background: $market-place-blue;
+      }
+    }
+
+    a {
+      font-size: 15px;
+      color : $pagination-inactive-color;
+
+      &:hover, &:focus, &:active {
+        box-shadow: none;
+        outline : 0;
+      }
+    }
+  }
+}

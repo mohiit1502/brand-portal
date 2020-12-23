@@ -1,3 +1,9 @@
+const TRADEMARK_COLOR = "#3483B9";
+const COUNTERFEIT_COLOR = "#1F4F94";
+const COPYRIGHT_COLOR = "#71C5DF";
+const PATENT_COLOR = "#ADDDE9";
+const ITEMS_COLOR = "#E4B33F";
+
 const WIDGETCONFIG = {
   "API": "/api/dashboard/__orgId__",
   "WIDGETS": [
@@ -156,12 +162,24 @@ const WIDGETCONFIG = {
           "ulClasses": "list-unstyled",
           "legendItems": [
             {
-              "name": "Claims",
-              "color": "#1bc5ef",
+              "name": "Counterfeit",
+              "color": COUNTERFEIT_COLOR,
+            },
+            {
+              "name": "Trademark",
+              "color": TRADEMARK_COLOR,
+            },
+            {
+              "name": "Copyright",
+              "color": COPYRIGHT_COLOR,
+            },
+            {
+              "name": "Patent",
+              "color": PATENT_COLOR,
             },
             {
               "name": "Items",
-              "color": "#d44928",
+              "color": ITEMS_COLOR,
             }
           ]
         }
@@ -206,19 +224,19 @@ const WIDGETCONFIG = {
           "legendItems": [
             {
               "name": "Counterfeit",
-              "color": "#ffb61a",
+              "color": COUNTERFEIT_COLOR,
             },
             {
               "name": "Trademark",
-              "color": "#007cc6",
+              "color": TRADEMARK_COLOR,
             },
             {
               "name": "Copyright",
-              "color": "#38b996",
+              "color": COPYRIGHT_COLOR,
             },
             {
               "name": "Patent",
-              "color": "#ac38b9",
+              "color": PATENT_COLOR,
             }
           ]
         }
@@ -264,19 +282,19 @@ const WIDGETCONFIG = {
           "legendItems": [
             {
               "name": "Counterfeit",
-              "color": "#ffb61a",
+              "color": COUNTERFEIT_COLOR,
             },
             {
               "name": "Trademark",
-              "color": "#007cc6",
+              "color": TRADEMARK_COLOR,
             },
             {
               "name": "Copyright",
-              "color": "#38b996",
+              "color": COPYRIGHT_COLOR,
             },
             {
               "name": "Patent",
-              "color": "#ac38b9",
+              "color": PATENT_COLOR,
             }
           ]
         }
@@ -303,7 +321,7 @@ const WIDGETCONFIG = {
     },
     "footer": {
       "contentLayout": "mx-4 py-3",
-      "contentClasses": "font-weight-bold"
+      "contentClasses": ""
     }
   },
   "WIDGETTYPES": {
@@ -318,8 +336,8 @@ const WIDGETCONFIG = {
         "layoutClasses": "px-4 pt-4 line-height-reset"
       },
       "footer": {
-        "layoutClasses": "d-block py-875",
-        "contentClasses": "border-top text-center footer-text font-size-16 font-weight-bold",
+        "layoutClasses": "d-block py-875 mt-4",
+        "contentClasses": "text-center footer-text",
         "position": "center",
       }
     },
