@@ -1,7 +1,7 @@
 @import "../../override/variables";
 
-$item-color : #2B3339;
 .custom-dropdown {
+  color: $ozark-noir-blue;
 
   a, a:not([href]) {
     cursor: pointer;
@@ -16,12 +16,16 @@ $item-color : #2B3339;
   }
 
   .dropdown-menu.show {
-    padding: 1rem 0;
+    //padding: 1rem 0;
     left: -47px !important;
     .dropdown-item {
+      height: 24px;
+      &:hover{
+        background: $dropdown-hover-background;
+      }
       &:active, &:focus {
-        background: transparent;
-        color : $item-color;
+        background: $dropdown-active-background;
+        //color : $item-color;
       }
     }
   }

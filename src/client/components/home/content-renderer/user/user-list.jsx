@@ -1,7 +1,3 @@
-/* eslint-disable max-nested-callbacks */
-/* eslint-disable no-return-assign */
-/* eslint-disable react/jsx-handler-names */
-/* eslint-disable complexity */
 import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/user/user-list.scss";
@@ -20,9 +16,8 @@ import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsM
 import CONSTANTS from "../../../../constants/constants";
 import restConfig from "../../../../config/rest";
 import AUTH_CONFIG from "../../../../config/authorizations";
-import searchIcon from "../../../../images/18-px-search.svg";
-import filterIcon from "../../../../images/filter-sc.svg";
-import burgerIcon from "../../../../images/group-23.svg";
+import filterIcon from "../../../../images/filterIcon.svg";
+import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType} from "../../../index";
 
 class UserList extends React.Component {
@@ -61,7 +56,7 @@ class UserList extends React.Component {
       loader: false,
       userRole,
       dropdown: {
-        buttonText: burgerIcon,
+        buttonText: kebabIcon,
         dropdownOptions: [
           {
             id: 1,
@@ -416,9 +411,9 @@ class UserList extends React.Component {
       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
       const total = this.state.userList.length;
       if (this.state.userList.length && to >= from) {
-        return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.USER.SECTION_TITLE_PLURAL}`;
-      } else if (this.state.userList.length && to <= from) {
-        return `Viewing 0 of ${total} ${CONSTANTS.USER.SECTION_TITLE_PLURAL}`;
+        return (<div>Viewing <span className="count font-weight-bold" >{from} - {to}</span> of {total} {CONSTANTS.USER.SECTION_TITLE_PLURAL}</div>);
+      } else if (this.props.claims && this.props.claims.length && to <= from) {
+        return (<div>Viewing <span className="count font-weight-bold">0</span> of ${total} ${CONSTANTS.USER.SECTION_TITLE_PLURAL}</div>);
       }
       return "";
     };
@@ -442,25 +437,21 @@ class UserList extends React.Component {
               <h3>Authorized User List</h3>
             </div>
           </div>
-          <div className="row content-row p-4 h-90">
+          <div className="row content-row p-4 h-90 mx-0">
             <div className="col content-col h-100;">
               <div className="row action-row align-items-center mx-0">
-                <div className="col-lg-8 col-6">
+                <div className="col-lg-8 col-6 pl-0">
                   <div className={`btn btn-primary btn-sm px-3${!enableUserInvite ? " disabled" : ""}`} onClick={enableUserInvite && this.createNewUser}>
                     Invite User
                   </div>
                 </div>
-                <div className="col-lg-4 col-6 text-right">
+                <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    <div className="input-group-prepend bg-transparent">
-                      <div className="input-group-text bg-transparent">
-                        <img src={searchIcon} className="Group-23" />
-                      </div>
-                    </div>
-                    <input id="search-box" className="form-control form-control-sm border-left-0 shadow-none" type="search" placeholder="Search by User Name" onChange={evt => this.uiSearch(evt, false)}/>
+                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Name"
+                           onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
-                        <div className="filter-btn pl-4 pr-2" > <strong className="mr-2">|</strong>
+                        <div className="filter-btn pl-4 " >
                           <img src={filterIcon} height="20px"/> Filter
                         </div>
                       </div>
@@ -472,15 +463,15 @@ class UserList extends React.Component {
               <FilterType filterText={`User is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
-                <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
+                <div className={`col-12 ml-4 pr-0 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
-                    <div className="row filter-headers-row align-items-center border-bottom py-3">
+                    <div className="row filter-headers-row align-items-center py-3">
                       <div className="col">
-                        <span className="filters-header-text">Filters</span>
+                        <span className="filters-header-text font-weight-bold font-size-20">Filters</span>
                       </div>
                       <div className="col text-right">
-                        <div className="btn filter-btns clear-btn text-primary mx-4" onClick={this.resetFilters}>Clear All Filters</div>
-                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
+                        <div className="btn filter-btns clear-btn text-primary mx-4 font-weight-bold" onClick={this.resetFilters}>Clear All Filters</div>
+                        <div className="btn filter-btns apply-btn btn-sm btn-primary mr-4 px-3 font-weight-bold" onClick={() => this.applyFilters(false, null, null, true)}>Apply Filters </div>
                         <span className="filter-close-btn cursor-pointer" onClick={this.toggleFilterVisibility}>&times;</span>
                       </div>
                     </div>
@@ -490,7 +481,7 @@ class UserList extends React.Component {
 
                           return (
                             <div key={filter.id} className={`col ${filter.id}-col`}>
-                              <div className="filter-col-header">
+                              <div className="filter-col-header font-weight-bold">
                                 {filter.name}
                               </div>
                               <ul className="filter-col-list pl-0 mt-2">
@@ -521,7 +512,7 @@ class UserList extends React.Component {
               </div>
               <div className={`row user-list-row align-items-start ${this.state.loader && "loader"}`}>
                 <div className="col pt-4 h-100">
-                  <div className="row user-list-table-row h-90">
+                  <div className="row user-list-table-row h-90 px-4">
                     <div className="col h-100 overflow-auto">
                       {
                         this.state.filteredList.length > 0 ?
@@ -530,8 +521,7 @@ class UserList extends React.Component {
                       }
                     </div>
                   </div>
-
-                  <div className="row user-list-table-manage-row h-10 align-items-center mx-4">
+                  <div className="row user-list-table-manage-row px-4 h-10 align-items-center">
                     <div className="col">
                       { viewerShip() }
                     </div>
@@ -539,15 +529,18 @@ class UserList extends React.Component {
                       <PaginationNav list={pageList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
                     </div>
                     <div className="col text-right">
+                      {
+                        !!this.state.userList.length && <span className="showing-content pr-2">Showing</span>
+                      }
                       {!!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                          Show {this.state.page.size} {CONSTANTS.USER.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
+                          {this.state.page.size} {CONSTANTS.USER.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
                         </button>}
                       <div className="dropdown-menu user-count-dropdown-menu">
                         {
                           this.state.page.sizeOptions.map(val => {
                             return (<a key={val} className="dropdown-item"
-                              onClick={() => {this.changePageSize(val);}}> Show {val} {CONSTANTS.USER.SECTION_TITLE_PLURAL} </a>);
+                              onClick={() => {this.changePageSize(val);}}> {val} {CONSTANTS.USER.SECTION_TITLE_PLURAL} </a>);
                           })
                         }
                       </div>

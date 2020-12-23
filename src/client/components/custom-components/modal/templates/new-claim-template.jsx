@@ -90,8 +90,14 @@ class NewClaimTemplate extends React.Component {
             error: ""
           },
           signature: {
+            label: "Digital Signature",
+            required: true,
             value: "",
-            required: true
+            type: "text",
+            pattern: null,
+            disabled: false,
+            subtitle: "",
+            error: ""
           }
         },
         undertakingList: [
@@ -460,13 +466,13 @@ class NewClaimTemplate extends React.Component {
       <div className="modal new-claim-modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
           <form onSubmit={this.handleSubmit} className="modal-content">
-            <div className="modal-header align-items-center">
+            <div className="modal-header font-weight-bold align-items-center">
               New Claim
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
-                <span aria-hidden="true">&times;</span>
+                <span className="close-btn" aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className={`modal-body text-left${this.state.loader && " loader"}`}>
+            <div className={`modal-body mx-2 text-left${this.state.loader && " loader"}`}>
               <p>Select the type of infringement you are reporting</p>
               <div className="row">
                 <div className="col-4">
@@ -549,13 +555,20 @@ class NewClaimTemplate extends React.Component {
                 <div className="col-7">
                   <div className="form-group">
                     <label htmlFor="signature-name" className="font-weight-bold">Typing your full name in this box will act as your digital signature</label>
-                    <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true}
-                      onChange={evt => {
-                              const formCloned = {...this.state.form};
-                              formCloned.inputData.signature.value = evt.target.value;
-                              this.setState({form: formCloned});
-                              this.checkToEnableSubmit();
-                            }}/>
+                    <CustomInput key={"signature"} inputId={"signature"} formId={form.id} label={inputData.signature.label} required={inputData.signature.required}
+                                 value={inputData.signature.value} type={inputData.signature.type} pattern={inputData.signature.pattern} onChange={evt => {
+                      const formCloned = {...this.state.form};
+                      formCloned.inputData.signature.value = evt.target.value;
+                      this.setState({form: formCloned});
+                      this.checkToEnableSubmit();
+                    }} disabled={inputData.signature.disabled} dropdownOptions={inputData.signature.options} customChangeHandler={this.customChangeHandler.bind(this)} />
+                    {/*<input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true} placeholder="Typing your full name in this box will act as your digital signature"*/}
+                    {/*  onChange={evt => {*/}
+                    {/*          const formCloned = {...this.state.form};*/}
+                    {/*          formCloned.inputData.signature.value = evt.target.value;*/}
+                    {/*          this.setState({form: formCloned});*/}
+                    {/*          this.checkToEnableSubmit();*/}
+                    {/*        }}/>*/}
                   </div>
                 </div>
               </div>
