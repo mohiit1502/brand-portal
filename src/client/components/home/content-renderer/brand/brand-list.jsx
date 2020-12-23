@@ -19,7 +19,7 @@ import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
 import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
-import {FilterType} from "../../../index";
+import {FilterType, Paginator} from "../../../index";
 
 class BrandList extends React.Component {
 
@@ -33,9 +33,10 @@ class BrandList extends React.Component {
     this.resetFilters = this.resetFilters.bind(this);
     this.applyFilters = this.applyFilters.bind(this);
     this.fetchBrands = this.fetchBrands.bind(this);
-    this.paginationCallback = this.paginationCallback.bind(this);
-    this.changePageSize = this.changePageSize.bind(this);
+    // this.paginationCallback = this.paginationCallback.bind(this);
+    // this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
+    this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
@@ -149,17 +150,17 @@ class BrandList extends React.Component {
     }
   }
 
-  paginationCallback (page) {
-
-    const pageState = {...this.state.page};
-    pageState.offset = page.offset;
-    pageState.size = page.size;
-    const paginatedList = [...page.list];
-    const filteredList = [...page.list];
-    this.createFilters(paginatedList);
-
-    this.setState({page: pageState, paginatedList, filteredList});
-  }
+  // paginationCallback (page) {
+  //
+  //   const pageState = {...this.state.page};
+  //   pageState.offset = page.offset;
+  //   pageState.size = page.size;
+  //   const paginatedList = [...page.list];
+  //   const filteredList = [...page.list];
+  //   this.createFilters(paginatedList);
+  //
+  //   this.setState({page: pageState, paginatedList, filteredList});
+  // }
 
   async fetchBrands () {
     this.loader(true);
@@ -198,7 +199,8 @@ class BrandList extends React.Component {
 
   applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
-    let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
+    // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
+    let paginatedList = filteredList ? [...filteredList] : [...this.state.brandList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
@@ -324,13 +326,11 @@ class BrandList extends React.Component {
     });
   }
 
-  changePageSize(size) {
-
-    const page = {...this.state.page};
-    page.size = size;
-    this.setState({page});
-
-  }
+  // changePageSize(size) {
+  //   const page = {...this.state.page};
+  //   page.size = size;
+  //   this.setState({page});
+  // }
 
   toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
@@ -340,21 +340,25 @@ class BrandList extends React.Component {
     });
   }
 
+  updateListAndFilters(paginatedList) {
+    this.setState({paginatedList});
+  }
+
   // eslint-disable-next-line complexity
   render () {
-
-    const viewerShip = () => {
-      const from = this.state.page.offset * this.state.page.size + 1;
-      const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
-      const total = this.state.brandList.length;
-      if (this.state.brandList.length && to >= from) {
-        return (<div>Viewing <span className="count font-weight-bold" >{from} - {to}</span> of {total} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL}</div>);
-        // return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}`;
-      } else if (this.state.brandList.length && to <= from) {
-        return (<div>Viewing <span className="count font-weight-bold">0</span> of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}</div>);
-      }
-      return "";
-    };
+    const brands = this.state.filteredList && this.state.filteredList.length ? this.state.filteredList : this.state.brandList;
+//     const viewerShip = () => {
+//       const from = this.state.page.offset * this.state.page.size + 1;
+//       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
+//       const total = this.state.brandList.length;
+//       if (this.state.brandList.length && to >= from) {
+//         return (<div>Viewing <span className="count font-weight-bold" >{from} - {to}</span> of {total} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL}</div>);
+//         // return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}`;
+//       } else if (this.state.brandList.length && to <= from) {
+//         return (<div>Viewing <span className="count font-weight-bold">0</span> of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}</div>);
+//       }
+//       return "";
+//     };
 
     const enableSectionAccess = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.BRANDS.SECTION_ACCESS.map(role => role.toLowerCase()).includes(this.state.userRole.toLowerCase()) : true;
     const enableBrandCreate = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.BRANDS.CREATE.map(role => role.toLowerCase()).includes(this.state.userRole.toLowerCase()) : true;
@@ -445,40 +449,41 @@ class BrandList extends React.Component {
                   <div className="row brand-list-table-row px-4 h-90">
                     <div className="col h-100 overflow-auto">
                       {
-                        this.state.filteredList.length > 0 ?
-                        <CustomTable data={[...this.state.filteredList]} columns={this.state.brandListColumns} template={BrandListTable}
+                        this.state.paginatedList.length > 0 ?
+                        <CustomTable data={[...this.state.paginatedList]} columns={this.state.brandListColumns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile}}/> : <NoRecordsMatch message="No Records Found matching search and filters provided." />
                       }
                     </div>
                   </div>
-                  <div className="row brand-list-table-manage-row px-4 h-10 align-items-center ">
-                    <div className="col">
-                      { viewerShip() }
-                    </div>
-                    <div className="col text-center">
-                      <PaginationNav list={this.state.brandList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
-                    </div>
-                    <div className="col text-right">
-                      {
-                        !!this.state.brandList.length && <span className="showing-content pr-2">Showing</span>
-                      }
-                      {
-                        !!this.state.brandList.length && <button type="button" className="btn btn-sm brand-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                          {this.state.page.size} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
-                        </button>
-                      }
+                  {/*<div className="row brand-list-table-manage-row px-4 h-10 align-items-center ">*/}
+                  {/*  <div className="col">*/}
+                  {/*    { viewerShip() }*/}
+                  {/*  </div>*/}
+                  {/*  <div className="col text-center">*/}
+                  {/*    <PaginationNav list={this.state.brandList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>*/}
+                  {/*  </div>*/}
+                  {/*  <div className="col text-right">*/}
+                  {/*    {*/}
+                  {/*      !!this.state.brandList.length && <span className="showing-content pr-2">Showing</span>*/}
+                  {/*    }*/}
+                  {/*    {*/}
+                  {/*      !!this.state.brandList.length && <button type="button" className="btn btn-sm brand-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"*/}
+                  {/*        aria-haspopup="true" aria-expanded="false">*/}
+                  {/*        {this.state.page.size} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;*/}
+                  {/*      </button>*/}
+                  {/*    }*/}
 
-                      <div className="dropdown-menu brand-count-dropdown-menu">
-                        {
-                          this.state.page.sizeOptions.map(val => {
-                            return (<a key={val} className="dropdown-item"
-                              onClick={() => {this.changePageSize(val);}}> {val} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} </a>);
-                          })
-                        }
-                      </div>
-                    </div>
-                  </div>
+                  {/*    <div className="dropdown-menu brand-count-dropdown-menu">*/}
+                  {/*      {*/}
+                  {/*        this.state.page.sizeOptions.map(val => {*/}
+                  {/*          return (<a key={val} className="dropdown-item"*/}
+                  {/*            onClick={() => {this.changePageSize(val);}}> {val} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} </a>);*/}
+                  {/*        })*/}
+                  {/*      }*/}
+                  {/*    </div>*/}
+                  {/*  </div>*/}
+                  {/*</div>*/}
+                  <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />
                 </div>
               </div>
             </div>

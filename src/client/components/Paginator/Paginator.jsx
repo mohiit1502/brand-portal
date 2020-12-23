@@ -46,20 +46,20 @@ class Paginator extends Component {
     } else if (records && records.length && to <= from) {
       pageViewInfo = <React.Fragment>Viewing <span className="count font-weight-bold" >0</span> of {total} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL}</React.Fragment>;
     }
-    const pageSizeSelector = records && records.length &&
+    const pageSizeSelector = records && records.length ?
       <React.Fragment>
         <span className="showing-content pr-2">Show</span>
-        <button type="button" className="btn btn-sm claim-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" className="btn btn-sm count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {page.size} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
         </button>
-        <div className="dropdown-menu claim-count-dropdown-menu">
+        <div className="dropdown-menu count-dropdown-menu">
           {page.sizeOptions.map(val => <a key={val} className="dropdown-item" onClick={() => {this.changePageSize(val);}}>
             {val} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL}</a>)}
         </div>
-      </React.Fragment>
+      </React.Fragment> : null;
 
     return (
-      <div className="c-Paginator row claim-list-table-manage-row h-10 align-items-center mx-4">
+      <div className="c-Paginator row table-manage-row h-10 px-4 align-items-center">
         <div className="col text-left">{ pageViewInfo }</div>
         <div className="col text-center"><PaginationNav list={records ? records : []} offset={page.offset} size={page.size} callback={this.paginationCallback}/></div>
         <div className="col text-right">{pageSizeSelector}</div>
