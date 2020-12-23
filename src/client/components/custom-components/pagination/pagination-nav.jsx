@@ -58,38 +58,39 @@ class PaginationNav extends React.Component {
   }
 
   render() {
-    const paginationNav = [];
+    const paginationButtons = [];
     for (let i = 0; i < this.state.page.net.pagesCount; i++) {
       const navItem = (<li key={i} className={`page-item ${this.state.page.offset === i ? "active" : ""}`}
         onClick={() => {this.updatePage(this.state.list, i, this.state.page.size);}}>
         <a className="page-link" href="#">{i + 1}</a>
       </li>);
-      paginationNav.push(navItem);
+      paginationButtons.push(navItem);
     }
+
+    const previousButton = <li className="page-item" onClick={() => {this.updatePage(this.state.list, this.state.page.offset - 1, this.state.page.size);}}>
+      <a className="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true"> &lt; </span>
+      </a>
+    </li>;
+
+    const nextButton = <li className="page-item" onClick={() => {this.updatePage(this.state.list, this.state.page.offset + 1, this.state.page.size);}}>
+      <a className="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true"> &gt; </span>
+      </a>
+    </li>
 
     return (
       !!this.state.list.length &&
         <nav>
           <ul className="pagination pagination-sm justify-content-center align-items-center m-0">
-            <li className="page-item"
-              onClick={() => {this.updatePage(this.state.list, this.state.page.offset - 1, this.state.page.size);}}>
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true"> &lt; </span>
-              </a>
-            </li>
-            {paginationNav}
-            <li className="page-item"
-              onClick={() => {this.updatePage(this.state.list, this.state.page.offset + 1, this.state.page.size);}}>
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true"> &gt; </span>
-              </a>
-            </li>
+            {previousButton}
+            {paginationButtons}
+            {nextButton}
           </ul>
         </nav>
     );
   }
 }
-
 
 PaginationNav.propTypes = {
   list: PropTypes.array,
@@ -98,10 +99,4 @@ PaginationNav.propTypes = {
   callback: PropTypes.func
 };
 
-const mapStateToProps = state => state;
-
-
-export default connect(
-  mapStateToProps,
-  dispatch => ({ dispatch })
-)(PaginationNav);
+export default connect()(PaginationNav);
