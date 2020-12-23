@@ -16,7 +16,7 @@ import CustomTable from "../../../custom-components/table/custom-table";
 import ClaimListTable from "../../../custom-components/table/templates/claim-list-table";
 import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
-import {FilterType} from "../../../index";
+import {FilterType, Paginator} from "../../../index";
 
 class ClaimList extends React.Component {
 
@@ -25,23 +25,17 @@ class ClaimList extends React.Component {
 
     this.addNewClaim = this.addNewClaim.bind(this);
     this.applyFilters = this.applyFilters.bind(this);
-    this.changePageSize = this.changePageSize.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.fetchClaims = this.fetchClaims.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
-    this.paginationCallback = this.paginationCallback.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.uiSearch = this.uiSearch.bind(this);
     this.checkAndApplyDashboardFilter = this.checkAndApplyDashboardFilter.bind(this);
+    this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.filterMap = {"inprogress": "Work in Progress", "closed": "Closed"};
 
     this.state = {
-      page: {
-        offset: 0,
-        size: 10,
-        sizeOptions: [5, 10, 15, 20, 30]
-      },
       showFilters: false,
       claimList: [],
       paginatedList: [],
@@ -137,17 +131,6 @@ class ClaimList extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    // if (prevProps.history.location.pathname !== this.props.history.location.pathname) {
-    //   const location = this.props.history.location.pathname;
-    //   const isClaimDetailPath = new RegExp(CONSTANTS.REGEX.CLAIMDETAILSPATH).test(location);
-    //   if (isClaimDetailPath) {
-    //     const ticketId = location.substring(location.indexOf("/claims/") + 8);
-    //     this.showClaimDetails(ticketId);
-    //   }
-    // }
-  }
-
   async fetchClaims () {
     this.loader(true);
     const response = (await Http.get("/api/claims", "", () => this.loader(false))).body;
@@ -164,6 +147,7 @@ class ClaimList extends React.Component {
         newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
         return newClaim;
       });
+      this.createFilters(claimList);
     }
 
     if (this.props.widgetAction) {
@@ -276,7 +260,8 @@ class ClaimList extends React.Component {
 
   applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
-    let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
+    // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
+    let paginatedList = filteredList ? [...filteredList] : [...this.props.claims];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
@@ -331,44 +316,15 @@ class ClaimList extends React.Component {
     });
   }
 
-  paginationCallback (page) {
-
-    const pageState = {...this.state.page};
-    pageState.offset = page.offset;
-    pageState.size = page.size;
-    const paginatedList = [...page.list];
-    const filteredList = [...page.list];
-    this.createFilters(paginatedList);
-
-    this.setState({page: pageState, paginatedList, filteredList});
-  }
-
-  changePageSize(size) {
-
-    const page = {...this.state.page};
-    page.size = size;
-    this.setState({page});
-
+  updateListAndFilters(paginatedList) {
+    this.setState({paginatedList});
   }
 
   render () {
-
-    const viewerShip = () => {
-      const from = this.state.page.offset * this.state.page.size + 1;
-      const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
-      const total = this.props.claims && this.props.claims.length;
-      if (this.props.claims && this.props.claims.length && to >= from) {
-        return (<div>Viewing <span className="count font-weight-bold" >{from} - {to}</span> of {total} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL}</div>);
-      } else if (this.props.claims && this.props.claims.length && to <= from) {
-        return (<div>Viewing <span className="count font-weight-bold">0</span> of ${total} ${CONSTANTS.CLAIM.SECTION_TITLE_PLURAL}</div>);
-      }
-      return "";
-    };
-
+    const claims = this.state.filteredList && this.state.filteredList.length ? this.state.filteredList : this.props.claims;
     return (
       <div className="row claim-list-content h-100">
         <div className="col h-100">
-
           <div className="row content-header-row p-4 h-10 mx-0">
             <div className="col">
               <h3>My Claims</h3>
@@ -452,8 +408,8 @@ class ClaimList extends React.Component {
                   <div className="row claim-list-table-row px-4 h-90">
                     <div className="col h-100 overflow-auto">
                       {
-                        this.state.filteredList.length > 0 &&
-                        <CustomTable data={[...this.state.filteredList]} columns={this.state.claimListColumns} template={ClaimListTable}
+                        this.state.paginatedList.length > 0 &&
+                        <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> ||
                         <div className="row align-items-center h-100">
                           <div className="col text-center">
@@ -466,34 +422,7 @@ class ClaimList extends React.Component {
                       }
                     </div>
                   </div>
-                  <div className="row claim-list-table-manage-row px-4 h-10 align-items-center">
-                    <div className="col">
-                      { viewerShip() }
-                    </div>
-                    <div className="col text-center">
-                      <PaginationNav list={this.props.claims ? this.props.claims : []} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>
-                    </div>
-                    <div className="col text-right">
-                      {
-                        !!(this.props.claims && this.props.claims.length) && <span className="showing-content pr-2">Showing</span>
-                      }
-                      {
-                        !!(this.props.claims && this.props.claims.length) && <button type="button" className="btn btn-sm claim-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"
-                          aria-haspopup="true" aria-expanded="false">
-                          {this.state.page.size} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
-                        </button>
-                      }
-
-                      <div className="dropdown-menu claim-count-dropdown-menu">
-                        {
-                          this.state.page.sizeOptions.map(val => {
-                            return (<a key={val} className="dropdown-item"
-                                            onClick={() => {this.changePageSize(val);}}>  {val} {CONSTANTS.CLAIM.SECTION_TITLE_PLURAL} </a>);
-                          })
-                        }
-                      </div>
-                    </div>
-                  </div>
+                  <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={claims} section="CLAIM" updateListAndFilters={this.updateListAndFilters} />
                 </div>
               </div>
             </div>
