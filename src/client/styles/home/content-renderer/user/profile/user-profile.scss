@@ -2,11 +2,35 @@
 
 .user-profile-content {
   .content-header-row {
-    background: #FAFAFA;
+    font-weight: bold;
+  }
+  .password-reset-col{
+    button{
+      border-radius: 42px;
+      background: #235882;
+      font-weight: bold;
+      font-size: 15px;
+      border: none;
+    }
+  }
+
+  .edit-button-panel{
+    .btn-primary{
+      border-radius: 42px;
+      background: #235882;
+      font-weight: bold;
+      font-size: 15px;
+      border: none;
+    }
+    .btn-link{
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: underline;
+    }
   }
   .password-reset-row {
     .badge {
-      border: 1px solid $blue;
+      //border: 1px solid $blue;
     }
   }
 }

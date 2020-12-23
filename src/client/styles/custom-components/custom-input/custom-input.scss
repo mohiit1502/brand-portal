@@ -157,10 +157,17 @@ $dropdown-select-background: #E7F3F8;
   &.disabled {
     .custom-input-label-placeholder {
       .label-upper-bg {
+        color: #a3a8a9;
         background: $disabled-background;
       }
     }
+    .custom-input-label{
+      .label-text{
+        color: #a3a8a9;
+      }
+    }
   }
+
 
   &.field-loader {
     .custom-input-element {
@@ -232,6 +239,7 @@ $dropdown-select-background: #E7F3F8;
       }
     }
 
+
     &[disabled]{
       border: 1px solid $disabled-font;
       color : $disabled-font;
@@ -264,6 +272,9 @@ $dropdown-select-background: #E7F3F8;
 
   &.has-error {
     .custom-input-element, .custom-input-label {
+        .label-text{
+          color: #be2228;
+        }
       @extend .text-danger;
       @extend .border-danger;
     }
