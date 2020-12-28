@@ -180,8 +180,8 @@ class CompanyProfileRegistration extends React.Component {
     const section = this.state.section;
     return (
       <div className="row justify-content-center">
-        <div className="col-lg-6 col-md-8 col-12">
-          <div className="row title-row mb-4">
+        <div className="col-lg-10 col-md-8 col-12 pl-5 pr-0">
+          <div className="row title-row mb-4 pl-4">
             <div className="col">
               <div className="company-registration-title">
                 {section.sectionTitle}
@@ -191,7 +191,7 @@ class CompanyProfileRegistration extends React.Component {
               </div>
             </div>
           </div>
-          <form className="company-reg-form" onSubmit={this.gotoBrandRegistration}>
+          <form className="company-reg-form mb-4 pl-4" onSubmit={this.gotoBrandRegistration}>
             { this.getFieldRenders()}
             {/*  // TODO CODE: USERAPPROVAL - Uncomment below line once user approval flow is in progress*/}
           </form>

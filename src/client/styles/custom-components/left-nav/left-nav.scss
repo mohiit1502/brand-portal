@@ -7,7 +7,7 @@ $nav-selected-white : #FFFFFF;
 .left-nav {
   position: absolute;
   background: $nav-blue;
-  width: $left-nav-width;
+  width: $left-nav-width + 16px;
   height: calc(100% - #{$nav-max-height});
   overflow: hidden;
 

@@ -87,7 +87,7 @@ const Summary = props => {
   return (
     <div className={`c-Summary${contentClasses ? " " + contentClasses : ""}${commonWidgetClasses ? " " + commonWidgetClasses : ""}`}>
       <h4 className={headerLayoutClasses}>{header ? header.title : ""}</h4>
-      <div className={bodyLayoutClasses}>
+      <div className={`Summary-body ${bodyLayoutClasses}`}>
         {getDetails()}
       </div>
       <span className={`${footerLayoutClasses}${footerContentClasses ? " " + footerContentClasses : ""}`} onClick={triggerAddAction}>{footer && footer.text}</span>

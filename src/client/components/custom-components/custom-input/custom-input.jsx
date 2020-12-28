@@ -6,7 +6,7 @@ import $ from "jquery";
 import Tooltip from "../tooltip/tooltip";
 import Validator from "../../../utility/validationUtil";
 import * as images from "./../../../images";
-import QuestionMarkIcon from "./../../../images/questionMarkIcon.svg";
+import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
@@ -302,7 +302,7 @@ class CustomInput extends React.Component {
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} />
+          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
       </div>
     );
   }
@@ -371,7 +371,7 @@ CustomInput.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
-  ])
+  ]),
 };
 
 const mapStateToProps = state => state;

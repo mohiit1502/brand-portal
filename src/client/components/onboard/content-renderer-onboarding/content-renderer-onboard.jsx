@@ -14,7 +14,7 @@ class ContentRendererOnboard extends React.Component {
   render () {
     return (
       <div className="content-page-onboard row">
-        <div className="col content-page-onboard__col">
+        <div className="col content-page-onboard__col pb-4">
           <Switch>
             <Route path={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}>
               <CompanyProfileRegistration {...this.props}/>

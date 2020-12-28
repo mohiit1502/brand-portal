@@ -53,7 +53,7 @@ class NewUserAddedTemplate extends React.Component {
               </div>
               <div className="row mt-5">
                 <div className="col">
-                  <div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>
+                  <div className="btn btn-sm btn-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>
                 </div>
               </div>
             </div>

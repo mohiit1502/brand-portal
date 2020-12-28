@@ -9,7 +9,7 @@ const FilterType = props => {
   }
 
   return (
-    <div className="c-FilterType font-size-14 ml-3 mt-2 mr-1 px-2">
+    <div className="c-FilterType font-size-14 mt-2 mr-1 px-2">
       <span className="c-FilterType__primaryText mr-3 line-height-reset">
         {props.filterText ? props.filterText.replace("__filterType__", props.filterMap[props.currentFilters[props.filterId]]) : ""}
       </span>

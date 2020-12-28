@@ -62,10 +62,9 @@ $ozark-noir-blue: #0b1e40;
       }
       .filter-dropdown-row{
         position: relative;
-        margin-right: 24px;
         height: 0;
         .filter-dropdown-column {
-          position: relative;
+
           z-index: 9;
           top: 30px;
           display: none;

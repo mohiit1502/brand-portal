@@ -47,7 +47,7 @@ const WidgetContainer = props => {
   };
 
   return (
-    <div className="c-WidgetContainer row my-4 px-25">
+    <div className="c-WidgetContainer row my-4 mx-0 px-4">
       {layoutWidgets()}
     </div>
   );

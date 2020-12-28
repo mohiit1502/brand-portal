@@ -35,7 +35,8 @@ html,body {
         min-width: $min-viewport-width;
         min-height: $min-viewport-height;
         color: #0b1e40;
-        overflow: auto;
+        overflow : auto;
+        padding: 0;
       }
     }
   }

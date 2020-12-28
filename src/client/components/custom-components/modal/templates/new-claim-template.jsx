@@ -87,7 +87,8 @@ class NewClaimTemplate extends React.Component {
             pattern: null,
             disabled: false,
             subtitle: "",
-            error: ""
+            error: "",
+            placeholder:"Please Provide Additional Information about the claim"
           },
           signature: {
             label: "Digital Signature",
@@ -531,7 +532,7 @@ class NewClaimTemplate extends React.Component {
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
                     value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
-                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} />
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} />
                 </div>
               </div>
               {

@@ -156,10 +156,10 @@ class BrandRegistration extends React.Component {
 
     return (
       <div className={`row justify-content-center ${this.state.form.loader && "loader"}`}>
-        <div className="col-lg-6 col-md-8 col-12">
-          <div className="row title-row mb-4">
-            <div className="col">
-              <div className="brand-registration-title">
+        <div className="col-lg-10 col-md-8 col-12 pl-5 pr-0">
+          <div className="row title-row mb-4 pl-4">
+            <div className="col pl-4">
+              <div className="brand-registration-title font-weight-bold">
                 {section.sectionTitle}
               </div>
               <div className="brand-registration-subtitle">
@@ -167,7 +167,7 @@ class BrandRegistration extends React.Component {
               </div>
             </div>
           </div>
-          <form className="brand-reg-form" onSubmit={this.submitOnboardingForm}>
+          <form className="brand-reg-form pl-4" onSubmit={this.submitOnboardingForm}>
             {this.getFieldRenders()}
           </form>
         </div>

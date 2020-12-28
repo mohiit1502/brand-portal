@@ -2,120 +2,102 @@
 
 // ======= This configuration is moved to CCM and is maintained here for reference ========== //
 const LOGINCONFIG = {
-  "TILES": [{
+  "TILES": [
+    {
       "svg": "ProblemSolving",
-      "header": "What is Brand Portal?",
+      "header": "What are the benefits of Walmart Brand Portal?",
       "content": {
-        "para1": "Brand Portal helps you to:",
         "list1": {
-          "type": "ul",
+          "type": "ol",
           "steps": [
-            "Easily enter your brand information, get it verified, and maintain your brand \"catalog\" on Walmart.",
-            "Submit intellectual property claims and track their progress in one dashboard.",
-            "Manage both internal and third party authorized reporters in one tool."
+            "Streamlined IP claim submission process",
+            "Comprehensive claim tracking dashboard",
+            "Centralized user management services"
           ]
         }
       }
     },
     {
       "svg": "GroupPeople",
-      "header": "Who is Brand Portal for?",
+      "header": "Who is eligible to use Walmart Brand Portal?",
       "content": {
-        "paraStyleClass": "",
-        "para1": "Brand Portal is built for rights owners who would like to protect their intellectual property on Walmart.com.",
-        "para2": "In order to use the Brand Portal features, you must have registered trademarks associated with your brands.",
-        "para3": "To start the Brand Portal registration process, please click \"Register\" above."
+        "list1": {
+          "type": "ol",
+          "steps": [
+            "Rights owners with registered trademarks",
+            "Authorized third-party brand protection agencies",
+            "Authorized legal representatives"
+          ]
+        }
       }
     },
     {
       "svg": "Verify",
-      "header": "Register for Brand Portal",
+      "header": "What do I need to get started?",
       "content": {
-        "para1": "To register for Brand Portal:",
         "list1": {
           "type": "ol",
-          "steps": [{
-              "partial": {
-                "chunk1": "Create an account at ",
-                "anchor1": {
-                  "href": "/api/falcon/register",
-                  "text": "Brand Portal."
-                }
-              }
-            },
-            "Fill in your company information.",
-            "Fill in your brand information."
+          "steps": [
+            "Company information",
+            "Active trademark registration number",
+            "Verifiable email address"
           ]
-        },
-        "para2": "After you submit, we will review and verify the information provided."
+        }
       }
     }
   ],
-
   "FAQ": {
     "header": "Frequently Asked Questions",
     "id": "LoginFAQ",
     "items": [
       {
-        "question": "How do I get access to Walmart Brand Portal?",
-        "type": "list",
+        "question": "Why Walmart Brand Portal?",
+        "type": "simple",
         "answer": {
           "partial1": {
-            "chunk1": "Brand Portal is built for rights owners who would like to protect their intellectual property on ",
+            "chunk1": "Walmart takes allegations of intellectual property infringement seriously. We built the Walmart Brand Portal with the goal to enable rights owners to better manage and protect their intellectual property rights on ",
             "anchor1": {
               "href": "https://www.walmart.com",
-              "text": "Walmart.com."
+              "text": "Walmart.com"
             },
-            "chunk2": " To qualify for a Brand Portal account, you will need registered trademarks associated with your brands. We will ask for the following information in the application process:"
-          },
-          "list": {
-            "type": "ol",
-            "subType": "1",
-            "steps": [{
-                "main": "User Information:",
-                "subList": {
-                  "type": "ul",
-                  "subType": "-",
-                  "steps": [
-                    "First and last name",
-                    "Email address"
-                  ]
-                }
-              },
-              {
-                "main": "Company Information:",
-                "subList": {
-                  "type": "ul",
-                  "subType": "-",
-                  "steps": [
-                    "Company name",
-                    "Company address",
-                    "Business registration documents"
-                  ]
-                }
-              },
-              {
-                "main": "Brand Information:",
-                "subList": {
-                  "type": "ul",
-                  "subType": "-",
-                  "steps": [
-                    "Brand name",
-                    "Registered Trademark Number associated with the brand",
-                    "Additional comments about the brand"
-                  ]
-                }
-              }
-            ]
-          },
-          "para2": "You will be granted access to Brand Portal to protect your intellectual property once we have verified the information you submit in your application. "
+            "chunk2": ", and to build a trusted online platform for our customers."
+          }
         }
       },
       {
-        "question": "How can I check the status of my Brand Portal application?",
+        "question": "How can I check the status of my Walmart Brand Portal application?",
         "type": "simple",
         "answer": {
-          "para1": "To see the status of your application, please log into your Brand Portal account. You will see a message with the current application status upon login."
+          "para1": "To see the status of your application, please log into your Walmart Brand Portal account. You will see a message with the current application status upon login."
+        }
+      },
+      {
+        "question": "What type of claims can I submit using Walmart Brand Portal?",
+        "type": "simple",
+        "answer": {
+          "partial1": {
+            "chunk1": "You can report any legitimate claims of intellectual property infringement for items listed on ",
+            "anchor1": {
+              "href": "https://www.walmart.com",
+              "text": "Walmart.com"
+            },
+            "chunk2": ", including claims of copyright, trademark, patent, and counterfeit."
+          },
+          "para2": "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements. "
+        }
+      },
+      {
+        "question": "Is Walmart Brand Portal available only in the United States?",
+        "type": "simple",
+        "answer": {
+          "partial1": {
+            "chunk1": "Yes, Walmart Brand Portal services are currently offered only for the United States ",
+            "anchor1": {
+              "href": "https://www.walmart.com",
+              "text": "Walmart.com"
+            },
+            "chunk2": " marketplace."
+          }
         }
       },
       {
@@ -126,14 +108,7 @@ const LOGINCONFIG = {
         }
       },
       {
-        "question": "Can agents or third party vendors that represent a brand get access to Brand Portal?",
-        "type": "simple",
-        "answer": {
-          "para1": "Yes. Rights owners can add additional users, including agents, to their Brand Portal account by inviting a new user and assigning specific roles and brands to the new user."
-        }
-      },
-      {
-        "question": "How do I report alleged intellectual property violations if I don't have a Brand Portal account?",
+        "question": "How do I submit intellectual property claims if I don't have a Walmart Brand Portal account?",
         "type": "simple",
         "answer": {
           "partial1": {
@@ -149,23 +124,9 @@ const LOGINCONFIG = {
             "chunk2": " for reporting alleged instances of intellectual property infringement."
           }
         }
-      },
-      {
-        "question": "What type of claims can I use Brand Portal to report?",
-        "type": "simple",
-        "answer": {
-          "para1": "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit."
-        }
-      },
-      {
-        "question": "Is Walmart Brand Portal service available only in the United States?",
-        "type": "simple",
-        "answer": {
-          "para1": "Yes, Brand Portal services are currently offered only for the United States Walmart.com marketplace."
-        }
       }
     ]
   }
-};
+}
 
 export default LOGINCONFIG;
