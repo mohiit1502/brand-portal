@@ -99,7 +99,7 @@ Summary.propTypes = {
   data: PropTypes.object,
   dispatchFilter: PropTypes.func,
   fetchComplete: PropTypes.bool,
-  history: PropTypes.array,
+  history: PropTypes.object,
   ID: PropTypes.string,
   toggleModal: PropTypes.func,
   widget: PropTypes.object,
