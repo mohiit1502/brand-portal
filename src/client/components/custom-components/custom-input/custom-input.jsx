@@ -6,7 +6,7 @@ import $ from "jquery";
 import Tooltip from "../tooltip/tooltip";
 import Validator from "../../../utility/validationUtil";
 import * as images from "./../../../images";
-import QuestionMarkIcon from "./../../../images/questionMarkIcon.svg";
+import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";

@@ -18,7 +18,7 @@ const StatusModalTemplate = props => {
           <div className="modal-body text-center p-5">
             <div className="row">
               <div className="col">
-                <img src={props.meta.image} height={87}/>
+                <img src={props.meta.image} height={100}/>
               </div>
             </div>
             <div className="row mt-4">
@@ -37,7 +37,7 @@ const StatusModalTemplate = props => {
             </div>
             <div className="row mt-5">
               <div className="col">
-                <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Logout</a>
+                <a className="btn btn-sm btn-primary px-5" href={logoutUrl}>Logout</a>
               </div>
             </div>
           </div>

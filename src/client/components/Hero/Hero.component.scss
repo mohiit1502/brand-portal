@@ -1,25 +1,43 @@
 .c-Hero {
-  padding: 0 2.5rem;
+  .row{
+    width: 100%;
+    margin: 0;
+    //height: 421px !important;
+    .c-Hero__left-container{
+      background: #e2f3f7 url("../../images/leftTileBackground.png") no-repeat;
+      background-size: 100% 100%;
+      .c-Hero__tag-line-container {
+        .c-Hero__tag-line {
+          //   width: 400px;
+          text-align: center;
+          //padding: 0 135px;
+          font-size: 40px;
+          font-weight: bold;
+          color: #0b1e40;
+          margin-bottom: 1.5rem;
+          line-height: 1.2;
+        }
+        .button-con{
+          text-align: center;
+        }
 
-  .c-Hero__tag-line-container {
-    margin-top: 4.7rem;
-    margin-left: 11.6rem;
-    font-family: BogleWeb-Regular, sans-serif;
-    position: relative;
+        .c-Hero__register-btn {
+          padding: 0.5rem 3.5rem;
+          border-radius: 42px;
+          background: #006799;
+          font-weight: bold;
+        }
+      }
 
-    .c-Hero__tag-line {
-    //   width: 400px;
-      font-size: 2.3rem;
-      font-weight: normal;
-      margin-bottom: 1.5rem;
     }
+    .c-Hero__right-container {
+      background: url("../../images/laptopImage.jpg") no-repeat;
+      background-size: 100% 100%;
 
-    .c-Hero__register-btn {
-        padding: 0.5rem 3.5rem;
     }
   }
 
-  .c-Hero__introImage {
-    padding: 2rem 3.25rem;
-  }
+
+
+
 }

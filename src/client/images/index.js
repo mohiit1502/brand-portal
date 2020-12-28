@@ -1,5 +1,6 @@
 import Access from "./access.svg";
 import Alert from "./alert.svg";
+import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
 import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./BrandList.png";
@@ -37,9 +38,7 @@ import User from "./user.svg";
 import UserList from "./User List.png";
 import Verified from "./verified.svg";
 import Verify from "./001-verify.svg";
-import WalmartIntro from "./Walmart_Intro_wide.png";
 import Warning from "./warning.svg";
-import WMBlue from "./Walmart-Brand-Portal-for-white-bg---236x80.png";
 import WMWhite from "./Walmart Brand Portal-for blue bg - 236x80.svg";
 import YellowBGExclamation from "./YellowBGExclamation.png";
 import YellowBGKey from "./YellowBGKey.png";
@@ -47,6 +46,7 @@ import YellowBGKey from "./YellowBGKey.png";
 export {
     Access,
     Alert,
+    Arrow,
     ArrowDown,
     BlackBGCheck,
     BrandList,
@@ -84,9 +84,7 @@ export {
     UserList,
     Verified,
     Verify,
-    WalmartIntro,
     Warning,
-    WMBlue,
     WMWhite,
     YellowBGExclamation,
     YellowBGKey

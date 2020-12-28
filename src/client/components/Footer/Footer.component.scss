@@ -1,17 +1,19 @@
 @import "./../../styles/override/variables.scss";
 
 .c-Footer {
-  padding: 1.75rem 2.5rem;
-  background: $blue;
+  //padding: 1.75rem 0;
+  //padding: 0 6rem;
+  background: #286697;
   color: white;
 
   .c-Footer__logoSocialContainer {
     display: inline-block;
     position: relative;
-    margin-bottom: 0.6rem;
+    //margin-bottom: 0.6rem;
 
     .c-Footer__wmWhiteLogo {
-      width: 7.625rem;
+      //width: 7.625rem;
+      height: 30px;
     }
 
     .c-Footer__logoText {
@@ -23,14 +25,26 @@
     }
   }
 
-  .c-Footer__copyrightText,
-  .c-Footer__privacyNav {
-    padding: 0.7rem 0 0.3rem;
+  .c-Footer__copyrightText {
+    padding: 10px 6rem;
     color: #eee;
+    //padding-left: 6rem;
+    .c-Footer__privacyNav {
+        color: #eee;
+      margin: 0 10px;
+      //border-left: 2px solid white;
+      //padding-left: 10px;
+    }
+    .c-Footer__privacyNav:before{
+      content: "|";
+      padding-right: 10px;
+    }
+
   }
 
   .login-footer-nav {
-    padding: 0;
+    padding: 1rem 6rem;
+    background: #235882;
 
     .navbar-collapsible-footer {
       .nav-item {

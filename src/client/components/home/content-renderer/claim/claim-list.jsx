@@ -400,7 +400,7 @@ class ClaimList extends React.Component {
               <FilterType filterText={`Claim is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
-                <div className={`col-12 ml-4 pr-0 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
+                <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
                     <div className="row filter-headers-row align-items-center py-3">
                       <div className="col">

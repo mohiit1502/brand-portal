@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import * as images from "./../../../images/index";
+import WMBPLightLogo from "./../../../images/wmbplightLogo.svg";
 import "../../../styles/custom-components/headers/login-header.scss";
 
 class LoginHeader extends React.Component {
@@ -23,7 +23,7 @@ class LoginHeader extends React.Component {
     return (
       <nav className="c-LoginHeader navbar navbar-expand-lg navbar-dark login-header-nav">
         <a className="navbar-brand walmart-brand" href="#">
-          <img src={images.WMBlue} />
+          <img src={WMBPLightLogo} />
         </a>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
           aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,15 +32,14 @@ class LoginHeader extends React.Component {
 
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
-            {/* <li className="nav-item mx-4">
-              <a className="nav-link" href="#">Home</a>
-            </li> */}
-            <li className="nav-item mx-4">
+            <li className="nav-item px-4">
               {/* <Link className="nav-link" to="LoginFAQ" smooth={true} duration={500} activeClass="active" spy={true} offset={-700}>FAQ</Link> */}
               <a className="nav-link" href="#LoginFAQ" onClick={this.scrollAction}>FAQ</a>
             </li>
-            <li className="nav-item ml-4 d-flex align-items-center">
-              <a className="nav-link btn login-btn" href={this.state.loginRedirectLink} onClick={() => $("a.nav-link.btn.login-btn").addClass("disabled")}>Login</a>
+            {/*<li  className="mx-2 nav-item"><strong>|</strong></li>*/}
+            <li  className="mx-2 nav-item middle-list"></li>
+            <li className="nav-item pl-4 d-flex align-items-center">
+              <a className="nav-link login-button" href={this.state.loginRedirectLink} onClick={() => $("a.nav-link.login-button").addClass("disabled")}>Login</a>
             </li>
           </ul>
         </div>

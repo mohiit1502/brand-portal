@@ -38,7 +38,7 @@ const CONSTANTS = {
     },
     PORTAL_VERIFICATION: {
       CODE: 2,
-      IMAGE: "Alert",
+      IMAGE: "Arrow",
       MESSAGE: "Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
       TITLE: "Your company and brand details are being verified"
     },
@@ -209,7 +209,7 @@ const CONSTANTS = {
 
   LOGIN: {
     LANDING_PAGE_TEXT: "Helping you protect your intellectual property on Walmart.com",
-    REGISTER_TEXT: "Register Now",
+    REGISTER_TEXT: "Register",
     IMAGE_WALMART_INTRO: "WalmartIntro",
     CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
     CONTACTEMAIL: "support@brandportal.com",

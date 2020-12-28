@@ -3,21 +3,23 @@
   color: #2E2E2E;
 
   .c-Tile__content {
-    box-shadow: 0 2px 4px;
-    padding: 1.875rem;
+    //box-shadow: 0 2px 4px;
+    padding: 2.875rem 1.875rem;
     height: 100%;
-    background: white;
+    background: #f5fafb;
 
     .c-Tile__content__symbol {
       margin-bottom: 1.4rem;
+      text-align: center;
     }
 
     .c-Tile__content__header {
-      // font-family: "Myriad Pro";
-      font-size: 1.4rem;
-      font-weight: bolder;
-      line-height: 1.875rem;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 1.08;
       margin-bottom: 1.15rem;
+      min-height: 50px;
     }
 
     .c-Tile__content__body {
@@ -26,7 +28,6 @@
         padding-left: 1rem;
         li {
             margin-bottom: 0.75rem;
-            // line-height: 1.15rem;
         }
       }
 
@@ -40,21 +41,45 @@
           counter-increment: item;
           margin-bottom: 0.75rem;
         }
+        li:before{
+          background: #0b1e40;
+          border-radius: 100%;
+          //color: #0b1e40;
+          content: "";
+          font-size: 18px;
+          display: inline-block;
+          margin-right: 10px;
+          padding: 0.1rem 0.3rem;
+          //text-align: center;
+          width: 10px;
+          height: 10px;
 
-        li:before {
-            background: #F2AF36;
-            border-radius: 100%;
-            color: black;
-            content: counter(item);
-            font-size: 0.9rem;
-            // font-weight: bolder;
-            display: inline-block;
-            margin-right: 10px;
-            padding: 0.1rem 0.3rem;
-            text-align: center;
-            width: 1.5rem;
         }
       }
     }
+
   }
 }
+//.c-Tile:first-child, .c-Tile:nth-child(2){
+//  li{
+//    background: url("../../images/blueTick.png") no-repeat;
+//    line-height: 30px;
+//    padding-left: 40px
+//  }
+//}
+//.c-Tile:last-child{
+//
+//  li:before {
+//    background: #b7dbec;
+//    border-radius: 100%;
+//    color: #0b1e40;
+//    content: counter(item);
+//    font-size: 18px;
+//    display: inline-block;
+//    margin-right: 10px;
+//    padding: 0.1rem 0.3rem;
+//    text-align: center;
+//    width: 1.875rem;
+//    height: 1.875rem;
+//  }
+//}

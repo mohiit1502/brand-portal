@@ -13,12 +13,12 @@ $stepper-row-height: 106px;
       width: 200px;
 
       .bg-stepper-gray {
-        background: #C8C8C8;
+        background: #e2f3f7 !important;
       }
 
       .step-title {
         font-size: 14px;
-        font-family: MyriadPro-Regular, sans-serif;
+        font-weight: bold;
       }
 
       .stepper-circle {
@@ -28,10 +28,14 @@ $stepper-row-height: 106px;
         width: 16px;
         border-radius: 50%;
         margin: auto;
+        background-color: #7ac4e4 !important;
 
         &.bg-complete {
-          background: white !important;
-          border: 4px solid #007DC6;
+          background: #7ac4e4 !important;
+          //border: 4px solid #007DC6;
+        }
+        &.bg-stepper-gray{
+          background: #e2f3f7 !important;
         }
       }
 
@@ -40,6 +44,10 @@ $stepper-row-height: 106px;
         height: 5px;
         margin-left: -142px;
         margin-top: 5px;
+        //background-color: #e2f3f7;
+        &.bg-primary{
+          background: #7ac4e4 !important;
+        }
       }
     }
   }
