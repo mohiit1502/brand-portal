@@ -77,17 +77,11 @@ class ClaimManagerApi {
         headers
       };
       let payload = request.app.ccmGet("CLAIM_CONFIG.IQS_QUERY");
-      console.log("Raw payload",payload)
       payload = payload.replace("__itemId__", request.query.payload);
 
       let url = secrets.IQS_URL;
 
       const response = await ServerHttp.post(url, options, payload);
-      console.log("===========Claims manager api==================")
-      console.log("url from secrets : ",url)
-      console.log("options from iqs header ",options)
-      console.log("Query ",payload)
-      console.log("Resposne",response)
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         responseBody = this.parseSellersFromResponse(response.body.docs);
