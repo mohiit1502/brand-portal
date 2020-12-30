@@ -38,7 +38,6 @@ const ClaimListTable = function(props) {
   return (
     <div className={`table-responsive${loader && " loader"}`}>
       <div className="custom-table px-0">
-
         <div className="table-header">
           {
             headerGroups.map((headerGroup, j) => {

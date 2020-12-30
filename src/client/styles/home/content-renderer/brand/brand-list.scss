@@ -115,6 +115,8 @@ $filer-text-color : #424242;
             }
 
             .filter-content-row {
+              max-height: 25rem;
+              overflow-y: scroll;
               .filter-col-header {
                 padding-bottom: 10px;
                 border-bottom: 2px solid white;

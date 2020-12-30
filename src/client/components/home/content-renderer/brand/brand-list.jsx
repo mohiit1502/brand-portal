@@ -134,10 +134,9 @@ class BrandList extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
-  async uiSearch (evt, isFilter, filteredBrands) {
-
+  uiSearch (evt, isFilter, filteredBrands) {
     const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allBrands = filteredBrands ? filteredBrands : this.state.paginatedList;
+    const allBrands = filteredBrands ? filteredBrands : this.state.brandList;
     const filteredList = allBrands.filter(brand => {
       return brand.brandName && brand.brandName.toLowerCase().indexOf(searchText) !== -1
         || brand.dateAdded && brand.dateAdded.toLowerCase().indexOf(searchText) !== -1
@@ -192,8 +191,13 @@ class BrandList extends React.Component {
         filterOption.selected = false;
       });
     });
-    const filteredList = [...this.state.paginatedList];
-    this.setState({filters, filteredList}, this.uiSearch);
+    const brandList = [...this.state.brandList];
+    let i = 1;
+    brandList.forEach(brand => brand.sequence = i++)
+    this.setState({filters, filteredList: brandList}, () => {
+      this.uiSearch();
+      this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
+    });
     this.toggleFilterVisibility();
   }
 
@@ -206,14 +210,15 @@ class BrandList extends React.Component {
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        // console.log(filterId);
+        let i = 1;
         paginatedList = paginatedList.filter(user => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
             bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
           });
           return bool;
-        });
+        })
+        paginatedList.forEach(brand => brand.sequence = i++);
 
       }
     });
@@ -225,9 +230,9 @@ class BrandList extends React.Component {
       this.toggleFilterVisibility(showFilter);
     }
 
-    if (buttonClickAction) {
-      this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
-    }
+    // if (buttonClickAction) {
+    //   this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
+    // }
   }
 
   createFilters(paginatedList) {
@@ -274,24 +279,34 @@ class BrandList extends React.Component {
   }
 
   checkAndApplyDashboardFilter(brandList) {
+    const filterValue = this.filterMap[this.props.filter["widget-brand-summary"]]
+    this.createFilters(brandList);
+    const stateCloned = {...this.state};
+    const brandStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "brandStatus")
+    const dashboardFilter = brandStatusFilter && brandStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
     if (this.props.filter && this.props.filter["widget-brand-summary"]) {
-      const filterValue = this.filterMap[this.props.filter["widget-brand-summary"]]
-      this.createFilters(brandList);
       this.setState(state => {
-        state = {...state};
-        const brandStatusFilter = state.filters.length > 0 && state.filters.find(filter => filter.id === "brandStatus")
-        const dashboardFilter = brandStatusFilter && brandStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
         dashboardFilter && (dashboardFilter.selected = true);
-        return state;
+        return stateCloned;
       }, () => this.applyFilters(false, brandList, false))
       // })
+    } else {
+      this.setState(state => {
+        let i = 1;
+        brandStatusFilter && brandStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
+        brandList.forEach(brand => brand.sequence = i++)
+        return stateCloned;
+      }, () => this.applyFilters(false, brandList, false))
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.brandEdit.save) {
       this.fetchBrands();
       this.props.saveBrandCompleted();
+    }
+    if (prevProps.filter["widget-brand-summary"] !== this.props.filter["widget-brand-summary"]) {
+      this.checkAndApplyDashboardFilter(this.state.brandList);
     }
   }
 

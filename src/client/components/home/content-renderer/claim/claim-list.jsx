@@ -8,7 +8,6 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import filterIcon from "../../../../images/filterIcon.svg";
 import emptyClaims from "../../../../images/empty-claim.png";
-import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import {dispatchClaims} from "./../../../../actions/claim/claim-actions";
@@ -44,11 +43,11 @@ class ClaimList extends React.Component {
       loader: false,
       searchText: "",
       claimListColumns: [
-        {
-          Header: "#",
-          accessor: "sequence",
-          canSort: true
-        },
+        // {
+        //   Header: "#",
+        //   accessor: "sequence",
+        //   canSort: true
+        // },
         {
           Header: "CLAIM NUMBER",
           accessor: "caseNumber"
@@ -101,18 +100,31 @@ class ClaimList extends React.Component {
     this.checkAndApplyDashboardFilter(claimList);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.filter["widget-claim-summary"] !== this.props.filter["widget-claim-summary"]) {
+      this.checkAndApplyDashboardFilter(this.props.claims);
+    }
+  }
+
   checkAndApplyDashboardFilter(claimList) {
+    const filterValue = this.filterMap[this.props.filter["widget-claim-summary"]]
+    this.createFilters(claimList);
+    const stateCloned = {...this.state};
+    const claimStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "claimStatus")
+    const dashboardFilter = claimStatusFilter && claimStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
     if (this.props.filter && this.props.filter["widget-claim-summary"]) {
-      const filterValue = this.filterMap[this.props.filter["widget-claim-summary"]]
-      this.createFilters(claimList);
       this.setState(state => {
-        state = {...state};
-        const claimStatusFilter = state.filters.length > 0 && state.filters.find(filter => filter.id === "claimStatus")
-        const dashboardFilter = claimStatusFilter && claimStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
         dashboardFilter && (dashboardFilter.selected = true);
-        return state;
+        return stateCloned;
       }, () => this.applyFilters(false, claimList, false))
       // })
+    } else {
+      this.setState(state => {
+        let i = 1;
+        claimStatusFilter && claimStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
+        claimList.forEach(claim => claim.sequence = i++)
+        return stateCloned;
+      }, () => this.applyFilters(false, claimList, false))
     }
   }
 
@@ -165,9 +177,9 @@ class ClaimList extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
-  async uiSearch (evt, isFilter, filteredClaims) {
+  uiSearch (evt, isFilter, filteredClaims) {
     const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allClaims = filteredClaims ? filteredClaims : this.state.paginatedList;
+    const allClaims = filteredClaims ? filteredClaims : this.props.claims;
     const filteredList = allClaims.filter(claim => {
       return claim.caseNumber.toLowerCase().indexOf(searchText) !== -1
         || claim.claimType.toLowerCase().indexOf(searchText) !== -1
@@ -198,8 +210,14 @@ class ClaimList extends React.Component {
         filterOption.selected = false;
       });
     });
-    const filteredList = [...this.state.paginatedList];
-    this.setState({filters, filteredList}, this.uiSearch);
+    const claimList = [...this.props.claims];
+    let i = 1;
+    claimList.forEach(claim => claim.sequence = i++)
+    this.setState({filters, filteredList: claimList}, () => {
+      this.uiSearch()
+      this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""});
+    });
+
     this.toggleFilterVisibility();
   }
 
@@ -267,6 +285,7 @@ class ClaimList extends React.Component {
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
+        let i = 1;
         paginatedList = paginatedList.filter(claim => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
@@ -274,6 +293,7 @@ class ClaimList extends React.Component {
           });
           return bool;
         });
+        paginatedList.forEach(claim => claim.sequence = i++)
 
       }
     });
@@ -285,9 +305,9 @@ class ClaimList extends React.Component {
       this.toggleFilterVisibility(showFilter);
     }
 
-    if (buttonClickAction) {
-      this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""})
-    }
+//     if (buttonClickAction) {
+//       this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""})
+//     }
   }
 
   onFilterChange (filterId, optionId) {
@@ -321,7 +341,7 @@ class ClaimList extends React.Component {
   }
 
   render () {
-    const claims = this.state.filteredList && this.state.filteredList.length ? this.state.filteredList : this.props.claims;
+    const claims = this.state.filteredList ? this.state.filteredList : this.props.claims;
     return (
       <div className="row claim-list-content h-100">
         <div className="col h-100">

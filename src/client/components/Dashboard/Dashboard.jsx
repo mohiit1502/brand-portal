@@ -30,7 +30,7 @@ class Dashboard extends React.PureComponent {
   componentDidMount() {
     Http.get(widgetConfig.API.replace("__orgId__", this.props.userProfile.organization.id), null, null, this.props.showNotification, null, "Unable to complete request!")
       .then(response => {
-        console.log(response);
+        // console.log(response);
         if (response.body && response.body.errors && response.body.errors.length > 0) {
           throw "error";
         }
@@ -47,7 +47,11 @@ class Dashboard extends React.PureComponent {
           fetchComplete: true
         })
         this.props.currentFilters["orgId"] = this.props.userProfile.organization.id;
-        this.props.dispatchFilter(this.props.currentFilters);
+        this.props.currentFilters["widget-claims-by-type"] = {dateRange: "last30days"};
+        this.props.currentFilters["widget-claims-by-brand"] = {dateRange: "last30days"};
+        this.props.currentFilters["widget-claims-by-user"] = {dateRange: "last30days"};
+        const filters = {...this.props.currentFilters};
+        this.props.dispatchFilter(filters);
       })
       .catch(e => {
         console.log(e)
