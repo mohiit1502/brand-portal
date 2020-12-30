@@ -34,11 +34,11 @@ const FilterController = props => {
     claimType: {
       className: `form-control form-control-filter-controller custom-input-element`,
       dropdownOptions: [
-        { id: "all", value: "all", label: "All", handler: onChangeHandler },
-        { id: "trademark", value: "trademark", label: "Trademark", handler: onChangeHandler },
-        { id: "patent", value: "patent", label: "Patent", handler: onChangeHandler },
         { id: "counterfeit", value: "counterfeit", label: "Counterfeit", handler: onChangeHandler },
-        { id: "copyright", value: "copyright", label: "Copyright", handler: onChangeHandler }
+        { id: "trademark", value: "trademark", label: "Trademark", handler: onChangeHandler },
+        { id: "copyright", value: "copyright", label: "Copyright", handler: onChangeHandler },
+        { id: "patent", value: "patent", label: "Patent", handler: onChangeHandler },
+        { id: "all", value: "all", label: "All", handler: onChangeHandler }
       ],
       error: "",
       id: "claim-type-filter-controller",
@@ -71,7 +71,7 @@ const FilterController = props => {
     props.toggleModal(TOGGLE_ACTIONS.SHOW, { ...meta });
   }
 
-  function onChangeHandler(option, filter) {
+  function onChangeHandler(option, filter, currentFilters) {
     let currentWidgetFilters = currentFilters[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
@@ -80,7 +80,7 @@ const FilterController = props => {
     currentWidgetFilters[filter.name] = option.value
     currentWidgetFilters.orgId = currentFilters.orgId;
     Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: filterMeta} );
-    // dispatchFilter(currentFilters);
+    dispatchFilter(currentFilters);
   }
 
   const onClickHandler = (option, filter) => {
@@ -89,7 +89,7 @@ const FilterController = props => {
       fieldStateCloned[filter.name].value = option.label;
       return fieldStateCloned;
     })
-    option.handler && option.handler(option, filter);
+    option.handler && option.handler(option, filter, currentFilters);
   }
 
   const filterRenders = filterMeta && filterMeta.map((filter, key1) => {

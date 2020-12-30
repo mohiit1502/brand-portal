@@ -1,26 +1,26 @@
 import React, {memo, useEffect, useRef} from "react";
-import { renderToString } from 'react-dom/server'
+import { renderToString } from "react-dom/server"
 import PropTypes from "prop-types";
 import {
-  select,
-  scaleBand,
   axisBottom,
-  stack,
-  max,
-  scaleLinear,
   axisLeft,
+  format,
+  max,
+  scaleBand,
+  scaleLinear,
+  select,
+  stack,
   stackOrderAscending
 } from "d3";
 import d3Tip from "d3-tip"
 import useResizeObserver from "./../../hooks/useResizeObserver";
-import "./StackedBarChart.component.scss";
-import Helper from "../../utility/helper";
 import TopBrandsTooltip from "../custom-components/tooltip/templates/top-brand-tooltip";
 import TopReporterTooltip from "../custom-components/tooltip/templates/top-reporters";
-
+import Helper from "../../utility/helper";
+import "./StackedBarChart.component.scss";
 
 const StackedBarChart = props => {
-  const {chart, classes, data, keys, colors, currentFilter,subType} = props;
+  const {chart, classes, data, keys, colors, currentFilter} = props;
   const svgRef = useRef();
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
@@ -28,13 +28,14 @@ const StackedBarChart = props => {
   useEffect(() => {
     const svg = select(svgRef.current);
     let {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
-    const margin = {top: 0, right: 10, bottom: 20, left: 40};
+    const margin = {top: 0, right: 10, bottom: 30, left: 40};
     width = width - margin.left - margin.right;
     height = height - margin.top - margin.bottom;
+    data.sort(function(a, b) { return a[props.chart.sortKey] - b[props.chart.sortKey]; });
 
-    const tooltip = d3Tip().attr('class','d3-tip')
+    const tooltip = d3Tip().attr("class","d3-tip")
       .offset([-10, 0])
-      .style("filter","opacity(0.95)")
+      .style("filter","opacity(0.9)")
       .style("position", "absolute")
       .style("background", "#485465")
       .style("color","white")
@@ -60,8 +61,27 @@ const StackedBarChart = props => {
 
     const x = scaleLinear()
       .domain(extent)
-      .range([0, width - margin.left - margin.right]);
+      .range([0, width - margin.left - margin.right])
 
+    if (!data || (data.length !== undefined && !data.length)) {
+      svg.append("text")
+        .attr("y", height / 2)//magic number here
+        .attr("x", width / 2)
+        .attr("text-anchor", "middle")
+        // .attr("class", "myLabel")
+        .text("No data to show");
+      return;
+    }
+
+    svg.append("text")
+      .attr("transform", "translate(" + 0 + ", " + (height + margin.top + 17) + ")")
+      .style("font-size", "12")
+      .style("font-weight", "bold")
+      .text("Claims");
+
+    const xTicks = x.ticks().filter(tick => Number.isInteger(tick));
+
+    svg.append("circle").attr("id", `${props.containerId}-tipfollowscursor`)
     svg.call(tooltip)
 
     const sbChart = svg
@@ -78,9 +98,13 @@ const StackedBarChart = props => {
       .attr("x", 0)
       .attr("width", 0)
       .attr("height", y.bandwidth())
-      .on("mouseover", function(event, d) {
-        select(this).style("opacity",0.5);
-        tooltip.show(event, d, this)
+      .on("mousemove", function(event, d) {
+        select(this).style("opacity",0.8);
+        const target = select(`#${props.containerId}-tipfollowscursor`)
+          .attr("cx", event.offsetX)
+          .attr("cy", event.offsetY - 5) // 5 pixels above the cursor
+          .node();
+        tooltip.show(event, d, target);
       })
       .on("mouseout", function() {
         select(this).style("opacity",1);
@@ -91,13 +115,18 @@ const StackedBarChart = props => {
       .attr("width", d => x(d[1]) - x(d[0]))
       .attr("x", d => x(d[0]))
 
-    const xAxis = axisBottom(x);
+    const xAxis = axisBottom(x)
+      .tickValues(xTicks)
+      .tickSize(-height)
+      .tickPadding(10)
+      .tickFormat(format("d"));
+
     svg
       .select(".x-axis")
       .attr("transform", `translate(${margin.left}, ${height + margin.top})`)
       .call(xAxis);
 
-    const yAxis = axisLeft(y);
+    const yAxis = axisLeft(y).tickSize(0);
     svg.select(".y-axis")
       .attr("transform", `translate(${margin.left}, ${margin.top})`)
       .call(yAxis)
@@ -108,8 +137,13 @@ const StackedBarChart = props => {
   return (
     <div className={`c-StackedBarChart${classes ? " " + classes : ""}`} ref={wrapperRef}>
       <svg ref={svgRef} style={{width: "100%", height: "100%"}}>
-        <g className="x-axis" />
-        <g className="y-axis" />
+        {
+          data && data.length > 0 &&
+            <React.Fragment>
+              <g className="x-axis" />
+              <g className="y-axis" />
+            </React.Fragment>
+        }
       </svg>
     </div>
   );
@@ -119,6 +153,7 @@ StackedBarChart.propTypes = {
   chart: PropTypes.object,
   classes: PropTypes.string,
   colors: PropTypes.object,
+  containerId: PropTypes.string,
   data: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array

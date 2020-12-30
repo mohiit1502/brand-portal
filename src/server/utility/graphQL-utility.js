@@ -88,12 +88,12 @@ class GraphQLUtility {
     const payload = {};
     let allQuery = "query{";
     if (query === "_all") {
-      allQuery = allQuery + Object.keys(this.gqlQueries).reduce((allQueries, queryName) => !queryName.endsWith("_filtered") ? allQueries + this.gqlQueries[queryName] : allQueries, "");
+      allQuery = allQuery + Object.keys(this.gqlQueries).reduce((allQueries, queryName) => queryName.endsWith("_default") ? allQueries + this.gqlQueries[queryName] : allQueries, "");
     } else {
       allQuery = allQuery + this.gqlQueries[query];
     }
     allQuery =  allQuery + "}"
-    filters.fromDate = "2019-12-12";
+    filters.fromDate = "1970-01-01";
     filters.toDate = "";
     allQuery = this.addFilters(allQuery, filters, query)
     payload.query = allQuery;
@@ -111,6 +111,15 @@ class GraphQLUtility {
       query = query.replace(/__fromDate__/g, fromDate);
       query = query.replace(/__toDate__/g, toDate);
       query = query.replace(/__claimFilter__/g, filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}`: "");
+    } else {
+      const now = new Date();
+      now.setDate(now.getDate() + 1)
+      const toDate = JSON.stringify(now).substring(1, 11);
+      now.setDate(now.getDate() - 30);
+      const fromDate = JSON.stringify(now).substring(1, 11);
+      query = query.replace(/__fromDate__/g, fromDate);
+      query = query.replace(/__toDate__/g, toDate);
+      query = query.replace(/__claimFilter__/g, filters.claimType && filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}`: "");
     }
     return query;
   }

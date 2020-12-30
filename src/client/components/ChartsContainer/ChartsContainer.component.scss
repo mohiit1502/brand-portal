@@ -8,4 +8,12 @@
   .c-ChartsContainer__content__body {
     height: 72.22%;
   }
+
+  .x-axis .tick text {font-weight: bold;}
+  .x-axis, .y-axis {
+    path.domain {opacity: 0;}
+    .tick {
+      line {stroke: #e6f2f7;}
+    }
+  }
 }

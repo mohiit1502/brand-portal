@@ -148,9 +148,9 @@ class UserList extends React.Component {
     });
   }
 
-  async uiSearch (evt, isFilter, filteredUsers) {
+  uiSearch (evt, isFilter, filteredUsers) {
     const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allUsers = filteredUsers ? filteredUsers : this.state.paginatedList;
+    const allUsers = filteredUsers ? filteredUsers : this.state.userList;
     const filteredList = allUsers.filter(user => {
       return user.username.toLowerCase().indexOf(searchText) !== -1
         || user.role.toLowerCase().indexOf(searchText) !== -1
@@ -217,8 +217,13 @@ class UserList extends React.Component {
         filterOption.selected = false;
       });
     });
-    const filteredList = [...this.state.paginatedList];
-    this.setState({filters, filteredList}, this.uiSearch);
+    const userList = [...this.state.userList];
+    let i = 1;
+    userList.forEach(user => user.sequence = i++)
+    this.setState({filters, filteredList: userList}, () => {
+      this.uiSearch();
+      this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
+    });
     this.toggleFilterVisibility();
   }
 
@@ -231,6 +236,7 @@ class UserList extends React.Component {
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
+        let i = 1;
         if (filterId === "brands") {
           paginatedList = paginatedList.filter(user => {
             let bool = false;
@@ -239,6 +245,7 @@ class UserList extends React.Component {
             });
             return bool;
           });
+          paginatedList.forEach(user => user.sequence = i++);
         } else {
           paginatedList = paginatedList.filter(user => {
             let bool = false;
@@ -247,6 +254,7 @@ class UserList extends React.Component {
             });
             return bool;
           });
+          paginatedList.forEach(user => user.sequence = i++);
         }
       }
     });
@@ -259,9 +267,9 @@ class UserList extends React.Component {
       this.toggleFilterVisibility(showFilter);
     }
 
-    if (buttonClickAction) {
-      this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
-    }
+    // if (buttonClickAction) {
+    //   this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
+    // }
   }
 
   createFilters(paginatedList) {
@@ -333,24 +341,34 @@ class UserList extends React.Component {
   }
 
   checkAndApplyDashboardFilter(userList) {
+    const filterValue = this.filterMap[this.props.filter["widget-user-summary"]]
+    this.createFilters(userList);
+    const stateCloned = {...this.state};
+    const userStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "status")
+    const dashboardFilter = userStatusFilter && userStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
     if (this.props.filter && this.props.filter["widget-user-summary"]) {
-      const filterValue = this.filterMap[this.props.filter["widget-user-summary"]]
-      this.createFilters(userList);
       this.setState(state => {
-        state = {...state};
-        const userStatusFilter = state.filters.length > 0 && state.filters.find(filter => filter.id === "status")
-        const dashboardFilter = userStatusFilter && userStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
         dashboardFilter && (dashboardFilter.selected = true);
-        return state;
+        return stateCloned;
       }, () => this.applyFilters(false, userList, false))
       // })
+    } else {
+      this.setState(state => {
+        let i = 1;
+        userStatusFilter && userStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
+        userList.forEach(user => user.sequence = i++)
+        return stateCloned;
+      }, () => this.applyFilters(false, userList, false))
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.userEdit.save) {
       this.fetchUserData();
       this.props.saveUserCompleted();
+    }
+    if (prevProps.filter["widget-user-summary"] !== this.props.filter["widget-user-summary"]) {
+      this.checkAndApplyDashboardFilter(this.state.userList);
     }
   }
 

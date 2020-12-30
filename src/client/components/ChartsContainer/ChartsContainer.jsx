@@ -145,29 +145,28 @@ const ChartsContainer = props => {
   const keys = legend.legendItems && legend.legendItems.map(legendItem => legendItem.name);
   const colors = {}
   legend.legendItems && legend.legendItems.forEach(legendItem => colors[legendItem.name] = legendItem.color);
-
-  const updateChart = (filterData) => {
-    let interpolatedApi = API;
-    setLoader(true);
-    try {
-      filterData && Object.keys(filterData).forEach(filter => {
-        const filterMeta = filters.find(filterItem => filterItem.name === filter);
-        const filterValue = filterMeta && filterMeta.backendMapper ? filterMeta.backendMapper[filterData[filter]] : filterData[filter];
-        interpolatedApi = interpolatedApi.replace(`__${filter}__`, filterValue)
-      })
-      Http.get(interpolatedApi)
-        .then(response => {
-          setDataLocal(response.body.data && response.body.data[DATAKEY] ? response.body.data[DATAKEY] : dataLocal);
-          setLoader(false);
-        })
-        .catch(err => {
-          console.log(err)
-          setLoader(false);
-        });
-    } catch (e) {
-      setLoader(false)
-    }
-  }
+  // const updateChart = (filterData) => {
+  //   let interpolatedApi = API;
+  //   setLoader(true);
+  //   try {
+  //     filterData && Object.keys(filterData).forEach(filter => {
+  //       const filterMeta = filters.find(filterItem => filterItem.name === filter);
+  //       const filterValue = filterMeta && filterMeta.backendMapper ? filterMeta.backendMapper[filterData[filter]] : filterData[filter];
+  //       interpolatedApi = interpolatedApi.replace(`__${filter}__`, filterValue)
+  //     })
+  //     Http.get(interpolatedApi)
+  //       .then(response => {
+  //         setDataLocal(response.body.data && response.body.data[DATAKEY] ? response.body.data[DATAKEY] : dataLocal);
+  //         setLoader(false);
+  //       })
+  //       .catch(err => {
+  //         console.log(err)
+  //         setLoader(false);
+  //       });
+  //   } catch (e) {
+  //     setLoader(false)
+  //   }
+  // }
 
   const Legend = () => (
     <div className={`c-ChartsContainer__content__footer pb-4 line-height-reset`}>
@@ -186,7 +185,8 @@ const ChartsContainer = props => {
       <h5 className={headerLayoutClasses}>{header ? header.title : ""}</h5>
       <div className={bodyLayoutClasses}>
         <FilterController filters={filters} widgetId={ID} updateChartMeta={updateChartMeta} currentFilters={currentFilters}/>
-        {SUBTYPE && !loader && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={dataLocal} keys={keys} colors={colors} currentFilter={currentFilters} subType = {SUBTYPE}/>}
+        {SUBTYPE && !loader && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={dataLocal} keys={keys} colors={colors}
+                                        currentFilter={currentFilters} containerId={ID} sortingArray={["Counterfeit", "Trademark", "Copyright", "Patent"]}/>}
         {/*{SUBTYPE && <D3Chart classes="c-ChartsContainer__content__body" chart={chart} data={window[SUBTYPE]} keys={keys} colors={colors} />}*/}
         {legend.legendItems && <Legend />}
       </div>

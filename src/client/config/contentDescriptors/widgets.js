@@ -147,8 +147,7 @@ const WIDGETCONFIG = {
           "key": "claimType",
           "group": [
             {
-              "name": "claimsCount",
-              "colorMapper": "Claims"
+              "name": "claimsCount"
             },
             {
               "name": "itemsCount",
@@ -218,7 +217,8 @@ const WIDGETCONFIG = {
           },
         ],
         "chart": {
-          "layerKey": "brandName"
+          "layerKey": "brandName",
+          "sortKey": "totalClaim"
         },
         "legend": {
           "legendItems": [
@@ -256,7 +256,8 @@ const WIDGETCONFIG = {
           "title": "Claim Submitted by User"
         },
         "chart": {
-          "layerKey": "firstName,lastName"
+          "layerKey": "firstName,lastName",
+          "sortKey": "totalClaim"
         },
         "filters": [
           {
