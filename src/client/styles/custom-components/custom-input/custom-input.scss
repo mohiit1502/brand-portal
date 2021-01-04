@@ -228,6 +228,9 @@ $dropdown-select-background: #E7F3F8;
     &.custom-input-element-textarea {
       height: unset;
       border-radius: 0px;
+      &::placeholder{
+        color: #0b1e40;
+      }
     }
     &:focus, &:active{
       box-shadow: 0px 3px 18px #7AC4E433;
