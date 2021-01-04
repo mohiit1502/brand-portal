@@ -29,7 +29,7 @@ const Alert = props => {
             </div>
             <div className="row mt-4">
               <div className="col">
-                <p className="status-header">
+                <p className="status-header font-weight-bold">
                   You have unsaved changes!
                 </p>
               </div>

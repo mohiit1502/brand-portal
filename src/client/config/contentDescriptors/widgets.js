@@ -134,7 +134,7 @@ const WIDGETCONFIG = {
       "DETAILS": {
         "layoutClasses": "pr-12",
         "header": {
-          "title": "Claim Submitted by Type"
+          "title": "Claims Submitted by Type"
         },
         "filters": [
           {
@@ -195,7 +195,7 @@ const WIDGETCONFIG = {
       "DETAILS": {
         "layoutClasses": "px-12",
         "header": {
-          "title": "Claim Submitted by Brand"
+          "title": "Claims Submitted by Brand"
         },
         "filters": [
           {
@@ -253,7 +253,7 @@ const WIDGETCONFIG = {
       "DETAILS": {
         "layoutClasses": "pl-12",
         "header": {
-          "title": "Claim Submitted by User"
+          "title": "Claims Submitted by User"
         },
         "chart": {
           "layerKey": "firstName,lastName",

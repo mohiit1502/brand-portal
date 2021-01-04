@@ -34,7 +34,7 @@ class CompanyVerificationPendingTemplate extends React.Component {
               <div className="row mt-3">
                 <div className="col">
                   <span className="status-description">
-                    Your company and brand details are currently being verified. Once complete, we will send a confirmation to your registered email. Please login using the shared link.
+                    Your company and brand details are currently being verified. <br/>Once complete, we will send a confirmation to your registered email. Please login using the shared link.
                   </span>
                 </div>
               </div>
