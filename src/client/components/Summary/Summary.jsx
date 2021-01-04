@@ -47,7 +47,7 @@ const Summary = props => {
   }
 
   const getDetails = () => {
-    return <ul className="list-unstyled row">
+    return <ul className="list-unstyled d-flex justify-content-between">
       {
         body && body.items && body.items.map((item, key) => {
           let itemCount = "-";
@@ -67,7 +67,7 @@ const Summary = props => {
               itemCount = "-"
             }
           }
-          return <li key={key} className={`list-unstyled d-inline-block col-${12/body.items.length}`}>
+          return <li key={key} className={`list-unstyled d-inline-block`}>
             <div className="font-size-12 pb-625 item-status">{item.label}</div>
             {fetchComplete ? itemCount !== "-"
               ? <span onClick={() => onClickHandler(item.name)} className="font-size-28 item-count">{itemCount}</span>
