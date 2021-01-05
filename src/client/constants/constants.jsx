@@ -39,7 +39,7 @@ const CONSTANTS = {
     PORTAL_VERIFICATION: {
       CODE: 2,
       IMAGE: "Arrow",
-      MESSAGE: "Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
+      MESSAGE: "Once complete, we will send a confirmation to your registered email.\n Please login using the shared link.",
       TITLE: "Your company and brand details are being verified"
     },
     PORTAL_DASHBOARD: {
@@ -66,7 +66,7 @@ const CONSTANTS = {
     USER_VERIFICATION: {
       CODE: 64,
       IMAGE: "Alert",
-      MESSAGE: "A verification email has been sent to your email address. Please verify using the link provided.",
+      MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
       TITLE: "Email verification required"
     },
     ERRORCODES: {
@@ -219,7 +219,7 @@ const CONSTANTS = {
   },
 
   NOTIFICATIONPOPUP: {
-    DATADELAY: 5000,
+    DATADELAY: 10000,
     SUCCESSIMAGE: "Verified",
     FAILUREIMAGE: "RedCircleCross",
     CLOSEBUTTONSUCCESS: "TimesSuccess",
