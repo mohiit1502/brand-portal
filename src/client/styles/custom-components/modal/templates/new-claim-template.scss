@@ -69,25 +69,6 @@
         background: $background-blue;
         border-bottom: 9px solid #7ac4e4;
         //box-shadow: 0px -4px 4px 0px rgba(0,0,0,0.15);
-
-
-        .btn-primary{
-          font-weight: bold;
-          background: #006799;
-          border-radius: 42px;
-          font-size: 15px;
-        }
-        .btn-primary:disabled{
-            background: #a3a8a9;
-            border-color: #a3a8a9;
-
-        }
-        .cancel-btn{
-          font-size: 18px;
-          font-weight: bold;
-          background: none;
-          text-decoration: underline;
-        }
       }
     }
   }

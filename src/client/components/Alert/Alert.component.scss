@@ -1,8 +1,34 @@
 .c-Alert {
+  .modal-dialog {
+    width:530px;
+    height: 325px;
+    .modal-content {
+      box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.16);
+      .modal-body {
+        .status-header {
+          font-size: 24px;
+        }
 
+        .status-description {
+          white-space: pre-wrap;
+          font-size: 14px;
+        }
+
+        .btn-outline-primary{
+          padding: 4px 10px;
+          border: solid 1px #006799;
+          font-weight: bold;
+          border-radius: 42px;
+          color: #006799;
+        }
+        .btn-outline-primary:hover{
+          background: none;
+          color: #006799;
+        }
+
+      }
+    }
+  }
 
 }
-.btn-danger{
-  border-radius: 42px !important;
-  font-weight: bold !important;
-}
+

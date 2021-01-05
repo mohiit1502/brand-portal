@@ -66,25 +66,7 @@ $header-color : white;
               padding-left: 0.75rem;
             }
 
-            .new-user-button-panel {
-              //padding: 0 24px;
-              .btn-primary {
-                background: $header-background;
-                font-weight: bold;
-                border-radius: 42px;
-                border: none;
-                font-size: 15px;
-              }
 
-              .btn-primary:disabled {
-                background: #a3a8a9;
-              }
-              .cancel-btn{
-                font-weight: bold;
-                text-decoration: underline;
-                font-size: 18px;
-              }
-            }
           }
         }
       }

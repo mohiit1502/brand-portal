@@ -17,7 +17,7 @@ const ReportedClaimsTooltip = function (props){
       return (
         <table className={`tooltip-table`}>
           <tr>
-            <td className = {`tooltip-col1`} style={{}}><span className="rounded" style={{background: colors.Claims}} />Claims:</td>
+            <td className = {`tooltip-col1`} style={{}}><span className="rounded" style={{background: colors[d.claimType]}} />Claims:</td>
             <td className = {`tooltip-col2`} style={{textAlign: "right"}}>{d.claimsCount}</td>
           </tr>
           <tr>
