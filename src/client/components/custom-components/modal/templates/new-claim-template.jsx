@@ -88,7 +88,7 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: "",
-            placeholder:"Please Provide Additional Information about the claim"
+            placeholder:"Please provide additional information about the claim"
           },
           signature: {
             label: "Digital Signature",

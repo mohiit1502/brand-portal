@@ -373,7 +373,7 @@ class ClaimList extends React.Component {
                 </div>
               </div>
               {this.props.filter && this.props.filter["widget-claim-summary"] && this.props.filter["widget-claim-summary"] !== "all" &&
-              <FilterType filterText={`Claim is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
+              <FilterType filterText={`Claim Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
                           clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
@@ -431,6 +431,7 @@ class ClaimList extends React.Component {
                         this.state.paginatedList.length > 0 &&
                         <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> ||
+                        this.state.loader === false &&
                         <div className="row align-items-center h-100">
                           <div className="col text-center">
                             <img src={emptyClaims} height={95}/>
