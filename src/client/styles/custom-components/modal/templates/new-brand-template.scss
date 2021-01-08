@@ -1,6 +1,6 @@
 @import "../../../override/variables";
 
-$modal-header-background-color: #235882;
+$modal-header-background-color: #006799;
 .modal{
   &.new-brand-modal{
     .modal-dialog{
@@ -18,21 +18,6 @@ $modal-header-background-color: #235882;
             //background: black;
             //padding-bottom: 20px;
             padding: 20px 0px;
-            .submit-btn{
-              border-radius: 42px;
-              background: $modal-header-background-color;
-              border : none;
-              font-weight: bold;
-              font-size: 15px;
-            }
-            .submit-btn:disabled{
-              background: #a3a8a9;
-            }
-            .cancel-btn{
-              font-weight: bold;
-              font-size: 18px;
-              text-decoration: underline;
-            }
 
           }
         }

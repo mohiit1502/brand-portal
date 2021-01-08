@@ -25,10 +25,6 @@ const Footer = props => {
                 {/* <li className="nav-item mx-4">
                   <a className="nav-link" href="#">Home</a>
                 </li> */}
-                <li className="nav-item mx-1">
-                  <a className="nav-link" href="#LoginFAQ" onClick={scrollAction}>FAQ</a>
-                  {/*<img className="nav-link" src={linkedIn}/>*/}
-                </li>
                 <li className="nav-item mx-1 d-flex align-items-center">
                   <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT}>Login</a>
                   {/*<img className="nav-link" src={youtube}/>*/}

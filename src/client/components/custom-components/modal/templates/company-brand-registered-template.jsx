@@ -39,7 +39,7 @@ class CompanyBrandRegisteredTemplate extends React.Component {
                   </span>
                 </div>
               </div>
-              <div className="row mt-5">
+              <div className="row mt-4">
                 <div className="col">
                   <a className="btn btn-sm btn-primary px-5" href={logoutUrl}>Logout</a>
                 </div>

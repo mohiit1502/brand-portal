@@ -3,7 +3,7 @@
 
 $border-color: rgb(226, 229, 231);
 $local-gray: rgb(67, 71, 80);
-$modal-header-background-color: #235882;
+$modal-header-background-color: $market-place-blue;
 
 .modal {
   &.claim-details-modal {
@@ -47,9 +47,8 @@ $modal-header-background-color: #235882;
 
           .items-row {
             .item-header-row {
-              color: $modal-header-background-color;
+              color: #235882;
               font-size: 15px;
-              //border-bottom: 1px solid $border-color;
               position: relative;
               background: #e6f2f7;
             }
@@ -65,6 +64,7 @@ $modal-header-background-color: #235882;
                 position: relative;
                 .item-url{
                   font-weight: bold;
+                  color: #006799 !important;
                 }
               }
             }
@@ -73,11 +73,6 @@ $modal-header-background-color: #235882;
 
           .status-description {
             font-size: 14px;
-          }
-          .cancel-btn{
-            font-weight: bold;
-            font-size: 18px;
-            text-decoration: underline;
           }
         }
       }

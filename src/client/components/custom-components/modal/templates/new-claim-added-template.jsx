@@ -34,32 +34,32 @@ class NewClaimAddedTemplate extends React.Component {
       <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
-            <div className="modal-body text-center p-5">
+            <div className="modal-body text-center p-3">
               <div className="row">
                 <div className="col">
-                  <img src={YellowCheckIcon} height={87}/>
+                  <img src={YellowCheckIcon} height={120}/>
                 </div>
               </div>
-              <div className="row mt-4">
+              <div className="row mt-3">
                 <div className="col">
-                  <span className="status-header">
+                  <span className="status-header font-weight-bold">
                     {this.getHeaderString()}
                   </span>
                 </div>
               </div>
-              <div className="row mt-3">
+              <div className="row mt-2">
                 <div className="col">
                   <span className="status-description">
                     {this.getDescriptionString()}
                   </span>
                 </div>
               </div>
-              <div className="row mt-5">
+              <div className="row mt-3">
                 <div className="col">
                   <div className="btn btn-sm btn-primary px-5" onClick={this.addNewClaim}>Submit another claim</div>
                 </div>
               </div>
-              <div className="row mt-3">
+              <div className="row mt-2">
                 <div className="col">
                   <div className="btn btn-sm btn-block cancel-btn text-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Done</div>
                 </div>

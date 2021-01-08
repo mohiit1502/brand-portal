@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import WMBPLightLogo from "./../../../images/wmbplightLogo.svg";
 import "../../../styles/custom-components/headers/login-header.scss";
+import CONSTANTS from "../../../constants/constants";
 
 class LoginHeader extends React.Component {
 
@@ -34,7 +35,7 @@ class LoginHeader extends React.Component {
           <ul className="navbar-nav ml-auto">
             <li className="nav-item px-4">
               {/* <Link className="nav-link" to="LoginFAQ" smooth={true} duration={500} activeClass="active" spy={true} offset={-700}>FAQ</Link> */}
-              <a className="nav-link" href="#LoginFAQ" onClick={this.scrollAction}>FAQ</a>
+              <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT}>Register</a>
             </li>
             {/*<li  className="mx-2 nav-item"><strong>|</strong></li>*/}
             <li  className="mx-2 nav-item middle-list"></li>
