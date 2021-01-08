@@ -61,7 +61,7 @@ const CONSTANTS = {
     },
     USER_VERIFICATION: {
       CODE: 64,
-      IMAGE: "Alert",
+      IMAGE: "EmailIcon",
       MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
       TITLE: "Email verification required"
     },

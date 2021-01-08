@@ -34,7 +34,6 @@
       ol {
         list-style: none;
         counter-reset: item;
-        font-weight: bolder;
         padding-left: 0;
 
         li {
@@ -60,26 +59,3 @@
 
   }
 }
-//.c-Tile:first-child, .c-Tile:nth-child(2){
-//  li{
-//    background: url("../../images/blueTick.png") no-repeat;
-//    line-height: 30px;
-//    padding-left: 40px
-//  }
-//}
-//.c-Tile:last-child{
-//
-//  li:before {
-//    background: #b7dbec;
-//    border-radius: 100%;
-//    color: #0b1e40;
-//    content: counter(item);
-//    font-size: 18px;
-//    display: inline-block;
-//    margin-right: 10px;
-//    padding: 0.1rem 0.3rem;
-//    text-align: center;
-//    width: 1.875rem;
-//    height: 1.875rem;
-//  }
-//}

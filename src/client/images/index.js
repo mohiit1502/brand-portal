@@ -12,6 +12,7 @@ import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.png";
 import CreateBrandForm from "./CreateBrandForm.png";
 import DashboardIcon from "./dashboard.png";
+import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
 import FieldLoader from "./field-loader.svg";
@@ -24,14 +25,12 @@ import HidePassword from "./hidePassword.svg";
 import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.jpg";
 import InviteUserForm from "./AddUser.jpg";
-import LandingPageBG from "./combined-shape.svg";
 import Login from "./Login.jpg";
 import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
 import ProblemSolving from "./group-1473.png";
 import Question from "./question.svg";
 import RedCircleCross from "./red-circle-cross.svg";
-import Search from "./18-px-search.svg";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
 import TimesFailure from "./times-failure.svg";
@@ -62,6 +61,7 @@ export {
     CreateBrandForm,
     CheckGreen,
     DashboardIcon,
+    EmailIcon,
     Event,
     Exclamation,
     FieldLoader,
@@ -74,14 +74,12 @@ export {
     Info,
     InviteUser,
     InviteUserForm,
-    LandingPageBG,
     Login,
     Paste,
     Plus,
     ProblemSolving,
     Question,
     RedCircleCross,
-    Search,
     ShowPassword,
     Sort,
     TimesFailure,
