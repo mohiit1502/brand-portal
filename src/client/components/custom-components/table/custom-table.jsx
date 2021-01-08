@@ -16,23 +16,9 @@ const CustomTable = function (props) {
     () => props.columns,
     []
   );
-  // TODO: use memo here
-  // let data = React.useMemo(
-  //   () => props.data,
-  //   []
-  // );
 
-
-  return (
-    <Table columns={columns} data={props.data} templateProps={props.templateProps} Template={props.template}/>
-  );
+  return <Table columns={columns} data={props.data} templateProps={props.templateProps} Template={props.template}/>;
 };
-
-// Table.propTypes = {
-//   columns: PropTypes.array,
-//   data: PropTypes.array,
-//   //Element: PropTypes.element
-// };
 
 CustomTable.propTypes = {
   columns: PropTypes.array,

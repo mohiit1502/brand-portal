@@ -426,11 +426,11 @@ class ClaimList extends React.Component {
               <div className={`row claim-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row claim-list-table-row px-4 h-90">
-                    <div className="col h-100 overflow-auto">
+                    <div className="col h-100">
                       {
-                        this.state.paginatedList.length > 0 &&
+                        this.props.claims && this.props.claims.length > 0 ?
                         <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
-                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> ||
+                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/> :
                         <div className="row align-items-center h-100">
                           <div className="col text-center">
                             <img src={emptyClaims} height={95}/>

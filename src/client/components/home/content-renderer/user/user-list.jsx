@@ -430,7 +430,7 @@ class UserList extends React.Component {
 
   render () {
 
-    const users = this.state.filteredList && this.state.filteredList.length ? this.state.filteredList : this.state.userList;
+    const users = this.state.filteredList ? this.state.filteredList : this.state.userList;
     // const viewerShip = () => {
     //   const from = this.state.page.offset * this.state.page.size + 1;
     //   const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
@@ -538,7 +538,7 @@ class UserList extends React.Component {
               <div className={`row user-list-row align-items-start ${this.state.loader && "loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90 px-4">
-                    <div className="col h-100 overflow-auto">
+                    <div className="col h-100">
                       {
                         this.state.paginatedList.length > 0 ?
                         <CustomTable data={[...this.state.paginatedList]} columns={this.state.userListColumns} template={UserListTable}

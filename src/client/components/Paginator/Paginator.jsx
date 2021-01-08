@@ -44,7 +44,7 @@ class Paginator extends Component {
     pageState.net.size = list.length;
     pageState.net.pagesCount = Math.ceil(pageState.net.size / pageState.size);
     pageState.list = pageList;
-    pageState.offset = offset >= pageState.net.pagesCount ? pageState.net.pagesCount - 1 : offset;
+    pageState.offset = offset >= pageState.net.pagesCount ? pageState.net.pagesCount - 1 > 0 ? pageState.net.pagesCount - 1 : 0 : offset;
     const startIndex = pageState.offset * size;
     const endIndex = startIndex + size;
     const pageList = list.slice(startIndex, endIndex);

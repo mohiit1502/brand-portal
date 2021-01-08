@@ -70,75 +70,73 @@ const UserListTable = function(props) {
   };
 
   return (
-    <div className="table-responsive h-100">
-      <div className="custom-table px-0">
+    <div className="custom-table px-0 h-100">
 
-        <div className="table-header">
-          {
-            headerGroups.map((headerGroup, j) => {
-              return (
-                <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    headerGroup.headers.map(header => {
-                      return (
-                        <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                          { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-        </div>
+      <div className="table-header">
+        {
+          headerGroups.map((headerGroup, j) => {
+            return (
+              <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
+                {
+                  headerGroup.headers.map(header => {
+                    return (
+                      <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
+                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })
+        }
+      </div>
 
-        <div className="table-body" {...getTableBodyProps()}>
-          {
-            rows.map(row => {
-              prepareRow(row);
-              const status = row && row.original && row.original.status;
-              // const negativeStatuses = [CONSTANTS.USER.STATUS.PENDING.toLowerCase(), CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
-              const negativeStatuses = [CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
-              const {values} = row;
-              let ddOptions;
-              return (
-                <div className="table-row row" key={`tr${row.id}`} {...row.getRowProps()}>
-                  {
-                    row.cells.map((cell, k) => {
-                      return (
-                        <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
-                          {
-                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
-                          }
-                          {
-                            cell.column.id === "username" && cell.row.original.company &&
-                            <span className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.company}</span>
-                          }
-                          {
-                            cell.column.id === "status"
-                              && (values.role === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : ""))
-                              && values.role && CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase() !== values.role.toLowerCase()
-                              && (values.status === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.status.toLowerCase()))
-                              && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) &&
-                                <span className="float-right">
-                                  &nbsp;&nbsp;
-                                  <Dropdown
-                                    options={ddOptions}
-                                    data={row.original}
-                                    hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
-                                  &nbsp;&nbsp;
-                                </span>
-                          }
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-        </div>
+      <div className="table-body" {...getTableBodyProps()}>
+        {
+          rows.map(row => {
+            prepareRow(row);
+            const status = row && row.original && row.original.status;
+            // const negativeStatuses = [CONSTANTS.USER.STATUS.PENDING.toLowerCase(), CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
+            const negativeStatuses = [CONSTANTS.USER.STATUS.REJECTED.toLowerCase()];
+            const {values} = row;
+            let ddOptions;
+            return (
+              <div className="table-row row" key={`tr${row.id}`} {...row.getRowProps()}>
+                {
+                  row.cells.map((cell, k) => {
+                    return (
+                      <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
+                        {
+                          Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
+                        }
+                        {
+                          cell.column.id === "username" && cell.row.original.company &&
+                          <span className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.company}</span>
+                        }
+                        {
+                          cell.column.id === "status"
+                            && (values.role === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : ""))
+                            && values.role && CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase() !== values.role.toLowerCase()
+                            && (values.status === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.status.toLowerCase()))
+                            && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) &&
+                              <span className="float-right">
+                                &nbsp;&nbsp;
+                                <Dropdown
+                                  options={ddOptions}
+                                  data={row.original}
+                                  hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
+                                &nbsp;&nbsp;
+                              </span>
+                        }
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })
+        }
       </div>
     </div>
   );

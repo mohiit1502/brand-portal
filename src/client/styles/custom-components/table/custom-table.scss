@@ -10,7 +10,7 @@ $row-height: 48px;
 .custom-table {
   margin: 0;
   thead, .table-header {
-    height: calc(100% - #{$header-row-height});
+    //height: $header-row-height;
     background: $table-header-background-color;
     padding: 0 15px;
     border: none;

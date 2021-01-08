@@ -43,6 +43,18 @@ class NewClaimTemplate extends React.Component {
         underwritingChecked: false,
         id: "new-claim-form",
         inputData: {
+          brandName: {
+            label: "Brand Name",
+            required: true,
+            value: "",
+            type: "select",
+            pattern: null,
+            disabled: false,
+            options: [],
+            placeholder: "Type to search",
+            subtitle: "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
+            error: ""
+          },
           claimType: {
             label: "Claim Type",
             required: true,
@@ -52,17 +64,6 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             options: [],
             subtitle: "",
-            error: ""
-          },
-          brandName: {
-            label: "Brand Name",
-            required: true,
-            value: "",
-            type: "select",
-            pattern: null,
-            disabled: false,
-            options: [],
-            subtitle: "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
             error: ""
           },
           claimTypeIdentifier: {
@@ -474,30 +475,31 @@ class NewClaimTemplate extends React.Component {
               </button>
             </div>
             <div className={`modal-body mx-2 text-left${this.state.loader && " loader"}`}>
-              <p>Select the type of infringement you are reporting</p>
+              <p>Select your brand</p>
               <div className="row">
-                <div className="col-4">
-                  <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
-                    value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
-                    disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
+                <div className="col-6">
+                  <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
+                               value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue}
+                               disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
                 </div>
               </div>
           {this.state.claimTypeSelected &&
             <React.Fragment>
-              <p>Please complete the following fields to submit your claim.</p>
-              <div className="row brand-and-patent">
+              <p>Select the type of infringement you are reporting</p>
+              <div className="row claim-type-and-patent">
                 <div className="col-4">
-                  <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
-                    value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue}
-                    disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
+                  <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
+                               value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
+                               disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                 </div>
                 <div className="col-4">
                   <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}
-                    required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
-                    pattern={inputData.claimTypeIdentifier.pattern} onChange={this.onChange} disabled={inputData.claimTypeIdentifier.disabled}
-                    dropdownOptions={inputData.claimTypeIdentifier.options} />
+                               required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
+                               pattern={inputData.claimTypeIdentifier.pattern} onChange={this.onChange} disabled={inputData.claimTypeIdentifier.disabled}
+                               dropdownOptions={inputData.claimTypeIdentifier.options} />
                 </div>
               </div>
+              <p>Please complete the following fields to submit your claim.</p>
               {
                 inputData.itemList.map((item, i) => {
                   return (

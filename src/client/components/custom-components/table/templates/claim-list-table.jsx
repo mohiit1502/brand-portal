@@ -1,21 +1,22 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-console */
 import React, {useState} from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
-import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sortIcon.svg";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import NoRecordsMatch from "../../NoRecordsMatch";
+import sortIcon from "../../../../images/sortIcon.svg";
 import Http from "../../../../utility/Http";
 
 
 const ClaimListTable = function(props) {
-  const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = props;
-  const [loader, setLoader] = useState(false);
+  const { getTableBodyProps, headerGroups, loader, rows, prepareRow } = props;
+  const [claimDetailsloader, setClaimDetailsloader] = useState(false);
 
   const showClaimDetails = async function (row) {
     // props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
-    setLoader(true);
+    setClaimDetailsloader(true);
     try {
       const ticketId = row.original && row.original.ticketId;
       const claimDetailsUrl = `/api/claims/${ticketId}`;
@@ -26,7 +27,7 @@ const ClaimListTable = function(props) {
       // eslint-disable-next-line no-undef
       console.log(e);
     }
-    setLoader(false);
+    setClaimDetailsloader(false);
   };
 
   const classColMap = {
@@ -35,52 +36,61 @@ const ClaimListTable = function(props) {
     createdBy: "col-3"
   };
 
-  return (
-    <div className={`table-responsive${loader && " loader"}`}>
-      <div className="custom-table px-0">
-        <div className="table-header">
-          {
-            headerGroups.map((headerGroup, j) => {
-              return (
-                <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    headerGroup.headers.map(header => {
-                      return (
-                        <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                          { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-        </div>
+  const sortData = (headerId) => {
 
-        <div className="table-body" {...getTableBodyProps()}>
-          {
-            rows.map(row => {
-              prepareRow(row);
-              return (
-                <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
-                  {
-                    row.cells.map((cell, k) => {
-                      return (
-                        <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
-                          {
-                            cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value
-                          }
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-        </div>
+  }
+
+  return (
+    <div className={`custom-table px-0 h-100${claimDetailsloader ? " loader" : ""}`}>
+      <div className="table-header">
+        {
+          headerGroups.map((headerGroup, j) => {
+            return (
+              <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
+                {
+                  headerGroup.headers.map(header => {
+                    const sortByToggleProps = header.getSortByToggleProps();
+                    // sortByToggleProps.onClick = (e) => {
+                    //
+                    //   console.log(e);
+                    // };
+                    // console.log(sortByToggleProps);
+                    // console.log(headerProps)
+                    return (
+                      <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
+                        { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })
+        }
       </div>
+      {rows.length > 0 &&
+      <div className="table-body" {...getTableBodyProps()}>
+        {
+          rows.map(row => {
+            prepareRow(row);
+            return (
+              <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
+                {
+                  row.cells.map((cell, k) => {
+                    return (
+                      <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
+                        {
+                          cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value
+                        }
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })
+        }
+      </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)}
     </div>
   );
 };
