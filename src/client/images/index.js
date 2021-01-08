@@ -4,11 +4,14 @@ import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
 import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./BrandList.png";
+import BrandsIcon from "./brands.png";
 import CheckGreen from "./check-grn.svg";
+import ClaimsIcon from "./claims.svg";
 import Confirm from "./confirm.svg";
 import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.png";
 import CreateBrandForm from "./CreateBrandForm.png";
+import DashboardIcon from "./dashboard.png";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
@@ -34,6 +37,7 @@ import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
 import User from "./user.svg";
+import UsersIcon from "./users.png";
 import UserList from "./User List.jpg";
 import Verified from "./verified.svg";
 import Verify from "./group-1475.png";
@@ -49,11 +53,14 @@ export {
     ArrowDown,
     BlackBGCheck,
     BrandList,
+    BrandsIcon,
+    ClaimsIcon,
     Confirm,
     ContactUsBG,
     CreateBrandButton,
     CreateBrandForm,
     CheckGreen,
+    DashboardIcon,
     EmailIcon,
     Event,
     Exclamation,
@@ -79,6 +86,7 @@ export {
     TimesSuccess,
     TOU,
     User,
+    UsersIcon,
     UserList,
     Verified,
     Verify,

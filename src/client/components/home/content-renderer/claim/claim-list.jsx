@@ -426,20 +426,19 @@ class ClaimList extends React.Component {
               <div className={`row claim-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row claim-list-table-row px-4 h-90">
-                    <div className="col h-100 overflow-auto">
+                    <div className="col h-100">
                       {
-                        this.state.paginatedList.length > 0 &&
-                        <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
-                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown}}/> ||
-                        this.state.loader === false &&
-                        <div className="row align-items-center h-100">
+                        this.props.claims ?
+                          <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
+                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
+                          : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">
                             <img src={emptyClaims} height={95}/>
                             <br/><br/>
                             <div className="h4">No Claim History</div>
                             <div>You can submit a claim by clicking the "Submit New Claim" button</div>
                           </div>
-                        </div>
+                        </div>)
                       }
                     </div>
                   </div>

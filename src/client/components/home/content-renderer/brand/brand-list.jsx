@@ -361,7 +361,7 @@ class BrandList extends React.Component {
 
   // eslint-disable-next-line complexity
   render () {
-    const brands = this.state.filteredList && this.state.filteredList.length ? this.state.filteredList : this.state.brandList;
+    const brands = this.state.filteredList ? this.state.filteredList : this.state.brandList;
 //     const viewerShip = () => {
 //       const from = this.state.page.offset * this.state.page.size + 1;
 //       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
@@ -462,11 +462,12 @@ class BrandList extends React.Component {
               <div className={`row brand-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row brand-list-table-row px-4 h-90">
-                    <div className="col h-100 overflow-auto">
+                    <div className="col h-100">
                       {
-                        this.state.paginatedList.length > 0 ?
+                        this.state.brandList ?
                         <CustomTable data={[...this.state.paginatedList]} columns={this.state.brandListColumns} template={BrandListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile}}/> : <NoRecordsMatch message="No Records Found matching search and filters provided." />
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
+                          : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }
                     </div>
                   </div>
