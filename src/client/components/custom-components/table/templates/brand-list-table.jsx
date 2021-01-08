@@ -9,7 +9,7 @@ import NoRecordsMatch from "../../NoRecordsMatch";
 
 const BrandListTable = function(props) {
 
-  const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, templateProps : {loader}, rows,  prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     sequence: "col-1"
@@ -83,7 +83,7 @@ const BrandListTable = function(props) {
           })
         }
       </div>
-      {rows.length > 0 ?
+      {rows.length > 0 &&
         <div className="table-body" {...getTableBodyProps()}>
           {
             rows.map(row => {
@@ -122,7 +122,7 @@ const BrandListTable = function(props) {
               );
             })
           }
-        </div> : (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)
+        </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)
       }
     </div>
   );

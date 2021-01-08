@@ -11,7 +11,7 @@ import Http from "../../../../utility/Http";
 
 
 const ClaimListTable = function(props) {
-  const { getTableBodyProps, headerGroups, loader, rows, prepareRow } = props;
+  const { getTableBodyProps, headerGroups, templateProps : {loader}, rows, prepareRow } = props;
   const [claimDetailsloader, setClaimDetailsloader] = useState(false);
 
   const showClaimDetails = async function (row) {
@@ -69,28 +69,21 @@ const ClaimListTable = function(props) {
         }
       </div>
       {rows.length > 0 &&
-      <div className="table-body" {...getTableBodyProps()}>
-        {
-          rows.map(row => {
-            prepareRow(row);
-            return (
-              <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
-                {
-                  row.cells.map((cell, k) => {
-                    return (
-                      <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
-                        {
-                          cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value
-                        }
-                      </div>
-                    );
-                  })
-                }
-              </div>
-            );
-          })
-        }
-      </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)}
+        <div className="table-body" {...getTableBodyProps()}>
+          {
+            rows.map(row => {
+              prepareRow(row);
+              return <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
+                  {row.cells.map((cell, k) => {
+                    return <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
+                        {cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value}
+                      </div>;
+                  })}
+                </div>;
+            })
+          }
+        </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)
+      }
     </div>
   );
 };

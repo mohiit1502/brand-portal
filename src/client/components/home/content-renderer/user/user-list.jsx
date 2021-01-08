@@ -540,9 +540,10 @@ class UserList extends React.Component {
                   <div className="row user-list-table-row h-90 px-4">
                     <div className="col h-100">
                       {
-                        this.state.paginatedList.length > 0 ?
+                        this.state.userList ?
                         <CustomTable data={[...this.state.paginatedList]} columns={this.state.userListColumns} template={UserListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile}}/> : <NoRecordsMatch />
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}} />
+                          : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }
                     </div>
                   </div>

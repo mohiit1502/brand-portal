@@ -464,9 +464,10 @@ class BrandList extends React.Component {
                   <div className="row brand-list-table-row px-4 h-90">
                     <div className="col h-100">
                       {
-                        this.state.paginatedList.length > 0 ?
+                        this.state.brandList ?
                         <CustomTable data={[...this.state.paginatedList]} columns={this.state.brandListColumns} template={BrandListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile}}/> : <NoRecordsMatch message="No Records Found matching search and filters provided." />
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
+                          : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }
                     </div>
                   </div>
