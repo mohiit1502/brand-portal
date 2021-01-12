@@ -38,6 +38,7 @@ class BrandList extends React.Component {
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
+    this.clearFilter = this.clearFilter.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
 
@@ -51,6 +52,7 @@ class BrandList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      appliedFilter: [],
       searchText: "",
       showFilters: false,
       loader: false,
@@ -194,7 +196,7 @@ class BrandList extends React.Component {
     const brandList = [...this.state.brandList];
     let i = 1;
     brandList.forEach(brand => brand.sequence = i++)
-    this.setState({filters, filteredList: brandList}, () => {
+    this.setState({filters, filteredList: brandList,appliedFilter:[]}, () => {
       this.uiSearch();
       this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
     });
@@ -223,6 +225,16 @@ class BrandList extends React.Component {
       }
     });
 
+    let appliedFilters = this.state.filters.map(filter => {
+      let clonedFilterOption = filter.filterOptions.map(option => {
+        return {...option}
+      })
+      return {...filter,filterOptions: clonedFilterOption}
+    });
+    if(buttonClickAction === true){
+      this.setState({appliedFilter: appliedFilters});
+    }
+
     if (isSearch) {
       this.setState({filteredList: paginatedList});
     } else {
@@ -233,6 +245,12 @@ class BrandList extends React.Component {
     // if (buttonClickAction) {
     //   this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
     // }
+  }
+
+  clearFilter(filterID,optionID){
+    this.onFilterChange(filterID, optionID);
+    this.applyFilters(false,null,null,true)
+    this.toggleFilterVisibility()
   }
 
   createFilters(paginatedList) {
@@ -288,7 +306,7 @@ class BrandList extends React.Component {
       this.setState(state => {
         dashboardFilter && (dashboardFilter.selected = true);
         return stateCloned;
-      }, () => this.applyFilters(false, brandList, false))
+      }, () => this.applyFilters(false, brandList, false,true))
       // })
     } else {
       this.setState(state => {
@@ -296,7 +314,7 @@ class BrandList extends React.Component {
         brandStatusFilter && brandStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
         brandList.forEach(brand => brand.sequence = i++)
         return stateCloned;
-      }, () => this.applyFilters(false, brandList, false))
+      }, () => this.applyFilters(false, brandList, false,false))
     }
   }
 
@@ -387,7 +405,7 @@ class BrandList extends React.Component {
             </div>
           </div>
           <div className="row content-row p-4 h-90 mx-0">
-            <div className="col content-col h-100;">
+            <div className="col content-col pb-4 h-100;">
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6 pl-0">
                   <div className={`btn btn-primary btn-sm px-3 ${!enableBrandCreate ? " disabled" : ""}`} onClick={enableBrandCreate && this.addNewBrand}>
@@ -408,9 +426,9 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.props.filter && this.props.filter["widget-brand-summary"] && this.props.filter["widget-brand-summary"] !== "all" &&
-              <FilterType filterText={`Brand Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-brand-summary"
-                          clearFilterHandler={this.props.dispatchFilter}/>}
+              {/*{this.props.filter && this.props.filter["widget-brand-summary"] && this.props.filter["widget-brand-summary"] !== "all" &&*/}
+              {/*<FilterType filterText={`Brand Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-brand-summary"*/}
+              {/*            clearFilterHandler={this.props.dispatchFilter}/>}*/}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 pr-4 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -459,6 +477,9 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
+              <div className="filter-pin-row">
+                <FilterType filters ={this.state.appliedFilter} clearFilter={this.clearFilter}/>
+              </div>
               <div className={`row brand-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row brand-list-table-row px-4 h-90">
@@ -499,9 +520,10 @@ class BrandList extends React.Component {
                   {/*    </div>*/}
                   {/*  </div>*/}
                   {/*</div>*/}
-                  <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />
+                  {/*<Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />*/}
                 </div>
               </div>
+              <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />
             </div>
           </div>
         </div>

@@ -23,6 +23,9 @@
     }
 
     .c-Tile__content__body {
+      display: flex;
+      justify-content: center;
+      //text-align: left;
 
       ul {
         padding-left: 1rem;

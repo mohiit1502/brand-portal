@@ -1,6 +1,9 @@
 @import "../../styles/override/variables";
 
 .c-Paginator {
+  position: sticky;
+  bottom: 0;
+  background: white;
   &.table-manage-row {
     //position: relative;
     .count {

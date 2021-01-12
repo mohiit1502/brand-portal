@@ -32,6 +32,8 @@ class ClaimList extends React.Component {
     this.uiSearch = this.uiSearch.bind(this);
     this.checkAndApplyDashboardFilter = this.checkAndApplyDashboardFilter.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
+    // this.getFilterPins = this.getFilterPins.bind(this);
+    this.clearFilter = this.clearFilter.bind(this);
     this.filterMap = {"inprogress": "Work in Progress", "closed": "Closed"};
 
     this.state = {
@@ -40,6 +42,7 @@ class ClaimList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      appliedFilter: [],
       loader: false,
       searchText: "",
       claimListColumns: [
@@ -80,6 +83,7 @@ class ClaimList extends React.Component {
     };
   }
 
+
   loader (enable) {
     this.setState(state => {
       const stateClone = {...state};
@@ -116,7 +120,7 @@ class ClaimList extends React.Component {
       this.setState(state => {
         dashboardFilter && (dashboardFilter.selected = true);
         return stateCloned;
-      }, () => this.applyFilters(false, claimList, false))
+      }, () => this.applyFilters(false, claimList, false,true))
       // })
     } else {
       this.setState(state => {
@@ -124,7 +128,7 @@ class ClaimList extends React.Component {
         claimStatusFilter && claimStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
         claimList.forEach(claim => claim.sequence = i++)
         return stateCloned;
-      }, () => this.applyFilters(false, claimList, false))
+      }, () => this.applyFilters(false, claimList, false,false))
     }
   }
 
@@ -213,7 +217,7 @@ class ClaimList extends React.Component {
     const claimList = [...this.props.claims];
     let i = 1;
     claimList.forEach(claim => claim.sequence = i++)
-    this.setState({filters, filteredList: claimList}, () => {
+    this.setState({filters, filteredList: claimList,appliedFilter:[]}, () => {
       this.uiSearch()
       this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""});
     });
@@ -277,12 +281,10 @@ class ClaimList extends React.Component {
   }
 
   applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
-
-    // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
     let paginatedList = filteredList ? [...filteredList] : [...this.props.claims];
+
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
         let i = 1;
@@ -298,20 +300,26 @@ class ClaimList extends React.Component {
       }
     });
 
+    let appliedFilters = this.state.filters.map(filter => {
+      let clonedFilterOption = filter.filterOptions.map(option => {
+        return {...option}
+      })
+      return {...filter,filterOptions: clonedFilterOption}
+    });
+
+    if(buttonClickAction === true){
+      this.setState({appliedFilter: appliedFilters});
+    }
     if (isSearch) {
       this.setState({filteredList: paginatedList});
     } else {
       this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
       this.toggleFilterVisibility(showFilter);
     }
-
-//     if (buttonClickAction) {
-//       this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""})
-//     }
   }
 
   onFilterChange (filterId, optionId) {
-    const state = {...this.state};
+   const state = {...this.state};
 
     const filter = state.filters[ClientUtils.where(state.filters, {id: filterId})];
     const option = filter.filterOptions[ClientUtils.where(filter.filterOptions, {id: optionId})];
@@ -340,6 +348,14 @@ class ClaimList extends React.Component {
     this.setState({paginatedList});
   }
 
+  clearFilter(filterID,optionID){
+    this.onFilterChange(filterID, optionID);
+    this.applyFilters(false,null,null,true)
+    this.toggleFilterVisibility()
+  }
+
+
+
   render () {
     const claims = this.state.filteredList ? this.state.filteredList : this.props.claims;
     return (
@@ -350,8 +366,9 @@ class ClaimList extends React.Component {
               <h3>My Claims</h3>
             </div>
           </div>
+          {/*h-90*/}
           <div className="row content-row p-4 h-90 mx-0">
-            <div className="col content-col h-100">
+            <div className="col content-col pb-4 h-100">
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6 pl-0">
                   <div className="btn btn-primary btn-sm px-3" onClick={this.addNewClaim}>
@@ -372,9 +389,6 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.props.filter && this.props.filter["widget-claim-summary"] && this.props.filter["widget-claim-summary"] !== "all" &&
-              <FilterType filterText={`Claim Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"
-                          clearFilterHandler={this.props.dispatchFilter}/>}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -423,9 +437,15 @@ class ClaimList extends React.Component {
                   </div>
                 </div>
               </div>
+              <div className="filter-pin-row">
+                <FilterType filters ={this.state.appliedFilter} clearFilter={this.clearFilter}/>
+              </div>
+              {/*{this.props.filter && this.props.filter["widget-claim-summary"] && this.props.filter["widget-claim-summary"] !== "all" &&*/}
+              {/*<FilterType filterText={`Claim Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"*/}
+              {/*            clearFilterHandler={this.props.dispatchFilter}/>}*/}
               <div className={`row claim-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
-                  <div className="row claim-list-table-row px-4 h-90">
+                  <div className="row claim-list-table-row mb-5 px-4 h-90">
                     <div className="col h-100">
                       {
                         this.props.claims ?
@@ -442,9 +462,9 @@ class ClaimList extends React.Component {
                       }
                     </div>
                   </div>
-                  <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={claims} section="CLAIM" updateListAndFilters={this.updateListAndFilters} />
                 </div>
               </div>
+              <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={claims} section="CLAIM" updateListAndFilters={this.updateListAndFilters} />
             </div>
           </div>
         </div>

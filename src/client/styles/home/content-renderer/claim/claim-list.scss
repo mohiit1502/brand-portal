@@ -143,6 +143,15 @@ $ozark-noir-blue: #0b1e40;
         }
 
       }
+      .filter-pin-row{
+        white-space: nowrap;
+        overflow: -moz-scrollbars-none;
+        -ms-overflow-style: none;
+        overflow-x: scroll;
+      }
+      .filter-pin-row::-webkit-scrollbar{
+        height: 0 !important;
+      }
       .claim-list-row {
         margin-right: -40px;
         margin-left: -40px;

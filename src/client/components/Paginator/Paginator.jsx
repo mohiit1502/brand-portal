@@ -84,7 +84,7 @@ class Paginator extends Component {
       </React.Fragment> : null;
 
     return (
-      <div className="c-Paginator row table-manage-row h-10 px-4 align-items-center">
+      <div className="c-Paginator row table-manage-row h-10 mb-4 align-items-center">
         <div className="col text-left">{pageViewInfo}</div>
         <div className="col text-center">
           <PaginationNav list={records ? records : []} page={this.state.page} updatePage={this.updatePage}/>
