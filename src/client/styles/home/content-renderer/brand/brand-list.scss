@@ -37,8 +37,8 @@ $filer-text-color : #424242;
 
         .btn-primary.disabled {
           cursor: default;
-          color: $button-disabled-color;
-          color: $button-disabled-color;
+          background-color: #a3a8a9;
+          color: white;
         }
 
         .input-group {
@@ -160,6 +160,15 @@ $filer-text-color : #424242;
             //box-shadow: 0 0 2px 0 rgba(0, 0, 18, 0.15);
           }
         }
+      }
+      .filter-pin-row{
+        white-space: nowrap;
+        overflow: -moz-scrollbars-none;
+        -ms-overflow-style: none;
+        overflow-x: scroll;
+      }
+      .filter-pin-row::-webkit-scrollbar{
+        height: 0 !important;
       }
 
       .brand-list-row {
