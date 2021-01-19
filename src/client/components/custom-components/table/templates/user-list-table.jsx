@@ -9,7 +9,7 @@ import NoRecordsMatch from "../../NoRecordsMatch";
 
 const UserListTable = function(props) {
 
-  const { getTableBodyProps, headerGroups, templateProps : {loader}, rows, prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     userName: "col-3",
@@ -21,7 +21,7 @@ const UserListTable = function(props) {
   const updateDDOptions = (index, values, ddOptions) => {
     const statusPending = CONSTANTS.USER.STATUS.PENDING.toLowerCase();
     const statusActive = CONSTANTS.USER.STATUS.ACTIVE.toLowerCase();
-    const statusSuspended = CONSTANTS.USER.STATUS.SUSPENDED.toLowerCase();
+    const statusSuspended = CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND.toLowerCase();
     if (index !== -1) {
       const toggleStatusDropdown = ddOptions[index];
       const incoming = values.status ? values.status.toLowerCase() : "";
@@ -80,8 +80,10 @@ const UserListTable = function(props) {
               <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
                 {
                   headerGroup.headers.map(header => {
+                    const sortByToggleProps = header.getSortByToggleProps();
+                    sortByToggleProps.onClick = () => sortHandler(header);
                     return (
-                      <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
+                      <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
                       </div>
                     );
@@ -109,7 +111,8 @@ const UserListTable = function(props) {
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
+                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value && typeof cell.value === "string"
+                            && CONSTANTS.USER.VALUES.STATUS[cell.value.toUpperCase()] ? CONSTANTS.USER.VALUES.STATUS[cell.value.toUpperCase()] : cell.value
                           }
                           {
                             cell.column.id === "username" && cell.row.original.company &&

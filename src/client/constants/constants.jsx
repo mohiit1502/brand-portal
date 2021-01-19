@@ -145,20 +145,25 @@ const CONSTANTS = {
       NEW: "New",
       PENDING: "Pending Activation",
       ACTIVE: "Active",
-      SUSPENDED: "Suspended",
+      SUSPENDED: "Inactive",
       REJECTED: "Rejected"
     },
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit User Profile",
         RESENDINVITE: "Resend Invite",
-        SUSPEND: "Suspend User Profile",
+        SUSPEND: "Deactivate User",
         REACTIVATE: "Activate User",
         DELETE: "Delete User Profile"
       },
       PAYLOAD: {
         SUSPEND: "Suspended",
         ACTIVE: "Active"
+      }
+    },
+    VALUES: {
+      STATUS: {
+        SUSPENDED: "Inactive"
       }
     }
   },
@@ -247,6 +252,14 @@ const CONSTANTS = {
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
     EMAILERROR: "Please enter a valid Email ID",
     PHONEERROR: "Please enter a valid phone number"
+  },
+
+  SORTSTATE: {
+    ASCENDING: 0,
+    DESCENDING: 1,
+    RESET: 2,
+    DATETYPE: "date",
+    ARRAYTYPE: "array"
   },
 
   POPOVERSELECTOR: "tutorialPopover",

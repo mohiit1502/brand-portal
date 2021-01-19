@@ -209,11 +209,11 @@ class CustomInput extends React.Component {
             this.state.dropdownOptions.map((option, i) => {
               return (
                 <a key={option.id || i} className="dropdown-item">
-                  <div className="form-check pl-0">
-                    <input className="cursor-pointer" type="checkbox" autoComplete="off" value={option.value}
+                  <div className="form-check pl-0 d-flex">
+                    <input className="cursor-pointer my-auto" type="checkbox" autoComplete="off" value={option.value}
                       id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
                       onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
-                    <label className="form-check-label ml-2 cursor-pointer" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
+                    <label className="form-check-label ml-2 cursor-pointer flex-fill" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
                       {option.value}
                     </label>
                   </div>

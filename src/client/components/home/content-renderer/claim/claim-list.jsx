@@ -16,6 +16,7 @@ import ClaimListTable from "../../../custom-components/table/templates/claim-lis
 import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
 import {FilterType, Paginator} from "../../../index";
+import SortUtil from "../../../../utility/SortUtil";
 
 class ClaimList extends React.Component {
 
@@ -34,6 +35,7 @@ class ClaimList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     // this.getFilterPins = this.getFilterPins.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
+    this.sort = SortUtil.sort.bind(this);
     this.filterMap = {"inprogress": "Work in Progress", "closed": "Closed"};
 
     this.state = {
@@ -45,7 +47,8 @@ class ClaimList extends React.Component {
       appliedFilter: [],
       loader: false,
       searchText: "",
-      claimListColumns: [
+      unsortedList: [],
+      columns: [
         // {
         //   Header: "#",
         //   accessor: "sequence",
@@ -53,27 +56,46 @@ class ClaimList extends React.Component {
         // },
         {
           Header: "CLAIM NUMBER",
-          accessor: "caseNumber"
+          accessor: "caseNumber",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "CLAIM TYPE",
-          accessor: "claimType"
+          accessor: "claimType",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "BRAND",
-          accessor: "brandName"
+          accessor: "brandName",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
-          Header: "CLAIM BY",
-          accessor: "createdByName"
+          Header: "SUBMITTED BY",
+          accessor: "createdByName",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
-          Header: "CLAIM DATE",
-          accessor: "claimDate"
+          Header: "SUBMISSION DATE",
+          accessor: "claimDate",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE
+          }
         },
         {
           Header: "CLAIM STATUS",
-          accessor: "claimStatus"
+          accessor: "claimStatus",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         }
         // {
         //   Header: "CLAIM STATUS DETAILS",
@@ -172,6 +194,7 @@ class ClaimList extends React.Component {
     }
 
     this.props.dispatchClaims({claimList});
+    this.setState({unsortedList: claimList});
 
     return claimList;
   }
@@ -193,9 +216,9 @@ class ClaimList extends React.Component {
         || claim.claimStatus.toLowerCase().indexOf(searchText) !== -1;
     });
     if (isFilter) {
-      this.setState({filteredList, searchText});
+      this.setState({filteredList, unsortedList: filteredList, searchText});
     } else {
-      this.setState({filteredList, searchText}, () => this.applyFilters(true, filteredList));
+      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
     }
   }
 
@@ -217,7 +240,7 @@ class ClaimList extends React.Component {
     const claimList = [...this.props.claims];
     let i = 1;
     claimList.forEach(claim => claim.sequence = i++)
-    this.setState({filters, filteredList: claimList,appliedFilter:[]}, () => {
+    this.setState({filters, filteredList: claimList, unsortedList: claimList, appliedFilter:[]}, () => {
       this.uiSearch()
       this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""});
     });
@@ -260,7 +283,7 @@ class ClaimList extends React.Component {
 
     const claimByFilter = {
       id: "createdBy",
-      name: "Claim By",
+      name: "Submitted By",
       filterOptions: Array.from(claimBySet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
@@ -281,22 +304,21 @@ class ClaimList extends React.Component {
   }
 
   applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
-    let paginatedList = filteredList ? [...filteredList] : [...this.props.claims];
+    filteredList = filteredList ? [...filteredList] : [...this.props.claims];
 
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
         let i = 1;
-        paginatedList = paginatedList.filter(claim => {
+        filteredList = filteredList.filter(claim => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
             bool = bool || (!!claim[filterId] && claim[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
           });
           return bool;
         });
-        paginatedList.forEach(claim => claim.sequence = i++)
-
+        filteredList.forEach(claim => claim.sequence = i++)
       }
     });
 
@@ -311,9 +333,9 @@ class ClaimList extends React.Component {
       this.setState({appliedFilter: appliedFilters});
     }
     if (isSearch) {
-      this.setState({filteredList: paginatedList});
+      this.setState({filteredList, unsortedList: filteredList});
     } else {
-      this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
+      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
       this.toggleFilterVisibility(showFilter);
     }
   }
@@ -353,8 +375,6 @@ class ClaimList extends React.Component {
     this.applyFilters(false,null,null,true)
     this.toggleFilterVisibility()
   }
-
-
 
   render () {
     const claims = this.state.filteredList ? this.state.filteredList : this.props.claims;
@@ -449,7 +469,7 @@ class ClaimList extends React.Component {
                     <div className="col h-100">
                       {
                         this.props.claims ?
-                          <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
+                          <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
                           : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">

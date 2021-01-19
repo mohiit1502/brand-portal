@@ -174,7 +174,7 @@ const ChartsContainer = props => {
         {legend && legend.legendItems.map((legendItem, key) =>
           <li key={key} id={legendItem.name} className={legendStyles.liClasses}>
             <span className={legendStyles.indicatorClasses} style={{background: legendItem.color}} />
-            {legendItem.name}
+            {legendItem.label}
           </li>
         )}
       </ul>
