@@ -11,7 +11,7 @@ import Http from "../../../../utility/Http";
 
 
 const ClaimListTable = function(props) {
-  const { getTableBodyProps, headerGroups, templateProps : {loader}, rows, prepareRow } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow } = props;
   const [claimDetailsloader, setClaimDetailsloader] = useState(false);
 
   const showClaimDetails = async function (row) {
@@ -36,10 +36,6 @@ const ClaimListTable = function(props) {
     createdBy: "col-3"
   };
 
-  const sortData = (headerId) => {
-
-  }
-
   return (
     <div className={`custom-table px-0 h-100${claimDetailsloader ? " loader" : ""}`}>
       <div className="table-header">
@@ -50,12 +46,7 @@ const ClaimListTable = function(props) {
                 {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
-                    sortByToggleProps.onClick = (e) => {
-                    
-                      console.log(e);
-                    };
-//                     console.log(sortByToggleProps);
-//                     console.log(headerProps)
+                    sortByToggleProps.onClick = () => sortHandler(header);
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }

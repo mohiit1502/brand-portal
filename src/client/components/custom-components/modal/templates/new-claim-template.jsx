@@ -270,24 +270,30 @@ class NewClaimTemplate extends React.Component {
   }
 
   getClaimTypes () {
-    this.loader("loader", true);
-    return Http.get("/api/claims/types")
-      .then(res => {
-        const state = {...this.state};
-        const form = {...state.form};
-        state.form = form;
-        let options = [...res.body.data];
-        options = options.map(option => {
-          const displayVal = Helper.toCamelCaseIndividual(option.claimType);
-          option.label = displayVal;
-          option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
-          return option;
-        });
+    // this.loader("loader", true);
+    const state = {...this.state};
+    const form = state.form;
+    const options = [
+      {claimType: "trademark", label: "Trademark", claimTypeIdentifierLabel: "Trademark Number"},
+      {claimType: "patent", label: "Patent", claimTypeIdentifierLabel: "Patent Number"},
+      {claimType: "counterfeit", label: "Counterfeit", claimTypeIdentifierLabel: "Trademark Number"},
+      {claimType: "copyright", label: "Copyright", claimTypeIdentifierLabel: "Copyright Number"}
+    ];
+    // return Http.get("/api/claims/types")
+    //   .then(res => {
+
+    //     let options = [...res.body.data];
+    //     options = options.map(option => {
+    //       const displayVal = Helper.toCamelCaseIndividual(option.claimType);
+    //       option.label = displayVal;
+    //       option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
+    //       return option;
+    //     });
         form.inputData.claimType.options = options && options.map(v => ({value: v.label}));
         form.claimTypesWithMeta = options;
-        state.loader = false;
+        // state.loader = false;
         this.setState(state);
-      });
+      // });
   }
 
   getBrands () {
@@ -427,9 +433,12 @@ class NewClaimTemplate extends React.Component {
   }
 
   onItemUrlChange (event, i) {
-    const url = event && event.target.value;
+    let url = event && event.target.value;
     if (url) {
       this.loader("fieldLoader", true);
+      if (url.endsWith("/")) {
+        url = url.substring(0, url.length - 1);
+      }
       const slash = url.lastIndexOf("/");
       const qMark = url.lastIndexOf("?") === -1 ? url.length : url.lastIndexOf("?");
 

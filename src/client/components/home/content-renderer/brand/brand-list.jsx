@@ -9,17 +9,17 @@ import Http from "../../../../utility/Http";
 import filterIcon from "../../../../images/filterIcon.svg";
 import kebabIcon from "../../../../images/kebab-icon.png";
 import {saveBrandCompleted} from "../../../../actions/brand/brand-actions";
-import PaginationNav from "../../../custom-components/pagination/pagination-nav";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
+import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
+import {FilterType, Paginator} from "../../../index";
 import CustomTable from "../../../custom-components/table/custom-table";
 import BrandListTable from "../../../custom-components/table/templates/brand-list-table";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
+import SortUtil from "../../../../utility/SortUtil";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
-import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
-import {FilterType, Paginator} from "../../../index";
 
 class BrandList extends React.Component {
 
@@ -39,6 +39,7 @@ class BrandList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
+    this.sort = SortUtil.sort.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
 
@@ -57,6 +58,7 @@ class BrandList extends React.Component {
       showFilters: false,
       loader: false,
       userRole,
+      unsortedList: [],
       dropdown: {
         buttonText: kebabIcon,
         dropdownOptions: [
@@ -101,23 +103,36 @@ class BrandList extends React.Component {
           // }
         ]
       },
-      brandListColumns: [
+      columns: [
         {
           Header: "#",
           accessor: "sequence",
-          canSort: true
+          canSort: false,
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "BRAND NAME",
-          accessor: "brandName"
+          accessor: "brandName",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "DATE ADDED",
-          accessor: "dateAdded"
+          accessor: "dateAdded",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE
+          }
         },
         {
           Header: "STATUS",
-          accessor: "brandStatus"
+          accessor: "brandStatus",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         }
       ]
     };
@@ -145,9 +160,9 @@ class BrandList extends React.Component {
         || brand.brandStatus && brand.brandStatus.toLowerCase().indexOf(searchText) !== -1;
     });
     if (isFilter) {
-      this.setState({filteredList, searchText});
+      this.setState({filteredList, unsortedList: filteredList, searchText});
     } else {
-      this.setState({filteredList, searchText}, () => this.applyFilters(true, filteredList));
+      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
     }
   }
 
@@ -182,7 +197,7 @@ class BrandList extends React.Component {
       this.props.dispatchWidgetAction(false);
     }
 
-    this.setState({brandList});
+    this.setState({brandList, unsortedList: brandList}, () => this.checkAndApplyDashboardFilter(brandList));
     return brandList;
   }
 
@@ -196,7 +211,7 @@ class BrandList extends React.Component {
     const brandList = [...this.state.brandList];
     let i = 1;
     brandList.forEach(brand => brand.sequence = i++)
-    this.setState({filters, filteredList: brandList,appliedFilter:[]}, () => {
+    this.setState({filters, filteredList: brandList, unsortedList: brandList, appliedFilter:[]}, () => {
       this.uiSearch();
       this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
     });
@@ -206,21 +221,21 @@ class BrandList extends React.Component {
   applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
     // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
-    let paginatedList = filteredList ? [...filteredList] : [...this.state.brandList];
+    filteredList = filteredList ? [...filteredList] : [...this.state.brandList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
         let i = 1;
-        paginatedList = paginatedList.filter(user => {
+        filteredList = filteredList.filter(user => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
             bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
           });
           return bool;
         })
-        paginatedList.forEach(brand => brand.sequence = i++);
+        filteredList.forEach(brand => brand.sequence = i++);
 
       }
     });
@@ -236,9 +251,9 @@ class BrandList extends React.Component {
     }
 
     if (isSearch) {
-      this.setState({filteredList: paginatedList});
+      this.setState({filteredList, unsortedList: filteredList});
     } else {
-      this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
+      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
       this.toggleFilterVisibility(showFilter);
     }
 
@@ -486,7 +501,7 @@ class BrandList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.brandList ?
-                        <CustomTable data={[...this.state.paginatedList]} columns={this.state.brandListColumns} template={BrandListTable}
+                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

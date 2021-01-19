@@ -19,6 +19,7 @@ import AUTH_CONFIG from "../../../../config/authorizations";
 import filterIcon from "../../../../images/filterIcon.svg";
 import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
+import SortUtil from "../../../../utility/SortUtil";
 
 class UserList extends React.Component {
 
@@ -39,6 +40,7 @@ class UserList extends React.Component {
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
+    this.sort = SortUtil.sort.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
     this.filterMap = {"pending": "Pending Activation", "active": "Active"};
 
@@ -58,6 +60,7 @@ class UserList extends React.Component {
       showFilters: false,
       loader: false,
       userRole,
+      unsortedList: [],
       dropdown: {
         buttonText: kebabIcon,
         dropdownOptions: [
@@ -116,27 +119,43 @@ class UserList extends React.Component {
           }
         ]
       },
-      userListColumns: [
+      columns: [
         {
           Header: "#",
           accessor: "sequence",
-          canSort: true
+          canSort: true,
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "USER NAME",
-          accessor: "username"
+          accessor: "username",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "ROLE",
-          accessor: "role"
+          accessor: "role",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         },
         {
           Header: "ASSOCIATED BRANDS",
-          accessor: "brands"
+          accessor: "brands",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            type: CONSTANTS.SORTSTATE.ARRAYTYPE
+          }
         },
         {
           Header: "PROFILE STATUS",
-          accessor: "status"
+          accessor: "status",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
         }
       ]
     };
@@ -160,9 +179,9 @@ class UserList extends React.Component {
         || user.brands.join(",").toLowerCase().indexOf(searchText) !== -1;
     });
     if (isFilter) {
-      this.setState({filteredList, searchText});
+      this.setState({filteredList, unsortedList: filteredList, searchText});
     } else {
-      this.setState({filteredList, searchText}, () => this.applyFilters(true, filteredList));
+      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
     }
   }
 
@@ -208,7 +227,7 @@ class UserList extends React.Component {
       this.props.dispatchWidgetAction(false);
     }
 
-    this.setState({userList});
+    this.setState({userList, unsortedList: userList}, () => this.checkAndApplyDashboardFilter(userList));
     return userList;
   }
 
@@ -222,7 +241,7 @@ class UserList extends React.Component {
     const userList = [...this.state.userList];
     let i = 1;
     userList.forEach(user => user.sequence = i++)
-    this.setState({filters, filteredList: userList,appliedFilter:[]}, () => {
+    this.setState({filters, filteredList: userList, unsortedList: userList, appliedFilter:[]}, () => {
       this.uiSearch();
       this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
     });
@@ -232,7 +251,7 @@ class UserList extends React.Component {
   applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
 
     // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
-    let paginatedList = filteredList ? [...filteredList] : [...this.state.userList];
+    filteredList = filteredList ? [...filteredList] : [...this.state.userList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
@@ -240,23 +259,23 @@ class UserList extends React.Component {
         const filterId = filter.id;
         let i = 1;
         if (filterId === "brands") {
-          paginatedList = paginatedList.filter(user => {
+          filteredList = filteredList.filter(user => {
             let bool = false;
             filterOptionsSelected.map(filterOption => {
               user[filterId].map(brand => bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
             });
             return bool;
           });
-          paginatedList.forEach(user => user.sequence = i++);
+          filteredList.forEach(user => user.sequence = i++);
         } else {
-          paginatedList = paginatedList.filter(user => {
+          filteredList = filteredList.filter(user => {
             let bool = false;
             filterOptionsSelected.map(filterOption => {
               bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
             });
             return bool;
           });
-          paginatedList.forEach(user => user.sequence = i++);
+          filteredList.forEach(user => user.sequence = i++);
         }
       }
     });
@@ -272,9 +291,9 @@ class UserList extends React.Component {
     }
 
     if (isSearch) {
-      this.setState({filteredList: paginatedList});
+      this.setState({filteredList, unsortedList: filteredList});
     } else {
-      this.setState({filteredList: paginatedList}, () => this.uiSearch(null, true, paginatedList));
+      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
       // this.setState({filteredList: paginatedList});
       this.toggleFilterVisibility(showFilter);
     }
@@ -563,7 +582,7 @@ class UserList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.userList ?
-                        <CustomTable data={[...this.state.paginatedList]} columns={this.state.userListColumns} template={UserListTable}
+                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}} />
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

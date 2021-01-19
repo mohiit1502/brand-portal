@@ -162,22 +162,27 @@ const WIDGETCONFIG = {
           "legendItems": [
             {
               "name": "Counterfeit",
+              "label": "Counterfeit",
               "color": COUNTERFEIT_COLOR,
             },
             {
               "name": "Trademark",
+              "label": "Trademark",
               "color": TRADEMARK_COLOR,
             },
             {
               "name": "Copyright",
+              "label": "Copyright",
               "color": COPYRIGHT_COLOR,
             },
             {
               "name": "Patent",
+              "label": "Patent",
               "color": PATENT_COLOR,
             },
             {
               "name": "Items",
+              "label": "# of Items",
               "color": ITEMS_COLOR,
             }
           ]
@@ -224,18 +229,22 @@ const WIDGETCONFIG = {
           "legendItems": [
             {
               "name": "Counterfeit",
+              "label": "Counterfeit",
               "color": COUNTERFEIT_COLOR,
             },
             {
               "name": "Trademark",
+              "label": "Trademark",
               "color": TRADEMARK_COLOR,
             },
             {
               "name": "Copyright",
+              "label": "Copyright",
               "color": COPYRIGHT_COLOR,
             },
             {
               "name": "Patent",
+              "label": "Patent",
               "color": PATENT_COLOR,
             }
           ]
@@ -283,18 +292,22 @@ const WIDGETCONFIG = {
           "legendItems": [
             {
               "name": "Counterfeit",
+              "label": "Counterfeit",
               "color": COUNTERFEIT_COLOR,
             },
             {
               "name": "Trademark",
+              "label": "Trademark",
               "color": TRADEMARK_COLOR,
             },
             {
               "name": "Copyright",
+              "label": "Copyright",
               "color": COPYRIGHT_COLOR,
             },
             {
               "name": "Patent",
+              "label": "Patent",
               "color": PATENT_COLOR,
             }
           ]

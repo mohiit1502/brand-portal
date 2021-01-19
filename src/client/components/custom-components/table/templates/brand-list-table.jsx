@@ -9,7 +9,7 @@ import NoRecordsMatch from "../../NoRecordsMatch";
 
 const BrandListTable = function(props) {
 
-  const { getTableBodyProps, headerGroups, templateProps : {loader}, rows,  prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows,  prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     sequence: "col-1"
@@ -71,8 +71,10 @@ const BrandListTable = function(props) {
               <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
                 {
                   headerGroup.headers.map(header => {
+                    const sortByToggleProps = header.getSortByToggleProps();
+                    sortByToggleProps.onClick = () => sortHandler(header);
                     return (
-                      <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
+                      <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
                       </div>
                     );
