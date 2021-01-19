@@ -283,7 +283,7 @@ class ClaimList extends React.Component {
 
     const claimByFilter = {
       id: "createdBy",
-      name: "Claim By",
+      name: "Submitted By",
       filterOptions: Array.from(claimBySet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
