@@ -50,12 +50,12 @@ const ClaimListTable = function(props) {
                 {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
-                    // sortByToggleProps.onClick = (e) => {
-                    //
-                    //   console.log(e);
-                    // };
-                    // console.log(sortByToggleProps);
-                    // console.log(headerProps)
+                    sortByToggleProps.onClick = (e) => {
+                    
+                      console.log(e);
+                    };
+//                     console.log(sortByToggleProps);
+//                     console.log(headerProps)
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }

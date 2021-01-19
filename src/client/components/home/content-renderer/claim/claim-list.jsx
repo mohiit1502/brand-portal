@@ -429,7 +429,7 @@ class ClaimList extends React.Component {
                     <div className="col h-100">
                       {
                         this.props.claims ?
-                          <CustomTable data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
+                          <CustomTable sortableData={[...this.props.claims]} data={[...this.state.paginatedList]} columns={this.state.claimListColumns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
                           : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">
