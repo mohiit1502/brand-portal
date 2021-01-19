@@ -38,6 +38,7 @@ class UserList extends React.Component {
     // this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
+    this.clearFilter = this.clearFilter.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
     this.filterMap = {"pending": "Pending Activation", "active": "Active"};
 
@@ -52,6 +53,7 @@ class UserList extends React.Component {
       paginatedList: [],
       filteredList: [],
       filters: [],
+      appliedFilter: [],
       searchText: "",
       showFilters: false,
       loader: false,
@@ -220,7 +222,7 @@ class UserList extends React.Component {
     const userList = [...this.state.userList];
     let i = 1;
     userList.forEach(user => user.sequence = i++)
-    this.setState({filters, filteredList: userList}, () => {
+    this.setState({filters, filteredList: userList,appliedFilter:[]}, () => {
       this.uiSearch();
       this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
     });
@@ -259,6 +261,16 @@ class UserList extends React.Component {
       }
     });
 
+    let appliedFilters = this.state.filters.map(filter => {
+      let clonedFilterOption = filter.filterOptions.map(option => {
+        return {...option}
+      })
+      return {...filter,filterOptions: clonedFilterOption}
+    });
+    if(buttonClickAction === true){
+      this.setState({appliedFilter: appliedFilters});
+    }
+
     if (isSearch) {
       this.setState({filteredList: paginatedList});
     } else {
@@ -270,6 +282,12 @@ class UserList extends React.Component {
     // if (buttonClickAction) {
     //   this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
     // }
+  }
+
+  clearFilter(filterID,optionID){
+    this.onFilterChange(filterID, optionID);
+    this.applyFilters(false,null,null,true)
+    this.toggleFilterVisibility()
   }
 
   createFilters(paginatedList) {
@@ -350,7 +368,7 @@ class UserList extends React.Component {
       this.setState(state => {
         dashboardFilter && (dashboardFilter.selected = true);
         return stateCloned;
-      }, () => this.applyFilters(false, userList, false))
+      }, () => this.applyFilters(false, userList, false,true))
       // })
     } else {
       this.setState(state => {
@@ -358,7 +376,7 @@ class UserList extends React.Component {
         userStatusFilter && userStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
         userList.forEach(user => user.sequence = i++)
         return stateCloned;
-      }, () => this.applyFilters(false, userList, false))
+      }, () => this.applyFilters(false, userList, false,false))
     }
   }
 
@@ -463,7 +481,7 @@ class UserList extends React.Component {
             </div>
           </div>
           <div className="row content-row p-4 h-90 mx-0">
-            <div className="col content-col h-100;">
+            <div className="col content-col pb-4 h-100;">
               <div className="row action-row align-items-center mx-0">
                 <div className="col-lg-8 col-6 pl-0">
                   <div className={`btn btn-primary btn-sm px-3${!enableUserInvite ? " disabled" : ""}`} onClick={enableUserInvite && this.createNewUser}>
@@ -484,9 +502,9 @@ class UserList extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.props.filter && this.props.filter["widget-user-summary"] && this.props.filter["widget-user-summary"] !== "all" &&
-              <FilterType filterText={`Profile Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"
-                          clearFilterHandler={this.props.dispatchFilter}/>}
+              {/*{this.props.filter && this.props.filter["widget-user-summary"] && this.props.filter["widget-user-summary"] !== "all" &&*/}
+              {/*<FilterType filterText={`Profile Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"*/}
+              {/*            clearFilterHandler={this.props.dispatchFilter}/>}*/}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 ml-4 pr-0 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -535,6 +553,10 @@ class UserList extends React.Component {
                   </div>
                 </div>
               </div>
+              <div className="filter-pin-row">
+                <FilterType filters ={this.state.appliedFilter} clearFilter={this.clearFilter}/>
+              </div>
+              {/*<FilterType filters ={this.state.appliedFilter} clearFilter={this.clearFilter}/>*/}
               <div className={`row user-list-row align-items-start ${this.state.loader && "loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row user-list-table-row h-90 px-4">
@@ -572,9 +594,10 @@ class UserList extends React.Component {
                   {/*    </div>*/}
                   {/*  </div>*/}
                   {/*</div>*/}
-                  <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={users} section="USER" updateListAndFilters={this.updateListAndFilters} />
+                  {/*<Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={users} section="USER" updateListAndFilters={this.updateListAndFilters} />*/}
                 </div>
               </div>
+              <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={users} section="USER" updateListAndFilters={this.updateListAndFilters} />
             </div>
           </div>
         </div>
