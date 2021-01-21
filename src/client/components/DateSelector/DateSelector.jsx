@@ -80,6 +80,8 @@ class DateSelector extends React.Component {
     currentWidgetFilters.viewValue = dateConcatenatedToView
     currentWidgetFilters.dateRange = "customDate";
     currentWidgetFilters.orgId = currentFilters.orgId;
+    currentWidgetFilters.emailId = currentFilters.emailId;
+    currentWidgetFilters.role = currentFilters.role;
     this.props.dispatchFilter(currentFilters);
     Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: updateChartMeta.filters});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE)
