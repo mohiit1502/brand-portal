@@ -6,6 +6,7 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
 import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
 import Helper from "../../utility/helper";
 import "./Summary.component.scss";
+import AuthUtil from "../../utility/AuthUtil";
 
 const Summary = props => {
 
@@ -17,6 +18,7 @@ const Summary = props => {
     history,
     ID,
     toggleModal,
+    userProfile,
     widget: {
       DETAILS: {
         body,
@@ -85,12 +87,12 @@ const Summary = props => {
   }
 
   return (
-    <div className={`c-Summary${contentClasses ? " " + contentClasses : ""}${commonWidgetClasses ? " " + commonWidgetClasses : ""}`}>
+    <div className={`c-Summary c-Widget__content${contentClasses ? " " + contentClasses : ""}${commonWidgetClasses ? " " + commonWidgetClasses : ""}`}>
       <h4 className={headerLayoutClasses}>{header ? header.title : ""}</h4>
       <div className={`Summary-body ${bodyLayoutClasses}`}>
         {getDetails()}
       </div>
-      <span className={`${footerLayoutClasses}${footerContentClasses ? " " + footerContentClasses : ""}`} onClick={triggerAddAction}>{footer && footer.text}</span>
+      <footer className={`c-Widget__content__footer${footerLayoutClasses ? " " + footerLayoutClasses : ""}${footerContentClasses ? " " + footerContentClasses : ""}${AuthUtil.isActionAccessible(footer.actionMapper, userProfile) ? "" : " disabled"}`} onClick={triggerAddAction}>{footer && footer.text}</footer>
     </div>
   );
 };
@@ -102,6 +104,7 @@ Summary.propTypes = {
   history: PropTypes.object,
   ID: PropTypes.string,
   toggleModal: PropTypes.func,
+  userProfile: PropTypes.object,
   widget: PropTypes.object,
   widgetCommon: PropTypes.object,
   widgetStackItem: PropTypes.object

@@ -14,22 +14,22 @@ class DashboardManagerApi {
     return server.route([
       {
         method: "GET",
-        path: "/api/dashboard/{orgId}",
+        path: "/api/dashboard/{orgId}/{emailId}/{role}",
         handler: this.getDashboard
       },
       {
         method: "GET",
-        path: "/api/dashboard/reportedClaimsType/{orgId}/{dateRange}",
+        path: "/api/dashboard/reportedClaimsType/{orgId}/{emailId}/{role}/{dateRange}",
         handler: this.getReportedClaimsType
       },
       {
         method: "GET",
-        path: "/api/dashboard/topReportedBrands/{orgId}/{dateRange}/{claimType}",
+        path: "/api/dashboard/topReportedBrands/{orgId}/{emailId}/{role}/{dateRange}/{claimType}",
         handler: this.getTopReportedBrands
       },
       {
         method: "GET",
-        path: "/api/dashboard/topReporters/{orgId}/{dateRange}/{claimType}",
+        path: "/api/dashboard/topReporters/{orgId}/{emailId}/{role}/{dateRange}/{claimType}",
         handler: this.getTopReporters
       }
     ]);

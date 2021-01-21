@@ -5,7 +5,7 @@ const PATENT_COLOR = "#ADDDE9";
 const ITEMS_COLOR = "#E4B33F";
 
 const WIDGETCONFIG = {
-  "API": "/api/dashboard/__orgId__",
+  "API": "/api/dashboard/__orgId__/__emailId__/__role__",
   "WIDGETS": [
     {
       "DATAMAPPER": "claim",
@@ -38,7 +38,8 @@ const WIDGETCONFIG = {
         },
         "footer": {
           "contentLayout": "text-right",
-          "text": "Submit New Claim"
+          "text": "Submit New Claim",
+          "actionMapper": "CLAIMS.DASHBOARD_ACTION"
         },
         "templateName": "NewClaimTemplate"
       },
@@ -78,7 +79,8 @@ const WIDGETCONFIG = {
         },
         "footer": {
           "contentLayout": "text-right",
-          "text": "Register New Brand"
+          "text": "Register New Brand",
+          "actionMapper": "BRANDS.DASHBOARD_ACTION"
         },
         "templateName": "NewBrandTemplate"
       },
@@ -118,7 +120,7 @@ const WIDGETCONFIG = {
         },
         "footer": {
           "text": "Invite New User",
-          "href": "/brands"
+          "actionMapper": "USERS.DASHBOARD_ACTION"
         },
         "templateName": "CreateUserTemplate"
       },
@@ -129,7 +131,7 @@ const WIDGETCONFIG = {
     },
     {
       "DATAMAPPER": "claimsByType",
-      "API": "/api/dashboard/reportedClaimsType/__orgId__/__dateRange__",
+      "API": "/api/dashboard/reportedClaimsType/__orgId__/__emailId__/__role__/__dateRange__",
       "DATAKEY": "reportedClaimsType",
       "DETAILS": {
         "layoutClasses": "pr-12",
@@ -195,7 +197,7 @@ const WIDGETCONFIG = {
     },
     {
       "DATAMAPPER": "claimsByBrands",
-      "API": "/api/dashboard/topReportedBrands/__orgId__/__dateRange__/__claimType__",
+      "API": "/api/dashboard/topReportedBrands/__orgId__/__emailId__/__role__/__dateRange__/__claimType__",
       "DATAKEY": "topReportedBrands",
       "DETAILS": {
         "layoutClasses": "px-12",
@@ -257,7 +259,7 @@ const WIDGETCONFIG = {
     },
     {
       "DATAMAPPER": "claimsByUsers",
-      "API": "/api/dashboard/topReporters/__orgId__/__dateRange__/__claimType__",
+      "API": "/api/dashboard/topReporters/__orgId__/__emailId__/__role__/__dateRange__/__claimType__",
       "DATAKEY": "topReporters",
       "DETAILS": {
         "layoutClasses": "pl-12",

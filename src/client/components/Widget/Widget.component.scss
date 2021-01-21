@@ -19,6 +19,16 @@
         .c-Widget__content__footer {
             //padding-bottom: 0 !important;
 
+            &.disabled {
+              cursor: default;
+              color: #ddd !important;
+              text-decoration-line: none !important;
+
+              &:active {
+                pointer-events: none;
+              }
+            }
+
             a {
                 cursor: pointer;
                 position: relative;
@@ -26,7 +36,7 @@
 
                 &.disabled {
                     cursor: default;
-                    color: #ddd !important;
+                    color: #bbb !important;
                     text-decoration-line: none !important;
 
                     &:active {

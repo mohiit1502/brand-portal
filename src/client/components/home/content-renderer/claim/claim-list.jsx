@@ -36,7 +36,7 @@ class ClaimList extends React.Component {
     // this.getFilterPins = this.getFilterPins.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
     this.sort = SortUtil.sort.bind(this);
-    this.filterMap = {"inprogress": "Work in Progress", "closed": "Closed"};
+    this.filterMap = {"inprogress": "In Progress", "closed": "Closed"};
 
     this.state = {
       showFilters: false,

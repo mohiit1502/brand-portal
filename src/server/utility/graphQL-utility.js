@@ -102,6 +102,8 @@ class GraphQLUtility {
 
   addFilters(query, filters, queryName) {
     filters.orgId && (query = query.replace(/__orgId__/g, filters.orgId));
+    filters.emailId && (query = query.replace(/__emailId__/g, filters.emailId));
+    filters.role && (query = query.replace(/__role__/g, filters.role));
     if (queryName !== "_all") {
       const {fromDate, toDate} = Helper.getDateRange(filters.dateRange);
       // const now = new Date();
