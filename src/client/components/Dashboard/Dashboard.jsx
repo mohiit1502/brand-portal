@@ -28,10 +28,18 @@ class Dashboard extends React.PureComponent {
   }
 
   componentDidMount() {
-    Http.get(widgetConfig.API.replace("__orgId__", this.props.userProfile.organization.id), null, null, this.props.showNotification, null, "Unable to complete request!")
+    const url = widgetConfig.API;
+    const user = this.props.userProfile;
+    const interpolatedUrl = url && user && user.role && url.replace("__orgId__", user.organization.id).replace("__emailId__", user.email).replace("__role__", user.role.name);
+    Http.get(interpolatedUrl, null, null, this.props.showNotification, null, "Unable to complete request!")
       .then(response => {
         // console.log(response);
+        const filters = {...this.props.currentFilters};
+        filters["orgId"] = user.organization.id;
+        filters["emailId"] = user.email;
+        filters["role"] = user.role && user.role.name;
         if (response.body && response.body.errors && response.body.errors.length > 0) {
+          this.props.dispatchFilter(filters);
           throw "error";
         }
         const data = response.body && response.body.data;
@@ -46,11 +54,9 @@ class Dashboard extends React.PureComponent {
           },
           fetchComplete: true
         })
-        this.props.currentFilters["orgId"] = this.props.userProfile.organization.id;
-        this.props.currentFilters["widget-claims-by-type"] = {dateRange: "last30days"};
-        this.props.currentFilters["widget-claims-by-brand"] = {dateRange: "last30days"};
-        this.props.currentFilters["widget-claims-by-user"] = {dateRange: "last30days"};
-        const filters = {...this.props.currentFilters};
+        filters["widget-claims-by-type"] = {dateRange: "last30days"};
+        filters["widget-claims-by-brand"] = {dateRange: "last30days"};
+        filters["widget-claims-by-user"] = {dateRange: "last30days"};
         this.props.dispatchFilter(filters);
       })
       .catch(e => {

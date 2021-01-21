@@ -79,6 +79,8 @@ const FilterController = props => {
     }
     currentWidgetFilters[filter.name] = option.value
     currentWidgetFilters.orgId = currentFilters.orgId;
+    currentWidgetFilters.emailId = currentFilters.emailId;
+    currentWidgetFilters.role = currentFilters.role;
     Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: filterMeta} );
     dispatchFilter(currentFilters);
   }
