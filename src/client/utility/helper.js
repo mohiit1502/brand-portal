@@ -138,18 +138,30 @@ export default class Helper {
   }
 
   static updateChart (filterData, chartsContainerMeta) {
-    let interpolatedApi = chartsContainerMeta.API;
+    let url = chartsContainerMeta.API;
     chartsContainerMeta.setLoader(true);
+    const baseUrl = url.substring(0, url.indexOf("__"));
+    let params = url.substring(url.indexOf("__"));
+    filterData && Object.keys(filterData).forEach(filter => {
+      const filterMeta = chartsContainerMeta.filters.find(filterItem => filterItem.name === filter);
+      let filterValue = filterMeta && filterMeta.backendMapper ? filterMeta.backendMapper[filterData[filter]] : filterData[filter];
+      if (filter === "dateRange" && filterValue === "customDate") {
+        filterValue = filterData.value;
+      }
+      params = params.replace(`__${filter}__`, filter + ":" + filterValue)
+    })
+    while (params.indexOf("__") > -1 && params.indexOf(":__") === -1) {
+      const firstUS = params.indexOf("__");
+      const preParam = params.substring(0, params.indexOf("__"));
+      const restParam = params.substring(params.indexOf("__") + 2);
+      const secondUS = preParam.length + restParam.indexOf("__") + 4;
+      const param = params.substring(firstUS, secondUS)
+      const paramTrimmed = param.substring(2, param.lastIndexOf("__"));
+      params = params.replace(param, paramTrimmed + ":" + param);
+    }
+    url = baseUrl + btoa(params);
     try {
-      filterData && Object.keys(filterData).forEach(filter => {
-        const filterMeta = chartsContainerMeta.filters.find(filterItem => filterItem.name === filter);
-        let filterValue = filterMeta && filterMeta.backendMapper ? filterMeta.backendMapper[filterData[filter]] : filterData[filter];
-        if (filter === "dateRange" && filterValue === "customDate") {
-          filterValue = filterData.value;
-        }
-        interpolatedApi = interpolatedApi.replace(`__${filter}__`, filterValue)
-      })
-      Http.get(interpolatedApi)
+      Http.get(url)
         .then(response => {
           chartsContainerMeta.setDataLocal(response.body.data && response.body.data[chartsContainerMeta.DATAKEY] ? response.body.data[chartsContainerMeta.DATAKEY] : chartsContainerMeta.dataLocal);
           chartsContainerMeta.setLoader(false);
@@ -161,5 +173,19 @@ export default class Helper {
     } catch (e) {
       chartsContainerMeta.setLoader(false)
     }
+  }
+
+  static getParamsEncoded (url, user) {
+    let baseUrl, params, interpolatedUrl;
+    if (url && url.indexOf("__") > -1) {
+      baseUrl = url.substring(0, url.indexOf("__"));
+      params = url.substring(url.indexOf("__"));
+      const paramsInterpolated = params && user && user.role && params.replace("__orgId__", "orgId:" + user.organization.id).replace("__emailId__", "emailId:" + user.email).replace("__role__", "role:" + user.role.name);
+      const paramsEncoded = btoa(paramsInterpolated);
+      interpolatedUrl = baseUrl + paramsEncoded;
+    } else {
+      interpolatedUrl = url && user && user.role && url.replace("__orgId__", user.organization.id).replace("__emailId__", user.email).replace("__role__", user.role.name);
+    }
+    return interpolatedUrl;
   }
 }

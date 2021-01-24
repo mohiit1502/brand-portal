@@ -10,6 +10,7 @@ import widgetConfig from "./../../config/contentDescriptors/widgets";
 import AUTH_CONFIG from "../../config/authorizations";
 // import TABLESMETA from "../../config/tablesMeta";
 import "./Dashboard.component.scss";
+import Helper from "../../utility/helper";
 
 class Dashboard extends React.PureComponent {
   constructor(props) {
@@ -30,7 +31,8 @@ class Dashboard extends React.PureComponent {
   componentDidMount() {
     const url = widgetConfig.API;
     const user = this.props.userProfile;
-    const interpolatedUrl = url && user && user.role && url.replace("__orgId__", user.organization.id).replace("__emailId__", user.email).replace("__role__", user.role.name);
+    const interpolatedUrl = Helper.getParamsEncoded(url, user);
+    // interpolatedUrl = url && user && user.role && url.replace("__orgId__", user.organization.id).replace("__emailId__", user.email).replace("__role__", user.role.name);
     Http.get(interpolatedUrl, null, null, this.props.showNotification, null, "Unable to complete request!")
       .then(response => {
         // console.log(response);
