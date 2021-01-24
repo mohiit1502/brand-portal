@@ -54,4 +54,14 @@ export default class Helper {
           return {fromDate, toDate}
       }
     }
+
+    static arrayToObj (array) {
+      const returnObj = {};
+      array && array.length > 0 && array.forEach(item => {
+        if (item.indexOf(":") > -1) {
+          returnObj[item.substring(0, item.indexOf(":"))] = item.substring(item.indexOf(":") + 1);
+        }
+      })
+      return returnObj;
+    }
 }
