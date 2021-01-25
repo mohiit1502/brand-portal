@@ -287,15 +287,10 @@ class CreateUserTemplate extends React.Component {
       .then(res => {
         const form = {...this.state.form};
         form.inputData.role.dropdownOptions = res.body.roles;
-        // console.log(res.body.roles);
         form.inputData.role.dropdownOptions.map(v => {v.value = v.name; });
         this.setState({form});
         this.loader("form", false);
       });
-    // const form = {...this.state.form};
-    // form.inputData.role.dropdownOptions = [
-    //
-    // ]
   }
 
   async fetchBrandsForUser () {
