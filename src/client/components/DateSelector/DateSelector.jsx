@@ -41,20 +41,11 @@ class DateSelector extends React.Component {
 
   getStatsFromServer() {
     const state = { ...this.state };
-    // state.startValueDate = startValueDate;
-    // state.endValueDate = endValueDate;
     this.setState(state);
 
     //get orgId - If we want to call Chart from this Component
     const orgId = `${this.props.modal.orgId}`;
     console.log("orgId" + orgId);
-
-    // if (this.state.flag2 == true && this.state.flag1 == true) {
-    //   this.state.flag2 = false;
-    //   this.state.flag1 = false;
-    //
-    //   this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    // }
   }
 
   getStats(e) {
@@ -89,37 +80,6 @@ class DateSelector extends React.Component {
     console.log(dateConcatenatedToSubmit);
     this.getStatsFromServer();
   }
-  //
-  // handleStartDateChanged(date) {
-  //   console.log("handleStartDateChanged");
-  //   let startDate = date;
-  //   let endDate = this.state.endDate;
-  //
-  //   if (startDate >= endDate && endDate != '' && endDate != null) {
-  //     console.log('startDate more than end date');
-  //     endDate = moment(date).add(1, 'days').toDate();
-  //   }
-  //   this.setState({
-  //     startDate: startDate,
-  //     endDate: endDate,
-  //     flag1: true
-  //   });
-  // }
-  // handleEndDateChanged(date) {
-  //   console.log("handleEndDateChanged");
-  //   let startDate = this.state.startDate;
-  //   let endDate = date;
-  //
-  //   if (startDate >= endDate && startDate != '' && startDate != null) {
-  //     startDate = moment(date).add(-1, 'days').toDate();
-  //   }
-  //   this.setState({
-  //     startDate: startDate,
-  //     endDate: endDate,
-  //     flag2: true
-  //   });
-  // }
-
 
   resetTemplateStatus = () => {
     console.log("resetTemplateStatus");

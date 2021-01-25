@@ -54,20 +54,8 @@ const FilterController = props => {
     setFieldState(fieldStateCloned);
   }, [currentFilters[widgetId], customDate])
 
-  //serialized function for update chart
-  //doesnt send state
-  // const serializeFunction = updateChart.toString();
-
   function dispatchDateSelector() {
-    // //Pass the org Id
-    // let currentWidgetFilters = currentFilters[widgetId];
-    // if (!currentWidgetFilters) {
-    //   currentWidgetFilters = {};
-    //   currentFilters[widgetId] = currentWidgetFilters
-    // }
-    // let orgIdValue = currentFilters.orgId;
     const meta = { templateName: "DateSelectorTemplate", updateChartMeta: {...updateChartMeta, filters: filterMeta}, orgId: currentFilters.orgId, currentFilters, widgetId };
-
     props.toggleModal(TOGGLE_ACTIONS.SHOW, { ...meta });
   }
 
