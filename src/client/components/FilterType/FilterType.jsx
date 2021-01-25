@@ -4,10 +4,6 @@ import "./FilterType.component.scss";
 
 const FilterType = props => {
 
-  // const clearFilter = () => {
-  //   props.clearFilterHandler({...props.currentFilters, [props.filterId]: ""})
-  // }
-
   const filters = props.filters
 
   const getFilterText = (filterName, filterOption) => {
