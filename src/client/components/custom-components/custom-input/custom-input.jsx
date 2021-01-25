@@ -6,6 +6,7 @@ import $ from "jquery";
 import Tooltip from "../tooltip/tooltip";
 import Validator from "../../../utility/validationUtil";
 import * as images from "./../../../images";
+import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
@@ -119,15 +120,15 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group custom-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${subtitleText ? "mb-0" : "mb-4"} ${errorClass}`}>
-        {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={images.Question}/>}
+      <div className={`form-group custom-input-form-group custom-select-form-group dropdown${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-3"} ${errorClass}`}>
+        {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={QuestionMarkIcon}/>}
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
-          <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
-          <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
+          {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
+          {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
           <span className="label-text"> { this.state.label } </span>
         </label>
         <img src={images.ArrowDown} className="dropdown-arrow"/>
@@ -188,7 +189,7 @@ class CustomInput extends React.Component {
 
     return (
 
-      <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-4"}`}>
+      <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
           value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
@@ -208,11 +209,11 @@ class CustomInput extends React.Component {
             this.state.dropdownOptions.map((option, i) => {
               return (
                 <a key={option.id || i} className="dropdown-item">
-                  <div className="form-check pl-0">
-                    <input className="cursor-pointer" type="checkbox" autoComplete="off" value={option.value}
+                  <div className="form-check pl-0 d-flex">
+                    <input className="cursor-pointer my-auto" type="checkbox" autoComplete="off" value={option.value}
                       id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
                       onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
-                    <label className="form-check-label ml-2 cursor-pointer" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
+                    <label className="form-check-label ml-2 cursor-pointer flex-fill" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
                       {option.value}
                     </label>
                   </div>
@@ -272,7 +273,7 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     const pattern = this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath);
     return (
-      <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-3" : " mb-4"}${errorClass ? " " + errorClass : ""}
+      <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-2" : " mb-3"}${errorClass ? " " + errorClass : ""}
         ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
@@ -301,7 +302,7 @@ class CustomInput extends React.Component {
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} />
+          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
       </div>
     );
   }
@@ -370,7 +371,7 @@ CustomInput.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
-  ])
+  ]),
 };
 
 const mapStateToProps = state => state;

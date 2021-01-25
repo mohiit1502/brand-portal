@@ -1,6 +1,13 @@
 @import "../override/variables";
 
 .onboard-container{
-  padding: 0 15px;
+  //padding: 0 15px;
+  background: #e6f2f7;
+  .onboard-form-container{
+    margin-top: 4rem;
+    background: white url("./../../images/onboard-screen.svg") left no-repeat;
+    background-size: contain;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+  }
 }
 

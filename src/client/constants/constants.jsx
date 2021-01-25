@@ -34,8 +34,8 @@ const CONSTANTS = {
     },
     PORTAL_VERIFICATION: {
       CODE: 2,
-      IMAGE: "Alert",
-      MESSAGE: "Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
+      IMAGE: "Arrow",
+      MESSAGE: "Once complete, we will send a confirmation to your registered email.\n Please login using the shared link.",
       TITLE: "Your company and brand details are being verified"
     },
     PORTAL_DASHBOARD: {
@@ -61,8 +61,8 @@ const CONSTANTS = {
     },
     USER_VERIFICATION: {
       CODE: 64,
-      IMAGE: "Alert",
-      MESSAGE: "A verification email has been sent to your email address. Please verify using the link provided.",
+      IMAGE: "EmailIcon",
+      MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
       TITLE: "Email verification required"
     },
     ERRORCODES: {
@@ -113,9 +113,9 @@ const CONSTANTS = {
   },
 
   NAVIGATION_PANEL: [
-    { id: "1", name: "DASHBOARD", value: "HOME", href: "/dashboard", active: false},
-    { id: "2", name: "CLAIMS", value: "MY CLAIMS", href: "/claims", active: false},
-    { id: "3", name: "BRANDS", value: "MY BRANDS", href: "/brands", active: false},
+    { id: "1", name: "DASHBOARD", value: "My Dashboard", href: "/dashboard", active: false, image: "DashboardIcon"},
+    { id: "2", name: "CLAIMS", value: "My Claims", href: "/claims", active: false, image: "ClaimsIcon"},
+    { id: "3", name: "BRANDS", value: "My Brands", href: "/brands", active: false, image: "BrandsIcon"},
     // {
     //   id: "3",
     //   name: "USERS",
@@ -126,7 +126,7 @@ const CONSTANTS = {
     //     { id: "32", name: "APPROVALLIST", value: "Approval List", href: "/users/user-approval", active: false}
     //   ]
     // }
-    { id: "4", name: "USERS", value: "USERS", href: "/users", active: false}
+    { id: "4", name: "USERS", value: "Users", href: "/users", active: false, image: "UsersIcon"}
   ],
 
   USER: {
@@ -145,20 +145,25 @@ const CONSTANTS = {
       NEW: "New",
       PENDING: "Pending Activation",
       ACTIVE: "Active",
-      SUSPENDED: "Suspended",
+      SUSPENDED: "Inactive",
       REJECTED: "Rejected"
     },
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit User Profile",
         RESENDINVITE: "Resend Invite",
-        SUSPEND: "Suspend User Profile",
+        SUSPEND: "Deactivate User",
         REACTIVATE: "Activate User",
         DELETE: "Delete User Profile"
       },
       PAYLOAD: {
         SUSPEND: "Suspended",
         ACTIVE: "Active"
+      }
+    },
+    VALUES: {
+      STATUS: {
+        SUSPENDED: "Inactive"
       }
     }
   },
@@ -205,7 +210,7 @@ const CONSTANTS = {
 
   LOGIN: {
     LANDING_PAGE_TEXT: "Helping you protect your intellectual property on Walmart.com",
-    REGISTER_TEXT: "Register Now",
+    REGISTER_TEXT: "Register",
     IMAGE_WALMART_INTRO: "WalmartIntro",
     CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
     CONTACTEMAIL: "support@brandportal.com",
@@ -215,7 +220,7 @@ const CONSTANTS = {
   },
 
   NOTIFICATIONPOPUP: {
-    DATADELAY: 5000,
+    DATADELAY: 10000,
     SUCCESSIMAGE: "Verified",
     FAILUREIMAGE: "RedCircleCross",
     CLOSEBUTTONSUCCESS: "TimesSuccess",
@@ -230,13 +235,14 @@ const CONSTANTS = {
   },
 
   REGEX: {
-    NAMES: "[a-zA-Z0-9. ]+",
-    COMPANY: "[a-zA-Z0-9., ]+",
-    ZIP: "\\d{5}(?:[-\s]\\d{4})?$",
-    EMAIL: "\\S+@\\S+\.\\S+",
-    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
-    REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$"
+    COMPANY: "[a-zA-Z0-9., ]+",
+    EMAIL: "\\S+@\\S+\.\\S+",
+    NAMES: "[a-zA-Z0-9. ]+",
+    PASSWORD: "^(?=.*[A-Z]{1,})(?=.*[a-z]{1,})(?=.*[0-9]{1,})(?=.*[~!@#$%^&*()\\-_=+{};:,<.>]{1,}).{8,}$",
+    PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
+    REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$",
+    ZIP: "\\d{5}(?:[-\s]\\d{4})?$"
   },
 
   ERRORMESSAGES: {
@@ -246,6 +252,14 @@ const CONSTANTS = {
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
     EMAILERROR: "Please enter a valid Email ID",
     PHONEERROR: "Please enter a valid phone number"
+  },
+
+  SORTSTATE: {
+    ASCENDING: 0,
+    DESCENDING: 1,
+    RESET: 2,
+    DATETYPE: "date",
+    ARRAYTYPE: "array"
   },
 
   POPOVERSELECTOR: "tutorialPopover",

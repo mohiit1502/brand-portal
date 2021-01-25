@@ -2,13 +2,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sort.svg";
+import sortIcon from "../../../../images/sortIcon.svg";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
+import NoRecordsMatch from "../../NoRecordsMatch";
 
 const UserListTable = function(props) {
 
-  const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     userName: "col-3",
@@ -20,7 +21,7 @@ const UserListTable = function(props) {
   const updateDDOptions = (index, values, ddOptions) => {
     const statusPending = CONSTANTS.USER.STATUS.PENDING.toLowerCase();
     const statusActive = CONSTANTS.USER.STATUS.ACTIVE.toLowerCase();
-    const statusSuspended = CONSTANTS.USER.STATUS.SUSPENDED.toLowerCase();
+    const statusSuspended = CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND.toLowerCase();
     if (index !== -1) {
       const toggleStatusDropdown = ddOptions[index];
       const incoming = values.status ? values.status.toLowerCase() : "";
@@ -70,29 +71,30 @@ const UserListTable = function(props) {
   };
 
   return (
-    <div className="table-responsive h-100">
-      <div className="custom-table h-100">
+    <div className="custom-table px-0 h-100">
 
-        <div className="table-header">
-          {
-            headerGroups.map((headerGroup, j) => {
-              return (
-                <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    headerGroup.headers.map(header => {
-                      return (
-                        <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                          { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-        </div>
-
+      <div className="table-header">
+        {
+          headerGroups.map((headerGroup, j) => {
+            return (
+              <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
+                {
+                  headerGroup.headers.map(header => {
+                    const sortByToggleProps = header.getSortByToggleProps();
+                    sortByToggleProps.onClick = () => sortHandler(header);
+                    return (
+                      <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
+                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })
+        }
+      </div>
+      {rows.length > 0 &&
         <div className="table-body" {...getTableBodyProps()}>
           {
             rows.map(row => {
@@ -109,25 +111,27 @@ const UserListTable = function(props) {
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
+                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value && typeof cell.value === "string"
+                            && CONSTANTS.USER.VALUES.STATUS[cell.value.toUpperCase()] ? CONSTANTS.USER.VALUES.STATUS[cell.value.toUpperCase()] : cell.value
                           }
                           {
                             cell.column.id === "username" && cell.row.original.company &&
-                            <span className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.company}</span>
+                            <span
+                              className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.company}</span>
                           }
                           {
                             cell.column.id === "status"
-                              && (values.role === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : ""))
-                              && values.role && CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase() !== values.role.toLowerCase()
-                              && (values.status === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.status.toLowerCase()))
-                              && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) && 
-                                <span className="float-right">
+                            && (values.role === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : ""))
+                            && values.role && CONSTANTS.USER.ROLES.SUPERADMIN.toLowerCase() !== values.role.toLowerCase()
+                            && (values.status === undefined || AUTH_CONFIG.USERS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.status.toLowerCase()))
+                            && (ddOptions = generateDropDownOptionsDynamic(dropdownOptions, values)) &&
+                            <span className="float-right">
                                   &nbsp;&nbsp;
-                                  <Dropdown
-                                    options={ddOptions}
-                                    data={row.original}
-                                    hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
-                                  &nbsp;&nbsp;
+                              <Dropdown
+                                options={ddOptions}
+                                data={row.original}
+                                hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")}/>
+                              &nbsp;&nbsp;
                                 </span>
                           }
                         </div>
@@ -138,8 +142,8 @@ const UserListTable = function(props) {
               );
             })
           }
-        </div>
-      </div>
+        </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)
+      }
     </div>
   );
 };

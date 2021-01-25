@@ -40,8 +40,10 @@ class Onboarder extends React.Component {
     return (
       <div className="view-container onboard-container">
         <HomeHeader {...this.props}/>
-        <Stepper steps={this.props.steps} />
-        <ContentRendererOnboard {...this.props} {...this.state} updateOrgData={this.callback}/>
+        <div className="onboard-form-container container">
+          <Stepper steps={this.props.steps} />
+          <ContentRendererOnboard {...this.props} {...this.state} updateOrgData={this.callback}/>
+        </div>
       </div>
     );
   }

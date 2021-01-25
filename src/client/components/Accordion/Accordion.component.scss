@@ -1,8 +1,5 @@
 .c-Accordion {
 
-    .c-Accordion__button-container:hover {
-        background: #FAFAFA;
-    }
 
     .c-Accordion__button {
         background: none;
@@ -18,23 +15,18 @@
         &:after {
             height: 1rem;
             width: 1rem;
-            content: "";
+            content: url("../../images/bluePlus1.png");
             transition: .4s transform;
             transform: rotate(45deg);
-            border-top: 3px solid #2B3339;
-            border-right: 3px solid #2B3339;
             float: right;
             margin-left: 5px;
             margin-top: 5px;
         }
         &.expanded {
-            font-weight: bolder;
-            &:after {
-                transform: rotate(135deg);
-            }
+          font-weight: bolder;
         }
     }
-    
+
     .c-Accordion__panel {
         padding: 0 1.5rem 0;
         background-color: white;
@@ -45,13 +37,14 @@
         // & > span {
         //     padding-bottom: 1rem;
         // }
-        
+
         & > *:last-child {
             padding-bottom: 0;
             margin-bottom: 0;
         }
 
         &.expanded {
+            padding-top: 10px;
             padding-bottom: 1.5rem;
             overflow: scroll;
         }

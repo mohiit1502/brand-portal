@@ -1,0 +1,36 @@
+$theme-color: #017DC6;
+
+.c-ClaimTabular {
+  .tab-bar {
+    background: #D8D8D8;
+    //height: 20%;
+    .list-horizontal {
+      cursor: pointer;
+
+      &:hover {
+        background: #EAEAEA;
+      }
+
+      &.active {
+        background: #FFFFFF;
+        border-top: 3px solid $theme-color;
+      }
+
+      .item-label {
+        color: #868C94;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      .item-count {
+        color: #2B3339;
+        font-size: 1.75rem;
+        margin-bottom: 0;
+      }
+    }
+  }
+  .content-container {
+    height: 80%;
+  }
+}

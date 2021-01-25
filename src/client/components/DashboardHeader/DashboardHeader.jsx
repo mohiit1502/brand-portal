@@ -6,7 +6,8 @@ const DashboardHeader = props => {
   return (
     <div className="c-DashboardHeader row p-4 h-10 mx-0">
       <div className="col">
-        <h3>Hello {props.userInfo.firstName}!</h3>
+        {/*<h3>Hello {props.userInfo.firstName}!</h3>*/}
+        <h3>My Dashboard</h3>
       </div>
     </div>
   );

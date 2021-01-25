@@ -1,6 +1,8 @@
 @import "../../../override/variables";
 
 .modal {
+  width:530px;
+  height: 325px;
   .modal-dialog {
     .modal-content {
       .modal-body {
@@ -9,6 +11,7 @@
         }
 
         .status-description {
+          white-space: pre-wrap;
           font-size: 14px;
         }
       }

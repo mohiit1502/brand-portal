@@ -175,13 +175,13 @@ class NewBrandTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className={`modal-body text-left${this.state.form.loader && " loader"}`}>
+            <div className={`modal-body p-0 text-left${this.state.form.loader && " loader"}`}>
               <div className="row">
-                <div className="col">
+                <div className="col px-4 mx-2 pb-1 pt-4">
                   <p>{form.formHeading}</p>
                 </div>
               </div>
-              <form onSubmit={this.handleSubmit} className="h-100 px-2">
+              <form onSubmit={this.handleSubmit} className="h-100 px-4">
                 {this.getFieldRenders()}
                 {/*<div className="row mt-3">*/}
                 {/*  <div className="col text-right">*/}

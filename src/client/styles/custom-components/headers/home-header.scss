@@ -4,14 +4,16 @@ $dropdown-white : #F9F9F9;
 
 
 .home-header-nav{
-  background: $blue;
+  background: #006799;
   height: $nav-max-height;
   max-height: $nav-max-height;
-  margin: 0 -15px;
+  //margin: 0 -15px;
 
   .walmart-brand{
     img {
-      width: 122px;
+      width: 235px;
+      height: 28px;
+      margin-left: 27px;
     }
   }
   .navbar-collapsible-header{
@@ -24,17 +26,21 @@ $dropdown-white : #F9F9F9;
       .nav-link {
         font-size: 16px;
         color : white;
+        font-weight: bold;
         &.login-btn{
           width : 90px;
           border : 1px solid $white;
           @extend .py-1;
+        }
+        &.user-name{
+          display: flex;
+          align-items: center;
         }
         &.nav-help {
           display: flex;
           align-items: center;
 
           .badge {
-            font-family: Arial Rounded MT Bold;
             font-size: 1rem;
             padding: 0.2em 0.42em;
           }

@@ -17,7 +17,6 @@ import { ElectrodeApplication } from "@walmart/electrode-application";
 import "./styles/global.scss";
 
 // Redux configure store with Hot Module Reload
-//
 const configureStore = initialState => {
   const composeEnhancers =
   typeof window === "object" &&

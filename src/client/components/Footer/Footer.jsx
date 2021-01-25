@@ -2,6 +2,7 @@ import React from "react";
 import * as images from "./../../images";
 import CONSTANTS from "./../../constants/constants";
 import "./Footer.component.scss";
+import WMBPDarkLogo from "./../../images/WMWhite-horizontal.svg";
 
 const Footer = props => {
 
@@ -16,7 +17,7 @@ const Footer = props => {
         <div className="col">
           <nav className="navbar navbar-expand-lg login-footer-nav">
             <div className="c-Footer__logoSocialContainer">
-              <img className="c-Footer__wmWhiteLogo" src={images.WMWhite} />
+              <img className="c-Footer__wmWhiteLogo" src={WMBPDarkLogo} />
               {/* <span className="c-Footer__logoText">Walmart Brand Portal</span> */}
             </div>
             <div className="collapse navbar-collapse navbar-collapsible-footer" id="collapsible-footer">
@@ -24,14 +25,13 @@ const Footer = props => {
                 {/* <li className="nav-item mx-4">
                   <a className="nav-link" href="#">Home</a>
                 </li> */}
-                <li className="nav-item mx-4">
-                  <a className="nav-link" href="#LoginFAQ" onClick={scrollAction}>FAQ</a>
-                </li>
-                <li className="nav-item mx-4 d-flex align-items-center">
+                <li className="nav-item mx-1 d-flex align-items-center">
                   <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT}>Login</a>
+                  {/*<img className="nav-link" src={youtube}/>*/}
                 </li>
-                <li className="nav-item ml-4">
+                <li className="nav-item ml-1">
                   <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT}>Register</a>
+                  {/*<img className="nav-link" src={walmart}/>*/}
                 </li>
               </ul>
             </div>
@@ -41,8 +41,11 @@ const Footer = props => {
       <div className="row">
         <div className="col">
           <div className="c-Footer__copyrightContainer">
-            <span className="c-Footer__copyrightText float-left">{CONSTANTS.LOGIN.COPYRIGHTTEXT}</span>
-            <a target="_blank" href={CONSTANTS.LOGIN.PRIVACYURL} className="c-Footer__privacyNav float-right">{CONSTANTS.LOGIN.PRIVACYTEXT}</a>
+            <span className="c-Footer__copyrightText float-left">
+              {CONSTANTS.LOGIN.COPYRIGHTTEXT}
+              <a target="_blank" href={CONSTANTS.LOGIN.PRIVACYURL} className="c-Footer__privacyNav float-right">{CONSTANTS.LOGIN.PRIVACYTEXT}</a>
+            </span>
+            {/*<a target="_blank" href={CONSTANTS.LOGIN.PRIVACYURL} className="c-Footer__privacyNav float-right">{CONSTANTS.LOGIN.PRIVACYTEXT}</a>*/}
           </div>
         </div>
       </div>

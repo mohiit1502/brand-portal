@@ -1,107 +1,52 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-
+import "../../../styles/custom-components/pagination/pagination-nav.scss"
+import leftCaret from "../../../images/caret_left.svg"
+import rightCaret from "../../../images/caret_right.svg"
 
 class PaginationNav extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.updatePage = this.updatePage.bind(this);
-
-    this.state = {
-      list: [],
-      page: {
-        offset: 0,
-        size: 0,
-        net: {
-          size: 0,
-          pagesCount: 0
-        },
-        list: []
-      }
-    };
-  }
-
-  updatePage (list, offset, size) {
-    //console.log(offset >= this.state.page.net.pagesCount || offset < 0)
-
-    const startIndex = offset * size;
-    const endIndex = startIndex + size;
-    const pageList = list.slice(startIndex, endIndex);
-
-    const pageState = {...this.state.page};
-    pageState.offset = offset;
-    pageState.size = size;
-    pageState.net.size = list.length;
-    pageState.net.pagesCount = Math.ceil(pageState.net.size / pageState.size);
-    pageState.list = pageList;
-
-    if (pageState.offset >= pageState.net.pagesCount || pageState.offset < 0) {
-      return;
-    }
-
-    this.setState({list, page: pageState});
-    this.props.callback(pageState);
-  }
-
-  componentDidMount() {
-    if (this.props.list.length && this.props.offset >= 0 && this.props.size >= 0) {
-      this.updatePage(this.props.list, this.props.offset, this.props.size);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps !== this.props && this.props.list.length && this.props.offset >= 0 && this.props.size >= 0) {
-      this.updatePage(this.props.list, this.props.offset, this.props.size);
-    }
-  }
-
   render() {
-    const paginationNav = [];
-    for (let i = 0; i < this.state.page.net.pagesCount; i++) {
-      const navItem = (<li key={i} className={`page-item ${this.state.page.offset === i ? "active" : ""}`}
-        onClick={() => {this.updatePage(this.state.list, i, this.state.page.size);}}>
+    const paginationButtons = [];
+    const page = this.props.page;
+    for (let i = 0; i < page.net.pagesCount; i++) {
+      const navItem = (<li key={i} className={`page-item ${page.offset === i ? "active" : ""}`}
+        onClick={() => {this.props.updatePage(i, page.size);}}>
         <a className="page-link" href="#">{i + 1}</a>
       </li>);
-      paginationNav.push(navItem);
+      paginationButtons.push(navItem);
     }
 
+    const previousButton = <li className="page-item" onClick={() => this.props.updatePage(page.offset - 1, page.size)}>
+      <a className="page-link left" href="#" aria-label="Previous">
+        <img className="arrow left" src={leftCaret}/>
+      </a>
+    </li>;
+
+    const nextButton = <li className="page-item" onClick={() => this.props.updatePage(page.offset + 1, page.size)}>
+      <a className="page-link right" href="#" aria-label="Next">
+        <img className="arrow right" src={rightCaret}/>
+      </a>
+    </li>
+
     return (
-      !!this.state.list.length &&
+      !!this.props.list.length &&
         <nav>
           <ul className="pagination pagination-sm justify-content-center align-items-center m-0">
-            <li className="page-item"
-              onClick={() => {this.updatePage(this.state.list, this.state.page.offset - 1, this.state.page.size);}}>
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true"> &lt; </span>
-              </a>
-            </li>
-            {paginationNav}
-            <li className="page-item"
-              onClick={() => {this.updatePage(this.state.list, this.state.page.offset + 1, this.state.page.size);}}>
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true"> &gt; </span>
-              </a>
-            </li>
+            {previousButton}
+            {paginationButtons}
+            {nextButton}
           </ul>
         </nav>
     );
   }
 }
 
-
 PaginationNav.propTypes = {
   list: PropTypes.array,
-  offset: PropTypes.number,
-  size: PropTypes.number,
-  callback: PropTypes.func
+  page: PropTypes.object,
+  updatePage: PropTypes.func
 };
 
-const mapStateToProps = state => state;
-
-
-export default connect(
-  mapStateToProps,
-  dispatch => ({ dispatch })
-)(PaginationNav);
+export default connect()(PaginationNav);

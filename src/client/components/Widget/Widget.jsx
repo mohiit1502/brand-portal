@@ -1,100 +1,66 @@
-/* eslint-disable filenames/match-regex */
-/* eslint-disable max-statements */
-/* eslint-disable complexity */
-import React, {useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-import {dispatchWidgetAction} from "./../../actions/dashboard/dashboard-actions";
+import {ChartsContainer, Summary} from "../index";
 import "./Widget.component.scss";
 
-const Widget = props => {
+const contentComponentMap = {
+  VERTICALGROUPEDBAR: ChartsContainer,
+  SUMMARY: Summary,
+  HORIZONTALSTACKEDBAR: ChartsContainer
+}
 
+const Widget = props => {
   const {
-  authConfig,
-  widgetActionDispatcher,
-  restConfig,
+    data,
+    currentFilters,
+    fetchComplete,
+    userProfile,
     widgetCommon: {
       layoutClasses: commonLayoutClasses = "",
-      widgetClasses: commonWidgetClasses = "",
       widgetStyle: commonWidgetStyle = {},
-      contentLayout: commonContentLayout = "",
-      header: commonHeader = {},
-      body: commonBody = {},
-      footer: commonFooter = {}
     },
-    widget: {actionEnabler = "", colClass = "", item = "", action = "", layoutClasses = "", widgetClasses = "", widgetStyle = {}, header = {}, body = {}, footer = {}},
-    userProfile
+    widget: {
+      API,
+      DATAKEY,
+      ID,
+      DETAILS: {
+        colClass = "",
+        layoutClasses = "",
+        widgetStyle = {}
+      },
+      SUBTYPE,
+      TYPE
+    },
+    widgetStackItem
   } = props;
 
-  const [hovered, setHovered] = useState(false);
+  const opts = {API, currentFilters, data, DATAKEY, ID, fetchComplete, widgetCommon: props.widgetCommon, userProfile, widgetStackItem, SUBTYPE, widget: props.widget};
+  // tableMeta !== undefined && (opts.tableMeta = tableMeta);
 
-  const authRoles = userProfile.role && authConfig[item] && authConfig[item][action] ? authConfig[item][action].length ? authConfig[item][action] : Object.keys(authConfig[item][action]) : [];
-  window[actionEnabler] = restConfig.AUTHORIZATIONS_ENABLED ? authRoles && authRoles.length > 0 && userProfile.role.name && authRoles.map(role => role.toLowerCase()).includes(userProfile.role.name && userProfile.role.name.toLowerCase()) : true;
-  const isDisabled = actionEnabler && !window[actionEnabler];
-
+  const ContentComponent = contentComponentMap[TYPE];
   const commonLayoutClassesInferred = `${commonLayoutClasses ? ` ${commonLayoutClasses}` : ""}`;
   const layoutClassesInferred = `${layoutClasses ? ` ${layoutClasses}` : ""}`;
   const colClassInferred = `${colClass ? ` ${colClass}` : ""}`;
 
-  const commonWidgetClassesInferred = `${commonWidgetClasses ? ` ${commonWidgetClasses}` : ""}`;
-  const widgetClassesInferred = `${widgetClasses ? ` ${widgetClasses}` : ""}`;
-
-  const commonContentLayoutInferred = `${commonContentLayout ? ` ${commonContentLayout}` : ""}`;
-
-  const commonHeaderLayoutInferred = `${commonHeader.contentLayout ? ` ${commonHeader.contentLayout}` : ""}`;
-  const headerLayoutInferred = `${header.contentLayout ? ` ${header.contentLayout}` : ""}`;
-  const commonHeaderContentClassesInferred = `${commonHeader.contentClasses ? ` ${commonHeader.contentClasses}` : ""}`;
-  const headerContentClassesInferred = `${header.contentClasses ? ` ${header.contentClasses}` : ""}`;
-
-  const commonBodyLayoutInferred = `${commonBody.contentLayout ? ` ${commonBody.contentLayout}` : ""}`;
-  const bodyLayoutInferred = `${body.contentLayout ? ` ${body.contentLayout}` : ""}`;
-  const commonBodyContentClassesInferred = `${commonBody.contentClasses ? ` ${commonBody.contentClasses}` : ""}`;
-  const bodyContentClassesInferred = `${body.contentClasses ? ` ${body.contentClasses}` : ""}`;
-
-  const commonFooterLayoutInferred = `${commonFooter.contentLayout ? ` ${commonFooter.contentLayout}` : ""}`;
-  const footerLayoutInferred = `${footer.contentLayout ? ` ${footer.contentLayout}` : ""}`;
-  const commonFooterContentClassesInferred = `${commonFooter.contentClasses ? ` ${commonFooter.contentClasses}` : ""}`;
-  const footerContentClassesInferred = `${footer.contentClasses ? ` ${footer.contentClasses}` : ""}`;
-
   return (
-    <div className={`c-Widget${commonLayoutClassesInferred}${layoutClassesInferred}${colClassInferred}`} style={{...commonWidgetStyle, ...widgetStyle}}>
-      <div className={`c-Widget__content${commonWidgetClassesInferred}${widgetClassesInferred}`}>
-        <div className={`c-Widget__content__header${commonContentLayoutInferred}${commonHeaderLayoutInferred}${headerLayoutInferred}`}>
-          <div className={`${commonHeaderContentClassesInferred}${headerContentClassesInferred}`}>
-            {header.title}
-          </div>
-        </div>
-        <div className={`c-Widget__content__body${commonContentLayoutInferred}${commonBodyLayoutInferred}${bodyLayoutInferred}`}>
-          <div className={`${commonBodyContentClassesInferred}${bodyContentClassesInferred}`}>
-            {body.content}
-          </div>
-        </div>
-        <div className={`c-Widget__content__footer${commonContentLayoutInferred}${commonFooterLayoutInferred}${footerLayoutInferred}`}>
-          <Link className={`${commonFooterContentClassesInferred}${footerContentClassesInferred}${hovered ? " visible" : ""}${isDisabled ? " disabled insufficiet-access-message" : ""}`} to={!isDisabled ? footer.href : ""} onClick={() => widgetActionDispatcher(true)} onMouseOver={() => isDisabled && setHovered(true)} onMouseOut={() => isDisabled && setHovered(false)}>
-            <div className="c-Widget__content__footer__text">
-              {footer.text}
-              <span className="c-Widget__content__footer__icon"><span className="arrow right" /></span>
-            </div>
-            {/* {isDisabled && hovered && <div id="widgetActionDisabledTooltip" className="tooltip1 tooltiptext">Insufficient access to perform this action!</div>} */}
-          </Link>
-        </div>
-      </div>
+    <div id={ID} className={`c-Widget${commonLayoutClassesInferred}${layoutClassesInferred}${colClassInferred}`} style={{...commonWidgetStyle, ...widgetStyle}}>
+      <ContentComponent {...opts} />
     </div>
   );
 };
 
 Widget.propTypes = {
   authConfig: PropTypes.object,
-  widgetActionDispatcher: PropTypes.func,
-  restConfig: PropTypes.object,
+  currentFilters: PropTypes.object,
+  data: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]),
+  fetchComplete: PropTypes.bool,
   userProfile: PropTypes.object,
+  widget: PropTypes.object,
   widgetCommon: PropTypes.object,
-  widget: PropTypes.object
+  widgetStackItem: PropTypes.object
 };
 
-const mapDispatchToProps = {
-  widgetActionDispatcher: dispatchWidgetAction
-};
-
-export default connect(null, mapDispatchToProps)(Widget);
+export default Widget;

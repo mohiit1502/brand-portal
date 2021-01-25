@@ -6,8 +6,12 @@
     }
 
     .c-Help__header {
-        padding: 1.5rem 2.5rem;
-        background: #FAFAFA;
+      padding: 1.5rem 2.5rem;
+      .help-header{
+        font-weight: bold;
+
+      }
+
     }
 
     .c-Help__content {

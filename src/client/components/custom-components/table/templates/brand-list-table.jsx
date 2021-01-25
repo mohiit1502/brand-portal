@@ -2,13 +2,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import sortIcon from "../../../../images/sort.svg";
+import sortIcon from "../../../../images/sortIcon.svg";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
+import NoRecordsMatch from "../../NoRecordsMatch";
 
 const BrandListTable = function(props) {
 
-  const { getTableBodyProps,  headerGroups,  rows,  prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows,  prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     sequence: "col-1"
@@ -61,29 +62,30 @@ const BrandListTable = function(props) {
   };
 
   return (
-    <div className="table-responsive h-100">
-      <div className="custom-table h-100">
+    <div className="custom-table px-0 h-100">
 
-        <div className="table-header">
-          {
-            headerGroups.map((headerGroup, j) => {
-              return (
-                <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    headerGroup.headers.map(header => {
-                      return (
-                        <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
-                          { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
-                        </div>
-                      );
-                    })
-                  }
-                </div>
-              );
-            })
-          }
-        </div>
-
+      <div className="table-header">
+        {
+          headerGroups.map((headerGroup, j) => {
+            return (
+              <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
+                {
+                  headerGroup.headers.map(header => {
+                    const sortByToggleProps = header.getSortByToggleProps();
+                    sortByToggleProps.onClick = () => sortHandler(header);
+                    return (
+                      <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
+                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })
+        }
+      </div>
+      {rows.length > 0 &&
         <div className="table-body" {...getTableBodyProps()}>
           {
             rows.map(row => {
@@ -103,16 +105,16 @@ const BrandListTable = function(props) {
                           {
                             // cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
                             cell.column.id === "brandStatus"
-                              && AUTH_CONFIG.BRANDS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : "")
-                              && (values.brandStatus === undefined || AUTH_CONFIG.BRANDS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.brandStatus.toLowerCase()))
-                              && <span className="float-right">
-                                &nbsp;&nbsp;
-                                <Dropdown
-                                  options={generateDropDownOptionsDynamic(dropdownOptions, values)}
-                                  data={row.original}
-                                  hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")} />
-                                &nbsp;&nbsp;
-                              </span>
+                            && AUTH_CONFIG.BRANDS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : "")
+                            && (values.brandStatus === undefined || AUTH_CONFIG.BRANDS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.brandStatus.toLowerCase()))
+                            && <span className="float-right">
+                              &nbsp;&nbsp;
+                              <Dropdown
+                                options={generateDropDownOptionsDynamic(dropdownOptions, values)}
+                                data={row.original}
+                                hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")}/>
+                              &nbsp;&nbsp;
+                            </span>
                           }
                         </div>
                       );
@@ -122,8 +124,8 @@ const BrandListTable = function(props) {
               );
             })
           }
-        </div>
-      </div>
+        </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)
+      }
     </div>
   );
 };

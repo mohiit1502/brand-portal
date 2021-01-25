@@ -35,7 +35,7 @@ class Login extends React.Component {
   render() {
     const loginConfig = this.state.loginConfig;
     return loginConfig && Object.keys(loginConfig).length > 0 &&
-            <div className="login-container view-container" style={{backgroundImage: `url(${images.LandingPageBG})`, backgroundSize: "100%", backgroundRepeat: "no-repeat", backgroundPosition: "center 120%"}}>
+            <div className="login-container view-container">
               <LoginHeader/>
               <Hero />
               <TilesContainer tiles={loginConfig.TILES} />

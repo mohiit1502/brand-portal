@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-2{fill:#286799}
+        </style>
+    </defs>
+    <g id="Group_778" transform="translate(-4737 -4434)">
+        <path id="Rectangle_528" fill="none" d="M0 0H24V24H0z" transform="translate(4737 4434)"/>
+        <g id="Group_777" transform="translate(20 4.216)">
+            <path id="Icon_awesome-caret-down" d="M.463 0h5.954a.462.462 0 0 1 .326.789L3.767 3.767a.464.464 0 0 1-.655 0L.137.789A.462.462 0 0 1 .463 0z" class="cls-2" transform="translate(4726 4443.313)"/>
+            <path id="Icon_awesome-caret-down-2" d="M.463 0h5.954a.462.462 0 0 1 .326.789L3.767 3.767a.464.464 0 0 1-.655 0L.137.789A.462.462 0 0 1 .463 0z" class="cls-2" transform="rotate(180 2366.44 2220.343)"/>
+        </g>
+    </g>
+</svg>

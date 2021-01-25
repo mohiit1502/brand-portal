@@ -14,7 +14,7 @@ import ClaimDetailsTemplate from "./templates/claim-details-template";
 import CompanyVerificationPendingTemplate from "./templates/company-verification-pending-template";
 import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
 import Alert from "../../Alert/Alert";
-import {ResetPasswordTemplate} from "../../index";
+import {DateSelector, ResetPasswordTemplate} from "../../index";
 
 
 class CustomModal extends React.Component {
@@ -38,7 +38,7 @@ class CustomModal extends React.Component {
   fetchTemplate(key) {
     switch (key) {
       case "Alert": return Alert;
-      case "ResetPasswordTemplate": return ResetPasswordTemplate;
+      case "DateSelectorTemplate": return DateSelector;
       case "ClaimDetailsTemplate": return ClaimDetailsTemplate;
       case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
       case "CompanyVerificationPendingTemplate": return CompanyVerificationPendingTemplate;
@@ -47,6 +47,7 @@ class CustomModal extends React.Component {
       case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
       case "NewClaimTemplate": return NewClaimTemplate;
       case "NewUserAddedTemplate": return NewUserAddedTemplate;
+      case "ResetPasswordTemplate": return ResetPasswordTemplate;
       case "StatusModalTemplate": return StatusModalTemplate;
     }
     return null;
@@ -54,13 +55,17 @@ class CustomModal extends React.Component {
 
   toggleModal(toggleAction) {
     const modalElements = $(".modal");
-    const statusModals = ["NewUserAddedTemplate", "StatusModalTemplate"];
+    const backdropModals = {
+      "NewUserAddedTemplate": false,
+      "StatusModalTemplate": false,
+      "DateSelectorTemplate": true,
+    };
     const backdrop = $(".modal-backdrop");
     if (backdrop) {
       backdrop.remove();
     }
     const options = {
-      backdrop: !statusModals.includes(this.props.modal.templateName) ? "static" : false,
+      backdrop: backdropModals[this.props.modal.templateName] !== undefined ? backdropModals[this.props.modal.templateName] : "static",
       keyboard: false,
       show: toggleAction.toLowerCase() === "show"
     };

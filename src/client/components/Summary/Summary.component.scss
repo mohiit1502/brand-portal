@@ -1,0 +1,41 @@
+@import "../../styles/override/variables";
+
+$item-status-color: #8797A5;
+.c-Summary {
+  .item-status {
+    color: $item-status-color;
+    font-weight: bold;
+    text-transform: lowercase;
+    line-height: 14px;
+
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  .item-count {
+    color: $market-place-blue;
+    cursor: pointer;
+    text-decoration: underline;
+    line-height: 22px;
+
+    &:hover {
+      color: $navy-blue;
+    }
+  }
+
+  .footer-text {
+    cursor: pointer;
+    text-decoration: underline;
+    color: $market-place-blue;
+    background: $background-blue;
+    //font-weight: bold;
+    font-size: 15px;
+    line-height: 22px;
+    font-family: Bogle-Bold;
+
+    &:hover {
+      color: $navy-blue;
+    }
+  }
+}

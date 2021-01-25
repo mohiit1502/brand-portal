@@ -108,8 +108,8 @@ class ClaimDetailsTemplate extends React.Component {
                                   <div className="col-3 text-capitalize">
                                     {item.sellerName}
                                   </div>
-                                  <div className="col-9">
-                                    <a className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
+                                  <div className="col-9 item-url">
+                                    <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
                                   </div>
                                 </div>
                               );
@@ -121,13 +121,13 @@ class ClaimDetailsTemplate extends React.Component {
                   </div>
                   <div className="row mt-4">
                     <div className="col">
-                      <span className="font-size-14">Comments</span>
+                      <span className="font-size-14 font-weight-bold">Comments</span>
                       <p>{this.props.data.comments}</p>
                     </div>
                   </div>
                   <div className="row mt-3">
                     <div className="col">
-                      <span className="font-size-14">Status Detail</span>
+                      <span className="font-size-14 font-weight-bold">Status Detail</span>
                       <h6>{this.props.data.statusDetails}</h6>
                     </div>
                   </div>

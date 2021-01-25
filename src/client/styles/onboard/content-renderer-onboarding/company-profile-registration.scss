@@ -3,15 +3,15 @@
 $subtitle-color: #6E7677;
 
 .title-row {
-  font-family: MyriadPro-Regular, sans-serif;
-  .company-registration-title {
 
+  .company-registration-title {
+    font-weight: bold;
     font-size: 32px;
   }
 
   .company-registration-subtitle {
     font-size: 16px;
-    color: $subtitle-color;
+    //color: $subtitle-color;
   }
 }
 
@@ -29,8 +29,42 @@ $subtitle-color: #6E7677;
       }
     }
   }
+  .company-onboarding-button-panel{
+    .btn-primary{
+      border-radius: 42px;
+      font-weight: bold;
+      background-color: #286799;
+      font-size: 15px;
+
+    }
+
+    .btn-primary:disabled {
+      background-color: #a3a8a9;
+      cursor: default;
+      border: none;
+
+    }
+
+    .cancel-btn{
+      text-decoration: underline;
+      font-weight: bold;
+      font-size: 17px;
+      color: #006799;
+
+    }
+  }
+
+  .btn-primary{
+    border-radius: 42px;
+    font-weight: bold;
+    background-color: #286799;
+
+  }
 
   .btn-primary.disabled {
-    cursor: default
+    background-color: #a3a8a9;
+    cursor: default;
+    border: none;
+
   }
 }

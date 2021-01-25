@@ -1,0 +1,42 @@
+@import "../../styles/override/variables";
+
+.c-Paginator {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  &.table-manage-row {
+    //position: relative;
+    .count {
+      color: $market-place-blue;
+    }
+
+    .count-toggle-btn {
+      border: $default-input-border;
+      border-radius: $input-border-radius;
+      font-weight: bold;
+      font-size: 14px;
+
+      &:focus, &:active {
+        box-shadow: 0px 3px 18px #7AC4E433;
+        border: 1px solid #7AC4E4;
+        outline: 0;
+      }
+    }
+
+    .count-dropdown-menu {
+      box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.15);
+
+      .dropdown-item {
+        cursor: pointer;
+
+        &:hover {
+          background: $dropdown-hover-background;
+        }
+
+        &:active {
+          background: $dropdown-active-background;
+        }
+      }
+    }
+  }
+}

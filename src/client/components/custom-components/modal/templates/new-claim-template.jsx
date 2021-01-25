@@ -52,6 +52,8 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             options: [],
             subtitle: "",
+            // placeholder: "Type to search",
+            // subtitle: "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
             error: ""
           },
           brandName: {
@@ -63,6 +65,7 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             options: [],
             subtitle: "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
+            // subtitle: "",
             error: ""
           },
           claimTypeIdentifier: {
@@ -87,11 +90,18 @@ class NewClaimTemplate extends React.Component {
             pattern: null,
             disabled: false,
             subtitle: "",
-            error: ""
+            error: "",
+            placeholder:"Please provide additional information about the claim"
           },
           signature: {
+            label: "Digital Signature",
+            required: true,
             value: "",
-            required: true
+            type: "text",
+            pattern: null,
+            disabled: false,
+            subtitle: "",
+            error: ""
           }
         },
         undertakingList: [
@@ -260,24 +270,30 @@ class NewClaimTemplate extends React.Component {
   }
 
   getClaimTypes () {
-    this.loader("loader", true);
-    return Http.get("/api/claims/types")
-      .then(res => {
-        const state = {...this.state};
-        const form = {...state.form};
-        state.form = form;
-        let options = [...res.body.data];
-        options = options.map(option => {
-          const displayVal = Helper.toCamelCaseIndividual(option.claimType);
-          option.label = displayVal;
-          option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
-          return option;
-        });
+    // this.loader("loader", true);
+    const state = {...this.state};
+    const form = state.form;
+    const options = [
+      {claimType: "trademark", label: "Trademark", claimTypeIdentifierLabel: "Trademark Number"},
+      {claimType: "patent", label: "Patent", claimTypeIdentifierLabel: "Patent Number"},
+      {claimType: "counterfeit", label: "Counterfeit", claimTypeIdentifierLabel: "Trademark Number"},
+      {claimType: "copyright", label: "Copyright", claimTypeIdentifierLabel: "Copyright Number"}
+    ];
+    // return Http.get("/api/claims/types")
+    //   .then(res => {
+
+    //     let options = [...res.body.data];
+    //     options = options.map(option => {
+    //       const displayVal = Helper.toCamelCaseIndividual(option.claimType);
+    //       option.label = displayVal;
+    //       option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
+    //       return option;
+    //     });
         form.inputData.claimType.options = options && options.map(v => ({value: v.label}));
         form.claimTypesWithMeta = options;
-        state.loader = false;
+        // state.loader = false;
         this.setState(state);
-      });
+      // });
   }
 
   getBrands () {
@@ -286,7 +302,7 @@ class NewClaimTemplate extends React.Component {
       .then(res => {
         const state = {...this.state};
         state.brands = res.body.content;
-        state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName}));
+        state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
         state.loader = false;
         this.setState(state);
       });
@@ -376,6 +392,8 @@ class NewClaimTemplate extends React.Component {
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
     const brandId = inputData.brandName.options[index].id;
+    const usptoUrl = inputData.brandName.options[index].usptoUrl;
+    const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
     const comments = inputData.comments.value;
     const digitalSignatureBy = inputData.signature.value;
@@ -392,7 +410,9 @@ class NewClaimTemplate extends React.Component {
       registrationNumber,
       comments,
       digitalSignatureBy,
-      items: getItems(inputData.itemList)
+      items: getItems(inputData.itemList),
+      usptoUrl,
+      usptoVerification
     };
     this.loader("loader", true);
     return Http.post("/api/claims", payload)
@@ -413,9 +433,12 @@ class NewClaimTemplate extends React.Component {
   }
 
   onItemUrlChange (event, i) {
-    const url = event && event.target.value;
+    let url = event && event.target.value;
     if (url) {
       this.loader("fieldLoader", true);
+      if (url.endsWith("/")) {
+        url = url.substring(0, url.length - 1);
+      }
       const slash = url.lastIndexOf("/");
       const qMark = url.lastIndexOf("?") === -1 ? url.length : url.lastIndexOf("?");
 
@@ -456,37 +479,44 @@ class NewClaimTemplate extends React.Component {
       <div className="modal new-claim-modal show" id="singletonModal" tabIndex="-1" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-xl" role="document">
           <form onSubmit={this.handleSubmit} className="modal-content">
-            <div className="modal-header align-items-center">
+            <div className="modal-header font-weight-bold align-items-center">
               New Claim
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
-                <span aria-hidden="true">&times;</span>
+                <span className="close-btn" aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className={`modal-body text-left${this.state.loader && " loader"}`}>
+            <div className={`modal-body mx-2 text-left${this.state.loader && " loader"}`}>
               <p>Select the type of infringement you are reporting</p>
+              {/*<p>Select your brand</p>*/}
               <div className="row">
                 <div className="col-4">
                   <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
-                    value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
-                    disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
+                               value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
+                               disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                 </div>
               </div>
           {this.state.claimTypeSelected &&
             <React.Fragment>
               <p>Please complete the following fields to submit your claim.</p>
               <div className="row brand-and-patent">
+              {/*<p>Select the type of infringement you are reporting</p>*/}
+              {/*<div className="row claim-type-and-patent">*/}
                 <div className="col-4">
                   <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
-                    value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue}
-                    disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
+                               value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue}
+                               disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
+                  {/*<CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}*/}
+                  {/*             value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}*/}
+                  {/*             disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />*/}
                 </div>
                 <div className="col-4">
                   <CustomInput key={"claimTypeIdentifier"} inputId={"claimTypeIdentifier"} formId={form.id} label={inputData.claimTypeIdentifier.label}
-                    required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
-                    pattern={inputData.claimTypeIdentifier.pattern} onChange={this.onChange} disabled={inputData.claimTypeIdentifier.disabled}
-                    dropdownOptions={inputData.claimTypeIdentifier.options} />
+                               required={inputData.claimTypeIdentifier.required} value={inputData.claimTypeIdentifier.value} type={inputData.claimTypeIdentifier.type}
+                               pattern={inputData.claimTypeIdentifier.pattern} onChange={this.onChange} disabled={inputData.claimTypeIdentifier.disabled}
+                               dropdownOptions={inputData.claimTypeIdentifier.options} />
                 </div>
               </div>
+              {/*<p>Please complete the following fields to submit your claim.</p>*/}
               {
                 inputData.itemList.map((item, i) => {
                   return (
@@ -521,7 +551,7 @@ class NewClaimTemplate extends React.Component {
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
                     value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
-                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} />
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} />
                 </div>
               </div>
               {
@@ -545,13 +575,20 @@ class NewClaimTemplate extends React.Component {
                 <div className="col-7">
                   <div className="form-group">
                     <label htmlFor="signature-name" className="font-weight-bold">Typing your full name in this box will act as your digital signature</label>
-                    <input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true}
-                      onChange={evt => {
-                              const formCloned = {...this.state.form};
-                              formCloned.inputData.signature.value = evt.target.value;
-                              this.setState({form: formCloned});
-                              this.checkToEnableSubmit();
-                            }}/>
+                    <CustomInput key={"signature"} inputId={"signature"} formId={form.id} label={inputData.signature.label} required={inputData.signature.required}
+                                 value={inputData.signature.value} type={inputData.signature.type} pattern={inputData.signature.pattern} onChange={evt => {
+                      const formCloned = {...this.state.form};
+                      formCloned.inputData.signature.value = evt.target.value;
+                      this.setState({form: formCloned});
+                      this.checkToEnableSubmit();
+                    }} disabled={inputData.signature.disabled} dropdownOptions={inputData.signature.options} customChangeHandler={this.customChangeHandler.bind(this)} />
+                    {/*<input type="text" className="form-control" id="signature-name" aria-describedby="signature-name" required={true} placeholder="Typing your full name in this box will act as your digital signature"*/}
+                    {/*  onChange={evt => {*/}
+                    {/*          const formCloned = {...this.state.form};*/}
+                    {/*          formCloned.inputData.signature.value = evt.target.value;*/}
+                    {/*          this.setState({form: formCloned});*/}
+                    {/*          this.checkToEnableSubmit();*/}
+                    {/*        }}/>*/}
                   </div>
                 </div>
               </div>

@@ -3,66 +3,77 @@
 
 $border-color: rgb(226, 229, 231);
 $local-gray: rgb(67, 71, 80);
-$header-gray: rgb(164, 172, 178);
+$modal-header-background-color: $market-place-blue;
 
-.modal.claim-details-modal {
-  .modal-dialog {
-    max-height: 80%;
-    font-family: MyriadPro-Regular, sans-serif;
-    .modal-content {
-      height: 100%;
-      .modal-body {
-        .case-header-row {
-          .case-header-text {
-            font-size: 32px;
-            font-weight: normal;
-          }
-          .case-status {
-            position: relative;
-            top: -6px;
-            font-size: 14px;
-            background: rgba(255, 194, 32, 0.2);
-            margin-left: 15px;
-            padding: 7px 14px;
-          }
+.modal {
+  &.claim-details-modal {
+    .modal-dialog {
+      max-height: 80%;
+      .modal-content {
+        border-bottom: 9px solid #7ac4e4;
+        height: 100%;
+        .modal-header{
+          font-weight: bold;
+          font-size: 27px;
+          background: $modal-header-background-color;
+          color: white;
         }
-
-        .claim-snapshots-row {
-          .snapshot-header {
-            font-size: 14px;
-            color: $local-gray;
-          }
-
-          .snapshot-value {
-            font-size: 16px;
-            color: $local-gray;
-          }
-        }
-
-        .items-row {
-          .item-header-row {
-            color: $header-gray;
-            font-size: 10px;
-            border-bottom: 1px solid $border-color;
-            position: relative;
-          }
-          .item-data-container {
-            max-height: 290px;
-            overflow: auto;
-            .item-data-row {
-              border-bottom: 1px solid $border-color;
-              // height: 48px;
-              padding-top: 1rem;
-              padding-bottom: 1rem;
-              font-size: 14px;
+        .modal-body {
+          .case-header-row {
+            .case-header-text {
+              font-size: 32px;
+              font-weight: normal;
+            }
+            .case-status {
               position: relative;
+              top: -6px;
+              font-size: 14px;
+              background: rgba(255, 194, 32, 0.2);
+              margin-left: 15px;
+              padding: 7px 14px;
             }
           }
 
-        }
+          .claim-snapshots-row {
+            .snapshot-header {
+              font-size: 14px;
+              font-weight: bold;
+            }
 
-        .status-description {
-          font-size: 14px;
+            .snapshot-value {
+              font-size: 16px;
+            }
+          }
+
+          .items-row {
+            .item-header-row {
+              color: #235882;
+              font-size: 15px;
+              position: relative;
+              background: #e6f2f7;
+            }
+            .item-data-container {
+              max-height: 290px;
+              overflow: auto;
+              .item-data-row {
+                border-bottom: solid 2px #e5f1f7;
+                // height: 48px;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                font-size: 14px;
+                position: relative;
+                .item-url{
+                  font-weight: bold;
+                  color: #006799 !important;
+                }
+              }
+            }
+
+          }
+
+          .status-description {
+            font-size: 14px;
+          }
         }
       }
     }
