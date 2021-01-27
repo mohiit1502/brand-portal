@@ -26,6 +26,7 @@ import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.jpg";
 import InviteUserForm from "./AddUser.jpg";
 import Login from "./Login.jpg";
+import PageError from "./page-error.svg";
 import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
 import ProblemSolving from "./group-1473.png";
@@ -75,6 +76,7 @@ export {
     InviteUser,
     InviteUserForm,
     Login,
+    PageError,
     Paste,
     Plus,
     ProblemSolving,

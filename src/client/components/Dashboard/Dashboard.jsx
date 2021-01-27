@@ -6,11 +6,11 @@ import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
 import {DashboardHeader, WidgetContainer} from "../index";
 import {showNotification} from "../../actions/notification/notification-actions";
 import Http from "../../utility/Http";
+import Helper from "../../utility/helper";
 import widgetConfig from "./../../config/contentDescriptors/widgets";
 import AUTH_CONFIG from "../../config/authorizations";
-// import TABLESMETA from "../../config/tablesMeta";
+import * as images from "./../../images";
 import "./Dashboard.component.scss";
-import Helper from "../../utility/helper";
 
 class Dashboard extends React.PureComponent {
   constructor(props) {
@@ -24,6 +24,7 @@ class Dashboard extends React.PureComponent {
         claimsByBrands: [],
         claimsByUsers: []
       },
+      error: false,
       fetchComplete: false
     }
   }
@@ -64,6 +65,7 @@ class Dashboard extends React.PureComponent {
       .catch(e => {
         console.log(e)
         this.setState({
+          error: true,
           fetchComplete: true
         })
       });
@@ -73,7 +75,7 @@ class Dashboard extends React.PureComponent {
     return (
       <div className="c-Dashboard h-100">
         <DashboardHeader userInfo={this.props.userProfile}/>
-        <WidgetContainer
+        {!this.state.error ? <WidgetContainer
           authConfig={AUTH_CONFIG}
           currentFilters={this.props.currentFilters}
           data={this.state.data}
@@ -82,7 +84,11 @@ class Dashboard extends React.PureComponent {
           userProfile={this.props.userProfile}
           widgetCommon={widgetConfig.WIDGETCOMMON}
           widgetStack={widgetConfig.WIDGETTYPES}
-        />
+        /> : <div className="page-error text-center">
+          <img className="error-image" src={images.PageError} alt="Page Error" />
+          <h4 className="page-error-header font-weight-bold">Oops. Something went wrong.</h4>
+          <p className="page-error-message">Try to refresh this page or try again later.</p>
+        </div>}
       </div>
     );
   }
