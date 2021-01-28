@@ -1,3 +1,22 @@
 .c-Dashboard {
   overflow-y: scroll;
+
+  .page-error {
+    margin-top: 8rem;
+    color: #192340;
+
+    .error-image {
+      margin-bottom: 2.8rem;
+      transform: scale(1.1);
+    }
+
+    .page-error-header {
+      line-height: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .page-error-message {
+      line-height: 1.2rem;
+    }
+  }
 }

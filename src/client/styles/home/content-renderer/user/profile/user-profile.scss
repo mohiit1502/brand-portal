@@ -7,14 +7,19 @@
   .password-reset-col{
     button{
       border-radius: 42px;
-      background: #006799;
+      color: $market-place-blue;
       font-weight: bold;
       font-size: 15px;
-      border: none;
+      border: $default-input-border;
+
+      &:hover {
+        color: white;
+        background: $market-place-blue;
+      }
     }
   }
 
-  .edit-button-panel{
+  .edit-button-panel {
     .btn-primary{
       border-radius: 42px;
       background: #006799;

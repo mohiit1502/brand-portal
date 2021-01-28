@@ -14,7 +14,7 @@
     "providers": {
       "@walmart/electrode-ccm-client": {
         "options": {
-          "environment": "prod"
+          "environment": "stg"
         }
       },
       "@walmart/electrode-quimby-client": {}
@@ -29,7 +29,7 @@
       "root": {
         "profiles": {
           "default": {
-            "environment": "prod"
+            "environment": "stg"
           }
         },
         "data": {
