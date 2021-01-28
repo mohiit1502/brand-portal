@@ -395,7 +395,8 @@ class UserManagerApi {
 
   getLogoutProvider(request, h) {
     try {
-      const logoutProviderURL = request.app.ccmGet("IAM.FALCON_LOGOUT_URL");
+      let logoutProviderURL = request.app.ccmGet("IAM.FALCON_LOGOUT_URL");
+      logoutProviderURL = logoutProviderURL ? `${logoutProviderURL}&clientId=${secrets.CLIENT_ID}` : logoutProviderURL;
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
