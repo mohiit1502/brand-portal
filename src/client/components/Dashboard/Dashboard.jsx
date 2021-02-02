@@ -3,7 +3,7 @@ import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
-import {DashboardHeader, WidgetContainer} from "../index";
+import {DashboardHeader, GenericErrorPage, WidgetContainer} from "../index";
 import {showNotification} from "../../actions/notification/notification-actions";
 import Http from "../../utility/Http";
 import Helper from "../../utility/helper";
@@ -84,11 +84,7 @@ class Dashboard extends React.PureComponent {
           userProfile={this.props.userProfile}
           widgetCommon={widgetConfig.WIDGETCOMMON}
           widgetStack={widgetConfig.WIDGETTYPES}
-        /> : <div className="page-error text-center">
-          <img className="error-image" src={images.PageError} alt="Page Error" />
-          <h4 className="page-error-header font-weight-bold">Oops. Something went wrong.</h4>
-          <p className="page-error-message">Try to refresh this page or try again later.</p>
-        </div>}
+        /> : <GenericErrorPage />}
       </div>
     );
   }

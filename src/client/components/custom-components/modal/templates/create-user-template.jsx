@@ -219,12 +219,12 @@ class CreateUserTemplate extends React.Component {
     evt.preventDefault();
 
     let brands = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
-    const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
+    // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
     // eslint-disable-next-line no-unused-expressions
-    !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
-
+    // !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
+    brands = brands.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
     const loginId = this.state.form.inputData.emailId.value;
-    brands = brands.map(v => ({id: v.id}));
+    // brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
     const firstName = this.state.form.inputData.firstName.value;
     const lastName = this.state.form.inputData.lastName.value;

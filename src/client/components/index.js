@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import GenericErrorPage from './GenericErrorPage';
 import Paginator from './Paginator';
 import DatePickerWrapper from './DatePickerWrapper';
 import FilterType from './FilterType';
@@ -42,6 +43,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	GenericErrorPage,
 	Paginator,
 	DatePickerWrapper,
 	FilterType,

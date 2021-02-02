@@ -6,7 +6,6 @@ import TilesContainer from "../TilesContainer";
 import LoginFaq from "./../LoginFaq";
 import ContactUsPrompt from "../ContactUsPrompt";
 import Footer from "../Footer";
-import * as images from "./../../images";
 import Http from "../../utility/Http";
 import "../../styles/login/login.scss";
 
@@ -28,7 +27,6 @@ class Login extends React.Component {
           stateCloned.loginConfig = JSON.parse(res.body);
           return stateCloned;
         }));
-      // setHelpConfig(JSON.parse(response));
     } catch (e) {console.log(e);}
   }
 
