@@ -343,6 +343,14 @@ class UserManagerApi {
       const USER_SELF_INFO_PATH = request.app.ccmGet("USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
       const response = await ServerHttp.get(url, options);
+      if (response.status === 520 && !response.body) {
+        if (response.message) {
+          const iamResponse = JSON.parse(response.message);
+          return iamResponse && iamResponse.code === "1052" && h.response(response).code(404);
+        } else {
+          return h.response(response).code(response.status);
+        }
+      }
       return h.response(response.body).code(response.status);
     } catch (err) {
       return h.response(err).code(err.status);

@@ -14,5 +14,19 @@
 
   .c-GenericErrorPage__message {
     line-height: 1.2rem;
+
+    ul {
+      list-style-type: none;
+      padding-left: 0.3rem;
+
+      & > li {
+        text-indent: -5px;
+
+        &:before {
+          content: "-";
+          padding-right: 1rem;
+        }
+      }
+    }
   }
 }
