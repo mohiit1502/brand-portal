@@ -32,12 +32,11 @@ class Login extends React.Component {
 
   render() {
     const loginConfig = this.state.loginConfig;
-    return loginConfig && Object.keys(loginConfig).length > 0 &&
-            <div className="login-container view-container">
+    return <div className="login-container view-container">
               <LoginHeader/>
               <Hero />
               <TilesContainer tiles={loginConfig.TILES} />
-              <LoginFaq faq={loginConfig.FAQ} />
+              {loginConfig && Object.keys(loginConfig).length > 0 && <LoginFaq faq={loginConfig.FAQ} />}
               {/* TODO below commented until better communication modes available this needs to be uncommented at a later stage */}
               {/* <ContactUsPrompt /> */}
               <Footer />
