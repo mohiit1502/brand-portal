@@ -15,7 +15,7 @@ const GenericErrorPage = props => {
             <li>
               If you are a new Brand Portal user, please try the following:
               <ul>
-                <li>Visit <a href="/logout">Brand Portal</a></li>
+                <li>Visit <a href="/logout">Walmart Brand Portal</a></li>
                 <li>Click “Register”</li>
                 <li>Create a new account using a different email address than the one used for your Walmart supplier account</li>
               </ul>
