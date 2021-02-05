@@ -7,6 +7,7 @@ import LoginFaq from "./../LoginFaq";
 import ContactUsPrompt from "../ContactUsPrompt";
 import Footer from "../Footer";
 import Http from "../../utility/Http";
+import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
 import "../../styles/login/login.scss";
 
 class Login extends React.Component {
@@ -24,10 +25,16 @@ class Login extends React.Component {
       Http.get("/api/loginConfig")
         .then(res => this.setState(state => {
           const stateCloned = {...state};
-          stateCloned.loginConfig = JSON.parse(res.body);
+          let loginConfigResponse;
+          try {loginConfigResponse = JSON.parse(res.body);} catch (e) {loginConfigResponse = loginConfig;}
+          stateCloned.loginConfig = loginConfigResponse;
           return stateCloned;
-        }));
-    } catch (e) {console.log(e);}
+        }))
+        .catch(e => this.setState({loginConfig}));
+    } catch (e) {
+      this.setState({loginConfig});
+      console.log(e);
+    }
   }
 
   render() {
@@ -35,8 +42,13 @@ class Login extends React.Component {
     return <div className="login-container view-container">
               <LoginHeader/>
               <Hero />
-              <TilesContainer tiles={loginConfig.TILES} />
-              {loginConfig && Object.keys(loginConfig).length > 0 && <LoginFaq faq={loginConfig.FAQ} />}
+              {
+                loginConfig && Object.keys(loginConfig).length > 0 &&
+                <React.Fragment>
+                  <TilesContainer tiles={loginConfig.TILES}/>
+                  <LoginFaq faq={loginConfig.FAQ}/>
+                </React.Fragment>
+              }
               {/* TODO below commented until better communication modes available this needs to be uncommented at a later stage */}
               {/* <ContactUsPrompt /> */}
               <Footer />
