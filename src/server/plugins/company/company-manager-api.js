@@ -99,6 +99,7 @@ class CompanyManagerApi {
       };
 
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8092";
       const TM_VALIDITY_PATH = request.app.ccmGet("BRAND_CONFIG.TM_VALIDITY_PATH");
       const url = `${BASE_URL}${TM_VALIDITY_PATH}/${request.params.trademarkNumber}`;
 

@@ -76,6 +76,7 @@ class BrandManagerApi {
       };
 
       const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8092";
       const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
       const url = `${BASE_URL}${BRANDS_PATH}`;
 
