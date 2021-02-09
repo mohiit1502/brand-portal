@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 
-// ======= This configuration is moved to CCM and is maintained here for reference ========== //
+// ======= This configuration is moved to CCM and is maintained here for api failure handling ========== //
 const LOGINCONFIG = {
   "TILES": [
     {

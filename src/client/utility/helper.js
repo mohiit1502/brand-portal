@@ -150,10 +150,10 @@ export default class Helper {
       }
       params = params.replace(`__${filter}__`, filter + ":" + filterValue)
     })
-    while (params.indexOf("__") > -1 && params.indexOf(":__") === -1) {
+    if (params.indexOf("__") > -1) {
       const firstUS = params.indexOf("__");
-      const preParam = params.substring(0, params.indexOf("__"));
-      const restParam = params.substring(params.indexOf("__") + 2);
+      const preParam = params.substring(0, firstUS);
+      const restParam = params.substring(firstUS + 2);
       const secondUS = preParam.length + restParam.indexOf("__") + 4;
       const param = params.substring(firstUS, secondUS)
       const paramTrimmed = param.substring(2, param.lastIndexOf("__"));

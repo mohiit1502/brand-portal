@@ -3,14 +3,14 @@ import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
-import {DashboardHeader, WidgetContainer} from "../index";
+import {DashboardHeader, GenericErrorPage, WidgetContainer} from "../index";
 import {showNotification} from "../../actions/notification/notification-actions";
 import Http from "../../utility/Http";
+import Helper from "../../utility/helper";
 import widgetConfig from "./../../config/contentDescriptors/widgets";
 import AUTH_CONFIG from "../../config/authorizations";
-// import TABLESMETA from "../../config/tablesMeta";
+import * as images from "./../../images";
 import "./Dashboard.component.scss";
-import Helper from "../../utility/helper";
 
 class Dashboard extends React.PureComponent {
   constructor(props) {
@@ -24,6 +24,7 @@ class Dashboard extends React.PureComponent {
         claimsByBrands: [],
         claimsByUsers: []
       },
+      error: false,
       fetchComplete: false
     }
   }
@@ -64,6 +65,7 @@ class Dashboard extends React.PureComponent {
       .catch(e => {
         console.log(e)
         this.setState({
+          error: true,
           fetchComplete: true
         })
       });
@@ -73,7 +75,7 @@ class Dashboard extends React.PureComponent {
     return (
       <div className="c-Dashboard h-100">
         <DashboardHeader userInfo={this.props.userProfile}/>
-        <WidgetContainer
+        {!this.state.error ? <WidgetContainer
           authConfig={AUTH_CONFIG}
           currentFilters={this.props.currentFilters}
           data={this.state.data}
@@ -82,7 +84,7 @@ class Dashboard extends React.PureComponent {
           userProfile={this.props.userProfile}
           widgetCommon={widgetConfig.WIDGETCOMMON}
           widgetStack={widgetConfig.WIDGETTYPES}
-        />
+        /> : <GenericErrorPage generic />}
       </div>
     );
   }

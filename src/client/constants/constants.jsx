@@ -68,6 +68,7 @@ const CONSTANTS = {
     ERRORCODES: {
       FORBIDDEN: "403",
       FOURNOTFOUR: "404",
+      UNAUTHORIZED: 401,
       SERVERDOWN: 500,
       SERVERDOWNWRAPPER: 520,
       SERVERERROR: "^[4,5]\\d{2}$"
@@ -213,7 +214,7 @@ const CONSTANTS = {
     REGISTER_TEXT: "Register",
     IMAGE_WALMART_INTRO: "WalmartIntro",
     CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
-    CONTACTEMAIL: "support@brandportal.com",
+    CONTACTEMAIL: "IPInvest@walmart.com",
     COPYRIGHTTEXT: "© 2020 Walmart. All rights reserved.",
     PRIVACYTEXT: "Privacy Policy",
     PRIVACYURL: ""

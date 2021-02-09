@@ -11,6 +11,7 @@ import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
 import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions";
 import {dispatchMetadata} from "../actions/content/content-actions";
+import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
 
@@ -24,7 +25,8 @@ class Authenticator extends React.Component {
     this.state = {
       isLoggedIn: !!sessionCookie,
       isOnboarded: false,
-      profileInformationLoaded: false
+      profileInformationLoaded: false,
+      userInfoError: false
     };
   }
 
@@ -78,6 +80,7 @@ class Authenticator extends React.Component {
 
     } catch (e) {
       console.error(e);
+      this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
     }
   }
 
@@ -154,7 +157,7 @@ class Authenticator extends React.Component {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
-        return <div className="fill-parent loader" />;
+        return !this.state.userInfoError ? <div className="fill-parent loader" /> : <GenericErrorPage generic={this.state.userInfoError === "USER_INFO_ERROR_GENERIC"} containerClass="mt-12rem"/>;
       }
     } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;

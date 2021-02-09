@@ -1,0 +1,32 @@
+.c-GenericErrorPage {
+  margin-top: 8rem;
+  color: #192340;
+
+  .c-GenericErrorPage__image {
+    margin-bottom: 2.8rem;
+    transform: scale(1.1);
+  }
+
+  .c-GenericErrorPage__header {
+    line-height: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .c-GenericErrorPage__message {
+    line-height: 1.2rem;
+
+    ul {
+      list-style-type: none;
+      padding-left: 0.3rem;
+
+      & > li {
+        text-indent: -5px;
+
+        &:before {
+          content: "-";
+          padding-right: 1rem;
+        }
+      }
+    }
+  }
+}
