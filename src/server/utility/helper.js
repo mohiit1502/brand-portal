@@ -11,10 +11,7 @@ export default class Helper {
     static getDateRange(dateKey) {
       let date = new Date();
       const dateInMonth = date.getDate();
-      const year = date.getFullYear();
-      let month = date.getMonth();
-      const day = date.getDay();
-      let fromDate, toDate, numberOfDays, quarter;
+      let fromDate, toDate;
       if (dateKey.includes("-to-")) {
         const parts = dateKey.split("-to-");
         fromDate = parts[0];
