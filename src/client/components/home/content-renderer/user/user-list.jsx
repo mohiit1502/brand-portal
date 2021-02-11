@@ -20,7 +20,7 @@ import filterIcon from "../../../../images/filterIcon.svg";
 import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
-
+import moment from "moment";
 class UserList extends React.Component {
 
   constructor (props) {
@@ -151,6 +151,14 @@ class UserList extends React.Component {
           }
         },
         {
+          Header: "DATE ADDED",
+          accessor: "dateAdded",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE
+          }
+        },
+        {
           Header: "PROFILE STATUS",
           accessor: "status",
           sortState: {
@@ -196,11 +204,22 @@ class UserList extends React.Component {
   //
   //   this.setState({page: pageState, paginatedList, filteredList});
   // }
-
+  getDateFromTimeStamp(timestamp){
+    try {
+    const dateParts= timestamp.split('T');
+      let dateString ;
+      if(dateParts && dateParts[0])
+        dateString = dateParts[0];
+      return moment(dateString).format('MM-DD-YYYY');
+    }
+    catch(e){
+      console.log(e);
+    }
+      return "";
+  }
   async fetchUserData () {
     this.loader(true);
     let userList = (await Http.get("/api/users", "", () => this.loader(false))).body;
-    // console.log(userList);
     userList = userList.content.map((user, i) => {
       const newUser = {
         id: user.email,
@@ -208,6 +227,7 @@ class UserList extends React.Component {
         username: `${user.firstName} ${user.lastName}`,
         sequence: i + 1,
         brands: user.brands.map(brand => brand.name),
+        dateAdded: this.getDateFromTimeStamp(user.createTs),
         status: user.status,
         original: user
       };
