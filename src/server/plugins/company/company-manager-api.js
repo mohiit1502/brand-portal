@@ -78,8 +78,8 @@ class CompanyManagerApi {
         headers
       };
       const payload = request.payload;
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const REGISTER_ORG_PATH = request.app.ccmGet("BRAND_CONFIG.REGISTER_ORG_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      const REGISTER_ORG_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.REGISTER_ORG_PATH");
       const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -98,9 +98,9 @@ class CompanyManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8092";
-      const TM_VALIDITY_PATH = request.app.ccmGet("BRAND_CONFIG.TM_VALIDITY_PATH");
+      const TM_VALIDITY_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.TM_VALIDITY_PATH");
       const url = `${BASE_URL}${TM_VALIDITY_PATH}/${request.params.trademarkNumber}`;
 
       const response = await ServerHttp.get(url, options);
@@ -123,8 +123,8 @@ class CompanyManagerApi {
       const filename = file.hapi.filename;
       const fd = new FormData();
       fd.append("file", file, {filename});
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const ADDITIONAL_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.ADDITIONAL_DOC_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      const ADDITIONAL_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.ADDITIONAL_DOC_PATH");
       const url = `${BASE_URL}${ADDITIONAL_DOC_PATH}`;
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
@@ -146,8 +146,8 @@ class CompanyManagerApi {
       const fd = new FormData();
 
       fd.append("file", file, {filename});
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const BUSINESS_DOC_PATH = request.app.ccmGet("BRAND_CONFIG.BUSINESS_DOC_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BUSINESS_DOC_PATH");
       const url = `${BASE_URL}${BUSINESS_DOC_PATH}`;
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
@@ -168,8 +168,8 @@ class CompanyManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const COMPANY_NAME_UNIQUENESS_PATH = request.app.ccmGet("BRAND_CONFIG.COMPANY_NAME_UNIQUENESS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      const COMPANY_NAME_UNIQUENESS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.COMPANY_NAME_UNIQUENESS_PATH");
       const url = `${BASE_URL}${COMPANY_NAME_UNIQUENESS_PATH}`;
 
       const response = await ServerHttp.get(url, options, {name});
