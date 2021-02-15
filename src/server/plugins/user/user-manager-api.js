@@ -139,7 +139,7 @@ class UserManagerApi {
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {headers};
-      const HEALTHCHECK_PATH = request.app.ccmGet("HEALTH_CONFIG.HEALTHCHECK_URL");
+      const HEALTHCHECK_PATH = await ServerUtils.ccmGet(request, "HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
       console.log("Health check response: ", response);
       return h.response(response.body).code(response.status);
@@ -155,8 +155,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
       const response = await ServerHttp.put(url, options, payload);
@@ -173,8 +173,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      let INVITE_USER_PATH = request.app.ccmGet("USER_CONFIG.USER_REINVITE");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      let INVITE_USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_REINVITE");
       INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
       const url = `${BASE_URL}${INVITE_USER_PATH}`;
 
@@ -193,9 +193,9 @@ class UserManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       console.log(payload);
-      let RESET_PASSWORD_PATH = request.app.ccmGet("USER_CONFIG.RESET_PASSWORD");
+      let RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
       const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -212,8 +212,8 @@ class UserManagerApi {
         method: "GET",
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
       const response = await ServerHttp.get(url, options);
@@ -230,8 +230,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      let UNIQUENESS_CHECK_PATH = request.app.ccmGet("USER_CONFIG.UNIQUENESS_CHECK_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.UNIQUENESS_CHECK_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
       // const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${UNIQUENESS_CHECK_PATH}`;
@@ -250,8 +250,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -267,8 +267,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
 
       const response = await ServerHttp.put(url, options);
@@ -284,8 +284,8 @@ class UserManagerApi {
       const options = {
         headers: { ...headers, "Content-Type": "text/plain" }
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_PATH = request.app.ccmGet("USER_CONFIG.USER_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
       const response = await ServerHttp.delete(url, options);
       return h.response(response.body).code(response.status);
@@ -297,8 +297,8 @@ class UserManagerApi {
 
   async getNewUserRoles (request, h) {
     try {
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const ROLE_PATH = request.app.ccmGet("USER_CONFIG.ROLE_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const ROLE_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ROLE_PATH");
       const url = `${BASE_URL}${ROLE_PATH}`;
       const headers = ServerUtils.getHeaders(request);
 
@@ -314,8 +314,8 @@ class UserManagerApi {
 
   async getNewUserBrands (request, h) {
     try {
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const ASSIGNABLE_BRANDS_PATH = request.app.ccmGet("USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const ASSIGNABLE_BRANDS_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
       const url = `${BASE_URL}${ASSIGNABLE_BRANDS_PATH}`;
 
       const headers = ServerUtils.getHeaders(request);
@@ -339,8 +339,8 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("USER_CONFIG.BASE_URL");
-      const USER_SELF_INFO_PATH = request.app.ccmGet("USER_CONFIG.USER_SELF_INFO_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request,"USER_CONFIG.BASE_URL");
+      const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
       const response = await ServerHttp.get(url, options);
       if (response.status === 520 && !response.body) {
@@ -401,9 +401,9 @@ class UserManagerApi {
     }
   }
 
-  getLogoutProvider(request, h) {
+  async getLogoutProvider(request, h) {
     try {
-      let logoutProviderURL = request.app.ccmGet("IAM.FALCON_LOGOUT_URL");
+      let logoutProviderURL = await ServerUtils.ccmGet(request, "IAM.FALCON_LOGOUT_URL");
       logoutProviderURL = logoutProviderURL ? `${logoutProviderURL}&clientId=${secrets.CLIENT_ID}` : logoutProviderURL;
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -414,7 +414,8 @@ class UserManagerApi {
 
   async redirectToFalcon (request, h) {
     try {
-      return h.redirect(falcon.generateFalconRedirectURL(request, request.params.action));
+      const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action);
+      return h.redirect(redirectUri);
     } catch (e) {
       console.log(e);
       throw e;
@@ -423,7 +424,7 @@ class UserManagerApi {
 
   async getAccessToken(request, authorizationCode) {
     try {
-      const IAM = request.app.ccmGet("IAM");
+      const IAM = await ServerUtils.ccmGet(request, "IAM");
       const url = secrets.IAM_TOKEN_URL;
       const clientId = secrets.CLIENT_ID;
       const clientSecret = secrets.CLIENT_SECRET;

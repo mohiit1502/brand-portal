@@ -59,10 +59,12 @@ export default class ServerHttp {
         console.log("4. Couldn't parse response as JSON, trying as text...");
         err = await response.text();
       }
-      console.log(`5. In ServerHttp.${method} - Capturing error for not Ok response ====== `, err);
+      const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `
+      console.log(errorString, err);
       throw new ServerHttpError(status, err.error, err.message);
     } catch (e) {
-      console.error(`6. Caught in ServerHttp.${method}: `, err);
+      const errorString = `6. Caught in ServerHttp.${method}: `;
+      console.error(errorString, e);
       throw new ServerHttpError(500, e);
     } finally {
       console.log("7. === Crud Request End!");
