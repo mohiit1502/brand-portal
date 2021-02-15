@@ -76,7 +76,7 @@ class ClaimManagerApi {
       const options = {
         headers
       };
-      let payload = request.app.ccmGet("CLAIM_CONFIG.IQS_QUERY");
+      let payload = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.IQS_QUERY");
       payload = payload.replace("__itemId__", request.query.payload);
 
       let url = secrets.IQS_URL;
@@ -99,8 +99,8 @@ class ClaimManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("CLAIM_CONFIG.BASE_URL");
-      const CLAIM_TYPES_PATH = request.app.ccmGet("CLAIM_CONFIG.CLAIM_TYPES_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
+      const CLAIM_TYPES_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIM_TYPES_PATH");
       const url = `${BASE_URL}${CLAIM_TYPES_PATH}`;
 
       const response = await ServerHttp.get(url, options);
@@ -120,8 +120,8 @@ class ClaimManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("CLAIM_CONFIG.BASE_URL");
-      const CLAIMS_PATH = request.app.ccmGet("CLAIM_CONFIG.CLAIMS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
+      const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
 
       const response = await ServerHttp.get(url, options);
@@ -140,8 +140,8 @@ class ClaimManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("CLAIM_CONFIG.BASE_URL");
-      const CLAIMS_PATH = `${request.app.ccmGet("CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
+      const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
+      const CLAIMS_PATH = `${await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
       const url = `${BASE_URL}${CLAIMS_PATH}`;
 
       const response = await ServerHttp.get(url, options);
@@ -165,8 +165,8 @@ class ClaimManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("CLAIM_CONFIG.BASE_URL");
-      const CLAIMS_PATH = request.app.ccmGet("CLAIM_CONFIG.CLAIMS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
+      const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);

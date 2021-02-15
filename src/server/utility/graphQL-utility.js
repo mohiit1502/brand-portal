@@ -22,8 +22,8 @@ class GraphQLUtility {
       const options = {
         headers
       };
-      const BASE_URL = request.app.ccmGet("DASHBOARD_CONFIG.BASE_URL");
-      const GRAPHQL_ENDPOINT = request.app.ccmGet("DASHBOARD_CONFIG.GRAPHQL_ENDPOINT");
+      const BASE_URL = await ServerUtils.ccmGet(request, "DASHBOARD_CONFIG.BASE_URL");
+      const GRAPHQL_ENDPOINT = await ServerUtils.ccmGet(request, "DASHBOARD_CONFIG.GRAPHQL_ENDPOINT");
       const url = `${BASE_URL}${GRAPHQL_ENDPOINT}`;
       let response =  await ServerHttp.post(url, options, payload);
       this.processResponse(response, filters);
