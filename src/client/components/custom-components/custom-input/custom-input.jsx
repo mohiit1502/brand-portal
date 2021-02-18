@@ -183,30 +183,41 @@ class CustomInput extends React.Component {
     });
     return selectedList;
   }
-
+  
   getMultiSelectInput () {
 
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
-
+    const updateOptions = (e) => {
+      const value = e.target.value;
+      this.setState(state => {
+        state = {...state};
+        state.value = value.length>0? [value]:[];
+        return state;
+      },()=>this.state.onChange(value.length>0?[value]:[], this.state.inputId,null, false));
+    }
     return (
 
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
-          value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} onChange={() => {}}
-          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
+          value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} 
+          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}  onChange={updateOptions}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <img src={images.ArrowDown} className="dropdown-arrow"/>
+        {
+          this.state.dropdownOptions && this.state.dropdownOptions.length>0 && <img src={images.ArrowDown} className="dropdown-arrow"/>
+        }
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
+        {          
+         this.state.dropdownOptions && this.state.dropdownOptions.length>0 && 
         <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
-          {
+          { 
             this.state.dropdownOptions.map((option, i) => {
               return (
                 <a key={option.id || i} className="dropdown-item">
@@ -222,7 +233,9 @@ class CustomInput extends React.Component {
               );
             })
           }
+        
         </div>
+        }
       </div>
     );
   }

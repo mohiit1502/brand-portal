@@ -80,8 +80,10 @@ class ClaimManagerApi {
       payload = payload.replace("__itemId__", request.query.payload);
 
       let url = secrets.IQS_URL;
-
-      const response = await ServerHttp.post(url, options, payload);
+      //url= url+'r';
+      //let response = await ServerHttp.post(url, options, payload);
+      retry_config = { max_attempts:3, delay:[30,50,80]};
+      let response = await ServerUtils.retry({ url, options, payload,method:"POST"}, retry_config);
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         responseBody = this.parseSellersFromResponse(response.body.docs);
