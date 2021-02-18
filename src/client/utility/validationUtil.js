@@ -305,7 +305,8 @@ export default class Validator {
     }
     tmMeta.isValid = res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED";
     tmMeta.error = error;
-    tmMeta.fieldOk = !error;
+    tmMeta.fieldOk = res.body.usptoVerification === "VALID";
+    tmMeta.fieldAlert = res.body.usptoVerification === "NOT_VERIFIED";
     tmMeta.disabled = false;
     tmMeta.loader = false;
     tmMeta.usptoUrl = res.body.usptoUrl;

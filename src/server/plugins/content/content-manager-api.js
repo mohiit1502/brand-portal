@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import {CONSTANTS} from "../../constants/server-constants";
+import ServerUtils from "../../utility/server-utils";
 
 class ContentManagerApi {
   constructor() {
@@ -29,7 +30,7 @@ class ContentManagerApi {
 
   async getHelpConfiguration(request, h) {
     try {
-      const configuration = request.app.ccmGet("CONTENT_CONFIG.HELPDESCRIPTOR");
+      const configuration = await ServerUtils.ccmGet(request,"CONTENT_CONFIG.HELPDESCRIPTOR");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
@@ -39,7 +40,7 @@ class ContentManagerApi {
 
   async getLandingPageConfiguration(request, h) {
     try {
-      const configuration = request.app.ccmGet("CONTENT_CONFIG.LANDINGPAGEDESCRIPTOR");
+      const configuration = await ServerUtils.ccmGet(request,"CONTENT_CONFIG.LANDINGPAGEDESCRIPTOR");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
@@ -49,7 +50,7 @@ class ContentManagerApi {
 
   async getFormFieldConfiguration(request, h) {
     try {
-      const configuration = request.app.ccmGet("CONTENT_CONFIG.FORMFIELDCONFIG");
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.FORMFIELDCONFIG");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);

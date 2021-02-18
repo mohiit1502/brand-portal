@@ -6,9 +6,9 @@ const secrets = require(CONSTANTS.PATH);
 
 class Falcon {
 
-  generateFalconRedirectURL (request, action) {
+  async generateFalconRedirectURL (request, action) {
     try {
-      const IAM = request.app.ccmGet("IAM");
+      const IAM = await ServerUtils.ccmGet(request,"IAM");
       const clientId = secrets.CLIENT_ID;
       const nonce = ServerUtils.randomStringGenerator(secrets.NONCE_STRING_LENGTH).toUpperCase();
       const clientType = secrets.CLIENT_TYPE;

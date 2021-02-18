@@ -57,6 +57,7 @@ class CustomInput extends React.Component {
       this.setState({
 //         error: "",
         fieldOk: false,
+        fieldAlert: false,
         value: evt.target.value
       });
     }
@@ -87,7 +88,7 @@ class CustomInput extends React.Component {
   }
 
   havePropsChanged(prevProps, newProps) {
-    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "loader", "fieldOk", "radioOptions", "dropdownOptions", "error", "subtitle"];
+    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "loader", "fieldAlert", "fieldOk", "radioOptions", "dropdownOptions", "error", "subtitle"];
     const changedProps = {};
     for (const i in changeableProps) {
       if (prevProps[changeableProps[i]] !== newProps[changeableProps[i]]) {
@@ -274,7 +275,7 @@ class CustomInput extends React.Component {
     const pattern = this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath);
     return (
       <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-2" : " mb-3"}${errorClass ? " " + errorClass : ""}
-        ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
+        ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : this.state.fieldAlert ? " field-alert" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}

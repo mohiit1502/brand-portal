@@ -54,7 +54,7 @@ class DateSelector extends React.Component {
     const updateChartMeta = {...this.props.meta.updateChartMeta};
     const widgetId = this.props.meta.widgetId;
     const startValueDate = moment(this.state.startDate).format('YYYY-MM-DD');
-    const endValueDate = moment(this.state.endDate).format('YYYY-MM-DD');
+    const endValueDate = moment(this.state.endDate).add(1, 'd').format('YYYY-MM-DD');
     const ldf = moment.localeData().longDateFormat('LL');
     const startDateView = moment.utc(this.state.startDate, [ldf]).format('MMM DD, YYYY');
     const endDateView = moment(this.state.endDate, [ldf]).format('MMM DD, YYYY');
