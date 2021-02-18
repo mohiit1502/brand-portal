@@ -1,5 +1,6 @@
 import nj from "node-jose";
 import {CONSTANTS} from "../constants/server-constants";
+// import ccmLocal from "./../config/ccmFailoverBackup.json";
 const secrets = require(CONSTANTS.PATH);
 
 class ServerUtils {
@@ -56,6 +57,38 @@ class ServerUtils {
       }
     });
   }
+
+  async ccmGet(request, path) {
+    try {
+      await request.app.loadCCM();
+      return request.app.ccmGet(path);
+    } catch (e) {
+      console.log("Error at CCM Access: ", e)
+      console.log("Triggering failover config access...");
+      throw e;
+      // return ServerUtils.search(path, ccmLocal);
+    }
+  }
+
+  // static search(path, obj, selector) {
+  //   try {
+  //     if (!path) return obj;
+  //     const pathArr = path.split(".");
+  //     let recurredObject = obj;
+  //     let i = 0;
+  //     while (i < pathArr.length) {
+  //       if (typeof recurredObject === "object" && recurredObject.length !== undefined) {
+  //         recurredObject = recurredObject.find(itemInner => itemInner[pathArr[i]] === selector)
+  //       } else {
+  //         recurredObject = recurredObject[pathArr[i]];
+  //       }
+  //       i++;
+  //     }
+  //     return recurredObject;
+  //   } catch (e) {
+  //     return "";
+  //   }
+  // }
 }
 
 export default new ServerUtils();
