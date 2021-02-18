@@ -195,10 +195,6 @@ class NewClaimTemplate extends React.Component {
     const state = {...this.state};
     let shouldDisable = false;
     state.form.inputData.itemList.every(item => {
-      if(item.sellerName && item.sellerName.length>0 && item.url.error)
-      {
-        item.url.error="";
-      }
       if (!item.url.value || !item.sellerName.value || (item.sellerName.value.length !== undefined && item.sellerName.value.length === 0) || item.url.error || item.sellerName.error) {
         shouldDisable = true;
         return false;
@@ -367,7 +363,7 @@ class NewClaimTemplate extends React.Component {
     const form = {...this.state.form};
 
     const bool = form.inputData.claimType.value &&
-      //form.inputData.brandName.value &&
+      form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
       form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0), true) &&
       form.inputData.comments.value &&
