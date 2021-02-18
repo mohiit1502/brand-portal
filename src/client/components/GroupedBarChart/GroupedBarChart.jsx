@@ -25,6 +25,16 @@ const GroupedBarChart = props => {
       .range([height - margin.top - margin.bottom, 0]);
     sortingArray && data.sort((a, b) => sortingArray.indexOf(a.claimType) - sortingArray.indexOf(b.claimType));
 
+    if (!data || (data.length !== undefined && !data.length)) {
+      svg.append("text")
+        .attr("y", height / 2)//magic number here
+        .attr("x", width / 2)
+        .attr("text-anchor", "middle")
+        // .attr("class", "myLabel")
+        .text("No data to show");
+      return;
+    }
+
     const tooltip = d3Tip()
       .attr('class','d3-tip')
       .offset([-10, 0])

@@ -55,8 +55,9 @@ class BrandManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request,"BRAND_CONFIG.BASE_URL");
+      // const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
+      const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
       const url = param ? `${BASE_URL}${BRANDS_PATH}?brandStatus=${param}` : `${BASE_URL}${BRANDS_PATH}`;
 
       const response = await ServerHttp.get(url, options);
@@ -75,8 +76,9 @@ class BrandManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8092";
+      const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
       const url = `${BASE_URL}${BRANDS_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -95,8 +97,8 @@ class BrandManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      const BRANDS_PATH = request.app.ccmGet("BRAND_CONFIG.BRANDS_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
       const url = `${BASE_URL}${BRANDS_PATH}/${request.params.brandId}`;
       const response = await ServerHttp.put(url, options, payload);
       return h.response(response.body).code(response.status);
@@ -114,8 +116,8 @@ class BrandManagerApi {
         headers
       };
 
-      const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
-      let UNIQUENESS_CHECK_PATH = request.app.ccmGet("BRAND_CONFIG.UNIQUENESS_CHECK_PATH");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UNIQUENESS_CHECK_PATH");
       // const UNIQUENSS_CHECK_PATH = `/ropro/umf/v1/brands/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__brandName__", request.query.brandName));
       const url = `${BASE_URL}${UNIQUENESS_CHECK_PATH}`;
