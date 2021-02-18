@@ -84,7 +84,7 @@ class Dashboard extends React.PureComponent {
           userProfile={this.props.userProfile}
           widgetCommon={widgetConfig.WIDGETCOMMON}
           widgetStack={widgetConfig.WIDGETTYPES}
-        /> : <GenericErrorPage />}
+        /> : <GenericErrorPage generic />}
       </div>
     );
   }

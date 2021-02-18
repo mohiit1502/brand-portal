@@ -354,11 +354,11 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   z-index: 1040;
 }
 
-.field-loader, .field-ok {
+.field-loader, .field-ok, .field-alert {
   position: relative;
 }
 
-.field-loader:before, .field-ok:before {
+.field-loader:before, .field-ok:before, .field-alert:before {
   display: block;
   content: "";
   position: absolute;
@@ -375,6 +375,12 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   top: 0.5rem;
   background-size: 1.2rem;
   background-image: url("./../images/check-grn.svg");
+}
+
+.field-alert:before {
+  top: 0.5rem;
+  background-size: 1.2rem;
+  background-image: url("./../images/alertIcon-circle.svg");
 }
 
 .item-loader {
