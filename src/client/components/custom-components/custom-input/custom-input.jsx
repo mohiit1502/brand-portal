@@ -191,15 +191,16 @@ class CustomInput extends React.Component {
       const value = e.target.value;
       this.setState(state => {
         state = {...state};
-        state.value = value.length>0? [value]:[];
+        state.value = value.length > 0 ? [value] : [];
         return state;
-      },()=>this.state.onChange(value.length>0?[value]:[], this.state.inputId,null, false));
+      }, () => this.state.onChange(value.length > 0 ? [value] : [], this.state.inputId, null, false));
     }
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
           value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} 
-          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}  onChange={updateOptions}
+          pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled} 
+           onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>

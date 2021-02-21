@@ -467,12 +467,23 @@ class NewClaimTemplate extends React.Component {
           }
         })
         .catch(err => {
-        
+          if(err.status==500) {      //iqs server down
+            this.loader("fieldLoader", false);
+            const form = {...this.state.form};
+            form.inputData.itemList[i].sellerName.disabled = false;
+            form.inputData.itemList[i].sellerName.options = [];
+            form.inputData.itemList[i].sellerName.value = "";
+            form.isSubmitDisabled=true;
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please proceed by entering seller's name!";
+            this.setState({form}, this.checkToEnableItemButton);
+          }
+          else{
               this.loader("fieldLoader", false);
               const form = {...this.state.form};
               form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
               form.inputData.itemList[i].sellerName.disabled = true;
               this.setState({form}, this.checkToEnableItemButton);
+         }
         });
     }
 
