@@ -1,5 +1,6 @@
 import nj from "node-jose";
 import {CONSTANTS} from "../constants/server-constants";
+import ServerHttp from './ServerHttp';
 // import ccmLocal from "./../config/ccmFailoverBackup.json";
 const secrets = require(CONSTANTS.PATH);
 
@@ -69,7 +70,23 @@ class ServerUtils {
       // return ServerUtils.search(path, ccmLocal);
     }
   }
-
+  async retry( request, incrementalTimeouts){  
+    for (let attempt = 0 ; attempt <= incrementalTimeouts.length ; attempt++ ){  
+        try{
+          const requestType = request.type && request.type.toLowerCase() ;
+         
+          console.log ( "[WBP] Making request for request type " + requestType );
+          console.log( "[WBP] Requested function is " , ServerHttp[ requestType ] );
+          const response = ServerHttp[ requestType ] && await ServerHttp[ requestType ]( request.url, request.options, request.payload);
+          return response ? response : { status : 500 , body : { } }
+      } catch( err ){
+        console.error("[WBP] Error while retrying: ", err );  
+        console.log("[WBP] Retry Attemp: ",attempt+1);
+        incrementalTimeouts.length > attempt ? await new Promise( timeOutDone => setTimeout(() => timeOutDone(), incrementalTimeouts[ attempt ])) : {} ;
+      }
+    }
+    return null;
+  }
   // static search(path, obj, selector) {
   //   try {
   //     if (!path) return obj;

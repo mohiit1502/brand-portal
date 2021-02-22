@@ -80,13 +80,11 @@ class ClaimManagerApi {
       payload = payload.replace("__itemId__", request.query.payload);
 
       let url = secrets.IQS_URL;
-      //url= url+'r';
-      //let response = await ServerHttp.post(url, options, payload);
-      retry_config = { max_attempts:3, delay:[30,50,80]};
-      let response = await ServerUtils.retry({ url, options, payload,method:"POST"}, retry_config);
-      let responseBody = [];
-      if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-        responseBody = this.parseSellersFromResponse(response.body.docs);
+      let incrementalTimeouts = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.INCREMENTAL_TIMEOUTS");
+      incrementalTimeouts = incrementalTimeouts && JSON.parse( incrementalTimeouts );
+      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      let responseBody = [];
+      if ( response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+        responseBody = this.parseSellersFromResponse( response.body.docs );
       }
       return h.response(responseBody).code(response.status);
     } catch (err) {
