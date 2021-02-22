@@ -82,7 +82,7 @@ class ServerUtils {
       } catch( err ){
         console.error("[WBP] Error while retrying: ", err );  
         console.log("[WBP] Retry Attemp: ",attempt+1);
-        incrementalTimeouts.length > attempt ? await new Promise( timeOutDone => setTimeout(() => timeOutDone(), incrementalTimeouts[ attempt ])) : {} ;
+        incrementalTimeouts.length > attempt ? await new Promise( resolve => setTimeout(()=>resolve() ,incrementalTimeouts[ attempt ] )) : {} ;
       }
     }
     return null;
