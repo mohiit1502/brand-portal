@@ -78,11 +78,11 @@ class ClaimManagerApi {
       };
       let payload = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.IQS_QUERY");
       payload = payload.replace("__itemId__", request.query.payload);
-
       let url = secrets.IQS_URL;
       let incrementalTimeouts = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.INCREMENTAL_TIMEOUTS");
       incrementalTimeouts = incrementalTimeouts && JSON.parse( incrementalTimeouts );
-      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      let responseBody = [];
+      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      
+      let responseBody = [];
       if ( response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         responseBody = this.parseSellersFromResponse( response.body.docs );
       }
@@ -91,7 +91,6 @@ class ClaimManagerApi {
       return h.response(err).code(err.status);
     }
   }
-
   async getClaimTypes(request, h) {
     try {
       const headers = ServerUtils.getHeaders(request);
