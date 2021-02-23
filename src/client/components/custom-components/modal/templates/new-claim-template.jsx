@@ -365,7 +365,7 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce(( boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0 ), true) &&
+      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0), true) &&
       form.inputData.comments.value &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;

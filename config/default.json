@@ -60,6 +60,10 @@
           "DASHBOARD_CONFIG": {
             "serviceName": "ropro-brandportal",
             "+configNames": ["DASHBOARD_CONFIG"]
+          },
+          "EXTERNAL_SERVICE_CONFIG": {
+            "serviceName": "ropro-brandportal",
+            "+configNames": ["EXTERNAL_SERVICE_CONFIG"]
           }
         }
       }
