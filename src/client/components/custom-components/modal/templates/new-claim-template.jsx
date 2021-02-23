@@ -365,7 +365,7 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0), true) &&
+      form.inputData.itemList.reduce(( boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0 ), true) &&
       form.inputData.comments.value &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -467,26 +467,21 @@ class NewClaimTemplate extends React.Component {
           }
         })
         .catch(err => {
-          if(err.status==500) {      //iqs server down
-            this.loader("fieldLoader", false);
-            const form = {...this.state.form};
+          this.loader("fieldLoader", false);
+          const form = {...this.state.form};
+          if( new RegExp( CONSTANTS.CODES.ERRORCODES.SERVERERROR ).test( err.status.toString() )) {      //IQS- error
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please proceed by entering seller's name!";
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].sellerName.options = [];
             form.inputData.itemList[i].sellerName.value = "";
             form.isSubmitDisabled=true;
-            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please proceed by entering seller's name!";
-            this.setState({form}, this.checkToEnableItemButton);
-          }
-          else{
-              this.loader("fieldLoader", false);
-              const form = {...this.state.form};
-              form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
-              form.inputData.itemList[i].sellerName.disabled = true;
-              this.setState({form}, this.checkToEnableItemButton);
+          }else{
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
+            form.inputData.itemList[i].sellerName.disabled = true;   
          }
+         this.setState({form}, this.checkToEnableItemButton);
         });
     }
-
   }
 
   render() {

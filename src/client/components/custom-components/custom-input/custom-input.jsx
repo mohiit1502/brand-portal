@@ -191,9 +191,9 @@ class CustomInput extends React.Component {
       const value = e.target.value;
       this.setState(state => {
         state = {...state};
-        state.value = value.length > 0 ? [value] : [];
+        state.value = value.length > 0 ? [ value ] : [ ];
         return state;
-      }, () => this.state.onChange(value.length > 0 ? [value] : [], this.state.inputId, null, false));
+      }, ( ) => this.state.onChange(value.length > 0 ? [ value ] : [ ], this.state.inputId, null, false));
     }
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>

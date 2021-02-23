@@ -78,9 +78,7 @@ class ClaimManagerApi {
       };
       let payload = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.IQS_QUERY");
       payload = payload.replace("__itemId__", request.query.payload);
-
       let url = secrets.IQS_URL;
-
       const response = await ServerHttp.post(url, options, payload);
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
@@ -91,7 +89,6 @@ class ClaimManagerApi {
       return h.response(err).code(err.status);
     }
   }
-
   async getClaimTypes(request, h) {
     try {
       const headers = ServerUtils.getHeaders(request);
