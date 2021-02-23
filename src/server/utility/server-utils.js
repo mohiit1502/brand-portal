@@ -69,7 +69,6 @@ class ServerUtils {
       // return ServerUtils.search(path, ccmLocal);
     }
   }
-
   // static search(path, obj, selector) {
   //   try {
   //     if (!path) return obj;
@@ -90,5 +89,4 @@ class ServerUtils {
   //   }
   // }
 }
-
 export default new ServerUtils();

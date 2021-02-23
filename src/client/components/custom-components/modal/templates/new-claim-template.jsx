@@ -217,6 +217,7 @@ class NewClaimTemplate extends React.Component {
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
+          state.form.inputData.itemList[index].url.error="";
         } else {
           state.form.inputData[key].value = value;
         }
@@ -364,7 +365,7 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value), true) &&
+      form.inputData.itemList.reduce(( boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0 ), true) &&
       form.inputData.comments.value &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -448,28 +449,39 @@ class NewClaimTemplate extends React.Component {
         .then(res => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
+          form.inputData.itemList[i].sellerName.value ="";
           if(res.body.length != 0){
             res.body.unshift({value: "All", id: "_all"});
             form.inputData.itemList[i].sellerName.options = res.body;
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].url.error = "";
+            form.isSubmitDisabled=true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
+            form.inputData.itemList[i].sellerName.value = "";
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
+            form.isSubmitDisabled=true;
             this.setState({form}, this.checkToEnableItemButton);
           }
         })
         .catch(err => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
-          form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
-          form.inputData.itemList[i].sellerName.disabled = true;
-          this.setState({form}, this.checkToEnableItemButton);
+          if( new RegExp( CONSTANTS.CODES.ERRORCODES.SERVERERROR ).test( err.status.toString() )) {      //IQS- error
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please proceed by entering seller's name!";
+            form.inputData.itemList[i].sellerName.disabled = false;
+            form.inputData.itemList[i].sellerName.options = [];
+            form.inputData.itemList[i].sellerName.value = "";
+            form.isSubmitDisabled=true;
+          }else{
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
+            form.inputData.itemList[i].sellerName.disabled = true;   
+         }
+         this.setState({form}, this.checkToEnableItemButton);
         });
     }
-
   }
 
   render() {
