@@ -58,7 +58,7 @@ class CustomInput extends React.Component {
 //         error: "",
         fieldOk: false,
         fieldAlert: false,
-        value: evt.target.value
+        value: evt.target.value && evt.target.value.trim()
       });
     }
     this.changeHandlerDebounce(evt, key);
@@ -183,7 +183,7 @@ class CustomInput extends React.Component {
     });
     return selectedList;
   }
-  
+
   getMultiSelectInput () {
 
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
@@ -198,8 +198,8 @@ class CustomInput extends React.Component {
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
-          value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} 
-          pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled} 
+          value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value}
+          pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
           onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
@@ -214,10 +214,10 @@ class CustomInput extends React.Component {
           { subtitleText }
         </small>
 
-        {          
-         this.state.dropdownOptions && this.state.dropdownOptions.length>0 && 
+        {
+         this.state.dropdownOptions && this.state.dropdownOptions.length>0 &&
         <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
-          { 
+          {
             this.state.dropdownOptions.map((option, i) => {
               return (
                 <a key={option.id || i} className="dropdown-item">
@@ -233,7 +233,7 @@ class CustomInput extends React.Component {
               );
             })
           }
-        
+
         </div>
         }
       </div>
