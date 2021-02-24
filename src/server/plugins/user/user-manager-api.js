@@ -347,7 +347,7 @@ class UserManagerApi {
     } catch (err) {
       if (err.status === 520) {
         if (err.error && err.error.message) {
-          const iamResponse = JSON.parse(err.message);
+          const iamResponse = JSON.parse(err.error.message);
           return iamResponse && iamResponse.code === "1052" && h.response(err).code(404);
         } else {
           return h.response(err).code(err.status);
