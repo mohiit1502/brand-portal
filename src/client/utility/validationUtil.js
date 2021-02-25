@@ -162,8 +162,16 @@ export default class Validator {
     this.setState(state);
     Http.get("/api/brands/checkUnique", params, null, this.props.showNotification, null, inputData.brandName.ERROR5XX)
       .then(res => {
-        const error = res.body.unique ? "" : "This brand is already registered in your Walmart Brand Portal account";
-        inputData.brandName.isUnique = res.body.unique;
+        //const error = res.body.krakenUniqueStatus ? "" : "This brand is already registered in your Walmart Brand Portal account";
+        if(res.body.krakenUniqueStatus==="KRAKEN"){
+            inputData.brandName.isUnique = true;
+        }else if(res.body.krakenUniqueStatus==="EMAIL"){
+            const error ="This is email workflow"
+            inputData.brandName.isUnique = false;
+        }else{
+          const error ="This brand is already registered in your Walmart Brand Portal account"
+          inputData.brandName.isUnique = false;
+        }
         inputData.brandName.error = error;
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
