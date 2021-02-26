@@ -445,6 +445,7 @@ class NewClaimTemplate extends React.Component {
 
       const payload = url.substring(slash + 1, qMark);
       const query = {payload};
+      this.setState( state => { state = {...state}; state.form.isSubmitDisabled = true ; return state; });
       Http.get("/api/sellers", query,null, this.props.showNotification, null, "Request failed, please try again.")
         .then(res => {
           this.loader("fieldLoader", false);
