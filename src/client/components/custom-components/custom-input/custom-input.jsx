@@ -61,7 +61,7 @@ class CustomInput extends React.Component {
         value: evt.target.value && evt.target.value.trim()
       });
     }
-    this.state.updateNCTSubmitButton && this.state.updateNCTSubmitButton();
+    this.state.disableSubmitButton && this.state.disableSubmitButton();
     this.changeHandlerDebounce(evt, key);
   }
 
