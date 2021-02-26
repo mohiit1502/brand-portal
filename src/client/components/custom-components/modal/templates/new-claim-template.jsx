@@ -31,6 +31,7 @@ class NewClaimTemplate extends React.Component {
     this.removeFromItemList = this.removeFromItemList.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.onItemUrlChange = this.onItemUrlChange.bind(this);
+    this.disableSubmitButton = this.disableSubmitButton.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
 
@@ -341,6 +342,7 @@ class NewClaimTemplate extends React.Component {
       this.setState(state => {
         state = {...state};
         if (index > -1) {
+          state.form.inputData.itemList[index].sellerName.value = "";
           state.form.inputData.itemList[index].sellerName.disabled = true;
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
@@ -374,6 +376,9 @@ class NewClaimTemplate extends React.Component {
     this.setState({form}, callback && callback());
   }
 
+  disableSubmitButton(){
+    this.setState( state => { state = {...state}; state.form.isSubmitDisabled = true ; return state; });
+  }
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.undertakingList[index].selected = !state.form.undertakingList[index].selected;
@@ -460,7 +465,6 @@ class NewClaimTemplate extends React.Component {
             this.setState({form}, this.checkToEnableItemButton);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
-            form.inputData.itemList[i].sellerName.value = "";
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
             form.isSubmitDisabled=true;
             this.setState({form}, this.checkToEnableItemButton);
@@ -473,7 +477,6 @@ class NewClaimTemplate extends React.Component {
             form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please proceed by entering seller's name!";
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].sellerName.options = [];
-            form.inputData.itemList[i].sellerName.value = "";
             form.isSubmitDisabled=true;
           }else{
             form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
@@ -536,7 +539,7 @@ class NewClaimTemplate extends React.Component {
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
                           value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={this.onChange} disabled={item.url.disabled}
-                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i} />
+                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i}  disableSubmitButton = { this.disableSubmitButton } />
                       </div>
                       <div className="col-4">
                         <div className="row">
