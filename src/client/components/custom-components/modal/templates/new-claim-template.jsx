@@ -31,6 +31,7 @@ class NewClaimTemplate extends React.Component {
     this.removeFromItemList = this.removeFromItemList.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.onItemUrlChange = this.onItemUrlChange.bind(this);
+    this.disableSubmitButtonOnUrlChange = this.disableSubmitButtonOnUrlChange.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
 
@@ -341,6 +342,7 @@ class NewClaimTemplate extends React.Component {
       this.setState(state => {
         state = {...state};
         if (index > -1) {
+          state.form.inputData.itemList[index].sellerName.value = "";
           state.form.inputData.itemList[index].sellerName.disabled = true;
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
@@ -374,6 +376,9 @@ class NewClaimTemplate extends React.Component {
     this.setState({form}, callback && callback());
   }
 
+  disableSubmitButtonOnUrlChange(){
+    this.setState( state => { state = {...state}; state.form.isSubmitDisabled = true ; return state; });
+  }
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.undertakingList[index].selected = !state.form.undertakingList[index].selected;
@@ -445,7 +450,6 @@ class NewClaimTemplate extends React.Component {
 
       const payload = url.substring(slash + 1, qMark);
       const query = {payload};
-      this.setState( state => { state = {...state}; state.form.isSubmitDisabled = true ; return state; });
       Http.get("/api/sellers", query,null, this.props.showNotification, null, "Request failed, please try again.")
         .then(res => {
           this.loader("fieldLoader", false);
@@ -537,7 +541,7 @@ class NewClaimTemplate extends React.Component {
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
                           value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={this.onChange} disabled={item.url.disabled}
-                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i} />
+                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i}  updateNCTSubmitButton = { this.disableSubmitButtonOnUrlChange } />
                       </div>
                       <div className="col-4">
                         <div className="row">
