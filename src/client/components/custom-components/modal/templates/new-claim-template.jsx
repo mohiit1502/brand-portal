@@ -93,7 +93,15 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: "",
-            placeholder:"Please provide additional information about the claim"
+            patternPath: CONSTANTS.REGEX.NAMES,
+            patternErrorMessage: "Please enter valid comments!",
+            placeholder:"Please provide additional information about the claim",
+            validators: {
+              validateLength: {
+                minLength: 20,
+                error: "Comment should be 20 numeric characters long!"
+              }
+            }
           },
           signature: {
             label: "Digital Signature",
@@ -378,7 +386,18 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
           state.currentItem = index;
-        } else {
+        } 
+        else if ( key === "comments" ){  
+            state.form.inputData[key].value = targetVal;
+            const pattern = new RegExp(this.state.form.inputData.comments.patternPath);
+            const patternErrorMessage = this.state.form.inputData.comments.patternErrorMessage ;
+            if (pattern && !pattern.test(evt.target.value)) {
+              state.form.inputData.comments.error = patternErrorMessage;
+            } else {
+                  state.form.inputData.comments.error = "";
+            }  
+        }
+        else {
           state.form.inputData[key].value = targetVal;
         }
         return {
@@ -598,7 +617,8 @@ class NewClaimTemplate extends React.Component {
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
                     value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
-                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} />
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} 
+                    validators ={inputData.comments.validators }  bubbleValue = {this.bubbleValue} />
                 </div>
               </div>
               {
@@ -663,7 +683,8 @@ NewClaimTemplate.propTypes = {
   saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
   data: PropTypes.object,
-  showNotification: PropTypes.func
+  showNotification: PropTypes.func,
+  bubbleValue: propTypes.func
 };
 
 const mapStateToProps = state => {
