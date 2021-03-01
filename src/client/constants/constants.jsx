@@ -149,6 +149,11 @@ const CONSTANTS = {
       SUSPENDED: "Inactive",
       REJECTED: "Rejected"
     },
+    UNIQUENESS_CHECK_STATUS: {
+      EMAIL: "EMAIL",
+      DENY: "DENY",
+      KRAKEN: "KRAKEN"
+    },
     OPTIONS: {
       DISPLAY: {
         EDIT: "Edit User Profile",
