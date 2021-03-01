@@ -182,12 +182,6 @@ class NewClaimTemplate extends React.Component {
           validateLength: {
             minLength: 3,
             error: "Minimum length is 3 characters"
-          },
-          validateRegex:{
-            dataRuleRegex : "^[a-zA-Z0-9,. ]+$",
-            errorMessages : {
-              dataMsgRegex: "Please enter a valid Seller(s) name"
-            }
           }
         }
       }
