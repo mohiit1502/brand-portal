@@ -181,7 +181,13 @@ class NewClaimTemplate extends React.Component {
         validators: {
           validateLength: {
             minLength: 3,
-            error: "Seller name should be 3 numeric characters long!"
+            error: "Minimum length is 3 characters"
+          },
+          validateRegex:{
+            dataRuleRegex : "[a-zA-Z0-9,]+",
+            errorMessages : {
+              dataMsgRegex: "Please enter a valid Seller(s) name"
+            }
           }
         }
       }
@@ -437,7 +443,14 @@ class NewClaimTemplate extends React.Component {
 
     const getItems = items => {
       const itemList = [];
-      items.forEach(item => item.sellerName.value && item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName})));
+      items.forEach(item => { 
+        if (item.sellerName.value && typeof item.sellerName.value === "object"){
+          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName}));
+        }else if ( item.sellerName.value ) {
+          const sellerNames = item.sellerName.value.trim().split(',').filter(Boolean);
+          sellerNames.forEach( sellerName => itemList.push({ itemUrl: item.url.value, sellerName }));
+        }
+    });
       return itemList;
     };
 

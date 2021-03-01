@@ -186,19 +186,17 @@ class CustomInput extends React.Component {
   }
 
   getMultiSelectInput () {
-
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     const updateOptions = (e) => {
       const error = this.validate(e, this.state.parentRef);
       if (!error) {
-        const value = e.target.value && e.target.value && e.target.value.trim().split(',');
+        const value = e.target.value;
         this.setState(state => {
         state = {...state};
         state.value = value;
         return state;
       }, ( ) => this.state.onChange( value , this.state.inputId, null, false));
       } else {
-        this.setState( { error: "" } );
         this.state.bubbleValue && this.state.bubbleValue( e, this.state.inputId , error );
       }
     }
@@ -206,7 +204,7 @@ class CustomInput extends React.Component {
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
-          value = { this.state.value && typeof this.state.value === "object" && this.state.dropdownOptions.length > 0 ? ( this.state.value.length ? this.state.value.join(", ") : this.state.value ) : this.state.value  }
+          value = { this.state.value && typeof this.state.value === "object" &&  this.state.value.length ? this.state.value.join(",") : this.state.value  }
           pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
           onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
           data-toggle="dropdown" autoComplete="off" />
