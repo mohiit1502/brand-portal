@@ -39,7 +39,7 @@ export default class Validator {
   }
 
   static validateRegex (target, validationObj, regexSelector) {
-    const formFieldValue = target.value
+    const formFieldValue = target.value.trim();
     if (validationObj) {
       const formFieldRegexString =
         validationObj.dataRuleRegex &&
