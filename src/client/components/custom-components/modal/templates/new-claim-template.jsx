@@ -184,7 +184,7 @@ class NewClaimTemplate extends React.Component {
             error: "Minimum length is 3 characters"
           },
           validateRegex:{
-            dataRuleRegex : "[a-zA-Z0-9,]+",
+            dataRuleRegex : "^[a-zA-Z0-9,. ]+$",
             errorMessages : {
               dataMsgRegex: "Please enter a valid Seller(s) name"
             }
@@ -364,7 +364,7 @@ class NewClaimTemplate extends React.Component {
       });
     }
 
-    this.props.dispatchClaims({claimList});
+    this.props.dispatchClaims({claimList, fetchClaimsCompleted: true});
   }
 
   onChange(evt, key) {
@@ -448,7 +448,7 @@ class NewClaimTemplate extends React.Component {
           item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName}));
         }else if ( item.sellerName.value ) {
           const sellerNames = item.sellerName.value.trim().split(',').filter(Boolean);
-          sellerNames.forEach( sellerName => itemList.push({ itemUrl: item.url.value, sellerName }));
+          sellerNames.forEach( sellerName => itemList.push({ itemUrl: item.url.value, sellerName: sellerName.trim() }));
         }
     });
       return itemList;
