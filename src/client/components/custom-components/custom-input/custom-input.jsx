@@ -206,7 +206,7 @@ class CustomInput extends React.Component {
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
-          value = { this.state.value && typeof this.state.value === "object" && this.state.dropdownOptions.length > 0 ? ( this.state.value.length ? this.state.value.join(" ,") : this.state.value ) : this.state.value  }
+          value = { this.state.value && typeof this.state.value === "object" && this.state.dropdownOptions.length > 0 ? ( this.state.value.length ? this.state.value.join(", ") : this.state.value ) : this.state.value  }
           pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
           onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
           data-toggle="dropdown" autoComplete="off" />
