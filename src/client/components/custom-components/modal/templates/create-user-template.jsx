@@ -38,6 +38,7 @@ class CreateUserTemplate extends React.Component {
         ...newUserContent.formConfig,
         inputData: {...newUserContent.fields}
       },
+      uniquenessCheckStatus: "",
       loader: false,
       fieldLoader: false,
       allSelected: false
@@ -244,13 +245,12 @@ class CreateUserTemplate extends React.Component {
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        type: isThirdParty ? "ThirdParty" : "Internal"
+        type: isThirdParty ? "ThirdParty" : "Internal",
+        krakenUniqueStatus: this.state.uniquenessCheckStatus
       }
     };
 
-    if (isThirdParty) {
-      payload.user.companyName = this.state.form.inputData.companyName.value;
-    }
+    payload.user.companyName = isThirdParty ? this.state.form.inputData.companyName.value : "";
 
     const url = "/api/users";
     this.loader("form", true);
@@ -267,7 +267,6 @@ class CreateUserTemplate extends React.Component {
           console.log(err);
         });
     } else {
-
       return Http.post(url, payload)
         .then(res => {
           this.resetTemplateStatus();
