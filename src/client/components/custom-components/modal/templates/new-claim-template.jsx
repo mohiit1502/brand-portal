@@ -35,7 +35,7 @@ class NewClaimTemplate extends React.Component {
     this.bubbleValue = this.bubbleValue.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
-
+    this.invalid = { comments : false, claimTypeIdentifier: false};
     this.state = {
       form: {
         isSubmitDisabled: true,
@@ -100,6 +100,12 @@ class NewClaimTemplate extends React.Component {
               validateLength: {
                 minLength: 20,
                 error: "Comment should be 20 numeric characters long!"
+              },
+              validateRegex:{
+                dataRuleRegex : "[a-zA-Z0-9,. ]+$",
+                errorMessages : {
+                  dataMsgRegex: "Please enter a valid comment"
+                }
               }
             }
           },
@@ -392,18 +398,10 @@ class NewClaimTemplate extends React.Component {
           state.disableAddItem = true;
           state.currentItem = index;
         } 
-        else if ( key === "comments" ){  
-            state.form.inputData[key].value = targetVal;
-            const pattern = new RegExp(this.state.form.inputData.comments.patternPath);
-            const patternErrorMessage = this.state.form.inputData.comments.patternErrorMessage ;
-            if (pattern && !pattern.test(evt.target.value)) {
-              state.form.inputData.comments.error = patternErrorMessage;
-            } else {
-                  state.form.inputData.comments.error = "";
-            }  
-        }
         else {
           state.form.inputData[key].value = targetVal;
+          state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
+          this.invalid[key] = false;
         }
         return {
           ...state
@@ -422,7 +420,7 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && !item.sellerName.error), true) &&
+      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&
       form.inputData.comments.value && !form.inputData.comments.error &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -448,7 +446,7 @@ class NewClaimTemplate extends React.Component {
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
-    const registrationNumber = inputData.claimTypeIdentifier.value;
+    const registrationNumber = Helper.handleSpaces( inputData.claimTypeIdentifier.value );
 
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
@@ -456,17 +454,18 @@ class NewClaimTemplate extends React.Component {
     const usptoUrl = inputData.brandName.options[index].usptoUrl;
     const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
-    const comments = inputData.comments.value;
-    const digitalSignatureBy = inputData.signature.value;
+    const comments = Helper.handleSpaces( inputData.comments.value );
+    const digitalSignatureBy = Helper.handleSpaces( inputData.signature.value );
 
     const getItems = items => {
       const itemList = [];
       items.forEach(item => { 
+        const itemUrl = Helper.handleSpaces( item.url.value );
         if (item.sellerName.value && typeof item.sellerName.value === "object"){
-          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName}));
+          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
         }else if ( item.sellerName.value ) {
           const sellerNames = item.sellerName.value.trim().split(',').filter(Boolean);
-          sellerNames.forEach( sellerName => itemList.push({ itemUrl: item.url.value, sellerName: sellerName.trim() }));
+          sellerNames.forEach( sellerName => itemList.push({ itemUrl: itemUrl , sellerName: sellerName.trim() }));
         }
     });
       return itemList;
@@ -600,7 +599,7 @@ class NewClaimTemplate extends React.Component {
                     <div key={i} className="row item-url-list">
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
-                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={this.onChange} disabled={item.url.disabled}
+                          value={item.url.value} type={item.url.type}  onChange={this.onChange} disabled={item.url.disabled}
                           dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i}  disableSubmitButton = { this.disableSubmitButton } />
                       </div>
                       <div className="col-4">

@@ -188,4 +188,11 @@ export default class Helper {
     }
     return interpolatedUrl;
   }
+  static handleSpaces( incoming ){
+    if( typeof incoming === "string" ){
+      return incoming.replace(/  +/g, ' ');
+    } else{
+      return incoming;
+    }
+  }
 }
