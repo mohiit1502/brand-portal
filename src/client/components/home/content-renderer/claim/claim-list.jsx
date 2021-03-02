@@ -127,8 +127,9 @@ class ClaimList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.filter["widget-claim-summary"] !== this.props.filter["widget-claim-summary"]) {
+    if (prevProps.filter["widget-claim-summary"] !== this.props.filter["widget-claim-summary"] || this.props.fetchClaimsCompleted) {
       this.checkAndApplyDashboardFilter(this.props.claims);
+      this.props.dispatchClaims({fetchClaimsCompleted: false});
     }
   }
 
@@ -500,6 +501,7 @@ ClaimList.propTypes = {
   dispatchWidgetAction: PropTypes.func,
   filter: PropTypes.object,
   history: PropTypes.object,
+  fetchClaimCompleted: PropTypes.bool,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func,
   widgetAction: PropTypes.bool
@@ -508,6 +510,7 @@ ClaimList.propTypes = {
 const mapStateToProps = state => {
   return {
     claims: state.claims && state.claims.claimList,
+    fetchClaimsCompleted: state.claims && state.claims.fetchClaimsCompleted,
     filter: state.dashboard.filter,
     modal: state.modal,
     widgetAction: state.dashboard.widgetAction

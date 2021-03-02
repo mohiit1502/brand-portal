@@ -185,7 +185,19 @@ class NewClaimTemplate extends React.Component {
         disabled: true,
         options: [],
         subtitle: "",
-        error: ""
+        error: "",
+        validators: {
+          validateLength: {
+            minLength: 3,
+            error: "Minimum length is 3 characters"
+          },
+          validateRegex:{
+            dataRuleRegex : "^[a-zA-Z0-9,. ]+$",
+            errorMessages : {
+              dataMsgRegex: "Please enter a valid Seller(s) name"
+            }
+          }
+        }
       }
     };
     const state = {...this.state};
@@ -359,7 +371,7 @@ class NewClaimTemplate extends React.Component {
       });
     }
 
-    this.props.dispatchClaims({claimList});
+    this.props.dispatchClaims({claimList, fetchClaimsCompleted: true});
   }
 
   onChange(evt, key) {
@@ -410,7 +422,7 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value && item.sellerName.value.length>0), true) &&
+      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && !item.sellerName.error), true) &&
       form.inputData.comments.value && !form.inputData.comments.error &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -449,7 +461,14 @@ class NewClaimTemplate extends React.Component {
 
     const getItems = items => {
       const itemList = [];
-      items.forEach(item => item.sellerName.value && item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName})));
+      items.forEach(item => { 
+        if (item.sellerName.value && typeof item.sellerName.value === "object"){
+          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName}));
+        }else if ( item.sellerName.value ) {
+          const sellerNames = item.sellerName.value.trim().split(',').filter(Boolean);
+          sellerNames.forEach( sellerName => itemList.push({ itemUrl: item.url.value, sellerName: sellerName.trim() }));
+        }
+    });
       return itemList;
     };
 
