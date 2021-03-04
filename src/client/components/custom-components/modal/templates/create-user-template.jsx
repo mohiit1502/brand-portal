@@ -245,9 +245,9 @@ class CreateUserTemplate extends React.Component {
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        type: isThirdParty ? "ThirdParty" : "Internal",
-        krakenUniqueStatus: this.state.uniquenessCheckStatus
-      }
+        type: isThirdParty ? "ThirdParty" : "Internal"
+      },
+      krakenUniqueWorkflow: this.state.uniquenessCheckStatus
     };
 
     payload.user.companyName = isThirdParty ? this.state.form.inputData.companyName.value : "";
