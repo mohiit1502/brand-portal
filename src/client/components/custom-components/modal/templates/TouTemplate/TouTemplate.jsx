@@ -48,8 +48,9 @@ const TouTemplate = props => {
           </div>
           <div className="modal-body">
             <div>
-              <p className="font-italic">You have been invited to manage IP rights for the brand</p>
-              <h4 className="text-center font-weight-bold font-italic">Brand XYZ</h4>
+              <p className="font-italic">You have been invited to manage IP rights for the following brand/s</p>
+              {/*<h4 className="text-center font-weight-bold font-italic">{props.meta.userProfile && props.meta.userProfile.brands && props.meta.userProfile.brands.join(", ")}</h4>*/}
+              <h4 className="c-BrandList text-center font-weight-bold">Brand1, Brand2, Brand3</h4>
               <p className="font-italic">Before proceeding you need to acknowledge and accept the following terms of use, please click "AGREE" to proceed to the dashboard or "DECLINE" to reject.</p>
             </div>
             <hr />
@@ -57,8 +58,9 @@ const TouTemplate = props => {
               alt : <a href="TOU.pdf">Terms of Use.pdf</a>
             </object>
           </div>
-          <div className="modal-footer text-right">
-            <div className="btn btn-outline-danger" style={{border: "none", borderRadius: "20px", fontWeight: "bold"}} onClick={() => updateUserStatus("TOU_DECLINED")}>DECLINE</div>
+          <div className="modal-footer">
+            <a href="/js/Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf" download>Download PDF</a>
+            <div className="btn btn-outline-danger ml-auto" style={{border: "none", borderRadius: "20px", fontWeight: "bold"}} onClick={() => updateUserStatus("TOU_DECLINED")}>DECLINE</div>
             <div className="btn btn-primary" style={{paddingLeft: "1.3rem", paddingRight: "1.3rem"}} onClick={() => updateUserStatus("TOU_AGREED")}>AGREE</div>
           </div>
         </div>
