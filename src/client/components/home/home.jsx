@@ -46,8 +46,9 @@ class Home extends React.Component {
             template = {templateName: "StatusModalTemplate", image, ...template};
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
           } else if (genericTemplateCodes.includes(workflowDecider.code)) {
-            // template = {templateName: "TouTemplate", image, ...template};
-            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "TouTemplate"})
+            const userProfile = this.props.userProfile;
+            const template = {templateName: "TouTemplate", userProfile};
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template})
           }
         }
       }
