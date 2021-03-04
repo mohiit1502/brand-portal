@@ -34,13 +34,21 @@ class Home extends React.Component {
       const statusTemplateCodes = Object.keys(CONSTANTS.CODES)
         .filter(key => CONSTANTS.CODES[key].MESSAGE && CONSTANTS.CODES[key].TITLE)
         .map(key => CONSTANTS.CODES[key].CODE);
+      const genericTemplateCodes = Object.keys(CONSTANTS.CODES)
+        .filter(key => CONSTANTS.CODES[key].GENERIC)
+        .map(key => CONSTANTS.CODES[key].CODE);
       if (!this.props.isNew) {
-        if (workflowDecider && workflowDecider.code && statusTemplateCodes.includes(workflowDecider.code)) {
-          const templateKey = Object.keys(CONSTANTS.CODES).find(item => CONSTANTS.CODES[item].CODE === workflowDecider.code);
-          let template = templateKey && CONSTANTS.CODES[templateKey];
-          const image = images[template.IMAGE];
-          template = {templateName: "StatusModalTemplate", image, ...template};
-          this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+        if (workflowDecider && workflowDecider.code) {
+          if (statusTemplateCodes.includes(workflowDecider.code)) {
+            const templateKey = Object.keys(CONSTANTS.CODES).find(item => CONSTANTS.CODES[item].CODE === workflowDecider.code);
+            let template = templateKey && CONSTANTS.CODES[templateKey];
+            const image = images[template.IMAGE];
+            template = {templateName: "StatusModalTemplate", image, ...template};
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+          } else if (genericTemplateCodes.includes(workflowDecider.code)) {
+            // template = {templateName: "TouTemplate", image, ...template};
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "TouTemplate"})
+          }
         }
       }
     });
@@ -48,9 +56,9 @@ class Home extends React.Component {
 
   render () {
     const workflowDecider = this.state.profile && this.state.profile.workflow;
-      const codes = Object.keys(CONSTANTS.CODES)
-        .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "REQUEST_ACCESS", "USER_VERIFICATION"].includes(key))
-        .map(key => CONSTANTS.CODES[key].CODE);
+    const codes = Object.keys(CONSTANTS.CODES)
+      .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "PORTAL_ACCESS_REVOKED", "USER_ACCESS_REVOKED", "REQUEST_ACCESS", "USER_VERIFICATION", "TOU_VERIFICATION"].includes(key))
+      .map(key => CONSTANTS.CODES[key].CODE);
     const disablePortalAccess = workflowDecider && workflowDecider.code && codes.includes(workflowDecider.code);
     return (
       <div className="view-container home-container">

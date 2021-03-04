@@ -14,7 +14,7 @@ import ClaimDetailsTemplate from "./templates/claim-details-template";
 import CompanyVerificationPendingTemplate from "./templates/company-verification-pending-template";
 import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
 import Alert from "../../Alert/Alert";
-import {DateSelector, ResetPasswordTemplate} from "../../index";
+import {DateSelector, ResetPasswordTemplate, TouTemplate} from "../../index";
 
 
 class CustomModal extends React.Component {
@@ -49,6 +49,7 @@ class CustomModal extends React.Component {
       case "NewUserAddedTemplate": return NewUserAddedTemplate;
       case "ResetPasswordTemplate": return ResetPasswordTemplate;
       case "StatusModalTemplate": return StatusModalTemplate;
+      case "TouTemplate": return TouTemplate;
     }
     return null;
   }
