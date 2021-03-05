@@ -196,12 +196,6 @@ class NewClaimTemplate extends React.Component {
           validateLength: {
             minLength: 3,
             error: "Minimum length is 3 characters"
-          },
-          validateRegex:{
-            dataRuleRegex : "^[a-zA-Z0-9,. ]+$",
-            errorMessages : {
-              dataMsgRegex: "Please enter a valid Seller(s) name"
-            }
           }
         }
       }
@@ -446,7 +440,7 @@ class NewClaimTemplate extends React.Component {
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
-    const registrationNumber = Helper.handleSpaces( inputData.claimTypeIdentifier.value );
+    const registrationNumber = Helper.trimSpaces( inputData.claimTypeIdentifier.value );
 
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
@@ -454,18 +448,18 @@ class NewClaimTemplate extends React.Component {
     const usptoUrl = inputData.brandName.options[index].usptoUrl;
     const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
-    const comments = Helper.handleSpaces( inputData.comments.value );
-    const digitalSignatureBy = Helper.handleSpaces( inputData.signature.value );
+    const comments = Helper.trimSpaces( inputData.comments.value );
+    const digitalSignatureBy = Helper.trimSpaces( inputData.signature.value );
 
     const getItems = items => {
       const itemList = [];
       items.forEach(item => { 
-        const itemUrl = Helper.handleSpaces( item.url.value );
+        const itemUrl = Helper.trimSpaces( item.url.value );
         if (item.sellerName.value && typeof item.sellerName.value === "object"){
           item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
         }else if ( item.sellerName.value ) {
-          const sellerNames = item.sellerName.value.trim().split(',').filter(Boolean);
-          sellerNames.forEach( sellerName => itemList.push({ itemUrl: itemUrl , sellerName: sellerName.trim() }));
+          const sellerNames = item.sellerName.value.trim();
+          itemList.push({ itemUrl: itemUrl , sellerName: sellerNames });
         }
     });
       return itemList;
@@ -535,7 +529,7 @@ class NewClaimTemplate extends React.Component {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
           if( new RegExp( CONSTANTS.CODES.ERRORCODES.SERVERERROR ).test( err.status.toString() )) {      //IQS- error
-            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please proceed by entering seller's name!";
+            form.inputData.itemList[i].url.error = "Unable to retrieve seller names for this item at this time, please enter the name of the sellers(s) related to your report (comma separated if multiple sellers)" ;
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].sellerName.options = [];
             form.isSubmitDisabled=true;
@@ -599,7 +593,7 @@ class NewClaimTemplate extends React.Component {
                     <div key={i} className="row item-url-list">
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
-                          value={item.url.value} type={item.url.type}  onChange={this.onChange} disabled={item.url.disabled}
+                          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={this.onChange} disabled={item.url.disabled}
                           dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i}  disableSubmitButton = { this.disableSubmitButton } />
                       </div>
                       <div className="col-4">
@@ -607,7 +601,8 @@ class NewClaimTemplate extends React.Component {
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} />
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options}
+                              validators = { item.sellerName.validators } bubbleValue = { this.bubbleValue } />
                           </div>
                           <div className="col-4">
                             {
