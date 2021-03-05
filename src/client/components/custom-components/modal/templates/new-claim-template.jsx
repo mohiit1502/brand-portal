@@ -391,8 +391,7 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
           state.currentItem = index;
-        } 
-        else {
+        } else {
           state.form.inputData[key].value = targetVal;
           state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
           this.invalid[key] = false;
@@ -601,8 +600,8 @@ class NewClaimTemplate extends React.Component {
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options}
-                              validators = { item.sellerName.validators } bubbleValue = { this.bubbleValue } />
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
+                              validators = { item.sellerName.validators } bubbleValue = { this.bubbleValue }/>
                           </div>
                           <div className="col-4">
                             {
