@@ -262,7 +262,8 @@ class NewClaimTemplate extends React.Component {
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
-          state.form.inputData.itemList[index].url.error="";
+          state.form.inputData.itemList[index][key].error = "";
+          state.form.inputData.itemList[index].url.error = "";
         } else {
           state.form.inputData[key].value = value;
         }
