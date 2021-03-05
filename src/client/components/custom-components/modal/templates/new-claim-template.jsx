@@ -35,7 +35,6 @@ class NewClaimTemplate extends React.Component {
     this.bubbleValue = this.bubbleValue.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
-    this.invalid = { comments : false, claimTypeIdentifier: false};
     this.state = {
       form: {
         isSubmitDisabled: true,
@@ -93,17 +92,15 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: "",
-            patternPath: CONSTANTS.REGEX.NAMES,
-            patternErrorMessage: "Please enter valid comments!",
-            placeholder:"Please provide additional information about the claim",
+            placeholder: "Please provide additional information about the claim",
             validators: {
               validateLength: {
                 minLength: 20,
                 error: "Comment should be 20 numeric characters long!"
               },
-              validateRegex:{
-                dataRuleRegex : "[a-zA-Z0-9,. ]+$",
-                errorMessages : {
+              validateRegex: {
+                dataRuleRegex: "[a-zA-Z0-9,. ]+$",
+                errorMessages: {
                   dataMsgRegex: "Please enter a valid comment"
                 }
               }
@@ -262,7 +259,8 @@ class NewClaimTemplate extends React.Component {
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
-          state.form.inputData.itemList[index].url.error="";
+          state.form.inputData.itemList[index][key].error = "";
+          state.form.inputData.itemList[index].url.error = "";
         } else {
           state.form.inputData[key].value = value;
         }
@@ -391,11 +389,9 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
           state.currentItem = index;
-        } 
-        else {
+        } else {
           state.form.inputData[key].value = targetVal;
-          state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
-          this.invalid[key] = false;
+          state.form.inputData[key].error = "";
         }
         return {
           ...state
@@ -457,7 +453,7 @@ class NewClaimTemplate extends React.Component {
         const itemUrl = Helper.trimSpaces( item.url.value );
         if (item.sellerName.value && typeof item.sellerName.value === "object"){
           item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
-        }else if ( item.sellerName.value ) {
+        } else if (item.sellerName.value) {
           const sellerNames = item.sellerName.value.trim();
           itemList.push({ itemUrl: itemUrl , sellerName: sellerNames });
         }
@@ -601,8 +597,8 @@ class NewClaimTemplate extends React.Component {
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options}
-                              validators = { item.sellerName.validators } bubbleValue = { this.bubbleValue } />
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
+                              validators={item.sellerName.validators} bubbleValue={this.bubbleValue}/>
                           </div>
                           <div className="col-4">
                             {
@@ -683,13 +679,13 @@ class NewClaimTemplate extends React.Component {
 }
 
 NewClaimTemplate.propTypes = {
+  bubbleValue: PropTypes.func,
   dispatchClaims: PropTypes.func,
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
   data: PropTypes.object,
-  showNotification: PropTypes.func,
-  bubbleValue: PropTypes.func
+  showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
