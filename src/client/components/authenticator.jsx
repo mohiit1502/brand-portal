@@ -14,6 +14,8 @@ import {dispatchMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
+import mixpanel from "../utility/mixpanel";
+import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 class Authenticator extends React.Component {
 
@@ -71,7 +73,7 @@ class Authenticator extends React.Component {
       let profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
-        // profile.workflow.code=1;
+         //profile.workflow.code = 1;
         // profile = JSON.stringify("{\"firstName\":\"Test\",\"lastName\":\"Mohsin\",\"phoneCountry\":\"1\",\"phoneNumber\":\"(234) 567-8901\",\"emailVerified\":true,\"isUserEnabled\":true,\"organization\":{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\",\"status\":\"Accepted\"},\"role\":{\"id\":\"6a429471-3675-4490-93db-5aadf5412a8b\",\"name\":\"Super Admin\",\"description\":\"Brand Rights Owner\"},\"brands\":[{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\"}],\"type\":\"Internal\",\"registrationMode\":\"SelfRegistered\",\"email\":\"wm.ropro+testbike@gmail.com\",\"status\":\"Active\",\"statusDetails\":\"Status updated by: system\",\"createdBy\":\"wm.ropro+testbike@gmail.com\",\"createTs\":\"2020-09-15T07:15:18.965Z\",\"lastUpdatedBy\":\"wm.ropro+testbike@gmail.com\",\"lastUpdateTs\":\"2020-09-21T10:06:07.633Z\",\"isOrgEnabled\":true,\"workflow\":{\"code\":4,\"workflow\":\"portal_dashboard\",\"defaultView\":\"portal-view-users\",\"roleCode\":1,\"roleView\":\"SUPER_ADMIN\"}}");
         this.props.updateUserProfile(profile);
       }
@@ -135,8 +137,9 @@ class Authenticator extends React.Component {
     const role = this.props.userProfile && this.props.userProfile.role ? this.props.userProfile.role.name : "";
     const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
-    if (this.state.isLoggedIn) {
+    if (this.state.isLoggedIn) { //TODO mixpanel register user
       if (this.state.profileInformationLoaded) {
+        mixpanel.login(this.props.userProfile, MIXPANEL_CONSTANTS.LOGIN.USER_LOGIN);
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");

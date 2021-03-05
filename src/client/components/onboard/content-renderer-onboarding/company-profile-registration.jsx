@@ -11,6 +11,8 @@ import Validator from "../../../utility/validationUtil";
 import ContentRenderer from "../../../utility/ContentRenderer";
 import DocumentActions from "../../../utility/docOps";
 import "../../../styles/onboard/content-renderer-onboarding/company-profile-registration.scss";
+import mixpanel from "../../../utility/mixpanel";
+import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class CompanyProfileRegistration extends React.Component {
 
   componentDidMount() {
     $("[data-toggle='tooltip']").tooltip();
+    mixpanel.brandRegistration(this.props.userProfile, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE);
   }
 
   undertakingToggle () {
@@ -150,8 +153,8 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
     form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
-
     this.setState(state);
+    mixpanel.brandRegistration(this.props.userProfile, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.RESET_COMPANY_PROFILE );
   }
 
   gotoBrandRegistration (evt) {

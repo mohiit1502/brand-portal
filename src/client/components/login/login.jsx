@@ -9,7 +9,7 @@ import Footer from "../Footer";
 import Http from "../../utility/Http";
 import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
 import "../../styles/login/login.scss";
-
+import Mixpanel from "../../utility/mixpanel";
 class Login extends React.Component {
 
   constructor(props) {
@@ -31,6 +31,7 @@ class Login extends React.Component {
           return stateCloned;
         }))
         .catch(e => this.setState({loginConfig}));
+        Mixpanel.homePage();
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);
