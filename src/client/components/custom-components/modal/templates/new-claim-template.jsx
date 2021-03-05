@@ -683,13 +683,13 @@ class NewClaimTemplate extends React.Component {
 }
 
 NewClaimTemplate.propTypes = {
+  bubbleValue: PropTypes.func,
   dispatchClaims: PropTypes.func,
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
   data: PropTypes.object,
-  showNotification: PropTypes.func,
-  bubbleValue: PropTypes.func
+  showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
