@@ -424,7 +424,7 @@ class NewClaimTemplate extends React.Component {
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
-    const registrationNumber = inputData.claimTypeIdentifier.value;
+    const registrationNumber = Helper.trimSpaces( inputData.claimTypeIdentifier.value );
 
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
@@ -432,17 +432,18 @@ class NewClaimTemplate extends React.Component {
     const usptoUrl = inputData.brandName.options[index].usptoUrl;
     const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
-    const comments = inputData.comments.value;
-    const digitalSignatureBy = inputData.signature.value;
+    const comments = Helper.trimSpaces( inputData.comments.value );
+    const digitalSignatureBy = Helper.trimSpaces( inputData.signature.value );
 
     const getItems = items => {
       const itemList = [];
       items.forEach(item => { 
+        const itemUrl = Helper.trimSpaces( item.url.value );
         if (item.sellerName.value && typeof item.sellerName.value === "object"){
-          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName}));
+          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
         }else if ( item.sellerName.value ) {
-          const sellerNames = item.sellerName.value.trim().split(',').filter(Boolean);
-          sellerNames.forEach( sellerName => itemList.push({ itemUrl: item.url.value, sellerName: sellerName.trim() }));
+          const sellerNames = item.sellerName.value.trim();
+          itemList.push({ itemUrl: itemUrl , sellerName: sellerNames });
         }
     });
       return itemList;
