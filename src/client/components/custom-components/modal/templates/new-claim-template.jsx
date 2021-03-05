@@ -35,7 +35,6 @@ class NewClaimTemplate extends React.Component {
     this.bubbleValue = this.bubbleValue.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
-
     this.state = {
       form: {
         isSubmitDisabled: true,
@@ -93,7 +92,19 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: "",
-            placeholder:"Please provide additional information about the claim"
+            placeholder: "Please provide additional information about the claim",
+            validators: {
+              validateLength: {
+                minLength: 20,
+                error: "Comment should be 20 numeric characters long!"
+              },
+              validateRegex: {
+                dataRuleRegex: "[a-zA-Z0-9,. ]+$",
+                errorMessages: {
+                  dataMsgRegex: "Please enter a valid comment"
+                }
+              }
+            }
           },
           signature: {
             label: "Digital Signature",
@@ -248,8 +259,8 @@ class NewClaimTemplate extends React.Component {
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
-          state.form.inputData.itemList[index][key].error="";
-          state.form.inputData.itemList[index].url.error="";
+          state.form.inputData.itemList[index][key].error = "";
+          state.form.inputData.itemList[index].url.error = "";
         } else {
           state.form.inputData[key].value = value;
         }
@@ -380,6 +391,7 @@ class NewClaimTemplate extends React.Component {
           state.currentItem = index;
         } else {
           state.form.inputData[key].value = targetVal;
+          state.form.inputData[key].error = "";
         }
         return {
           ...state
@@ -399,7 +411,7 @@ class NewClaimTemplate extends React.Component {
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
       form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&
-      form.inputData.comments.value && 
+      form.inputData.comments.value && !form.inputData.comments.error &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
 
@@ -441,7 +453,7 @@ class NewClaimTemplate extends React.Component {
         const itemUrl = Helper.trimSpaces( item.url.value );
         if (item.sellerName.value && typeof item.sellerName.value === "object"){
           item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
-        }else if ( item.sellerName.value ) {
+        } else if (item.sellerName.value) {
           const sellerNames = item.sellerName.value.trim();
           itemList.push({ itemUrl: itemUrl , sellerName: sellerNames });
         }
@@ -586,7 +598,7 @@ class NewClaimTemplate extends React.Component {
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
                               onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
-                              validators = { item.sellerName.validators } bubbleValue = { this.bubbleValue }/>
+                              validators={item.sellerName.validators} bubbleValue={this.bubbleValue}/>
                           </div>
                           <div className="col-4">
                             {
@@ -606,7 +618,8 @@ class NewClaimTemplate extends React.Component {
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
                     value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
-                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} />
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} 
+                    validators ={inputData.comments.validators }  bubbleValue = {this.bubbleValue} />
                 </div>
               </div>
               {
@@ -666,6 +679,7 @@ class NewClaimTemplate extends React.Component {
 }
 
 NewClaimTemplate.propTypes = {
+  bubbleValue: PropTypes.func,
   dispatchClaims: PropTypes.func,
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
