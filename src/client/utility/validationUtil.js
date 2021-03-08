@@ -2,6 +2,8 @@ import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
 import CONSTANTS from "../constants/constants";
+import mixpanel from "../utility/mixpanel";
+import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 export default class Validator {
 
@@ -163,21 +165,24 @@ export default class Validator {
     this.setState(state);
     Http.get("/api/brands/checkUnique", params, null, this.props.showNotification, null, inputData.brandName.ERROR5XX)
       .then(res => {
-        //const error = res.body.krakenUniqueStatus ? "" : "This brand is already registered in your Walmart Brand Portal account";
-        if(res.body.krakenUniqueStatus==="KRAKEN"){
+        const error = res.body.krakenUniqueStatus ? "" : "This brand is already registered in your Walmart Brand Portal account";
+        let error;
+        if(res.body.krakenUniqueStatus==="KRAKEN") {
             inputData.brandName.isUnique = true;
-        }else if(res.body.krakenUniqueStatus==="EMAIL"){
-            const error ="This is email workflow"
+            
+        } else if(res.body.krakenUniqueStatus==="EMAIL") {
+            error = "This is email workflow";
             inputData.brandName.isUnique = false;
-        }else{
-          const error ="This brand is already registered in your Walmart Brand Portal account"
+        } else {
+          error = "This brand is already registered in your Walmart Brand Portal account"
           inputData.brandName.isUnique = false;
         }
         inputData.brandName.error = error;
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
-        this.setState(state, this.checkToEnableSubmit);
+        this.setState(state, this.checkToEnableSubmit);  
+        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_SUCCESS);
       })
       .catch(err => {
         inputData.brandName.isUnique = false;
@@ -187,6 +192,7 @@ export default class Validator {
         inputData.brandName.loader = false;
         console.log(err);
         this.setState(state, this.checkToEnableSubmit);
+        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_FAILURE);
       });
   }
 
@@ -204,6 +210,7 @@ export default class Validator {
     Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
       .then (res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, state, inputData.trademarkNumber);
+        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_SUCCESS);
       })
       .catch (err => {
         inputData.trademarkNumber.isValid = true;
@@ -215,6 +222,7 @@ export default class Validator {
         inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
         console.log(err)
         this.setState(state, this.checkToEnableSubmit);
+        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_FIALURE);
       });
   }
 
@@ -244,6 +252,7 @@ export default class Validator {
           this.toggleFormEnable(!error, !error, false)
           this.checkToEnableSubmit();
         });
+        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_SUCCESS);
       }).catch (err => {
         inputData.companyName.disabled = false;
         inputData.companyName.error = err.error;
@@ -254,10 +263,12 @@ export default class Validator {
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
         if (error) {
           this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
+          mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_FAILURE);
         }
         this.setState(state);
         // console.log(err);
-      })
+        
+      });
   }
 
   static onEmailChange() {

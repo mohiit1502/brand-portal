@@ -145,7 +145,7 @@ class BrandRegistration extends React.Component {
       mixpanel.brandRegistration({},MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_SUCCESS);
     } catch (err) {
       this.loader("form", false);
-      mixpanel.brandRegistration({},MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_FAILURE);
+      mixpanel.brandRegistration({err}, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_FAILURE);
     }
   }
 
