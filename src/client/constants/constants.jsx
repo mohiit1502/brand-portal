@@ -65,6 +65,11 @@ const CONSTANTS = {
       MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
       TITLE: "Email verification required"
     },
+    TOU_VERIFICATION: {
+      CODE: 128,
+      FILE: "test.pdf",
+      GENERIC: true
+    },
     ERRORCODES: {
       FORBIDDEN: "403",
       FOURNOTFOUR: "404",

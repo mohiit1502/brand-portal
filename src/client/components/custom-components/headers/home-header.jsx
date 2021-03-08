@@ -16,9 +16,6 @@ class HomeHeader extends React.Component {
   }
 
   render() {
-    //TODO: correct the config for logout;
-
-    // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
     const baseUrl = window.location.origin;
     const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
     return (

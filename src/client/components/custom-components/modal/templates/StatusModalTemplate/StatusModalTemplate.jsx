@@ -48,10 +48,8 @@ const StatusModalTemplate = props => {
 };
 
 StatusModalTemplate.props = {
-  data: PropTypes.object,
   logoutUrl: PropTypes.string,
-  meta: PropTypes.object,
-  modal: PropTypes.object
+  meta: PropTypes.object
 };
 
 const mapStateToProps = state => {
