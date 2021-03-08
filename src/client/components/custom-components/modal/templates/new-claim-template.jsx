@@ -97,12 +97,6 @@ class NewClaimTemplate extends React.Component {
               validateLength: {
                 minLength: 20,
                 error: "Comment should be 20 numeric characters long!"
-              },
-              validateRegex: {
-                dataRuleRegex: "[a-zA-Z0-9,. ]+$",
-                errorMessages: {
-                  dataMsgRegex: "Please enter a valid comment"
-                }
               }
             }
           },
