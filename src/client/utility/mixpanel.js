@@ -1,7 +1,8 @@
 import mixpanel from "mixpanel-browser";
 export default class {
     static login(userProfile, eventName) {
-        try {
+        try { 
+        //const userID = mixpanel.get_property('user_id');
         mixpanel.init("1968bbc8bf2304c4c850ca1d53e79ea2");
         mixpanel.identify(userProfile.email);
         mixpanel.track(eventName);
@@ -40,6 +41,13 @@ export default class {
     static validatorsEvents(eventName) {
         try {
         mixpanel.track(eventName);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    static newClaimEvents(eventName, eventData) {
+        try {
+            mixpanel.track(eventName);
         } catch (e) {
             console.log(e);
         }

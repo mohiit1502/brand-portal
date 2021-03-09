@@ -137,7 +137,7 @@ class Authenticator extends React.Component {
     const role = this.props.userProfile && this.props.userProfile.role ? this.props.userProfile.role.name : "";
     const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
-    if (this.state.isLoggedIn) { //TODO mixpanel register user
+    if (this.state.isLoggedIn) {
       if (this.state.profileInformationLoaded) {
         mixpanel.login(this.props.userProfile, MIXPANEL_CONSTANTS.LOGIN.USER_LOGIN);
         if (this.isRootPath(this.props.location.pathname)) {

@@ -25,6 +25,16 @@ const MIXPANEL_CONSTANTS = {
     FILE_UPLOAD_EVENTS: {
         FILE_UPLOAD_SUCCESS: "TEST: File Upload Success",
         FILE_UPLOAD_FAILURE: "TEST: File Upload Failure"
+    },
+    NEW_CLAIM_TEMPLATE_EVENTS: {
+        NEW_CLAIM_TEMPLATE: "TEST: New Claim template",
+        ADD_ITEM_TO_CLAIM_LIST: "TEST: Add item to claim list",
+        REMOVE_ITEM_TO_CLAIM_LIST: "TEST: REMOVE item from claim list",
+        GET_SELLERS_NAME_SUCCESS: "TEST: Fetch Seller name(for item url) Success",
+        GET_SELLERS_NAME_FAILURE: "TEST: Fetch Seller name(for item url) failure",
+        SUBMIT_CLAIM_SUCCESS: "TEST: Submit new claim success",
+        SUBMIT_CLAIM_FAILURE: "TEST: Submit new claim failure",
+        RESET_CLAIM_DETAILS: "TEST: Reset Claim Details"
     }
 };
 export default MIXPANEL_CONSTANTS;
