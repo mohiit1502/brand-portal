@@ -273,9 +273,11 @@ class CreateUserTemplate extends React.Component {
           this.props.saveUserInitiated();
           const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+          this.loader("form", false);
         })
         .catch(err => {
           console.log(err);
+          this.loader("form", false);
         });
     }
   }
