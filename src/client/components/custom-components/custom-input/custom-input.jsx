@@ -324,7 +324,7 @@ class CustomInput extends React.Component {
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
         <small className={`form-text custom-input-help-text text-area-error ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
-          { subtitleText !== "Optional" && subtitleText }
+          { errorClass && subtitleText }
         </small>
       </div>
   );
