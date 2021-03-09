@@ -1,5 +1,9 @@
 .c-TouTemplate {
   .c-BrandList {
-    text-decoration: underline;
+    //text-decoration: underline;
+
+    &.field-loader:before {
+      right: 44%;
+    }
   }
 }

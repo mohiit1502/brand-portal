@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
@@ -13,6 +13,14 @@ import "./TouTemplate.component.scss";
 const TouTemplate = props => {
 
   const [loader, setLoader] = useState(false);
+  const [brands, setBrands] = useState([]);
+  useEffect(() => {
+    Http.get("/api/brands")
+     .then(res => {
+       const brands = res && res.body && res.body.content;
+       setBrands(res && res.body && res.body.content ? res.body.content.map(brand => brand.brandName) : [])
+      }).catch(e => console.log(e))
+  });
 
   const updateUserStatus = (outgoingStatus) => {
     setLoader(true);
@@ -35,6 +43,8 @@ const TouTemplate = props => {
       })
   };
 
+  // const brandList = props.meta.userProfile && props.meta.userProfile.brands && props.meta.userProfile.brands.map(brand => )
+
   return (
     <div className="c-TouTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className={`modal-dialog modal-dialog-centered modal-lg${loader ? " loader" : ""}`} role="document">
@@ -49,7 +59,7 @@ const TouTemplate = props => {
             <div>
               <p className="font-italic">You have been invited to manage IP rights for the following brand/s</p>
               {/*<h4 className="text-center font-weight-bold font-italic">{props.meta.userProfile && props.meta.userProfile.brands && props.meta.userProfile.brands.join(", ")}</h4>*/}
-              <h4 className="c-BrandList text-center font-weight-bold pt-4 pb-4">Brand1, Brand2, Brand3</h4>
+              <h4 className={`c-BrandList text-center font-weight-bold pt-4 pb-4${brands.length === 0 ? " field-loader" : ""}`}>{brands.join(", ")}</h4>
               <p className="font-italic">Before proceeding you need to acknowledge and accept the following terms of use, please click "AGREE" to proceed to the dashboard or "DECLINE" to reject.</p>
             </div>
             <hr />
