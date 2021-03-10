@@ -1,6 +1,7 @@
 import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
+import CONSTANTS from "../constants/constants";
 
 export default class Validator {
 
@@ -39,7 +40,7 @@ export default class Validator {
   }
 
   static validateRegex (target, validationObj, regexSelector) {
-    const formFieldValue = target.value
+    const formFieldValue = target.value.trim();
     if (validationObj) {
       const formFieldRegexString =
         validationObj.dataRuleRegex &&
@@ -266,13 +267,13 @@ export default class Validator {
         emailId.disabled = false;
         emailId.loader = false;
         let error;
-        let isUnique;
-        error = !res.body.unique ? "This email already exists in the Walmart Brand Portal." : "";
+        const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
+        error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
         emailId.error = emailId.error !== emailId.invalidError && error;
-        emailId.isUnique = res.body.unique;
+        emailId.isUnique = unique;
         emailId.fieldOk = !error;
-        this.setState({form}, this.checkToEnableSubmit);
+        this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
       }).catch(err => {
         emailId.disabled = false;
         emailId.loader = false;

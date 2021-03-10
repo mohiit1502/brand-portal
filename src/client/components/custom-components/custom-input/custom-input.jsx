@@ -61,6 +61,7 @@ class CustomInput extends React.Component {
         value: evt.target.value
       });
     }
+    this.state.disableSubmitButton && this.state.disableSubmitButton();
     this.changeHandlerDebounce(evt, key);
   }
 
@@ -185,26 +186,42 @@ class CustomInput extends React.Component {
   }
 
   getMultiSelectInput () {
-
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
-
+    const updateOptions = (e) => {
+      const error = this.validate(e, this.state.parentRef);
+      if (!error) {
+        const value = e.target.value;
+        this.setState(state => {
+        state = {...state};
+        state.value = value;
+        return state;
+      }, ( ) => this.state.onChange( value , this.state.inputId, null, false));
+      } else {
+        this.state.bubbleValue && this.state.bubbleValue( e, this.state.inputId , error );
+      }
+    }
+    
     return (
-
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
-          value={this.state.value && typeof this.state.value === "object" && this.state.value.length ? this.state.value.join(", ") : this.state.value} onChange={() => {}}
-          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
+          value = { this.state.value && typeof this.state.value === "object" &&  this.state.value.length ? this.state.value.join(",") : this.state.value  }
+          pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
+          onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <img src={images.ArrowDown} className="dropdown-arrow"/>
+        {
+          this.state.dropdownOptions && this.state.dropdownOptions.length>0 && <img src={images.ArrowDown} className="dropdown-arrow"/>
+        }
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
+        {
+         this.state.dropdownOptions && this.state.dropdownOptions.length>0 &&
         <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
           {
             this.state.dropdownOptions.map((option, i) => {
@@ -222,7 +239,9 @@ class CustomInput extends React.Component {
               );
             })
           }
+
         </div>
+        }
       </div>
     );
   }
@@ -297,15 +316,18 @@ class CustomInput extends React.Component {
   }
 
   getTextAreaInputType () {
-
+    const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
+        <small className={`form-text custom-input-help-text text-area-error ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
+          { errorClass ? subtitleText : "" }
+        </small>
       </div>
-    );
+  );
   }
 
   render () {

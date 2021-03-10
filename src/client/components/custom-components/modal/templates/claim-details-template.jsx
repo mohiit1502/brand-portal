@@ -2,7 +2,6 @@
 /* eslint-disable no-nested-ternary */
 import React from "react";
 import {connect} from "react-redux";
-import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/claim-details-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
@@ -158,7 +157,6 @@ class ClaimDetailsTemplate extends React.Component {
 
 ClaimDetailsTemplate.propTypes = {
   modal: PropTypes.object,
-  saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
   data: PropTypes.object,
   showNotification: PropTypes.func
@@ -172,7 +170,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   toggleModal,
-  saveBrandInitiated,
   showNotification
 };
 

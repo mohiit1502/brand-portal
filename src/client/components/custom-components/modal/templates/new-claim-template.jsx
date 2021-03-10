@@ -31,9 +31,10 @@ class NewClaimTemplate extends React.Component {
     this.removeFromItemList = this.removeFromItemList.bind(this);
     this.setSelectInputValue = this.setSelectInputValue.bind(this);
     this.onItemUrlChange = this.onItemUrlChange.bind(this);
+    this.disableSubmitButton = this.disableSubmitButton.bind(this);
+    this.bubbleValue = this.bubbleValue.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
-
     this.state = {
       form: {
         isSubmitDisabled: true,
@@ -91,7 +92,13 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: "",
-            placeholder:"Please provide additional information about the claim"
+            placeholder: "Please provide additional information about the claim",
+            validators: {
+              validateLength: {
+                minLength: 20,
+                error: "Comment should be 20 characters long!"
+              }
+            }
           },
           signature: {
             label: "Digital Signature",
@@ -175,7 +182,13 @@ class NewClaimTemplate extends React.Component {
         disabled: true,
         options: [],
         subtitle: "",
-        error: ""
+        error: "",
+        validators: {
+          validateLength: {
+            minLength: 3,
+            error: "Minimum length is 3 characters"
+          }
+        }
       }
     };
     const state = {...this.state};
@@ -205,6 +218,29 @@ class NewClaimTemplate extends React.Component {
     this.setState(state);
   }
 
+  bubbleValue(evt, key, error) {
+    const value = evt.target.value;
+    let index = -1;
+    if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
+      index = Number(key.split("-")[1]);
+      key = key.split("-")[0];
+    }
+    this.setState(state => {
+      state = {...state};
+      if (index > -1) {
+        state.form.inputData.itemList[index][key].value = value;
+        state.form.inputData.itemList[index][key].error = error;
+      } else {
+        state.form.inputData[key].value = value;
+        state.form.inputData[key].error = error;
+      }
+
+      return {
+        ...state
+      };
+    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+  }
+
   setSelectInputValue (value, key) {
     if (value) {
       let index = -1;
@@ -217,6 +253,8 @@ class NewClaimTemplate extends React.Component {
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
+          state.form.inputData.itemList[index][key].error = "";
+          state.form.inputData.itemList[index].url.error = "";
         } else {
           state.form.inputData[key].value = value;
         }
@@ -325,7 +363,7 @@ class NewClaimTemplate extends React.Component {
       });
     }
 
-    this.props.dispatchClaims({claimList});
+    this.props.dispatchClaims({claimList, fetchClaimsCompleted: true});
   }
 
   onChange(evt, key) {
@@ -340,12 +378,14 @@ class NewClaimTemplate extends React.Component {
       this.setState(state => {
         state = {...state};
         if (index > -1) {
+          state.form.inputData.itemList[index].sellerName.value = "";
           state.form.inputData.itemList[index].sellerName.disabled = true;
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
           state.currentItem = index;
         } else {
           state.form.inputData[key].value = targetVal;
+          state.form.inputData[key].error = "";
         }
         return {
           ...state
@@ -364,8 +404,8 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && item.sellerName.value), true) &&
-      form.inputData.comments.value &&
+      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&
+      form.inputData.comments.value && !form.inputData.comments.error &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
 
@@ -373,6 +413,9 @@ class NewClaimTemplate extends React.Component {
     this.setState({form}, callback && callback());
   }
 
+  disableSubmitButton(){
+    this.setState( state => { state = {...state}; state.form.isSubmitDisabled = true ; return state; });
+  }
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.undertakingList[index].selected = !state.form.undertakingList[index].selected;
@@ -387,7 +430,7 @@ class NewClaimTemplate extends React.Component {
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
-    const registrationNumber = inputData.claimTypeIdentifier.value;
+    const registrationNumber = Helper.trimSpaces( inputData.claimTypeIdentifier.value );
 
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
@@ -395,12 +438,20 @@ class NewClaimTemplate extends React.Component {
     const usptoUrl = inputData.brandName.options[index].usptoUrl;
     const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
-    const comments = inputData.comments.value;
-    const digitalSignatureBy = inputData.signature.value;
+    const comments = Helper.trimSpaces( inputData.comments.value );
+    const digitalSignatureBy = Helper.trimSpaces( inputData.signature.value );
 
     const getItems = items => {
       const itemList = [];
-      items.forEach(item => item.sellerName.value && item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName})));
+      items.forEach(item => { 
+        const itemUrl = Helper.trimSpaces( item.url.value );
+        if (item.sellerName.value && typeof item.sellerName.value === "object"){
+          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
+        } else if (item.sellerName.value) {
+          const sellerNames = item.sellerName.value.trim();
+          itemList.push({ itemUrl: itemUrl , sellerName: sellerNames });
+        }
+    });
       return itemList;
     };
 
@@ -448,28 +499,37 @@ class NewClaimTemplate extends React.Component {
         .then(res => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
+          form.inputData.itemList[i].sellerName.value ="";
           if(res.body.length != 0){
             res.body.unshift({value: "All", id: "_all"});
             form.inputData.itemList[i].sellerName.options = res.body;
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].url.error = "";
+            form.isSubmitDisabled=true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
+            form.isSubmitDisabled=true;
             this.setState({form}, this.checkToEnableItemButton);
           }
         })
         .catch(err => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
-          form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
-          form.inputData.itemList[i].sellerName.disabled = true;
-          this.setState({form}, this.checkToEnableItemButton);
+          if( new RegExp( CONSTANTS.CODES.ERRORCODES.SERVERERROR ).test( err.status.toString() )) {      //IQS- error
+            form.inputData.itemList[i].url.error = "Unable to retrieve seller names for this item at this time, please enter the name of the sellers(s) related to your report (comma separated if multiple sellers)" ;
+            form.inputData.itemList[i].sellerName.disabled = false;
+            form.inputData.itemList[i].sellerName.options = [];
+            form.isSubmitDisabled=true;
+          }else{
+            form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
+            form.inputData.itemList[i].sellerName.disabled = true;   
+         }
+         this.setState({form}, this.checkToEnableItemButton);
         });
     }
-
   }
 
   render() {
@@ -524,14 +584,15 @@ class NewClaimTemplate extends React.Component {
                       <div className="col-8">
                         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={form.id} label={item.url.label} required={item.url.required}
                           value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={this.onChange} disabled={item.url.disabled}
-                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i} />
+                          dropdownOptions={item.url.options} error={item.url.error} loader={this.state.fieldLoader && this.state.currentItem === i}  disableSubmitButton = { this.disableSubmitButton } />
                       </div>
                       <div className="col-4">
                         <div className="row">
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} />
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
+                              validators={item.sellerName.validators} bubbleValue={this.bubbleValue}/>
                           </div>
                           <div className="col-4">
                             {
@@ -551,7 +612,8 @@ class NewClaimTemplate extends React.Component {
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
                     value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
-                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} />
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} 
+                    validators ={inputData.comments.validators }  bubbleValue = {this.bubbleValue} />
                 </div>
               </div>
               {
@@ -611,6 +673,7 @@ class NewClaimTemplate extends React.Component {
 }
 
 NewClaimTemplate.propTypes = {
+  bubbleValue: PropTypes.func,
   dispatchClaims: PropTypes.func,
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,

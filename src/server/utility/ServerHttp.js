@@ -46,26 +46,17 @@ export default class ServerHttp {
       const {ok, status, headers} = response;
       if (ok) {
         console.log("2. Response is OK with status: ", status);
-        if (headers.get("content-type") === "application/json") {
-          return {status, body: await response.json()};
-        }
-        return {status, body: await response.text()};
+        return headers.get("content-type") === "application/json" ? {status, body: await response.json()} : {status, body: await response.text()};
       }
       console.log("3. Response not OK, logging response: ", response);
-      let err;
-      try {
-        err = await response.json();
-      } catch (e) {
-        console.log("4. Couldn't parse response as JSON, trying as text...");
-        err = await response.text();
-      }
+      let err = headers.get("content-type") === "application/json" ? await response.json() : await response.text();
       const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `
       console.log(errorString, err);
       throw new ServerHttpError(status, err.error, err.message);
     } catch (e) {
       const errorString = `6. Caught in ServerHttp.${method}: `;
       console.error(errorString, e);
-      throw new ServerHttpError(500, e);
+      throw new ServerHttpError(e.status || 500, e);
     } finally {
       console.log("7. === Crud Request End!");
     }
