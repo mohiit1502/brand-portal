@@ -2,29 +2,47 @@ import mixpanel from "mixpanel-browser";
 export default class {
     static login(userProfile, eventName) {
         try { 
-        //const userID = mixpanel.get_property('user_id');
-        mixpanel.init("1968bbc8bf2304c4c850ca1d53e79ea2");
-        mixpanel.identify(userProfile.email);
-        mixpanel.track(eventName);
-        const payload = {
+        let distinct_id = mixpanel.get_distinct_id();
+        } catch (e) {
+            mixpanel.init("1968bbc8bf2304c4c850ca1d53e79ea2");
+            mixpanel.identify(userProfile.email);
+            mixpanel.track(eventName);
+            const payload = {
             $email: userProfile.email,
             $name: userProfile.firstName + userProfile.lastName,
             "Date added": userProfile.createTs,
             "Created By": userProfile.createdBy
         };
         mixpanel.people.set_once(payload);
-        } catch (e) {
             console.log(e);
         }
     }
     static logout(userProfile, eventName) {
         try {
         mixpanel.track(eventName);
+        mixpanel.reset();
         } catch (e) {
             console.log(e);
         }
     }
-    static fileUploadEvents(eventName, eventData){
+    static addBrand(eventName, eventData) {
+        try {
+            console.log(eventName);
+            mixpanel.track(eventName);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    static inviteUser(eventName, eventData) {
+        try {
+            console.log(eventName);
+            mixpanel.track(eventName);
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
+    static fileUploadEvents(eventName, eventData) {
         try {
             mixpanel.track(eventName,eventData);
         } catch (e) {
@@ -40,6 +58,7 @@ export default class {
     }
     static validatorsEvents(eventName) {
         try {
+            console.log(eventName);
         mixpanel.track(eventName);
         } catch (e) {
             console.log(e);
@@ -47,15 +66,42 @@ export default class {
     }
     static newClaimEvents(eventName, eventData) {
         try {
+            
             mixpanel.track(eventName);
         } catch (e) {
             console.log(e);
         }
     }
+    static resetPasswordEvent(eventName, eventData) {
+        try { 
+         //   mixpanel.track(eventName);
+         console.log(eventName);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    static userProfileEvents(eventName, eventData) {
+        try { 
+         //   mixpanel.track(eventName);
+         console.log(eventName);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    static clickEvents(eventName) {
+        try {
+            console.log(eventName);
+            mixpanel.init("1968bbc8bf2304c4c850ca1d53e79ea2");
+            mixpanel.track(eventName);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    
 //testing
     static homePage() {
         try {
-            mixpanel.init("1968bbc8bf2304c4c850ca1d53e79ea2");
+           // mixpanel.init("1968bbc8bf2304c4c850ca1d53e79ea2");
             mixpanel.track("Home Page visit");
         }
         catch (e) {

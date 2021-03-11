@@ -4,7 +4,8 @@ import {connect} from "react-redux";
 import BrandRegisteredIcon from "../../../../images/brandRegisteredIcon.png";
 
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
-
+import mixpanel from "../../../../utility/mixpanel";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 class CompanyBrandRegisteredTemplate extends React.Component {
 
   constructor (props) {
@@ -41,7 +42,7 @@ class CompanyBrandRegisteredTemplate extends React.Component {
               </div>
               <div className="row mt-4">
                 <div className="col">
-                  <a className="btn btn-sm btn-primary px-5" href={logoutUrl}>Logout</a>
+                  <a className="btn btn-sm btn-primary px-5" href={logoutUrl} onClick={mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.USER_LOGOUT)}>Logout</a>
                 </div>
               </div>
             </div>

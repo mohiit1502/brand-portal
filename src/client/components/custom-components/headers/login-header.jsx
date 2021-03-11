@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import WMBPLightLogo from "./../../../images/wmbplightLogo.svg";
 import "../../../styles/custom-components/headers/login-header.scss";
 import CONSTANTS from "../../../constants/constants";
-
+import mixpanel from "../../../utility/mixpanel";
+import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 class LoginHeader extends React.Component {
 
   constructor(props) {
@@ -35,12 +36,15 @@ class LoginHeader extends React.Component {
           <ul className="navbar-nav ml-auto">
             <li className="nav-item px-4">
               {/* <Link className="nav-link" to="LoginFAQ" smooth={true} duration={500} activeClass="active" spy={true} offset={-700}>FAQ</Link> */}
-              <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT}>Register</a>
+              <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {mixpanel.clickEvents(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.REGISTER_CLICK_EVENT);}}>Register</a>
             </li>
             {/*<li  className="mx-2 nav-item"><strong>|</strong></li>*/}
             <li  className="mx-2 nav-item middle-list"></li>
             <li className="nav-item pl-4 d-flex align-items-center">
-              <a className="nav-link login-button" href={this.state.loginRedirectLink} onClick={() => $("a.nav-link.login-button").addClass("disabled")}>Login</a>
+              <a className="nav-link login-button" href={this.state.loginRedirectLink} onClick={() => {
+                $("a.nav-link.login-button").addClass("disabled");
+                mixpanel.clickEvents(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.LOGIN_CLICK_EVENT);
+              } }>Login</a>
             </li>
           </ul>
         </div>

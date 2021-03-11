@@ -172,7 +172,7 @@ export default class Validator {
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
         this.setState(state, this.checkToEnableSubmit);  
-        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_SUCCESS);
+        mixpanel.validatorsEvents(res.body.unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_SUCCESS : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_FAILURE);
       })
       .catch(err => {
         inputData.brandName.isUnique = false;
@@ -182,7 +182,7 @@ export default class Validator {
         inputData.brandName.loader = false;
         console.log(err);
         this.setState(state, this.checkToEnableSubmit);
-        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_FAILURE);
+      //  mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_FAILURE);
       });
   }
 
@@ -200,7 +200,6 @@ export default class Validator {
     Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
       .then (res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, state, inputData.trademarkNumber);
-        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_SUCCESS);
       })
       .catch (err => {
         inputData.trademarkNumber.isValid = true;
@@ -212,7 +211,6 @@ export default class Validator {
         inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
         console.log(err)
         this.setState(state, this.checkToEnableSubmit);
-        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_FIALURE);
       });
   }
 
@@ -242,7 +240,7 @@ export default class Validator {
           this.toggleFormEnable(!error, !error, false)
           this.checkToEnableSubmit();
         });
-        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_SUCCESS);
+        mixpanel.validatorsEvents(response.body.unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_SUCCESS:MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_FAILURE);
       }).catch (err => {
         inputData.companyName.disabled = false;
         inputData.companyName.error = err.error;
@@ -253,7 +251,7 @@ export default class Validator {
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
         if (error) {
           this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
-          mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_FAILURE);
+          //mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_FAILURE);
         }
         this.setState(state);
         // console.log(err);
@@ -307,10 +305,12 @@ export default class Validator {
     let error;
     if (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED") {
       error = "";
+      mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_SUCCESS);
     } else {
       error = tmMeta[res.body.usptoVerification];
       if (error && error.indexOf("__trademarkNumber__") !== -1) {
         error = error.replace("__trademarkNumber__", res.body.ipNumber);
+        mixpanel.validatorsEvents(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_FIALURE);
       }
     }
     tmMeta.isValid = res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED";

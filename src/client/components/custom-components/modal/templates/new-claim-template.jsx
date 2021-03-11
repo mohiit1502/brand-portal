@@ -204,14 +204,14 @@ class NewClaimTemplate extends React.Component {
     // state.form.inputData.itemList.unshift(item);
     state.form.inputData.itemList.push(item);
     this.setState(state, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
-    mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.ADD_ITEM_TO_CLAIM_LIST);
+   // mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.ADD_ITEM_TO_CLAIM_LIST);
   }
 
   removeFromItemList (evt, index) {
     const form = {...this.state.form};
     form.inputData.itemList.splice(index, 1);
     this.setState({form}, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
-    mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.REMOVE_ITEM_TO_CLAIM_LIST);
+    //mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.REMOVE_ITEM_TO_CLAIM_LIST);
   }
 
   checkToEnableItemButton () {

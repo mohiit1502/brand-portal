@@ -12,7 +12,8 @@ import Validator from "../../../../../utility/validationUtil";
 // import FORMFIELDCONFIG from "./../../../../../config/formsConfig/form-field-meta";
 import "../../../../../styles/home/content-renderer/user/profile/user-profile.scss";
 import CONSTANTS from "../../../../../constants/constants";
-
+import mixpanel from "../../../../../utility/mixpanel";
+import MIXPANEL_CONSTANTS from "../../../../../constants/MixPanelConsants";
 class UserProfile extends React.Component {
 
   constructor (props) {
@@ -42,8 +43,8 @@ class UserProfile extends React.Component {
     Object.keys(this.state.form.inputData).forEach(itemKey => {
       const item = this.state.form.inputData[itemKey];
       this.state.form.inputData[itemKey].value = Helper.search(item.initValuePath, this.props.userProfile);
-    })
-
+    });
+    mixpanel.userProfileEvents(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);
   }
 
   componentDidUpdate(prevProps) {
@@ -172,8 +173,12 @@ class UserProfile extends React.Component {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
             this.disableInput(true);
+            mixpanel.userProfileEvents(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
           })
-          .catch(() => this.loader("form", false));
+          .catch(() => {
+            this.loader("form", false);
+         //   mixpanel.userProfileEvents(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.)
+          });
       } else {
         this.loader("form", false);
         this.disableInput(true);

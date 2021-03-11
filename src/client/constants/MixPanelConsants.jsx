@@ -35,6 +35,38 @@ const MIXPANEL_CONSTANTS = {
         SUBMIT_CLAIM_SUCCESS: "TEST: Submit new claim success",
         SUBMIT_CLAIM_FAILURE: "TEST: Submit new claim failure",
         RESET_CLAIM_DETAILS: "TEST: Reset Claim Details"
+    },
+    NEW_BRANDS_TEMPLATE_EVENTS: {
+        ADD_NEW_BRAND: "TEST: Add new Brand",
+        SUBMIT_NEW_BRAND_SUCCESS: "TEST: Submit new Brand success",
+        SUBMIT_NEW_BRAND_FAILURE: "Test: Submit new Brand Failure",
+        RESET_BRAND_DETAILS: "TEST: Reset Brand Details"
+    },
+    INVITE_NEW_USER_TEMPLATE_EVENTS: {
+        ADD_NEW_USER: "TEST: Add new User",
+        SUBMIT_NEW_USER_SUCCESS: "TEST: Submit new User success",
+        SUBMIT_NEW_USER_FAILURE: "Test: Submit new User Failure",
+        RESET_USER_DETAILS: "TEST: Reset User Details"
+    },
+    HOME_PAGE_EVENTS: {
+        WBP_HOME_PAGE: "TEST: WBP Home page",
+        LOGIN_CLICK_EVENT: "TEST: LogIn click event",
+        REGISTER_CLICK_EVENT: "TEST: Register click event"
+    },
+    USER_PROFILE: {
+        VIEW_USER_PROFILE: "TEST: View User Profile",
+        CHANGE_PASSWORD: {
+            CHANGE_USER_PASSWORD: "TEST: Change User PassWord",
+            CANCLE_CHANGE_PASSWORD: "TEST: Cancle Reset Password",
+            SAVE_PASSWORD_SUCCESS: "TEST: Reset Password Success",
+            SAVE_PASSWORD_FAILURE: "TEST: Reset Password Failure"
+        },
+        EDIT_USER_PROFILE: {
+            EDIT_USER_PROFILE: "TEST: Edit User Profile",
+            CANCLE_EDIT_USER_PROFILE: "TEST: Cancel Edit User Profile",
+            SAVE_USER_PROFILE: "TEST: Save User Profile"
+        }
     }
 };
+
 export default MIXPANEL_CONSTANTS;
