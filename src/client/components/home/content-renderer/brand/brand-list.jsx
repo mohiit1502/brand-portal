@@ -191,7 +191,16 @@ class BrandList extends React.Component {
         return newBrand;
       });
     }
-
+    const sortingConfigue = [
+      {
+        name: "caseStatus",
+        level: CONSTANTS.SORTSTATE.ASCENDING
+      },
+      {
+        name: "dateAdded",
+        level: CONSTANTS.SORTSTATE.ASCENDING
+      }];
+    brandList = SortUtil.multisort(brandList, sortingConfigue);
     if (this.props.widgetAction) {
       this.addNewBrand();
       this.props.dispatchWidgetAction(false);
