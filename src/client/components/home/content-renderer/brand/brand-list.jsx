@@ -39,7 +39,7 @@ class BrandList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.sort = SortUtil.multiSort.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
 
@@ -109,32 +109,38 @@ class BrandList extends React.Component {
           accessor: "sequence",
           canSort: false,
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            initSort: false
           }
         },
         {
           Header: "BRAND NAME",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            initSort: false,
           }
         },
         {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE
+            level: CONSTANTS.SORTSTATE.DESCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE, // initSort , priorityLevel,
+            initSort: true,
+            priorityLevel: 2,
           }
         },
         {
           Header: "STATUS",
           accessor: "brandStatus",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            initSort: true,
+            priorityLevel: 1,
           }
         }
-      ]
+      ],
     };
   }
 
@@ -191,16 +197,16 @@ class BrandList extends React.Component {
         return newBrand;
       });
     }
-    const sortingConfigue = [
-      {
-        name: "caseStatus",
-        level: CONSTANTS.SORTSTATE.ASCENDING
-      },
-      {
-        name: "dateAdded",
-        level: CONSTANTS.SORTSTATE.ASCENDING
-      }];
-    brandList = SortUtil.multisort(brandList, sortingConfigue);
+    // const sortingConfigue = [
+    //   {
+    //     columnName: "brandStatus",
+    //     level: CONSTANTS.SORTSTATE.ASCENDING
+    //   },
+    //   {
+    //     columnName: "dateAdded",
+    //     level: CONSTANTS.SORTSTATE.ASCENDING
+    //   }];
+    brandList = SortUtil.multiSort(brandList, this.state.columns);
     if (this.props.widgetAction) {
       this.addNewBrand();
       this.props.dispatchWidgetAction(false);
