@@ -12,6 +12,8 @@ const UrlItemList = props => {
     const item = {
       id: `item-${itemUrlId}`,
       url: {
+        inputId: `url-${itemUrlId}`,
+        key: `url-${itemUrlId}`,
         label: "Item URL",
         required: true,
         value: "",
@@ -23,6 +25,8 @@ const UrlItemList = props => {
         error: ""
       },
       sellerName: {
+        inputId: `sellerName-${itemUrlId}`,
+        key: `sellerName-${itemUrlId}`,
         label: "Seller Name",
         required: true,
         value: "",
@@ -30,7 +34,7 @@ const UrlItemList = props => {
         // type: "select",
         pattern: null,
         disabled: true,
-        options: [],
+        dropdownOptions: [],
         subtitle: "",
         error: "",
         validators: {
@@ -62,8 +66,7 @@ const UrlItemList = props => {
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
                      required={item.url.required}
                      value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={props.onChange}
-                     disabled={item.url.disabled}
-                     dropdownOptions={item.url.options} error={item.url.error}
+                     disabled={item.url.disabled} error={item.url.error}
                      loader={props.fieldLoader && props.currentItem === i}/>
       </div>
       <div className="col-4">
@@ -73,13 +76,13 @@ const UrlItemList = props => {
                          label={item.sellerName.label}
                          required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
                          pattern={item.sellerName.pattern}
-                         onChange={props.setSelectInputValue} disabled={item.sellerName.disabled}
-                         dropdownOptions={item.sellerName.options}/>
+                         onChange={props.parentRef.setSelectInputValue} disabled={item.sellerName.disabled}
+                         dropdownOptions={item.sellerName.dropdownOptions}/>
           </div>
           <div className="col-4">
             {
               i === 0 &&
-              <div className={`btn btn-sm btn-block btn-primary${props.disableAddItem && " disabled" || ""}`} onClick={addToItemList} >
+              <div className={`btn btn-sm btn-block btn-primary${props.formData.disableAddItem && " disabled" || ""}`} onClick={addToItemList} >
                 <img src={images.Plus} className="plus-icon make-it-white"/> Item </div> ||
               <button className="btn btn-sm btn-block cancel-btn text-primary" type="button" onClick={() => removeFromItemList(i)}>Remove</button>
             }
@@ -91,8 +94,10 @@ const UrlItemList = props => {
 };
 
 UrlItemList.propTypes = {
+  formData: PropTypes.object,
   formId: PropTypes.string,
-  items: PropTypes.array
+  items: PropTypes.array,
+  parentRef: PropTypes.object
 };
 
 export default UrlItemList;
