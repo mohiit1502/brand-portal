@@ -55,7 +55,11 @@ $header-color : white;
           }
         }
 
-        .tou-acceptance {
+        .tou-rejection {
+          margin-top: 6rem;
+        }
+
+        .tou-acceptance, .tou-rejection {
           left: 100%;
           transition: all 0.4s ease-in-out;
 

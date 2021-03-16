@@ -4,70 +4,68 @@ $header-height : 65px;
 $header-background : #006799;
 $header-color : white;
 
-.modal {
-  &.create-user-modal {
-    .modal-dialog {
-      .modal-content {
-        border-radius: 3px;
+.modal.create-user-modal {
+  .modal-dialog {
+    .modal-content {
+      border-radius: 3px;
 
-        .modal-header {
-          border-radius: 2px;
-          height: $header-height;
-          background: $header-background;
-          color: $header-color;
-          font-size: 27px;
-          font-weight: bold;
-          padding: 1rem 2rem;
+      .modal-header {
+        border-radius: 2px;
+        height: $header-height;
+        background: $header-background;
+        color: $header-color;
+        font-size: 27px;
+        font-weight: bold;
+        padding: 1rem 2rem;
+      }
+
+      .modal-body {
+        padding: 1.125rem 1rem 1.5rem;
+
+        .text-secondary{
+          color: #0b1e40 !important;
         }
 
-        .modal-body {
-          padding: 1.125rem 1rem 1.5rem;
 
-          .text-secondary{
-            color: #0b1e40 !important;
+        form {
+          padding-left: 0.9rem;
+
+          .user-undertaking {
+            top: 2px;
           }
 
-
-          form {
-            padding-left: 0.9rem;
-
-            .user-undertaking {
-              top: 2px;
-            }
-
-            .user-undertaking-label {
-              color: $header-background;
-              font-size: 16px;
-            }
+          .user-undertaking-label {
+            color: $header-background;
+            font-size: 16px;
           }
         }
       }
     }
+  }
 
-    &.create-user-modal {
-      .modal-dialog {
-        width: 35.725rem;
+  &.create-user-modal {
+    .modal-dialog {
+      width: 35.725rem;
 
-        .modal-body {
-        border-bottom: 9px solid #7ac4e4;
-          form {
-            .row:nth-of-type(1) {
-              .col-6 .custom-input-form-group {
-                margin-bottom: 0;
-              }
+      .modal-body {
+      border-bottom: 9px solid #7ac4e4;
+        form {
+          .row:nth-of-type(1) {
+            .col-6 .custom-input-form-group {
+              margin-bottom: 0;
             }
-
-            // balancing col-6 15px padding to achieve designs 24px
-            .col-6:first-child {
-              padding-right: 0.75rem;
-            }
-
-            .col-6:last-child {
-              padding-left: 0.75rem;
-            }
-
-
           }
+
+          // balancing col-6 15px padding to achieve designs 24px
+          .col-6:first-child {
+            padding-right: 0.75rem;
+          }
+
+          .col-6:last-child {
+            padding-left: 0.75rem;
+          }
+
+
         }
       }
     }

@@ -242,10 +242,11 @@ class CreateUserTemplate extends React.Component {
         firstName,
         lastName,
         brands,
+        organization: this.props.userProfile.organization,
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        type: isThirdParty ? "ThirdParty" : "Internal"
+        type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
       },
       krakenUniqueWorkflow: this.state.uniquenessCheckStatus
     };
@@ -316,9 +317,7 @@ class CreateUserTemplate extends React.Component {
         <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
-              {
-                this.state.form.isUpdateTemplate ? section.sectionTitleEdit : section.sectionTitleNew
-              }
+              {this.state.form.isUpdateTemplate ? section.sectionTitleEdit : section.sectionTitleNew}
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -327,115 +326,6 @@ class CreateUserTemplate extends React.Component {
               <div className="text-secondary font-size-14 mb-2 pl-2">{form.formHeading}</div>
               <form onSubmit={this.handleSubmit} className="h-100 px-2 pl-0">
                 {this.getFieldRenders()}
-                {/*<div className="row userType">*/}
-                {/*  <div className="col">*/}
-                {/*    <div>*/}
-                {/*      <CustomInput key={"userType"}*/}
-                {/*        inputId={"userType"} radioOptions={this.state.form.inputData.userType.radioOptions}*/}
-                {/*        formId={this.state.form.id} label={this.state.form.inputData.userType.label}*/}
-                {/*        required={this.state.form.inputData.userType.required} value={this.state.form.inputData.userType.value}*/}
-                {/*        type={this.state.form.inputData.userType.type}*/}
-                {/*        onChange={this.onChange} disabled={this.state.form.inputData.userType.disabled} />*/}
-                {/*    </div>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-                {/*<div className="row form-prompt">*/}
-                {/*  <div className="col">*/}
-                {/*    <p>Please complete the following fields to invite a new user.</p>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-                {/*<div className="row fname-lname">*/}
-                {/*  <div className="col-6">*/}
-                {/*    <CustomInput key={"firstName"}*/}
-                {/*      inputId={"firstName"}*/}
-                {/*      formId={this.state.form.id} label={this.state.form.inputData.firstName.label}*/}
-                {/*      required={this.state.form.inputData.firstName.required} value={this.state.form.inputData.firstName.value}*/}
-                {/*      type={this.state.form.inputData.firstName.type} pattern={this.state.form.inputData.firstName.pattern}*/}
-                {/*      onChange={this.onChange} disabled={this.state.form.inputData.firstName.disabled} />*/}
-                {/*  </div>*/}
-                {/*  <div className="col-6">*/}
-                {/*    <CustomInput key={"lastName"}*/}
-                {/*      inputId={"lastName"}*/}
-                {/*      formId={this.state.form.id} label={this.state.form.inputData.lastName.label}*/}
-                {/*      required={this.state.form.inputData.lastName.required} value={this.state.form.inputData.lastName.value}*/}
-                {/*      type={this.state.form.inputData.lastName.type} pattern={this.state.form.inputData.lastName.pattern}*/}
-                {/*      onChange={this.onChange} disabled={this.state.form.inputData.lastName.disabled} />*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-                {/*{*/}
-                {/*  this.state.form.inputData.userType.value && this.state.form.inputData.userType.value.toLowerCase() !== "internal" &&*/}
-                {/*  <div className="row company">*/}
-                {/*    <div className="col-6">*/}
-                {/*      <CustomInput key={"companyName"}*/}
-                {/*        inputId={"companyName"}*/}
-                {/*        formId={this.state.form.id} label={this.state.form.inputData.companyName.label}*/}
-                {/*        required={this.state.form.inputData.companyName.required} value={this.state.form.inputData.companyName.value}*/}
-                {/*        type={this.state.form.inputData.companyName.type} pattern={this.state.form.inputData.companyName.pattern}*/}
-                {/*        onChange={this.onChange} disabled={this.state.form.inputData.companyName.disabled} />*/}
-                {/*    </div>*/}
-                {/*    <div className="col" />*/}
-                {/*  </div>*/}
-                {/*}*/}
-
-                {/*<div className="row contact-details">*/}
-                {/*  <div className="col-6">*/}
-                {/*    <CustomInput key={"emailId"}*/}
-                {/*      inputId={"emailId"}*/}
-                {/*      formId={this.state.form.id} label={this.state.form.inputData.emailId.label}*/}
-                {/*      required={this.state.form.inputData.emailId.required} value={this.state.form.inputData.emailId.value}*/}
-                {/*      type={this.state.form.inputData.emailId.type} pattern={this.state.form.inputData.emailId.pattern} onInvalid={this.onInvalid}*/}
-                {/*      error={this.state.form.inputData.emailId.error} onChange={this.onChange} disabled={this.state.form.inputData.emailId.disabled}*/}
-                {/*      loader={this.state.fieldLoader} />*/}
-                {/*  </div>*/}
-                {/*  <div className="col-6">*/}
-                {/*    <CustomInput key={"phone"}*/}
-                {/*      inputId={"phone"}*/}
-                {/*      formId={this.state.form.id} label={this.state.form.inputData.phone.label}*/}
-                {/*      required={this.state.form.inputData.phone.required} value={this.state.form.inputData.phone.value}*/}
-                {/*      type={this.state.form.inputData.phone.type} pattern={this.state.form.inputData.phone.pattern} customChangeHandler={this.customChangeHandler}*/}
-                {/*      onInvalid={this.onInvalid} error={this.state.form.inputData.phone.error} maxLength={this.state.form.inputData.phone.maxLength}*/}
-                {/*      onChange={this.onChange} disabled={this.state.form.inputData.phone.disabled} />*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-                {/*<div className="row role-and-brand">*/}
-                {/*  <div className="col-6">*/}
-                {/*    <CustomInput key={"role"}*/}
-                {/*      inputId={"role"} formId={this.state.form.id} label={this.state.form.inputData.role.label} required={this.state.form.inputData.role.required}*/}
-                {/*      value={this.state.form.inputData.role.value} type={this.state.form.inputData.role.type} pattern={this.state.form.inputData.role.pattern}*/}
-                {/*      onChange={this.setSelectInputValue} disabled={this.state.form.inputData.role.disabled} dropdownOptions={this.state.form.inputData.role.dropdownOptions}*/}
-                {/*      tooltipContent={this.state.form.inputData.role.tooltipContent} />*/}
-                {/*  </div>*/}
-                {/*  <div className="col-6">*/}
-                {/*    <CustomInput key={"brands"}*/}
-                {/*      inputId={"brands"}*/}
-                {/*      formId={this.state.form.id} label={this.state.form.inputData.brands.label}*/}
-                {/*      required={this.state.form.inputData.brands.required} value={this.state.form.inputData.brands.value}*/}
-                {/*      type={this.state.form.inputData.brands.type} pattern={this.state.form.inputData.brands.pattern}*/}
-                {/*      onChange={this.setMultiSelectInputValue} disabled={this.state.form.inputData.brands.disabled}*/}
-                {/*      dropdownOptions={this.state.form.inputData.brands.dropdownOptions}/>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-                {/*/!* <div className="row">*/}
-                {/*  <div className="col">*/}
-                {/*    <div className="form-check">*/}
-                {/*      <input type="checkbox" id="user-undertaking" className="form-check-input user-undertaking" checked={this.state.form.undertaking.selected} required={true}*/}
-                {/*        onChange={this.undertakingtoggle}/>*/}
-                {/*      <label className="form-check-label user-undertaking-label" htmlFor="user-undertaking">*/}
-                {/*        {this.state.form.undertaking.label}*/}
-                {/*      </label>*/}
-                {/*    </div>*/}
-                {/*  </div>*/}
-                {/*</div> *!/*/}
-                {/*<div className="row action-footer">*/}
-                {/*  <div className="col text-right">*/}
-                {/*    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>*/}
-                {/*    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={this.state.form.submitDisabled}>*/}
-                {/*      {*/}
-                {/*        this.state.form.isUpdateTemplate ? "Save" : "Invite"*/}
-                {/*      }*/}
-                {/*    </button>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
               </form>
             </div>
           </div>
@@ -449,13 +339,14 @@ CreateUserTemplate.propTypes = {
   newUserContent: PropTypes.object,
   toggleModal: PropTypes.func,
   saveUserInitiated: PropTypes.func,
-  data: PropTypes.object
+  data: PropTypes.object,
+  userProfile: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     newUserContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWUSER,
-    userEdit: state.userEdit
+    userProfile: state.user.profile
   };
 };
 

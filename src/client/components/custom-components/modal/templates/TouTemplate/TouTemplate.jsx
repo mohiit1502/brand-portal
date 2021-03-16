@@ -17,6 +17,7 @@ const TouTemplate = props => {
   const [brands, setBrands] = useState([]);
   const pages = {
     TOU_ACCEPTANCE: "touAcceptance",
+    TOU_REJECTION: "touRejection",
     INVITATION_ACCEPTANCE: "invitationAcceptance"
   }
 
@@ -48,10 +49,11 @@ const TouTemplate = props => {
   };
 
   const profile = props.meta.userProfile;
-  const invitedBy = `${profile.firstName} ${profile.lastName}  (${profile.createdBy})`;
+  const invitedBy = `${profile.createdFirstName} ${profile.createdLastName}  (${profile.createdBy})`;
   const inviteDateParts = profile.createTs && profile.createTs.split("T");
   const invitedOn = inviteDateParts && inviteDateParts.length === 2 &&
     `${moment(inviteDateParts[0]).format("MMM DD, YYYY")} ${inviteDateParts[1].substring(0, inviteDateParts[1].lastIndexOf("."))}`;
+  const bpAccount = profile && profile.organization && profile.organization.name;
 
   return (
     <div className="c-TouTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
@@ -69,7 +71,7 @@ const TouTemplate = props => {
             {/*  {page === pages.INVITATION_ACCEPTANCE ? ">" : "<"}</button>*/}
             <div className={`invitation-acceptance d-inline-block position-absolute w-100 font-size-20${page === pages.INVITATION_ACCEPTANCE ? " visible": ""}`}>
               <div className="d-inline-block">
-                <p className="ml-3 mr-5 pl-3 pr-5">You've been invited to join the following Brand Portal account. Please indicate below whether you'd like to accept or decline this invitation.</p>
+                <p className="ml-3 mr-5 pl-3 pr-5" style={{lineHeight: "2.5rem"}}>You've been invited to join the following Brand Portal account. Please indicate below whether you'd like to accept or decline this invitation.</p>
                 {/*<p className="mt-4">To continue, please confirm that you have read and agree to the <a href="#" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Terms of Use</a></p>*/}
                 {/*<CustomInput id="tou_cb" inputId="tou_cb" key="tou_cb" type="_checkBox" required={true} containerClasses="mt-5 pt-3 text-left"*/}
                 {/*  label="I have read and agree to the Terms of Use" selected={touAccepted} onChange={() => setTouAccepted(!touAccepted)}/>*/}
@@ -80,7 +82,7 @@ const TouTemplate = props => {
                   </div>
                   <div className="col-4 overflow-hidden">
                     <div className="header">Brand Portal Account</div>
-                    <div className="content font-weight-bold">Nike LLC.</div>
+                    <div className="content font-weight-bold">{bpAccount}</div>
                   </div>
                   <div className="col-4 overflow-hidden">
                     <div className="header">Invitation Date</div>
@@ -98,16 +100,23 @@ const TouTemplate = props => {
                 alt : <a href="TOU.pdf">Terms of Use.pdf</a>
               </object>
             </div>
+            <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible": ""}`}>
+              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? " (" + profile.companyName + ")": ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
+              <p className="ml-3 pl-3">Please click the "Decline" button to confirm.</p>
+            </div>
           </div>
           <div className="modal-footer position-relative">
             <div className={`btn-panel invitation-buttons-panel position-absolute${page === pages.INVITATION_ACCEPTANCE ? " visible": ""}`}>
-              <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => {}}>Decline</button>
-              {page === pages.INVITATION_ACCEPTANCE && <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button>}
+              {page === pages.INVITATION_ACCEPTANCE &&
+              <><button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>
+              <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button></>}
             </div>
-            <div className={`btn-panel tou-buttons-panel position-absolute${page === pages.TOU_ACCEPTANCE ? " visible" : ""}`}>
+            <div className={`btn-panel tou-buttons-panel position-absolute${page === pages.TOU_ACCEPTANCE || page === pages.TOU_REJECTION ? " visible" : ""}`}>
               {/*<a className="ml-0" href="/js/Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf" download>Download PDF</a>*/}
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
-              <button type="button" className="btn btn-primary px-3 ml-3" onClick={() => updateUserStatus("Active")}>Agree</button>
+              {page === pages.TOU_ACCEPTANCE ?
+                <button type="button" className="btn btn-primary px-3 ml-3" onClick={() => updateUserStatus("Active")}>Agree</button>
+                : <button type="button" className="btn btn-danger px-3 ml-3" onClick={() => window.location.pathname = "/logout"}>Decline</button>}
             </div>
           </div>
         </div>
