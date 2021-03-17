@@ -40,10 +40,11 @@ class UserList extends React.Component {
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
     this.filterMap = {"pending": "Pending Activation", "active": "Active"};
-
+    this.updateSortState = this.updateSortState.bind(this);
+    
     this.state = {
       page: {
         offset: 0,
@@ -125,28 +126,28 @@ class UserList extends React.Component {
           accessor: "sequence",
           canSort: true,
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "USER NAME",
           accessor: "username",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "ROLE",
           accessor: "role",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "ASSOCIATED BRANDS",
           accessor: "brands",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
+            level: CONSTANTS.SORTSTATE.RESET,
             type: CONSTANTS.SORTSTATE.ARRAYTYPE
           }
         },
@@ -154,18 +155,20 @@ class UserList extends React.Component {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE
+            level: CONSTANTS.SORTSTATE.DESCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE,
+            priorityLevel: 0,
           }
         },
         {
           Header: "PROFILE STATUS",
           accessor: "status",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         }
-      ]
+      ],
+      columnPriority: 0
     };
   }
 
@@ -175,6 +178,28 @@ class UserList extends React.Component {
       stateClone.loader = enable;
       return stateClone;
     });
+  }
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    let sortLevel = columnMeta.sortState.level;
+    let columnPriority = this.state.columnPriority;
+    sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+    if(sortLevel == CONSTANTS.SORTSTATE.RESET) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.ASCENDING;
+        if(!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel == -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority = columnPriority+1;
+        }
+    } else if(sortLevel == CONSTANTS.SORTSTATE.DESCENDING) {
+      columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+      columnMeta.sortState.priorityLevel = -1;
+    } else {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.DESCENDING;
+        if(columnMeta.sortState.priorityLevel == -1)  
+          {columnMeta.sortState.priorityLevel == this.state.columnPriority + 1; columnPriority = columnPriority+1;}//: columnMeta.sortState.priorityLevel = 2}
+    }
+    this.setState({columns,columnPriority}, ()=>this.multiSort());
   }
 
   uiSearch (evt, isFilter, filteredUsers) {
@@ -248,7 +273,9 @@ class UserList extends React.Component {
     }
 
     this.setState({userList, unsortedList: userList}, () => this.checkAndApplyDashboardFilter(userList));
-    return userList;
+    const sortedClaimList = this.multiSort();
+
+    return sortedClaimList;
   }
 
   resetFilters() {
@@ -602,7 +629,7 @@ class UserList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.userList ?
-                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
+                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}} />
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

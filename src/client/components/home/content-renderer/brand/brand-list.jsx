@@ -39,10 +39,10 @@ class BrandList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.multiSort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
-
+    this.updateSortState = this.updateSortState.bind(this);
     this.state = {
       page: {
         offset: 0,
@@ -109,16 +109,14 @@ class BrandList extends React.Component {
           accessor: "sequence",
           canSort: false,
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            initSort: false
+            level: CONSTANTS.SORTSTATE.RESET,
           }
         },
         {
           Header: "BRAND NAME",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            initSort: false,
+            level: CONSTANTS.SORTSTATE.RESET,
           }
         },
         {
@@ -126,9 +124,8 @@ class BrandList extends React.Component {
           accessor: "dateAdded",
           sortState: {
             level: CONSTANTS.SORTSTATE.DESCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE, // initSort , priorityLevel,
-            initSort: true,
-            priorityLevel: 2,
+            type: CONSTANTS.SORTSTATE.DATETYPE, // initSort , priorityLevel, 
+            priorityLevel: 1,
           }
         },
         {
@@ -136,11 +133,11 @@ class BrandList extends React.Component {
           accessor: "brandStatus",
           sortState: {
             level: CONSTANTS.SORTSTATE.ASCENDING,
-            initSort: true,
-            priorityLevel: 1,
+            priorityLevel: 0,
           }
         }
       ],
+      columnPriority: 1
     };
   }
 
@@ -151,7 +148,32 @@ class BrandList extends React.Component {
       return stateClone;
     });
   }
-
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    let sortLevel = columnMeta.sortState.level;
+    let columnPriority = this.state.columnPriority;
+    sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+    if(sortLevel == CONSTANTS.SORTSTATE.RESET) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.ASCENDING;
+        if(!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel == -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority = columnPriority+1;
+        }
+    } else if(sortLevel == CONSTANTS.SORTSTATE.DESCENDING) {
+      columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+      columnMeta.sortState.priorityLevel = -1;
+    } else {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.DESCENDING;
+        if(columnMeta.sortState.priorityLevel == -1)  
+          {columnMeta.sortState.priorityLevel == this.state.columnPriority + 1; columnPriority = columnPriority+1;}//: columnMeta.sortState.priorityLevel = 2}
+    }
+    this.setState({columns,columnPriority}, ()=>this.multiSort());
+  }
+//UpdateSortState {
+  //priority
+  //level
+  //setstate({},multisort(colsmeta/))
   editBrand (brandData) {
     const meta = { templateName: "NewBrandTemplate", data: {...brandData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
@@ -206,14 +228,18 @@ class BrandList extends React.Component {
     //     columnName: "dateAdded",
     //     level: CONSTANTS.SORTSTATE.ASCENDING
     //   }];
-    brandList = SortUtil.multiSort(brandList, this.state.columns);
+    
     if (this.props.widgetAction) {
       this.addNewBrand();
       this.props.dispatchWidgetAction(false);
     }
-
+                //
     this.setState({brandList, unsortedList: brandList}, () => this.checkAndApplyDashboardFilter(brandList));
-    return brandList;
+    const sortedBrandList = this.multiSort();
+    this.setState({brandList: sortedBrandList});
+      //sortedBrnadList
+   // this.setState({sortedBrandList, unsortedList: brandList});
+    return sortedBrandList;
   }
 
   resetFilters() {
@@ -516,7 +542,7 @@ class BrandList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.brandList ?
-                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
+                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

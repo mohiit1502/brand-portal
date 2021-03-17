@@ -35,9 +35,9 @@ class ClaimList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     // this.getFilterPins = this.getFilterPins.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     this.filterMap = {"inprogress": "In Progress", "closed": "Closed"};
-
+    this.updateSortState = this.updateSortState.bind(this);
     this.state = {
       showFilters: false,
       claimList: [],
@@ -58,50 +58,52 @@ class ClaimList extends React.Component {
           Header: "CLAIM NUMBER",
           accessor: "caseNumber",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "CLAIM TYPE",
           accessor: "claimType",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "BRAND",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "SUBMITTED BY",
           accessor: "createdByName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "SUBMISSION DATE",
           accessor: "claimDate",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE
+            level: CONSTANTS.SORTSTATE.DESCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE,
+            priorityLevel: 0,
           }
         },
         {
           Header: "CLAIM STATUS",
           accessor: "claimStatus",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         }
         // {
         //   Header: "CLAIM STATUS DETAILS",
         //   accessor: "statusDetails"
         // }
-      ]
+      ],
+      columnPriority:0
     };
   }
 
@@ -131,7 +133,28 @@ class ClaimList extends React.Component {
       this.checkAndApplyDashboardFilter(this.props.claims);
     }
   }
-
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    let sortLevel = columnMeta.sortState.level;
+    let columnPriority = this.state.columnPriority;
+    sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+    if(sortLevel == CONSTANTS.SORTSTATE.RESET) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.ASCENDING;
+        if(!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel == -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority = columnPriority+1;
+        }
+    } else if(sortLevel == CONSTANTS.SORTSTATE.DESCENDING) {
+      columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+      columnMeta.sortState.priorityLevel = -1;
+    } else {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.DESCENDING;
+        if(columnMeta.sortState.priorityLevel == -1)  
+          {columnMeta.sortState.priorityLevel == this.state.columnPriority + 1; columnPriority = columnPriority+1;}//: columnMeta.sortState.priorityLevel = 2}
+    }
+    this.setState({columns,columnPriority}, ()=>this.multiSort());
+  }
   checkAndApplyDashboardFilter(claimList) {
     const filterValue = this.filterMap[this.props.filter["widget-claim-summary"]]
     this.createFilters(claimList);
@@ -195,8 +218,9 @@ class ClaimList extends React.Component {
 
     this.props.dispatchClaims({claimList});
     this.setState({unsortedList: claimList});
+    const sortedClaimList = this.multiSort();
 
-    return claimList;
+    return sortedClaimList;
   }
 
   addNewClaim () {
@@ -469,7 +493,7 @@ class ClaimList extends React.Component {
                     <div className="col h-100">
                       {
                         this.props.claims ?
-                          <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
+                          <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
                           : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">
