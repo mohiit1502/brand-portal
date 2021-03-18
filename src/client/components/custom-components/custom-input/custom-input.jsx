@@ -323,6 +323,7 @@ class CustomInput extends React.Component {
   }
 
   getTextAreaInputType () {
+    const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
@@ -330,6 +331,9 @@ class CustomInput extends React.Component {
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
+        <small className={`form-text custom-input-help-text text-area-error ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
+          { errorClass ? subtitleText : "" }
+        </small>
       </div>
     );
   }
