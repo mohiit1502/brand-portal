@@ -324,6 +324,7 @@ class CustomInput extends React.Component {
 
   getTextAreaInputType () {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
+
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
@@ -334,7 +335,7 @@ class CustomInput extends React.Component {
           { errorClass ? subtitleText : "" }
         </small>
       </div>
-  );
+    );
   }
 
   render () {
