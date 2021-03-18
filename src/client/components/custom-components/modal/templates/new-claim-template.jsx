@@ -219,12 +219,15 @@ class NewClaimTemplate extends React.Component {
   }
 
   bubbleValue(evt, key, error) {
-    const value = evt.target.value;
+    let value = evt.target.value;
     let index = -1;
     if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
       index = Number(key.split("-")[1]);
       key = key.split("-")[0];
-    }
+    }else if(key=="comments") {
+        //value = Helper.trimSpaces(value);
+        //if(value && value[0]==" ") value = value.substring(1);
+      }
     this.setState(state => {
       state = {...state};
       if (index > -1) {
@@ -233,6 +236,7 @@ class NewClaimTemplate extends React.Component {
       } else {
         state.form.inputData[key].value = value;
         state.form.inputData[key].error = error;
+        state.form.inputData[key].originalValue = evt.target.value;
       }
 
       return {
@@ -256,7 +260,7 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.itemList[index][key].error = "";
           state.form.inputData.itemList[index].url.error = "";
         } else {
-          state.form.inputData[key].value = value;
+          state.form.inputData[key].value = "value";
         }
 
         return {
@@ -368,13 +372,15 @@ class NewClaimTemplate extends React.Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
-      const targetVal = evt.target.value;
+      let targetVal = evt.target.value;
       let index = -1;
       if (key.split("-")[0] === "url" && key.split("-")[1]) {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
+      }else if(key=="comments") {
+        targetVal = Helper.trimSpaces(targetVal);
+        if(targetVal && targetVal[0]==" ") targetVal = targetVal.substring(1);
       }
-
       this.setState(state => {
         state = {...state};
         if (index > -1) {
@@ -611,7 +617,7 @@ class NewClaimTemplate extends React.Component {
               <div className="row mb-3">
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
-                    value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
+                    value={inputData.comments.value} originalValue={inputData.comments.originalValue} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
                     disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} 
                     validators ={inputData.comments.validators }  bubbleValue = {this.bubbleValue} />
                 </div>
