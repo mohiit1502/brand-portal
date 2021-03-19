@@ -32,8 +32,12 @@ export default class SortUtil {
     return sortedList;
   }
 
-  static sortList(unSortedList, sortLevel, id, sortType) { 
-    unSortedList.sort((a, b) => {
+  static sortList(unSortedList,sortConfigue) { 
+    const sortLevel = sortConfigue.sortState.level;
+    const id = sortConfigue.accessor;
+    const sortType = sortConfigue.sortState.type;
+    let sortedList = unSortedList;
+    sortedList.sort((a, b) => {
       if (sortType === CONSTANTS.SORTSTATE.DATETYPE) {
         const aDate = new Date(a[id]);
         const bDate = new Date(b[id]);
@@ -46,7 +50,7 @@ export default class SortUtil {
         return SortUtil.sortAlphabet(a[id], b[id], sortLevel);
       }
     })
-    return unSortedList;
+    return sortedList;
   }
 
   // static multiSort(header, multiSortingConfigue) { //flag
@@ -125,7 +129,7 @@ export default class SortUtil {
     let result = [];
     if(i>=columnConfigue.length)
       return unsortedList;
-    let sortedList  = this.sortList(unsortedList, columnConfigue[i].sortState.level, columnConfigue[i].accessor, columnConfigue[i].sortState.type);
+    let sortedList  = this.sortList([...unsortedList], columnConfigue[i]);
     let initRow = sortedList[0];
     let tempList = []; tempList.push(initRow);
     const colName = columnConfigue[i].accessor;
@@ -161,12 +165,16 @@ export default class SortUtil {
   }
   static sortAlphabet (a, b, sortLevel) {
     if (sortLevel === CONSTANTS.SORTSTATE.ASCENDING) {
-      if (a.toUpperCase() < b.toUpperCase()) return -1;
-      if (a.toUpperCase() > b.toUpperCase()) return 1;
+      if (a < b) return -1;
+      if (a > b) return 1;
+//       if (a.toUpperCase() < b.toUpperCase()) return -1;
+//       if (a.toUpperCase() > b.toUpperCase()) return 1;
     }
     if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
-      if (a.toUpperCase() > b.toUpperCase()) return -1;
-      if (a.toUpperCase() < b.toUpperCase()) return 1;
+      if (a < b) return 1;
+      if (a > b) return -1;
+//       if (a.toUpperCase() > b.toUpperCase()) return -1;
+//       if (a.toUpperCase() < b.toUpperCase()) return 1;
     }
     return 0;
   }

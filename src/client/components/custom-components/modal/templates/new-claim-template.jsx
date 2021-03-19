@@ -684,7 +684,7 @@ NewClaimTemplate.propTypes = {
   toggleModal: PropTypes.func,
   data: PropTypes.object,
   showNotification: PropTypes.func,
-  bubbleValue: propTypes.func
+  bubbleValue: PropTypes.func
 };
 
 const mapStateToProps = state => {

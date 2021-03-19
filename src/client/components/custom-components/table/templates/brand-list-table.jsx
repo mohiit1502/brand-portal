@@ -3,6 +3,8 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sortIcon.svg";
+import sortIconUp from "../../../../images/sort_ascend.svg";
+import sortIconDown from "../../../../images/sort_descend.svg";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
 import NoRecordsMatch from "../../NoRecordsMatch";
@@ -73,9 +75,13 @@ const BrandListTable = function(props) {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
                     sortByToggleProps.onClick = () => sortHandler(header);
+                    const sortIcondisplay = header.sortState.level === 2 ? sortIcon : header.sortState.level === 1 ? sortIconUp : sortIconDown;
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
-                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
+                        { header.render("Header") }
+                        {
+                          <img className="sort-icon" src={sortIcondisplay} />
+                        }
                       </div>
                     );
                   })

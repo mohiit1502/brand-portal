@@ -86,9 +86,8 @@ class ClaimList extends React.Component {
           Header: "SUBMISSION DATE",
           accessor: "claimDate",
           sortState: {
-            level: CONSTANTS.SORTSTATE.DESCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE,
-            priorityLevel: 0,
+            level: CONSTANTS.SORTSTATE.RESET,
+            type: CONSTANTS.SORTSTATE.DATETYPE
           }
         },
         {
