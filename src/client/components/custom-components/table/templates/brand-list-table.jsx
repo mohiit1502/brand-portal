@@ -75,12 +75,12 @@ const BrandListTable = function(props) {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
                     sortByToggleProps.onClick = () => sortHandler(header);
-                    const sortIcondisplay = header.sortState.level === 2 ? sortIcon : header.sortState.level === 1 ? sortIconUp : sortIconDown;
+                    const sortIcondisplay = header.sortState.level === 2 ? sortIcon : header.sortState.level === 0 ? sortIconUp : sortIconDown;
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") }
                         {
-                          <img className="sort-icon" src={sortIcondisplay} />
+                          <img className={`sort-icon${header.sortState.level === 1 ? " mt-1" : "" }${header.sortState.level === 0 ? " mb-1" : "" }`} src={sortIcondisplay} />
                         }
                       </div>
                     );
