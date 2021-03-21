@@ -58,7 +58,7 @@ class CustomInput extends React.Component {
 //         error: "",
         fieldOk: false,
         fieldAlert: false,
-        value: evt.target.value
+        value: key === "comments" ? Helper.trimSpaces(evt.target.value) : evt.target.value
       });
     }
     this.state.disableSubmitButton && this.state.disableSubmitButton();
