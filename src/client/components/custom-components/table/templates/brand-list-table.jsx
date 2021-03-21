@@ -16,7 +16,9 @@ const BrandListTable = function(props) {
   const classColMap = {
     sequence: "col-1"
   };
-
+  const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
+  const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
+  const sortStateReset = CONSTANTS.SORTSTATE.RESET;
   const updateDDOptions = (index, values, ddOptions) => {
     const statusPending = CONSTANTS.BRAND.STATUS.PENDING.toLowerCase();
     const statusVerified = CONSTANTS.BRAND.STATUS.VERIFIED.toLowerCase();
@@ -75,12 +77,19 @@ const BrandListTable = function(props) {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
                     sortByToggleProps.onClick = () => sortHandler(header);
-                    const sortIcondisplay = header.sortState.level === 2 ? sortIcon : header.sortState.level === 0 ? sortIconUp : sortIconDown;
+                    let sortIcondisplay;
+                    if (header.sortState.level ===  sortStateReset) {
+                        sortIcondisplay = sortIcon;
+                    } else if (header.sortState.level === sortStateAscending) {
+                        sortIcondisplay = sortIconUp;
+                    } else {
+                        sortIcondisplay = sortIconDown;
+                    }
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") }
                         {
-                          <img className={`sort-icon${header.sortState.level === 1 ? " mt-1" : "" }${header.sortState.level === 0 ? " mb-1" : "" }`} src={sortIcondisplay} />
+                          <img className={`sort-icon${header.sortState.level === sortStateDescending ? " mt-0.5" : "" }${header.sortState.level === sortStateAscending ? " mb-0.5" : "" }`} src={sortIcondisplay} />
                         }
                       </div>
                     );

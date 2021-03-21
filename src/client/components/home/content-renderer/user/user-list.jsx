@@ -155,9 +155,8 @@ class UserList extends React.Component {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.DESCENDING,
+            level: CONSTANTS.SORTSTATE.RESET,
             type: CONSTANTS.SORTSTATE.DATETYPE,
-            priorityLevel: 0,
           }
         },
         {
