@@ -374,7 +374,7 @@ class NewClaimTemplate extends React.Component {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
-      
+
       this.setState(state => {
         state = {...state};
         if (index > -1) {
