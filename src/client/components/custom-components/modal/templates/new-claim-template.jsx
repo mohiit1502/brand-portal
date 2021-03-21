@@ -219,7 +219,7 @@ class NewClaimTemplate extends React.Component {
   }
 
   bubbleValue(evt, key, error) {
-    let value = evt.target.value;
+    const value = evt.target.value;
     let index = -1;
     if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
       index = Number(key.split("-")[1]);
@@ -368,12 +368,13 @@ class NewClaimTemplate extends React.Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
-      let targetVal = evt.target.value;
+      const targetVal = evt.target.value;
       let index = -1;
       if (key.split("-")[0] === "url" && key.split("-")[1]) {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
+      
       this.setState(state => {
         state = {...state};
         if (index > -1) {
