@@ -12,6 +12,8 @@ export default class SortUtil {
     });
     const unsortedList = this.state.unsortedList;
     const sortedList = SortUtil.multiSortUtil(unsortedList, sortingColumns, 0);
+    let i = 1;
+    sortedList.forEach(item => item.sequence = i++);
     this.setState({filteredList: sortedList});
     return sortedList;
   }

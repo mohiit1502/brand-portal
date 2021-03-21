@@ -184,21 +184,17 @@ class UserList extends React.Component {
     let sortLevel = columnMeta.sortState.level;
     let columnPriority = this.state.columnPriority;
     sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
-    if(sortLevel == CONSTANTS.SORTSTATE.RESET) {
-        columnMeta.sortState.level = CONSTANTS.SORTSTATE.ASCENDING;
-        if(!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel == -1) {
-          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
-          columnPriority = columnPriority+1;
-        }
-    } else if(sortLevel == CONSTANTS.SORTSTATE.DESCENDING) {
+    if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
       columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
       columnMeta.sortState.priorityLevel = -1;
     } else {
-        columnMeta.sortState.level = CONSTANTS.SORTSTATE.DESCENDING;
-        if(columnMeta.sortState.priorityLevel == -1)  
-          {columnMeta.sortState.priorityLevel == this.state.columnPriority + 1; columnPriority = columnPriority+1;}//: columnMeta.sortState.priorityLevel = 2}
+      columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+      if (!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel === -1) {
+        columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+        columnPriority += 1;
+      }
     }
-    this.setState({columns,columnPriority}, ()=>this.multiSort());
+    this.setState({columns, columnPriority}, () => this.multiSort());
   }
 
   uiSearch (evt, isFilter, filteredUsers) {
