@@ -35,7 +35,6 @@ class NewClaimTemplate extends React.Component {
     this.bubbleValue = this.bubbleValue.bind(this);
     this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.claimsMap = {};
-
     this.state = {
       form: {
         isSubmitDisabled: true,
@@ -93,13 +92,11 @@ class NewClaimTemplate extends React.Component {
             disabled: false,
             subtitle: "",
             error: "",
-            patternPath: CONSTANTS.REGEX.NAMES,
-            patternErrorMessage: "Please enter valid comments!",
-            placeholder:"Please provide additional information about the claim",
+            placeholder: "Please provide additional information about the claim",
             validators: {
               validateLength: {
                 minLength: 20,
-                error: "Comment should be 20 numeric characters long!"
+                error: "Comment should be 20 characters long!"
               }
             }
           },
@@ -189,7 +186,7 @@ class NewClaimTemplate extends React.Component {
         validators: {
           validateLength: {
             minLength: 3,
-            error: "Seller name should be 3 numeric characters long!"
+            error: "Minimum length is 3 characters"
           }
         }
       }
@@ -256,8 +253,8 @@ class NewClaimTemplate extends React.Component {
         state = this.selectHandlersLocal(key, state, value);
         if (index > -1) {
           state.form.inputData.itemList[index][key].value = value;
-          state.form.inputData.itemList[index][key].error="";
-          state.form.inputData.itemList[index].url.error="";
+          state.form.inputData.itemList[index][key].error = "";
+          state.form.inputData.itemList[index].url.error = "";
         } else {
           state.form.inputData[key].value = value;
         }
@@ -366,7 +363,7 @@ class NewClaimTemplate extends React.Component {
       });
     }
 
-    this.props.dispatchClaims({claimList});
+    this.props.dispatchClaims({claimList, fetchClaimsCompleted: true});
   }
 
   onChange(evt, key) {
@@ -386,19 +383,9 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.itemList[index][key].value = targetVal;
           state.disableAddItem = true;
           state.currentItem = index;
-        } 
-        else if ( key === "comments" ){  
-            state.form.inputData[key].value = targetVal;
-            const pattern = new RegExp(this.state.form.inputData.comments.patternPath);
-            const patternErrorMessage = this.state.form.inputData.comments.patternErrorMessage ;
-            if (pattern && !pattern.test(evt.target.value)) {
-              state.form.inputData.comments.error = patternErrorMessage;
-            } else {
-                  state.form.inputData.comments.error = "";
-            }  
-        }
-        else {
+        } else {
           state.form.inputData[key].value = targetVal;
+          state.form.inputData[key].error = "";
         }
         return {
           ...state
@@ -417,7 +404,7 @@ class NewClaimTemplate extends React.Component {
     const bool = form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && !item.sellerName.error), true) &&
+      form.inputData.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&
       form.inputData.comments.value && !form.inputData.comments.error &&
       form.undertakingList.reduce((boolResult, undertaking) => !!(boolResult && undertaking.selected), true) &&
       form.inputData.signature.value;
@@ -443,7 +430,7 @@ class NewClaimTemplate extends React.Component {
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
-    const registrationNumber = inputData.claimTypeIdentifier.value;
+    const registrationNumber = Helper.trimSpaces( inputData.claimTypeIdentifier.value );
 
     const brandName = inputData.brandName.value;
     const index = ClientUtils.where(inputData.brandName.options, {value: brandName});
@@ -451,12 +438,20 @@ class NewClaimTemplate extends React.Component {
     const usptoUrl = inputData.brandName.options[index].usptoUrl;
     const usptoVerification = inputData.brandName.options[index].usptoVerification;
 
-    const comments = inputData.comments.value;
-    const digitalSignatureBy = inputData.signature.value;
+    const comments = Helper.trimSpaces( inputData.comments.value );
+    const digitalSignatureBy = Helper.trimSpaces( inputData.signature.value );
 
     const getItems = items => {
       const itemList = [];
-      items.forEach(item => item.sellerName.value && item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: item.url.value, sellerName})));
+      items.forEach(item => { 
+        const itemUrl = Helper.trimSpaces( item.url.value );
+        if (item.sellerName.value && typeof item.sellerName.value === "object"){
+          item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
+        } else if (item.sellerName.value) {
+          const sellerNames = item.sellerName.value.trim();
+          itemList.push({ itemUrl: itemUrl , sellerName: sellerNames });
+        }
+    });
       return itemList;
     };
 
@@ -597,7 +592,7 @@ class NewClaimTemplate extends React.Component {
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
                               onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
-                              validators = { item.sellerName.validators } bubbleValue = { this.bubbleValue }/>
+                              validators={item.sellerName.validators} bubbleValue={this.bubbleValue}/>
                           </div>
                           <div className="col-4">
                             {
@@ -678,13 +673,13 @@ class NewClaimTemplate extends React.Component {
 }
 
 NewClaimTemplate.propTypes = {
+  bubbleValue: PropTypes.func,
   dispatchClaims: PropTypes.func,
   modal: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   toggleModal: PropTypes.func,
   data: PropTypes.object,
-  showNotification: PropTypes.func,
-  bubbleValue: PropTypes.func
+  showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {

@@ -56,7 +56,7 @@ export default class ServerHttp {
     } catch (e) {
       const errorString = `6. Caught in ServerHttp.${method}: `;
       console.error(errorString, e);
-      throw new ServerHttpError(e.status || 500, e);
+      throw typeof e === "string" ? new ServerHttpError(e.status || 500, e) : new ServerHttpError(e.status || 500, e.error, e.message);
     } finally {
       console.log("7. === Crud Request End!");
     }

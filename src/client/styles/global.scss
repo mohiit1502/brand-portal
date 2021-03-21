@@ -82,6 +82,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   margin-bottom: 2rem;
 }
 
+.pr-2rem {
+  padding-right: 2rem;
+}
+
 .p-25 {
   padding: 2.5rem;
 }
@@ -281,6 +285,13 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
     font-size: 15px;
   }
 
+.btn-danger {
+  font-weight: bold;
+  border-radius: 42px;
+  border: none;
+  font-size: 15px;
+}
+
 .btn-primary:disabled {
     background: #a3a8a9;
     border: none;
@@ -464,6 +475,6 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   padding-left: 12px;
 }
 
-
-
-
+.form-row>[class*="col-"]:first-child:not(.col-12) {
+  padding-left: 5px;
+}

@@ -79,12 +79,8 @@ NewClaimAddedTemplate.propTypes = {
   data: PropTypes.object
 };
 
-const mapStateToProps = state => {
-  return state;
-};
-
 const mapDispatchToProps = {
   toggleModal
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewClaimAddedTemplate);
+export default connect(null, mapDispatchToProps)(NewClaimAddedTemplate);

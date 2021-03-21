@@ -1,0 +1,121 @@
+@import "../../../../../styles/override/variables";
+
+$header-height : 65px;
+$header-background : #006799;
+$header-color : white;
+
+.modal.c-TouTemplate {
+  .modal-dialog {
+    min-width: 65rem;
+    .modal-content {
+      border-radius: 3px;
+      .modal-header {
+        border-radius: 2px;
+        height: $header-height;
+        background: $header-background;
+        color: $header-color;
+        font-size: 27px;
+        font-weight: bold;
+        padding: 1rem 2rem;
+      }
+      .modal-body {
+        padding: 1.125rem 1rem 1.5rem;
+        min-height: 30rem;
+        //min-width: 35rem;
+        //overflow-y: scroll;
+        .c-BrandList {
+          &.field-loader:before {right: 44%;}
+        }
+        //.text-secondary {color: #0b1e40 !important;}
+
+        .content {
+          color: $heading-blue;
+        }
+        //.button-navigator {
+        //  //right: 2rem;
+        //  background: $background-blue;
+        //  border: 1px solid $background-blue;
+        //  border-radius: 5px;
+        //  color: #017DC6;
+        //  font-size: 1.2rem;
+        //  line-height: 1.5rem;
+        //  padding: 0 0.4rem 0.2rem;
+        //  top: 1rem;
+        //  z-index: 2;
+        //}
+
+        .invitation-acceptance {
+          margin-top: 6rem;
+          left: -100%;
+          transition: all 0.4s ease-in-out;
+
+          &.visible {
+            left: 0;
+            padding: 0 1rem;
+          }
+        }
+
+        .tou-rejection {
+          margin-top: 6rem;
+        }
+
+        .tou-acceptance, .tou-rejection {
+          left: 100%;
+          transition: all 0.4s ease-in-out;
+
+          &.visible {
+            left: 0;
+            padding: 0 1rem;
+          }
+        }
+      }
+      .modal-footer{
+        height: 80px;
+        background: $background-blue;
+        border-bottom: 9px solid #7ac4e4;
+
+        .btn-primary {
+          background: $heading-blue !important;
+          color: white;
+        }
+
+        .btn-secondary {
+          color: $heading-blue !important;
+          background: none;
+          border: none !important;
+        }
+
+        .btn-panel {
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        .invitation-buttons-panel {
+          left: -100%;
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+          transition: all 0.4s ease-in-out;
+
+          &.visible {
+            left: 0;
+            padding: 0 1rem;
+          }
+        }
+
+        .tou-buttons-panel {
+          left: 100%;
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+          transition: all 0.4s ease-in-out;
+
+          &.visible {
+            left: 0;
+            padding: 0 1rem;
+          }
+        }
+      }
+    }
+  }
+}
