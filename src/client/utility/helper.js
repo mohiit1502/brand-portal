@@ -188,15 +188,9 @@ export default class Helper {
     }
     return interpolatedUrl;
   }
-  
+
   static trimSpaces(incoming) {
-    if (typeof incoming === "string") {
-      let trimmedString = incoming;
-      trimmedString = trimmedString.replace(/  +/g, ' ');
-      trimmedString = trimmedString && trimmedString[0] === " " ? trimmedString.substring(1) : trimmedString;
-      return trimmedString;
-    } else {
-      return incoming;
-    }
+    const value = typeof incoming === "object" ? incoming.target.value : incoming;
+    return value.replace(/  +/g, ' ').replace(/^\s+/g, "");
   }
 }
