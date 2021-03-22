@@ -9,7 +9,7 @@ import Footer from "../Footer";
 import Http from "../../utility/Http";
 import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
 import "../../styles/login/login.scss";
-import Mixpanel from "../../utility/mixpanel";
+import Mixpanel from "../../utility/mixpanelutils";
 class Login extends React.Component {
 
   constructor(props) {

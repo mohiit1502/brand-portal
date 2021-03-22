@@ -13,7 +13,7 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Helper from "../../../../utility/helper";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
-import mixpanel from "../../../../utility/mixpanel";
+import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 class NewClaimTemplate extends React.Component {
 

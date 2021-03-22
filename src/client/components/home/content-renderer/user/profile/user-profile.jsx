@@ -12,7 +12,7 @@ import Validator from "../../../../../utility/validationUtil";
 // import FORMFIELDCONFIG from "./../../../../../config/formsConfig/form-field-meta";
 import "../../../../../styles/home/content-renderer/user/profile/user-profile.scss";
 import CONSTANTS from "../../../../../constants/constants";
-import mixpanel from "../../../../../utility/mixpanel";
+import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/MixPanelConsants";
 class UserProfile extends React.Component {
 

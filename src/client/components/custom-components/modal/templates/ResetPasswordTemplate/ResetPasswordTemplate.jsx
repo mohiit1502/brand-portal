@@ -8,7 +8,7 @@ import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notifi
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import CONSTANTS from "../../../../../constants/constants";
 import './ResetPasswordTemplate.component.scss';
-import mixpanel from "../../../../../utility/mixpanel";
+import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/MixPanelConsants";
 class ResetPasswordTemplate extends Component {
   constructor(props) {

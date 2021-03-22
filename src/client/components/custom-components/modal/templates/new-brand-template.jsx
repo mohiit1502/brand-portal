@@ -10,7 +10,7 @@ import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
-import mixpanel from "../../../../utility/mixpanel";
+import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 class NewBrandTemplate extends React.Component {
 
@@ -33,7 +33,6 @@ class NewBrandTemplate extends React.Component {
         ...newBrandConfiguration.formConfig
       }
     };
-    mixpanel.addBrand(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.ADD_NEW_BRAND);
   }
 
   componentDidMount() {

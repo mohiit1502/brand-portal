@@ -272,6 +272,9 @@ const CONSTANTS = {
     DATETYPE: "date",
     ARRAYTYPE: "array"
   },
+  MIXPANEL: {
+    PROJECT_ID: "1968bbc8bf2304c4c850ca1d53e79ea2"
+  },
 
   POPOVERSELECTOR: "tutorialPopover",
   APIDEBOUNCETIMEOUT: 800,

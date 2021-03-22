@@ -13,7 +13,7 @@ import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
-import mixpanel from "../../../../utility/mixpanel";
+import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class CreateUserTemplate extends React.Component {

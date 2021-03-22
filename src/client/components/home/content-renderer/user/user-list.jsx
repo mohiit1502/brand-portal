@@ -21,6 +21,8 @@ import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
 import moment from "moment";
+import mixPanel from "../../../../utility/mixpanelutils";
+
 class UserList extends React.Component {
 
   constructor (props) {
@@ -431,6 +433,7 @@ class UserList extends React.Component {
 
   createNewUser () {
     const meta = { templateName: "CreateUserTemplate" };
+    mixPanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

@@ -11,7 +11,7 @@ import Validator from "../../../utility/validationUtil";
 import ContentRenderer from "../../../utility/ContentRenderer";
 import DocumentActions from "../../../utility/docOps";
 import "../../../styles/onboard/content-renderer-onboarding/company-profile-registration.scss";
-import mixpanel from "../../../utility/mixpanel";
+import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 
 class CompanyProfileRegistration extends React.Component {

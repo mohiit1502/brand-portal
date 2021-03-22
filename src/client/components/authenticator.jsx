@@ -14,7 +14,7 @@ import {dispatchMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
-import mixpanel from "../utility/mixpanel";
+import mixpanel from "../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 class Authenticator extends React.Component {
@@ -81,7 +81,7 @@ class Authenticator extends React.Component {
       this.setState({profileInformationLoaded: true});
 
     } catch (e) {
-      console.error(e);
+      //console.error(e);
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
     }
   }

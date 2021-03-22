@@ -2,7 +2,7 @@ import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
 import CONSTANTS from "../constants/constants";
-import mixpanel from "../utility/mixpanel";
+import mixpanel from "./mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 export default class Validator {
@@ -281,6 +281,7 @@ export default class Validator {
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
         this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        mixpanel.validatorsEvents(!unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY_FIALURE : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY_SUCCESS);
       }).catch(err => {
         emailId.disabled = false;
         emailId.loader = false;

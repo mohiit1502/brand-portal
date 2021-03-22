@@ -3,7 +3,7 @@ import * as images from "./../../images";
 import CONSTANTS from "./../../constants/constants";
 import "./Hero.component.scss";
 import LaptopImage from "./../../images/laptopImage.jpg"
-import mixpanel from "../../utility/mixpanel";
+import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/MixPanelConsants";
 const Hero = props => {
   return (

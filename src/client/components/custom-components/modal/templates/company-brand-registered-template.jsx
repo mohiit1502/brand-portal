@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import BrandRegisteredIcon from "../../../../images/brandRegisteredIcon.png";
 
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
-import mixpanel from "../../../../utility/mixpanel";
+import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 class CompanyBrandRegisteredTemplate extends React.Component {
 

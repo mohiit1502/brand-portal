@@ -20,7 +20,9 @@ const MIXPANEL_CONSTANTS = {
         CHECK_BRAND_UNIQUENESS_SUCCESS: "TEST: Brand Name uniqueness check success",
         CHECK_BRAND_UNIQUENESS_FAILURE: "TEST: Brand Name uniqueness check failure",
         CHECK_TRADEMARK_AVAILIBITY_SUCCESS: "TEST: Trade mark Avialibilty success",
-        CHECK_TRADEMARK_AVAILIBITY_FIALURE: "TEST: Trade mark Avialibilty failure"
+        CHECK_TRADEMARK_AVAILIBITY_FIALURE: "TEST: Trade mark Avialibilty failure",
+        CHECK_EMAIL_AVAILIBITY_SUCCESS: "TEST: Email Avialibilty success",
+        CHECK_EMAIL_AVAILIBITY_FIALURE: "TEST: Email Avialibilty failure"
     },
     FILE_UPLOAD_EVENTS: {
         FILE_UPLOAD_SUCCESS: "TEST: File Upload Success",
@@ -66,6 +68,14 @@ const MIXPANEL_CONSTANTS = {
             CANCLE_EDIT_USER_PROFILE: "TEST: Cancel Edit User Profile",
             SAVE_USER_PROFILE: "TEST: Save User Profile"
         }
+    },
+    HELP_CENTER_EVENTS: {
+        VIEW_HELP_TOPICS: "TEST: View Help Topics"
+    },
+    ADD_NEW_TEMPLATE: {
+        NewClaimTemplate: "TEST: New Claim template",
+        NewBrandTemplate: "TEST: Add new Brand",
+        CreateUserTemplate: "TEST: Add new User"
     }
 };
 

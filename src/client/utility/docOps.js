@@ -1,6 +1,6 @@
 import {CustomInterval} from "./timer-utils";
 import Http from "./Http";
-import mixpanel from "../utility/mixpanel";
+import mixpanel from "../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 export default class DocumentActions {
 

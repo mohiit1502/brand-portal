@@ -8,7 +8,7 @@ import headerLogo from "../../../images/WMWhite-horizontal.svg"
 import helpLogo from "../../../images/help-header.png"
 import profilePic from "../../../images/user-profile.png"
 import "../../../styles/custom-components/headers/home-header.scss";
-import mixpanel from "../../../utility/mixpanel";
+import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 class HomeHeader extends React.Component {
   constructor (props) {

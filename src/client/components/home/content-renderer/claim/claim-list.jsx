@@ -17,6 +17,7 @@ import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import mixPanel from "../../../../utility/mixpanelutils";
 
 class ClaimList extends React.Component {
 
@@ -202,6 +203,7 @@ class ClaimList extends React.Component {
 
   addNewClaim () {
     const meta = { templateName: "NewClaimTemplate" };
+    mixPanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

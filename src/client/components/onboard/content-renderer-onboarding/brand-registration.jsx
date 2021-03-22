@@ -12,7 +12,7 @@ import CONSTANTS from "../../../constants/constants";
 import Validator from "../../../utility/validationUtil";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
 import ContentRenderer from "../../../utility/ContentRenderer";
-import mixpanel from "../../../utility/mixpanel";
+import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 class BrandRegistration extends React.Component {
 

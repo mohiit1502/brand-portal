@@ -20,6 +20,7 @@ import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import SortUtil from "../../../../utility/SortUtil";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
+import mixPanel from "../../../../utility/mixpanelutils";
 
 class BrandList extends React.Component {
 
@@ -345,6 +346,7 @@ class BrandList extends React.Component {
 
   addNewBrand () {
     const meta = { templateName: "NewBrandTemplate" };
+    mixPanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
