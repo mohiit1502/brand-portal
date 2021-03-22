@@ -159,7 +159,7 @@ class BrandList extends React.Component {
       columnMeta.sortState.priorityLevel = -1;
     } else {
       columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-      if (!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel === -1) {
+      if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
         columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
         columnPriority += 1;
       }
@@ -212,26 +212,13 @@ class BrandList extends React.Component {
         return newBrand;
       });
     }
-    // const sortingConfigue = [
-    //   {
-    //     columnName: "brandStatus",
-    //     level: CONSTANTS.SORTSTATE.ASCENDING
-    //   },
-    //   {
-    //     columnName: "dateAdded",
-    //     level: CONSTANTS.SORTSTATE.ASCENDING
-    //   }];
-    
     if (this.props.widgetAction) {
       this.addNewBrand();
       this.props.dispatchWidgetAction(false);
     }
-                //
     this.setState({brandList, unsortedList: brandList}, () => this.checkAndApplyDashboardFilter(brandList));
     const sortedBrandList = this.multiSort();
     this.setState({brandList: sortedBrandList});
-      //sortedBrnadList
-   // this.setState({sortedBrandList, unsortedList: brandList});
     return sortedBrandList;
   }
 

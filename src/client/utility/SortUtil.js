@@ -80,6 +80,20 @@ export default class SortUtil {
     return 0;
   }
   static sortAlphabet (a, b, sortLevel) {
+    if (typeof a === "undefined" || typeof b === "undefined")
+       return 0;
+    if (sortLevel === CONSTANTS.SORTSTATE.ASCENDING) {
+      if (a.toUpperCase() < b.toUpperCase()) return -1;
+      if (a.toUpperCase() > b.toUpperCase()) return 1;
+    }
+    if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+      if (a.toUpperCase() > b.toUpperCase()) return -1;
+      if (a.toUpperCase() < b.toUpperCase()) return 1;
+    }
+    return SortUtil.sortAlphabetWithoutCase(a, b, sortLevel);
+  }
+
+  static sortAlphabetWithoutCase (a, b, sortLevel) {
     if (sortLevel === CONSTANTS.SORTSTATE.ASCENDING) {
       if (a < b) return -1;
       if (a > b) return 1;

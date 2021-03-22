@@ -144,7 +144,7 @@ class ClaimList extends React.Component {
       columnMeta.sortState.priorityLevel = -1;
     } else {
       columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-      if (!columnMeta.sortState.priorityLevel || columnMeta.sortState.priorityLevel === -1) {
+      if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
         columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
         columnPriority += 1;
       }
