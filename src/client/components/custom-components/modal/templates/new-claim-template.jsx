@@ -96,7 +96,7 @@ class NewClaimTemplate extends React.Component {
             validators: {
               validateLength: {
                 minLength: 20,
-                error: "Error: Please be sure to provide details regarding your claim."
+                error: "Please be sure to provide details regarding your claim."
               }
             }
           },
