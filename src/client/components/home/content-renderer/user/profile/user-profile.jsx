@@ -124,6 +124,7 @@ class UserProfile extends React.Component {
     if (disable && this.isDirty()) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCLE_EDIT_USER_PROFILE);
     } else {
       const form = {...this.state.form};
       form.isDisabled = disable;
