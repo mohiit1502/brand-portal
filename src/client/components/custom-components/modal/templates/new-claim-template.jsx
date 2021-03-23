@@ -145,7 +145,6 @@ class NewClaimTemplate extends React.Component {
       loader: false,
       fieldLoader: false
     };
-    mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.NEW_CLAIM_TEMPLATE);
   }
 
   loader (type, enable) {
@@ -204,14 +203,12 @@ class NewClaimTemplate extends React.Component {
     // state.form.inputData.itemList.unshift(item);
     state.form.inputData.itemList.push(item);
     this.setState(state, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
-   // mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.ADD_ITEM_TO_CLAIM_LIST);
   }
 
   removeFromItemList (evt, index) {
     const form = {...this.state.form};
     form.inputData.itemList.splice(index, 1);
     this.setState({form}, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
-    //mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.REMOVE_ITEM_TO_CLAIM_LIST);
   }
 
   checkToEnableItemButton () {
@@ -482,18 +479,18 @@ class NewClaimTemplate extends React.Component {
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
         this.fetchClaims();
         this.loader("loader", false);
-        mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_SUCCESS);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_SUCCESS);
       })
       .catch(err => {
         this.loader("loader", false);
         console.log(err);
-        mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_FAILURE);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_FAILURE, err);
       });
   }
 
   resetTemplateStatus () {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.RESET_CLAIM_DETAILS);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.RESET_CLAIM_DETAILS);
   }
 
   onItemUrlChange (event, i) {
@@ -521,13 +518,13 @@ class NewClaimTemplate extends React.Component {
             form.isSubmitDisabled=true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
-            mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_SUCCESS);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_SUCCESS);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
             form.isSubmitDisabled=true;
             this.setState({form}, this.checkToEnableItemButton);
-            mixpanel.newClaimEvents(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_FAILURE);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_FAILURE);
           }
         })
         .catch(err => {

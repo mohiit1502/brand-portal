@@ -44,7 +44,7 @@ class CompanyProfileRegistration extends React.Component {
 
   componentDidMount() {
     $("[data-toggle='tooltip']").tooltip();
-    mixpanel.brandRegistration(this.props.userProfile, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE);
   }
 
   undertakingToggle () {
@@ -154,7 +154,7 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
     this.setState(state);
-    mixpanel.brandRegistration(this.props.userProfile, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.RESET_COMPANY_PROFILE );
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.RESET_COMPANY_PROFILE );
   }
 
   gotoBrandRegistration (evt) {

@@ -25,7 +25,6 @@ class ResetPasswordTemplate extends Component {
         ...resetPasswordConfiguration.formConfig,
       }
     };
-    mixpanel.resetPasswordEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_USER_PASSWORD);
   }
 
   bubbleValue (evt, key, error) {
@@ -92,7 +91,7 @@ class ResetPasswordTemplate extends Component {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.loader("form", false);
-          mixpanel.resetPasswordEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_SUCCESS);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_SUCCESS);
         })
         .catch(err => {
           this.loader("form", false);
@@ -118,7 +117,7 @@ class ResetPasswordTemplate extends Component {
             }
           }
           console.log(err);
-          mixpanel.resetPasswordEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_FAILURE);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_FAILURE, err);
         });
     }
   }
@@ -141,7 +140,7 @@ class ResetPasswordTemplate extends Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.resetPasswordEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCLE_CHANGE_PASSWORD);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCLE_CHANGE_PASSWORD);
   }
 
   render() {

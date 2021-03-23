@@ -21,7 +21,8 @@ import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
 import moment from "moment";
-import mixPanel from "../../../../utility/mixpanelutils";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class UserList extends React.Component {
 
@@ -397,6 +398,7 @@ class UserList extends React.Component {
   async componentDidMount() {
     const userList = await this.fetchUserData();
     this.checkAndApplyDashboardFilter(userList);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_USERS);
   }
 
   checkAndApplyDashboardFilter(userList) {
@@ -433,7 +435,7 @@ class UserList extends React.Component {
 
   createNewUser () {
     const meta = { templateName: "CreateUserTemplate" };
-    mixPanel.addNewTemplate(meta);
+    mixpanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

@@ -47,10 +47,10 @@ export default class DocumentActions {
         updatedForm.inputData[type].id = uploadResponse.id;
         this.setState({updatedForm}, this.checkToEnableSubmit);
       }, 700);
-      mixpanel.fileUploadEvents(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD_SUCCESS, {});
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD_SUCCESS);
     } catch (e) {
       console.log(e);
-      mixpanel.fileUploadEvents(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD_FAILURE, e);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD_FAILURE, e);
     }
   }
 

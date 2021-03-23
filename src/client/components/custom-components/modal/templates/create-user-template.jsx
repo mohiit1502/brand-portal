@@ -58,7 +58,6 @@ class CreateUserTemplate extends React.Component {
     const formatter = new InputFormatter();
     const handlers = formatter.on(`#${this.state.section.id}-${this.state.form.inputData.phone.inputId}-custom-input`);
     this.prebounceChangeHandler = handlers.inputHandler;
-    mixpanel.inviteUser(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.ADD_NEW_USER);
   }
 
   componentDidMount() {
@@ -146,7 +145,7 @@ class CreateUserTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.inviteUser(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.RESET_USER_DETAILS);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.RESET_USER_DETAILS);
   }
 
   bubbleValue (evt, key, error) {
@@ -277,11 +276,11 @@ class CreateUserTemplate extends React.Component {
           this.props.saveUserInitiated();
           const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-          mixpanel.inviteUser(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_SUCCESS);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_SUCCESS);
         })
         .catch(err => {
           console.log(err);
-          mixpanel.inviteUser(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_FAILURE);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_FAILURE);
         });
     }
   }

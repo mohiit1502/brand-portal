@@ -36,7 +36,7 @@ class BrandRegistration extends React.Component {
         inputData: {...brandConfiguration.fields}
       }
     };
-    mixpanel.brandRegistration(props.userProfile, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION);
   }
 
   checkToEnableSubmit () {
@@ -142,10 +142,10 @@ class BrandRegistration extends React.Component {
       this.updateProfileInfo();
       this.props.dispatchNewRequest(true);
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      mixpanel.brandRegistration({},MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_SUCCESS);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_SUCCESS);
     } catch (err) {
       this.loader("form", false);
-      mixpanel.brandRegistration({err}, MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_FAILURE);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_FAILURE, err);
     }
   }
 

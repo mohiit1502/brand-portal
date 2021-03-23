@@ -44,7 +44,6 @@ class UserProfile extends React.Component {
       const item = this.state.form.inputData[itemKey];
       this.state.form.inputData[itemKey].value = Helper.search(item.initValuePath, this.props.userProfile);
     });
-    mixpanel.userProfileEvents(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);
   }
 
   componentDidUpdate(prevProps) {
@@ -117,6 +116,7 @@ class UserProfile extends React.Component {
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_USER_PASSWORD);
   }
 
   disableInput (disable) {
@@ -173,11 +173,10 @@ class UserProfile extends React.Component {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
             this.disableInput(true);
-            mixpanel.userProfileEvents(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
           })
           .catch(() => {
             this.loader("form", false);
-         //   mixpanel.userProfileEvents(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.)
           });
       } else {
         this.loader("form", false);

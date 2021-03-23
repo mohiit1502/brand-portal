@@ -76,6 +76,12 @@ const MIXPANEL_CONSTANTS = {
         NewClaimTemplate: "TEST: New Claim template",
         NewBrandTemplate: "TEST: Add new Brand",
         CreateUserTemplate: "TEST: Add new User"
+    },
+    LEFT_NAV_EVENTS: {
+        VIEW_MY_DASHBOARD: "TEST: View My Dashboard",
+        VIEW_MY_CLAIMS: "TEST: View My Claims",
+        VIEW_MY_BRANDS: "TEST: View My Brands",
+        VIEW_MY_USERS: "TEST: View My Users"
     }
 };
 

@@ -273,7 +273,7 @@ const CONSTANTS = {
     ARRAYTYPE: "array"
   },
   MIXPANEL: {
-    PROJECT_ID: "1968bbc8bf2304c4c850ca1d53e79ea2"
+    PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
   },
 
   POPOVERSELECTOR: "tutorialPopover",

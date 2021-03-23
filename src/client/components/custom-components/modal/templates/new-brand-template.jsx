@@ -136,12 +136,12 @@ class NewBrandTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
-          mixpanel.addBrand(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_SUCCESS);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_SUCCESS);
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
-          mixpanel.addBrand(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_FAILURE);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_FAILURE);
         });
     }
   }
@@ -161,7 +161,7 @@ class NewBrandTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.addBrand(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.RESET_BRAND_DETAILS);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.RESET_BRAND_DETAILS);
   }
 
   render() {

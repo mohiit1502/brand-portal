@@ -10,6 +10,8 @@ import Http from "../../utility/Http";
 import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
 import "../../styles/login/login.scss";
 import Mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/MixPanelConsants";
+
 class Login extends React.Component {
 
   constructor(props) {
@@ -31,7 +33,7 @@ class Login extends React.Component {
           return stateCloned;
         }))
         .catch(e => this.setState({loginConfig}));
-        Mixpanel.homePage();
+        Mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.WBP_HOME_PAGE);
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);
