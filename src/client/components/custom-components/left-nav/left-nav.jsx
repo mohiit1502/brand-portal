@@ -8,7 +8,6 @@ import restConfig from "./../../../config/rest";
 import CONSTANTS from "../../../constants/constants";
 import * as images from "./../../../images";
 import "../../../styles/custom-components/left-nav/left-nav.scss";
-import mixpanel from "../../../utility/mixpanelutils";
 
 class Leftnav extends React.Component {
   constructor (props) {
@@ -59,7 +58,6 @@ class Leftnav extends React.Component {
   }
 
   updateNavigationPanel (panel, pathname) {
-   // mixpanel.leftNavEvents
     const updatedPanel = this.constructNavigationPanel(panel, pathname);
     this.setState({
       NAVIGATION_PANEL: updatedPanel

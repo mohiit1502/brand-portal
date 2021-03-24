@@ -33,7 +33,6 @@ class Authenticator extends React.Component {
   }
 
   componentDidMount() {
-    //TODO MX intialise
     mixpanel.intializeMixpanel();
     if (this.state.isLoggedIn) {
       this.initMetaData();
@@ -83,7 +82,7 @@ class Authenticator extends React.Component {
       this.setState({profileInformationLoaded: true});
 
     } catch (e) {
-      //console.error(e);
+      console.error(e);
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
     }
   }

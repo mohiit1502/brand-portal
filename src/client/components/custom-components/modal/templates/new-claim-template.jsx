@@ -15,6 +15,7 @@ import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
+
 class NewClaimTemplate extends React.Component {
 
   // eslint-disable-next-line max-statements

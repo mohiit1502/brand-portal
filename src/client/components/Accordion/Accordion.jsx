@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./Accordion.component.scss";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/MixPanelConsants";
+
 const Accordion = ({children, data, expanded, setExpanded}) => {
   return (
     <div className="c-Accordion">

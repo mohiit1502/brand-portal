@@ -6,6 +6,7 @@ import "../../../styles/custom-components/headers/login-header.scss";
 import CONSTANTS from "../../../constants/constants";
 import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
+
 class LoginHeader extends React.Component {
 
   constructor(props) {

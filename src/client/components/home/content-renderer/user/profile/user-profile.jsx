@@ -14,6 +14,7 @@ import "../../../../../styles/home/content-renderer/user/profile/user-profile.sc
 import CONSTANTS from "../../../../../constants/constants";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/MixPanelConsants";
+
 class UserProfile extends React.Component {
 
   constructor (props) {

@@ -14,6 +14,7 @@ import "./../../../styles/onboard/content-renderer-onboarding/brand-registration
 import ContentRenderer from "../../../utility/ContentRenderer";
 import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
+
 class BrandRegistration extends React.Component {
 
   constructor(props) {
@@ -136,7 +137,7 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
-     // await Http.post("/api/org/register", data);
+      await Http.post("/api/org/register", data);
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();

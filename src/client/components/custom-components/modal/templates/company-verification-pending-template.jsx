@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
+
 class CompanyVerificationPendingTemplate extends React.Component {
 
   constructor (props) {

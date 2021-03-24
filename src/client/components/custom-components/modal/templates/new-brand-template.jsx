@@ -12,6 +12,7 @@ import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
+
 class NewBrandTemplate extends React.Component {
 
   constructor(props) {
