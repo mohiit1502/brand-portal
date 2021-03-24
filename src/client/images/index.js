@@ -34,6 +34,8 @@ import Question from "./question.svg";
 import RedCircleCross from "./red-circle-cross.svg";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
+import SortDown from "./sort_descend.svg"
+import SortUp from "./sort_ascend.svg"
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
@@ -84,6 +86,8 @@ export {
     RedCircleCross,
     ShowPassword,
     Sort,
+    SortDown,
+    SortUp,
     TimesFailure,
     TimesSuccess,
     TOU,
