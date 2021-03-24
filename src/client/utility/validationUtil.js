@@ -269,16 +269,16 @@ export default class Validator {
     if (emailId.value && emailId.error !== emailId.invalidError) {
       this.loader("fieldLoader", true);
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
+        const unique = res.body.unique !== undefined ? res.body.unique : res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
+        const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.disabled = false;
         emailId.loader = false;
-        let error;
-        const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
-        error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
         emailId.error = emailId.error !== emailId.invalidError && error;
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
-        this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        // this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        this.setState({form}, this.checkToEnableSubmit);
         mixpanel.trackEvent(!unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY_FIALURE : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY_SUCCESS);
       }).catch(err => {
         emailId.disabled = false;

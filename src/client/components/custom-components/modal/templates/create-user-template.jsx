@@ -251,10 +251,10 @@ class CreateUserTemplate extends React.Component {
         phoneNumber: this.state.form.inputData.phone.value,
         type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
       },
-      krakenUniqueWorkflow: this.state.uniquenessCheckStatus
+      // krakenUniqueWorkflow: this.state.uniquenessCheckStatus
     };
 
-    payload.user.companyName = isThirdParty ? this.state.form.inputData.companyName.value : "";
+    isThirdParty && (payload.user.companyName = this.state.form.inputData.companyName.value);
 
     const url = "/api/users";
     this.loader("form", true);
