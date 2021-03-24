@@ -13,7 +13,7 @@ const ttl = 12 * 60 * 60 * 1000;
 class UserManagerApi {
 
   constructor() {
-    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus"]
+    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus"]
     functions.forEach(name => this[name] = this[name].bind(this));
     this.name = "UserManagerApi";
   }
@@ -97,6 +97,11 @@ class UserManagerApi {
         handler: this.updateUserStatus
       },
       {
+        method: "PUT",
+        path: "/api/users/updateTouStatus/{status}",
+        handler: this.updateTouStatus
+      },
+      {
         method: "POST",
         path: "/api/users/reinvite",
         handler: this.reinviteUser
@@ -174,6 +179,7 @@ class UserManagerApi {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       let INVITE_USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_REINVITE");
       INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
       const url = `${BASE_URL}${INVITE_USER_PATH}`;
@@ -194,6 +200,7 @@ class UserManagerApi {
       };
 
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       console.log(payload);
       let RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
       const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
@@ -213,6 +220,7 @@ class UserManagerApi {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
@@ -231,6 +239,7 @@ class UserManagerApi {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.UNIQUENESS_CHECK_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
       // const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
@@ -251,6 +260,7 @@ class UserManagerApi {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
@@ -278,6 +288,25 @@ class UserManagerApi {
     }
   }
 
+  async updateTouStatus (request, h) {
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+      const payload = request.payload;
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}/me/status/${request.params.status}`;
+
+      const response = await ServerHttp.put(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
   async deleteUser (request, h) {
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -298,9 +327,11 @@ class UserManagerApi {
   async getNewUserRoles (request, h) {
     try {
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const ROLE_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ROLE_PATH");
       const url = `${BASE_URL}${ROLE_PATH}`;
       const headers = ServerUtils.getHeaders(request);
+      headers.ROPRO_CLIENT_ID = "rma";
 
       const options = {
         headers
@@ -340,6 +371,7 @@ class UserManagerApi {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request,"USER_CONFIG.BASE_URL");
+      // const BASE_URL = `http://localhost:8091`;
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
       const response = await ServerHttp.get(url, options);

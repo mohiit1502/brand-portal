@@ -10,7 +10,14 @@ import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent} from "../../index";
+import {
+  ButtonsPanel,
+  CheckBox,
+  ErrorComponent,
+  FileUploader,
+  HeaderFormComponent,
+  UrlItemList
+} from "../../index";
 
 class CustomInput extends React.Component {
 
@@ -141,8 +148,8 @@ class CustomInput extends React.Component {
 
         <div className="dropdown-menu">
           {
-            this.state.dropdownOptions.map((option, i) => {
-              return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value, this.state.inputId); } }>{option.value}</a>;
+            this.state.dropdownOptions && this.state.dropdownOptions.map((option, i) => {
+              return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>{option.label || option.value}</a>;
             })
           }
         </div>
@@ -200,7 +207,7 @@ class CustomInput extends React.Component {
         this.state.bubbleValue && this.state.bubbleValue( e, this.state.inputId , error );
       }
     }
-    
+
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
@@ -317,6 +324,7 @@ class CustomInput extends React.Component {
 
   getTextAreaInputType () {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
+
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
@@ -327,7 +335,7 @@ class CustomInput extends React.Component {
           { errorClass ? subtitleText : "" }
         </small>
       </div>
-  );
+    );
   }
 
   render () {
@@ -356,6 +364,8 @@ class CustomInput extends React.Component {
         return <ErrorComponent {...this.props} />
       case "_formFieldsHeader" :
         return <HeaderFormComponent {...this.props} />
+      case "_urlItemList" :
+        return <UrlItemList {...this.props} />
     }
     return null;
   }
