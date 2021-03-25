@@ -13,6 +13,8 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Helper from "../../../../utility/helper";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class NewClaimTemplate extends React.Component {
 
@@ -98,6 +100,12 @@ class NewClaimTemplate extends React.Component {
                 minLength: 20,
                 error: "Comment should be 20 characters long!"
               }
+              // validateRegex: {
+              //   dataRuleRegex: "[a-zA-Z0-9,. ]+$",
+              //   errorMessages: {
+              //     dataMsgRegex: "Please enter a valid comment"
+              //   }
+              // }
             }
           },
           signature: {
@@ -476,15 +484,18 @@ class NewClaimTemplate extends React.Component {
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
         this.fetchClaims();
         this.loader("loader", false);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_SUCCESS);
       })
       .catch(err => {
         this.loader("loader", false);
         console.log(err);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_FAILURE, err);
       });
   }
 
   resetTemplateStatus () {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.RESET_CLAIM_DETAILS);
   }
 
   onItemUrlChange (event, i) {
@@ -512,11 +523,13 @@ class NewClaimTemplate extends React.Component {
             form.isSubmitDisabled=true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_SUCCESS);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
             form.isSubmitDisabled=true;
             this.setState({form}, this.checkToEnableItemButton);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_FAILURE);
           }
         })
         .catch(err => {

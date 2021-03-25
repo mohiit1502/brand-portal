@@ -17,6 +17,8 @@ import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class ClaimList extends React.Component {
 
@@ -125,6 +127,7 @@ class ClaimList extends React.Component {
     }
     const claimList = await this.fetchClaims();
     this.checkAndApplyDashboardFilter(claimList);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_CLAIMS);
   }
 
   componentDidUpdate(prevProps) {
@@ -222,6 +225,7 @@ class ClaimList extends React.Component {
 
   addNewClaim () {
     const meta = { templateName: "NewClaimTemplate" };
+    mixpanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

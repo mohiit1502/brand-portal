@@ -12,6 +12,8 @@ import CONSTANTS from "../../../constants/constants";
 import Validator from "../../../utility/validationUtil";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
 import ContentRenderer from "../../../utility/ContentRenderer";
+import mixpanel from "../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 
 class BrandRegistration extends React.Component {
 
@@ -35,6 +37,7 @@ class BrandRegistration extends React.Component {
         inputData: {...brandConfiguration.fields}
       }
     };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION);
   }
 
   checkToEnableSubmit () {
@@ -134,15 +137,16 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
-
       await Http.post("/api/org/register", data);
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();
       this.props.dispatchNewRequest(true);
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_SUCCESS);
     } catch (err) {
       this.loader("form", false);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_FAILURE, err);
     }
   }
 

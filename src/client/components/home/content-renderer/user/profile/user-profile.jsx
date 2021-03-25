@@ -12,6 +12,8 @@ import Validator from "../../../../../utility/validationUtil";
 // import FORMFIELDCONFIG from "./../../../../../config/formsConfig/form-field-meta";
 import "../../../../../styles/home/content-renderer/user/profile/user-profile.scss";
 import CONSTANTS from "../../../../../constants/constants";
+import mixpanel from "../../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../../constants/MixPanelConsants";
 
 class UserProfile extends React.Component {
 
@@ -42,8 +44,7 @@ class UserProfile extends React.Component {
     Object.keys(this.state.form.inputData).forEach(itemKey => {
       const item = this.state.form.inputData[itemKey];
       this.state.form.inputData[itemKey].value = Helper.search(item.initValuePath, this.props.userProfile);
-    })
-
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -116,6 +117,7 @@ class UserProfile extends React.Component {
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_USER_PASSWORD);
   }
 
   disableInput (disable) {
@@ -123,6 +125,7 @@ class UserProfile extends React.Component {
     if (disable && this.isDirty()) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCLE_EDIT_USER_PROFILE);
     } else {
       const form = {...this.state.form};
       form.isDisabled = disable;
@@ -172,8 +175,11 @@ class UserProfile extends React.Component {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
             this.disableInput(true);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
           })
-          .catch(() => this.loader("form", false));
+          .catch(() => {
+            this.loader("form", false);
+          });
       } else {
         this.loader("form", false);
         this.disableInput(true);

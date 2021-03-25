@@ -8,6 +8,8 @@ import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notifi
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import CONSTANTS from "../../../../../constants/constants";
 import './ResetPasswordTemplate.component.scss';
+import mixpanel from "../../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../../constants/MixPanelConsants";
 
 class ResetPasswordTemplate extends Component {
   constructor(props) {
@@ -90,6 +92,7 @@ class ResetPasswordTemplate extends Component {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.loader("form", false);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_SUCCESS);
         })
         .catch(err => {
           this.loader("form", false);
@@ -115,6 +118,7 @@ class ResetPasswordTemplate extends Component {
             }
           }
           console.log(err);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_FAILURE, err);
         });
     }
   }
@@ -137,6 +141,7 @@ class ResetPasswordTemplate extends Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCLE_CHANGE_PASSWORD);
   }
 
   render() {
