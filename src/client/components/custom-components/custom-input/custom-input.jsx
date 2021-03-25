@@ -129,9 +129,9 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
 
     return (
-      <div className={`form-group custom-input-form-group custom-select-form-group dropdown${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-3"} ${errorClass}`}>
+      <div className={`form-group custom-input-form-group custom-select-form-group dropdown field-select-arrow${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-3"} ${errorClass}${this.state.realign ? " row d-block fix-alignment" : ""}`}>
         {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={QuestionMarkIcon}/>}
-        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
+        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${this.state.realign ? " col-4" : ""}`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
           pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
           data-toggle="dropdown" autoComplete="off" />
@@ -140,8 +140,7 @@ class CustomInput extends React.Component {
           {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <img src={images.ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.7rem"}}>
           { subtitleText }
         </small>
 
@@ -315,7 +314,7 @@ class CustomInput extends React.Component {
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className="label-text"> { this.state.label } </span>
         </label>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: false && "0.3rem"}}>
           { subtitleText }
         </small>
       </div>
