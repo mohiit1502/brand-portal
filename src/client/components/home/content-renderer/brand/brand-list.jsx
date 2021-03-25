@@ -20,6 +20,8 @@ import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import SortUtil from "../../../../utility/SortUtil";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class BrandList extends React.Component {
 
@@ -330,6 +332,7 @@ class BrandList extends React.Component {
   async componentDidMount() {
     const brandList = await this.fetchBrands();
     this.checkAndApplyDashboardFilter(brandList);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_BRANDS);
   }
 
   checkAndApplyDashboardFilter(brandList) {
@@ -366,6 +369,7 @@ class BrandList extends React.Component {
 
   addNewBrand () {
     const meta = { templateName: "NewBrandTemplate" };
+    mixpanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

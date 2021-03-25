@@ -8,6 +8,8 @@ import headerLogo from "../../../images/WMWhite-horizontal.svg"
 import helpLogo from "../../../images/help-header.png"
 import profilePic from "../../../images/user-profile.png"
 import "../../../styles/custom-components/headers/home-header.scss";
+import mixpanel from "../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../constants/MixPanelConsants";
 
 class HomeHeader extends React.Component {
   constructor (props) {
@@ -42,9 +44,9 @@ class HomeHeader extends React.Component {
               </Link>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 {
-                  this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
+                  this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</a>
                 }
-                <a className="dropdown-item" href={logoutUrl}>Logout</a>
+                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.USER_LOGOUT);}}>Logout</a>
               </div>
             </li>
           </ul>

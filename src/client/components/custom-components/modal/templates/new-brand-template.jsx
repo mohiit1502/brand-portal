@@ -10,6 +10,8 @@ import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class NewBrandTemplate extends React.Component {
 
@@ -135,10 +137,12 @@ class NewBrandTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_SUCCESS);
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_FAILURE);
         });
     }
   }
@@ -158,6 +162,7 @@ class NewBrandTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.RESET_BRAND_DETAILS);
   }
 
   render() {
