@@ -3,6 +3,8 @@ import * as images from "./../../images";
 import CONSTANTS from "./../../constants/constants";
 import "./Footer.component.scss";
 import WMBPDarkLogo from "./../../images/WMWhite-horizontal.svg";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/MixPanelConsants";
 
 const Footer = props => {
 
@@ -26,11 +28,11 @@ const Footer = props => {
                   <a className="nav-link" href="#">Home</a>
                 </li> */}
                 <li className="nav-item mx-1 d-flex align-items-center">
-                  <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT}>Login</a>
+                  <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.LOGIN_CLICK_EVENT);}}>Login</a>
                   {/*<img className="nav-link" src={youtube}/>*/}
                 </li>
                 <li className="nav-item ml-1">
-                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT}>Register</a>
+                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.REGISTER_CLICK_EVENT);}}>Register</a>
                   {/*<img className="nav-link" src={walmart}/>*/}
                 </li>
               </ul>

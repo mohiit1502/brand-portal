@@ -2,6 +2,8 @@ import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
 import CONSTANTS from "../constants/constants";
+import mixpanel from "./mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 export default class Validator {
 
@@ -169,7 +171,8 @@ export default class Validator {
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
-        this.setState(state, this.checkToEnableSubmit);  
+        this.setState(state, this.checkToEnableSubmit);
+        mixpanel.trackEvent(res.body.unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_SUCCESS : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_FAILURE);
       })
       .catch(err => {
         inputData.brandName.isUnique = false;
@@ -236,6 +239,7 @@ export default class Validator {
           this.toggleFormEnable(!error, !error, false)
           this.checkToEnableSubmit();
         });
+        mixpanel.trackEvent(response.body.unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_SUCCESS : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY_FAILURE);
       }).catch (err => {
         inputData.companyName.disabled = false;
         inputData.companyName.error = err.error;
@@ -249,7 +253,8 @@ export default class Validator {
         }
         this.setState(state);
         // console.log(err);
-      })
+        
+      });
   }
 
   static onEmailChange() {
@@ -264,16 +269,17 @@ export default class Validator {
     if (emailId.value && emailId.error !== emailId.invalidError) {
       this.loader("fieldLoader", true);
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
+        const unique = res.body.unique !== undefined ? res.body.unique : res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
+        const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.disabled = false;
         emailId.loader = false;
-        let error;
-        const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
-        error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
         emailId.error = emailId.error !== emailId.invalidError && error;
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
-        this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        // this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        this.setState({form}, this.checkToEnableSubmit);
+        mixpanel.trackEvent(!unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY_FIALURE : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY_SUCCESS);
       }).catch(err => {
         emailId.disabled = false;
         emailId.loader = false;
@@ -298,10 +304,12 @@ export default class Validator {
     let error;
     if (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED") {
       error = "";
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_SUCCESS);
     } else {
       error = tmMeta[res.body.usptoVerification];
       if (error && error.indexOf("__trademarkNumber__") !== -1) {
         error = error.replace("__trademarkNumber__", res.body.ipNumber);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY_FIALURE);
       }
     }
     tmMeta.isValid = res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED";

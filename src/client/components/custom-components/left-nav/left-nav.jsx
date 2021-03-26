@@ -84,7 +84,7 @@ class Leftnav extends React.Component {
                       {item.children.map(subItem => {
                         return (
                           <li className={`nav-item sub-nav-item pl-3 ${subItem.active ? "active" : "inactive"}`} key={`${item.id}-${subItem.id}`}>
-                            <Link className="nav-link" to={subItem.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href);}}>
+                            <Link className="nav-link" to={subItem.href}  onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href); }}>
                               {subItem.value}
                             </Link>
                           </li>

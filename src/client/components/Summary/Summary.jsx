@@ -7,6 +7,7 @@ import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
 import Helper from "../../utility/helper";
 import "./Summary.component.scss";
 import AuthUtil from "../../utility/AuthUtil";
+import mixpanel from "../../utility/mixpanelutils";
 
 const Summary = props => {
 
@@ -83,6 +84,7 @@ const Summary = props => {
 
   const triggerAddAction = () => {
     const meta = { templateName };
+    mixpanel.addNewTemplate(meta);
     toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
