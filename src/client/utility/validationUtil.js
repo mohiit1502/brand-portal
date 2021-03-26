@@ -169,7 +169,7 @@ export default class Validator {
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
-        this.setState(state, this.checkToEnableSubmit);
+        this.setState(state, this.checkToEnableSubmit);  
       })
       .catch(err => {
         inputData.brandName.isUnique = false;
