@@ -97,9 +97,14 @@ class NewClaimTemplate extends React.Component {
             error: "",
             placeholder: "Please provide additional information about the claim",
             validators: {
+              validateRequired: {
+                errorMessages: {
+                  dataMsgRequired: "Please be sure to provide details regarding your claim."
+                }
+              },
               validateLength: {
                 minLength: 20,
-                error: "Please be sure to provide details regarding your claim."
+                error: "Comment should be 20 characters long!"
               }
               // validateRegex: {
               //   dataRuleRegex: "[a-zA-Z0-9,. ]+$",
