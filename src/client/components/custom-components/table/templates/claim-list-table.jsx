@@ -56,15 +56,15 @@ const ClaimListTable = function(props) {
                     if (header.sortState.level ===  sortStateReset) {
                         sortIcondisplay = sortIcon;
                     } else if (header.sortState.level === sortStateAscending) {
-                        sortIcondisplay = sortIconUp;
+                      sortIcondisplay = sortIconDown;
                     } else {
-                        sortIcondisplay = sortIconDown;
+                        sortIcondisplay = sortIconUp;
                     }
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") }
                         {
-                          <img className={`sort-icon${header.sortState.level === sortStateDescending ? " mt-0.5" : "" }${header.sortState.level === sortStateAscending ? " mb-0.5" : "" }`} src={sortIcondisplay} />
+                          <img className={"sort-icon"} src={sortIcondisplay} />
                         }
                       </div>
                     );

@@ -171,7 +171,7 @@ export default class Validator {
         inputData.brandName.fieldOk = !error;
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
-        this.setState(state, this.checkToEnableSubmit);  
+        this.setState(state, this.checkToEnableSubmit);
         mixpanel.trackEvent(res.body.unique ? MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_SUCCESS : MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS_FAILURE);
       })
       .catch(err => {
