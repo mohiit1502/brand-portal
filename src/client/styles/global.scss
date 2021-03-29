@@ -385,7 +385,12 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   top: 0.7rem;
 }
 
-.field-ok:before, .field-alert:before {
+.field-loader::before {
+  top: 0.7rem;
+}
+
+.field-ok:before {
+  top: 0.5rem;
   background-size: 1.2rem;
 }
 
@@ -393,10 +398,16 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   background-image: url("./../images/check-grn.svg");
 }
 
-.field-select-arrow::before {
-  background-image: url("./../images/arrow-down-dk.png");
-  background-size: 1.45rem;
-  top: 0.3rem;
+.field-select-arrow {
+  &::before {
+    background-image: url("./../images/arrow-down-dk.png");
+    background-size: 1.45rem;
+    top: 0.3rem;
+  }
+  
+  &.col-4:before {
+    right: 0.3rem;
+  }
 }
 
 .field-alert:before {
