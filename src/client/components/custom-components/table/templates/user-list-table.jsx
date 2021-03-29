@@ -91,9 +91,9 @@ const UserListTable = function(props) {
                     if (header.sortState.level ===  sortStateReset) {
                         sortIcondisplay = sortIcon;
                     } else if (header.sortState.level === sortStateAscending) {
-                        sortIcondisplay = sortIconUp;
-                    } else {
                         sortIcondisplay = sortIconDown;
+                    } else {
+                        sortIcondisplay = sortIconUp;
                     }
                     return (
                       <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
