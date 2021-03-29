@@ -13,6 +13,8 @@ import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class CreateUserTemplate extends React.Component {
 
@@ -143,6 +145,7 @@ class CreateUserTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.RESET_USER_DETAILS);
   }
 
   bubbleValue (evt, key, error) {
@@ -275,10 +278,12 @@ class CreateUserTemplate extends React.Component {
           const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
           this.loader("form", false);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_SUCCESS);
         })
         .catch(err => {
           console.log(err);
           this.loader("form", false);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_FAILURE);
         });
     }
   }
