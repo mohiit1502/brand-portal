@@ -99,14 +99,8 @@ class NewClaimTemplate extends React.Component {
             validators: {
               validateLength: {
                 minLength: 20,
-                error: "Please be sure to provide details regarding your claim."
+                error: "Comment should be 20 characters long!"
               }
-              // validateRegex: {
-              //   dataRuleRegex: "[a-zA-Z0-9,. ]+$",
-              //   errorMessages: {
-              //     dataMsgRegex: "Please enter a valid comment"
-              //   }
-              // }
             }
           },
           signature: {
@@ -611,7 +605,7 @@ class NewClaimTemplate extends React.Component {
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options}
                               validators={item.sellerName.validators} bubbleValue={this.bubbleValue}/>
                           </div>
                           <div className="col-4">
@@ -632,7 +626,7 @@ class NewClaimTemplate extends React.Component {
                 <div className="col">
                   <CustomInput key={"comments"} inputId={"comments"} formId={form.id} label={inputData.comments.label} required={inputData.comments.required}
                     value={inputData.comments.value} type={inputData.comments.type} pattern={inputData.comments.pattern} onChange={this.onChange}
-                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder} 
+                    disabled={inputData.comments.disabled} rowCount={2} error={inputData.comments.error} subtitle={inputData.comments.subtitle} placeholder={inputData.comments.placeholder}
                     validators ={inputData.comments.validators }  bubbleValue = {this.bubbleValue} prebounceChangeHandler = {this.trimSpaces} />
                 </div>
               </div>

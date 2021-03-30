@@ -253,8 +253,7 @@ export default class Validator {
         }
         this.setState(state);
         // console.log(err);
-        
-      });
+      })
   }
 
   static onEmailChange() {

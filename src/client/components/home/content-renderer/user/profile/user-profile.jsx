@@ -177,9 +177,7 @@ class UserProfile extends React.Component {
             this.disableInput(true);
             mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
           })
-          .catch(() => {
-            this.loader("form", false);
-          });
+          .catch(() => this.loader("form", false));
       } else {
         this.loader("form", false);
         this.disableInput(true);
