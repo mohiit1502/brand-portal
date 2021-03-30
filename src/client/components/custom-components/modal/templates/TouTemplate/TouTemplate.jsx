@@ -41,6 +41,7 @@ const TouTemplate = props => {
         props.toggleModal(TOGGLE_ACTIONS.HIDE);
         profile.workflow.code = outgoingStatus === "Active" ? CONSTANTS.CODES.PORTAL_DASHBOARD.CODE : CONSTANTS.CODES.PORTAL_REGISTRATION.CODE;
         props.updateUserProfile(profile);
+        outgoingStatus === "TouNotAccepted" && (window.location.pathname = "/logout");
       })
       .catch(e => {
         console.log(e);
@@ -116,7 +117,7 @@ const TouTemplate = props => {
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
               {page === pages.TOU_ACCEPTANCE ?
                 <button type="button" className="btn btn-primary px-3 ml-3" onClick={() => updateUserStatus("Active")}>Agree</button>
-                : <button type="button" className="btn btn-danger px-3 ml-3" onClick={() => window.location.pathname = "/logout"}>Decline</button>}
+                : <button type="button" className="btn btn-danger px-3 ml-3" onClick={() => updateUserStatus("TouNotAccepted")}>Decline</button>}
             </div>
           </div>
         </div>
