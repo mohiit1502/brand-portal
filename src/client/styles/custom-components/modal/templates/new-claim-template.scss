@@ -5,6 +5,7 @@
     height: 80%;
     .modal-content {
       height:  100%;
+      max-height:  60rem;
       .modal-header{
         height: 65px;
         font-size: 27px;
@@ -69,6 +70,16 @@
         background: $background-blue;
         border-bottom: 9px solid #7ac4e4;
         //box-shadow: 0px -4px 4px 0px rgba(0,0,0,0.15);
+      }
+
+      .fix-alignment::before{
+        top: .45rem;
+        left: 21.8rem;
+        background-size: 1.43rem;
+      }
+      
+      .fix-alignment{
+        padding-left: 1rem;
       }
     }
   }

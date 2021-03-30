@@ -20,6 +20,8 @@ import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import SortUtil from "../../../../utility/SortUtil";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class BrandList extends React.Component {
 
@@ -39,10 +41,10 @@ class BrandList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
-
+    this.updateSortState = this.updateSortState.bind(this);
     this.state = {
       page: {
         offset: 0,
@@ -109,32 +111,35 @@ class BrandList extends React.Component {
           accessor: "sequence",
           canSort: false,
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET,
           }
         },
         {
           Header: "BRAND NAME",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET,
           }
         },
         {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE
+            level: CONSTANTS.SORTSTATE.DESCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE, // initSort , priorityLevel, 
+            priorityLevel: 1,
           }
         },
         {
           Header: "STATUS",
           accessor: "brandStatus",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            priorityLevel: 0,
           }
         }
-      ]
+      ],
+      columnPriority: 1
     };
   }
 
@@ -144,6 +149,24 @@ class BrandList extends React.Component {
       stateClone.loader = enable;
       return stateClone;
     });
+  }
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    let sortLevel = columnMeta.sortState.level;
+    let columnPriority = this.state.columnPriority;
+    sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+    if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+      columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+      columnMeta.sortState.priorityLevel = -1;
+    } else {
+      columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+      if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
+        columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+        columnPriority += 1;
+      }
+    }
+    this.setState({columns, columnPriority}, () => this.multiSort());
   }
 
   editBrand (brandData) {
@@ -191,14 +214,14 @@ class BrandList extends React.Component {
         return newBrand;
       });
     }
-
     if (this.props.widgetAction) {
       this.addNewBrand();
       this.props.dispatchWidgetAction(false);
     }
-
     this.setState({brandList, unsortedList: brandList}, () => this.checkAndApplyDashboardFilter(brandList));
-    return brandList;
+    const sortedBrandList = this.multiSort();
+    this.setState({brandList: sortedBrandList});
+    return sortedBrandList;
   }
 
   resetFilters() {
@@ -309,6 +332,7 @@ class BrandList extends React.Component {
   async componentDidMount() {
     const brandList = await this.fetchBrands();
     this.checkAndApplyDashboardFilter(brandList);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_BRANDS);
   }
 
   checkAndApplyDashboardFilter(brandList) {
@@ -345,6 +369,7 @@ class BrandList extends React.Component {
 
   addNewBrand () {
     const meta = { templateName: "NewBrandTemplate" };
+    mixpanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
@@ -501,7 +526,7 @@ class BrandList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.brandList ?
-                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
+                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

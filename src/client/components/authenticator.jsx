@@ -14,6 +14,8 @@ import {dispatchMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
+import mixpanel from "../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 class Authenticator extends React.Component {
 
@@ -31,6 +33,7 @@ class Authenticator extends React.Component {
   }
 
   componentDidMount() {
+    mixpanel.intializeMixpanel();
     if (this.state.isLoggedIn) {
       this.initMetaData();
       this.getProfileInfo();
@@ -137,6 +140,7 @@ class Authenticator extends React.Component {
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     if (this.state.isLoggedIn) {
       if (this.state.profileInformationLoaded) {
+        mixpanel.login(this.props.userProfile, MIXPANEL_CONSTANTS.LOGIN.USER_LOGIN);
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");

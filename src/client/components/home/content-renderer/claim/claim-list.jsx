@@ -17,6 +17,8 @@ import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class ClaimList extends React.Component {
 
@@ -35,9 +37,9 @@ class ClaimList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     // this.getFilterPins = this.getFilterPins.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     this.filterMap = {"inprogress": "In Progress", "closed": "Closed"};
-
+    this.updateSortState = this.updateSortState.bind(this);
     this.state = {
       showFilters: false,
       claimList: [],
@@ -58,35 +60,35 @@ class ClaimList extends React.Component {
           Header: "CLAIM NUMBER",
           accessor: "caseNumber",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "CLAIM TYPE",
           accessor: "claimType",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "BRAND",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "SUBMITTED BY",
           accessor: "createdByName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "SUBMISSION DATE",
           accessor: "claimDate",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
+            level: CONSTANTS.SORTSTATE.RESET,
             type: CONSTANTS.SORTSTATE.DATETYPE
           }
         },
@@ -94,14 +96,15 @@ class ClaimList extends React.Component {
           Header: "CLAIM STATUS",
           accessor: "claimStatus",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         }
         // {
         //   Header: "CLAIM STATUS DETAILS",
         //   accessor: "statusDetails"
         // }
-      ]
+      ],
+      columnPriority:0
     };
   }
 
@@ -124,6 +127,7 @@ class ClaimList extends React.Component {
     }
     const claimList = await this.fetchClaims();
     this.checkAndApplyDashboardFilter(claimList);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_CLAIMS);
   }
 
   componentDidUpdate(prevProps) {
@@ -131,6 +135,24 @@ class ClaimList extends React.Component {
       this.checkAndApplyDashboardFilter(this.props.claims);
       this.props.dispatchClaims({fetchClaimsCompleted: false});
     }
+  }
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    let sortLevel = columnMeta.sortState.level;
+    let columnPriority = this.state.columnPriority;
+    sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+    if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+      columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+      columnMeta.sortState.priorityLevel = -1;
+    } else {
+      columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+      if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
+        columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+        columnPriority += 1;
+      }
+    }
+    this.setState({columns, columnPriority}, () => this.multiSort());
   }
 
   checkAndApplyDashboardFilter(claimList) {
@@ -196,12 +218,14 @@ class ClaimList extends React.Component {
 
     this.props.dispatchClaims({claimList});
     this.setState({unsortedList: claimList});
+    const sortedClaimList = this.multiSort();
 
-    return claimList;
+    return sortedClaimList;
   }
 
   addNewClaim () {
     const meta = { templateName: "NewClaimTemplate" };
+    mixpanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
@@ -470,7 +494,7 @@ class ClaimList extends React.Component {
                     <div className="col h-100">
                       {
                         this.props.claims ?
-                          <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
+                          <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
                           : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">

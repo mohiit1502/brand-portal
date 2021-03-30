@@ -365,15 +365,15 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   z-index: 1040;
 }
 
-.field-loader, .field-ok, .field-alert {
+.field-loader, .field-ok, .field-alert, .field-select-arrow{
   position: relative;
 }
 
-.field-loader:before, .field-ok:before, .field-alert:before {
+.field-loader:before, .field-ok:before, .field-alert:before, .field-select-arrow::before {
   display: block;
   content: "";
   position: absolute;
-  top: 0.7rem;
+  top: 0.5rem;
   right: -0.7rem;
   width: 40px;
   height: 40px;
@@ -381,16 +381,25 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   background-repeat: no-repeat;
   z-index: 10;
 }
+.field-loader::before {
+  top: 0.7rem;
+}
 
-.field-ok:before {
-  top: 0.5rem;
+.field-ok:before, .field-alert:before {
   background-size: 1.2rem;
+}
+
+.field-ok:before{
   background-image: url("./../images/check-grn.svg");
 }
 
+.field-select-arrow::before {
+  background-image: url("./../images/arrow-down-dk.png");
+  background-size: 1.45rem;
+  top: 0.3rem;
+}
+
 .field-alert:before {
-  top: 0.5rem;
-  background-size: 1.2rem;
   background-image: url("./../images/alertIcon-circle.svg");
 }
 

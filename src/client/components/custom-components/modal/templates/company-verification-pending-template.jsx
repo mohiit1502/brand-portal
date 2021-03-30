@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import CheckGreenIcon from "../../../../images/check-grn.svg";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class CompanyVerificationPendingTemplate extends React.Component {
 
@@ -41,7 +43,8 @@ class CompanyVerificationPendingTemplate extends React.Component {
               <div className="row mt-5">
                 <div className="col">
                   {/*<div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>*/}
-                  <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}>Logout</a>
+                  <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}
+                    onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.USER_LOGOUT);}}>Logout</a>
                 </div>
               </div>
             </div>
