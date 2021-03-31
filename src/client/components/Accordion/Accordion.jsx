@@ -8,7 +8,7 @@ const Accordion = ({children, data, expanded, setExpanded}) => {
   return (
     <div className="c-Accordion">
       {!data.simple && <div className="c-Accordion__button-container">
-        <button className={`c-Accordion__button${expanded ? " expanded" : ""}`} onClick={() => {setExpanded(!expanded); !expanded && mixpanel.trackEvent(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_TOPICS, data); }}>
+        <button className={`c-Accordion__button${expanded ? " expanded" : ""}`} onClick={() => {setExpanded(!expanded); !expanded && mixpanel.helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_TOPICS, data); }}>
             {data.question}
         </button>
       </div>}

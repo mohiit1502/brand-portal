@@ -145,7 +145,9 @@ class CreateUserTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.RESET_USER_DETAILS);
+    const mixpanelPayload = {WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"};
+    if (!this.state.form.loader) 
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.CANCEL_SUBMIT_USER_DETAILS, mixpanelPayload);
   }
 
   bubbleValue (evt, key, error) {
@@ -222,11 +224,11 @@ class CreateUserTemplate extends React.Component {
   async handleSubmit(evt) {
     evt.preventDefault();
 
-    let brands = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
+    let brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
     // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
     // eslint-disable-next-line no-unused-expressions
     // !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
-    brands = brands.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
+    let brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
     const loginId = this.state.form.inputData.emailId.value;
     // brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
@@ -255,9 +257,17 @@ class CreateUserTemplate extends React.Component {
     };
 
     isThirdParty && (payload.user.companyName = this.state.form.inputData.companyName.value);
-
     const url = "/api/users";
     this.loader("form", true);
+    const mixpanelPayload = {
+      API: url,
+      INVITEE_COMPANY_NAME: this.props.userProfile.organization.name,
+      INVITEE_EMAIL: loginId,
+      INVITEE_BRANDS: brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => {return v.value}),
+      INVITEE_ROLE: role.name,
+      IS_UPDATE_USER: this.state.form.isUpdateTemplate,
+      WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
+    };
     if (this.state.form.isUpdateTemplate) {
       return Http.put(`${url}/${payload.user.email}`, payload)
         .then(() => {
@@ -265,10 +275,16 @@ class CreateUserTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.USER_DETAILS_SUBMISSION, mixpanelPayload);
         });
     } else {
       return Http.post(url, payload)
@@ -278,12 +294,16 @@ class CreateUserTemplate extends React.Component {
           const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
           this.loader("form", false);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_SUCCESS);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           console.log(err);
           this.loader("form", false);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_NEW_USER_FAILURE);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.USER_DETAILS_SUBMISSION, mixpanelPayload);
         });
     }
   }

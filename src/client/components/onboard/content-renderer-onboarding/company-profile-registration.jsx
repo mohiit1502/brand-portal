@@ -43,8 +43,11 @@ class CompanyProfileRegistration extends React.Component {
   }
 
   componentDidMount() {
+    const mixpanelPayload = {
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
     $("[data-toggle='tooltip']").tooltip();
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
   }
 
   undertakingToggle () {

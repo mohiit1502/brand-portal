@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/MixPanelConsants";
+
 import "./HelpSideBar.component.scss";
 
 const HelpSideBar = ({activeTab, categoryHeader, categories, setActiveTab}) => {
 
   const categoriesRendered = categories && Object.keys(categories).map(categoryKey => {
     const category = categories[categoryKey];
-    return <li key={categoryKey} className={`c-HelpSideBar__category${activeTab === categoryKey ? " active" : ""}`} onClick={() => setActiveTab(categoryKey)}>{category.categoryText}</li>;
+    return (<li key={categoryKey} className={`c-HelpSideBar__category${activeTab === categoryKey ? " active" : ""}`}
+      onClick={() => {setActiveTab(categoryKey); mixpanel.helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_MENU, {id: categoryKey});}}>
+      {category.categoryText}
+      </li>);
   });
 
   return (

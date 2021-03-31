@@ -113,7 +113,13 @@ class NewBrandTemplate extends React.Component {
     const comments = this.state.form.inputData.comments.value;
     const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification };
     const url = "/api/brands";
-
+    const mixpanelPayload = {
+      API: url,
+      BRAND_NAME: name,
+      IS_UPDATE_BRAND: this.state.form.isUpdateTemplate,
+      TRADEMARK_NUMBER: trademarkNumber,
+      WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    };
     if (this.state.form.isUpdateTemplate) {
       this.loader("form", true);
       return Http.put(`${url}/${this.props.data.brandId}`, {comments})
@@ -123,10 +129,16 @@ class NewBrandTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
         });
     } else {
       this.loader("form", true);
@@ -137,12 +149,16 @@ class NewBrandTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_SUCCESS);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.SUBMIT_NEW_BRAND_FAILURE);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
         });
     }
   }
@@ -162,7 +178,11 @@ class NewBrandTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRANDS_TEMPLATE_EVENTS.RESET_BRAND_DETAILS);
+    const mixpanelPayload = {
+      WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    };
+    if (!this.state.form.loader)
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.CANCEL_SUBMIT_BRAND_DETAILS, mixpanelPayload);
   }
 
   render() {

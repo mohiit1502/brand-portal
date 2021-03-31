@@ -84,9 +84,20 @@ class UserList extends React.Component {
               const outgoingStatus = data.status && data.status === CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.USER.OPTIONS.PAYLOAD.ACTIVE : CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND;
               this.loader(true);
+              const mixpanelPayload = {
+                API: "/api/users/",
+                WORK_FLOW: "VIEW_USER_LIST",
+                SELECTED_USER_EMAIL:data.id,
+                SELECTED_USER_UPDATED_STATUS: outgoingStatus,
+                SELECTED_USER_ROLE: data.role,
+                SELECTED_USER_NAME: data.username,
+                SELECTED_USER_BRANDS: data.brands
+              }
               const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`, {}, "", () => this.loader(false));
               response.then(() => {
                 this.fetchUserData();
+                mixpanelPayload.API_SUCCESS = true;
+                mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.UPDATE_USER_STATUS, mixpanelPayload);
               });
             }
           },
@@ -109,6 +120,15 @@ class UserList extends React.Component {
             disabled: true,
             clickCallback: (evt, option, data) => {
               this.loader(true);
+              const mixpanelPayload = {
+                API: "/api/users/reinvite",
+                WORK_FLOW: "VIEW_USER_LIST",
+                SELECTED_USER_EMAIL:data.id,
+                SELECTED_USER_STATUS: data.status,
+                SELECTED_USER_ROLE: data.role,
+                SELECTED_USER_NAME: data.username,
+                SELECTED_USER_BRANDS: data.brands
+              }
               Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader(false))
                 .then(res => {
                   if (res.body === true) {
@@ -118,6 +138,8 @@ class UserList extends React.Component {
                   } else {
                     this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
                   }
+                  mixpanelPayload.API_SUCCESS = true;
+                  mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.RESEND_INVITE, mixpanelPayload);
                 });
             }
           }
@@ -420,7 +442,8 @@ class UserList extends React.Component {
   async componentDidMount() {
     const userList = await this.fetchUserData();
     this.checkAndApplyDashboardFilter(userList);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_USERS);
+    const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.VIEW_USERS, mixpanelPayload);
   }
 
   checkAndApplyDashboardFilter(userList) {
@@ -457,13 +480,22 @@ class UserList extends React.Component {
 
   createNewUser () {
     const meta = { templateName: "CreateUserTemplate" };
-    mixpanel.addNewTemplate(meta);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
+    mixpanel.addNewTemplate(meta, mixpanelPayload);
   }
 
   editUser (userData) {
     const meta = { templateName: "CreateUserTemplate", data: {...userData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    const mixpanelPayload = {
+      WORK_FLOW: "VIEW_USER_LIST",
+      SELECTED_USER_EMAIL: userData.email,
+      SELECTED_USER_ROLE: userData.role.name,
+      SELECTED_USER_STATUS: userData.status,
+      SELECTED_USER_TYPE: userData.type
+  };
+  mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.EDIT_USER_PROFILE, mixpanelPayload);
   }
 
   onFilterChange (filterId, optionId) {

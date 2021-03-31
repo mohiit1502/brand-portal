@@ -138,6 +138,7 @@ class UserProfile extends React.Component {
         }
       });
       this.setState({form});
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_USER_PROFILE);
     }
   }
 
@@ -170,15 +171,23 @@ class UserProfile extends React.Component {
 
       const url = this.state.form.apiPath;
       if (this.isDirty()) {
+        const mixpanelPayload = {
+          API: url
+        };
         return Http.put(`${url}/${payload.user.loginId}`, payload, null, null, this.props.showNotification, this.state.form.profileSaveMessage)
           .then(async res => {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
             this.disableInput(true);
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
+            mixpanelPayload.API_SUCCESS = true;
           })
-          .catch(() => {
+          .catch(err => {
             this.loader("form", false);
+            mixpanelPayload.API_SUCCESS = false;
+            mixpanelPayload.ERROR = err.message ? err.message : err;
+          })
+          .finally(() => {
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE, mixpanelPayload);
           });
       } else {
         this.loader("form", false);

@@ -1,87 +1,97 @@
 
 const MIXPANEL_CONSTANTS = {
     LOGIN: {
-        USER_LOGIN: "LOGIN"
+        USER_LOGIN: "LOGIN_SUCCESS"
     },
     LOGOUT: {
         USER_LOGOUT: "LOGOUT"
     },
     COMPANY_REGISTRATION: {
-        CREATE_COMPANY_PROFILE: "Create Company Profile",
-        RESET_COMPANY_PROFILE: "Reset Company Profile",
-        COMPANY_UNIQUENESS_CHECK_FAIURE: "Company uniqueness service failure",
-        BRAND_REGISTRATION: "Brand Registration",
-        COMPANY_ONBOARDING_SUCCESS: "Company onboarding details submission succcess",
-        COMPANY_ONBOARDING_FAILURE: "Company onboarding details submission failure"
+        CREATE_COMPANY_PROFILE: "CREATE_COMPANY_PROFILE",
+        RESET_COMPANY_PROFILE: "CANCLE_ONBOARDING_FORM",
+        BRAND_REGISTRATION: "BRAND_REGISTRATION",
+        COMPANY_ONBOARDING_DETAIL_SUBMISSION: "ONBOARDING_DETAIL_SUBMISSION"
     },
     VALIDATION_EVENTS: {
-        CHECK_COMPANY_NAME_AVIAILIBILITY_SUCCESS: "Company name Availibility success",
-        CHECK_COMPANY_NAME_AVIAILIBILITY_FAILURE: "Company name Availibility failure",
-        CHECK_BRAND_UNIQUENESS_SUCCESS: "Brand Name uniqueness check success",
-        CHECK_BRAND_UNIQUENESS_FAILURE: "Brand Name uniqueness check failure",
-        CHECK_TRADEMARK_AVAILIBITY_SUCCESS: "Trade mark Avialibilty success",
-        CHECK_TRADEMARK_AVAILIBITY_FIALURE: "Trade mark Avialibilty failure",
-        CHECK_EMAIL_AVAILIBITY_SUCCESS: "Email Avialibilty success",
-        CHECK_EMAIL_AVAILIBITY_FIALURE: "Email Avialibilty failure"
+        CHECK_COMPANY_NAME_AVIAILIBILITY: "COMPANY_NAME_AVAILABILITY_CHECK",
+        CHECK_BRAND_UNIQUENESS: "BRAND_UNIQUENESS_CHECK",
+        CHECK_TRADEMARK_AVAILIBITY: "TRADEMARK_VALIDITY",
+        CHECK_EMAIL_AVAILIBITY: "EMAIL_VALIDITY_CHECK"
+    },
+    CLAIM_LIST_WORKFLOW: {
+        VIEW_CLAIMS: "VIEW_CLAIMS",
+        VIEW_CLAIM_DETAILS: "VIEW_CLAIM_DETAILS"
+    },
+    BRAND_LIST_WORKFLOW: {
+        VIEW_BRANDS: "VIEW_BRANDS",
+        EDIT_BRAND: "EDIT_BRAND",
+        UPDATE_BRAND_STATUS: "UPDATE_BRAND_STATUS"
+    },
+    USER_LIST_WORKFLOW: {
+        VIEW_USERS: "VIEW_USERS",
+        UPDATE_USER_STATUS: "UPDATE_USER_STATUS",
+        RESEND_INVITE: "RESEND_INVITE",
+        EDIT_USER_PROFILE: "EDIT_USER_PROFILE"
+    },
+    VIEW_DASHBOARD_WORKFLOW: {
+        VIEW_DASHBOARD: "VIEW_DASHBOARD",
+        FILTER_SELECTED: "FILTER_SELECTED"
     },
     FILE_UPLOAD_EVENTS: {
-        FILE_UPLOAD_SUCCESS: "File Upload Success",
-        FILE_UPLOAD_FAILURE: "File Upload Failure"
+        FILE_UPLOAD: "UPLOAD_DOCUMENT"
     },
     NEW_CLAIM_TEMPLATE_EVENTS: {
-        NEW_CLAIM_TEMPLATE: "New Claim template",
-        ADD_ITEM_TO_CLAIM_LIST: "Add item to claim list",
-        REMOVE_ITEM_TO_CLAIM_LIST: "REMOVE item from claim list",
-        GET_SELLERS_NAME_SUCCESS: "Fetch Seller name(for item url) Success",
-        GET_SELLERS_NAME_FAILURE: "Fetch Seller name(for item url) failure",
-        SUBMIT_CLAIM_SUCCESS: "Submit new claim success",
-        SUBMIT_CLAIM_FAILURE: "Submit new claim failure",
-        RESET_CLAIM_DETAILS: "Reset Claim Details"
+        SUBMIT_NEW_CLAIM: "SUBMIT_NEW_CLAIM",
+        GET_SELLERS_NAME: "GET_SELLERS_NAME",
+        CANCEL_CLAIM_DETAILS: "CANCEL_SUBMIT_CLAIM"
     },
-    NEW_BRANDS_TEMPLATE_EVENTS: {
-        ADD_NEW_BRAND: "Add new Brand",
-        SUBMIT_NEW_BRAND_SUCCESS: "Submit new Brand success",
-        SUBMIT_NEW_BRAND_FAILURE: "Submit new Brand Failure",
-        RESET_BRAND_DETAILS: "Reset Brand Details"
+    NEW_BRAND_TEMPLATE_EVENTS: {
+        BRAND_DETAILS_SUBMISSION: "BRAND_DETAILS_SUBMISSION",
+        CANCEL_SUBMIT_BRAND_DETAILS: "CANCEL_SUBMIT_BRAND_DETAILS"
     },
     INVITE_NEW_USER_TEMPLATE_EVENTS: {
-        ADD_NEW_USER: "Add new User",
-        SUBMIT_NEW_USER_SUCCESS: "Submit new User success",
-        SUBMIT_NEW_USER_FAILURE: "Submit new User Failure",
-        RESET_USER_DETAILS: "Reset User Details"
+        USER_DETAILS_SUBMISSION: "USER_DETAILS_SUBMISSION",
+        CANCEL_SUBMIT_USER_DETAILS: "CANCEL_SUBMIT_USER_DETAILS"
     },
     HOME_PAGE_EVENTS: {
-        WBP_HOME_PAGE: "WBP Home page",
-        LOGIN_CLICK_EVENT: "LogIn click event",
-        REGISTER_CLICK_EVENT: "Register click event"
+        WBP_HOME_PAGE: "VISIT_HOME_PAGE",
+        LOGIN_CLICK_EVENT: "CLICK_ON_LOGIN",
+        REGISTER_CLICK_EVENT: "CLICK_ON_REGISTER"
     },
     USER_PROFILE: {
-        VIEW_USER_PROFILE: "View User Profile",
+        VIEW_USER_PROFILE: "VIEW_USER_PROFILE",
         CHANGE_PASSWORD: {
-            CHANGE_USER_PASSWORD: "Change User PassWord",
-            CANCLE_CHANGE_PASSWORD: "Cancle Reset Password",
-            SAVE_PASSWORD_SUCCESS: "Reset Password Success",
-            SAVE_PASSWORD_FAILURE: "Reset Password Failure"
+            CHANGE_USER_PASSWORD: "DISPLAY_CHANGE_PASSWORD",
+            CANCLE_CHANGE_PASSWORD: "CANCEL_CHANGE_PASSWORD",
+            CHANGE_PASSWORD: "CHANGE_PASSWORD"
         },
         EDIT_USER_PROFILE: {
-            EDIT_USER_PROFILE: "Edit User Profile",
-            CANCLE_EDIT_USER_PROFILE: "Cancel Edit User Profile",
-            SAVE_USER_PROFILE: "Save User Profile"
+            EDIT_USER_PROFILE: "EDIT_PROFILE",
+            CANCLE_EDIT_USER_PROFILE: "CANCEL_EDIT_PROFILE",
+            SAVE_USER_PROFILE: "SAVE_PROFILE"
         }
     },
     HELP_CENTER_EVENTS: {
-        VIEW_HELP_TOPICS: "View Help Topics"
+        VIEW_HELP_MENU: "VIEW_HELP_MENU",
+        VIEW_HELP_TOPICS: "VIEW_HELP_TOPICS"
     },
     ADD_NEW_TEMPLATE: {
-        NewClaimTemplate: "New Claim template",
-        NewBrandTemplate: "Add new Brand",
-        CreateUserTemplate: "Add new User"
+        NewClaimTemplate: "ADD_NEW_CLAIM",
+        NewBrandTemplate: "ADD_BRAND",
+        CreateUserTemplate: "INVITE_NEW_USER"
     },
-    LEFT_NAV_EVENTS: {
-        VIEW_MY_DASHBOARD: "View My Dashboard",
-        VIEW_MY_CLAIMS: "View My Claims",
-        VIEW_MY_BRANDS: "View My Brands",
-        VIEW_MY_USERS: "View My Users"
+    WORK_FLOW_MAPPING: {
+        newbrand: "ADD_NEW_BRAND",
+        brandreg: "COMPANY_ONBOARDING",
+        companyreg: "COMPANY_ONBOARDING",
+        newuser: "INVITE_NEW_USER"
+    },
+    HELP_TOPIC_MAPPING: {
+        faq: "FREQUENTLY_ASKED_QUESTIONS",
+        user: "USER_MANAGEMENT",
+        brand: "USER_MANAGEMENT",
+        claim: "CLAIM_SUBMISSION",
+        contact: "CONTACT_US"
     }
 };
 

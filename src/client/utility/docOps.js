@@ -33,8 +33,15 @@ export default class DocumentActions {
   }
 
   static async uploadDocument (file, interval, type) {
+    const mixpanelPayload = {
+      DOCUMENT_TYPE: type,
+      FILE_TYPE: file.type,
+      FILE_SIZE: file.size,
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
     try {
       const urlMap = {businessRegistrationDoc: "/api/company/uploadBusinessDocument", additionalDoc: "/api/company/uploadAdditionalDocument"};
+      mixpanelPayload.API = urlMap[type];
       this.checkToEnableSubmit();
       const formData = new FormData();
       formData.append("file", file);
@@ -48,11 +55,13 @@ export default class DocumentActions {
         updatedForm.inputData[type].id = uploadResponse.id;
         this.setState({updatedForm}, this.checkToEnableSubmit);
       }, 700);
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD_SUCCESS);
+      mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
       console.log(e);
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD_FAILURE, e);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = e.message ? e.message : e;
     }
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD, mixpanelPayload);
   }
 
   static cancelSelection(docKey) {

@@ -87,12 +87,15 @@ class ResetPasswordTemplate extends Component {
       const url = form.apiPath;
 
       this.loader("form", true);
+      const mixpanelPayload = {
+        API: url,
+      };
       return Http.post(url, payload, null, null, this.props.showNotification, this.state.form.passwordChangedMessage, this.state.form.failureMessage)
         .then(res => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.loader("form", false);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_SUCCESS);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
@@ -118,7 +121,11 @@ class ResetPasswordTemplate extends Component {
             }
           }
           console.log(err);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.SAVE_PASSWORD_FAILURE, err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_PASSWORD, mixpanelPayload);
         });
     }
   }
