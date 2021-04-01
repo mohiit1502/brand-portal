@@ -25,6 +25,7 @@ class ContentManagerApi {
         path: "/api/formConfig",
         handler: this.getFormFieldConfiguration
       }
+      //todo:mixpanel
     ]);
   }
 
