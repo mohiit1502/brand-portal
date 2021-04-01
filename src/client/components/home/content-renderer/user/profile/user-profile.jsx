@@ -138,7 +138,7 @@ class UserProfile extends React.Component {
         }
       });
       this.setState({form});
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE);
+      if (!disable) mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE);
     }
   }
 

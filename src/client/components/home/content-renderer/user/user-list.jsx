@@ -139,6 +139,13 @@ class UserList extends React.Component {
                     this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
                   }
                   mixpanelPayload.API_SUCCESS = true;
+                })
+                .catch( (e) => {
+                  console.log(e);
+                  mixpanelPayload.API_SUCCESS = false;
+                  mixpanelPayload.ERROR = e.message ? e.message : e;
+                })
+                .finally(() => {
                   mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.RESEND_INVITE, mixpanelPayload);
                 });
             }

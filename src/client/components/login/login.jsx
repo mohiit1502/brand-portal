@@ -36,8 +36,8 @@ class Login extends React.Component {
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);
-      Mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.WBP_HOME_PAGE);
     }
+    Mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
   }
 
   render() {
