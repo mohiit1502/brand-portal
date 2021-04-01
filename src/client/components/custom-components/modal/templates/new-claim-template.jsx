@@ -434,7 +434,7 @@ class NewClaimTemplate extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.ATTEMPT_SUBMIT_CLAIM);
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
@@ -487,6 +487,7 @@ class NewClaimTemplate extends React.Component {
         this.fetchClaims();
         this.loader("loader", false);
         mixpanelPayload.API_SUCCESS = true;
+        mixpanel.submitNCUtil(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
       })
       .catch(err => {
         this.loader("loader", false);

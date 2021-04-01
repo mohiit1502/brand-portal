@@ -33,10 +33,10 @@ class Login extends React.Component {
           return stateCloned;
         }))
         .catch(e => this.setState({loginConfig}));
-        Mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.WBP_HOME_PAGE);
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);
+      Mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.WBP_HOME_PAGE);
     }
   }
 
