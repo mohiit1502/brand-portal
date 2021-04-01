@@ -389,8 +389,7 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   top: 0.7rem;
 }
 
-.field-ok:before {
-  top: 0.5rem;
+.field-ok:before,.field-alert:before {
   background-size: 1.2rem;
 }
 
