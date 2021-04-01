@@ -148,7 +148,7 @@ class ResetPasswordTemplate extends Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCLE_CHANGE_PASSWORD);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCEL_CHANGE_PASSWORD);
   }
 
   render() {

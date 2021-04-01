@@ -117,7 +117,7 @@ class UserProfile extends React.Component {
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_USER_PASSWORD);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD);
   }
 
   disableInput (disable) {
@@ -125,7 +125,7 @@ class UserProfile extends React.Component {
     if (disable && this.isDirty()) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCLE_EDIT_USER_PROFILE);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE);
     } else {
       const form = {...this.state.form};
       form.isDisabled = disable;
@@ -138,7 +138,7 @@ class UserProfile extends React.Component {
         }
       });
       this.setState({form});
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_USER_PROFILE);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE);
     }
   }
 
@@ -187,7 +187,7 @@ class UserProfile extends React.Component {
             mixpanelPayload.ERROR = err.message ? err.message : err;
           })
           .finally(() => {
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE, mixpanelPayload);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_PROFILE, mixpanelPayload);
           });
       } else {
         this.loader("form", false);

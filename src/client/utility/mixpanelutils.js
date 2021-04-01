@@ -39,7 +39,7 @@ export default class MixpanelUtils {
     static intializeMixpanel() {
         try {
         // eslint-disable-next-line camelcase
-        mixpanel.init(CONSTANTS.MIXPANEL.PROJECT_TOKEN, {api_host: "https://api.mixpanel.com"});
+        mixpanel.init(CONSTANTS.MIXPANEL.PROJECT_TOKEN, {api_host: "https://api.mixpanel.com"});  //
         } catch (e) {
             console.log(e);
         }
@@ -99,7 +99,7 @@ export default class MixpanelUtils {
     }
     static addNewTemplate(meta, payload) {
         const templateName = meta.templateName;
-        const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE[templateName];
+        const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
         MixpanelUtils.trackEvent(eventName, payload);
     }
     static helpSectionEvents(eventName, payLoad) {

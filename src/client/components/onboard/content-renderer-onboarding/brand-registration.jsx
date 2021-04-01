@@ -161,7 +161,7 @@ class BrandRegistration extends React.Component {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
     } finally {
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
     }
   }
 

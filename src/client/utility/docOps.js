@@ -61,7 +61,7 @@ export default class DocumentActions {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
     }
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.FILE_UPLOAD, mixpanelPayload);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.UPLOAD_DOCUMENT, mixpanelPayload);
   }
 
   static cancelSelection(docKey) {
