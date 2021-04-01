@@ -16,7 +16,7 @@ export default class MixpanelUtils {
             elementCloned.properties.$name = mixpanel.get_property("$name");
             // eslint-disable-next-line camelcase
             elementCloned.properties.distinct_id = mixpanel.get_property("$user_id");
-            elementCloned.properties.token = CONSTANTS.MIXPANEL.PROJECT_TOKEN;
+            elementCloned.properties.token = mixpanel.get_config("token");
             return elementCloned;
         });
         const encodedParams = new URLSearchParams();
@@ -36,10 +36,10 @@ export default class MixpanelUtils {
           }
     }
 
-    static intializeMixpanel() {
+    static intializeMixpanel(projectToken) {
         try {
         // eslint-disable-next-line camelcase
-        mixpanel.init(CONSTANTS.MIXPANEL.PROJECT_TOKEN, {api_host: "https://api.mixpanel.com"});
+          mixpanel.init(projectToken, {api_host: "https://api.mixpanel.com"});
         } catch (e) {
             console.log(e);
         }

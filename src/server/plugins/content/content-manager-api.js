@@ -24,8 +24,12 @@ class ContentManagerApi {
         method: "GET",
         path: "/api/formConfig",
         handler: this.getFormFieldConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/mixpanelConfig",
+        handler: this.getMixpanelConfiguration
       }
-      //todo:mixpanel
     ]);
   }
 
@@ -53,6 +57,16 @@ class ContentManagerApi {
     try {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.FORMFIELDCONFIG");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      console.log(err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async getMixpanelConfiguration (request, h) {
+    try {
+      const projectToken = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
+      return h.response({projectToken}).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
       return h.response(err).code(err.status);

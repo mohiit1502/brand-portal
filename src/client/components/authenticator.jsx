@@ -2,19 +2,19 @@
 /* eslint-disable max-statements */
 import React from "react";
 import { connect } from "react-redux";
-import Login from "./login/login";
-import Home from "./home/home";
-import {Redirect} from "react-router";
 import PropTypes from "prop-types";
-import CONSTANTS from "../constants/constants";
+import {Redirect} from "react-router";
 import Cookies from "electrode-cookies";
-import Http from "../utility/Http";
 import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions";
 import {dispatchMetadata} from "../actions/content/content-actions";
-import {GenericErrorPage} from "./index";
+import Login from "./login/login";
+import Home from "./home/home";
 import Onboarder from "./onboard/onboarder";
-import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
+import {GenericErrorPage} from "./index";
+import Http from "../utility/Http";
 import mixpanel from "../utility/mixpanelutils";
+import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
+import CONSTANTS from "../constants/constants";
 import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 class Authenticator extends React.Component {
@@ -33,7 +33,10 @@ class Authenticator extends React.Component {
   }
 
   componentDidMount() {
-    mixpanel.intializeMixpanel();
+    Http.get("/api/mixpanelConfig")
+      .then(res => {
+        mixpanel.intializeMixpanel(res.body.projectToken);
+      }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN))
     if (this.state.isLoggedIn) {
       this.initMetaData();
       this.getProfileInfo();
@@ -178,6 +181,7 @@ class Authenticator extends React.Component {
 
 Authenticator.propTypes = {
   dispatchLogoutUrl: PropTypes.func,
+  dispatchMixpanelConfig: PropTypes.func,
   dispatchMetadata: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,
