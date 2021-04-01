@@ -434,7 +434,7 @@ class NewClaimTemplate extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.ATTEMPT_SUBMIT_CLAIM);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED);
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
@@ -504,7 +504,7 @@ class NewClaimTemplate extends React.Component {
   resetTemplateStatus () {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_CLAIM_DETAILS, mixpanelPayload);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_SUBMIT_CLAIM, mixpanelPayload);
   }
 
   onItemUrlChange (event, i) {

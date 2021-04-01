@@ -99,7 +99,7 @@ export default class MixpanelUtils {
     }
     static addNewTemplate(meta, payload) {
         const templateName = meta.templateName;
-        const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE[templateName];
+        const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
         MixpanelUtils.trackEvent(eventName, payload);
     }
     static helpSectionEvents(eventName, payLoad) {

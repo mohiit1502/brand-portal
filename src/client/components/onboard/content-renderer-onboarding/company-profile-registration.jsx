@@ -157,7 +157,7 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
     this.setState(state);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.RESET_COMPANY_PROFILE );
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CANCLE_ONBOARDING_FORM );
   }
 
   gotoBrandRegistration (evt) {

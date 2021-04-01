@@ -105,7 +105,7 @@ class NewBrandTemplate extends React.Component {
   }
 
   async handleSubmit(evt) {
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.ATTEMPT_SUBMIT_BRAND);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED);
     evt.preventDefault();
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
     const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;

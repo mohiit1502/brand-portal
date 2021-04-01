@@ -46,7 +46,7 @@ class HomeHeader extends React.Component {
                 {
                   this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</a>
                 }
-                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.USER_LOGOUT);}}>Logout</a>
+                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT);}}>Logout</a>
               </div>
             </li>
           </ul>

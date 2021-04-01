@@ -192,7 +192,7 @@ export default class Validator {
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_BRAND_UNIQUENESS, mixpanelPayload);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.BRAND_UNIQUENESS_CHECK, mixpanelPayload);
       });
   }
 
@@ -234,7 +234,7 @@ export default class Validator {
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_TRADEMARK_AVAILIBITY, mixpanelPayload);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.TRADEMARK_VALIDITY, mixpanelPayload);
       });
   }
 
@@ -288,7 +288,7 @@ export default class Validator {
         // console.log(err);
       })
       .finally(() => {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_COMPANY_NAME_AVIAILIBILITY, mixpanelPayload);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.COMPANY_NAME_AVAILABILITY_CHECK, mixpanelPayload);
       });
   }
 
@@ -330,7 +330,7 @@ export default class Validator {
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.CHECK_EMAIL_AVAILIBITY, mixpanelPayload);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.EMAIL_VALIDITY_CHECK, mixpanelPayload);
       });
     }
   }

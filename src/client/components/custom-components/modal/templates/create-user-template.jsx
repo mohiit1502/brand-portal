@@ -223,7 +223,7 @@ class CreateUserTemplate extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.ATTEMPT_INVITE_USER);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_CREATED_USER_CLICKED);
     let brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
     // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
     // eslint-disable-next-line no-unused-expressions

@@ -14,7 +14,7 @@ const Hero = props => {
               <div className="c-Hero__tag-line px-5 mx-5">{CONSTANTS.LOGIN.LANDING_PAGE_TEXT}</div>
               <div className="button-con">
               <a className="c-Hero__register-btn btn btn-primary px-5" href={CONSTANTS.URL.REGISTER_REDIRECT}
-                onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.REGISTER_CLICK_EVENT);}}>{CONSTANTS.LOGIN.REGISTER_TEXT}</a>
+                onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>{CONSTANTS.LOGIN.REGISTER_TEXT}</a>
             </div>
             </div>
         </div>
