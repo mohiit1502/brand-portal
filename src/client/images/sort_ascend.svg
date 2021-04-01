@@ -3,5 +3,6 @@
     <title>sort</title>
     <g id="sort" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <polygon id="Path-2" fill="#6E7677" points="8 13.6 12 17.6 16 13.6"></polygon>
+        <polygon id="Path-2-Copy" fill="#7ac4e4" transform="translate(12.000000, 9.000000) rotate(-180.000000) translate(-12.000000, -9.000000) " points="8 7 12 11 16 7"></polygon>
     </g>
 </svg>

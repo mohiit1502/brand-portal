@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
@@ -16,26 +14,6 @@ class UserManagerApi {
     const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus"]
     functions.forEach(name => this[name] = this[name].bind(this));
     this.name = "UserManagerApi";
-  }
-
-  createBody(result) {
-    let retObj = {};
-    if (result && result.response && !isEmpty(result)) {
-      const res = get(result, "response.data");
-      const OK = 200;
-      const BAD_REQUEST = 400;
-
-      retObj = {
-        status: res ? OK : BAD_REQUEST,
-        payload: res || get(result, "response.errors")
-      };
-    } else {
-      retObj = {
-        status: get(result, "error.status"),
-        payload: get(result, "error.response")
-      };
-    }
-    return retObj;
   }
 
   register(server) {
@@ -425,7 +403,7 @@ class UserManagerApi {
         isSecure: false,
         isHttpOnly: false
       });
-      // console.log("hapi state ========= ", h.state("auth_sessio_token"));
+      // console.log("hapi state ========= ", h.state("auth_session_token"));
       return h.redirect("/");
     } catch (err) {
       console.error(err);
