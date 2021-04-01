@@ -14,10 +14,11 @@ const UserListTable = function(props) {
   const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
-    userName: "col-3",
+    dateAdded: "col-2",
+    role: "col-1",
     sequence: "col-1",
-    status: "col-2",
-    role: "col-2"
+    status: "col-3",
+    username: "col-2"
   };
   const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
   const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
