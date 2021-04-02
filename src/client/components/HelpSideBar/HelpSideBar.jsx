@@ -7,10 +7,15 @@ import "./HelpSideBar.component.scss";
 
 const HelpSideBar = ({activeTab, categoryHeader, categories, setActiveTab}) => {
 
+  const onClickHandler = categoryKey => {
+    setActiveTab(categoryKey);
+    mixpanel.helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_MENU, {id: categoryKey});
+  };
+
   const categoriesRendered = categories && Object.keys(categories).map(categoryKey => {
     const category = categories[categoryKey];
     return (<li key={categoryKey} className={`c-HelpSideBar__category${activeTab === categoryKey ? " active" : ""}`}
-      onClick={() => {setActiveTab(categoryKey); mixpanel.helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_MENU, {id: categoryKey});}}>
+      onClick={() => {onClickHandler(categoryKey);}}>
       {category.categoryText}
       </li>);
   });

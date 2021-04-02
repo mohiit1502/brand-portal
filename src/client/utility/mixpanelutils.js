@@ -1,11 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 import mixpanel from "mixpanel-browser";
-import CONSTANTS from "../constants/constants";
 import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 export default class MixpanelUtils {
-    static async trackBatchOfSameType(eventName, payload) {
+    static async trackEventBatch(eventName, payload) {
         const adaptedPayload = payload && payload.map(element => {
             const elementCloned = {};
             elementCloned.event = eventName;
@@ -111,22 +110,6 @@ export default class MixpanelUtils {
         };
         if (payLoad.question) updatedPayload.QUESTION = payLoad.question;
         MixpanelUtils.trackEvent(eventName, updatedPayload);
-    }
-    static submitNCUtil(eventName, payload) {
-        const items = payload.items;
-        const mixpanelPayload = items && items.map(item => {
-            const eventPayload = {};
-            eventPayload.SELLER_NAME = item.sellerName;
-            eventPayload.ITEM_URL = item.itemUrl;
-            eventPayload.CLAIM_TYPE = payload.claimType;
-            eventPayload.BRAND_ID = payload.brandId;
-            eventPayload.USPTO_URL = payload.usptoUrl;
-            eventPayload.USPTO_VERIFICATION = payload.usptoVerification;
-            return eventPayload;
-        });
-
-        console.log(mixpanelPayload);
-        MixpanelUtils.trackBatchOfSameType(eventName, mixpanelPayload);
     }
 }
 

@@ -5,10 +5,16 @@ import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/MixPanelConsants";
 
 const Accordion = ({children, data, expanded, setExpanded}) => {
+
+  const onClickHandler = () => {
+    setExpanded(!expanded);
+    if (!expanded) mixpanel.helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_TOPICS, data);
+  };
+
   return (
     <div className="c-Accordion">
       {!data.simple && <div className="c-Accordion__button-container">
-        <button className={`c-Accordion__button${expanded ? " expanded" : ""}`} onClick={() => {setExpanded(!expanded); !expanded && mixpanel.helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_TOPICS, data); }}>
+        <button className={`c-Accordion__button${expanded ? " expanded" : ""}`} onClick={() => {onClickHandler();}}>
             {data.question}
         </button>
       </div>}

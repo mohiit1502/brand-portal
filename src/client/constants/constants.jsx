@@ -148,11 +148,13 @@ const CONSTANTS = {
       SUPERADMIN: "Super Admin"
     },
     STATUS: {
+      ACTIVE: "Active",
       NEW: "New",
       PENDING: "Pending Activation",
-      ACTIVE: "Active",
+      PENDING_SUPPLIER: "Pending Supplier Activation",
+      REJECTED: "Rejected",
       SUSPENDED: "Inactive",
-      REJECTED: "Rejected"
+      TOU_NOT_ACCEPTED: "TouNotAccepted"
     },
     UNIQUENESS_CHECK_STATUS: {
       EMAIL: "EMAIL",

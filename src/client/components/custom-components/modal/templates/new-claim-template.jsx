@@ -491,7 +491,7 @@ class NewClaimTemplate extends React.Component {
         this.fetchClaims();
         this.loader("loader", false);
         mixpanelPayload.API_SUCCESS = true;
-        mixpanel.submitNCUtil(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
+        this.mixpanelUtilOnSubmitClaim(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
       })
       .catch(err => {
         this.loader("loader", false);
@@ -570,6 +570,20 @@ class NewClaimTemplate extends React.Component {
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME, mixpanelPayload);
         });
     }
+  }
+  mixpanelUtilOnSubmitClaim(eventName, payload) {
+    const items = payload.items;
+    const mixpanelPayload = items && items.map(item => {
+        const eventPayload = {};
+        eventPayload.SELLER_NAME = item.sellerName;
+        eventPayload.ITEM_URL = item.itemUrl;
+        eventPayload.CLAIM_TYPE = payload.claimType;
+        eventPayload.BRAND_ID = payload.brandId;
+        eventPayload.USPTO_URL = payload.usptoUrl;
+        eventPayload.USPTO_VERIFICATION = payload.usptoVerification;
+        return eventPayload;
+    });
+    mixpanel.trackEventBatch(eventName, mixpanelPayload);
   }
 
   render() {
