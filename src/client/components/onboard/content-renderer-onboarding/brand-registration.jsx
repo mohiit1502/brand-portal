@@ -37,7 +37,10 @@ class BrandRegistration extends React.Component {
         inputData: {...brandConfiguration.fields}
       }
     };
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION);
+    const mixpanelPayload = {
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION, mixpanelPayload);
   }
 
   checkToEnableSubmit () {
@@ -120,6 +123,7 @@ class BrandRegistration extends React.Component {
 
   async submitOnboardingForm(evt) {
     evt.preventDefault();
+    let mixpanelPayload;
     try {
       this.loader("form", true);
       const inputData = this.state.form.inputData;
@@ -137,16 +141,27 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
+      mixpanelPayload = {
+        API: "/api/org/register",
+        BRAND_NAME: brand.name,
+        COMPANY_NAME: this.props.org.name,
+        TRADEMARK_NUMBER: brand.trademarkNumber,
+        IS_DOCUMENT_UPLOADED: Boolean(this.props.org.businessRegistrationDocId || his.props.org.additionalDocId),
+        WORK_FLOW: "COMPANY_ONBOARDING"
+      }
       await Http.post("/api/org/register", data);
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();
       this.props.dispatchNewRequest(true);
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_SUCCESS);
+      mixpanelPayload.API_SUCCESS = true;
     } catch (err) {
       this.loader("form", false);
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.COMPANY_ONBOARDING_FAILURE, err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+    } finally {
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
     }
   }
 

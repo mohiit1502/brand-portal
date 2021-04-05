@@ -43,8 +43,11 @@ class CompanyProfileRegistration extends React.Component {
   }
 
   componentDidMount() {
+    const mixpanelPayload = {
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
     $("[data-toggle='tooltip']").tooltip();
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
   }
 
   undertakingToggle () {
@@ -154,7 +157,7 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
     this.setState(state);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.RESET_COMPANY_PROFILE );
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CANCLE_ONBOARDING_FORM );
   }
 
   gotoBrandRegistration (evt) {

@@ -71,7 +71,8 @@ class Dashboard extends React.PureComponent {
           fetchComplete: true
         })
       });
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.LEFT_NAV_EVENTS.VIEW_MY_DASHBOARD);
+      const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.VIEW_DASHBOARD, mixpanelPayload);
   }
 
   render() {

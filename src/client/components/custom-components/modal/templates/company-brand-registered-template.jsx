@@ -43,7 +43,7 @@ class CompanyBrandRegisteredTemplate extends React.Component {
               </div>
               <div className="row mt-4">
                 <div className="col">
-                  <a className="btn btn-sm btn-primary px-5" href={logoutUrl} onClick={mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.USER_LOGOUT)}>Logout</a>
+                  <a className="btn btn-sm btn-primary px-5" href={logoutUrl} onClick={mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT)}>Logout</a>
                 </div>
               </div>
             </div>

@@ -1,11 +1,44 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
 import mixpanel from "mixpanel-browser";
-import CONSTANTS from "../constants/constants";
 import MIXPANEL_CONSTANTS from "../constants/MixPanelConsants";
 
 export default class MixpanelUtils {
-    static intializeMixpanel() {
+    static async trackEventBatch(eventName, payload) {
+        const adaptedPayload = payload && payload.map(element => {
+            const elementCloned = {};
+            elementCloned.event = eventName;
+            elementCloned.properties = element;
+            elementCloned.properties.USER_TYPE = mixpanel.get_property("USER_TYPE");
+            elementCloned.properties.$email = mixpanel.get_property("$email");
+            elementCloned.propertiesROLE = mixpanel.get_property("ROLE");
+            elementCloned.properties.$name = mixpanel.get_property("$name");
+            // eslint-disable-next-line camelcase
+            elementCloned.properties.distinct_id = mixpanel.get_property("$user_id");
+            elementCloned.properties.token = mixpanel.get_config("token");
+            return elementCloned;
+        });
+        const encodedParams = new URLSearchParams();
+        encodedParams.set("ip", "1");
+        encodedParams.set("data", JSON.stringify(adaptedPayload));
+        const options = {
+            method: "POST",
+            headers: {Accept: "text/plain", "Content-Type": "application/x-www-form-urlencoded"},
+            body: encodedParams
+          };
+          try {
+            let response = await fetch("https://api.mixpanel.com/track#past-events-batch", options);
+            response = await response.json();
+            console.log(response);
+          } catch (e) {
+            console.log(e);
+          }
+    }
+
+    static intializeMixpanel(projectToken) {
         try {
-        mixpanel.init(CONSTANTS.MIXPANEL.PROJECT_TOKEN);
+        // eslint-disable-next-line camelcase
+          mixpanel.init(projectToken, {api_host: "https://api.mixpanel.com"});
         } catch (e) {
             console.log(e);
         }
@@ -14,18 +47,23 @@ export default class MixpanelUtils {
         mixpanel.identify(userProfile.email);
         const payload = {
             $email: userProfile.email,
-            $name: userProfile.firstName + userProfile.lastName,
-            "Date added": userProfile.createTs ? userProfile.createTs : "",
-            "Created By": userProfile.createdBy ? userProfile.createdBy : ""
+            $name: `${userProfile.firstName } ${ userProfile.lastName}`,
+            DATE_ADDED: userProfile.createTs ? userProfile.createTs : "",
+            CREATED_BY: userProfile.createdBy ? userProfile.createdBy : "",
+            ORG_ID: userProfile.organization.id,
+            ORG_NAME: userProfile.organization.name,
+            USER_ROLE: userProfile.role.name,
+            USER_TYPE: userProfile.type,
+            LAST_UPDATED_BY: userProfile.lastUpdatedBy
         };
         mixpanel.people.set_once(payload);
     }
     static setSuperProperties(userProfile) {
         const superPropertyPayLoad = {
             $email: userProfile.email,
-            $name: userProfile.firstName + userProfile.lastName,
-            "User Type": userProfile.type ? userProfile.type : "",
-            Role: userProfile.role.name ? userProfile.role.name : ""
+            $name: `${userProfile.firstName } ${ userProfile.lastName}`,
+            USER_TYPE: userProfile.type ? userProfile.type : "",
+            ROLE: userProfile.role.name ? userProfile.role.name : ""
         };
         mixpanel.register(superPropertyPayLoad);
     }
@@ -39,7 +77,8 @@ export default class MixpanelUtils {
     static login(userProfile, eventName) {
         try {
         const userId = mixpanel.get_property("$user_id");
-        if (!userId) {
+        if (!userId || userId !== userProfile.email) {
+            mixpanel.reset();
             MixpanelUtils.setUserProfile(userProfile);
             MixpanelUtils.setSuperProperties(userProfile);
             MixpanelUtils.trackEvent(eventName);
@@ -56,11 +95,6 @@ export default class MixpanelUtils {
         } catch (e) {
             console.log(e);
         }
-    }
-    static addNewTemplate(meta) {
-        const templateName = meta.templateName;
-        const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE[templateName];
-        MixpanelUtils.trackEvent(eventName);
     }
 }
 

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import YellowCheckIcon from "../../../../images/claimsSubmitted.png";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/MixPanelConsants";
 
 class NewClaimAddedTemplate extends React.Component {
 
@@ -27,6 +29,8 @@ class NewClaimAddedTemplate extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     const meta = { templateName: "NewClaimTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    const mixpanelPayload = { WORK_FLOW: "ADD_NEW_CLAIM"};
+    mixpanel.addNewTemplate(meta, mixpanelPayload);
   }
 
   render() {

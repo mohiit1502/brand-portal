@@ -438,7 +438,7 @@ class NewClaimTemplate extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED);
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
@@ -477,6 +477,12 @@ class NewClaimTemplate extends React.Component {
       usptoUrl,
       usptoVerification
     };
+    const mixpanelPayload = {
+      API: "/api/claims",
+      BRAND_NAME: brandName,
+      CLAIM_TYPE: claimType,
+      WORK_FLOW: "ADD_NEW_CLAIM"
+    };
     this.loader("loader", true);
     return Http.post("/api/claims", payload)
       .then(res => {
@@ -484,18 +490,25 @@ class NewClaimTemplate extends React.Component {
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
         this.fetchClaims();
         this.loader("loader", false);
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_SUCCESS);
+        mixpanelPayload.API_SUCCESS = true;
+        this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
       })
       .catch(err => {
         this.loader("loader", false);
         console.log(err);
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_FAILURE, err);
-      });
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      })
+      .finally( () => {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_NEW_CLAIM, mixpanelPayload);
+      })
+      
   }
 
   resetTemplateStatus () {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.RESET_CLAIM_DETAILS);
+    const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_SUBMIT_CLAIM, mixpanelPayload);
   }
 
   onItemUrlChange (event, i) {
@@ -510,12 +523,19 @@ class NewClaimTemplate extends React.Component {
 
       const payload = url.substring(slash + 1, qMark);
       const query = {payload};
-      Http.get("/api/sellers", query, null, this.props.showNotification, null, "Request failed, please try again.")
+      const mixpanelPayload = {
+        API: "/api/sellers",
+        ITEM_URL: url,
+        WORK_FLOW: "ADD_NEW_CLAIM"
+      };
+      Http.get("/api/sellers", query,null, this.props.showNotification, null, "Request failed, please try again.")
         .then(res => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
-          form.inputData.itemList[i].sellerName.value = "";
-          if (res.body.length != 0) {
+          form.inputData.itemList[i].sellerName.value ="";
+          mixpanelPayload.API_SUCCESS = true;
+          mixpanelPayload.SELLERS_NAMES = res.body.map(seller => {return seller.value});
+          if(res.body.length != 0) {
             res.body.unshift({value: "All", id: "_all"});
             form.inputData.itemList[i].sellerName.options = res.body;
             form.inputData.itemList[i].sellerName.disabled = false;
@@ -523,13 +543,11 @@ class NewClaimTemplate extends React.Component {
             form.isSubmitDisabled = true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_SUCCESS);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
             form.isSubmitDisabled = true;
             this.setState({form}, this.checkToEnableItemButton);
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME_FAILURE);
           }
         })
         .catch(err => {
@@ -545,8 +563,27 @@ class NewClaimTemplate extends React.Component {
             form.inputData.itemList[i].sellerName.disabled = true;
          }
          this.setState({form}, this.checkToEnableItemButton);
+         mixpanelPayload.API_SUCCESS = false;
+         mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME, mixpanelPayload);
         });
     }
+  }
+  mixpanelBatchEventUtil(eventName, payload) {
+    const items = payload.items;
+    const mixpanelPayload = items && items.map(item => {
+        const eventPayload = {};
+        eventPayload.SELLER_NAME = item.sellerName;
+        eventPayload.ITEM_URL = item.itemUrl;
+        eventPayload.CLAIM_TYPE = payload.claimType;
+        eventPayload.BRAND_ID = payload.brandId;
+        eventPayload.USPTO_URL = payload.usptoUrl;
+        eventPayload.USPTO_VERIFICATION = payload.usptoVerification;
+        return eventPayload;
+    });
+    mixpanel.trackEventBatch(eventName, mixpanelPayload);
   }
 
   render() {

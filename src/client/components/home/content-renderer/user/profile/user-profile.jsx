@@ -117,7 +117,7 @@ class UserProfile extends React.Component {
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_USER_PASSWORD);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD);
   }
 
   disableInput (disable) {
@@ -125,7 +125,7 @@ class UserProfile extends React.Component {
     if (disable && this.isDirty()) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCLE_EDIT_USER_PROFILE);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE);
     } else {
       const form = {...this.state.form};
       form.isDisabled = disable;
@@ -138,6 +138,7 @@ class UserProfile extends React.Component {
         }
       });
       this.setState({form});
+      if (!disable) mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE);
     }
   }
 
@@ -170,14 +171,24 @@ class UserProfile extends React.Component {
 
       const url = this.state.form.apiPath;
       if (this.isDirty()) {
+        const mixpanelPayload = {
+          API: url
+        };
         return Http.put(`${url}/${payload.user.loginId}`, payload, null, null, this.props.showNotification, this.state.form.profileSaveMessage)
           .then(async res => {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
             this.disableInput(true);
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_USER_PROFILE);
+            mixpanelPayload.API_SUCCESS = true;
           })
-          .catch(() => this.loader("form", false));
+          .catch(err => {
+            this.loader("form", false);
+            mixpanelPayload.API_SUCCESS = false;
+            mixpanelPayload.ERROR = err.message ? err.message : err;
+          })
+          .finally(() => {
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_PROFILE, mixpanelPayload);
+          });
       } else {
         this.loader("form", false);
         this.disableInput(true);
