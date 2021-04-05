@@ -114,7 +114,7 @@ class CreateUserTemplate extends React.Component {
     }
   }
 
-  resetTemplateStatus () {
+  resetTemplateStatus (e) {
     const form = {...this.state.form};
     form.templateUpdateComplete = false;
     form.isUpdateTemplate = false;
@@ -145,9 +145,10 @@ class CreateUserTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    const mixpanelPayload = {WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"};
-    if (!this.state.form.loader) 
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.CANCEL_SUBMIT_USER_DETAILS, mixpanelPayload);
+    if (e) {
+      const mixpanelPayload = {WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"};
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.CANCEL_SUBMIT_USER_DETAILS, mixpanelPayload);
+    }
   }
 
   bubbleValue (evt, key, error) {

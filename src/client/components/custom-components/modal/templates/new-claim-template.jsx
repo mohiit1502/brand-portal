@@ -491,7 +491,7 @@ class NewClaimTemplate extends React.Component {
         this.fetchClaims();
         this.loader("loader", false);
         mixpanelPayload.API_SUCCESS = true;
-        this.mixpanelUtilOnSubmitClaim(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
+        this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
       })
       .catch(err => {
         this.loader("loader", false);
@@ -571,7 +571,7 @@ class NewClaimTemplate extends React.Component {
         });
     }
   }
-  mixpanelUtilOnSubmitClaim(eventName, payload) {
+  mixpanelBatchEventUtil(eventName, payload) {
     const items = payload.items;
     const mixpanelPayload = items && items.map(item => {
         const eventPayload = {};

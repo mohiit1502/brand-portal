@@ -96,21 +96,6 @@ export default class MixpanelUtils {
             console.log(e);
         }
     }
-    static addNewTemplate(meta, payload) {
-        const templateName = meta.templateName;
-        const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
-        MixpanelUtils.trackEvent(eventName, payload);
-    }
-    static helpSectionEvents(eventName, payLoad) {
-        let helpId = payLoad.id;
-        helpId = helpId.split("-")[0];
-        const updatedPayload = {
-            HELP_TOPIC: MIXPANEL_CONSTANTS.HELP_TOPIC_MAPPING[helpId],
-            WORK_FLOW: "HELP_EVENTS"
-        };
-        if (payLoad.question) updatedPayload.QUESTION = payLoad.question;
-        MixpanelUtils.trackEvent(eventName, updatedPayload);
-    }
 }
 
 

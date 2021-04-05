@@ -164,7 +164,7 @@ class NewBrandTemplate extends React.Component {
     }
   }
 
-  resetTemplateStatus () {
+  resetTemplateStatus (e) {
     const form = {...this.state.form};
     form.inputData.trademarkNumber.value = "";
     form.inputData.brandName.value = "";
@@ -179,11 +179,12 @@ class NewBrandTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    const mixpanelPayload = {
-      WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
-    };
-    if (!this.state.form.loader)
+    if (e) {
+      const mixpanelPayload = {
+        WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+      };
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.CANCEL_SUBMIT_BRAND_DETAILS, mixpanelPayload);
+    }
   }
 
   render() {

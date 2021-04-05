@@ -387,10 +387,16 @@ class BrandList extends React.Component {
     }
   }
 
+  mixpanelAddNewTemplateUtil = (meta, payload) => {
+    const templateName = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    mixpanel.trackEvent(eventName, payload);
+  }
+
   addNewBrand () {
     const meta = { templateName: "NewBrandTemplate" };
     const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
-    mixpanel.addNewTemplate(meta, mixpanelPayload);
+    this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
