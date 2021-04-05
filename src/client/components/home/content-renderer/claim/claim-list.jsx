@@ -139,20 +139,22 @@ class ClaimList extends React.Component {
   updateSortState(header) {
     const columns = [...this.state.columns];
     const columnMeta = columns.find(column => column.accessor === header.id);
-    let sortLevel = columnMeta.sortState.level;
-    let columnPriority = this.state.columnPriority;
-    sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
-    if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
-      columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
-      columnMeta.sortState.priorityLevel = -1;
-    } else {
-      columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-      if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
-        columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
-        columnPriority += 1;
+    if (columnMeta.canSort !== false) {
+      let sortLevel = columnMeta.sortState.level;
+      let columnPriority = this.state.columnPriority;
+      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+        columnMeta.sortState.priorityLevel = -1;
+      } else {
+        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority += 1;
+        }
       }
-    }
-    this.setState({columns, columnPriority}, () => this.multiSort());
+      this.setState({columns, columnPriority}, () => this.multiSort());
+  }
   }
 
   checkAndApplyDashboardFilter(claimList) {
@@ -232,7 +234,7 @@ class ClaimList extends React.Component {
   uiSearch (evt, isFilter, filteredClaims) {
     const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
     const allClaims = filteredClaims ? filteredClaims : this.props.claims;
-    const filteredList = allClaims.filter(claim => {
+    let filteredList = allClaims.filter(claim => {
       return claim.caseNumber.toLowerCase().indexOf(searchText) !== -1
         || claim.claimType.toLowerCase().indexOf(searchText) !== -1
         || claim.brandName.toLowerCase().indexOf(searchText) !== -1
@@ -240,8 +242,16 @@ class ClaimList extends React.Component {
         || claim.claimDate.toLowerCase().indexOf(searchText) !== -1
         || claim.claimStatus.toLowerCase().indexOf(searchText) !== -1;
     });
+    let i = 1;
+    if (filteredList) filteredList.forEach(claim => claim.sequence = i++);
     if (isFilter) {
-      this.setState({filteredList, unsortedList: filteredList, searchText});
+      const unsortedfilteredList = filteredList;
+      if (this.state.columnPriority > 0) {
+        i = 1;
+        filteredList = this.multiSort(filteredList);
+        filteredList.forEach(claim => claim.sequence = i++);
+      }
+      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
     } else {
       this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
     }
@@ -333,9 +343,9 @@ class ClaimList extends React.Component {
 
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
+      let i = 1;
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        let i = 1;
         filteredList = filteredList.filter(claim => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
@@ -343,8 +353,8 @@ class ClaimList extends React.Component {
           });
           return bool;
         });
-        filteredList.forEach(claim => claim.sequence = i++)
       }
+      filteredList && filteredList.forEach(claim => claim.sequence = i++);
     });
 
     let appliedFilters = this.state.filters.map(filter => {
@@ -358,7 +368,13 @@ class ClaimList extends React.Component {
       this.setState({appliedFilter: appliedFilters});
     }
     if (isSearch) {
-      this.setState({filteredList, unsortedList: filteredList});
+      const unsortedfilteredList = filteredList;
+      if (this.state.columnPriority > 0) {
+        filteredList = this.multiSort(filteredList);
+        let i = 0;
+        filteredList.forEach(claim => claim.sequence = i++);
+      }
+      this.setState({filteredList, unsortedList: unsortedfilteredList});
     } else {
       this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
       this.toggleFilterVisibility(showFilter);

@@ -1,21 +1,24 @@
 import CONSTANTS from "../constants/constants";
 
 export default class SortUtil {
-  static multiSort() {
-    const columns = [...this.state.columns];
-    const sortingColumns = columns.filter(column => {
-      if (column.sortState.priorityLevel >= 0)
-        return column;
-    });
-    sortingColumns.sort((a, b) => {
-      return a.sortState.priorityLevel - b.sortState.priorityLevel;
-    });
-    const unsortedList = this.state.unsortedList;
-    const sortedList = SortUtil.multiSortUtil(unsortedList, sortingColumns, 0);
-    let i = 1;
-    sortedList.forEach(item => item.sequence = i++);
-    this.setState({filteredList: sortedList});
-    return sortedList;
+  static multiSort(dataList) {
+      const columns = [...this.state.columns];
+      const sortingColumns = columns.filter(column => column.sortState.priorityLevel >= 0 ?  column : false);
+      sortingColumns.sort((a, b) => {
+        return a.sortState.priorityLevel - b.sortState.priorityLevel;
+      });
+      const unsortedList = dataList ? dataList : this.state.unsortedList;
+      try {
+        const sortedList = SortUtil.multiSortUtil(unsortedList, sortingColumns, 0);
+        let i = 1;
+        const columnPriority = sortingColumns.length > 0 ? this.state.columnPriority : 0;
+        sortedList.forEach(item => item.sequence = i++);
+        this.setState({filteredList: sortedList, columnPriority});
+        return sortedList;
+      } catch (e) {
+        console.log(e);
+        return unsortedList;
+      }
   }
 
   static sortList(unSortedList, columns) {
@@ -26,10 +29,10 @@ export default class SortUtil {
     if (!columns || columns.length === 0 || !unSortedList || unSortedList.length === 0)
       return unSortedList;
     sortedList.sort((a, b) => {
-      if (sortType === CONSTANTS.SORTSTATE.DATETYPE) {
-        const aDate = new Date(a[id]);
-        const bDate = new Date(b[id]);
-        return SortUtil.sortNumericAndDate(aDate, bDate, sortLevel);
+      if (sortType === CONSTANTS.SORTSTATE.DATETYPE || sortType === CONSTANTS.SORTSTATE.NUMERICTYPE) {
+        const aValue = (sortType === CONSTANTS.SORTSTATE.DATETYPE) ? new Date(a[id]) : a[id];
+        const bValue = (sortType === CONSTANTS.SORTSTATE.DATETYPE) ? new Date(b[id]) : b[id];
+        return SortUtil.sortNumericAndDate(aValue, bValue, sortLevel);
       } else if (sortType === CONSTANTS.SORTSTATE.ARRAYTYPE) {
         a = a[id].join(",");
         b = b[id].join(",");
