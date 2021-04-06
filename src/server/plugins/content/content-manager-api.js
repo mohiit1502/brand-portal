@@ -35,7 +35,7 @@ class ContentManagerApi {
   }
 
   async getHelpConfiguration(request, h) {
-   return  LandingPageConfiguration;
+    return h.response(LandingPageConfiguration).code(CONSTANTS.STATUS_CODE_SUCCESS);
   }
 
   async getLandingPageConfiguration(request, h) {
