@@ -4,6 +4,7 @@ import NewUserSVG from "../../../../images/user.svg";
 import PropTypes from "prop-types";
 import "../../../../styles/custom-components/modal/templates/new-user-added-template.scss";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import CONSTANTS from "../../../../constants/constants";
 
 class NewUserAddedTemplate extends React.Component {
 
@@ -23,7 +24,7 @@ class NewUserAddedTemplate extends React.Component {
 
   getDescriptionString() {
     // return `An email has been sent to ${this.props.modal.data.email}. The email has limited validity and will expire in 24 hours. The profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
-    return `An invitation has been sent to ${this.props.modal.data.email} which will expire in 24 hours. \n The user profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
+    return `An invitation has been sent to ${this.props.modal.data.email} which will expire in ${this.props.modal.data.status === CONSTANTS.USER.STATUS.PENDING_SUPPLIER ? 72 : 24} hours. \n The user profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
   }
 
   render() {
