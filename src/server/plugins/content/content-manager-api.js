@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
+import LandingPageConfiguration from "../../static/landing-page-configuration";
 
 class ContentManagerApi {
   constructor() {
@@ -34,13 +35,7 @@ class ContentManagerApi {
   }
 
   async getHelpConfiguration(request, h) {
-    try {
-      const configuration = await ServerUtils.ccmGet(request,"CONTENT_CONFIG.HELPDESCRIPTOR");
-      return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
-    } catch (err) {
-      console.log(err);
-      return h.response(err).code(err.status);
-    }
+    return h.response(LandingPageConfiguration).code(CONSTANTS.STATUS_CODE_SUCCESS);
   }
 
   async getLandingPageConfiguration(request, h) {
