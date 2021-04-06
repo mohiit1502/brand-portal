@@ -227,7 +227,7 @@ const CONSTANTS = {
     IMAGE_WALMART_INTRO: "WalmartIntro",
     CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
     CONTACTEMAIL: "IPInvest@walmart.com",
-    COPYRIGHTTEXT: "© 2020 Walmart. All rights reserved.",
+    COPYRIGHTTEXT: "© 2021 Walmart. All rights reserved.",
     PRIVACYTEXT: "Privacy Policy",
     PRIVACYURL: ""
   },

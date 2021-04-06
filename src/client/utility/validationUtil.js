@@ -204,6 +204,7 @@ export default class Validator {
         inputData.trademarkNumber.isValid = true;
         inputData.trademarkNumber.error = false;
         inputData.trademarkNumber.fieldOk = false;
+        inputData.trademarkNumber.fieldAlert = false;
         inputData.trademarkNumber.disabled = false;
         inputData.trademarkNumber.loader = false;
         inputData.trademarkNumber.usptoUrl = "";

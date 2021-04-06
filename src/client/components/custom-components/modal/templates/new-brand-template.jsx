@@ -158,6 +158,7 @@ class NewBrandTemplate extends React.Component {
     form.inputData.comments.error = "";
 
     form.inputData.trademarkNumber.fieldOk = false;
+    form.inputData.trademarkNumber.fieldAlert = false;
     form.inputData.brandName.fieldOk = false;
 
     this.setState({form});
