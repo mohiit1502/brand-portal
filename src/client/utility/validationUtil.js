@@ -318,8 +318,8 @@ export default class Validator {
         emailId.error = emailId.error !== emailId.invalidError && error;
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
-        // this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
-        this.setState({form}, this.checkToEnableSubmit);
+        this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        // this.setState({form}, this.checkToEnableSubmit);
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_EMAIL_UNIQUE = unique;
       }).catch(err => {
