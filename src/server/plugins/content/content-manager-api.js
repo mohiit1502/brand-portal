@@ -35,17 +35,17 @@ class ContentManagerApi {
   }
 
   async getHelpConfiguration(request, h) {
-    return h.response(LandingPageConfiguration).code(CONSTANTS.STATUS_CODE_SUCCESS);
-  }
-
-  async getLandingPageConfiguration(request, h) {
     try {
-      const configuration = await ServerUtils.ccmGet(request,"CONTENT_CONFIG.LANDINGPAGEDESCRIPTOR");
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.HELPDESCRIPTOR");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
       return h.response(err).code(err.status);
     }
+  }
+
+  async getLandingPageConfiguration(request, h) {
+    return h.response(LandingPageConfiguration).code(CONSTANTS.STATUS_CODE_SUCCESS);
   }
 
   async getFormFieldConfiguration(request, h) {
