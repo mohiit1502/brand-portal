@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {saveUserInitiated} from "../../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import {showNotification} from "../../../../actions/notification/notification-actions";
 import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
@@ -270,7 +271,7 @@ class CreateUserTemplate extends React.Component {
       WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
     };
     if (this.state.form.isUpdateTemplate) {
-      return Http.put(`${url}/${payload.user.email}`, payload)
+      return Http.put(`${url}/${payload.user.email}`, payload, null, null, this.props.showNotification, "Unable to update the user!")
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -288,7 +289,7 @@ class CreateUserTemplate extends React.Component {
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.USER_DETAILS_SUBMISSION, mixpanelPayload);
         });
     } else {
-      return Http.post(url, payload)
+      return Http.post(url, payload, null, null, this.props.showNotification, "Unable to invite the user!")
         .then(res => {
           this.resetTemplateStatus();
           this.props.saveUserInitiated();
@@ -365,6 +366,7 @@ CreateUserTemplate.propTypes = {
   newUserContent: PropTypes.object,
   toggleModal: PropTypes.func,
   saveUserInitiated: PropTypes.func,
+  showNotification: PropTypes.func,
   data: PropTypes.object,
   userProfile: PropTypes.object
 };
@@ -378,6 +380,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   saveUserInitiated,
+  showNotification,
   toggleModal
 };
 
