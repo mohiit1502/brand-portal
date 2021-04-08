@@ -79,11 +79,14 @@ class NewBrandTemplate extends React.Component {
         if (key === "trademarkNumber") {
           state.form.inputData[key].isValid = false;
           state.form.inputData[key].error = "";
+          state.form.inputData[key].fieldAlert = false;
+          state.form.inputData[key].fieldOk = false;
           this.trademarkDebounce();
         }
         if (key === "brandName") {
           state.form.inputData[key].isUnique = false;
           state.form.inputData[key].error = "";
+          state.form.inputData[key].fieldOk = false;
           this.brandDebounce({brandName: targetVal, wf: "BRAND_WORKFLOW"});
         }
         state = {...state};
