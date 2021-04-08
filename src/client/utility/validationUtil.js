@@ -167,18 +167,17 @@ export default class Validator {
         inputData.brandName.isUnique = res.body.unique;
         inputData.brandName.error = error;
         inputData.brandName.fieldOk = !error;
-        inputData.brandName.disabled = false;
-        inputData.brandName.loader = false;
         this.setState(state, this.checkToEnableSubmit);
       })
       .catch(err => {
         inputData.brandName.isUnique = false;
         inputData.brandName.error = false;
         inputData.brandName.fieldOk = false;
-        inputData.brandName.disabled = false;
-        inputData.brandName.loader = false;
-        console.log(err);
         this.setState(state, this.checkToEnableSubmit);
+      })
+      .finally(() => {
+        inputData.brandName.disabled = false;
+        inputData.brandName.loader = false
       });
   }
 
@@ -201,12 +200,14 @@ export default class Validator {
         inputData.trademarkNumber.isValid = true;
         inputData.trademarkNumber.error = false;
         inputData.trademarkNumber.fieldOk = false;
-        inputData.trademarkNumber.disabled = false;
-        inputData.trademarkNumber.loader = false;
+        inputData.trademarkNumber.fieldAlert = false;
         inputData.trademarkNumber.usptoUrl = "";
         inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
-        console.log(err)
         this.setState(state, this.checkToEnableSubmit);
+      })
+      .finally(() => {
+        inputData.trademarkNumber.disabled = false;
+        inputData.trademarkNumber.loader = false;
       });
   }
 
@@ -222,34 +223,30 @@ export default class Validator {
     inputData.companyOnboardingActions.buttons = {...inputData.companyOnboardingActions.buttons}
     inputData.companyOnboardingActions.buttons.clear.disabled = true;
     this.setState(state);
-    // const response = (await Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value}));
     Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value})
       .then(response => {
         const error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
-        inputData.companyName.disabled = false;
         inputData.companyName.error = error;
         inputData.companyName.isUnique = !error;
         inputData.companyName.fieldOk = !error;
-        inputData.companyName.loader = false;
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
         this.setState(state, () => {
-          this.toggleFormEnable(!error, !error, false)
+          this.toggleFormEnable(!error, !error, false);
           this.checkToEnableSubmit();
         });
       }).catch (err => {
-        inputData.companyName.disabled = false;
         inputData.companyName.error = err.error;
         inputData.companyName.isUnique = false;
         inputData.companyName.fieldOk = false;
-        inputData.companyName.loader = false;
         inputData.companyName.requestAdministratorAccess = true;
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
-        if (error) {
-          this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
-        }
+        this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
         this.setState(state);
-        // console.log(err);
       })
+      .finally(() => {
+        inputData.companyName.disabled = false;
+        inputData.companyName.loader = false;
+      });
   }
 
   static onEmailChange() {
@@ -264,23 +261,19 @@ export default class Validator {
     if (emailId.value && emailId.error !== emailId.invalidError) {
       this.loader("fieldLoader", true);
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
-        emailId.disabled = false;
-        emailId.loader = false;
-        // const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
+        const error = !res.body.unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
         emailId.error = emailId.error !== emailId.invalidError && error;
-        // const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
-        const error = !res.body.unique ? "This email already exists in the Walmart Brand Portal." : "";
-        // emailId.isUnique = unique;
         emailId.isUnique = res.body.unique;
         emailId.fieldOk = !error;
         this.setState({form}, this.checkToEnableSubmit);
-        // this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
       }).catch(err => {
-        emailId.disabled = false;
-        emailId.loader = false;
         emailId.fieldOk = false;
         this.setState({form});
+      })
+      .finally(() => {
+        emailId.disabled = false;
+        emailId.loader = false;
       });
     }
   }
@@ -310,8 +303,6 @@ export default class Validator {
     tmMeta.error = error;
     tmMeta.fieldOk = res.body.usptoVerification === "VALID";
     tmMeta.fieldAlert = res.body.usptoVerification === "NOT_VERIFIED";
-    tmMeta.disabled = false;
-    tmMeta.loader = false;
     tmMeta.usptoUrl = res.body.usptoUrl;
     tmMeta.usptoVerification = res.body.usptoVerification;
     this.setState(state, this.checkToEnableSubmit);

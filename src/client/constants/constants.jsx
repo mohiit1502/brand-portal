@@ -148,11 +148,13 @@ const CONSTANTS = {
       SUPERADMIN: "Super Admin"
     },
     STATUS: {
+      ACTIVE: "Active",
       NEW: "New",
       PENDING: "Pending Activation",
-      ACTIVE: "Active",
+      PENDING_SUPPLIER: "Pending Supplier Activation",
+      REJECTED: "Rejected",
       SUSPENDED: "Inactive",
-      REJECTED: "Rejected"
+      TOU_NOT_ACCEPTED: "TouNotAccepted"
     },
     UNIQUENESS_CHECK_STATUS: {
       EMAIL: "EMAIL",
@@ -225,7 +227,7 @@ const CONSTANTS = {
     IMAGE_WALMART_INTRO: "WalmartIntro",
     CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
     CONTACTEMAIL: "IPInvest@walmart.com",
-    COPYRIGHTTEXT: "© 2020 Walmart. All rights reserved.",
+    COPYRIGHTTEXT: "© 2021 Walmart. All rights reserved.",
     PRIVACYTEXT: "Privacy Policy",
     PRIVACYURL: ""
   },
