@@ -1,7 +1,5 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
 import falcon from "../../components/auth/falcon";
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
@@ -13,29 +11,9 @@ const ttl = 12 * 60 * 60 * 1000;
 class UserManagerApi {
 
   constructor() {
-    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus"]
+    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus"]
     functions.forEach(name => this[name] = this[name].bind(this));
     this.name = "UserManagerApi";
-  }
-
-  createBody(result) {
-    let retObj = {};
-    if (result && result.response && !isEmpty(result)) {
-      const res = get(result, "response.data");
-      const OK = 200;
-      const BAD_REQUEST = 400;
-
-      retObj = {
-        status: res ? OK : BAD_REQUEST,
-        payload: res || get(result, "response.errors")
-      };
-    } else {
-      retObj = {
-        status: get(result, "error.status"),
-        payload: get(result, "error.response")
-      };
-    }
-    return retObj;
   }
 
   register(server) {
@@ -95,6 +73,11 @@ class UserManagerApi {
         method: "PUT",
         path: "/api/users/{emailId}/status/{status}",
         handler: this.updateUserStatus
+      },
+      {
+        method: "PUT",
+        path: "/api/users/updateTouStatus/{status}",
+        handler: this.updateTouStatus
       },
       {
         method: "POST",
@@ -278,6 +261,25 @@ class UserManagerApi {
     }
   }
 
+  async updateTouStatus (request, h) {
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+      const payload = request.payload;
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
+      const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
+      const url = `${BASE_URL}${USER_PATH}/me/status/${request.params.status}`;
+
+      const response = await ServerHttp.put(url, options, payload);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      return h.response(err).code(err.status);
+    }
+  }
+
   async deleteUser (request, h) {
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -393,7 +395,6 @@ class UserManagerApi {
         isSecure: false,
         isHttpOnly: false
       });
-      // console.log("hapi state ========= ", h.state("auth_sessio_token"));
       return h.redirect("/");
     } catch (err) {
       console.error(err);
