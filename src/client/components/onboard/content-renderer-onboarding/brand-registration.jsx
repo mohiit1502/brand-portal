@@ -73,11 +73,14 @@ class BrandRegistration extends React.Component {
         state = {...state};
         if (key === "trademarkNumber") {
           this.trademarkDebounce();
+          state.form.inputData.trademarkNumber.fieldAlert = false;
+          state.form.inputData.trademarkNumber.fieldOk = false;
           state.form.inputData.trademarkNumber.error = "";
           state.form.inputData.trademarkNumber.isValid = false;
         }
         if (key === "brandName") {
           this.brandDebounce({brandName: targetVal});
+          state.form.inputData.brandName.fieldOk = false;
           state.form.inputData.brandName.error = "";
           state.form.inputData.brandName.isUnique = false;
         }

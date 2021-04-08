@@ -168,7 +168,7 @@ class CreateUserTemplate extends React.Component {
         inputData[key].error = !this.invalid[key] ? "" : inputData[key].error;
         if (key === "emailId") {
           inputData.emailId.isUnique = false;
-//           inputData.emailId.fieldOk = false;
+          inputData.emailId.fieldOk = false;
           (inputData.emailId.error !== CONSTANTS.ERRORMESSAGES.EMAILERROR) && (inputData.emailId.error = "");
           this.emailDebounce();
         }
