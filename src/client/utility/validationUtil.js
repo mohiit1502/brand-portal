@@ -266,14 +266,16 @@ export default class Validator {
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
         emailId.disabled = false;
         emailId.loader = false;
-        let error;
-        const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
-        error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
+        // const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
         emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
         emailId.error = emailId.error !== emailId.invalidError && error;
-        emailId.isUnique = unique;
+        // const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
+        const error = !res.body.unique ? "This email already exists in the Walmart Brand Portal." : "";
+        // emailId.isUnique = unique;
+        emailId.isUnique = res.body.unique;
         emailId.fieldOk = !error;
-        this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
+        this.setState({form}, this.checkToEnableSubmit);
+        // this.setState({form, uniquenessCheckStatus: res.body.krakenUniqueStatus}, this.checkToEnableSubmit);
       }).catch(err => {
         emailId.disabled = false;
         emailId.loader = false;
