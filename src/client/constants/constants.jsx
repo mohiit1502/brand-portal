@@ -153,8 +153,8 @@ const CONSTANTS = {
       PENDING: "Pending Activation",
       PENDING_SUPPLIER: "Pending Supplier Activation",
       REJECTED: "Rejected",
-      SUSPENDED: "Inactive",
-      TOU_NOT_ACCEPTED: "TouNotAccepted"
+      SUSPENDED: "Suspended",
+      TOU_NOT_ACCEPTED: "Invitation Not Accepted"
     },
     UNIQUENESS_CHECK_STATUS: {
       EMAIL: "EMAIL",
@@ -176,7 +176,8 @@ const CONSTANTS = {
     },
     VALUES: {
       STATUS: {
-        SUSPENDED: "Inactive"
+        [CONSTANTS.USER.STATUS.SUSPENDED]: "Inactive",
+        [CONSTANTS.USER.STATUS.PENDING_SUPPLIER]: "Pending Activation"
       }
     }
   },

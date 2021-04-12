@@ -112,7 +112,7 @@ const UserListTable = function(props) {
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
                             Array.isArray(cell.value) ? cell.value.join(", ") : cell.value && typeof cell.value === "string"
-                            && CONSTANTS.USER.VALUES.STATUS[cell.value.toUpperCase()] ? CONSTANTS.USER.VALUES.STATUS[cell.value.toUpperCase()] : cell.value
+                            && CONSTANTS.USER.VALUES.STATUS[cell.value] ? CONSTANTS.USER.VALUES.STATUS[cell.value] : cell.value
                           }
                           {
                             cell.column.id === "username" && cell.row.original.company &&
