@@ -268,7 +268,7 @@ class CreateUserTemplate extends React.Component {
           console.log(err);
         });
     } else {
-      return Http.post(url, payload, null, null, this.props.showNotification, "", `Unable to invite user ${loginId}!`)
+      return Http.post(url, payload, null, null, this.props.showNotification, "", `Unable to invite user ${loginId}, please try with a different mail ID`)
         .then(res => {
           this.resetTemplateStatus();
           this.props.saveUserInitiated();
