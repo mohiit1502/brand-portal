@@ -268,7 +268,7 @@ class CreateUserTemplate extends React.Component {
           console.log(err);
         });
     } else {
-      return Http.post(url, payload)
+      return Http.post(url, payload, null, null, this.props.showNotification, "", `Unable to invite user ${loginId}!`)
         .then(res => {
           this.resetTemplateStatus();
           this.props.saveUserInitiated();
@@ -338,6 +338,7 @@ class CreateUserTemplate extends React.Component {
 
 CreateUserTemplate.propTypes = {
   newUserContent: PropTypes.object,
+  showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   saveUserInitiated: PropTypes.func,
   data: PropTypes.object,
@@ -353,6 +354,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   saveUserInitiated,
+  showNotification,
   toggleModal
 };
 
