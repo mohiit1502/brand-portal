@@ -168,7 +168,7 @@ class CreateUserTemplate extends React.Component {
         inputData[key].error = !this.invalid[key] ? "" : inputData[key].error;
         if (key === "emailId") {
           inputData.emailId.isUnique = false;
-//           inputData.emailId.fieldOk = false;
+          inputData.emailId.fieldOk = false;
           (inputData.emailId.error !== CONSTANTS.ERRORMESSAGES.EMAILERROR) && (inputData.emailId.error = "");
           this.emailDebounce();
         }
@@ -243,11 +243,13 @@ class CreateUserTemplate extends React.Component {
         firstName,
         lastName,
         brands,
+        organization: this.props.userProfile.organization,
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value,
-        type: isThirdParty ? "ThirdParty" : "Internal"
-      }
+        type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
+      },
+      krakenUniqueWorkflow: this.state.uniquenessCheckStatus
     };
 
     isThirdParty && (payload.user.companyName = this.state.form.inputData.companyName.value);
@@ -266,16 +268,17 @@ class CreateUserTemplate extends React.Component {
           console.log(err);
         });
     } else {
-      return Http.post(url, payload)
+      return Http.post(url, payload, null, null, this.props.showNotification, "", `Unable to invite user, please try with a different mail ID`)
         .then(res => {
           this.resetTemplateStatus();
           this.props.saveUserInitiated();
           const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-          this.loader("form", false);
         })
         .catch(err => {
           console.log(err);
+        })
+        .finally (() => {
           this.loader("form", false);
         })
     }
@@ -335,20 +338,23 @@ class CreateUserTemplate extends React.Component {
 
 CreateUserTemplate.propTypes = {
   newUserContent: PropTypes.object,
+  showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   saveUserInitiated: PropTypes.func,
-  data: PropTypes.object
+  data: PropTypes.object,
+  userProfile: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     newUserContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWUSER,
-    userEdit: state.userEdit
+    userProfile: state.user.profile
   };
 };
 
 const mapDispatchToProps = {
   saveUserInitiated,
+  showNotification,
   toggleModal
 };
 

@@ -148,11 +148,13 @@ const CONSTANTS = {
       SUPERADMIN: "Super Admin"
     },
     STATUS: {
+      ACTIVE: "Active",
       NEW: "New",
       PENDING: "Pending Activation",
-      ACTIVE: "Active",
-      SUSPENDED: "Inactive",
-      REJECTED: "Rejected"
+      PENDING_SUPPLIER: "Pending Supplier Activation",
+      REJECTED: "Rejected",
+      SUSPENDED: "Suspended",
+      TOU_NOT_ACCEPTED: "Invitation Not Accepted"
     },
     UNIQUENESS_CHECK_STATUS: {
       EMAIL: "EMAIL",
@@ -174,7 +176,8 @@ const CONSTANTS = {
     },
     VALUES: {
       STATUS: {
-        SUSPENDED: "Inactive"
+        "Suspended": "Inactive",
+        "Pending Supplier Activation": "Pending Activation"
       }
     }
   },
@@ -225,7 +228,7 @@ const CONSTANTS = {
     IMAGE_WALMART_INTRO: "WalmartIntro",
     CONTACTTEXT: "If you have more questions or wish to know more, contact us at ",
     CONTACTEMAIL: "IPInvest@walmart.com",
-    COPYRIGHTTEXT: "© 2020 Walmart. All rights reserved.",
+    COPYRIGHTTEXT: "© 2021 Walmart. All rights reserved.",
     PRIVACYTEXT: "Privacy Policy",
     PRIVACYURL: ""
   },
@@ -258,7 +261,7 @@ const CONSTANTS = {
 
   ERRORMESSAGES: {
     PASSWORDMISMATCH: "Password did not match.",
-    PASSWORDPOLICYMESSAGE: "The specified password does not meet defined policy",
+    PASSWORDPOLICYMESSAGE: "The specified password does not meet defined policy.",
     SAMEPASSWORD: "New password matches old password.",
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
     EMAILERROR: "Please enter a valid Email ID",

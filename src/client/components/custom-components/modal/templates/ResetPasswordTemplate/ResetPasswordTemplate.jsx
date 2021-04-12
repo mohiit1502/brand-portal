@@ -93,6 +93,7 @@ class ResetPasswordTemplate extends Component {
         })
         .catch(err => {
           this.loader("form", false);
+          err = err.error;
           if (err.status === CONSTANTS.STATUS_CODE_400) {
             if (err.message && err.message.toLowerCase() === CONSTANTS.ERRORMESSAGES.PASSWORDMISMATCH.toLowerCase()) {
               this.setState(state => {
