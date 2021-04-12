@@ -176,8 +176,8 @@ const CONSTANTS = {
     },
     VALUES: {
       STATUS: {
-        [CONSTANTS.USER.STATUS.SUSPENDED]: "Inactive",
-        [CONSTANTS.USER.STATUS.PENDING_SUPPLIER]: "Pending Activation"
+        "Suspended": "Inactive",
+        "Pending Supplier Activation": "Pending Activation"
       }
     }
   },
