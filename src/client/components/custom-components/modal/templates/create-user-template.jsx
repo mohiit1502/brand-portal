@@ -141,6 +141,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.emailId.loader = false;
     form.inputData.emailId.fieldOk = false;
     form.inputData.emailId.disabled = false;
+    form.inputData.emailId.isUnique = true;
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);

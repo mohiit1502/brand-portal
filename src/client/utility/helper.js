@@ -148,7 +148,7 @@ export default class Helper {
       if (filter === "dateRange" && filterValue === "customDate") {
         filterValue = filterData.value;
       }
-      params = params.replace(`__${filter}__`, filter + ":" + filterValue)
+      params = (filter === "claimType" && filterValue === "__claimType__") ? params: params.replace(`__${filter}__`, filter + ":" + filterValue);
     })
     if (params.indexOf("__") > -1) {
       const firstUS = params.indexOf("__");

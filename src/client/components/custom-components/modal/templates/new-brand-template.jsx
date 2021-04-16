@@ -146,6 +146,7 @@ class NewBrandTemplate extends React.Component {
     }
   }
 
+  // eslint-disable-next-line max-statements
   resetTemplateStatus () {
     const form = {...this.state.form};
     form.inputData.trademarkNumber.value = "";
@@ -157,7 +158,14 @@ class NewBrandTemplate extends React.Component {
     form.inputData.comments.error = "";
 
     form.inputData.trademarkNumber.fieldOk = false;
+    form.inputData.trademarkNumber.fieldAlert = false;
     form.inputData.brandName.fieldOk = false;
+
+    form.inputData.trademarkNumber.isValid = false;
+    form.inputData.brandName.isUnique = false;
+
+    form.inputData.trademarkNumber.disabled = false;
+    form.inputData.brandName.disabled = false;
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
