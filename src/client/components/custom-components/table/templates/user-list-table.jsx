@@ -6,17 +6,23 @@ import sortIcon from "../../../../images/sortIcon.svg";
 import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
 import NoRecordsMatch from "../../NoRecordsMatch";
+import sortIconUp from "../../../../images/sort_ascend.svg";
+import sortIconDown from "../../../../images/sort_descend.svg";
 
 const UserListTable = function(props) {
 
   const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
-    userName: "col-3",
+    dateAdded: "col-2",
+    role: "col-1",
     sequence: "col-1",
-    status: "col-2",
-    role: "col-2"
+    status: "col-3",
+    username: "col-2"
   };
+  const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
+  const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
+  const sortStateReset = CONSTANTS.SORTSTATE.RESET;
 
   const updateDDOptions = (index, values, ddOptions) => {
     const statusPending = CONSTANTS.USER.STATUS.PENDING.toLowerCase();
@@ -82,9 +88,20 @@ const UserListTable = function(props) {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
                     sortByToggleProps.onClick = () => sortHandler(header);
+                    let sortIcondisplay;
+                    if (header.sortState.level ===  sortStateReset) {
+                        sortIcondisplay = sortIcon;
+                    } else if (header.sortState.level === sortStateAscending) {
+                        sortIcondisplay = sortIconDown;
+                    } else {
+                        sortIcondisplay = sortIconUp;
+                    }
                     return (
                       <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
-                        { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
+                        { header.render("Header") }
+                        {
+                          <img className={"sort-icon"} src={sortIcondisplay} />
+                        }
                       </div>
                     );
                   })
