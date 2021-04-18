@@ -14,6 +14,8 @@ import {dispatchMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
+import mixpanel from "../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 
 class Authenticator extends React.Component {
 
@@ -31,6 +33,12 @@ class Authenticator extends React.Component {
   }
 
   componentDidMount() {
+    if (mixpanel.getToken() === undefined) {
+      Http.get("/api/mixpanelConfig")
+      .then(res => {
+        mixpanel.intializeMixpanel(res.body.projectToken);
+      }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+    }
     if (this.state.isLoggedIn) {
       this.initMetaData();
       this.getProfileInfo();
@@ -137,6 +145,7 @@ class Authenticator extends React.Component {
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     if (this.state.isLoggedIn) {
       if (this.state.profileInformationLoaded) {
+        mixpanel.login(this.props.userProfile, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");
@@ -174,6 +183,7 @@ class Authenticator extends React.Component {
 
 Authenticator.propTypes = {
   dispatchLogoutUrl: PropTypes.func,
+  dispatchMixpanelConfig: PropTypes.func,
   dispatchMetadata: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,

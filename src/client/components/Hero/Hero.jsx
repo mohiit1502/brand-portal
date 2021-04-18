@@ -3,6 +3,8 @@ import * as images from "./../../images";
 import CONSTANTS from "./../../constants/constants";
 import "./Hero.component.scss";
 import LaptopImage from "./../../images/laptopImage.jpg"
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 const Hero = props => {
   return (
@@ -12,7 +14,8 @@ const Hero = props => {
             <div className="c-Hero__tag-line-container align-content-lg-center py-5 mx-5 my-3">
               <div className="c-Hero__tag-line px-5 mx-5">{CONSTANTS.LOGIN.LANDING_PAGE_TEXT}</div>
               <div className="button-con">
-              <a className="c-Hero__register-btn btn btn-primary px-5" href={CONSTANTS.URL.REGISTER_REDIRECT}>{CONSTANTS.LOGIN.REGISTER_TEXT}</a>
+              <a className="c-Hero__register-btn btn btn-primary px-5" href={CONSTANTS.URL.REGISTER_REDIRECT}
+                onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>{CONSTANTS.LOGIN.REGISTER_TEXT}</a>
             </div>
             </div>
         </div>

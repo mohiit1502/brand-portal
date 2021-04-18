@@ -7,6 +7,8 @@ import {dispatchFilter} from "../../actions/dashboard/dashboard-actions";
 import Helper from "../../utility/helper";
 import "./Summary.component.scss";
 import AuthUtil from "../../utility/AuthUtil";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 const Summary = props => {
 
@@ -42,6 +44,12 @@ const Summary = props => {
       }
     }
   } = props;
+
+  const mixpanelAddNewTemplateUtil = (meta, payload) => {
+    const templateName = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    mixpanel.trackEvent(eventName, payload);
+  };
 
   const onClickHandler = (filterName) => {
     currentFilters[ID] = filterName;
@@ -83,6 +91,8 @@ const Summary = props => {
 
   const triggerAddAction = () => {
     const meta = { templateName };
+    const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
+    mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

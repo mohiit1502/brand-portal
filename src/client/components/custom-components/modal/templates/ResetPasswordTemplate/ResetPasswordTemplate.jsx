@@ -8,6 +8,8 @@ import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notifi
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import CONSTANTS from "../../../../../constants/constants";
 import './ResetPasswordTemplate.component.scss';
+import mixpanel from "../../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 
 class ResetPasswordTemplate extends Component {
   constructor(props) {
@@ -85,11 +87,15 @@ class ResetPasswordTemplate extends Component {
       const url = form.apiPath;
 
       this.loader("form", true);
+      const mixpanelPayload = {
+        API: url,
+      };
       return Http.post(url, payload, null, null, this.props.showNotification, this.state.form.passwordChangedMessage, this.state.form.failureMessage)
         .then(res => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
@@ -116,6 +122,11 @@ class ResetPasswordTemplate extends Component {
             }
           }
           console.log(err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CHANGE_PASSWORD, mixpanelPayload);
         });
     }
   }
@@ -138,6 +149,7 @@ class ResetPasswordTemplate extends Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCEL_CHANGE_PASSWORD);
   }
 
   render() {

@@ -2,6 +2,8 @@
 import CONSTANTS from "../constants/constants";
 import * as d3 from "d3";
 import Http from "./Http";
+import mixpanel from "../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 
 export default class Helper {
   static toCamelCaseFirstUpper(incoming) {
@@ -159,19 +161,34 @@ export default class Helper {
       const paramTrimmed = param.substring(2, param.lastIndexOf("__"));
       params = params.replace(param, paramTrimmed + ":" + param);
     }
+    const mixpanelPayload = {
+      API: baseUrl,
+      WORK_FLOW: "MY_DASHBOARD",
+      CHART_SELECTED: MIXPANEL_CONSTANTS.FILTER_SELECTED_MAPPING[chartsContainerMeta.DATAKEY],
+      DATA_RANGE: filterData.dateRange
+    };
+    if (filterData.claimType)  mixpanelPayload.CLAIM_TYPE = filterData.claimType;
     url = baseUrl + btoa(params);
     try {
       Http.get(url)
         .then(response => {
           chartsContainerMeta.setDataLocal(response.body.data && response.body.data[chartsContainerMeta.DATAKEY] ? response.body.data[chartsContainerMeta.DATAKEY] : chartsContainerMeta.dataLocal);
           chartsContainerMeta.setLoader(false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           console.log(err)
           chartsContainerMeta.setLoader(false);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
         });
     } catch (e) {
-      chartsContainerMeta.setLoader(false)
+      chartsContainerMeta.setLoader(false);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+    }
+    finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.FILTER_SELECTED,mixpanelPayload);
     }
   }
 

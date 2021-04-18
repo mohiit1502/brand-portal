@@ -12,6 +12,8 @@ import CONSTANTS from "../../../constants/constants";
 import Validator from "../../../utility/validationUtil";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
 import ContentRenderer from "../../../utility/ContentRenderer";
+import mixpanel from "../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 
 class BrandRegistration extends React.Component {
 
@@ -35,6 +37,10 @@ class BrandRegistration extends React.Component {
         inputData: {...brandConfiguration.fields}
       }
     };
+    const mixpanelPayload = {
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION, mixpanelPayload);
   }
 
   checkToEnableSubmit () {
@@ -120,6 +126,10 @@ class BrandRegistration extends React.Component {
 
   async submitOnboardingForm(evt) {
     evt.preventDefault();
+    let mixpanelPayload = {
+      API: "/api/org/register",
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
     try {
       this.loader("form", true);
       const inputData = this.state.form.inputData;
@@ -137,15 +147,23 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
-
+      mixpanelPayload.BRAND_NAME = brand.name;
+      mixpanelPayload.COMPANY_NAME = this.props.org.name;
+      mixpanelPayload.TRADEMARK_NUMBER = brand.trademarkNumber;
+      mixpanelPayload.IS_DOCUMENT_UPLOADED = Boolean(this.props.org.businessRegistrationDocId || this.props.org.additionalDocId);
       await Http.post("/api/org/register", data);
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();
       this.props.dispatchNewRequest(true);
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      mixpanelPayload.API_SUCCESS = true;
     } catch (err) {
       this.loader("form", false);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+    } finally {
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
     }
   }
 

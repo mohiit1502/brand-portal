@@ -4,13 +4,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import "./StatusModalTemplate.component.scss";
+import mixpanel from "../../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 
 const StatusModalTemplate = props => {
 
   // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
   const baseUrl = window.location.origin;
   const logoutUrl = props.logoutUrl && props.logoutUrl.replace("__domain__", baseUrl);
-
+  const mixpanelPayload = {
+    WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[props.meta && props.meta.CODE ? props.meta.CODE : 0]
+  };
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -37,7 +41,9 @@ const StatusModalTemplate = props => {
             </div>
             <div className="row mt-4">
               <div className="col">
-                <a className="btn btn-sm btn-primary px-5" href={logoutUrl}>Logout</a>
+                <a className="btn btn-sm btn-primary px-5" href={logoutUrl}onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
+                  Logout
+                </a>
               </div>
             </div>
           </div>

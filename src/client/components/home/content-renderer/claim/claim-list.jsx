@@ -17,6 +17,8 @@ import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class ClaimList extends React.Component {
 
@@ -124,6 +126,8 @@ class ClaimList extends React.Component {
     }
     const claimList = await this.fetchClaims();
     this.checkAndApplyDashboardFilter(claimList);
+    const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIM_LIST_WORKFLOW.VIEW_CLAIMS, mixpanelPayload);
   }
 
   componentDidUpdate(prevProps) {
@@ -200,8 +204,16 @@ class ClaimList extends React.Component {
     return claimList;
   }
 
+  mixpanelAddNewTemplateUtil = (meta, payload) => {
+    const templateName = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    mixpanel.trackEvent(eventName, payload);
+  }
+
   addNewClaim () {
     const meta = { templateName: "NewClaimTemplate" };
+    const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
+    this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
