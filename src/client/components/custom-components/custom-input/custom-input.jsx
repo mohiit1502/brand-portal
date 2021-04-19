@@ -52,13 +52,14 @@ class CustomInput extends React.Component {
 
   onChangeLocal(evt, key) {
     evt.persist();
-    this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
+    const trimmedValue = this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
     if (evt && evt.target) {
-      this.setState({
-//         error: "",
-        fieldOk: false,
-        fieldAlert: false,
-        value: evt.target.value
+      this.setState(() => {
+        const stateCloned = {...this.state};
+        stateCloned.fieldOk = false;
+        stateCloned.fieldAlert = false;
+        stateCloned.value = trimmedValue !== undefined ? trimmedValue : evt.target.value;
+        return stateCloned;
       });
     }
     this.changeHandlerDebounce(evt, key);
