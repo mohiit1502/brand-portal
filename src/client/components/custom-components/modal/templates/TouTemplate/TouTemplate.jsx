@@ -51,7 +51,7 @@ const TouTemplate = props => {
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = e.message ? e.message : e;
       }) .finally(() => {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.TOU_TEMPLATE.TOU_VERIFICATION_ACCEPTED, mixpanelPayload);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.TOU_TEMPLATE.TOU_VERIFICATION, mixpanelPayload);
       });
   };
 
