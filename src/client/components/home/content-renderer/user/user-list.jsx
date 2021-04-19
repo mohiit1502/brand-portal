@@ -291,7 +291,9 @@ class UserList extends React.Component {
           filteredList = filteredList.filter(user => {
             let bool = false;
             filterOptionsSelected.map(filterOption => {
-              bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
+              const altValue = user[filterId] && CONSTANTS.USER.VALUES[filterId.toUpperCase()] && CONSTANTS.USER.VALUES[filterId.toUpperCase()][user[filterId]]
+              const value = (altValue && altValue.toLowerCase()) || (!!user[filterId] && user[filterId].toLowerCase());
+              bool = bool || (value && value.indexOf(filterOption.value.toLowerCase()) !== -1);
             });
             return bool;
           });
@@ -336,6 +338,7 @@ class UserList extends React.Component {
     const companySet = new Set();
     const userStatuses = Object.values(CONSTANTS.USER.STATUS);
     userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.REJECTED), 1);
+    userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.PENDING_SUPPLIER), 1);
 
     paginatedList.map(user => {
       user.brands.map(brand => {
@@ -345,7 +348,7 @@ class UserList extends React.Component {
         rolesSet.add(user.role);
       }
       if (user.status) {
-        statusSet.add(user.status);
+        statusSet.add(CONSTANTS.USER.VALUES.STATUS[user.status] || user.status);
       }
 
       if (user.company) {

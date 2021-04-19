@@ -73,7 +73,7 @@ const WIDGETCONFIG = {
               "name": "verified",
               "label": "Verified",
               "mapper": "workFlowCounts.status",
-              "value": "ACCEPTED"
+              "value": "ACCEPTED,ACCEPTED_ON_AUDIT"
             }
           ]
         },
