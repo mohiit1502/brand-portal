@@ -21,6 +21,7 @@ import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
 import moment from "moment";
+
 class UserList extends React.Component {
 
   constructor (props) {
@@ -40,9 +41,10 @@ class UserList extends React.Component {
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
     this.filterMap = {"pending": "Pending Activation", "active": "Active"};
+    this.updateSortState = this.updateSortState.bind(this);
 
     this.state = {
       page: {
@@ -123,30 +125,31 @@ class UserList extends React.Component {
         {
           Header: "#",
           accessor: "sequence",
-          canSort: true,
+          canSort: false,
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET,
+            type: CONSTANTS.SORTSTATE.NUMERICTYPE,
           }
         },
         {
           Header: "USER NAME",
           accessor: "username",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "ROLE",
           accessor: "role",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
           Header: "ASSOCIATED BRANDS",
           accessor: "brands",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
+            level: CONSTANTS.SORTSTATE.RESET,
             type: CONSTANTS.SORTSTATE.ARRAYTYPE
           }
         },
@@ -154,18 +157,19 @@ class UserList extends React.Component {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE
+            level: CONSTANTS.SORTSTATE.RESET,
+            type: CONSTANTS.SORTSTATE.DATETYPE,
           }
         },
         {
           Header: "PROFILE STATUS",
           accessor: "status",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET
           }
         }
-      ]
+      ],
+      columnPriority: 0
     };
   }
 
@@ -176,18 +180,46 @@ class UserList extends React.Component {
       return stateClone;
     });
   }
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    if (columnMeta.canSort !== false) {
+      let sortLevel = columnMeta.sortState.level;
+      let columnPriority = this.state.columnPriority;
+      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+        columnMeta.sortState.priorityLevel = -1;
+      } else {
+        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority += 1;
+        }
+      }
+      this.setState({columns, columnPriority}, () => this.multiSort());
+    }
+  }
 
   uiSearch (evt, isFilter, filteredUsers) {
     const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
     const allUsers = filteredUsers ? filteredUsers : this.state.userList;
-    const filteredList = allUsers.filter(user => {
+    let filteredList = allUsers.filter(user => {
       return user.username.toLowerCase().indexOf(searchText) !== -1
         || user.role.toLowerCase().indexOf(searchText) !== -1
         || user.status.toLowerCase().indexOf(searchText) !== -1
         || user.brands.join(",").toLowerCase().indexOf(searchText) !== -1;
     });
+    let i = 1;
+    if (filteredList) filteredList.forEach(claim => claim.sequence = i++);
     if (isFilter) {
-      this.setState({filteredList, unsortedList: filteredList, searchText});
+      const unsortedfilteredList = filteredList;
+      if (this.state.columnPriority > 0) {
+        i = 1;
+        filteredList = this.multiSort(filteredList);
+        filteredList.forEach(claim => claim.sequence = i++);
+      }
+      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
     } else {
       this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
     }
@@ -248,7 +280,9 @@ class UserList extends React.Component {
     }
 
     this.setState({userList, unsortedList: userList}, () => this.checkAndApplyDashboardFilter(userList));
-    return userList;
+    const sortedClaimList = this.multiSort();
+
+    return sortedClaimList;
   }
 
   resetFilters() {
@@ -274,10 +308,9 @@ class UserList extends React.Component {
     filteredList = filteredList ? [...filteredList] : [...this.state.userList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-
+      let i = 1;
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        let i = 1;
         if (filterId === "brands") {
           filteredList = filteredList.filter(user => {
             let bool = false;
@@ -295,9 +328,9 @@ class UserList extends React.Component {
             });
             return bool;
           });
-          filteredList.forEach(user => user.sequence = i++);
         }
       }
+      filteredList.forEach(user => user.sequence = i++);
     });
 
     let appliedFilters = this.state.filters.map(filter => {
@@ -311,7 +344,13 @@ class UserList extends React.Component {
     }
 
     if (isSearch) {
-      this.setState({filteredList, unsortedList: filteredList});
+      const unsortedfilteredList = filteredList;
+      if (this.state.columnPriority > 0) {
+        let i = 1;
+        filteredList = this.multiSort(filteredList);
+        filteredList.forEach(claim => claim.sequence = i++);
+      }
+      this.setState({filteredList, unsortedList: unsortedfilteredList});
     } else {
       this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
       // this.setState({filteredList: paginatedList});
@@ -602,7 +641,7 @@ class UserList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.userList ?
-                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
+                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}} />
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }
