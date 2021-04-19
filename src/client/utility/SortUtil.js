@@ -83,8 +83,9 @@ export default class SortUtil {
     return 0;
   }
   static sortAlphabet (a, b, sortLevel) {
-    if (typeof a === "undefined" || typeof b === "undefined")
+    if (!a || !b) {
        return 0;
+    }
     if (sortLevel === CONSTANTS.SORTSTATE.ASCENDING) {
       if (a.toUpperCase() < b.toUpperCase()) return -1;
       if (a.toUpperCase() > b.toUpperCase()) return 1;
