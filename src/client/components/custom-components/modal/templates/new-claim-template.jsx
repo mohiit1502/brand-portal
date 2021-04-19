@@ -144,7 +144,7 @@ class NewClaimTemplate extends React.Component {
       },
       brands: [],
       itemUrlId: 0,
-      claimTypeSelected: false,
+      brandNameSelected: false,
       disableAddItem: true,
       currentItem: 0,
       loader: false,
@@ -161,9 +161,9 @@ class NewClaimTemplate extends React.Component {
   }
 
   componentDidMount() {
+    this.addToItemList();
     this.getClaimTypes();
     this.getBrands();
-    this.addToItemList();
   }
 
   componentDidUpdate() {
@@ -285,9 +285,9 @@ class NewClaimTemplate extends React.Component {
       if (key === "brandName") {
         claimType = state.form.inputData.claimType.value;
         brandName = value;
+        state.brandNameSelected = true;
       } else if (key === "claimType") {
         state.form.inputData.claimTypeIdentifier.required = true;
-        state.claimTypeSelected = true;
         brandName = state.form.inputData.brandName.value;
         claimType = value;
       }
@@ -348,13 +348,17 @@ class NewClaimTemplate extends React.Component {
 
   getBrands () {
     this.loader("loader", true);
-    return Http.get("/api/brands?brandStatus=ACCEPTED")
+    return Http.get("/api/brands?brandStatus=ACCEPTED", null, null, this.props.showNotification, null, "Request failed, please try again.")
       .then(res => {
         const state = {...this.state};
         state.brands = res.body.content;
         state.form.inputData.brandName.options = state.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
         state.loader = false;
         this.setState(state);
+        //this.loader("loader", false);
+      }).catch(err => {
+        this.loader("loader", false);
+        console.log(err);
       });
   }
 
@@ -558,25 +562,25 @@ class NewClaimTemplate extends React.Component {
               </button>
             </div>
             <div className={`modal-body mx-2 text-left${this.state.loader && " loader"}`}>
-              <p>Select the type of infringement you are reporting</p>
+              <p>Select your brand</p>
               {/*<p>Select your brand</p>*/}
               <div className="row">
-                <div className="col-4">
-                  <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
-                               value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
-                               disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
+                <div className="col-12">
+                  <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
+                               value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue} realign={true}
+                              disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
                 </div>
               </div>
-          {this.state.claimTypeSelected &&
+          {this.state.brandNameSelected &&
             <React.Fragment>
-              <p>Please complete the following fields to submit your claim.</p>
+            <p>Select the type of infringement you are reporting</p>
               <div className="row brand-and-patent">
               {/*<p>Select the type of infringement you are reporting</p>*/}
               {/*<div className="row claim-type-and-patent">*/}
                 <div className="col-4">
-                  <CustomInput key={"brandName"} inputId={"brandName"} formId={form.id} label={inputData.brandName.label} required={inputData.brandName.required}
-                               value={inputData.brandName.value} type={inputData.brandName.type} pattern={inputData.brandName.pattern} onChange={this.setSelectInputValue}
-                               disabled={inputData.brandName.disabled} dropdownOptions={inputData.brandName.options} subtitle={inputData.brandName.subtitle} unpadSubtitle={true} />
+                <CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}
+                               value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}
+                               disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />
                   {/*<CustomInput key={"claimType"} inputId={"claimType"} formId={form.id} label={inputData.claimType.label} required={inputData.claimType.required}*/}
                   {/*             value={inputData.claimType.value} type={inputData.claimType.type} pattern={inputData.claimType.pattern} onChange={this.setSelectInputValue}*/}
                   {/*             disabled={inputData.claimType.disabled} dropdownOptions={inputData.claimType.options} customChangeHandler={this.customChangeHandler.bind(this)} />*/}
@@ -588,6 +592,7 @@ class NewClaimTemplate extends React.Component {
                                dropdownOptions={inputData.claimTypeIdentifier.options} />
                 </div>
               </div>
+              <p>Please fill out the following details to submit your claim</p>
               {/*<p>Please complete the following fields to submit your claim.</p>*/}
               {
                 inputData.itemList.map((item, i) => {
@@ -672,7 +677,7 @@ class NewClaimTemplate extends React.Component {
             <div className="modal-footer">
               <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>
               {
-                this.state.claimTypeSelected &&
+                this.state.brandNameSelected &&
                 <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={form.isSubmitDisabled}>
                   Submit
                 </button>

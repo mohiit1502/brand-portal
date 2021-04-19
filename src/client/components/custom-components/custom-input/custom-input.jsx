@@ -120,32 +120,31 @@ class CustomInput extends React.Component {
   getSelectInput() {
 
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
-
+    const content = (<React.Fragment>
+      <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
+        id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
+        pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
+        data-toggle="dropdown" autoComplete="off" />
+      <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+        {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
+        {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
+        <span className="label-text"> { this.state.label } </span>
+      </label>
+      <div className="dropdown-menu">
+        {
+          this.state.dropdownOptions && this.state.dropdownOptions.map((option, i) => {
+            return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>{option.label || option.value}</a>;
+          })
+        }
+      </div>
+      </React.Fragment>);
     return (
-      <div className={`form-group custom-input-form-group custom-select-form-group dropdown${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-3"} ${errorClass}`}>
+      <div className={`form-group custom-input-form-group custom-select-form-group dropdown ${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-3"} ${errorClass}${this.state.realign ? " row d-block" : " field-select-arrow"}`}>
         {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={QuestionMarkIcon}/>}
-        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
-          pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
-          data-toggle="dropdown" autoComplete="off" />
-        <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
-          {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
-          {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
-          <span className="label-text"> { this.state.label } </span>
-        </label>
-        <img src={images.ArrowDown} className="dropdown-arrow"/>
-        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
+        {this.state.realign ? <div className="col-4 field-select-arrow">{content}</div> : content}
+        <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && this.state.realign ? "1.7rem" : "0.7rem"}}>
           { subtitleText }
         </small>
-
-
-        <div className="dropdown-menu">
-          {
-            this.state.dropdownOptions.map((option, i) => {
-              return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value, this.state.inputId); } }>{option.value}</a>;
-            })
-          }
-        </div>
       </div>
     );
   }
