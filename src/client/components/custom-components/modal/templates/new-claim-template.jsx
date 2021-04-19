@@ -429,8 +429,8 @@ class NewClaimTemplate extends React.Component {
     this.setState({form}, callback && callback());
   }
 
-  disableSubmitButton(){
-    this.setState( state => { state = {...state}; state.form.isSubmitDisabled = true ; return state; });
+  disableSubmitButton() {
+    this.setState(state => { state = {...state}; state.form.isSubmitDisabled = true; return state; });
   }
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
@@ -521,27 +521,27 @@ class NewClaimTemplate extends React.Component {
             form.inputData.itemList[i].sellerName.options = res.body;
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].url.error = "";
-            form.isSubmitDisabled=true;
+            form.isSubmitDisabled = true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
           } else if(res.body.length == 0){
             form.inputData.itemList[i].sellerName.disabled = true;
             form.inputData.itemList[i].url.error = "Please check the URL and try again!";
-            form.isSubmitDisabled=true;
+            form.isSubmitDisabled = true;
             this.setState({form}, this.checkToEnableItemButton);
           }
         })
         .catch(err => {
           this.loader("fieldLoader", false);
           const form = {...this.state.form};
-          if( new RegExp( CONSTANTS.CODES.ERRORCODES.SERVERERROR ).test( err.status.toString() )) {      //IQS- error
+          if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(err.status.toString())) {      //IQS- error
             form.inputData.itemList[i].url.error = "Unable to retrieve seller names for this item at this time, please enter the name of the sellers(s) related to your report (comma separated if multiple sellers)" ;
             form.inputData.itemList[i].sellerName.disabled = false;
             form.inputData.itemList[i].sellerName.options = [];
-            form.isSubmitDisabled=true;
-          }else{
+            form.isSubmitDisabled = true;
+          } else {
             form.inputData.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
-            form.inputData.itemList[i].sellerName.disabled = true;   
+            form.inputData.itemList[i].sellerName.disabled = true;
          }
          this.setState({form}, this.checkToEnableItemButton);
         });
@@ -609,7 +609,7 @@ class NewClaimTemplate extends React.Component {
                           <div className="col-8">
                             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={form.id} label={item.sellerName.label}
                               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type} pattern={item.sellerName.pattern}
-                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options} 
+                              onChange={this.setSelectInputValue} disabled={item.sellerName.disabled} dropdownOptions={item.sellerName.options}
                               validators={item.sellerName.validators} bubbleValue={this.bubbleValue}/>
                           </div>
                           <div className="col-4">

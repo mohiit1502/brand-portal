@@ -42,8 +42,7 @@ class UserProfile extends React.Component {
     Object.keys(this.state.form.inputData).forEach(itemKey => {
       const item = this.state.form.inputData[itemKey];
       this.state.form.inputData[itemKey].value = Helper.search(item.initValuePath, this.props.userProfile);
-    })
-
+    });
   }
 
   componentDidUpdate(prevProps) {

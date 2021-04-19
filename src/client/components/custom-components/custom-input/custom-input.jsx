@@ -199,7 +199,7 @@ class CustomInput extends React.Component {
         this.state.bubbleValue && this.state.bubbleValue( e, this.state.inputId , error );
       }
     }
-    
+
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
@@ -393,7 +393,7 @@ CustomInput.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
-  ]),
+  ])
 };
 
 const mapStateToProps = state => state;
