@@ -37,6 +37,14 @@ $stepper-row-height: 106px;
         &.bg-stepper-gray{
           background: #e2f3f7 !important;
         }
+        &.step-primary {
+          border: 5px solid #7ac4e4;
+          width: 1.4rem;
+          height: 1.4rem;
+          background: white !important;
+          top: 12px;
+          right: 0.1rem;
+        }
       }
 
       .connect-bar {
@@ -48,8 +56,10 @@ $stepper-row-height: 106px;
         &.bg-primary{
           background: #7ac4e4 !important;
         }
+        &.adjust-margin {
+          margin-top: -1px;
+        }
       }
     }
   }
 }
-

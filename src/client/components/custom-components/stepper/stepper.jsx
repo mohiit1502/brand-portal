@@ -18,9 +18,9 @@ class Stepper extends React.Component {
               return (
                 <div className="step-box" key={step.order}>
                   <div className="step-title">Step {step.order}: {step.name}</div>
-                  <div className={`stepper-circle ${step.complete ? step.active ? "bg-primary" : "bg-complete" : "bg-stepper-gray"}`} />
+                  <div className={`stepper-circle ${step.complete ? step.active ? "bg-primary step-primary" : "bg-complete" : "bg-stepper-gray"}`} />
                   {
-                    i > 0 && <div className={`connect-bar ${step.complete ? "bg-primary" : "bg-stepper-gray"}`} />
+                    i > 0 && <div className={`connect-bar${step.complete ? ` bg-primary${step.active ? " adjust-margin" : ""}` : " bg-stepper-gray"}`} />
                   }
                 </div>
               );
