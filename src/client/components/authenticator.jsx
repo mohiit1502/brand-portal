@@ -28,7 +28,8 @@ class Authenticator extends React.Component {
       isLoggedIn: !!sessionCookie,
       isOnboarded: false,
       profileInformationLoaded: false,
-      userInfoError: false
+      userInfoError: false,
+      logInId: Cookies.get("session_token_login_id")
     };
   }
 
@@ -75,6 +76,10 @@ class Authenticator extends React.Component {
   }
 
   async getProfileInfo () {
+    const mixpanelPayload = {
+      API: "/api/userInfo",
+      $email: this.state.logInId
+    };
     try {
       let profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
@@ -85,10 +90,14 @@ class Authenticator extends React.Component {
       }
       this.setOnboardStatus(profile.organization);
       this.setState({profileInformationLoaded: true});
-
+      mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
       console.error(e);
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = e.message ? e.message : e;
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.LOGIN.GET_USER_PROFILE, mixpanelPayload);
     }
   }
 
