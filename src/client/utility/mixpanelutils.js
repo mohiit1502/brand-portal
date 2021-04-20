@@ -71,7 +71,7 @@ export default class MixpanelUtils {
             $email: userProfile.email,
             $name: `${userProfile.firstName } ${ userProfile.lastName}`,
             USER_TYPE: userProfile.type ? userProfile.type : "",
-            ROLE: userProfile.name ? userProfile.role.name : ""
+            ROLE: userProfile.role ? userProfile.role.name : ""
         };
         mixpanel.register(superPropertyPayLoad);
     }
