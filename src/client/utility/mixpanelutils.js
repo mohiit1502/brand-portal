@@ -37,10 +37,10 @@ export default class MixpanelUtils {
     }
     static getToken() {
         try {
-            const token = mixpanel.get_config("token");
+            const token =  mixpanel && mixpanel.get_config("token");
             return token;
         } catch (e) {
-            return undefined;
+            //console.log(e);
         }
     }
     static intializeMixpanel(projectToken) {

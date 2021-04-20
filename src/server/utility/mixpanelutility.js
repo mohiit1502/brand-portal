@@ -1,24 +1,21 @@
 /* eslint-disable no-console */
-import {CONSTANTS} from "../constants/server-constants";
 const Mixpanel = require("mixpanel");
 let  mixpanel;
 
 export default class MixpanelUtils {
+    static setToken(token) {
+        MixpanelUtils.token = token;
+        MixpanelUtils.intializeMixpanel();
+    }
     static intializeMixpanel() {
         try {
-            mixpanel = Mixpanel.init(CONSTANTS.MIXPANEL_PROJECT_TOKEN);
+            mixpanel = Mixpanel.init(MixpanelUtils.token);
         } catch (e) {
             console.log(e);
         }
     }
     static getToken() {
-        try {
-            const token = mixpanel.token;
-            return token;
-        } catch (e) {
-            console.log("[WBP]", e);
-            return undefined;
-        }
+        return MixpanelUtils.token;
     }
     static trackEvent(eventName, payLoad) {
         try {

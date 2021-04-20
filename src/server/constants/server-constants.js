@@ -5,6 +5,5 @@ export const CONSTANTS = {
     CORRELATION_ID_LENGTH: 16,
     // PATH: "/Users/m0n02hz/_Projects_/Deliver/Frontend/secrets/secrets.json",
     BASE_URL: "http://localhost:3000",
-    PATH: "/secrets/secrets.json",
-    MIXPANEL_PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
+    PATH: "/secrets/secrets.json"
 };

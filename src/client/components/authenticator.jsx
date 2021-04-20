@@ -34,7 +34,7 @@ class Authenticator extends React.Component {
   }
 
   componentDidMount() {
-    if (mixpanel.getToken() === undefined) {
+    if (!mixpanel.getToken()) {
       Http.get("/api/mixpanelConfig")
       .then(res => {
         mixpanel.intializeMixpanel(res.body.projectToken);
