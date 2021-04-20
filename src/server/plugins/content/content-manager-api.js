@@ -99,23 +99,13 @@ class ContentManagerApi {
   }
 
   async getMixpanelConfiguration (request, h) {
-    const mixpanelPayload = {
-      METHOD: "GET",
-      API: "/api/mixpanelConfig"
-    };
     try {
       const projectToken = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
-      mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
-      mixpanelPayload.API_SUCCESS = true;
+      mixpanel.setToken(projectToken);
       return h.response({projectToken}).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
-      mixpanelPayload.API_SUCCESS = false;
-      mixpanelPayload.ERROR = err.message ? err.message : err;
-      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
-    } finally {
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_MIXPANEL_CONFIGURATION, mixpanelPayload);
     }
   }
 }

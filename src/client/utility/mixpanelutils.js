@@ -37,11 +37,10 @@ export default class MixpanelUtils {
     }
     static getToken() {
         try {
-            const token = mixpanel.get_config("token");
+            const token =  mixpanel && mixpanel.get_config("token");
             return token;
         } catch (e) {
-            console.log(e);
-            return undefined;
+            //console.log(e);
         }
     }
     static intializeMixpanel(projectToken) {
@@ -59,11 +58,11 @@ export default class MixpanelUtils {
             $name: `${userProfile.firstName } ${ userProfile.lastName}`,
             DATE_ADDED: userProfile.createTs ? userProfile.createTs : "",
             CREATED_BY: userProfile.createdBy ? userProfile.createdBy : "",
-            ORG_ID: userProfile.organization.id,
-            ORG_NAME: userProfile.organization.name,
-            USER_ROLE: userProfile.role.name,
-            USER_TYPE: userProfile.type,
-            LAST_UPDATED_BY: userProfile.lastUpdatedBy
+            ORG_ID: userProfile.organization ? userProfile.organization.id : "",
+            ORG_NAME: userProfile.organization ? userProfile.organization.name : "",
+            USER_ROLE: userProfile.role ? userProfile.role.name : userProfile.role.name,
+            USER_TYPE: userProfile.type ? userProfile.type : "",
+            LAST_UPDATED_BY: userProfile.lastUpdatedBy ? userProfile.lastUpdatedBy : ""
         };
         mixpanel.people.set_once(payload);
     }
@@ -72,7 +71,7 @@ export default class MixpanelUtils {
             $email: userProfile.email,
             $name: `${userProfile.firstName } ${ userProfile.lastName}`,
             USER_TYPE: userProfile.type ? userProfile.type : "",
-            ROLE: userProfile.role.name ? userProfile.role.name : ""
+            ROLE: userProfile.role ? userProfile.role.name : ""
         };
         mixpanel.register(superPropertyPayLoad);
     }
@@ -82,7 +81,7 @@ export default class MixpanelUtils {
                 payLoad = {};
             }
             payLoad.IS_SERVER = false;
-            payLoad ? mixpanel.track(eventName, payLoad) : mixpanel.track(eventName);
+           MixpanelUtils.getToken() && payLoad ? mixpanel.track(eventName, payLoad) : mixpanel.track(eventName);
         } catch (e) {
             console.log(e);
         }
