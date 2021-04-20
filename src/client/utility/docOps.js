@@ -65,7 +65,7 @@ export default class DocumentActions {
   }
 
   static cancelSelection(docKey) {
-    const state = {...this.state}
+    const state = {...this.state};
     const form = {...state.form};
     state.form = form;
     form.inputData[docKey].id = "";
@@ -75,5 +75,10 @@ export default class DocumentActions {
     form.inputData[docKey].filename = "";
     form.inputData[docKey].error = "";
     this.setState(state);
+    const mixpanelPayload = {
+      DOCUMENT_TYPE: docKey,
+      WORK_FLOW: "COMPANY_ONBOARDING"
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.CANCEL_DOCUMENT, mixpanelPayload);
   }
 }
