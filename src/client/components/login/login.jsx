@@ -9,6 +9,9 @@ import Footer from "../Footer";
 import Http from "../../utility/Http";
 import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
 import "../../styles/login/login.scss";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
+import CONSTANTS from "../../constants/constants";
 
 class Login extends React.Component {
 
@@ -31,6 +34,15 @@ class Login extends React.Component {
           return stateCloned;
         }))
         .catch(e => this.setState({loginConfig}));
+      if (mixpanel.getToken() === undefined) {
+        Http.get("/api/mixpanelConfig")
+        .then(res => {
+          mixpanel.intializeMixpanel(res.body.projectToken);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
+        }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+      } else {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
+      }
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);

@@ -1,12 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
+
 import "./HelpSideBar.component.scss";
 
 const HelpSideBar = ({activeTab, categoryHeader, categories, setActiveTab}) => {
+  const helpSectionEvents = (eventName, payLoad) => {
+    let helpId = payLoad.id;
+    helpId = helpId.split("-")[0];
+    const updatedPayload = {
+        HELP_TOPIC: MIXPANEL_CONSTANTS.HELP_TOPIC_MAPPING[helpId],
+        WORK_FLOW: "HELP_EVENTS"
+    };
+    if (payLoad.question) updatedPayload.QUESTION = payLoad.question;
+    mixpanel.trackEvent(eventName, updatedPayload);
+  };
+  const onClickHandler = categoryKey => {
+    setActiveTab(categoryKey);
+    helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_MENU, {id: categoryKey});
+  };
 
   const categoriesRendered = categories && Object.keys(categories).map(categoryKey => {
     const category = categories[categoryKey];
-    return <li key={categoryKey} className={`c-HelpSideBar__category${activeTab === categoryKey ? " active" : ""}`} onClick={() => setActiveTab(categoryKey)}>{category.categoryText}</li>;
+    return (<li key={categoryKey} className={`c-HelpSideBar__category${activeTab === categoryKey ? " active" : ""}`}
+      onClick={() => {onClickHandler(categoryKey);}}>
+      {category.categoryText}
+      </li>);
   });
 
   return (

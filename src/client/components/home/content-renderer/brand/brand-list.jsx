@@ -20,6 +20,8 @@ import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import SortUtil from "../../../../utility/SortUtil";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class BrandList extends React.Component {
 
@@ -79,9 +81,21 @@ class BrandList extends React.Component {
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
               const payload = {status: outgoingStatus};
               this.loader(true);
+              const mixpanelPayload = {
+                API: "/api/brands/",
+                WORK_FLOW: "VIEW_BRAND_LIST",
+                SELECTED_BRAND_NAME:data.brandName,
+                SELECTED_BRAND_UPDATED_STATUS: outgoingStatus,
+                SELECTED_BRAND_USRPTO_VERIFICATION: data.usptoUrl,
+                SELECTED_BRAND_USPTO_URL: data.usptoUrl,
+                SELECTED_BRAND_TRADEMARK_NUMBER: data.trademarkNumber
+              }
+              
               const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader(false));
               response.then(res => {
                 this.fetchBrands();
+                mixpanelPayload.API_SUCCESS = true;
+                mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRAND_LIST_WORKFLOW.UPDATE_BRAND_STATUS, mixpanelPayload);
               });
             }
           },
@@ -173,6 +187,13 @@ class BrandList extends React.Component {
   editBrand (brandData) {
     const meta = { templateName: "NewBrandTemplate", data: {...brandData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    const mixpanelPayload = {
+        WORK_FLOW: "VIEW_BRAND_LIST",
+        SELECTED_BRAND_NAME: brandData.brandName,
+        SELECTED_BRAND_STATUS: brandData.brandStatus,
+        SELECTED_BRAND_TRADEMARK_NUMBER: brandData.trademarkNumber
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRAND_LIST_WORKFLOW.EDIT_BRAND, mixpanelPayload);
   }
 
   uiSearch (evt, isFilter, filteredBrands) {
@@ -346,6 +367,8 @@ class BrandList extends React.Component {
   async componentDidMount() {
     const brandList = await this.fetchBrands();
     this.checkAndApplyDashboardFilter(brandList);
+    const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRAND_LIST_WORKFLOW.VIEW_BRANDS, mixpanelPayload);
   }
 
   checkAndApplyDashboardFilter(brandList) {
@@ -380,8 +403,16 @@ class BrandList extends React.Component {
     }
   }
 
+  mixpanelAddNewTemplateUtil = (meta, payload) => {
+    const templateName = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    mixpanel.trackEvent(eventName, payload);
+  }
+
   addNewBrand () {
     const meta = { templateName: "NewBrandTemplate" };
+    const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
+    this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 

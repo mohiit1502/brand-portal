@@ -1,9 +1,12 @@
+/* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
 import falcon from "../../components/auth/falcon";
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
 import ServerUtils from "../../utility/server-utils";
+import mixpanel from "../../utility/mixpanelutility";
+import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
 
 const secrets = require(CONSTANTS.PATH);
 const ttl = 12 * 60 * 60 * 1000;
@@ -132,6 +135,10 @@ class UserManagerApi {
   }
 
   async updateUser (request, h) {
+    const mixpanelPayload = {
+      METHOD: "PUT",
+      API: "/api/users/{emailId}"
+    };
     try {
       const payload = request.payload.user;
       const headers = ServerUtils.getHeaders(request);
@@ -142,14 +149,33 @@ class UserManagerApi {
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.SELECTED_USER_EMAIL = request.params.emailId;
+      mixpanelPayload.SELECTED_USER_NAME = `${payload.firstName} ${payload.lastName}`;
+      mixpanelPayload.SELECTED_USER_ROLE = payload.role.name;
+      mixpanelPayload.SELECTED_USER_TYPE = payload.type;
+
       const response = await ServerHttp.put(url, options, payload);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER, mixpanelPayload);
     }
   }
 
   async reinviteUser (request, h) {
+    const mixpanelPayload = {
+      METHOD: "POST",
+      API: "/api/users/reinvite"
+    };
     try {
       const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
@@ -161,14 +187,30 @@ class UserManagerApi {
       INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
       const url = `${BASE_URL}${INVITE_USER_PATH}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.SELECTED_USER_EMAIL = request.payload.email;
+
       const response = await ServerHttp.post(url, options, payload);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESEND_INVITE, mixpanelPayload);
     }
   }
 
   async resetPassword (request, h) {
+    const mixpanelPayload = {
+      METHOD: "POST",
+      API: "/api/users/resetPassword"
+    };
     try {
       const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
@@ -181,14 +223,29 @@ class UserManagerApi {
       let RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
       const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+
       const response = await ServerHttp.post(url, options, payload);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESET_PASSWORD, mixpanelPayload);
     }
   }
 
   async getUsers(request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/users"
+    };
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -199,14 +256,29 @@ class UserManagerApi {
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+
       const response = await ServerHttp.get(url, options);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USERS, mixpanelPayload);
     }
   }
 
   async checkUnique(request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/users/checkUnique"
+    };
     try {
       // const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
@@ -219,14 +291,30 @@ class UserManagerApi {
       // const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${UNIQUENESS_CHECK_PATH}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.INVITEE_EMAIL = request.query.email;
+
       const response = await ServerHttp.get(url, options);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.EMAIL_UNIQUENESS, mixpanelPayload);
     }
   }
 
   async createUser(request, h) {
+    const mixpanelPayload = {
+      METHOD: "POST",
+      API: "/api/users"
+    };
     try {
       const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
@@ -237,14 +325,34 @@ class UserManagerApi {
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.INVITEE_EMAIL = payload.user.email;
+      mixpanelPayload.INVITEE_NAME = `${payload.user.firstName} ${payload.user.lastName}`;
+      mixpanelPayload.INVITEE_ROLE = payload.user.role.name;
+      mixpanelPayload.INVITEE_ORG_NAME = payload.user.organization.name;
+      mixpanelPayload.INVITEE_USER_TYPE = payload.user.type;
+
       const response = await ServerHttp.post(url, options, payload);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.CREATE_USER, mixpanelPayload);
     }
   }
 
   async updateUserStatus (request, h) {
+    const mixpanelPayload = {
+      METHOD: "PUT",
+      API: "/api/users/{emailId}/status/{status}"
+    };
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -254,14 +362,31 @@ class UserManagerApi {
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.SELECTED_USER_EMAIL = request.params.emailId;
+      mixpanelPayload.SELECTED_USER_UPDATED_STATUS = request.params.status;
+
       const response = await ServerHttp.put(url, options);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER_STATUS, mixpanelPayload);
     }
   }
 
   async updateTouStatus (request, h) {
+    const mixpanelPayload = {
+      METHOD: "PUT",
+      API: "/api/users/updateTouStatus/{status}"
+    };
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -273,10 +398,22 @@ class UserManagerApi {
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/me/status/${request.params.status}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.TOU_STATUS = request.params.status;
+
       const response = await ServerHttp.put(url, options, payload);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_TOU_STATUS, mixpanelPayload);
     }
   }
 
@@ -298,6 +435,10 @@ class UserManagerApi {
   }
 
   async getNewUserRoles (request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/newUser/roles"
+    };
     try {
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const ROLE_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ROLE_PATH");
@@ -307,14 +448,30 @@ class UserManagerApi {
       const options = {
         headers
       };
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+
       const response = await ServerHttp.get(url, options);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_ROLE, mixpanelPayload);
     }
   }
 
   async getNewUserBrands (request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/newUser/brands"
+    };
     try {
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const ASSIGNABLE_BRANDS_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
@@ -325,17 +482,30 @@ class UserManagerApi {
       const options = {
         headers
       };
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_BRAND, mixpanelPayload);
     }
   }
 
 
   async getUserInfo (request, h) {
-
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/userInfo"
+    };
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -344,7 +514,14 @@ class UserManagerApi {
       const BASE_URL = await ServerUtils.ccmGet(request,"USER_CONFIG.BASE_URL");
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.Email = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+
       const response = await ServerHttp.get(url, options);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
       if (err.status === 520) {
@@ -355,11 +532,20 @@ class UserManagerApi {
           return h.response(err).code(err.status);
         }
       }
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USER_INFORMATION, mixpanelPayload);
     }
   }
 
   async loginSuccessRedirect (request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/login-redirect"
+    };
     try {
       const query = request.query;
       // eslint-disable-next-line camelcase
@@ -375,14 +561,26 @@ class UserManagerApi {
       h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false});
       h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false});
 
+      mixpanelPayload.distinct_id = loginId;
+      mixpanelPayload.Email = loginId;
+      mixpanelPayload.API_SUCCESS = true;
+
       return h.redirect("/");
     } catch (err) {
       console.error("got error in authorization: ", err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
       throw err;
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGIN_SUCCESS_REDIRECT, mixpanelPayload);
     }
   }
 
   async logout(request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/logout"
+    };
     try {
       // h.unstate("auth_session_token");
       h.state("auth_session_token", "", {
@@ -395,21 +593,38 @@ class UserManagerApi {
         isSecure: false,
         isHttpOnly: false
       });
+
+      mixpanelPayload.API_SUCCESS = true;
       return h.redirect("/");
     } catch (err) {
       console.error(err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
       throw err;
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGOUT_SUCCESS, mixpanelPayload);
     }
   }
 
   async getLogoutProvider(request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/logoutProvider"
+    };
     try {
       let logoutProviderURL = await ServerUtils.ccmGet(request, "IAM.FALCON_LOGOUT_URL");
       logoutProviderURL = logoutProviderURL ? `${logoutProviderURL}&clientId=${secrets.CLIENT_ID}` : logoutProviderURL;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_LOGOUT_PROVIDER, mixpanelPayload);
     }
   }
 
