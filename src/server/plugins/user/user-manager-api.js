@@ -155,9 +155,6 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.SELECTED_USER_EMAIL = request.params.emailId;
       mixpanelPayload.SELECTED_USER_NAME = `${payload.firstName} ${payload.lastName}`;
-      mixpanelPayload.SELECTED_USER_ROLE = payload.role.name;
-      mixpanelPayload.SELECTED_USER_TYPE = payload.type;
-
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
