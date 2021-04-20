@@ -7,6 +7,8 @@ import {Link} from "react-router-dom";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import NoRecordsMatch from "../../NoRecordsMatch";
 import sortIcon from "../../../../images/sortIcon.svg";
+import sortIconUp from "../../../../images/sort_ascend.svg";
+import sortIconDown from "../../../../images/sort_descend.svg";
 import Http from "../../../../utility/Http";
 import CONSTANTS from "../../../../constants/constants";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
@@ -15,6 +17,9 @@ import mixpanel from "../../../../utility/mixpanelutils";
 const ClaimListTable = function(props) {
   const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow } = props;
   const [claimDetailsloader, setClaimDetailsloader] = useState(false);
+  const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
+  const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
+  const sortStateReset = CONSTANTS.SORTSTATE.RESET;
 
   const showClaimDetails = async function (row) {
     // props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
@@ -63,9 +68,20 @@ const ClaimListTable = function(props) {
                   headerGroup.headers.map(header => {
                     const sortByToggleProps = header.getSortByToggleProps();
                     sortByToggleProps.onClick = () => sortHandler(header);
+                    let sortIcondisplay;
+                    if (header.sortState.level ===  sortStateReset) {
+                        sortIcondisplay = sortIcon;
+                    } else if (header.sortState.level === sortStateAscending) {
+                      sortIcondisplay = sortIconDown;
+                    } else {
+                        sortIcondisplay = sortIconUp;
+                    }
                     return (
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
-                        { header.render("Header") } {<img  alt="" className="sort-icon" src={sortIcon} /> }
+                        { header.render("Header") }
+                        {
+                          <img className={"sort-icon"} src={sortIcondisplay} />
+                        }
                       </div>
                     );
                   })

@@ -205,12 +205,9 @@ export default class Helper {
     }
     return interpolatedUrl;
   }
-  
-  static trimSpaces( incoming ){
-    if( typeof incoming === "string" ){
-      return incoming.replace(/  +/g, ' ');
-    } else{
-      return incoming;
-    }
+
+  static trimSpaces(incoming) {
+    const value = typeof incoming === "object" ? incoming.target.value : incoming;
+    return value.replace(/  +/g, ' ').replace(/^\s+/g, "");
   }
 }

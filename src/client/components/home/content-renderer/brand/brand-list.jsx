@@ -41,10 +41,10 @@ class BrandList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.editBrand = this.editBrand.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
-    this.sort = SortUtil.sort.bind(this);
+    this.multiSort = SortUtil.multiSort.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
-
+    this.updateSortState = this.updateSortState.bind(this);
     this.state = {
       page: {
         offset: 0,
@@ -123,32 +123,36 @@ class BrandList extends React.Component {
           accessor: "sequence",
           canSort: false,
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET,
+            type: CONSTANTS.SORTSTATE.NUMERICTYPE
           }
         },
         {
           Header: "BRAND NAME",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.RESET,
           }
         },
         {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE
+            level: CONSTANTS.SORTSTATE.DESCENDING,
+            type: CONSTANTS.SORTSTATE.DATETYPE,
+            priorityLevel: 1,
           }
         },
         {
           Header: "STATUS",
           accessor: "brandStatus",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING
+            level: CONSTANTS.SORTSTATE.ASCENDING,
+            priorityLevel: 0,
           }
         }
-      ]
+      ],
+      columnPriority: 1
     };
   }
 
@@ -158,6 +162,26 @@ class BrandList extends React.Component {
       stateClone.loader = enable;
       return stateClone;
     });
+  }
+  updateSortState(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    if (columnMeta.canSort !== false) {
+      let sortLevel = columnMeta.sortState.level;
+      let columnPriority = this.state.columnPriority;
+      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+        columnMeta.sortState.priorityLevel = -1;
+      } else {
+        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority += 1;
+        }
+      }
+      this.setState({columns, columnPriority}, () => this.multiSort());
+   }
   }
 
   editBrand (brandData) {
@@ -175,13 +199,21 @@ class BrandList extends React.Component {
   uiSearch (evt, isFilter, filteredBrands) {
     const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
     const allBrands = filteredBrands ? filteredBrands : this.state.brandList;
-    const filteredList = allBrands.filter(brand => {
+    let filteredList = allBrands.filter(brand => {
       return brand.brandName && brand.brandName.toLowerCase().indexOf(searchText) !== -1
         || brand.dateAdded && brand.dateAdded.toLowerCase().indexOf(searchText) !== -1
         || brand.brandStatus && brand.brandStatus.toLowerCase().indexOf(searchText) !== -1;
     });
+    let i = 1;
+    if (filteredList) filteredList.forEach(brand => brand.sequence = i++);
     if (isFilter) {
-      this.setState({filteredList, unsortedList: filteredList, searchText});
+      const unsortedfilteredList = filteredList;
+      if (this.state.columnPriority > 0) {
+        i = 1;
+        filteredList = this.multiSort(filteredList);
+        filteredList.forEach(claim => claim.sequence = i++);
+      }
+      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
     } else {
       this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
     }
@@ -245,10 +277,9 @@ class BrandList extends React.Component {
     filteredList = filteredList ? [...filteredList] : [...this.state.brandList];
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-
+      let i = 1;
       if (filterOptionsSelected.length) {
         const filterId = filter.id;
-        let i = 1;
         filteredList = filteredList.filter(user => {
           let bool = false;
           filterOptionsSelected.map(filterOption => {
@@ -256,9 +287,9 @@ class BrandList extends React.Component {
           });
           return bool;
         })
-        filteredList.forEach(brand => brand.sequence = i++);
 
       }
+      filteredList && filteredList.forEach(brand => brand.sequence = i++);
     });
 
     let appliedFilters = this.state.filters.map(filter => {
@@ -272,7 +303,13 @@ class BrandList extends React.Component {
     }
 
     if (isSearch) {
-      this.setState({filteredList, unsortedList: filteredList});
+      const unsortedfilteredList = filteredList;
+      if (this.state.columnPriority > 0) {
+        filteredList = this.multiSort(filteredList);
+        let i = 1;
+        filteredList.forEach(claim => claim.sequence = i++);
+      }
+      this.setState({filteredList, unsortedList: unsortedfilteredList});
     } else {
       this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
       this.toggleFilterVisibility(showFilter);
@@ -532,7 +569,7 @@ class BrandList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.brandList ?
-                        <CustomTable sortHandler={this.sort} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
+                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

@@ -273,7 +273,8 @@ const CONSTANTS = {
     DESCENDING: 1,
     RESET: 2,
     DATETYPE: "date",
-    ARRAYTYPE: "array"
+    ARRAYTYPE: "array",
+    NUMERICTYPE: "number"
   },
   MIXPANEL: {
     PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
