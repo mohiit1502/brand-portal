@@ -20,6 +20,8 @@ import filterIcon from "../../../../images/filterIcon.svg";
 import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import SearchUtil from "../../../../utility/SearchUtil";
+import FilterUtil from "../../../../utility/FilterUtil";
 import moment from "moment";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
@@ -33,10 +35,8 @@ class UserList extends React.Component {
     this.createNewUser = this.createNewUser.bind(this);
     this.editUser = this.editUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
-    this.uiSearch = this.uiSearch.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
-    this.applyFilters = this.applyFilters.bind(this);
     this.fetchUserData = this.fetchUserData.bind(this);
     // this.paginationCallback = this.paginationCallback.bind(this);
     // this.changePageSize = this.changePageSize.bind(this);
@@ -44,9 +44,11 @@ class UserList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
     this.multiSort = SortUtil.multiSort.bind(this);
+    this.uiSearch = SearchUtil.uiSearch.bind(this);
+    this.applyFilters = FilterUtil.applyFilters.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
     this.filterMap = {"pending": "Pending Activation", "active": "Active"};
-    this.updateSortState = this.updateSortState.bind(this);
+    this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
 
     this.state = {
       page: {
@@ -152,6 +154,7 @@ class UserList extends React.Component {
           }
         ]
       },
+      identifier: "users",
       columns: [
         {
           Header: "#",
@@ -211,52 +214,6 @@ class UserList extends React.Component {
       return stateClone;
     });
   }
-  updateSortState(header) {
-    const columns = [...this.state.columns];
-    const columnMeta = columns.find(column => column.accessor === header.id);
-    if (columnMeta.canSort !== false) {
-      let sortLevel = columnMeta.sortState.level;
-      let columnPriority = this.state.columnPriority;
-      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
-      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
-        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
-        columnMeta.sortState.priorityLevel = -1;
-      } else {
-        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
-          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
-          columnPriority += 1;
-        }
-      }
-      this.setState({columns, columnPriority}, () => this.multiSort());
-    }
-  }
-
-  uiSearch (evt, isFilter, filteredUsers) {
-    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allUsers = filteredUsers ? filteredUsers : this.state.userList;
-    let filteredList = allUsers.filter(user => {
-      return user.username.toLowerCase().indexOf(searchText) !== -1
-        || user.role.toLowerCase().indexOf(searchText) !== -1
-        || user.status.toLowerCase().indexOf(searchText) !== -1
-        || user.brands.join(",").toLowerCase().indexOf(searchText) !== -1;
-    });
-    let i = 1;
-    if (filteredList) filteredList.forEach(claim => claim.sequence = i++);
-    if (isFilter) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        i = 1;
-        filteredList = this.multiSort(filteredList);
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
-    }
-  }
-
-
   // paginationCallback (page) {
   //   const pageState = {...this.state.page};
   //   pageState.offset = page.offset;
@@ -331,68 +288,6 @@ class UserList extends React.Component {
       this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
     });
     this.toggleFilterVisibility();
-  }
-
-  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
-
-    // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
-    filteredList = filteredList ? [...filteredList] : [...this.state.userList];
-    this.state.filters.map(filter => {
-      const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-      let i = 1;
-      if (filterOptionsSelected.length) {
-        const filterId = filter.id;
-        if (filterId === "brands") {
-          filteredList = filteredList.filter(user => {
-            let bool = false;
-            filterOptionsSelected.map(filterOption => {
-              user[filterId].map(brand => bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-            });
-            return bool;
-          });
-          filteredList.forEach(user => user.sequence = i++);
-        } else {
-          filteredList = filteredList.filter(user => {
-            let bool = false;
-            filterOptionsSelected.map(filterOption => {
-              const altValue = user[filterId] && CONSTANTS.USER.VALUES[filterId.toUpperCase()] && CONSTANTS.USER.VALUES[filterId.toUpperCase()][user[filterId]]
-              const value = (altValue && altValue.toLowerCase()) || (!!user[filterId] && user[filterId].toLowerCase());
-              bool = bool || (value && value.indexOf(filterOption.value.toLowerCase()) !== -1);
-            });
-            return bool;
-          });
-        }
-      }
-      filteredList.forEach(user => user.sequence = i++);
-    });
-
-    let appliedFilters = this.state.filters.map(filter => {
-      let clonedFilterOption = filter.filterOptions.map(option => {
-        return {...option}
-      })
-      return {...filter,filterOptions: clonedFilterOption}
-    });
-    if(buttonClickAction === true){
-      this.setState({appliedFilter: appliedFilters});
-    }
-
-    if (isSearch) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        let i = 1;
-        filteredList = this.multiSort(filteredList);
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
-      // this.setState({filteredList: paginatedList});
-      this.toggleFilterVisibility(showFilter);
-    }
-
-    // if (buttonClickAction) {
-    //   this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
-    // }
   }
 
   clearFilter(filterID,optionID){
@@ -691,7 +586,7 @@ class UserList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.userList ?
-                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
+                        <CustomTable sortHandler={this.sortAndNormalise} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}} />
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }
