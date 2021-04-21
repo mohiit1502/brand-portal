@@ -166,6 +166,7 @@ class NewBrandTemplate extends React.Component {
 
     form.inputData.trademarkNumber.disabled = false;
     form.inputData.brandName.disabled = false;
+    form.inputData.brandCreateActions.buttons.submit.disabled = true;
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
