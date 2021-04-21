@@ -111,6 +111,7 @@ class BrandManagerApi {
       mixpanelPayload.TRADE_MARK_NUMBER = payload.trademarkNumber;
       mixpanelPayload.USPTO_URL = payload.usptoUrl;
       mixpanelPayload.USPTO_VERIFICATION = payload.usptoVerification;
+      mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
 
@@ -131,7 +132,7 @@ class BrandManagerApi {
   async updateBrand(request, h) {
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: "/api/brands/{brandId}"
+      API: `/api/brands/${request.params.brandId}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -147,6 +148,7 @@ class BrandManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.put(url, options, payload);
 

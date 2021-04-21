@@ -91,7 +91,7 @@ export default class MixpanelUtils {
         const userId = userProfile.email;
             if (userId) {
                 const distinctId = mixpanel.get_property("distinct_id");
-                mixpanel.alias(distinctId, userId);
+                mixpanel.alias(userId, distinctId);
             }
         } catch (e) {
             console.log(e);

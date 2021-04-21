@@ -137,7 +137,7 @@ class UserManagerApi {
   async updateUser (request, h) {
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: "/api/users/{emailId}"
+      API: `/api/users/${request.params.emailId}`
     };
     try {
       const payload = request.payload.user;
@@ -155,6 +155,8 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.SELECTED_USER_EMAIL = request.params.emailId;
       mixpanelPayload.SELECTED_USER_NAME = `${payload.firstName} ${payload.lastName}`;
+      mixpanelPayload.PAYLOAD = payload;
+
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
@@ -189,6 +191,7 @@ class UserManagerApi {
       mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.SELECTED_USER_EMAIL = request.payload.email;
+      mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -331,6 +334,7 @@ class UserManagerApi {
       mixpanelPayload.INVITEE_ROLE = payload.user.role.name;
       mixpanelPayload.INVITEE_ORG_NAME = payload.user.organization.name;
       mixpanelPayload.INVITEE_USER_TYPE = payload.user.type;
+      mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -348,7 +352,7 @@ class UserManagerApi {
   async updateUserStatus (request, h) {
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: "/api/users/{emailId}/status/{status}"
+      API: `/api/users/{emailId}/status/${request.params.status}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -382,7 +386,7 @@ class UserManagerApi {
   async updateTouStatus (request, h) {
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: "/api/users/updateTouStatus/{status}"
+      API: `/api/users/updateTouStatus/${request.params.status}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -400,6 +404,7 @@ class UserManagerApi {
       mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.TOU_STATUS = request.params.status;
+      mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
