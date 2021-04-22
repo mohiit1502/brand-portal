@@ -11,6 +11,8 @@ import widgetConfig from "./../../config/contentDescriptors/widgets";
 import AUTH_CONFIG from "../../config/authorizations";
 import * as images from "./../../images";
 import "./Dashboard.component.scss";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 class Dashboard extends React.PureComponent {
   constructor(props) {
@@ -69,6 +71,8 @@ class Dashboard extends React.PureComponent {
           fetchComplete: true
         })
       });
+      const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.VIEW_DASHBOARD, mixpanelPayload);
   }
 
   render() {

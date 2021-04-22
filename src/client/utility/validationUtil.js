@@ -2,6 +2,8 @@ import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
 import CONSTANTS from "../constants/constants";
+import mixpanel from "./mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 
 export default class Validator {
 
@@ -161,22 +163,32 @@ export default class Validator {
     inputData.brandName.loader = true;
     inputData.brandName.disabled = true;
     this.setState(state);
+    const mixpanelPayload = {
+      API: "/api/brands/checkUnique",
+      BRAND_NAME: params.brandName,
+      WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
+    };
     Http.get("/api/brands/checkUnique", params, null, this.props.showNotification, null, inputData.brandName.ERROR5XX)
       .then(res => {
         const error = res.body.unique ? "" : "This brand is already registered in your Walmart Brand Portal account";
         inputData.brandName.isUnique = res.body.unique;
         inputData.brandName.error = error;
         inputData.brandName.fieldOk = !error;
+        mixpanelPayload.API_SUCCESS = true;
+        mixpanelPayload.IS_BRAND_NAME_UNIQUE = res.body.unique;
       })
       .catch(err => {
         inputData.brandName.isUnique = false;
         inputData.brandName.error = false;
         inputData.brandName.fieldOk = false;
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
         inputData.brandName.disabled = false;
         inputData.brandName.loader = false;
         this.setState(state, this.checkToEnableSubmit);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.BRAND_UNIQUENESS_CHECK, mixpanelPayload);
       });
   }
 
@@ -191,9 +203,18 @@ export default class Validator {
     inputData.trademarkNumber.disabled = true;
     inputData.trademarkNumber.fieldOk = false;
     this.setState(state);
+    const mixpanelPayload = {
+      API: "/api/brand/trademark/validity/",
+      TRADEMARK_NUMBER: this.state.form.inputData.trademarkNumber.value,
+      WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
+    };
     Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
       .then (res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, inputData.trademarkNumber);
+        mixpanelPayload.API_SUCCESS = true;
+        mixpanelPayload.USPTO_VERIFICATION_STATUS = res.body.usptoVerification;
+        mixpanelPayload.USPTO_URL = res.body.usptoUrl;
+        mixpanelPayload.IS_VALID_TRADEMARK = (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED");
       })
       .catch (err => {
         inputData.trademarkNumber.isValid = true;
@@ -202,11 +223,14 @@ export default class Validator {
         inputData.trademarkNumber.fieldAlert = false;
         inputData.trademarkNumber.usptoUrl = "";
         inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
         inputData.trademarkNumber.disabled = false;
         inputData.trademarkNumber.loader = false;
         this.setState(state, this.checkToEnableSubmit);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.TRADEMARK_VALIDITY, mixpanelPayload);
       });
   }
 
@@ -223,12 +247,19 @@ export default class Validator {
     inputData.companyOnboardingActions.buttons.clear.disabled = true;
     this.setState(state);
     let error;
+    const mixpanelPayload = {
+      API: "/api/company/availability",
+      COMPANY_NAME: this.state.form.inputData.companyName.value,
+      WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
+    };
     Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value})
       .then(response => {
         error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
         inputData.companyName.isUnique = !error;
         inputData.companyName.fieldOk = !error;
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
+        mixpanelPayload.API_SUCCESS = true;
+        mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
       }).catch (err => {
         error = err.error;
         inputData.companyName.isUnique = false;
@@ -236,6 +267,8 @@ export default class Validator {
         inputData.companyName.requestAdministratorAccess = true;
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
         this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
         inputData.companyName.error = error;
@@ -245,6 +278,7 @@ export default class Validator {
           this.toggleFormEnable(!error, !error, false);
           this.checkToEnableSubmit();
         } : () => {});
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.COMPANY_NAME_AVAILABILITY_CHECK, mixpanelPayload);
       });
   }
 
@@ -258,6 +292,11 @@ export default class Validator {
     emailId.loader = true;
     let uniquenessCheckStatus;
     this.setState({form});
+    const mixpanelPayload = {
+      API: "/api/users/checkUnique",
+      EMAIL_ID: inputData.emailId.value,
+      WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[this.state.form.id]
+    };
     if (emailId.value && emailId.error !== emailId.invalidError) {
       this.loader("fieldLoader", true);
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
@@ -268,13 +307,18 @@ export default class Validator {
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
         uniquenessCheckStatus = res.body.krakenUniqueStatus;
+        mixpanelPayload.API_SUCCESS = true;
+        mixpanelPayload.IS_EMAIL_UNIQUE = unique;
       }).catch(err => {
         emailId.fieldOk = false;
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
         emailId.disabled = false;
         emailId.loader = false;
         this.setState({form, uniquenessCheckStatus}, this.checkToEnableSubmit);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.EMAIL_VALIDITY_CHECK, mixpanelPayload);
       });
     }
   }

@@ -81,7 +81,7 @@ export default class Http {
 
   static displayToast(status, toastCallback, toastMessageSuccess, toastMessageFailure) {
     if (CONSTANTS.CODES.ERRORCODES.SERVERDOWNWRAPPER === status) {
-      toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure || "An unexpected occurred!");
+      toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure || "An unexpected error occurred!");
     } else if (CONSTANTS.CODES.ERRORCODES.SERVERDOWN === status) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
