@@ -180,7 +180,7 @@ class ClaimManagerApi {
   async getClaim(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/claims/{ticketId}"
+      API: `/api/claims/${request.params.ticketId}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -239,6 +239,7 @@ class ClaimManagerApi {
       mixpanelPayload.CLAIM_TYPE = payload.claimType;
       mixpanelPayload.USPTO_URL = payload.usptoUrl;
       mixpanelPayload.USPTO_VERIFICATION = payload.usptoVerification;
+      mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;

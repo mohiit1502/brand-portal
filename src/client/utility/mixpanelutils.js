@@ -52,7 +52,6 @@ export default class MixpanelUtils {
         }
     }
     static setUserProfile(userProfile) {
-        mixpanel.identify(userProfile.email);
         const payload = {
             $email: userProfile.email,
             $name: `${userProfile.firstName } ${ userProfile.lastName}`,
@@ -90,8 +89,7 @@ export default class MixpanelUtils {
         try {
         const userId = userProfile.email;
             if (userId) {
-                const distinctId = mixpanel.get_property("distinct_id");
-                mixpanel.alias(distinctId, userId);
+                mixpanel.alias(userId);
             }
         } catch (e) {
             console.log(e);

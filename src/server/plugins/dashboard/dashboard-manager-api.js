@@ -45,14 +45,14 @@ class DashboardManagerApi {
   // eslint-disable-next-line max-statements
   async getDashboard(request, h) {
     const mixpanelPayload = {
-      METHOD: "GET",
-      API: "/api/dashboard/{params}"
+      METHOD: "GET"
     };
     try {
       const paramsDecoded = request.params && Buffer.from(request.params.params, 'base64').toString();
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
+      mixpanelPayload.API =  `/api/dashboard/${paramsDecoded}`;
       mixpanelPayload.distinct_id = params.emailId;
       mixpanelPayload.Email = params.emailId;
       mixpanelPayload.ROLE = params.role;
@@ -77,7 +77,6 @@ class DashboardManagerApi {
   async getReportedClaimsType(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/dashboard/reportedClaimsType/{params}",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_TYPE"
     };
     try {
@@ -86,6 +85,7 @@ class DashboardManagerApi {
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
+      mixpanelPayload.API =  `/api/dashboard/reportedClaimsType/${paramsDecoded}`;
       mixpanelPayload.distinct_id = params.emailId;
       mixpanelPayload.Email = params.emailId;
       mixpanelPayload.ROLE = params.role;
@@ -110,7 +110,6 @@ class DashboardManagerApi {
   async getTopReportedBrands(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/dashboard/topReportedBrands/{params}",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_BRAND"
     };
     try {
@@ -118,6 +117,7 @@ class DashboardManagerApi {
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
+      mixpanelPayload.API =  `/api/dashboard/topReportedBrands/${paramsDecoded}`;
       mixpanelPayload.distinct_id = params.emailId;
       mixpanelPayload.Email = params.emailId;
       mixpanelPayload.ROLE = params.role;
@@ -143,7 +143,6 @@ class DashboardManagerApi {
   async getTopReporters(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/dashboard/topReporters/{params}",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_USER"
     };
     try {
@@ -151,6 +150,7 @@ class DashboardManagerApi {
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
+      mixpanelPayload.API =  `/api/dashboard/topReporters/${paramsDecoded}`;
       mixpanelPayload.distinct_id = params.emailId;
       mixpanelPayload.Email = params.emailId;
       mixpanelPayload.ROLE = params.role;
