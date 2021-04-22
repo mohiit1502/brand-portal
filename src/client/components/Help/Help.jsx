@@ -3,7 +3,7 @@ import HelpMain from "./../HelpMain";
 import HelpSideBar from "./../HelpSideBar";
 import ImageViewer from "../ImageViewer/ImageViewer";
 import Http from "../../utility/Http";
-// import helpConfig from "../../config/contentDescriptors/help";
+import helpConfiguration from "../../config/contentDescriptors/help";
 import "./Help.component.scss";
 
 const ACTIVE_TAB = "faq";
@@ -15,6 +15,7 @@ const Help = props => {
 
   useEffect(() => {
     (async () => {
+      setHelpConfig(helpConfiguration);
       try {
       const response = (await Http.get("/api/helpConfig")).body;
       setHelpConfig(JSON.parse(response));

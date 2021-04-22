@@ -56,6 +56,7 @@ class Authenticator extends React.Component {
   }
 
   initMetaData() {
+    this.props.dispatchMetadata(FORMFIELDCONFIG);
     Http.get("/api/formConfig")
       .then(response => {
         if (response.body) {
