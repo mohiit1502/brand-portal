@@ -36,20 +36,22 @@ class ContentManagerApi {
   }
 
   async getHelpConfiguration(request, h) {
+    console.log("[ContentManagerApi::getHelpConfiguration] API request for Help configuration has started");
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/helpConfig"
     };
     try {
-      const configuration = await ServerUtils.ccmGet(request,"CONTENT_CONFIG.HELPDESCRIPTOR");
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.HELPDESCRIPTOR");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
+      console.log("[ContentManagerApi::getHelpConfiguration] API request for Help configuration has completed");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[ContentManagerApi::getHelpConfiguration] Error occured in API request for Help configuration:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_HELP_CONFIGURATION, mixpanelPayload);
@@ -57,20 +59,22 @@ class ContentManagerApi {
   }
 
   async getLandingPageConfiguration(request, h) {
+    console.log("[ContentManagerApi::getLandingPageConfiguration] API request for landing page configuration has started");
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/loginConfig"
     };
     try {
-      const configuration = await ServerUtils.ccmGet(request,"CONTENT_CONFIG.LANDINGPAGEDESCRIPTOR");
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.LANDINGPAGEDESCRIPTOR");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
+      console.log("[ContentManagerApi::getHelpConfiguration] API request for landing page configuration has completed");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[ContentManagerApi::getLandingPageConfiguration] Error occured in API request for landing page configuration:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_LANDING_PAGE_CONFIGURATION, mixpanelPayload);
@@ -78,6 +82,7 @@ class ContentManagerApi {
   }
 
   async getFormFieldConfiguration(request, h) {
+    console.log("[ContentManagerApi::getFormFieldConfiguration] API request for form field configuration has started");
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/formConfig"
@@ -86,12 +91,13 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.FORMFIELDCONFIG");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
+      console.log("[ContentManagerApi::getFormFieldConfiguration] API request for form field  configuration has completed");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[ContentManagerApi::getFormFieldConfiguration] Error occured in API request for form field configuration:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_FORM_FIELD_CONFIGURATION, mixpanelPayload);
@@ -99,12 +105,14 @@ class ContentManagerApi {
   }
 
   async getMixpanelConfiguration (request, h) {
+    console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has started");
     try {
       const projectToken = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
       mixpanel.setToken(projectToken);
+      console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has completed");
       return h.response({projectToken}).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      console.log(err);
+      console.log("[ContentManagerApi::getMixpanelConfiguration] Error occured in API request for mixpanel field configuration:", err);
       return h.response(err).code(err.status);
     }
   }

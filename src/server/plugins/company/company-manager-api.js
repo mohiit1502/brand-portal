@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable max-statements */
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
@@ -71,6 +73,7 @@ class CompanyManagerApi {
   }
 
   async registerOrganization (request, h) {
+    console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has started");
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -83,14 +86,16 @@ class CompanyManagerApi {
       const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
+      console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
+      console.log("[CompanyManagerApi::registerOrganization] Error occured in API request for Register organization:", err);
       return h.response(err).code(err.status);
     }
   }
 
   async checkTrademarkValidity (request, h) {
+    console.log("[CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has started");
     try {
       const headers = ServerUtils.getHeaders(request);
 
@@ -104,14 +109,16 @@ class CompanyManagerApi {
       const url = `${BASE_URL}${TM_VALIDITY_PATH}/${request.params.trademarkNumber}`;
 
       const response = await ServerHttp.get(url, options);
+      console.log("[CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
+      console.log("[CompanyManagerApi::checkTrademarkValidity] Error occured in API request for Trademark Validity:", err);
       return h.response(err).code(err.status);
     }
   }
 
   async uploadAdditionalDocument (request, h) {
+    console.log("[CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has started");
     try {
 
       const headers = this.getHeaders(request);
@@ -128,14 +135,16 @@ class CompanyManagerApi {
       const url = `${BASE_URL}${ADDITIONAL_DOC_PATH}`;
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
+      console.log("[CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
+      console.log("[CompanyManagerApi::uploadAdditionalDocument] Error occured in API request for Upload Additional Document:", err);
       return h.response(err).code(err.status);
     }
   }
 
   async uploadBusinessDocument (request, h) {
+    console.log("[CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has started");
     try {
       const headers = this.getHeaders(request);
       const options = {
@@ -151,14 +160,17 @@ class CompanyManagerApi {
       const url = `${BASE_URL}${BUSINESS_DOC_PATH}`;
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
+      console.log("[CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log("5. In CMA - Error caught ======== ", err);
+      console.log("[CompanyManagerApi::uploadBusinessDocument] Error occured in API request for Upload Business document:", err);
       return h.response(err).code(err.status);
     }
   }
 
   async checkCompanyNameAvailabililty (request, h) {
+    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has started");
     try {
       const name = request.query.name;
 
@@ -173,8 +185,10 @@ class CompanyManagerApi {
       const url = `${BASE_URL}${COMPANY_NAME_UNIQUENESS_PATH}`;
 
       const response = await ServerHttp.get(url, options, {name});
+      console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
+      console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] Error occured in API request for Company Name Avaialability:", err);
       return h.response(err).code(err.status);
     }
   }
