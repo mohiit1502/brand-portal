@@ -15,8 +15,8 @@ const Help = props => {
 
   useEffect(() => {
     (async () => {
-      setHelpConfig(helpConfiguration);
       try {
+      setHelpConfig(helpConfiguration);
       const response = (await Http.get("/api/helpConfig")).body;
       setHelpConfig(JSON.parse(response));
       } catch (e) {console.log(e);}

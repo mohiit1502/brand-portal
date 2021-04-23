@@ -84,7 +84,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.lastName.value = data.lastName;
     form.inputData.emailId.value = data.email;
     form.inputData.emailId.disabled = true;
-    form.inputData.phone.value = data.phoneNumber;
+    form.inputData.phone.value = (data.phoneNumber === "0000000000") || (data.phoneNumber === "(000) 000-0000") ? "" : data.phoneNumber;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
     form.templateUpdateComplete = true;
