@@ -39,7 +39,6 @@ export default class SearchUtil {
         let filteredList = SearchUtil.getFilteredList(allRecords, searchText, identifier);
         if (isFilter) {
             if (this.state.columnPriority > 0) {
-                i = 1;
                 filteredList = this.multiSort(filteredList);
             }
         }

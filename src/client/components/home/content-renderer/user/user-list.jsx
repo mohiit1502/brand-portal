@@ -513,7 +513,7 @@ class UserList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Name"
+                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Details"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">

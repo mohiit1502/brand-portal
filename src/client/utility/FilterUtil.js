@@ -4,7 +4,6 @@ export default class FilterUtil {
 
     static applyFiltersUtil(filter, filteredList) {
         const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-        let i = 1;
         if (filterOptionsSelected.length) {
             const filterId = filter.id;
             if (filterId === "brands") {
@@ -57,11 +56,12 @@ export default class FilterUtil {
         if (isSearch) {
             if (this.state.columnPriority > 0) {
                 filteredList = this.multiSort(filteredList);
-                let i = 1;
             }
         } else {
             this.toggleFilterVisibility(showFilter);
         }
+        let i = 1;
+        filteredList.forEach(record => record.sequence = i++);
         this.setState({filteredList, unsortedList: filteredList}, () => {!isSearch && this.uiSearch(null, true, filteredList);});
 
     }
