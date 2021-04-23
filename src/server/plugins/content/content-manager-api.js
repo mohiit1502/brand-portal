@@ -37,6 +37,7 @@ class ContentManagerApi {
 
   async getHelpConfiguration(request, h) {
     console.log("[ContentManagerApi::getHelpConfiguration] API request for Help configuration has started");
+    console.log("[ContentManagerApi::getHelpConfiguration] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/helpConfig"
@@ -83,6 +84,7 @@ class ContentManagerApi {
 
   async getFormFieldConfiguration(request, h) {
     console.log("[ContentManagerApi::getFormFieldConfiguration] API request for form field configuration has started");
+    console.log("[ContentManagerApi::getFormFieldConfiguration] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/formConfig"
@@ -106,6 +108,7 @@ class ContentManagerApi {
 
   async getMixpanelConfiguration (request, h) {
     console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has started");
+    console.log("[ContentManagerApi::getMixpanelConfiguration] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const projectToken = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
       mixpanel.setToken(projectToken);

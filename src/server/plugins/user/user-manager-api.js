@@ -140,6 +140,7 @@ class UserManagerApi {
 
   async updateUser (request, h) {
     console.log("[UserManagerApi::updateUser] API request for Update User has started");
+    console.log("[UserManagerApi::updateUser] User ID: ", request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/${request.params.emailId}`
@@ -179,6 +180,7 @@ class UserManagerApi {
 
   async reinviteUser (request, h) {
     console.log("[UserManagerApi::reinviteUser] API request for Reinvite User has started");
+    console.log("[UserManagerApi::reinviteUser] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/reinvite"
@@ -218,6 +220,7 @@ class UserManagerApi {
 
   async resetPassword (request, h) {
     console.log("[UserManagerApi::resetPassword] API request for Reset Password has started");
+    console.log("[UserManagerApi::resetPassword] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/resetPassword"
@@ -256,6 +259,7 @@ class UserManagerApi {
 
   async getUsers(request, h) {
     console.log("[UserManagerApi::getUsers] API request for get Users has started");
+    console.log("[UserManagerApi::getUsers] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users"
@@ -292,6 +296,7 @@ class UserManagerApi {
 
   async checkUnique(request, h) {
     console.log("[UserManagerApi::checkUnique] API request for Check Unique User has started");
+    console.log("[UserManagerApi::checkUnique] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users/checkUnique"
@@ -331,6 +336,7 @@ class UserManagerApi {
 
   async createUser(request, h) {
     console.log("[UserManagerApi::createUser] API request for Create User has started");
+    console.log("[UserManagerApi::createUser] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users"
@@ -373,6 +379,7 @@ class UserManagerApi {
 
   async updateUserStatus (request, h) {
     console.log("[UserManagerApi::updateUserStatus] API request for Update User Status has started");
+    console.log("[UserManagerApi::updateUserStatus] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/{emailId}/status/${request.params.status}`
@@ -410,6 +417,7 @@ class UserManagerApi {
 
   async updateTouStatus (request, h) {
     console.log("[UserManagerApi::updateTouStatus] API request for Update TOU status has started");
+    console.log("[UserManagerApi::updateTouStatus] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/updateTouStatus/${request.params.status}`
@@ -449,6 +457,7 @@ class UserManagerApi {
 
   async deleteUser (request, h) {
     console.log("[UserManagerApi::deleteUser] API request for Delete Userhas started");
+    console.log("[UserManagerApi::deleteUser] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -469,6 +478,7 @@ class UserManagerApi {
 
   async getNewUserRoles (request, h) {
     console.log("[UserManagerApi::getNewUserRoles] API request for New User Roles has started");
+    console.log("[UserManagerApi::getNewUserRoles] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/roles"
@@ -505,6 +515,7 @@ class UserManagerApi {
 
   async getNewUserBrands (request, h) {
     console.log("[UserManagerApi::getNewUserBrands] API request for get New User Brand has started");
+    console.log("[UserManagerApi::getNewUserBrands] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/brands"
@@ -542,6 +553,7 @@ class UserManagerApi {
 
   async getUserInfo (request, h) {
     console.log("[UserManagerApi::getUserInfo] API request for get User information has started");
+    console.log("[UserManagerApi::getUserInfo] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/userInfo"
@@ -585,6 +597,7 @@ class UserManagerApi {
 
   async loginSuccessRedirect (request, h) {
     console.log("[UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has started");
+    console.log("[UserManagerApi::loginSuccessRedirect] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/login-redirect"
@@ -656,6 +669,7 @@ class UserManagerApi {
 
   async getLogoutProvider(request, h) {
     console.log("[UserManagerApi::getLogoutProvider] API request for Get Logout provider has started");
+    console.log("[UserManagerApi::getLogoutProvider] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/logoutProvider"
@@ -680,6 +694,7 @@ class UserManagerApi {
 
   async redirectToFalcon (request, h) {
     console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started");
+    console.log("[UserManagerApi::redirectToFalcon] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action);
       console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");
@@ -692,6 +707,7 @@ class UserManagerApi {
 
   async getAccessToken(request, authorizationCode) {
     console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has started");
+    console.log("[UserManagerApi::getAccessToken] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const IAM = await ServerUtils.ccmGet(request, "IAM");
       const url = secrets.IAM_TOKEN_URL;

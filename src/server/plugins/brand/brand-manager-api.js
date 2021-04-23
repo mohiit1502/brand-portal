@@ -52,6 +52,7 @@ class BrandManagerApi {
   // eslint-disable-next-line max-statements
   async getBrands(request, h) {
     console.log("[BrandManagerApi::getBrands] API request for get Brand has started");
+    console.log("[BrandManagerApi::getBrands] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands"
@@ -92,6 +93,7 @@ class BrandManagerApi {
   // eslint-disable-next-line max-statements
   async createBrand(request, h) {
     console.log("[BrandManagerApi::createBrand] API request for Create Brand has started");
+    console.log("[BrandManagerApi::createBrand] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/brands"
@@ -136,6 +138,7 @@ class BrandManagerApi {
   // eslint-disable-next-line max-statements
   async updateBrand(request, h) {
     console.log("[BrandManagerApi::updateBrand] API request for Update Brand has started");
+    console.log("[BrandManagerApi::updateBrand] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/brands/${request.params.brandId}`
@@ -174,6 +177,7 @@ class BrandManagerApi {
   // eslint-disable-next-line max-statements
   async checkUnique(request, h) {
     console.log("[BrandManagerApi::checkUnique] API request for Brand Uniqueness has started");
+    console.log("[BrandManagerApi::checkUnique] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands/checkUnique",

@@ -75,6 +75,7 @@ class ClaimManagerApi {
 
   async getSellers(request, h) {
     console.log("[ClaimManagerApi::getSellers] API request for Get Sellers has started");
+    console.log("[ClaimManagerApi::getSellers] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/sellers"
@@ -113,6 +114,7 @@ class ClaimManagerApi {
   }
   async getClaimTypes(request, h) {
     console.log("[ClaimManagerApi::getClaimTypes] API request for Get Claim type has started");
+    console.log("[ClaimManagerApi::getClaimTypes] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/claims/types"
@@ -150,6 +152,7 @@ class ClaimManagerApi {
 
   async getClaims(request, h) {
     console.log("[ClaimManagerApi::getClaims] API request for Get Claims has started");
+    console.log("[ClaimManagerApi::getClaims] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/claims"
@@ -186,6 +189,7 @@ class ClaimManagerApi {
 
   async getClaim(request, h) {
     console.log("[ClaimManagerApi::getClaim] API request for Get Claim has started");
+    console.log("[ClaimManagerApi::getClaim] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: `/api/claims/${request.params.ticketId}`
@@ -227,6 +231,7 @@ class ClaimManagerApi {
 
   async createClaim(request, h) {
     console.log("[ClaimManagerApi::createClaim] API request for Create Claim has started");
+    console.log("[ClaimManagerApi::createClaim] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/claims"

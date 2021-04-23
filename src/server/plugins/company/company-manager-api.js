@@ -74,6 +74,7 @@ class CompanyManagerApi {
 
   async registerOrganization (request, h) {
     console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has started");
+    console.log("[CompanyManagerApi::registerOrganization] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -96,6 +97,7 @@ class CompanyManagerApi {
 
   async checkTrademarkValidity (request, h) {
     console.log("[CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has started");
+    console.log("[CompanyManagerApi::checkTrademarkValidity] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
 
@@ -119,6 +121,7 @@ class CompanyManagerApi {
 
   async uploadAdditionalDocument (request, h) {
     console.log("[CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has started");
+    console.log("[CompanyManagerApi::uploadAdditionalDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
 
       const headers = this.getHeaders(request);
@@ -145,6 +148,7 @@ class CompanyManagerApi {
 
   async uploadBusinessDocument (request, h) {
     console.log("[CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has started");
+    console.log("[CompanyManagerApi::uploadBusinessDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = this.getHeaders(request);
       const options = {
@@ -171,6 +175,7 @@ class CompanyManagerApi {
 
   async checkCompanyNameAvailabililty (request, h) {
     console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has started");
+    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const name = request.query.name;
 

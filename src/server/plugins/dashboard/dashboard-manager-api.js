@@ -45,6 +45,7 @@ class DashboardManagerApi {
   // eslint-disable-next-line max-statements
   async getDashboard(request, h) {
     console.log("[DashboardManagerApi::getDashboard] API request for Dashboard data has started");
+    console.log("[DashboardManagerApi::getDashboard] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET"
     };
@@ -78,6 +79,7 @@ class DashboardManagerApi {
   // eslint-disable-next-line max-statements
   async getReportedClaimsType(request, h) {
     console.log("[DashboardManagerApi::getReportedClaimsType] API request for Claim Submitted by Type has started");
+    console.log("[DashboardManagerApi::getReportedClaimsType] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_TYPE"
@@ -113,6 +115,7 @@ class DashboardManagerApi {
   // eslint-disable-next-line max-statements
   async getTopReportedBrands(request, h) {
     console.log("[DashboardManagerApi::getTopReportedBrands] API request for Top Reported Brands has started");
+    console.log("[DashboardManagerApi::getTopReportedBrands] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_BRAND"
@@ -148,6 +151,7 @@ class DashboardManagerApi {
   // eslint-disable-next-line max-statements
   async getTopReporters(request, h) {
     console.log("[DashboardManagerApi::getTopReporters] API request for Top Reporters has started");
+    console.log("[DashboardManagerApi::getTopReporters] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_USER"
