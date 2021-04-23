@@ -84,7 +84,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.lastName.value = data.lastName;
     form.inputData.emailId.value = data.email;
     form.inputData.emailId.disabled = true;
-    form.inputData.phone.value = data.phoneNumber;
+    form.inputData.phone.value = (data.phoneNumber === "0000000000") || (data.phoneNumber === "(000) 000-0000") ? "" : data.phoneNumber;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
     form.templateUpdateComplete = true;
@@ -252,7 +252,7 @@ class CreateUserTemplate extends React.Component {
         organization: this.props.userProfile.organization,
         role,
         phoneCountry: "+1",
-        phoneNumber: this.state.form.inputData.phone.value,
+        phoneNumber: this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000", //[note:to handle VIP phone number validation]
         type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
       },
       krakenUniqueWorkflow: this.state.uniquenessCheckStatus
