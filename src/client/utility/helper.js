@@ -181,14 +181,12 @@ export default class Helper {
           chartsContainerMeta.setLoader(false);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.FILTER_SELECTED, mixpanelPayload);
         });
     } catch (e) {
       chartsContainerMeta.setLoader(false);
-      mixpanelPayload.API_SUCCESS = false;
-      mixpanelPayload.ERROR = err.message ? err.message : err;
-    }
-    finally {
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.FILTER_SELECTED,mixpanelPayload);
     }
   }
 

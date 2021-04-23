@@ -52,27 +52,31 @@ export default class MixpanelUtils {
         }
     }
     static setUserProfile(userProfile) {
-        const payload = {
-            $email: userProfile.email,
-            $name: `${userProfile.firstName } ${ userProfile.lastName}`,
-            DATE_ADDED: userProfile.createTs ? userProfile.createTs : "",
-            CREATED_BY: userProfile.createdBy ? userProfile.createdBy : "",
-            ORG_ID: userProfile.organization ? userProfile.organization.id : "",
-            ORG_NAME: userProfile.organization ? userProfile.organization.name : "",
-            USER_ROLE: userProfile.role ? userProfile.role.name : userProfile.role.name,
-            USER_TYPE: userProfile.type ? userProfile.type : "",
-            LAST_UPDATED_BY: userProfile.lastUpdatedBy ? userProfile.lastUpdatedBy : ""
-        };
-        mixpanel.people.set_once(payload);
+        if (userProfile) {
+            const payload = {
+                $email: userProfile.email,
+                $name: `${userProfile.firstName } ${ userProfile.lastName}`,
+                DATE_ADDED: userProfile.createTs ? userProfile.createTs : "",
+                CREATED_BY: userProfile.createdBy ? userProfile.createdBy : "",
+                ORG_ID: userProfile.organization ? userProfile.organization.id : "",
+                ORG_NAME: userProfile.organization ? userProfile.organization.name : "",
+                USER_ROLE: userProfile.role ? userProfile.role.name : "",
+                USER_TYPE: userProfile.type ? userProfile.type : "",
+                LAST_UPDATED_BY: userProfile.lastUpdatedBy ? userProfile.lastUpdatedBy : ""
+            };
+            mixpanel.people.set_once(payload);
+       }
     }
     static setSuperProperties(userProfile) {
-        const superPropertyPayLoad = {
-            $email: userProfile.email,
-            $name: `${userProfile.firstName } ${ userProfile.lastName}`,
-            USER_TYPE: userProfile.type ? userProfile.type : "",
-            ROLE: userProfile.role ? userProfile.role.name : ""
-        };
-        mixpanel.register(superPropertyPayLoad);
+        if (userProfile) {
+            const superPropertyPayLoad = {
+                $email: userProfile.email,
+                $name: `${userProfile.firstName } ${ userProfile.lastName}`,
+                USER_TYPE: userProfile.type ? userProfile.type : "",
+                ROLE: userProfile.role ? userProfile.role.name : ""
+            };
+            mixpanel.register(superPropertyPayLoad);
+        }
     }
     static trackEvent(eventName, payLoad) {
         try {

@@ -27,6 +27,8 @@ export default class MixpanelUtils {
             }
             if (payLoad) {
                 payLoad.IS_SERVER = true;
+                payLoad.$email = payLoad.distinct_id;
+                payLoad.$user_id = payLoad.distinct_id;
             }
             payLoad ? mixpanel.track(eventName, payLoad) : mixpanel.track(eventName);
         } catch (e) {

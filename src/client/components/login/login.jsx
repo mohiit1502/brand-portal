@@ -25,15 +25,6 @@ class Login extends React.Component {
 
   componentDidMount() {
     try {
-      Http.get("/api/loginConfig")
-        .then(res => this.setState(state => {
-          const stateCloned = {...state};
-          let loginConfigResponse;
-          try {loginConfigResponse = JSON.parse(res.body);} catch (e) {loginConfigResponse = loginConfig;}
-          stateCloned.loginConfig = loginConfigResponse;
-          return stateCloned;
-        }))
-        .catch(e => this.setState({loginConfig}));
       if (mixpanel.getToken() === undefined) {
         Http.get("/api/mixpanelConfig")
         .then(res => {
@@ -43,6 +34,15 @@ class Login extends React.Component {
       } else {
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
       }
+      Http.get("/api/loginConfig")
+        .then(res => this.setState(state => {
+          const stateCloned = {...state};
+          let loginConfigResponse;
+          try {loginConfigResponse = JSON.parse(res.body);} catch (e) {loginConfigResponse = loginConfig;}
+          stateCloned.loginConfig = loginConfigResponse;
+          return stateCloned;
+        }))
+        .catch(e => this.setState({loginConfig}));
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);

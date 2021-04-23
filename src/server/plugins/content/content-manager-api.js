@@ -50,6 +50,7 @@ class ContentManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_HELP_CONFIGURATION, mixpanelPayload);
@@ -86,6 +87,8 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.FORMFIELDCONFIG");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
