@@ -165,9 +165,9 @@ export default class Helper {
       API: baseUrl,
       WORK_FLOW: "MY_DASHBOARD",
       CHART_SELECTED: MIXPANEL_CONSTANTS.FILTER_SELECTED_MAPPING[chartsContainerMeta.DATAKEY],
-      DATA_RANGE: filterData.dateRange
+      DATA_RANGE: filterData && filterData.dateRange
     };
-    if (filterData.claimType)  mixpanelPayload.CLAIM_TYPE = filterData.claimType;
+    if (filterData.claimType)  mixpanelPayload.CLAIM_TYPE = filterData && filterData.claimType;
     url = baseUrl + btoa(params);
     try {
       Http.get(url)

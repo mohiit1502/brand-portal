@@ -19,6 +19,10 @@ class HomeHeader extends React.Component {
   render() {
     const baseUrl = window.location.origin;
     const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
+    const workflowCode = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
+    const mixpanelPayload = {
+      WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0]
+    };
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <Link className="navbar-brand walmart-brand" to="/dashboard">
@@ -46,7 +50,7 @@ class HomeHeader extends React.Component {
                 {
                   this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</a>
                 }
-                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT);}}>Logout</a>
+                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>Logout</a>
               </div>
             </li>
           </ul>
