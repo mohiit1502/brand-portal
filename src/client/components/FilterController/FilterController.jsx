@@ -50,7 +50,12 @@ const FilterController = props => {
 
   useEffect(() => {
     const fieldStateCloned = {...fieldState};
-    fieldStateCloned.dateRange.value =  currentFilters[widgetId] && currentFilters[widgetId].value ? currentFilters[widgetId].viewValue : fieldStateCloned.dateRange.value;
+    if (currentFilters[widgetId] && currentFilters[widgetId].value) {
+      fieldStateCloned.dateRange.value = currentFilters[widgetId].viewValue;
+    } else if (currentFilters[widgetId] && currentFilters[widgetId].dateRange && currentFilters[widgetId].dateRange !== "customDate") {
+      const dateRange = fieldStateCloned.dateRange.dropdownOptions.find(option => option.id === currentFilters[widgetId].dateRange)
+      fieldStateCloned.dateRange.value = dateRange.label;
+    }
     setFieldState(fieldStateCloned);
   }, [currentFilters[widgetId], customDate])
 

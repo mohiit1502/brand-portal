@@ -258,7 +258,7 @@ class CreateUserTemplate extends React.Component {
     const url = "/api/users";
     this.loader("form", true);
     if (this.state.form.isUpdateTemplate) {
-      return Http.put(`${url}/${payload.user.email}`, payload)
+      return Http.put(`${url}/${payload.user.email}`, payload, null, null, this.props.showNotification, "Unable to update the user!")
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -340,9 +340,9 @@ class CreateUserTemplate extends React.Component {
 
 CreateUserTemplate.propTypes = {
   newUserContent: PropTypes.object,
-  showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   saveUserInitiated: PropTypes.func,
+  showNotification: PropTypes.func,
   data: PropTypes.object,
   userProfile: PropTypes.object
 };

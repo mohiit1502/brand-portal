@@ -45,7 +45,6 @@ class DateSelector extends React.Component {
 
     //get orgId - If we want to call Chart from this Component
     const orgId = `${this.props.modal.orgId}`;
-    console.log("orgId" + orgId);
   }
 
   getStats(e) {
@@ -76,13 +75,10 @@ class DateSelector extends React.Component {
     this.props.dispatchFilter(currentFilters);
     Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: updateChartMeta.filters});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE)
-    console.log(dateConcatenatedToView);
-    console.log(dateConcatenatedToSubmit);
     this.getStatsFromServer();
   }
 
   resetTemplateStatus = () => {
-    console.log("resetTemplateStatus");
     this.setState({
       startDate: '',
       endDate: ''
