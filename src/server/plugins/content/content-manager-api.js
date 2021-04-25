@@ -103,9 +103,11 @@ class ContentManagerApi {
 
   async getMixpanelConfiguration (request, h) {
     try {
-      const projectToken = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
-      mixpanel.setToken(projectToken);
-      return h.response({projectToken}).code(CONSTANTS.STATUS_CODE_SUCCESS);
+      const response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
+      const projectToken = response.projectToken;
+      const enableTracking = response.enableTracking;
+      mixpanel.setToken(projectToken, enableTracking);
+      return h.response({projectToken, enableTracking}).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log(err);
       return h.response(err).code(err.status);

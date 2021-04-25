@@ -44,10 +44,11 @@ export default class MixpanelUtils {
             //console.log(e);
         }
     }
-    static intializeMixpanel(projectToken) {
+    static intializeMixpanel(projectToken, enableTracking) {
         try {
         // eslint-disable-next-line camelcase
           mixpanel.init(projectToken, {api_host: "https://api.mixpanel.com"});
+          !enableTracking && mixpanel.disable();
         } catch (e) {
             console.log(e);
         }

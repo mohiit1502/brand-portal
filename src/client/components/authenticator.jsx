@@ -37,7 +37,7 @@ class Authenticator extends React.Component {
     if (!mixpanel.getToken()) {
       Http.get("/api/mixpanelConfig")
       .then(res => {
-        mixpanel.intializeMixpanel(res.body.projectToken);
+        mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
       }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
     }
     if (this.state.isLoggedIn) {

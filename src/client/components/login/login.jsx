@@ -28,7 +28,7 @@ class Login extends React.Component {
       if (mixpanel.getToken() === undefined) {
         Http.get("/api/mixpanelConfig")
         .then(res => {
-          mixpanel.intializeMixpanel(res.body.projectToken);
+          mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
         }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
       } else {

@@ -3,8 +3,9 @@ const Mixpanel = require("mixpanel");
 let  mixpanel;
 
 export default class MixpanelUtils {
-    static setToken(token) {
+    static setToken(token, enableTracking) {
         MixpanelUtils.token = token;
+        MixpanelUtils.enableTracking = enableTracking;
         MixpanelUtils.intializeMixpanel();
     }
     static intializeMixpanel() {
@@ -30,7 +31,9 @@ export default class MixpanelUtils {
                 payLoad.$email = payLoad.distinct_id;
                 payLoad.$user_id = payLoad.distinct_id;
             }
-            payLoad ? mixpanel.track(eventName, payLoad) : mixpanel.track(eventName);
+            if (MixpanelUtils.enableTracking) {
+                payLoad ? mixpanel.track(eventName, payLoad) : mixpanel.track(eventName);
+            }
         } catch (e) {
             console.log(e);
         }
