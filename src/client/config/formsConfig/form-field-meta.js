@@ -4,18 +4,6 @@ const FORMFIELDCONFIG = {
       "sectionConfig": {
         "sectionTitle": "Create Company Profile",
         "sectionSubTitle": "Please provide the information in the form below to create your company profile."
-        // "conditionalRenders": {
-        //   "render1": {
-        //     "id": "doesNotRequireAccess",
-        //     "complyingFields": ["address", "city", "state", "zip", "country", "businessRegistrationDoc", "additionalDoc"],
-        //     "condition": {"flag": "requestAdministratorAccess", "locator": "form", "value": false}
-        //   },
-        //   "render2": {
-        //     "id": "requireAccess",
-        //     "complyingFields": ["companyRequestApprovalActions", "undertakingToggle"],
-        //     "condition": {"flag": "requestAdministratorAccess", "locator": "form", "value": true}
-        //   }
-        // }
       },
       "formConfig": {
         "id": "companyreg",
@@ -156,7 +144,7 @@ const FORMFIELDCONFIG = {
         },
         "companyOnboardingActions": {
           "containerClasses": "mt-3",
-          "colClasses": "text-right",
+          "colClasses": "company-onboarding-button-panel text-right",
           "layout": "7.1.0",
           "type": "_buttonsPanel",
           "buttons": {
@@ -175,39 +163,6 @@ const FORMFIELDCONFIG = {
             }
           }
         }
-        // "undertakingToggle": {
-        //   "checkBoxClasses": "user-undertaking",
-        //   "containerClasses": "mt-5",
-        //   "error": "",
-        //   "id": "user-undertaking",
-        //   "label": "I have read and agree to the Walmart Brand Portal Terms of Use.",
-        //   "labelClasses": "user-undertaking-label",
-        //   "layout": "8.1.0",
-        //   "onChange": "undertakingToggle",
-        //   "required": true,
-        //   "selected": false,
-        //   "type": "_checkBox",
-        // },
-        // "companyRequestApprovalActions": {
-        //   "containerClasses": "mt-3",
-        //   "colClasses": "text-right",
-        //   "layout": "9.1.0",
-        //   "buttons": {
-        //     "cancel": {
-        //       "classes": "btn btn-sm cancel-btn text-primary",
-        //       "disabled": false,
-        //       "onChange": "cancelRequestCompanyAccess",
-        //       "text": "Cancel",
-        //       "type": "button"
-        //     },
-        //     "submit": {
-        //       "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-        //       "disabled": true,
-        //       "text": "Request Access",
-        //       "type": "submit"
-        //     }
-        //   }
-        // }
       }
     },
     "BRANDREG": {
@@ -227,7 +182,7 @@ const FORMFIELDCONFIG = {
           "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
-          "INVALID": "Please provide a valid trademark number to proceed.",
+          "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
           "isValid": false,
           "key": "trademarkNumber",
           "label": "Trademark Number",
@@ -237,8 +192,6 @@ const FORMFIELDCONFIG = {
           "subtitle": "Please input the trademark registration number. Only USPTO registered trademarks are accepted.",
           "required": true,
           "type": "text",
-          "usptoUrl": "",
-          "usptoVerification": "",
           "value": "",
           "validators": {
             "validateLength": {
@@ -294,13 +247,13 @@ const FORMFIELDCONFIG = {
         },
         "brandOnboardingActions": {
           "containerClasses": "mt-3",
-          "colClasses": "text-right",
+          "colClasses": "brand-onboarding-button-panel text-right",
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "type": "_buttonsPanel",
           "buttons": {
-          "back": {
-            "classes": "btn btn-sm cancel-btn text-primary",
+            "back": {
+              "classes": "btn btn-sm cancel-btn text-primary",
               "disabled": false,
               "onClick": "gotoCompanyRegistration",
               "text": "Back",
@@ -308,9 +261,9 @@ const FORMFIELDCONFIG = {
             },
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": true,
-                "text": "Submit",
-                "type": "submit"
+              "disabled": true,
+              "text": "Submit",
+              "type": "submit"
             }
           }
         }
@@ -482,7 +435,7 @@ const FORMFIELDCONFIG = {
         },
         "userActions": {
           "containerClasses": "action-footer",
-          "colClasses": "text-right",
+          "colClasses": "new-user-button-panel text-right",
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "layout": "7.1.0",
@@ -526,7 +479,7 @@ const FORMFIELDCONFIG = {
           "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
-          "INVALID": "Please provide a valid trademark number to proceed.",
+          "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
           "isValid": false,
           "key": "trademarkNumber",
           "label": "Trademark Number",
@@ -536,8 +489,6 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "text",
-          "usptoUrl": "",
-          "usptoVerification": "",
           "value": "",
           "validators": {
             "validateLength": {
@@ -572,11 +523,12 @@ const FORMFIELDCONFIG = {
           "required": false,
           "subtitle": "",
           "type": "textarea",
+          "placeholder": "Please provide additional information about your brand.",
           "value": ""
         },
         "brandCreateActions": {
           "containerClasses": "mt-3",
-          "colClasses": "text-right",
+          "colClasses": "new-brand-button-panel text-right",
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "type": "_buttonsPanel",
@@ -614,18 +566,17 @@ const FORMFIELDCONFIG = {
       "formConfig": {
         "apiPath": "/api/users/resetPassword",
         "error": "",
-        "formHeading": "Please provide your current password and new password to reset your password.",
+        "formHeading": "Input the fields below to change your password. Your new password will be in effect next time you login.",
         "id": "resetPassword",
-        "incorrectPasswordError": "Current Password that you have entered is Incorrect!",
+        "incorrectPasswordError": "Current password is incorrect.",
         "loader": false,
         "old5PasswordsError": "New password can not be 1 of your previous 5 passwords",
         "passwordsDifferent": false,
         "passwordChangedMessage": "Password Changed Successfully!",
         "failureMessage": "Unable to process your request, please try in sometime",
-        // "passwordGuidance": "Password should contain a combination of upper case, lower case, numeric and special characters and should be between 8 and 16 characters long.",
         "passwordGuidance": "",
-        "passwordMismatchError": "New Password and Confirm Password fields do not match.",
-        "passwordPolicyMessage": "Selected password doesn't adhere to Walmart Brand Portal's Security policy, please refer the note above.",
+        "passwordMismatchError": "\"New Password\" and \"Confirm Password\" do not match",
+        "passwordPolicyMessage": "Password doesn't adhere to Walmart Brand Portal's Security policy.",
         "toastMessageExistingErrors": "Please resolve existing errors before proceeding!"
       },
       "fields": {
@@ -641,7 +592,6 @@ const FORMFIELDCONFIG = {
           "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
-          "tooltipText": "Password must contain between eight and thirty alphanumeric characters, one uppercase letter, and one number.",
           "type": "password",
           "value": "",
           "validators": {
@@ -661,7 +611,6 @@ const FORMFIELDCONFIG = {
           "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
-          "tooltipText": "Password must contain between eight and thirty alphanumeric characters, one uppercase letter, and one number.",
           "type": "password",
           "value": "",
           "validators": {
@@ -706,7 +655,7 @@ const FORMFIELDCONFIG = {
         },
         "resetPasswordAction": {
           "containerClasses": "px-0 text-right",
-          "colClasses": "text-right",
+          "colClasses": "reset-password-button-panel text-right",
           "layout": "1.1.12",
           "type": "_buttonsPanel",
           "buttons": {
@@ -825,13 +774,13 @@ const FORMFIELDCONFIG = {
           "initValuePath": "phoneNumber"
         },
         "resetPasswordAction": {
-          "containerClasses": "mb-5 pb-5 password-reset-col",
+          "containerClasses": "password-reset-col",
           "colClasses": "",
-          "layout": "1.1.12",
+          "layout": "1.1.6",
           "type": "_buttonsPanel",
           "buttons": {
             "changePassword": {
-              "classes": "btn btn-primary btn-sm px-3",
+              "classes": "btn btn-outline-primary btn-sm px-3",
               "onClick": "displayChangePassword",
               "text": "Change Password",
               "type": "button"
@@ -839,9 +788,9 @@ const FORMFIELDCONFIG = {
           }
         },
         "editActions": {
-          "containerClasses": "h-40 pt-5 mt-5 text-right",
-          "colClasses": "text-right",
-          "layout": "1.1.12",
+          "containerClasses": "h-40 text-right",
+          "colClasses": "edit-button-panel text-right",
+          "layout": "1.1.6",
           "type": "_buttonsPanel",
           "buttons": {
             "edit": {

@@ -56,20 +56,24 @@ class Authenticator extends React.Component {
   }
 
   initMetaData() {
-    Http.get("/api/formConfig")
-      .then(response => {
-        if (response.body) {
-          try {
-            response = JSON.parse(response.body);
-            // response = FORMFIELDCONFIG;
-            this.props.dispatchMetadata(response);
-          } catch (e) {
-            this.props.dispatchMetadata(FORMFIELDCONFIG);
+    try {
+      this.props.dispatchMetadata(FORMFIELDCONFIG);
+      Http.get("/api/formConfig")
+        .then(response => {
+          if (response.body) {
+            try {
+              response = JSON.parse(response.body);
+              // response = FORMFIELDCONFIG;
+              this.props.dispatchMetadata(response);
+            } catch (e) {
+              this.props.dispatchMetadata(FORMFIELDCONFIG);
+            }
           }
-        }
-      })
-      .catch(err => console.log(err));
+        });
+    } catch (err) {
+      console.log(err);
   }
+}
 
   setOnboardStatus (status) {
     return this.setState({isOnboarded: !!status});
