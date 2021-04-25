@@ -14,6 +14,8 @@ import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/create-user-template.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class CreateUserTemplate extends React.Component {
 
@@ -82,7 +84,7 @@ class CreateUserTemplate extends React.Component {
     form.inputData.lastName.value = data.lastName;
     form.inputData.emailId.value = data.email;
     form.inputData.emailId.disabled = true;
-    form.inputData.phone.value = data.phoneNumber;
+    form.inputData.phone.value = (data.phoneNumber === "0000000000") || (data.phoneNumber === "(000) 000-0000") ? "" : data.phoneNumber;
     form.inputData.role.value = data.role.name;
     form.inputData.brands = this.getPopulatedBrands(this.state.form.inputData.brands);
     form.templateUpdateComplete = true;
@@ -113,7 +115,7 @@ class CreateUserTemplate extends React.Component {
     }
   }
 
-  resetTemplateStatus () {
+  resetTemplateStatus (e) {
     const form = {...this.state.form};
     form.templateUpdateComplete = false;
     form.isUpdateTemplate = false;
@@ -146,6 +148,10 @@ class CreateUserTemplate extends React.Component {
     form.inputData.userActions.buttons.submit.disabled = true;
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    if (e) {
+      const mixpanelPayload = {WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"};
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.CANCEL_SUBMIT_USER_DETAILS, mixpanelPayload);
+    }
   }
 
   bubbleValue (evt, key, error) {
@@ -221,12 +227,16 @@ class CreateUserTemplate extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-
-    let brands = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
+    const mixpanelClickEventPayload = {
+      IS_UPDATE_USER: this.state.form && this.state.form.isUpdateTemplate,
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_CREATED_USER_CLICKED, mixpanelClickEventPayload);
+    let brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
     // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
     // eslint-disable-next-line no-unused-expressions
     // !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
-    brands = brands.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
+    let brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
     const loginId = this.state.form.inputData.emailId.value;
     // brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
@@ -248,7 +258,7 @@ class CreateUserTemplate extends React.Component {
         organization: this.props.userProfile.organization,
         role,
         phoneCountry: "+1",
-        phoneNumber: this.state.form.inputData.phone.value,
+        phoneNumber: this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000", //[note:to handle VIP phone number validation]
         type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
       },
       krakenUniqueWorkflow: this.state.uniquenessCheckStatus
@@ -257,6 +267,15 @@ class CreateUserTemplate extends React.Component {
     isThirdParty && (payload.user.companyName = this.state.form.inputData.companyName.value);
     const url = "/api/users";
     this.loader("form", true);
+    const mixpanelPayload = {
+      API: url,
+      INVITEE_COMPANY_NAME: this.props.userProfile && this.props.userProfile.organization && this.props.userProfile.organization.name,
+      INVITEE_EMAIL: loginId,
+      INVITEE_BRANDS: brandsSelected && brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => {return v.value}),
+      INVITEE_ROLE: role && role.name,
+      IS_UPDATE_USER: this.state.form && this.state.form.isUpdateTemplate,
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
+    };
     if (this.state.form.isUpdateTemplate) {
       return Http.put(`${url}/${payload.user.email}`, payload, null, null, this.props.showNotification, "Unable to update the user!")
         .then(() => {
@@ -264,10 +283,16 @@ class CreateUserTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveUserInitiated();
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.USER_DETAILS_SUBMISSION, mixpanelPayload);
         });
     } else {
       return Http.post(url, payload, null, null, this.props.showNotification, "", `Unable to invite user, please try with a different mail ID`)
@@ -276,13 +301,18 @@ class CreateUserTemplate extends React.Component {
           this.props.saveUserInitiated();
           const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+          this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           console.log(err);
-        })
-        .finally (() => {
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
         })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.USER_DETAILS_SUBMISSION, mixpanelPayload);
+        });
     }
   }
 

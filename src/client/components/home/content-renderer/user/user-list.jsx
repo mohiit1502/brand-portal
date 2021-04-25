@@ -20,7 +20,11 @@ import filterIcon from "../../../../images/filterIcon.svg";
 import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import SearchUtil from "../../../../utility/SearchUtil";
+import FilterUtil from "../../../../utility/FilterUtil";
 import moment from "moment";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class UserList extends React.Component {
 
@@ -31,10 +35,8 @@ class UserList extends React.Component {
     this.createNewUser = this.createNewUser.bind(this);
     this.editUser = this.editUser.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
-    this.uiSearch = this.uiSearch.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
-    this.applyFilters = this.applyFilters.bind(this);
     this.fetchUserData = this.fetchUserData.bind(this);
     // this.paginationCallback = this.paginationCallback.bind(this);
     // this.changePageSize = this.changePageSize.bind(this);
@@ -42,9 +44,11 @@ class UserList extends React.Component {
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
     this.multiSort = SortUtil.multiSort.bind(this);
+    this.uiSearch = SearchUtil.uiSearch.bind(this);
+    this.applyFilters = FilterUtil.applyFilters.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
     this.filterMap = {"pending": "Pending Activation", "active": "Active"};
-    this.updateSortState = this.updateSortState.bind(this);
+    this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
 
     this.state = {
       page: {
@@ -82,9 +86,20 @@ class UserList extends React.Component {
               const outgoingStatus = data.status && data.status === CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.USER.OPTIONS.PAYLOAD.ACTIVE : CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND;
               this.loader(true);
+              const mixpanelPayload = {
+                API: "/api/users/",
+                WORK_FLOW: "VIEW_USER_LIST",
+                SELECTED_USER_EMAIL:data.id,
+                SELECTED_USER_UPDATED_STATUS: outgoingStatus,
+                SELECTED_USER_ROLE: data.role,
+                SELECTED_USER_NAME: data.username,
+                SELECTED_USER_BRANDS: data.brands
+              }
               const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`, {}, "", () => this.loader(false));
               response.then(() => {
                 this.fetchUserData();
+                mixpanelPayload.API_SUCCESS = true;
+                mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.UPDATE_USER_STATUS, mixpanelPayload);
               });
             }
           },
@@ -107,6 +122,15 @@ class UserList extends React.Component {
             disabled: true,
             clickCallback: (evt, option, data) => {
               this.loader(true);
+              const mixpanelPayload = {
+                API: "/api/users/reinvite",
+                WORK_FLOW: "VIEW_USER_LIST",
+                SELECTED_USER_EMAIL:data.id,
+                SELECTED_USER_STATUS: data.status,
+                SELECTED_USER_ROLE: data.role,
+                SELECTED_USER_NAME: data.username,
+                SELECTED_USER_BRANDS: data.brands
+              }
               Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader(false))
                 .then(res => {
                   if (res.body === true) {
@@ -116,11 +140,21 @@ class UserList extends React.Component {
                   } else {
                     this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
                   }
+                  mixpanelPayload.API_SUCCESS = true;
+                })
+                .catch( (e) => {
+                  console.log(e);
+                  mixpanelPayload.API_SUCCESS = false;
+                  mixpanelPayload.ERROR = e.message ? e.message : e;
+                })
+                .finally(() => {
+                  mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.RESEND_INVITE, mixpanelPayload);
                 });
             }
           }
         ]
       },
+      identifier: "users",
       columns: [
         {
           Header: "#",
@@ -180,52 +214,6 @@ class UserList extends React.Component {
       return stateClone;
     });
   }
-  updateSortState(header) {
-    const columns = [...this.state.columns];
-    const columnMeta = columns.find(column => column.accessor === header.id);
-    if (columnMeta.canSort !== false) {
-      let sortLevel = columnMeta.sortState.level;
-      let columnPriority = this.state.columnPriority;
-      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
-      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
-        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
-        columnMeta.sortState.priorityLevel = -1;
-      } else {
-        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
-          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
-          columnPriority += 1;
-        }
-      }
-      this.setState({columns, columnPriority}, () => this.multiSort());
-    }
-  }
-
-  uiSearch (evt, isFilter, filteredUsers) {
-    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allUsers = filteredUsers ? filteredUsers : this.state.userList;
-    let filteredList = allUsers.filter(user => {
-      return user.username.toLowerCase().indexOf(searchText) !== -1
-        || user.role.toLowerCase().indexOf(searchText) !== -1
-        || user.status.toLowerCase().indexOf(searchText) !== -1
-        || user.brands.join(",").toLowerCase().indexOf(searchText) !== -1;
-    });
-    let i = 1;
-    if (filteredList) filteredList.forEach(claim => claim.sequence = i++);
-    if (isFilter) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        i = 1;
-        filteredList = this.multiSort(filteredList);
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
-    }
-  }
-
-
   // paginationCallback (page) {
   //   const pageState = {...this.state.page};
   //   pageState.offset = page.offset;
@@ -302,66 +290,6 @@ class UserList extends React.Component {
     this.toggleFilterVisibility();
   }
 
-  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
-
-    // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
-    filteredList = filteredList ? [...filteredList] : [...this.state.userList];
-    this.state.filters.map(filter => {
-      const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-      let i = 1;
-      if (filterOptionsSelected.length) {
-        const filterId = filter.id;
-        if (filterId === "brands") {
-          filteredList = filteredList.filter(user => {
-            let bool = false;
-            filterOptionsSelected.map(filterOption => {
-              user[filterId].map(brand => bool = bool || brand.toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-            });
-            return bool;
-          });
-          filteredList.forEach(user => user.sequence = i++);
-        } else {
-          filteredList = filteredList.filter(user => {
-            let bool = false;
-            filterOptionsSelected.map(filterOption => {
-              bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-            });
-            return bool;
-          });
-        }
-      }
-      filteredList.forEach(user => user.sequence = i++);
-    });
-
-    let appliedFilters = this.state.filters.map(filter => {
-      let clonedFilterOption = filter.filterOptions.map(option => {
-        return {...option}
-      })
-      return {...filter,filterOptions: clonedFilterOption}
-    });
-    if(buttonClickAction === true){
-      this.setState({appliedFilter: appliedFilters});
-    }
-
-    if (isSearch) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        let i = 1;
-        filteredList = this.multiSort(filteredList);
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
-      // this.setState({filteredList: paginatedList});
-      this.toggleFilterVisibility(showFilter);
-    }
-
-    // if (buttonClickAction) {
-    //   this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
-    // }
-  }
-
   clearFilter(filterID,optionID){
     this.onFilterChange(filterID, optionID);
     this.applyFilters(false,null,null,true)
@@ -375,6 +303,7 @@ class UserList extends React.Component {
     const companySet = new Set();
     const userStatuses = Object.values(CONSTANTS.USER.STATUS);
     userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.REJECTED), 1);
+    userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.PENDING_SUPPLIER), 1);
 
     paginatedList.map(user => {
       user.brands.map(brand => {
@@ -384,7 +313,7 @@ class UserList extends React.Component {
         rolesSet.add(user.role);
       }
       if (user.status) {
-        statusSet.add(user.status);
+        statusSet.add(CONSTANTS.USER.VALUES.STATUS[user.status] || user.status);
       }
 
       if (user.company) {
@@ -434,6 +363,8 @@ class UserList extends React.Component {
   async componentDidMount() {
     const userList = await this.fetchUserData();
     this.checkAndApplyDashboardFilter(userList);
+    const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.VIEW_USERS, mixpanelPayload);
   }
 
   checkAndApplyDashboardFilter(userList) {
@@ -467,15 +398,29 @@ class UserList extends React.Component {
       this.checkAndApplyDashboardFilter(this.state.userList);
     }
   }
-
+  mixpanelAddNewTemplateUtil = (meta, payload) => {
+    const templateName = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    mixpanel.trackEvent(eventName, payload);
+  }
   createNewUser () {
     const meta = { templateName: "CreateUserTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
+    this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
   }
 
   editUser (userData) {
     const meta = { templateName: "CreateUserTemplate", data: {...userData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    const mixpanelPayload = {
+      WORK_FLOW: "VIEW_USER_LIST",
+      SELECTED_USER_EMAIL: userData.email,
+      SELECTED_USER_ROLE: userData.role.name,
+      SELECTED_USER_STATUS: userData.status,
+      SELECTED_USER_TYPE: userData.type
+  };
+  mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.EDIT_USER_PROFILE, mixpanelPayload);
   }
 
   onFilterChange (filterId, optionId) {
@@ -568,7 +513,7 @@ class UserList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Name"
+                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Details"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
@@ -641,7 +586,7 @@ class UserList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.userList ?
-                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
+                        <CustomTable sortHandler={this.sortAndNormalise} data={[...this.state.paginatedList]} columns={this.state.columns} template={UserListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}} />
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

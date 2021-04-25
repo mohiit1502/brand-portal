@@ -17,6 +17,10 @@ import CONSTANTS from "../../../../constants/constants";
 import helper from "./../../../../utility/helper";
 import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
+import SearchUtil from "../../../../utility/SearchUtil";
+import FilterUtil from "../../../../utility/FilterUtil";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class ClaimList extends React.Component {
 
@@ -24,20 +28,20 @@ class ClaimList extends React.Component {
     super(props);
 
     this.addNewClaim = this.addNewClaim.bind(this);
-    this.applyFilters = this.applyFilters.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.fetchClaims = this.fetchClaims.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
-    this.uiSearch = this.uiSearch.bind(this);
     this.checkAndApplyDashboardFilter = this.checkAndApplyDashboardFilter.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     // this.getFilterPins = this.getFilterPins.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
     this.multiSort = SortUtil.multiSort.bind(this);
+    this.uiSearch = SearchUtil.uiSearch.bind(this);
+    this.applyFilters = FilterUtil.applyFilters.bind(this);
     this.filterMap = {"inprogress": "In Progress", "closed": "Closed"};
-    this.updateSortState = this.updateSortState.bind(this);
+    this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
     this.state = {
       showFilters: false,
       claimList: [],
@@ -48,6 +52,7 @@ class ClaimList extends React.Component {
       loader: false,
       searchText: "",
       unsortedList: [],
+      identifier: "claims",
       columns: [
         // {
         //   Header: "#",
@@ -125,6 +130,8 @@ class ClaimList extends React.Component {
     }
     const claimList = await this.fetchClaims();
     this.checkAndApplyDashboardFilter(claimList);
+    const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIM_LIST_WORKFLOW.VIEW_CLAIMS, mixpanelPayload);
   }
 
   componentDidUpdate(prevProps) {
@@ -132,26 +139,6 @@ class ClaimList extends React.Component {
       this.checkAndApplyDashboardFilter(this.props.claims);
       this.props.dispatchClaims({fetchClaimsCompleted: false});
     }
-  }
-  updateSortState(header) {
-    const columns = [...this.state.columns];
-    const columnMeta = columns.find(column => column.accessor === header.id);
-    if (columnMeta.canSort !== false) {
-      let sortLevel = columnMeta.sortState.level;
-      let columnPriority = this.state.columnPriority;
-      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
-      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
-        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
-        columnMeta.sortState.priorityLevel = -1;
-      } else {
-        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
-          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
-          columnPriority += 1;
-        }
-      }
-      this.setState({columns, columnPriority}, () => this.multiSort());
-  }
   }
 
   checkAndApplyDashboardFilter(claimList) {
@@ -222,36 +209,19 @@ class ClaimList extends React.Component {
     return sortedClaimList;
   }
 
+  mixpanelAddNewTemplateUtil = (meta, payload) => {
+    const templateName = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    mixpanel.trackEvent(eventName, payload);
+  }
+
   addNewClaim () {
     const meta = { templateName: "NewClaimTemplate" };
+    const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
+    this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
-  uiSearch (evt, isFilter, filteredClaims) {
-    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allClaims = filteredClaims ? filteredClaims : this.props.claims;
-    let filteredList = allClaims.filter(claim => {
-      return claim.caseNumber.toLowerCase().indexOf(searchText) !== -1
-        || claim.claimType.toLowerCase().indexOf(searchText) !== -1
-        || claim.brandName.toLowerCase().indexOf(searchText) !== -1
-        || claim.createdByName.toLowerCase().indexOf(searchText) !== -1
-        || claim.claimDate.toLowerCase().indexOf(searchText) !== -1
-        || claim.claimStatus.toLowerCase().indexOf(searchText) !== -1;
-    });
-    let i = 1;
-    if (filteredList) filteredList.forEach(claim => claim.sequence = i++);
-    if (isFilter) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        i = 1;
-        filteredList = this.multiSort(filteredList);
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
-    }
-  }
 
   toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
@@ -334,49 +304,6 @@ class ClaimList extends React.Component {
     this.setState({filters});
   }
 
-  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
-    filteredList = filteredList ? [...filteredList] : [...this.props.claims];
-
-    this.state.filters.map(filter => {
-      const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-      let i = 1;
-      if (filterOptionsSelected.length) {
-        const filterId = filter.id;
-        filteredList = filteredList.filter(claim => {
-          let bool = false;
-          filterOptionsSelected.map(filterOption => {
-            bool = bool || (!!claim[filterId] && claim[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-          });
-          return bool;
-        });
-      }
-      filteredList && filteredList.forEach(claim => claim.sequence = i++);
-    });
-
-    let appliedFilters = this.state.filters.map(filter => {
-      let clonedFilterOption = filter.filterOptions.map(option => {
-        return {...option}
-      })
-      return {...filter,filterOptions: clonedFilterOption}
-    });
-
-    if(buttonClickAction === true){
-      this.setState({appliedFilter: appliedFilters});
-    }
-    if (isSearch) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        filteredList = this.multiSort(filteredList);
-        let i = 0;
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
-      this.toggleFilterVisibility(showFilter);
-    }
-  }
-
   onFilterChange (filterId, optionId) {
    const state = {...this.state};
 
@@ -434,7 +361,7 @@ class ClaimList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Number"
+                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Details"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
@@ -506,7 +433,7 @@ class ClaimList extends React.Component {
                     <div className="col h-100">
                       {
                         this.props.claims ?
-                          <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
+                          <CustomTable sortHandler={this.sortAndNormalise} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
                                      templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
                           : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">

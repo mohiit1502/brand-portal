@@ -12,6 +12,8 @@ import Validator from "../../../../../utility/validationUtil";
 // import FORMFIELDCONFIG from "./../../../../../config/formsConfig/form-field-meta";
 import "../../../../../styles/home/content-renderer/user/profile/user-profile.scss";
 import CONSTANTS from "../../../../../constants/constants";
+import mixpanel from "../../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 
 class UserProfile extends React.Component {
 
@@ -42,6 +44,10 @@ class UserProfile extends React.Component {
     Object.keys(this.state.form.inputData).forEach(itemKey => {
       const item = this.state.form.inputData[itemKey];
       this.state.form.inputData[itemKey].value = Helper.search(item.initValuePath, this.props.userProfile);
+      if  (itemKey === "phone") {
+        const value = this.state.form.inputData[itemKey].value;
+        this.state.form.inputData[itemKey].value = (value === "0000000000") || (value === "(000) 000-0000") ? "" : value;
+      }
     });
   }
 
@@ -55,8 +61,8 @@ class UserProfile extends React.Component {
     const {firstName: originalFName, lastName: originalLName, email: originalEmail, phoneNumber: originalPhone, companyName: originalCompany} = this.props.userProfile;
     const {firstName: {value: currentFName}, lastName: {value: currentLName}, emailId: {value: currentEmail}, phone: {value: currentPhone}} = this.state.form.inputData;
     const currentCompany = this.state.form.inputData.company ? this.state.form.inputData.company.value : "";
-
-    return originalFName !== currentFName || originalLName !== currentLName || originalEmail !== currentEmail || originalPhone !== currentPhone || (originalCompany && currentCompany && originalCompany !== currentCompany);
+    const originalPhoneModified = (originalPhone === "0000000000" || originalPhone === "(000) 000-0000") ? "" : originalPhone;
+    return originalFName !== currentFName || originalLName !== currentLName || originalEmail !== currentEmail || originalPhoneModified !== currentPhone || (originalCompany && currentCompany && originalCompany !== currentCompany);
       // || ((!originalCompany && currentCompany) || (originalCompany && !currentCompany) || (originalCompany !== currentCompany));
   }
 
@@ -68,7 +74,7 @@ class UserProfile extends React.Component {
       form.inputData.lastName.value = obj.lastName;
       form.inputData.companyName.value = obj.type === "ThirdParty" ? obj.companyName : "";
       form.inputData.emailId.value = obj.email;
-      form.inputData.phone.value = obj.phoneNumber;
+      form.inputData.phone.value = (obj.phoneNumber === "0000000000") || (obj.phoneNumber === "(000) 000-0000") ? "" : obj.phoneNumber;
 
       Object.keys(form.inputData).forEach(key => {
         if (key !== "emailId") {
@@ -115,6 +121,7 @@ class UserProfile extends React.Component {
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD);
   }
 
   disableInput (disable) {
@@ -122,6 +129,7 @@ class UserProfile extends React.Component {
     if (disable && this.isDirty()) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE);
     } else {
       const form = {...this.state.form};
       form.isDisabled = disable;
@@ -134,6 +142,7 @@ class UserProfile extends React.Component {
         }
       });
       this.setState({form});
+      if (!disable) mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE);
     }
   }
 
@@ -151,7 +160,7 @@ class UserProfile extends React.Component {
       const loginId = this.state.form.inputData.emailId.value;
       const firstName = this.state.form.inputData.firstName.value;
       const lastName = this.state.form.inputData.lastName.value;
-      const phoneNumber = this.state.form.inputData.phone.value;
+      const phoneNumber = this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000"; //[note:to handle VIP phone number validation] 
       const payload = {
         user: {
           loginId,
@@ -166,13 +175,24 @@ class UserProfile extends React.Component {
 
       const url = this.state.form.apiPath;
       if (this.isDirty()) {
+        const mixpanelPayload = {
+          API: url
+        };
         return Http.put(`${url}/${payload.user.loginId}`, payload, null, null, this.props.showNotification, this.state.form.profileSaveMessage)
           .then(async res => {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
             this.disableInput(true);
+            mixpanelPayload.API_SUCCESS = true;
           })
-          .catch(() => this.loader("form", false));
+          .catch(err => {
+            this.loader("form", false);
+            mixpanelPayload.API_SUCCESS = false;
+            mixpanelPayload.ERROR = err.message ? err.message : err;
+          })
+          .finally(() => {
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.SAVE_PROFILE, mixpanelPayload);
+          });
       } else {
         this.loader("form", false);
         this.disableInput(true);

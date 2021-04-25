@@ -276,6 +276,9 @@ const CONSTANTS = {
     ARRAYTYPE: "array",
     NUMERICTYPE: "number"
   },
+  MIXPANEL: {
+    PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
+  },
 
   POPOVERSELECTOR: "tutorialPopover",
   APIDEBOUNCETIMEOUT: 800,

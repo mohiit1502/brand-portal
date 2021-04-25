@@ -10,6 +10,8 @@ import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import CONSTANTS from "../../../../constants/constants";
 import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
+import mixpanel from "../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class NewBrandTemplate extends React.Component {
 
@@ -106,6 +108,11 @@ class NewBrandTemplate extends React.Component {
   }
 
   async handleSubmit(evt) {
+    const mixpanelClickEventPayload = {
+      IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
     evt.preventDefault();
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
     const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
@@ -114,7 +121,13 @@ class NewBrandTemplate extends React.Component {
     const comments = this.state.form.inputData.comments.value;
     const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification };
     const url = "/api/brands";
-
+    const mixpanelPayload = {
+      API: url,
+      BRAND_NAME: name,
+      IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
+      TRADEMARK_NUMBER: trademarkNumber,
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    };
     if (this.state.form.isUpdateTemplate) {
       this.loader("form", true);
       return Http.put(`${url}/${this.props.data.brandId}`, {comments})
@@ -124,10 +137,16 @@ class NewBrandTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
         });
     } else {
       this.loader("form", true);
@@ -138,16 +157,21 @@ class NewBrandTemplate extends React.Component {
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
+          mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
           this.loader("form", false);
           console.log(err);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
         });
     }
   }
 
-  // eslint-disable-next-line max-statements
-  resetTemplateStatus () {
+  resetTemplateStatus (e) {
     const form = {...this.state.form};
     form.inputData.trademarkNumber.value = "";
     form.inputData.brandName.value = "";
@@ -170,6 +194,12 @@ class NewBrandTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    if (e) {
+      const mixpanelPayload = {
+        WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+      };
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.CANCEL_SUBMIT_BRAND_DETAILS, mixpanelPayload);
+    }
   }
 
   render() {

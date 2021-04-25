@@ -358,6 +358,6 @@ const HELPCONFIG = {
         }
       }
     }
-  };
+  }
 
 export default HELPCONFIG;

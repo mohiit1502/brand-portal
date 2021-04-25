@@ -8,6 +8,8 @@ import headerLogo from "../../../images/WMWhite-horizontal.svg"
 import helpLogo from "../../../images/help-header.png"
 import profilePic from "../../../images/user-profile.png"
 import "../../../styles/custom-components/headers/home-header.scss";
+import mixpanel from "../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 
 class HomeHeader extends React.Component {
   constructor (props) {
@@ -17,6 +19,10 @@ class HomeHeader extends React.Component {
   render() {
     const baseUrl = window.location.origin;
     const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
+    const workflowCode = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
+    const mixpanelPayload = {
+      WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0] || "CODE_NOT_FOUND"
+    };
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <Link className="navbar-brand walmart-brand" to="/dashboard">
@@ -42,9 +48,9 @@ class HomeHeader extends React.Component {
               </Link>
               <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
                 {
-                  this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER}>Profile</a>
+                  this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</a>
                 }
-                <a className="dropdown-item" href={logoutUrl}>Logout</a>
+                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>Logout</a>
               </div>
             </li>
           </ul>

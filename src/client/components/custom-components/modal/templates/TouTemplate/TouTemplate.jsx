@@ -9,6 +9,8 @@ import {updateUserProfile} from "../../../../../actions/user/user-actions";
 import Http from "../../../../../utility/Http";
 import CONSTANTS from "../../../../../constants/constants";
 import * as staticContent from "./../../../../../images";
+import mixpanel from "../../../../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 import "./TouTemplate.component.scss";
 
 const TouTemplate = props => {
@@ -24,7 +26,15 @@ const TouTemplate = props => {
   const updateUserStatus = (outgoingStatus) => {
     setLoader(true);
     const profile = props.meta.userProfile;
-    const payload = {...profile}
+    const payload = {...profile};
+    const mixpanelPayload = {
+      API: "/api/users/updateTouStatus/",
+      WORK_FLOW: "TOU_VERIFICATION",
+      TOU_ACCEPTED: outgoingStatus === "Active" ? true : false,
+      CREATED_BY: profile.createdBy,
+      ORG_NAME: profile.organization.name,
+      USER_STATUS: profile.status
+    };
     Http.put(`/api/users/updateTouStatus/${outgoingStatus}`, payload, null, null, props.showNotification, null, "Unable to complete Operation, please try again!")
       .then((res) => {
         setLoader(false);
@@ -33,11 +43,16 @@ const TouTemplate = props => {
         profile.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE ? CONSTANTS.CODES.PORTAL_DASHBOARD.CODE : CONSTANTS.CODES.PORTAL_REGISTRATION.CODE;
         props.updateUserProfile(profile);
         outgoingStatus === CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED && (window.location.pathname = "/logout");
+        mixpanelPayload.API_SUCCESS = true;
       })
       .catch(e => {
         console.log(e);
         setLoader(false);
-      })
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = e.message ? e.message : e;
+      }) .finally(() => {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.TOU_TEMPLATE.TOU_VERIFICATION, mixpanelPayload);
+      });
   };
 
   const profile = props.meta.userProfile;
