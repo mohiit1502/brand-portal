@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable max-statements */
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
@@ -78,6 +79,8 @@ class CompanyManagerApi {
       METHOD: "POST",
       API: "/api/org/register"
     };
+    console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has started");
+    console.log("[CompanyManagerApi::registerOrganization] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -98,12 +101,13 @@ class CompanyManagerApi {
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
+      console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::registerOrganization] Error occured in API request for Register organization:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.REGISTER_ORGANIZATION, mixpanelPayload);
@@ -115,6 +119,8 @@ class CompanyManagerApi {
       METHOD: "GET",
       API: `/api/brand/trademark/validity/${request.params && request.params.trademarkNumber}`
     };
+    console.log("[CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has started");
+    console.log("[CompanyManagerApi::checkTrademarkValidity] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
 
@@ -133,12 +139,13 @@ class CompanyManagerApi {
       mixpanelPayload.TRADEMARK_NUMBER = request.params && request.params.trademarkNumber;
 
       const response = await ServerHttp.get(url, options);
+      console.log("[CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::checkTrademarkValidity] Error occured in API request for Trademark Validity:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.CHECK_TRADEMARK_VALIDITY, mixpanelPayload);
@@ -150,6 +157,8 @@ class CompanyManagerApi {
       METHOD: "POST",
       API: "/api/company/uploadAdditionalDocument"
     };
+    console.log("[CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has started");
+    console.log("[CompanyManagerApi::uploadAdditionalDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
 
       const headers = this.getHeaders(request);
@@ -171,12 +180,13 @@ class CompanyManagerApi {
       mixpanelPayload.FILE_NAME = filename;
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
+      console.log("[CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::uploadAdditionalDocument] Error occured in API request for Upload Additional Document:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.UPLOAD_ADDITIONAL_DOCUMENT, mixpanelPayload);
@@ -188,6 +198,8 @@ class CompanyManagerApi {
       METHOD: "POST",
       API: "/api/company/uploadBusinessDocument"
     };
+    console.log("[CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has started");
+    console.log("[CompanyManagerApi::uploadBusinessDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = this.getHeaders(request);
       const options = {
@@ -209,12 +221,14 @@ class CompanyManagerApi {
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
+      console.log("[CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log("5. In CMA - Error caught ======== ", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::uploadBusinessDocument] Error occured in API request for Upload Business document:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.UPLOAD_BUSINESS_DOCUMENT, mixpanelPayload);
@@ -226,6 +240,8 @@ class CompanyManagerApi {
       METHOD: "GET",
       API: "/api/company/availability"
     };
+    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has started");
+    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const name = request.query.name;
 
@@ -245,11 +261,13 @@ class CompanyManagerApi {
       mixpanelPayload.COMPANY_NAME = name;
 
       const response = await ServerHttp.get(url, options, {name});
+      console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] Error occured in API request for Company Name Avaialability:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.CHECK_COMPANY_NAME_AVAILABILILTY, mixpanelPayload);

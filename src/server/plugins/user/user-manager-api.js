@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
@@ -122,19 +123,24 @@ class UserManagerApi {
   }
 
   async checkHealth (request, h) {
+    console.log("[UserManagerApi::checkHealth] API request for Check Health has started");
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {headers};
       const HEALTHCHECK_PATH = await ServerUtils.ccmGet(request, "HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
-      console.log("Health check response: ", response);
+      console.log("[UserManagerApi::checkHealth] API request for check health has completed");
+      console.log("[UserManagerApi::checkHealth] Health check response: ", response);
       return h.response(response.body).code(response.status);
     } catch (err) {
+      console.log("[UserManagerApi::checkHealth] Error occured in API request for check health:", err);
       return h.response(err).code(err.status);
     }
   }
 
   async updateUser (request, h) {
+    console.log("[UserManagerApi::updateUser] API request for Update User has started");
+    console.log("[UserManagerApi::updateUser] User ID: ", request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/${request.params && request.params.emailId}`
@@ -158,11 +164,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::updateUser] API request for Update User has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::updateUser] Error occured in API request for Update User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER, mixpanelPayload);
@@ -170,6 +178,8 @@ class UserManagerApi {
   }
 
   async reinviteUser (request, h) {
+    console.log("[UserManagerApi::reinviteUser] API request for Reinvite User has started");
+    console.log("[UserManagerApi::reinviteUser] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/reinvite"
@@ -193,11 +203,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::reinviteUser] API request for Reinvite User has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::reinviteUser] Error occured in API request for Reinvite User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESEND_INVITE, mixpanelPayload);
@@ -205,6 +217,8 @@ class UserManagerApi {
   }
 
   async resetPassword (request, h) {
+    console.log("[UserManagerApi::resetPassword] API request for Reset Password has started");
+    console.log("[UserManagerApi::resetPassword] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/resetPassword"
@@ -227,11 +241,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::resetPassword] API request for Reset Password has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::resetPassword] Error occured in API request for Reset Password:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESET_PASSWORD, mixpanelPayload);
@@ -239,6 +255,8 @@ class UserManagerApi {
   }
 
   async getUsers(request, h) {
+    console.log("[UserManagerApi::getUsers] API request for get Users has started");
+    console.log("[UserManagerApi::getUsers] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users"
@@ -259,11 +277,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::getUsers] API request for get Users has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getUsers] Error occured in API request for get Users:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USERS, mixpanelPayload);
@@ -271,6 +291,8 @@ class UserManagerApi {
   }
 
   async checkUnique(request, h) {
+    console.log("[UserManagerApi::checkUnique] API request for Check Unique User has started");
+    console.log("[UserManagerApi::checkUnique] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users/checkUnique"
@@ -293,12 +315,14 @@ class UserManagerApi {
       mixpanelPayload.INVITEE_EMAIL = request.query && request.query.email;
 
       const response = await ServerHttp.get(url, options);
+      console.log("[UserManagerApi::checkUnique] API request for Check Unique User has completed");
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::checkUnique] Error occured in API request for Check Unique User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.EMAIL_UNIQUENESS, mixpanelPayload);
@@ -307,6 +331,8 @@ class UserManagerApi {
 
   // eslint-disable-next-line complexity
   async createUser(request, h) {
+    console.log("[UserManagerApi::createUser] API request for Create User has started");
+    console.log("[UserManagerApi::createUser] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users"
@@ -333,11 +359,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::createUser] API request for Create User has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::createUser] Error occured in API request for Create User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.CREATE_USER, mixpanelPayload);
@@ -345,6 +373,8 @@ class UserManagerApi {
   }
 
   async updateUserStatus (request, h) {
+    console.log("[UserManagerApi::updateUserStatus] API request for Update User Status has started");
+    console.log("[UserManagerApi::updateUserStatus] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/{emailId}/status/${request.params.status}`
@@ -366,11 +396,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.put(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::updateUserStatus] API request for Update User Status has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::updateUserStatus] Error occured in API request for Update User Status:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER_STATUS, mixpanelPayload);
@@ -378,6 +410,8 @@ class UserManagerApi {
   }
 
   async updateTouStatus (request, h) {
+    console.log("[UserManagerApi::updateTouStatus] API request for Update TOU status has started");
+    console.log("[UserManagerApi::updateTouStatus] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/updateTouStatus/${request.params && request.params.status}`
@@ -401,11 +435,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::updateTouStatus] API request for Update TOU status has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::updateTouStatus] Error occured in API request for Update TOU status:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_TOU_STATUS, mixpanelPayload);
@@ -413,6 +449,8 @@ class UserManagerApi {
   }
 
   async deleteUser (request, h) {
+    console.log("[UserManagerApi::deleteUser] API request for Delete Userhas started");
+    console.log("[UserManagerApi::deleteUser] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -422,14 +460,18 @@ class UserManagerApi {
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
       const response = await ServerHttp.delete(url, options);
+      console.log("[UserManagerApi::deleteUser] API request for Delete User has completed");
       return h.response(response.body).code(response.status);
 
     } catch (err) {
+      console.log("[UserManagerApi::deleteUser] Error occured in API request for Delete User:", err);
       return h.response(err).code(err.status);
     }
   }
 
   async getNewUserRoles (request, h) {
+    console.log("[UserManagerApi::getNewUserRoles] API request for New User Roles has started");
+    console.log("[UserManagerApi::getNewUserRoles] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/roles"
@@ -450,11 +492,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::getNewUserRoles] API request for New User Roles has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getNewUserRoles] Error occured in API request for New User Roles:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_ROLE, mixpanelPayload);
@@ -462,6 +506,8 @@ class UserManagerApi {
   }
 
   async getNewUserBrands (request, h) {
+    console.log("[UserManagerApi::getNewUserBrands] API request for get New User Brand has started");
+    console.log("[UserManagerApi::getNewUserBrands] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/brands"
@@ -482,11 +528,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::getNewUserBrands] API request for get New User Brand has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getNewUserBrands] Error occured in API request for get New User Brand:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_BRAND, mixpanelPayload);
@@ -495,6 +543,8 @@ class UserManagerApi {
 
 
   async getUserInfo (request, h) {
+    console.log("[UserManagerApi::getUserInfo] API request for get User information has started");
+    console.log("[UserManagerApi::getUserInfo] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/userInfo"
@@ -514,6 +564,7 @@ class UserManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[UserManagerApi::getUserInfo] API request for get User information has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       if (err.status === 520) {
@@ -527,6 +578,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getUserInfo] Error occured in API request for get User information:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USER_INFORMATION, mixpanelPayload);
@@ -534,6 +586,8 @@ class UserManagerApi {
   }
 
   async loginSuccessRedirect (request, h) {
+    console.log("[UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has started");
+    console.log("[UserManagerApi::loginSuccessRedirect] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/login-redirect"
@@ -556,11 +610,13 @@ class UserManagerApi {
       mixpanelPayload.distinct_id = loginId;
       mixpanelPayload.API_SUCCESS = true;
 
+      console.log("[UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has completed");
       return h.redirect("/");
     } catch (err) {
       console.error("got error in authorization: ", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
+      console.log("[UserManagerApi::loginSuccessRedirect] Error occured in API request for Redirect of Login Success:", err);
       throw err;
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGIN_SUCCESS_REDIRECT, mixpanelPayload);
@@ -568,6 +624,7 @@ class UserManagerApi {
   }
 
   async logout(request, h) {
+    console.log("[UserManagerApi::logout] API request for Logout has started");
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/logout"
@@ -586,11 +643,13 @@ class UserManagerApi {
       });
 
       mixpanelPayload.API_SUCCESS = true;
+      console.log("[UserManagerApi::logout] API request for Logout has completed");
       return h.redirect("/");
     } catch (err) {
       console.error(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
+      console.log("[UserManagerApi::logout] Error occured in API request for Logout:", err);
       throw err;
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGOUT_SUCCESS, mixpanelPayload);
@@ -598,6 +657,8 @@ class UserManagerApi {
   }
 
   async getLogoutProvider(request, h) {
+    console.log("[UserManagerApi::getLogoutProvider] API request for Get Logout provider has started");
+    console.log("[UserManagerApi::getLogoutProvider] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/logoutProvider"
@@ -608,13 +669,13 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
-
+      console.log("[UserManagerApi::getLogoutProvider] API request for Get Logout provider has completed");
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getLogoutProvider] Error occured in API request for Get Logout provider:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_LOGOUT_PROVIDER, mixpanelPayload);
@@ -622,16 +683,21 @@ class UserManagerApi {
   }
 
   async redirectToFalcon (request, h) {
+    console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started");
+    console.log("[UserManagerApi::redirectToFalcon] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action);
+      console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");
       return h.redirect(redirectUri);
     } catch (e) {
-      console.log(e);
+      console.log("[UserManagerApi::redirectToFalcon] Error occured in API request for Redirect to Falcon:", e);
       throw e;
     }
   }
 
   async getAccessToken(request, authorizationCode) {
+    console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has started");
+    console.log("[UserManagerApi::getAccessToken] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const IAM = await ServerUtils.ccmGet(request, "IAM");
       const url = secrets.IAM_TOKEN_URL;
@@ -658,9 +724,11 @@ class UserManagerApi {
       const options = {headers};
 
       const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
+      console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has completed");
       return response.body;
 
     } catch (err) {
+      console.log("[UserManagerApi::getAccessToken] Error occured in API request for Get Access Token:", err);
       throw err;
     }
   }
