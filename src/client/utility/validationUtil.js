@@ -281,7 +281,6 @@ export default class Validator {
         emailId.disabled = false;
         emailId.loader = false;
         this.setState({form, uniquenessCheckStatus}, this.checkToEnableSubmit);
-        emailId.fieldOk = false;
         this.setState({form});
       });
     }

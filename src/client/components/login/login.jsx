@@ -22,6 +22,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     try {
+      this.setState({loginConfig});
       Http.get("/api/loginConfig")
         .then(res => this.setState(state => {
           const stateCloned = {...state};
