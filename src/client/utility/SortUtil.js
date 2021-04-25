@@ -1,6 +1,26 @@
 import CONSTANTS from "../constants/constants";
 
 export default class SortUtil {
+  static sortAndNormalise(header) {
+    const columns = [...this.state.columns];
+    const columnMeta = columns.find(column => column.accessor === header.id);
+    if (columnMeta.canSort !== false) {
+      let sortLevel = columnMeta.sortState.level;
+      let columnPriority = this.state.columnPriority;
+      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
+      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
+        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
+        columnMeta.sortState.priorityLevel = -1;
+      } else {
+        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
+        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
+          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
+          columnPriority += 1;
+        }
+      }
+      this.setState({columns, columnPriority}, () => this.multiSort());
+    }
+  }
   static multiSort(dataList) {
       const columns = [...this.state.columns];
       const sortingColumns = columns.filter(column => column.sortState.priorityLevel >= 0 ?  column : false);
