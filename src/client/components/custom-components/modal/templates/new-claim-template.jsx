@@ -432,6 +432,9 @@ class NewClaimTemplate extends React.Component {
   disableSubmitButton() {
     this.setState(state => { state = {...state}; state.form.isSubmitDisabled = true; return state; });
   }
+  enableSubmitButton() {
+    this.setState(state => { state = {...state}; state.form.isSubmitDisabled = false; return state; });
+  }
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.undertakingList[index].selected = !state.form.undertakingList[index].selected;
@@ -440,11 +443,11 @@ class NewClaimTemplate extends React.Component {
     }, this.checkToEnableSubmit);
   }
 
+  // eslint-disable-next-line max-statements
   async handleSubmit(evt) {
     evt.preventDefault();
-
+    this.disableSubmitButton();
     const inputData = this.state.form.inputData;
-
     const claimType = inputData.claimType.value;
     const registrationNumber = inputData.claimTypeIdentifier.value.trim();
 
@@ -492,6 +495,9 @@ class NewClaimTemplate extends React.Component {
       .catch(err => {
         this.loader("loader", false);
         console.log(err);
+      })
+      .finally(() => {
+          this.enableSubmitButton();
       });
   }
 
