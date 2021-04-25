@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
 import ServerHttp from "../../utility/ServerHttp";
 import ServerUtils from "../../utility/server-utils";
@@ -50,6 +51,8 @@ class BrandManagerApi {
 
   // eslint-disable-next-line max-statements
   async getBrands(request, h) {
+    console.log("[BrandManagerApi::getBrands] API request for get Brand has started");
+    console.log("[BrandManagerApi::getBrands] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands"
@@ -74,12 +77,13 @@ class BrandManagerApi {
       const response = await ServerHttp.get(url, options);
 
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[BrandManagerApi::getBrands] API request for get Brand has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[BrandManagerApi::getBrands] Error occured in API request for get Brand:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRANDS_API.GET_BRANDS, mixpanelPayload);
@@ -88,6 +92,8 @@ class BrandManagerApi {
 
   // eslint-disable-next-line max-statements
   async createBrand(request, h) {
+    console.log("[BrandManagerApi::createBrand] API request for Create Brand has started");
+    console.log("[BrandManagerApi::createBrand] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/brands"
@@ -116,12 +122,13 @@ class BrandManagerApi {
       const response = await ServerHttp.post(url, options, payload);
 
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      console.log("[BrandManagerApi::createBrand] API request for Create Brand has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[BrandManagerApi::createBrand] Error occured in API request for Create Brand:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRANDS_API.CREATE_BRAND, mixpanelPayload);
@@ -130,6 +137,8 @@ class BrandManagerApi {
 
   // eslint-disable-next-line max-statements
   async updateBrand(request, h) {
+    console.log("[BrandManagerApi::updateBrand] API request for Update Brand has started");
+    console.log("[BrandManagerApi::updateBrand] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/brands/${request.params.brandId}`
@@ -151,14 +160,14 @@ class BrandManagerApi {
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.put(url, options, payload);
-
+      console.log("[BrandManagerApi::updateBrand] API request for Update Brand has completed");
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[BrandManagerApi::updateBrand] Error occured in API request for Update Brand:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRANDS_API.UPDATE_BRAND, mixpanelPayload);
@@ -167,6 +176,8 @@ class BrandManagerApi {
 
   // eslint-disable-next-line max-statements
   async checkUnique(request, h) {
+    console.log("[BrandManagerApi::checkUnique] API request for Brand Uniqueness has started");
+    console.log("[BrandManagerApi::checkUnique] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands/checkUnique",
@@ -192,12 +203,14 @@ class BrandManagerApi {
       mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       const response = await ServerHttp.get(url, options, request.query);
+      console.log("[BrandManagerApi::checkUnique] API request for Brand Uniqueness has completed");
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[BrandManagerApi::checkUnique] Error occured in API request for Brand Uniqueness:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRANDS_API.BRAND_UNIQUENESS, mixpanelPayload);
