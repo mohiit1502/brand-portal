@@ -31,9 +31,9 @@
 
     }
     .c-Hero__right-container {
-      background: url("../../images/laptopImage.jpg") no-repeat;
-      background-size: 100% 100%;
-
+      background: url("../../images/laptopImage.jpg") no-repeat center;
+      //background-size: 100% 100%;
+      background-size: cover;
     }
   }
 
