@@ -55,9 +55,8 @@ class DashboardManagerApi {
       params = Helper.arrayToObj(params);
 
       mixpanelPayload.API =  `/api/dashboard/${paramsDecoded}`;
-      mixpanelPayload.distinct_id = params.emailId;
-      mixpanelPayload.Email = params.emailId;
-      mixpanelPayload.ROLE = params.role;
+      mixpanelPayload.distinct_id = params && params.emailId;
+      mixpanelPayload.ROLE = params && params.role;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await graphQLUtility.execute(request, "_all", params);
@@ -92,10 +91,9 @@ class DashboardManagerApi {
 
       mixpanelPayload.API =  `/api/dashboard/reportedClaimsType/${paramsDecoded}`;
       mixpanelPayload.distinct_id = params.emailId;
-      mixpanelPayload.Email = params.emailId;
-      mixpanelPayload.ROLE = params.role;
+      mixpanelPayload.ROLE = params && params.role;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.DATA_RANGE = params.dateRange;
+      mixpanelPayload.DATA_RANGE = params && params.dateRange;
 
       const response = await graphQLUtility.execute(request, "claimsByType_filtered", params);
       console.log("[DashboardManagerApi::getReportedClaimsType] API request for Claim Submitted by Type has completed");
@@ -127,11 +125,10 @@ class DashboardManagerApi {
 
       mixpanelPayload.API =  `/api/dashboard/topReportedBrands/${paramsDecoded}`;
       mixpanelPayload.distinct_id = params.emailId;
-      mixpanelPayload.Email = params.emailId;
       mixpanelPayload.ROLE = params.role;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.DATA_RANGE = params.dateRange;
-      mixpanelPayload.CLAIM_TYPE = params.claimType === "__claimType__" ? "ALL" : params.claimType;
+      mixpanelPayload.DATA_RANGE = params && params.dateRange;
+      mixpanelPayload.CLAIM_TYPE = params && params.claimType === "__claimType__" ? "ALL" : params.claimType;
 
       const response = await graphQLUtility.execute(request, "claimsByBrands_filtered", params);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -162,12 +159,11 @@ class DashboardManagerApi {
       params = Helper.arrayToObj(params);
 
       mixpanelPayload.API =  `/api/dashboard/topReporters/${paramsDecoded}`;
-      mixpanelPayload.distinct_id = params.emailId;
-      mixpanelPayload.Email = params.emailId;
-      mixpanelPayload.ROLE = params.role;
+      mixpanelPayload.distinct_id = params && params.emailId;
+      mixpanelPayload.ROLE = params && params.role;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.DATA_RANGE = params.dateRange;
-      mixpanelPayload.CLAIM_TYPE = params.claimType === "__claimType__" ? "ALL" : params.claimType;
+      mixpanelPayload.DATA_RANGE = params && params.dateRange;
+      mixpanelPayload.CLAIM_TYPE = params && params.claimType === "__claimType__" ? "ALL" : params.claimType;
 
       const response = await graphQLUtility.execute(request, "claimsByUsers_filtered", params);
       mixpanelPayload.RESPONSE_STATUS = response.status;

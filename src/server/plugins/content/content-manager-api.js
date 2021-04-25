@@ -46,6 +46,7 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.HELPDESCRIPTOR");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       console.log("[ContentManagerApi::getHelpConfiguration] API request for Help configuration has completed");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -93,6 +94,7 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.FORMFIELDCONFIG");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       console.log("[ContentManagerApi::getFormFieldConfiguration] API request for form field  configuration has completed");
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -110,10 +112,12 @@ class ContentManagerApi {
     console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has started");
     console.log("[ContentManagerApi::getMixpanelConfiguration] User ID: ", request.state && request.state.session_token_login_id);
     try {
-      const projectToken = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
-      mixpanel.setToken(projectToken);
+      const response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
+      const projectToken = response.projectToken;
+      const enableTracking = response.enableTracking;
+      mixpanel.setToken(projectToken, enableTracking);
       console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has completed");
-      return h.response({projectToken}).code(CONSTANTS.STATUS_CODE_SUCCESS);
+      return h.response({projectToken, enableTracking}).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log("[ContentManagerApi::getMixpanelConfiguration] Error occured in API request for mixpanel field configuration:", err);
       return h.response(err).code(err.status);

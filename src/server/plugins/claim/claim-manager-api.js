@@ -68,7 +68,7 @@ class ClaimManagerApi {
   }
 
   parseSellersFromResponse = response => {
-    const sellers = response
+    const sellers = response;
     const sellersParsed = sellers.map(seller => seller['offer.sellerId'] && {value: seller['rollupoffer.partnerDisplayName'], id: seller['offer.sellerId']}).filter(seller => seller);
     return sellersParsed;
   }
@@ -91,8 +91,9 @@ class ClaimManagerApi {
       let incrementalTimeouts = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.INCREMENTAL_TIMEOUTS");
       incrementalTimeouts = incrementalTimeouts && JSON.parse( incrementalTimeouts );
       mixpanelPayload.URL = url;
-      mixpanelPayload.ITEM_ID = request.query.payload;
+      mixpanelPayload.ITEM_ID = request.query && request.query.payload;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
 
       let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      
       let responseBody = [];
@@ -131,7 +132,6 @@ class ClaimManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -169,7 +169,6 @@ class ClaimManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -192,7 +191,7 @@ class ClaimManagerApi {
     console.log("[ClaimManagerApi::getClaim] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
-      API: `/api/claims/${request.params.ticketId}`
+      API: `/api/claims/${request.params && request.params.ticketId}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -206,7 +205,6 @@ class ClaimManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -249,11 +247,10 @@ class ClaimManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.CLAIM_TYPE = payload.claimType;
-      mixpanelPayload.USPTO_URL = payload.usptoUrl;
-      mixpanelPayload.USPTO_VERIFICATION = payload.usptoVerification;
+      mixpanelPayload.CLAIM_TYPE = payload && payload.claimType;
+      mixpanelPayload.USPTO_URL = payload && payload.usptoUrl;
+      mixpanelPayload.USPTO_VERIFICATION = payload && payload.usptoVerification;
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);

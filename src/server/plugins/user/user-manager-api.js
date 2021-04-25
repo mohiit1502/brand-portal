@@ -143,10 +143,10 @@ class UserManagerApi {
     console.log("[UserManagerApi::updateUser] User ID: ", request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: `/api/users/${request.params.emailId}`
+      API: `/api/users/${request.params && request.params.emailId}`
     };
     try {
-      const payload = request.payload.user;
+      const payload = request.payload && request.payload.user;
       const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
@@ -157,10 +157,9 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.SELECTED_USER_EMAIL = request.params.emailId;
-      mixpanelPayload.SELECTED_USER_NAME = `${payload.firstName} ${payload.lastName}`;
+      mixpanelPayload.SELECTED_USER_EMAIL = request.params && request.params.emailId;
+      mixpanelPayload.SELECTED_USER_NAME = `${payload && payload.firstName} ${payload && payload.lastName}`;
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.put(url, options, payload);
@@ -198,9 +197,8 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.SELECTED_USER_EMAIL = request.payload.email;
+      mixpanelPayload.SELECTED_USER_EMAIL = request.payload && request.payload.email;
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -239,7 +237,6 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -276,7 +273,6 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -315,9 +311,8 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.INVITEE_EMAIL = request.query.email;
+      mixpanelPayload.INVITEE_EMAIL = request.query && request.query.email;
 
       const response = await ServerHttp.get(url, options);
       console.log("[UserManagerApi::checkUnique] API request for Check Unique User has completed");
@@ -334,6 +329,7 @@ class UserManagerApi {
     }
   }
 
+  // eslint-disable-next-line complexity
   async createUser(request, h) {
     console.log("[UserManagerApi::createUser] API request for Create User has started");
     console.log("[UserManagerApi::createUser] User ID: ", request.state && request.state.session_token_login_id);
@@ -353,13 +349,12 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.INVITEE_EMAIL = payload.user.email;
-      mixpanelPayload.INVITEE_NAME = `${payload.user.firstName} ${payload.user.lastName}`;
-      mixpanelPayload.INVITEE_ROLE = payload.user.role.name;
-      mixpanelPayload.INVITEE_ORG_NAME = payload.user.organization.name;
-      mixpanelPayload.INVITEE_USER_TYPE = payload.user.type;
+      mixpanelPayload.INVITEE_EMAIL = payload && payload.user && payload.user.email;
+      mixpanelPayload.INVITEE_NAME =  payload && payload.user && `${payload.user.firstName} ${payload.user.lastName}`;
+      mixpanelPayload.INVITEE_ROLE = payload && payload.user && payload.user.role.name;
+      mixpanelPayload.INVITEE_ORG_NAME = payload && payload.user && payload.user.organization.name;
+      mixpanelPayload.INVITEE_USER_TYPE = payload && payload.user && payload.user.type;
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -395,10 +390,9 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.SELECTED_USER_EMAIL = request.params.emailId;
-      mixpanelPayload.SELECTED_USER_UPDATED_STATUS = request.params.status;
+      mixpanelPayload.SELECTED_USER_EMAIL = request.params && request.params.emailId;
+      mixpanelPayload.SELECTED_USER_UPDATED_STATUS = request.params && request.params.status;
 
       const response = await ServerHttp.put(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -420,7 +414,7 @@ class UserManagerApi {
     console.log("[UserManagerApi::updateTouStatus] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: `/api/users/updateTouStatus/${request.params.status}`
+      API: `/api/users/updateTouStatus/${request.params && request.params.status}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -435,9 +429,8 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.TOU_STATUS = request.params.status;
+      mixpanelPayload.TOU_STATUS = request.params && request.params.status;
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.put(url, options, payload);
@@ -495,7 +488,6 @@ class UserManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -532,7 +524,6 @@ class UserManagerApi {
       };
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -563,13 +554,12 @@ class UserManagerApi {
       const options = {
         headers
       };
-      const BASE_URL = await ServerUtils.ccmGet(request,"USER_CONFIG.BASE_URL");
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -618,7 +608,6 @@ class UserManagerApi {
       h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false});
 
       mixpanelPayload.distinct_id = loginId;
-      mixpanelPayload.Email = loginId;
       mixpanelPayload.API_SUCCESS = true;
 
       console.log("[UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has completed");
@@ -679,6 +668,7 @@ class UserManagerApi {
       logoutProviderURL = logoutProviderURL ? `${logoutProviderURL}&clientId=${secrets.CLIENT_ID}` : logoutProviderURL;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       console.log("[UserManagerApi::getLogoutProvider] API request for Get Logout provider has completed");
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {

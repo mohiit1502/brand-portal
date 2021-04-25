@@ -71,7 +71,6 @@ class BrandManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
 
       const response = await ServerHttp.get(url, options);
@@ -111,12 +110,11 @@ class BrandManagerApi {
       const url = `${BASE_URL}${BRANDS_PATH}`;
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.BRAND_NAME = payload.name;
-      mixpanelPayload.TRADE_MARK_NUMBER = payload.trademarkNumber;
-      mixpanelPayload.USPTO_URL = payload.usptoUrl;
-      mixpanelPayload.USPTO_VERIFICATION = payload.usptoVerification;
+      mixpanelPayload.BRAND_NAME = payload && payload.name;
+      mixpanelPayload.TRADE_MARK_NUMBER = payload && payload.trademarkNumber;
+      mixpanelPayload.USPTO_URL = payload && payload.usptoUrl;
+      mixpanelPayload.USPTO_VERIFICATION = payload && payload.usptoVerification;
       mixpanelPayload.PAYLOAD = payload;
 
       const response = await ServerHttp.post(url, options, payload);
@@ -141,7 +139,7 @@ class BrandManagerApi {
     console.log("[BrandManagerApi::updateBrand] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
-      API: `/api/brands/${request.params.brandId}`
+      API: `/api/brands/${request.params && request.params.brandId}`
     };
     try {
       const headers = ServerUtils.getHeaders(request);
@@ -155,7 +153,6 @@ class BrandManagerApi {
       const url = `${BASE_URL}${BRANDS_PATH}/${request.params.brandId}`;
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.PAYLOAD = payload;
 
@@ -181,7 +178,7 @@ class BrandManagerApi {
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands/checkUnique",
-      BRAND_NAME: request.query.brandName,
+      BRAND_NAME: request.query && request.query.brandName,
       WORK_FLOW: "BRAND_WORKFLOW"
     };
     try {
@@ -200,7 +197,6 @@ class BrandManagerApi {
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
-      mixpanelPayload.Email = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       const response = await ServerHttp.get(url, options, request.query);
       console.log("[BrandManagerApi::checkUnique] API request for Brand Uniqueness has completed");

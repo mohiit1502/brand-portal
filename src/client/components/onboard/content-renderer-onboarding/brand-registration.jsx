@@ -125,6 +125,7 @@ class BrandRegistration extends React.Component {
   }
 
   async submitOnboardingForm(evt) {
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, {WORK_FLOW: "COMPANY_ONBOARDING"});
     evt.preventDefault();
     let mixpanelPayload = {
       API: "/api/org/register",
@@ -147,10 +148,10 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
-      mixpanelPayload.BRAND_NAME = brand.name;
-      mixpanelPayload.COMPANY_NAME = this.props.org.name;
-      mixpanelPayload.TRADEMARK_NUMBER = brand.trademarkNumber;
-      mixpanelPayload.IS_DOCUMENT_UPLOADED = Boolean(this.props.org.businessRegistrationDocId || this.props.org.additionalDocId);
+      mixpanelPayload.BRAND_NAME = brand && brand.name;
+      mixpanelPayload.COMPANY_NAME = this.props.org && this.props.org.name;
+      mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
+      mixpanelPayload.IS_DOCUMENT_UPLOADED = this.props.org && Boolean(this.props.org.businessRegistrationDocId || this.props.org.additionalDocId);
       await Http.post("/api/org/register", data);
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
