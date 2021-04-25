@@ -110,7 +110,7 @@ const MIXPANEL_CONSTANTS = {
         topReporters: "CLAIM_SUBMITTED_BY_USER"
     },
     LOGOUT_WORKFLOW_MAPPING: {
-        0: "UNDEFINED",
+        0: "NOT_IN_A_WORKFLOW",
         1: "PORTAL_REGISTRATION",
         2: "PORTAL_VERIFICATION",
         4: "PORTAL_DASHBOARD",

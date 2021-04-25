@@ -13,7 +13,7 @@ const StatusModalTemplate = props => {
   const baseUrl = window.location.origin;
   const logoutUrl = props.logoutUrl && props.logoutUrl.replace("__domain__", baseUrl);
   const mixpanelPayload = {
-    WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[props.meta && props.meta.CODE ? props.meta.CODE : 0]
+    WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[props.meta && props.meta.CODE ? props.meta.CODE : 0] || "CODE_NOT_FOUND"
   };
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">

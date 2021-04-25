@@ -21,7 +21,7 @@ class HomeHeader extends React.Component {
     const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
     const workflowCode = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     const mixpanelPayload = {
-      WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0]
+      WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0] || "CODE_NOT_FOUND"
     };
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">

@@ -44,7 +44,7 @@ class CompanyVerificationPendingTemplate extends React.Component {
                 <div className="col">
                   {/*<div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>*/}
                   <a className="btn btn-sm btn-outline-primary px-5" href={logoutUrl}
-                    onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT);}}>Logout</a>
+                    onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, {WORK_FLOW: "PORTAL_VERIFICATION"});}}>Logout</a>
                 </div>
               </div>
             </div>
