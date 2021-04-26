@@ -143,7 +143,9 @@ class CreateUserTemplate extends React.Component {
     form.inputData.emailId.loader = false;
     form.inputData.emailId.fieldOk = false;
     form.inputData.emailId.disabled = false;
+    form.inputData.emailId.isUnique = true;
 
+    form.inputData.userActions.buttons.submit.disabled = true;
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     if (e) {
@@ -275,7 +277,7 @@ class CreateUserTemplate extends React.Component {
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
     };
     if (this.state.form.isUpdateTemplate) {
-      return Http.put(`${url}/${payload.user.email}`, payload)
+      return Http.put(`${url}/${payload.user.email}`, payload, null, null, this.props.showNotification, "Unable to update the user!")
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -368,9 +370,9 @@ class CreateUserTemplate extends React.Component {
 
 CreateUserTemplate.propTypes = {
   newUserContent: PropTypes.object,
-  showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   saveUserInitiated: PropTypes.func,
+  showNotification: PropTypes.func,
   data: PropTypes.object,
   userProfile: PropTypes.object
 };

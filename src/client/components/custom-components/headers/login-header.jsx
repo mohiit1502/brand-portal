@@ -37,7 +37,10 @@ class LoginHeader extends React.Component {
           <ul className="navbar-nav ml-auto">
             <li className="nav-item px-4">
               {/* <Link className="nav-link" to="LoginFAQ" smooth={true} duration={500} activeClass="active" spy={true} offset={-700}>FAQ</Link> */}
-              <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>Register</a>
+              <a className="nav-link register-button" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {
+              $("a.nav-link.register-button").addClass("disabled");
+              mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);
+              }}>Register</a>
             </li>
             {/*<li  className="mx-2 nav-item"><strong>|</strong></li>*/}
             <li  className="mx-2 nav-item middle-list"></li>

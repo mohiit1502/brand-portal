@@ -174,6 +174,8 @@ export default class Validator {
         inputData.brandName.isUnique = res.body.unique;
         inputData.brandName.error = error;
         inputData.brandName.fieldOk = !error;
+        inputData.brandName.disabled = false;
+        inputData.brandName.loader = false;
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_BRAND_NAME_UNIQUE = res.body.unique;
       })
@@ -221,6 +223,8 @@ export default class Validator {
         inputData.trademarkNumber.error = false;
         inputData.trademarkNumber.fieldOk = false;
         inputData.trademarkNumber.fieldAlert = false;
+        inputData.trademarkNumber.disabled = false;
+        inputData.trademarkNumber.loader = false;
         inputData.trademarkNumber.usptoUrl = "";
         inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
         mixpanelPayload.API_SUCCESS = false;
@@ -302,6 +306,8 @@ export default class Validator {
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
         const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
         const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
+        emailId.disabled = false;
+        emailId.loader = false;
         emailId.value = emailId.value ? emailId.value.toLowerCase() : emailId.value;
         emailId.error = emailId.error !== emailId.invalidError && error;
         emailId.isUnique = unique;
