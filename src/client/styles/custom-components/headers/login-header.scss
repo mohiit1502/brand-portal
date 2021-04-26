@@ -27,7 +27,7 @@ $nav-max-height : 118px;
         cursor: pointer;
         font-weight: bold;
         text-decoration: underline;
-        &.login-button{
+        &.login-button, &.register-button {
           &.disabled {
             pointer-events: none;
             color: #a3a8a9;

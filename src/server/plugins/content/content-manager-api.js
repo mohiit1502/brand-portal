@@ -112,7 +112,8 @@ class ContentManagerApi {
     console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has started");
     console.log("[ContentManagerApi::getMixpanelConfiguration] User ID: ", request.state && request.state.session_token_login_id);
     try {
-      const response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
+      let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
+      response = JSON.parse(response);
       const projectToken = response.projectToken;
       const enableTracking = response.enableTracking;
       mixpanel.setToken(projectToken, enableTracking);
