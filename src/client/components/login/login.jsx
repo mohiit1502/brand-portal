@@ -25,6 +25,15 @@ class Login extends React.Component {
 
   componentDidMount() {
     try {
+      if (mixpanel.getToken() === undefined) {
+        Http.get("/api/mixpanelConfig")
+        .then(res => {
+          mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
+        }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+      } else {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
+      }
       Http.get("/api/loginConfig")
         .then(res => this.setState(state => {
           const stateCloned = {...state};
@@ -34,15 +43,6 @@ class Login extends React.Component {
           return stateCloned;
         }))
         .catch(e => this.setState({loginConfig}));
-      if (mixpanel.getToken() === undefined) {
-        Http.get("/api/mixpanelConfig")
-        .then(res => {
-          mixpanel.intializeMixpanel(res.body.projectToken);
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
-        }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
-      } else {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
-      }
     } catch (e) {
       this.setState({loginConfig});
       console.log(e);

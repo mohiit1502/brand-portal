@@ -19,6 +19,8 @@ import CONSTANTS from "../../../../constants/constants";
 import AUTH_CONFIG from "./../../../../config/authorizations";
 import restConfig from "./../../../../config/rest.js";
 import SortUtil from "../../../../utility/SortUtil";
+import SearchUtil from "../../../../utility/SearchUtil";
+import FilterUtil from "../../../../utility/FilterUtil";
 import "./../../../../styles/home/content-renderer/brand/brand-list.scss";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
@@ -30,10 +32,8 @@ class BrandList extends React.Component {
 
     this.addNewBrand = this.addNewBrand.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
-    this.uiSearch = this.uiSearch.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
-    this.applyFilters = this.applyFilters.bind(this);
     this.fetchBrands = this.fetchBrands.bind(this);
     // this.paginationCallback = this.paginationCallback.bind(this);
     // this.changePageSize = this.changePageSize.bind(this);
@@ -42,9 +42,11 @@ class BrandList extends React.Component {
     this.editBrand = this.editBrand.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
     this.multiSort = SortUtil.multiSort.bind(this);
+    this.uiSearch = SearchUtil.uiSearch.bind(this);
+    this.applyFilters = FilterUtil.applyFilters.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
     this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
-    this.updateSortState = this.updateSortState.bind(this);
+    this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
     this.state = {
       page: {
         offset: 0,
@@ -117,6 +119,7 @@ class BrandList extends React.Component {
           // }
         ]
       },
+      identifier: "brands",
       columns: [
         {
           Header: "#",
@@ -163,26 +166,6 @@ class BrandList extends React.Component {
       return stateClone;
     });
   }
-  updateSortState(header) {
-    const columns = [...this.state.columns];
-    const columnMeta = columns.find(column => column.accessor === header.id);
-    if (columnMeta.canSort !== false) {
-      let sortLevel = columnMeta.sortState.level;
-      let columnPriority = this.state.columnPriority;
-      sortLevel = Number.isNaN(sortLevel) ? CONSTANTS.SORTSTATE.ASCENDING : sortLevel;
-      if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) {
-        columnMeta.sortState.level = CONSTANTS.SORTSTATE.RESET;
-        columnMeta.sortState.priorityLevel = -1;
-      } else {
-        columnMeta.sortState.level = sortLevel === CONSTANTS.SORTSTATE.RESET ? CONSTANTS.SORTSTATE.ASCENDING : CONSTANTS.SORTSTATE.DESCENDING;
-        if (typeof columnMeta.sortState.priorityLevel === "undefined" || columnMeta.sortState.priorityLevel === -1) {
-          columnMeta.sortState.priorityLevel = this.state.columnPriority + 1;
-          columnPriority += 1;
-        }
-      }
-      this.setState({columns, columnPriority}, () => this.multiSort());
-   }
-  }
 
   editBrand (brandData) {
     const meta = { templateName: "NewBrandTemplate", data: {...brandData} };
@@ -194,29 +177,6 @@ class BrandList extends React.Component {
         SELECTED_BRAND_TRADEMARK_NUMBER: brandData.trademarkNumber
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRAND_LIST_WORKFLOW.EDIT_BRAND, mixpanelPayload);
-  }
-
-  uiSearch (evt, isFilter, filteredBrands) {
-    const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
-    const allBrands = filteredBrands ? filteredBrands : this.state.brandList;
-    let filteredList = allBrands.filter(brand => {
-      return brand.brandName && brand.brandName.toLowerCase().indexOf(searchText) !== -1
-        || brand.dateAdded && brand.dateAdded.toLowerCase().indexOf(searchText) !== -1
-        || brand.brandStatus && brand.brandStatus.toLowerCase().indexOf(searchText) !== -1;
-    });
-    let i = 1;
-    if (filteredList) filteredList.forEach(brand => brand.sequence = i++);
-    if (isFilter) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        i = 1;
-        filteredList = this.multiSort(filteredList);
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList, searchText});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList, searchText}, () => this.applyFilters(true, filteredList));
-    }
   }
 
   // paginationCallback (page) {
@@ -269,55 +229,6 @@ class BrandList extends React.Component {
       this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
     });
     this.toggleFilterVisibility();
-  }
-
-  applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
-
-    // let paginatedList = filteredList ? [...filteredList] : [...this.state.paginatedList];
-    filteredList = filteredList ? [...filteredList] : [...this.state.brandList];
-    this.state.filters.map(filter => {
-      const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-      let i = 1;
-      if (filterOptionsSelected.length) {
-        const filterId = filter.id;
-        filteredList = filteredList.filter(user => {
-          let bool = false;
-          filterOptionsSelected.map(filterOption => {
-            bool = bool || (!!user[filterId] && user[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
-          });
-          return bool;
-        })
-
-      }
-      filteredList && filteredList.forEach(brand => brand.sequence = i++);
-    });
-
-    let appliedFilters = this.state.filters.map(filter => {
-      let clonedFilterOption = filter.filterOptions.map(option => {
-        return {...option}
-      })
-      return {...filter,filterOptions: clonedFilterOption}
-    });
-    if(buttonClickAction === true){
-      this.setState({appliedFilter: appliedFilters});
-    }
-
-    if (isSearch) {
-      const unsortedfilteredList = filteredList;
-      if (this.state.columnPriority > 0) {
-        filteredList = this.multiSort(filteredList);
-        let i = 1;
-        filteredList.forEach(claim => claim.sequence = i++);
-      }
-      this.setState({filteredList, unsortedList: unsortedfilteredList});
-    } else {
-      this.setState({filteredList, unsortedList: filteredList}, () => this.uiSearch(null, true, filteredList));
-      this.toggleFilterVisibility(showFilter);
-    }
-
-    // if (buttonClickAction) {
-    //   this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
-    // }
   }
 
   clearFilter(filterID,optionID){
@@ -497,7 +408,7 @@ class BrandList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Brand Name"
+                    <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Brand Details"
                       onChange={(evt) => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
@@ -569,7 +480,7 @@ class BrandList extends React.Component {
                     <div className="col h-100">
                       {
                         this.state.brandList ?
-                        <CustomTable sortHandler={this.updateSortState} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
+                        <CustomTable sortHandler={this.sortAndNormalise} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
                           templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }

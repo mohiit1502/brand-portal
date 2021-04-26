@@ -108,7 +108,11 @@ class NewBrandTemplate extends React.Component {
   }
 
   async handleSubmit(evt) {
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED);
+    const mixpanelClickEventPayload = {
+      IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    };
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
     evt.preventDefault();
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
     const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
@@ -120,9 +124,9 @@ class NewBrandTemplate extends React.Component {
     const mixpanelPayload = {
       API: url,
       BRAND_NAME: name,
-      IS_UPDATE_BRAND: this.state.form.isUpdateTemplate,
+      IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
       TRADEMARK_NUMBER: trademarkNumber,
-      WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
     };
     if (this.state.form.isUpdateTemplate) {
       this.loader("form", true);

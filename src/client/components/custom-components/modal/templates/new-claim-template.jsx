@@ -444,7 +444,7 @@ class NewClaimTemplate extends React.Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED, {WORK_FLOW: "ADD_NEW_CLAIM"});
     const inputData = this.state.form.inputData;
 
     const claimType = inputData.claimType.value;
