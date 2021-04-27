@@ -258,8 +258,8 @@ class CreateUserTemplate extends React.Component {
         organization: this.props.userProfile.organization,
         role,
         phoneCountry: "+1",
-        phoneNumber: this.state.form.inputData.phone.value,
-        //phoneNumber: this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000", //[note:to handle VIP phone number validation]
+        phoneNumber: this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000", //[note:to handle VIP phone number validation]
+        //phoneNumber: this.state.form.inputData.phone.value,
         type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
       },
       krakenUniqueWorkflow: this.state.uniquenessCheckStatus
