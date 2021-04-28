@@ -22,7 +22,7 @@ const MIXPANEL_CONSTANTS = {
     },
     CLAIM_LIST_WORKFLOW: {
         VIEW_CLAIMS: "VIEW_CLAIMS",
-        VIEW_CLAIM_DETAILS: "VIEW_CLAIM_DETAILS"
+        VIEW_CLAIM_DETAILS: "VIEW_CLAIM_DETAILS",
     },
     BRAND_LIST_WORKFLOW: {
         VIEW_BRANDS: "VIEW_BRANDS",
@@ -85,6 +85,12 @@ const MIXPANEL_CONSTANTS = {
     TOU_TEMPLATE: {
         TOU_VERIFICATION: "TOU_VERIFICATION"
     },
+    SEARCH_EVENT: {
+        APPLY_SEARCH: "APPLY_SEARCH"
+    },
+    FILTER_EVENTS: {
+        APPLY_FILTER: "APPLY_FILTER"
+    },
     ADD_NEW_TEMPLATE_MAPPING: {
         NewClaimTemplate: "ADD_NEW_CLAIM",
         NewBrandTemplate: "ADD_BRAND",
@@ -119,6 +125,11 @@ const MIXPANEL_CONSTANTS = {
         32: "REQUEST_ACCESS",
         64: "USER_VERIFICATION",
         128: "TOU_VERIFICATION"
+    },
+    TABLE_LIST_TO_WORKFLOW_MAPPING: {
+        brands: "VIEW_BRAND_LIST",
+        claims: "VIEW_CLAIM_LIST",
+        users: "VIEW_USER_LIST"
     }
 };
 
