@@ -685,19 +685,30 @@ class UserManagerApi {
   async redirectToFalcon (request, h) {
     console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started");
     console.log("[UserManagerApi::redirectToFalcon] User ID: ", request.state && request.state.session_token_login_id);
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/falcon/{action}"
+    };
     try {
       const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action);
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.REDIRECT_URI = redirectUri;
       console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");
       return h.redirect(redirectUri);
     } catch (e) {
       console.log("[UserManagerApi::redirectToFalcon] Error occured in API request for Redirect to Falcon:", e);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = e;
       throw e;
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.REDIRECT_TO_FALCON, mixpanelPayload);
     }
   }
 
   async getAccessToken(request, authorizationCode) {
     console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has started");
     console.log("[UserManagerApi::getAccessToken] User ID: ", request.state && request.state.session_token_login_id);
+    const mixpanelPayload = {};
     try {
       const IAM = await ServerUtils.ccmGet(request, "IAM");
       const url = secrets.IAM_TOKEN_URL;
@@ -725,11 +736,20 @@ class UserManagerApi {
 
       const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
       console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has completed");
+      mixpanelPayload.URL = url;
+      mixpanelPayload.METHOD = "POST";
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.RESPONSE_STATUS = response && response.status;
       return response.body;
 
     } catch (err) {
       console.log("[UserManagerApi::getAccessToken] Error occured in API request for Get Access Token:", err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err && err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err && err.status;
       throw err;
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_ACCESS_TOKEN, mixpanelPayload);
     }
   }
 
