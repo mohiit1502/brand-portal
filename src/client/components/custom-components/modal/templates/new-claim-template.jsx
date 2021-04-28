@@ -434,6 +434,9 @@ class NewClaimTemplate extends React.Component {
   disableSubmitButton() {
     this.setState(state => { state = {...state}; state.form.isSubmitDisabled = true; return state; });
   }
+  enableSubmitButton() {
+    this.setState(state => { state = {...state}; state.form.isSubmitDisabled = false; return state; });
+  }
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.undertakingList[index].selected = !state.form.undertakingList[index].selected;
@@ -442,11 +445,12 @@ class NewClaimTemplate extends React.Component {
     }, this.checkToEnableSubmit);
   }
 
+  // eslint-disable-next-line max-statements
   async handleSubmit(evt) {
     evt.preventDefault();
+    this.disableSubmitButton();
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED, {WORK_FLOW: "ADD_NEW_CLAIM"});
     const inputData = this.state.form.inputData;
-
     const claimType = inputData.claimType.value;
     const registrationNumber = inputData.claimTypeIdentifier.value.trim();
 
@@ -506,6 +510,7 @@ class NewClaimTemplate extends React.Component {
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally( () => {
+        this.enableSubmitButton();
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_NEW_CLAIM, mixpanelPayload);
       })
       

@@ -22,7 +22,6 @@ class Leftnav extends React.Component {
 
   componentDidMount() {
     this.unlisten = this.props.history.listen(location => {
-      // console.log("on route change: ", location);
       this.updateNavigationPanel(this.state.NAVIGATION_PANEL, location.pathname);
     });
   }
@@ -73,7 +72,7 @@ class Leftnav extends React.Component {
       <div className="left-nav d-inline-block">
         <ul className="nav flex-column mt-3">
           {
-            this.state.NAVIGATION_PANEL.map((item => {
+            this.state.NAVIGATION_PANEL.map(item => {
               return (
                 <li className={`nav-item main-nav-item ${item.active ? "active" : "inactive"}`} key={item.id}>
                   <Link className="nav-link" to={item.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, item.href);}}>
@@ -84,7 +83,7 @@ class Leftnav extends React.Component {
                       {item.children.map(subItem => {
                         return (
                           <li className={`nav-item sub-nav-item pl-3 ${subItem.active ? "active" : "inactive"}`} key={`${item.id}-${subItem.id}`}>
-                            <Link className="nav-link" to={subItem.href} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href);}}>
+                            <Link className="nav-link" to={{pathname: subItem.href, state: {prevPath: this.props.location.pathname}}} onClick={ () => {this.updateNavigationPanel(this.state.NAVIGATION_PANEL, subItem.href);}}>
                               {subItem.value}
                             </Link>
                           </li>
@@ -94,7 +93,7 @@ class Leftnav extends React.Component {
                   }
                 </li>
               );
-            }))
+            })
           }
         </ul>
       </div>
