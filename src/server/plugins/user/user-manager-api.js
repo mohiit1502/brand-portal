@@ -161,6 +161,7 @@ class UserManagerApi {
       mixpanelPayload.SELECTED_USER_EMAIL = request.params && request.params.emailId;
       mixpanelPayload.SELECTED_USER_NAME = `${payload && payload.firstName} ${payload && payload.lastName}`;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -200,6 +201,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.SELECTED_USER_EMAIL = request.payload && request.payload.email;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -238,6 +240,7 @@ class UserManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -274,6 +277,7 @@ class UserManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -313,6 +317,7 @@ class UserManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.INVITEE_EMAIL = request.query && request.query.email;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       console.log("[UserManagerApi::checkUnique] API request for Check Unique User has completed");
@@ -356,6 +361,7 @@ class UserManagerApi {
       mixpanelPayload.INVITEE_ORG_NAME = payload && payload.user && payload.user.organization.name;
       mixpanelPayload.INVITEE_USER_TYPE = payload && payload.user && payload.user.type;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -393,6 +399,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.SELECTED_USER_EMAIL = request.params && request.params.emailId;
       mixpanelPayload.SELECTED_USER_UPDATED_STATUS = request.params && request.params.status;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.put(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -432,6 +439,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.TOU_STATUS = request.params && request.params.status;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -489,6 +497,7 @@ class UserManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -525,6 +534,7 @@ class UserManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -561,12 +571,17 @@ class UserManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[UserManagerApi::getUserInfo] API request for get User information has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getUserInfo] Error occured in API request for get User information:", err);
       if (err.status === 520) {
         if (err.error && err.error.message) {
           const iamResponse = JSON.parse(err.error.message);
@@ -575,10 +590,6 @@ class UserManagerApi {
           return h.response(err).code(err.status);
         }
       }
-      mixpanelPayload.API_SUCCESS = false;
-      mixpanelPayload.ERROR = err.message ? err.message : err;
-      mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getUserInfo] Error occured in API request for get User information:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USER_INFORMATION, mixpanelPayload);
