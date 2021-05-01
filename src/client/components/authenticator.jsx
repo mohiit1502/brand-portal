@@ -179,7 +179,9 @@ class Authenticator extends React.Component {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
-        return !this.state.userInfoError ? <div className="fill-parent loader" /> : <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>;
+        return !this.state.userInfoError ? <div className="fill-parent loader" /> :
+          (this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND" ? <Redirect to={CONSTANTS.URL.REGISTER_REDIRECT}/> :
+            <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>);
       }
     } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
