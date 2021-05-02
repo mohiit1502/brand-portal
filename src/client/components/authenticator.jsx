@@ -97,7 +97,7 @@ class Authenticator extends React.Component {
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
       console.error(e);
-      this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
+      this.setState({userInfoError: (e.error !== null && (e.error.message).indexOf("404") !== -1 ) ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
     } finally {
@@ -179,11 +179,18 @@ class Authenticator extends React.Component {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
-        return !this.state.userInfoError ? <div className="fill-parent loader" /> :
-          (this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND" ? <Redirect to={CONSTANTS.URL.REGISTER_REDIRECT}/> :
-            <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>);
+        if(!this.state.userInfoError){
+          return <div className="fill-parent loader" />
+        }else if(this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND"){
+          Cookies.expire("auth_session_token");
+          Cookies.expire("session_token_login_id")
+          window.location.replace("/api/falcon/logout");
+          return null;
+        }else{
+          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>
+        }
       }
-    } else if (this.isRootPath(this.props.location.pathname)) {
+    }else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
