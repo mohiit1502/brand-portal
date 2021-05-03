@@ -97,7 +97,7 @@ class Authenticator extends React.Component {
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
       console.error(e);
-      this.setState({userInfoError: (e.error !== null && (e.error.message).indexOf("404") !== -1 ) ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
+      this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
     } finally {
