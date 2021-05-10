@@ -1,5 +1,7 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import WebFormHomePage from './WebFormHomePage';
+import WebFormWorkflowDecider from './WebFormWorkflowDecider';
 import TouTemplate from './custom-components/modal/templates/TouTemplate';
 import GenericErrorPage from './GenericErrorPage';
 import Paginator from './Paginator';
@@ -44,6 +46,8 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	WebFormHomePage,
+	WebFormWorkflowDecider,
 	TouTemplate,
 	GenericErrorPage,
 	Paginator,
