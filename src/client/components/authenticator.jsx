@@ -179,9 +179,18 @@ class Authenticator extends React.Component {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
-        return !this.state.userInfoError ? <div className="fill-parent loader" /> : <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>;
+        if(!this.state.userInfoError){
+          return <div className="fill-parent loader" />
+        }else if(this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND"){
+          Cookies.expire("auth_session_token");
+          Cookies.expire("session_token_login_id")
+          window.location.replace("/api/falcon/logout");
+          return null;
+        }else{
+          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>
+        }
       }
-    } else if (this.isRootPath(this.props.location.pathname)) {
+    }else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
