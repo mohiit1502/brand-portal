@@ -832,7 +832,7 @@ const FORMFIELDCONFIG = {
         "claimTypeSelected": false
       },
       "fields": {
-        "claimTypeIdentifier": {
+        "claimType": {
           "customChangeHandler": "customChangeHandler",
           "disabled": false,
           "error": "",
@@ -856,7 +856,7 @@ const FORMFIELDCONFIG = {
           "label": "First Name",
           "layout": "2.1.6",
           "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid first name.",
+          "patternErrorMessage": "Please enter a valid First name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
@@ -874,7 +874,7 @@ const FORMFIELDCONFIG = {
           "label": "Last Name",
           "layout": "2.2.6",
           "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid last name.",
+          "patternErrorMessage": "Please enter a valid Last name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
@@ -1119,14 +1119,14 @@ const FORMFIELDCONFIG = {
           "type": "textarea",
           "value": ""
         },
-        "user-undertaking-1": {
+        "user_undertaking_1": {
           "checkBoxClasses": "user-undertaking",
           //"containerClasses": "mt-5",
           "excludeRowContainer": true,
           "excludeColContainer": true,
-          "id": "user-undertaking-1",
-          "inputId": "user-undertaking-1",
-          "key": "user-undertaking-1",
+          "id": "user_undertaking_1",
+          "inputId": "user_undertaking_1",
+          "key": "user_undertaking_1",
           "label": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the trademark owner, its agent, or the law.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
@@ -1135,13 +1135,13 @@ const FORMFIELDCONFIG = {
           "selected": false,
           "type": "_checkBox"
         },
-        "user-undertaking-2": {
+        "user_undertaking_2": {
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
           "excludeColContainer": true,
-          "id": "user-undertaking-2",
-          "inputId": "user-undertaking-2",
-          "key": "user-undertaking-2",
+          "id": "user_undertaking_2",
+          "inputId": "user_undertaking_2",
+          "key": "user_undertaking_2",
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
@@ -1150,13 +1150,13 @@ const FORMFIELDCONFIG = {
           "selected": false,
           "type": "_checkBox"
         },
-        "user-undertaking-3": {
+        "user_undertaking_3": {
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
           "excludeColContainer": true,
-          "id": "user-undertaking-3",
-          "inputId": "user-undertaking-3",
-          "key": "user-undertaking-3",
+          "id": "user_undertaking_3",
+          "inputId": "user_undertaking_3",
+          "key": "user_undertaking_3",
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
@@ -1165,13 +1165,13 @@ const FORMFIELDCONFIG = {
           "selected": false,
           "type": "_checkBox"
         },
-        "user-undertaking-4": {
+        "user_undertaking_4": {
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
           "excludeColContainer": true,
-          "id": "user-undertaking-4",
-          "inputId": "user-undertaking-4",
-          "key": "user-undertaking-4",
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "key": "user_undertaking_4",
           "label": "Typing your full name in this box will act as your digital signature.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
