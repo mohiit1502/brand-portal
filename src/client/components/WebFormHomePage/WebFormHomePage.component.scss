@@ -1,0 +1,14 @@
+@import "../../styles/override/variables";
+
+.c-WebFormHomePage {
+    padding: 1.5rem 2.5rem;
+    .header{
+        font-weight: bold;
+        padding-bottom: 1.5rem;
+
+    }
+    .btn-primary {
+        background: $background-blue !important;
+        color: #006799;
+      }
+}
