@@ -1075,6 +1075,7 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "getItemListFromChild": "getItemListFromChild",
           "itemList": [{
+            "id": "item-0",
             "url": {
               "label": "Item URL",
               "required": "true",
