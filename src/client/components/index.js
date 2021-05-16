@@ -1,9 +1,9 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
 import JoinCta from './JoinCta';
-import Webform from './Webform';
-import WebformLandingPage from './WebformLandingPage';
-import WorkflowStepDecider from './WorkflowStepDecider';
+import Webform from './WebForm';
+import WebformHomePage from './WebformHomePage';
+import WebFormWorkflowDecider from './WebFormWorkflowDecider';
 import TouTemplate from './custom-components/modal/templates/TouTemplate';
 import GenericErrorPage from './GenericErrorPage';
 import Paginator from './Paginator';
@@ -50,8 +50,8 @@ export {
   /* PLOP_INJECT_EXPORT */
 	JoinCta,
 	Webform,
-	WebformLandingPage,
-	WorkflowStepDecider,
+  WebformHomePage,
+  WebFormWorkflowDecider,
 	TouTemplate,
 	GenericErrorPage,
 	Paginator,
