@@ -1,3 +1,3 @@
-import Webform from './Webform.jsx';
+import WebForm from './WebForm.jsx';
 
-export default Webform;
+export default WebForm;
