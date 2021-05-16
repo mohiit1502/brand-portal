@@ -20,28 +20,28 @@ class ContentRenderer extends React.Component {
     return (
       <div className="content-page d-inline-block">
         <Switch>
-          <Route path={CONSTANTS.ROUTES.PROFILE.USER}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER}>
             <UserProfile {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_LIST}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.USER_MGMT.USER_LIST}>
             <UserList {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.USER_MGMT.USER_APPROVAL}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.USER_MGMT.USER_APPROVAL}>
             <UserApproval {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.BRANDS.BRANDS_LIST}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.BRANDS.BRANDS_LIST}>
             <BrandList {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIMS_LIST}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.CLAIMS.CLAIMS_LIST}>
             <ClaimList {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.CLAIMS.CLAIM_DETAILS}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.CLAIMS.CLAIM_DETAILS}>
             <ClaimList {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.HELP.HELP}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.HELP.HELP}>
             <Help {...this.props}/>
           </Route>
-          <Route path={CONSTANTS.ROUTES.DASHBOARD}>
+          <Route path={CONSTANTS.ROUTES.PROTECTED.DASHBOARD}>
             <Dashboard {...this.props}/>
           </Route>
         </Switch>

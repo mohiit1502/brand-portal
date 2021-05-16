@@ -28,17 +28,17 @@ Root.propTypes = {
 
 const routes = [
    {
-    path: CONSTANTS.ROUTES.ROOT_PATH,
+    path: CONSTANTS.ROUTES.PROTECTED.ROOT_PATH,
     component: withRouter(Root),
     init: "./init-top",
     routes: [
       {
-        path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES),
+        path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES.PROTECTED),
         exact: true,
         component: Authenticator
       },
       {
-        path: CONSTANTS.ROUTES.SERVICES,
+        path: CONSTANTS.ROUTES.OPEN.SERVICES,
         exact: true,
         component: WebFormWorkflowDecider
       },

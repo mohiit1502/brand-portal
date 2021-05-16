@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import UrlItemList from './UrlItemList';
 import JoinCta from './JoinCta';
 import Webform from './WebForm';
 import WebformHomePage from './WebformHomePage';
@@ -48,6 +49,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+  UrlItemList,
 	JoinCta,
 	Webform,
   WebformHomePage,
