@@ -115,7 +115,8 @@ const CONSTANTS = {
       HELP: "/help"
     },
 
-    DASHBOARD: "/dashboard"
+    DASHBOARD: "/dashboard",
+    SERVICES: "/ipServices"
   },
 
   NAVIGATION_PANEL: [

@@ -8,6 +8,7 @@ import {Redirect} from "react-router";
 import CONSTANTS from "./constants/constants";
 import ClientUtils from "./utility/ClientUtils";
 import Notification from "./components/custom-components/notification/notification";
+import {WorkflowStepDecider} from "./components";
 
 const Root = ({ route, children }) => {
     return (
@@ -35,6 +36,11 @@ const routes = [
         path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES),
         exact: true,
         component: Authenticator
+      },
+      {
+        path: CONSTANTS.ROUTES.SERVICES,
+        exact: true,
+        component: WorkflowStepDecider
       },
       {
         path: "/user-management",
