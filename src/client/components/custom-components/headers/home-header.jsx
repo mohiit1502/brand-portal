@@ -19,8 +19,16 @@ class HomeHeader extends React.Component {
           {/* <img src={walmartLogo} /> */}
           <img src={headerLogo} />
         </Link>
+        {isWebForm &&
+          <React.Fragment>
+            <div className="webform-header pl-1 pr-3" >|</div>
+            <div className="h5 pt-2 webform-header" >
+            IP Services
+            </div>
+            </React.Fragment>
+        }
         { !isWebForm &&
-        <><button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
+        <React.Fragment><button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
           aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"/>
         </button>
@@ -35,7 +43,7 @@ class HomeHeader extends React.Component {
           }
           <UserMenu isOnboarded={this.props.isOnboarded}/>
           </ul>
-        </div></>
+        </div></React.Fragment>
         }
       </nav>
     );

@@ -137,6 +137,7 @@ class WebForm extends React.Component {
       form.inputData.companyName.label = matchedClaimTypeWithMeta.companyNameIdentifierLabel;
       form.inputData.ownerName.label = matchedClaimTypeWithMeta.ownerNameIdentifierLabel;
       form.claimTypeSelected = true;
+      form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       this.setState({form});
     }
   }
@@ -162,7 +163,7 @@ class WebForm extends React.Component {
   // eslint-disable-next-line complexity
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndetaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && form.inputData.user_undertaking_3.selected && form.inputData.user_undertaking_4.selected;
+    const userUndetaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected;
     const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
     const bool = isValidItemList && userUndetaking  && form.inputData.claimType.value &&
       form.inputData.firstName.value && form.inputData.lastName.value &&
@@ -195,17 +196,14 @@ class WebForm extends React.Component {
   render() {
     return (
       <div className="c-WebForm">
-        <div className="row h3 header pl-5">
-          Walmart IP Services
-        </div>
         <div className="row justify-content-center">
         <div className="col-lg-7 col-md-6 col-6 pl-3 pr-3">
-          <div className="row title-row mb-4 pl-2">
+          <div className="row title-row mb-4 pl-3">
               <div className="web-form-title">
                 {this.state.section.sectionTitle}
               </div>
           </div>
-          <form onSubmit={this.handleSubmit} className="web-form mb-4 ml-3 mr-3" >
+          <form onSubmit={this.handleSubmit} className="web-form mb-4 mr-3" >
             { this.getFieldRenders()}
           </form>
         </div>
