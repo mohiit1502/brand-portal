@@ -1,7 +1,7 @@
 import React from 'react';
-import WebForm from './WebForm';
+import JoinCta from './JoinCta';
 
-describe('WebForm', () => {
+describe('JoinCta', () => {
    it('renders without error', () => {
 
    });

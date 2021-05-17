@@ -19,23 +19,25 @@ class HomeHeader extends React.Component {
           {/* <img src={walmartLogo} /> */}
           <img src={headerLogo} />
         </Link>
-        { !isWebForm &&
-        <><button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
-          aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"/>
-        </button>
-        <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
-          <ul className="navbar-nav ml-auto">
-          { window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
-            <li className="nav-item nav-item-help mx-4">
-              <Link to="/help" className="nav-link nav-help" href="#">
-                <img src={helpLogo} height="32px" className="pr-2"/> Help
-              </Link>
-            </li>
-          }
-          <UserMenu isOnboarded={this.props.isOnboarded}/>
-          </ul>
-        </div></>
+        {!isWebForm &&
+        <>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
+                  aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"/>
+          </button>
+          <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
+            <ul className="navbar-nav ml-auto">
+              {window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
+              <li className="nav-item nav-item-help mx-4">
+                <Link to="/help" className="nav-link nav-help" href="#">
+                  <img src={helpLogo} height="32px" className="pr-2"/> Help
+                </Link>
+              </li>
+              }
+              <UserMenu isOnboarded={this.props.isOnboarded}/>
+            </ul>
+          </div>
+        </>
         }
       </nav>
     );

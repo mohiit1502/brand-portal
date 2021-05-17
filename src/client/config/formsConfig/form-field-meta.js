@@ -1066,7 +1066,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "urlItems": {
-          "disabled": "false",
+          "disabled": false,
           "error": "",
           "inputId": "items",
           "key": "items",
