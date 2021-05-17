@@ -818,6 +818,112 @@ const FORMFIELDCONFIG = {
           }
         }
       }
+    },
+    "CONTACTUS":{
+      "formConfig":{
+        "api":"/api/users/contactUs",
+        "id": "contactUs",
+        "isSubmitDisabled":true,
+        "loader": false
+      },
+      "fields": {
+        "area": {
+          "containerClasses": "mt-3 contact-us-form-row",
+          "colClasses": "contact-us-form-area",
+          "disabled": false,
+          "dropdownOptions" : [
+            {
+              "id" : "technicalSupport",
+              "label": "Technical Support",
+              "value": "Technical Support"
+            },
+            {
+              "label": "Claim Support",
+              "value": "Claim Support",
+              "id": "claimSupport"
+            },
+            {
+              "label": "User Management Support",
+              "value": "User Management Support",
+              "id": "userManagementSupport"
+            },
+            {
+              "label": "Follow-Up",
+              "value": "Follow-Up",
+              "id": "followUp"
+            },
+            {
+              "label": "IP Management Support",
+              "value": "IP Management Support",
+              "id": "ipManagementSupport"
+            }
+          ],
+          "error": "",
+          "fieldOk": false,
+          "inputId": "area",
+          "key": "area",
+          "label": "Area",
+          "layout": "1.0.6",
+          "loader": false,
+          "invalidError": "Please select from the drop down",
+          "patternErrorMessage": "Please select from the drop down.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "select",
+          "value": ""
+        },
+        "title" : {
+          "containerClasses": "mt-3 contact-us-form-row",
+          "colClasses": "contact-us-form-title",
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "title",
+          "invalidError": "Please enter the title for your support",
+          "key": "title",
+          "label": "Title",
+          "layout": "2.1.6",
+          "loader": false,
+          "patternErrorMessage": "Please enter the title for your support",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": ""
+        },
+        "details" : {
+          "containerClasses": "mt-3 contact-us-form-row",
+          "colClasses": "contact-us-form-details",
+          "disabled": false,
+          "error": "",
+          "inputId": "details",
+          "invalidError": "Please enter details about your issue.",
+          "key": "details",
+          "label": "Details",
+          "loader": false,
+          "patternErrorMessage": "Please enter details about your issue.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+        },
+        "sendActions":{
+          "containerClasses": "mt-3",
+          "colClasses": "contact-us-button-panel text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "type": "_buttonsPanel",
+          "buttons": {
+            "send": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14",
+              "text": "Send",
+              "type": "submit"
+            }
+          }
+        }
+      }
     }
   }
 }

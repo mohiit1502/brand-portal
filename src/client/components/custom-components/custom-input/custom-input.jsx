@@ -123,7 +123,7 @@ class CustomInput extends React.Component {
     const content = (<React.Fragment>
       <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
         id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
-        pattern={this.state.pattern} required={this.state.required} disabled={this.state.disabled}
+        pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
         data-toggle="dropdown" autoComplete="off" />
       <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
         {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
@@ -321,7 +321,7 @@ class CustomInput extends React.Component {
         <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
-          required={this.state.required} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
+          required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
         <small className={`form-text custom-input-help-text text-area-error ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { errorClass ? subtitleText : "" }
         </small>
