@@ -12,14 +12,14 @@ class HomeHeader extends React.Component {
   }
 
   render() {
-    const isWebForm = this.props.isWebForm;
+    const isWebform = this.props.isWebform;
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <Link className="navbar-brand walmart-brand" to="/dashboard">
           {/* <img src={walmartLogo} /> */}
           <img src={headerLogo} />
         </Link>
-        {!isWebForm &&
+        {!isWebform &&
         <>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
                   aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@ HomeHeader.propTypes = {
   isOnboarded: PropTypes.bool,
   logoutUrl: PropTypes.string,
   userProfile: PropTypes.object,
-  isWebForm: PropTypes.bool
+  isWebform: PropTypes.bool
 };
 
 export  default  HomeHeader;

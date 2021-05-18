@@ -3,14 +3,14 @@ import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {dispatchMetadata} from "../../actions/content/content-actions";
-import { WebFormHomePage } from "..";
+import { WebformLandingPage } from "..";
 import HomeHeader from "../custom-components/headers/home-header";
 import Footer from "../Footer";
-import WebForm from "../WebForm/WebForm";
+import Webform from "../Webform/Webform";
 import FORMFIELDCONFIG from "../../config/formsConfig/form-field-meta";
-import "./WebFormWorkflowDecider.component.scss";
+import "./WebformWorkflowDecider.component.scss";
 
-const WebFormWorkflowDecider = props => {
+const WebformWorkflowDecider = props => {
   const initMetaData = () => {
     try {
       props.dispatchMetadata(FORMFIELDCONFIG);
@@ -20,10 +20,10 @@ const WebFormWorkflowDecider = props => {
   };
   initMetaData();
   return (
-    <div className="c-WebFormWorkflowDecider">
-      <HomeHeader isWebForm={true}/>
-      {/* <WebFormHomePage/> */}
-      <WebForm/>
+    <div className="c-WebformWorkflowDecider">
+      <HomeHeader isWebform={true}/>
+      {/* <WebformLandingPage/> */}
+      <Webform/>
       <div className="fixed-bottom">
         <Footer/>
       </div>
@@ -31,10 +31,10 @@ const WebFormWorkflowDecider = props => {
   );
 };
 
-WebFormWorkflowDecider.propTypes = {
+WebformWorkflowDecider.propTypes = {
 
 };
 const mapDispatchToProps = {
   dispatchMetadata
 };
-export default connect(null, mapDispatchToProps)(WebFormWorkflowDecider);
+export default connect(null, mapDispatchToProps)(WebformWorkflowDecider);

@@ -1,7 +1,7 @@
 import React from 'react';
-import WebForm from './WebForm';
+import Webform from './Webform';
 
-describe('WebForm', () => {
+describe('Webform', () => {
    it('renders without error', () => {
 
    });

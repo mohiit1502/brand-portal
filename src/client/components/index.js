@@ -2,9 +2,9 @@
 /* PLOP_INJECT_IMPORT */
 import UrlItemList from './UrlItemList';
 import JoinCta from './JoinCta';
-import Webform from './WebForm';
-import WebformHomePage from './WebformHomePage';
-import WebFormWorkflowDecider from './WebFormWorkflowDecider';
+import Webform from './Webform';
+import WebformLandingPage from './WebformLandingPage';
+import WebformWorkflowDecider from './WebformWorkflowDecider';
 import TouTemplate from './custom-components/modal/templates/TouTemplate';
 import GenericErrorPage from './GenericErrorPage';
 import Paginator from './Paginator';
@@ -52,8 +52,8 @@ export {
   UrlItemList,
 	JoinCta,
 	Webform,
-  WebformHomePage,
-  WebFormWorkflowDecider,
+  WebformLandingPage,
+  WebformWorkflowDecider,
 	TouTemplate,
 	GenericErrorPage,
 	Paginator,
