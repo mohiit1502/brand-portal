@@ -1134,11 +1134,26 @@ const FORMFIELDCONFIG = {
           "label": "Comments",
           "pattern": null,
           "required": true,
+          "onChange": "onChange",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "rowCount": 2,
+          "placeholder":"Please provide additional information about the claim",
+          "prebounceChangeHandler": "trimSpaces",
           "subtitle": "",
           "type": "textarea",
-          "value": ""
-        },
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please be sure to provide details regarding your claim."
+              }
+            },
+            "validateLength": {
+              "minLength": 20,
+              "error": "Comment should be 20 characters long!"
+            }
+        }
+      },
         "user_undertaking_1": {
           "checkBoxClasses": "user-undertaking",
           //"containerClasses": "mt-5",
