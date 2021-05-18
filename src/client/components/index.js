@@ -1,9 +1,10 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
 import UrlItemList from './UrlItemList';
-import WebForm from './WebForm';
-import WebFormHomePage from './WebFormHomePage';
-import WebFormWorkflowDecider from './WebFormWorkflowDecider';
+import JoinCta from './JoinCta';
+import Webform from './Webform';
+import WebformLandingPage from './WebformLandingPage';
+import WebformWorkflowDecider from './WebformWorkflowDecider';
 import TouTemplate from './custom-components/modal/templates/TouTemplate';
 import GenericErrorPage from './GenericErrorPage';
 import Paginator from './Paginator';
@@ -48,10 +49,11 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
-	UrlItemList,
-	WebForm,
-	WebFormHomePage,
-	WebFormWorkflowDecider,
+  UrlItemList,
+	JoinCta,
+	Webform,
+  WebformLandingPage,
+  WebformWorkflowDecider,
 	TouTemplate,
 	GenericErrorPage,
 	Paginator,

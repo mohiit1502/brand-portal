@@ -12,38 +12,32 @@ class HomeHeader extends React.Component {
   }
 
   render() {
-    const isWebForm = this.props.isWebForm;
+    const isWebform = this.props.isWebform;
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <Link className="navbar-brand walmart-brand" to="/dashboard">
           {/* <img src={walmartLogo} /> */}
           <img src={headerLogo} />
         </Link>
-        {isWebForm &&
-          <React.Fragment>
-            <div className="webform-header pl-1 pr-3" >|</div>
-            <div className="h5 pt-2 webform-header" >
-            IP Services
-            </div>
-            </React.Fragment>
-        }
-        { !isWebForm &&
-        <React.Fragment><button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
-          aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"/>
-        </button>
-        <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
-          <ul className="navbar-nav ml-auto">
-          { window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
-            <li className="nav-item nav-item-help mx-4">
-              <Link to="/help" className="nav-link nav-help" href="#">
-                <img src={helpLogo} height="32px" className="pr-2"/> Help
-              </Link>
-            </li>
-          }
-          <UserMenu isOnboarded={this.props.isOnboarded}/>
-          </ul>
-        </div></React.Fragment>
+        {!isWebform &&
+        <>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
+                  aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"/>
+          </button>
+          <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
+            <ul className="navbar-nav ml-auto">
+              {window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
+              <li className="nav-item nav-item-help mx-4">
+                <Link to="/help" className="nav-link nav-help" href="#">
+                  <img src={helpLogo} height="32px" className="pr-2"/> Help
+                </Link>
+              </li>
+              }
+              <UserMenu isOnboarded={this.props.isOnboarded}/>
+            </ul>
+          </div>
+        </>
         }
       </nav>
     );
@@ -54,7 +48,7 @@ HomeHeader.propTypes = {
   isOnboarded: PropTypes.bool,
   logoutUrl: PropTypes.string,
   userProfile: PropTypes.object,
-  isWebForm: PropTypes.bool
+  isWebform: PropTypes.bool
 };
 
 export  default  HomeHeader;

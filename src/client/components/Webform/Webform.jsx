@@ -4,14 +4,14 @@ import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import ContentRenderer from "../../utility/ContentRenderer";
-import "./WebForm.component.scss";
+import "./Webform.component.scss";
 import Helper from "../../utility/helper";
 import Validator from "../../utility/validationUtil";
 import CONSTANTS from "../../constants/constants";
 import InputFormatter from "../../utility/phoneOps";
 
 
-class WebForm extends React.Component {
+class Webform extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["onChange", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit"];
@@ -195,7 +195,10 @@ class WebForm extends React.Component {
 
   render() {
     return (
-      <div className="c-WebForm">
+      <div className="c-Webform">
+        <div className="row h3 header pl-5">
+          Walmart IP Services
+        </div>
         <div className="row justify-content-center">
         <div className="col-lg-7 col-md-6 col-6 pl-3 pr-3">
           <div className="row title-row mb-4 pl-3">
@@ -214,7 +217,7 @@ class WebForm extends React.Component {
 
 }
 
-WebForm.propTypes = {
+Webform.propTypes = {
 
 };
 
@@ -225,4 +228,4 @@ const mapStateToProps = state => {
 };
 
 
-export default connect(mapStateToProps)(WebForm);
+export default connect(mapStateToProps)(Webform);
