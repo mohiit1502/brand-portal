@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./WebFormHomePage.component.scss";
+import "./WebformLandingPage.component.scss";
 
-const WebFormHomePage = props => {
+const WebformLandingPage = props => {
   return (
-    <div className="c-WebFormHomePage">
+    <div className="c-WebformLandingPage">
       <div className="row h3 header">
         Walmart IP Services
       </div>
@@ -27,8 +27,8 @@ const WebFormHomePage = props => {
   );
 };
 
-WebFormHomePage.propTypes = {
+WebformLandingPage.propTypes = {
 
 };
 
-export default WebFormHomePage;
+export default WebformLandingPage;
