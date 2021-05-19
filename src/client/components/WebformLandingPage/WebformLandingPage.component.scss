@@ -11,4 +11,24 @@
         background: $background-blue !important;
         color: #006799;
       }
+
+    .btn-secondary {
+    color: $heading-blue !important;
+    background: none;
+    border: none !important;
+    }
+    .content-header {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.08;
+        margin-top: 2rem;
+        min-height: 50px;
+    }
+    .content-button {
+        padding-right: 10rem;
+
+        .btn {
+            width: 150px;
+        }
+    }
 }
