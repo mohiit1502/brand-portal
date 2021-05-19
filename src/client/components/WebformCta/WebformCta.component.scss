@@ -1,0 +1,31 @@
+@import "../../styles/override/variables";
+.c-WebformCta {
+    padding: 1.5rem 2.5rem;
+    .header{
+        font-weight: bold;
+        padding-bottom: 1.5rem;
+
+    }
+    .c-TilesContainer{
+        margin-right: 8rem;
+        margin-left: 8rem;
+    }
+    .message-content {
+        font-size: 24px;
+    }
+    .btn{
+        text-decoration: underline;
+        font-weight: bold;
+        font-size: 16px;
+        
+    }
+    .new-claim-button{
+        &.disabled {
+            pointer-events: none;
+            color: #a3a8a9;
+          }
+          &:hover {
+            color: #006799;
+          }
+    }
+}

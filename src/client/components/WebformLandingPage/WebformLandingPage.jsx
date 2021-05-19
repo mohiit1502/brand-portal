@@ -1,37 +1,20 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import "./WebformLandingPage.component.scss";
 import ContentRenderer from "../../utility/ContentRenderer";
+import WEBFORMCONFIG from "../../config/contentDescriptors/webform";
 
 const WebformLandingPage = props => {
+  const [contentRenderer, setContentRenderer] = useState();
+  const [contentConfig, setContentConfig] = useState({});
+  useEffect(() => {
+    if (!contentRenderer) {
+      setContentRenderer(new ContentRenderer());
+    }
+    setContentConfig(WEBFORMCONFIG.landingPageConfig.contents);
+  }, []);
 
-  const contents = [
-    {
-    header: "Walmart Brand Portal",
-    body: {
-      para1: "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
-      para2: "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements."
-    },
-    button: {
-      buttonText: "Register",
-      key: "register",
-      classes: "btn btn-sm btn-primary"
-    }
-  },  {
-    header: "DMCA IP Claim Form",
-    body: {
-      para1: "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
-      para2: "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements."
-    },
-    button: {
-      buttonText: "Submit IP claim",
-      key: "submit_claim",
-      classes: "btn btn-sm  btn-primary"
-    }
-  }
-];
-  const contentRenderer = new ContentRenderer();
-  const contentRenders = contents.map(content => Object.keys(content).map(node => {
+  const contentRenders = contentConfig && contentRenderer && contentConfig.map(content => Object.keys(content).map(node => {
     if (node.startsWith("header")) {
       return (<div className="content-header">{content.header}</div>);
     } else if (node.startsWith("button")) {
