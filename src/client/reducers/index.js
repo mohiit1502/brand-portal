@@ -7,6 +7,7 @@ import claims from "./claim/claim-reducers";
 import content from "./content/content-reducer";
 import dashboard from "./dashboard/dashboard-reducers";
 import {notification} from "./notification/notification-reducers";
+import webform from "./webform/webform-reducer";
 
 const userRegistration = (store, action) => {
   switch (action.type) {
@@ -25,6 +26,7 @@ const userRegistration = (store, action) => {
 
 
 export default combineReducers({
+  webform,
   userRegistration,
   modal,
   userEdit,

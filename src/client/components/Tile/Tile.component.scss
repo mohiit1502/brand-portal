@@ -7,6 +7,7 @@
     padding: 2.875rem 1.875rem;
     height: 100%;
     background: #f5fafb;
+    margin-bottom: 1rem;
 
     .c-Tile__content__symbol {
       margin-bottom: 1.4rem;
@@ -23,7 +24,7 @@
     }
 
     .c-Tile__content__body {
-      display: flex;
+      //display: flex;
       justify-content: center;
       //text-align: left;
 
@@ -58,6 +59,18 @@
 
         }
       }
+
+      p{
+        text-align: center;
+        padding: 0.1rem 0.3rem;
+      }
+
+      a{
+        text-align: center;
+        padding: 0.1rem 0.3rem;
+        font-size: medium;
+      }
+
     }
 
   }

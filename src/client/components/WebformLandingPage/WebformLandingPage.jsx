@@ -11,30 +11,20 @@ const WebformLandingPage = props => {
     if (!contentRenderer) {
       setContentRenderer(new ContentRenderer());
     }
-    setContentConfig(WEBFORMCONFIG.landingPageConfig.contents);
+    if (!contentConfig) {
+    setContentConfig(WEBFORMCONFIG.landingPageConfig.content);
+    }
   }, []);
 
-  const contentRenders = contentConfig && contentRenderer && contentConfig.map(content => Object.keys(content).map(node => {
-    if (node.startsWith("header")) {
-      return (<div className="content-header">{content.header}</div>);
-    } else if (node.startsWith("button")) {
-      return (<div className="content-button  text-right pl-5"><button type="button" className={content[node].classes} key={content[node].key} >{content[node].buttonText}</button></div>);
-    } else {
-      return (Object.keys(content[node]).map(subcontent => {
-        return contentRenderer.getContent(content[node], subcontent);
-      }));
-    }
-  }));
-
+  const contentRenders = contentRenderer && contentConfig && Object.keys(contentConfig).map(node => {
+    return contentRenderer.getContent(contentConfig, node);
+  });
   return (
     <div className="c-WebformLandingPage">
-      <div className="row h3 header">
-        Walmart IP Services
-      </div>
-      <div className="row h4 header ml-3">
+      <div className="row h4 page-header">
         Submit IP claims
       </div>
-      <div className="px-5">{contentRenders}</div>
+      <div className="ml-3 px-5">{contentRenders}</div>
     </div>
   );
 };
