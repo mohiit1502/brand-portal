@@ -11,9 +11,7 @@ const WebformLandingPage = props => {
     if (!contentRenderer) {
       setContentRenderer(new ContentRenderer());
     }
-    if (!contentConfig) {
     setContentConfig(WEBFORMCONFIG.landingPageConfig.content);
-    }
   }, []);
 
   const contentRenders = contentRenderer && contentConfig && Object.keys(contentConfig).map(node => {

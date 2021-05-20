@@ -6,11 +6,11 @@ const WEBFORMCONFIG = {
           classes: "content-header h5"
         },
         para1: {
-          text: "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+          text: "Walmart respects the intellectual property (\"IP\") rights of others and understand that Brand owners freque stay alert and react quickly to protect their intellectual property.",
           classes: "message-content" 
         },
         para2: {
-          text: "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+          text: "With the new Walmart Brand Portal, you can manage your various brands, submit multiple types of intellec property claims, and track claim status, all within one easy to use interface. Register for the Walmart Brand today to simplify your brand management of Walmart.com.",
           classes: "message-content"
         },
         buttonsPanel1: {
@@ -28,11 +28,14 @@ const WEBFORMCONFIG = {
           classes: "content-header h5"
         },
         para3: {
-          text: "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+          text: `Walmart has set up the online IP Claim Form for owners of IP rights to report legitimate claims of infringement as to
+          items listed on Walmart.com, including claims of copyright, trademark, patent, publicity and counterfeit. Walmart
+          strives to promptly process and investigate such claims and take appropriate actions under applicable laws.`,
           classes: "message-content"
         },
         para4: {
-          text: "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+          text: `To make a claim of IP infringement, you will be required to declare, under penalty of perjury, that the information provided is correct and that you are the IP rights owner or an authorized agent. To understand what constitutes infringement, continue reading. To make an IP claim now, click here. If the information you submit is inaccurate or incomplete, we may be unable to process or respond to your request. If you have questions about IP or whether your
+          rights have been infringed, consider seeking legal advice.`,
           classes: "message-content"
         },
         buttonsPanel2: {
@@ -50,7 +53,7 @@ const WEBFORMCONFIG = {
     ctaPageConfig: {
       content: {
         para1: {
-          text: "Thank you for claim of IP infringement. We will review your request and let you know when a decision has been made.",
+          text: "Thank you for your claim of IP infringement. We will review your request and let you know wher decision has been made.",
           classes: "pl-5 h4 pb-5 message-content"
         },
         customDivider1: {
@@ -64,7 +67,7 @@ const WEBFORMCONFIG = {
           classes: "customDivider2"
         },
         para2: {
-                text: "Manage your Brands and Intellectual property right with powerful new tool",
+                text: "Manage your brands and intellectual property rights with a powerful new tool",
                 classes: "h4 pt-3 pb-5 col-8 d-inline-block post-cta-content"
         },
         buttonsPanel1: {
@@ -87,10 +90,10 @@ const WEBFORMCONFIG = {
           tiles: [
             {
               svg: "ProblemSolving",
-              header: "Manage Everything effortlessly",
+              header: "Manage everything effortlessly",
               content: {
                 para1: {
-                  text: "Authorized third-party brand protection agenciesAuthorized third-party brand protection agencies Streamlined IP claim submission process",
+                  text: "We've designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
                   classes: "tile-content"
                 },
                 anchor1: {
@@ -102,10 +105,10 @@ const WEBFORMCONFIG = {
             },
             {
               svg: "GroupPeople",
-              header: "Manage Everything effortlessly",
+              header: "Protect your brand",
               content: {
                 para1: {
-                  text: "Authorized third-party brand protection agenciesAuthorized third-party brand protection agencies Streamlined IP claim submission process",
+                  text: "Submit intellectual property claims using a simple form.",
                   classes: "tile-content"
                 },
                 anchor1: {
@@ -117,10 +120,10 @@ const WEBFORMCONFIG = {
             },
             {
                 svg: "GroupPeople",
-                header: "Manage Everything effortlessly",
+                header: "Track your claims",
                 content: {
                   para1: {
-                    text: "Authorized third-party brand protection agenciesAuthorized third-party brand protection agencies Streamlined IP claim submission process",
+                    text: "Monitor your claims in one sin dashboard, then delve into indiv claims to check on their progres results",
                     classes: "tile-content"
                   },
                   anchor1: {
@@ -138,7 +141,8 @@ const WEBFORMCONFIG = {
           button1: {
             buttonText: "Submit a New IP claim",
             key: "submit_claim",
-            classes: "btn submit_claim btn-sm"
+            classes: "btn submit_claim btn-sm",
+            onClick: "commonClickHandler"
           }
         }
       }
