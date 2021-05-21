@@ -9,8 +9,9 @@ import HomeHeader from "../custom-components/headers/home-header";
 import Footer from "../Footer";
 import Webform from "../Webform/Webform";
 import FORMFIELDCONFIG from "../../config/formsConfig/form-field-meta";
-import "./WebformWorkflowDecider.component.scss";
+import WEBFORMCONFIG from "../../config/contentDescriptors/webform";
 import ContentRenderer from "../../utility/ContentRenderer";
+import "./WebformWorkflowDecider.component.scss";
 
 class WebformWorkflowDecider extends React.Component {
   constructor(props) {
@@ -18,18 +19,33 @@ class WebformWorkflowDecider extends React.Component {
     const contentRenderer = new ContentRenderer();
     this.getContent = contentRenderer.getContent.bind(this);
     this.commonClickHandler = this.commonClickHandler.bind(this);
+    this.props.dispatchMetadata(FORMFIELDCONFIG);
     this.dispatchWebformState = this.props.dispatchWebformState;
   }
 
   componentDidMount() {
-    this.props.dispatchMetadata(FORMFIELDCONFIG);
+    
   }
 
-  commonClickHandler() {
-  console.log("console");
+  commonClickHandler(e) {
+    console.log(this.props.webformWorkflow);
+    this.dispatchWebformState(e.target.value);
   }
 
   render() {
+      let configuration, childComponent;
+      if (this.props.webformWorkflow === "2") {
+        configuration = WEBFORMCONFIG.ctaPageConfig;
+        childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
+
+      } else if (this.props.webformWorkflow === "1") {
+        childComponent = (<Webform getContent={this.getContent}/>);
+        configuration = WEBFORMCONFIG.webform;
+      } else {
+        configuration = WEBFORMCONFIG.landingPageConfig;
+        childComponent = (<WebformLandingPage  configuration= {configuration} getContent={this.getContent}/>);
+      }
+
       return (
         <div className="c-WebformWorkflowDecider">
           <HomeHeader isWebform={true}/>
@@ -37,11 +53,14 @@ class WebformWorkflowDecider extends React.Component {
             <div className="row h3 page-title">
               Walmart IP Services
             </div>
-            {/* <WebformLandingPage/> */}
-            {/* <Webform/> */}
-            <WebformCta getContent={this.getContent}/>
+            <div className={`row h4 page-header pt-1 ${configuration.header.text ? configuration.header.text : ""}`}>
+              {
+                configuration.header.text
+              }
+            </div>
+            {childComponent}
           </div>
-          <div className="">
+          <div className="fixed-bottom">
             <Footer/>
           </div>
         </div>
@@ -51,7 +70,8 @@ class WebformWorkflowDecider extends React.Component {
 
 WebformWorkflowDecider.propTypes = {
   dispatchMetadata: PropTypes.func,
-  dispatchWebformState: PropTypes.func
+  dispatchWebformState: PropTypes.func,
+  webformWorkflow: PropTypes.number
 };
 const mapDispatchToProps = {
   dispatchMetadata,
@@ -59,7 +79,7 @@ const mapDispatchToProps = {
 };
 const mapStateToProps = state => {
   return {
-    webformWorkflow: state.webform.workflow
+    webformWorkflow: state.webform.state
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(WebformWorkflowDecider);

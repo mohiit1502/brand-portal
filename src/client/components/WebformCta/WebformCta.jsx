@@ -1,14 +1,13 @@
 /* eslint-disable quote-props */
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import WEBFORMCONFIG from "../../config/contentDescriptors/webform";
 import "./WebformCta.component.scss";
 
 const WebformCta = function(props) {
   const [contentConfig, setContentConfig] = useState({});
   useEffect(() => {
-      setContentConfig(WEBFORMCONFIG.ctaPageConfig.content);
-  }, []);
+      setContentConfig(props.configuration.content ? props.configuration.content : {});
+  }, [props.configuration]);
 
   const contentRenders = contentConfig && props.getContent && Object.keys(contentConfig).map(node => {
     return props.getContent(contentConfig, node);
@@ -16,9 +15,6 @@ const WebformCta = function(props) {
 
   return (
     <div className="c-WebformCta">
-      <div className="row h4 page-header">
-        DCMA Claim Form
-      </div>
       <div className="px-5">
         {contentRenders}
       </div>
@@ -27,7 +23,8 @@ const WebformCta = function(props) {
 };
 
 WebformCta.propTypes = {
-  getContent: PropTypes.func
+  getContent: PropTypes.func,
+  configuration: PropTypes.Object
 };
 
 export default WebformCta;

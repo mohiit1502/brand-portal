@@ -1,5 +1,9 @@
 const WEBFORMCONFIG = {
     landingPageConfig: {
+      header: {
+        text: "Submit IP Claims",
+        classes: ""
+      },
       content: {
         header1: {
           title: "Walmart Brand Portal",
@@ -14,12 +18,12 @@ const WEBFORMCONFIG = {
           classes: "message-content"
         },
         buttonsPanel1: {
-          classes: "text-right pr-3  py-3",
+          classes: "text-right pr-3 mr-5 py-3",
           buttons: {
-            button1: {
-              buttonText: "Register",
-              key: "register",
-              classes: "btn btn-sm  btn-primary"
+            anchor1: {
+              "href": "/api/falcon/register",
+              "text": "Register",
+              "classes": "btn btn-sm  btn-primary"
             }
           }
         },
@@ -39,22 +43,28 @@ const WEBFORMCONFIG = {
           classes: "message-content"
         },
         buttonsPanel2: {
-          classes: "text-right pt-3 pr-3 pb-4",
+          classes: "text-right pt-3 mr-5 pr-3 pb-5 mb-5",
           buttons: {
             button2: {
               buttonText: "Submit IP claim",
               key: "submit_claim",
-              classes: "btn btn-sm  btn-primary"
+              classes: "btn btn-sm  btn-primary",
+              onClick: "commonClickHandler",
+              value: "1"
             }
           }
         }
       }
     },
     ctaPageConfig: {
+      header: {
+        text: "DMCA Claim Form",
+        classes: ""
+      },
       content: {
         para1: {
-          text: "Thank you for your claim of IP infringement. We will review your request and let you know wher decision has been made.",
-          classes: "pl-5 h4 pb-5 message-content"
+          text: "Thank you for your claim of IP infringement. We will review your request and let you know when decision has been made.",
+          classes: "pl-5 h4 pb-5"
         },
         customDivider1: {
           classes: "customDivider1"
@@ -68,84 +78,100 @@ const WEBFORMCONFIG = {
         },
         para2: {
                 text: "Manage your brands and intellectual property rights with a powerful new tool",
-                classes: "h4 pt-3 pb-5 col-8 d-inline-block post-cta-content"
+                classes: "h4 pt-3 pb-2 col-8 d-inline-block font-weight-bold post-cta-content message"
         },
         buttonsPanel1: {
-          classes: "py-3 col-4 text-right d-inline-block  buttonsPanel1 post-cta-content",
+          classes: "col-4 text-right d-inline-block  buttonsPanel1 post-cta-content",
           buttons: {
-            button1: {
-              buttonText: "Learn More",
-              key: "learn_more_1",
-              classes: "btn learn-more btn-sm"
+            anchor1: {
+              "href": "https://brandportal.stg.walmart.com/",
+              "text": "Learn More",
+              "classes": "btn pt-1 learn-more btn-sm"
             },
-            button2: {
-              buttonText: "Get Started",
-              key: "get_started_1",
-              classes: "btn get-started btn-sm"
+            anchor2: {
+              "href": "/api/falcon/register",
+              "text": "Get Started",
+              "classes": "btn get-started btn-sm"
             }
           }
         },
         tilesContainer: {
-          classes: "py-4 post-cta-content",
+          classes: "py-4 post-cta-content text-center",
           tiles: [
             {
               svg: "ProblemSolving",
-              header: "Manage everything effortlessly",
+              header: {
+                text: "Manage everything effortlessly",
+                classes: "tile-header"
+              },
               content: {
                 para1: {
                   text: "We've designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
                   classes: "tile-content"
                 },
                 anchor1: {
-                  "href": "https://brandportal.walmart.com/",
+                  "href": "/",
                   "text": "Learn More",
-                  "classes": "anchor"
+                  "image": "ArrowRight"
                 }
               }
             },
             {
               svg: "GroupPeople",
-              header: "Protect your brand",
+              header: {
+                text: "Protect your brand",
+                classes: "tile-header"
+              },
               content: {
                 para1: {
                   text: "Submit intellectual property claims using a simple form.",
                   classes: "tile-content"
                 },
                 anchor1: {
-                  "href": "https://brandportal.walmart.com/",
+                  "href": "/",
                   "text": "Learn More",
-                  "classes": "anchor"
+                  "image": "ArrowRight"
                 }
               }
             },
             {
                 svg: "GroupPeople",
-                header: "Track your claims",
+                header: {
+                  text: "Track your claims",
+                  classes: "tile-header"
+                },
                 content: {
                   para1: {
                     text: "Monitor your claims in one sin dashboard, then delve into indiv claims to check on their progres results",
                     classes: "tile-content"
                   },
                   anchor1: {
-                    "href": "https://brandportal.walmart.com/",
+                    "href": "/",
                     "text": "Learn More",
-                    "classes": "anchor"
+                    "image": "ArrowRight"
                   }
                 }
             }
           ]
       },
       buttonsPanel2: {
-        classes: "text-right py-5 pl-5 post-cta-content",
+        classes: "text-right py-5 mb-5 pl-5 post-cta-content",
         buttons: {
           button1: {
             buttonText: "Submit a New IP claim",
             key: "submit_claim",
             classes: "btn submit_claim btn-sm",
-            onClick: "commonClickHandler"
+            onClick: "commonClickHandler",
+            value: 1
           }
         }
       }
+      }
+    },
+    webform: {
+      header: {
+        text: "DMCA Claim Form",
+        classes: ""
       }
     }
   };

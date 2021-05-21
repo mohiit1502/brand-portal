@@ -8,8 +8,7 @@
         margin-left: 0.5rem;
         margin-right: 0.5rem;
         height: auto ;
-        margin-bottom: 0.5rem;
-        margin-bottom: 0.5rem;
+        
         min-width: 100px;
         min-height: 44px;
         &.learn-more {
@@ -38,16 +37,23 @@
     .tile-content {
         font-size: 20px;
     }
+    .tile-header {
+        color: #286799;
+    }
+    
     .content-block {
         display: inline-block;
     }
 
     .post-cta-content{
-        &p{
-            padding-left: 8rem
+        &.message{
+            padding-left: 8rem;
+            padding-right: 0rem;
+            color: #32658A;
         }
         &.buttonsPanel1{
-            padding-right: 8rem
+            padding-right: 8rem;
+            padding-left: 0rem;
         }
         padding-left: 8rem;
         padding-right: 8rem;

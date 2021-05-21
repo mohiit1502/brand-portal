@@ -1,7 +1,7 @@
 import {DISPATCH_WEB_FORM_STATE} from "../../actions/webform/webform-action";
 
 const initialState =  {
-  workflow: {code: 0}
+ state: "0"
 };
 
 const helpReducer = (store = initialState, action) => {

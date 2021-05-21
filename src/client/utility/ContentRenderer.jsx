@@ -97,7 +97,8 @@ export default class ContentRenderer {
     } else if (node.startsWith("button")) {
       return (
         <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key} 
-        onClick={content[node].onClick ? this[content[node].onClick]: () => {}}>
+        onClick={content[node].onClick ? this[content[node].onClick] : () => {}}
+        href={content[node].href ? content[node].href: ""} value={content[node].value ? content[node].value : 0} >
           {content[node].buttonText}
         </button>
       );
@@ -113,17 +114,10 @@ export default class ContentRenderer {
       return <Tile key={node} data={content} contentRenderer={this} />;
     } else if (node.startsWith("anchor")) {
       const metaData = content[node];
-      return <a href={metaData.href} className={metaData.href.classes ? metaData.href.classes : ""} >{metaData.text}</a>;
-    } else if (node.startsWith("contentBlock")) {
-      return (
-        <div className={content[node].classes ? content[node].classes: ""}>
-          {
-            Object.keys(content[node].subContents).map((subContent, key) => {
-              return this.getContent(content[node].subContents, subContent);
-            })
-          }
-        </div>
-      );
+      return (<React.Fragment>
+        <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}</a>
+        {metaData.image && imagesAll[metaData.image] ? <img className="d-inline-block" src={imagesAll[metaData.image]}/> : ""}
+      </React.Fragment>);
     } else {
       return null;
     }
