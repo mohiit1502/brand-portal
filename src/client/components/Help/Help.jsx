@@ -19,8 +19,8 @@ const Help = props => {
       setLoader(false);
       try {
       setHelpConfig(helpConfiguration);
-      const response = (await Http.get("/api/helpConfig")).body;
-      setHelpConfig(JSON.parse(response));
+      // const response = (await Http.get("/api/helpConfig")).body;
+      // setHelpConfig(JSON.parse(response));
       } catch (e) {console.log(e);}
     })();
   }, []);

@@ -62,8 +62,8 @@ class Authenticator extends React.Component {
         .then(response => {
           if (response.body) {
             try {
-              response = JSON.parse(response.body);
-              // response = FORMFIELDCONFIG;
+              // response = JSON.parse(response.body);
+              response = FORMFIELDCONFIG;
               this.props.dispatchMetadata(response);
             } catch (e) {
               this.props.dispatchMetadata(FORMFIELDCONFIG);

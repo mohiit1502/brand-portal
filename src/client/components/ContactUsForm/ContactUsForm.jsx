@@ -88,9 +88,6 @@ class ContactUsForm extends React.Component{
             && form.inputData.details.value;
     form.inputData.sendActions.buttons.send.disabled = !isSubmitEnabled;
     this.setState({form});
-
-    console.log("Check enable submit")
-    console.log(this.state);
   }
 
   handleSubmit(evt){
@@ -106,12 +103,12 @@ class ContactUsForm extends React.Component{
       const details = form.inputData.details.value;
       const payload = {area,title,details};
       return Http.post(url,payload).then(res => {
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS,"Request successfully submitted. Our agents will process your request");
           this.resetForm();
           this.loader("form",false);
+          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS,"Request successfully submitted. Our agents will process your request");
         }
       ).catch(err => {
-        this.loader("form", false);
+        this.loader("form",false);
         this.props.showNotification(NOTIFICATION_TYPE.ERROR,"Sorry request cannot be processed at the moment");
         console.log(err);
 
@@ -120,10 +117,8 @@ class ContactUsForm extends React.Component{
   }
 
   render(){
-    console.log(this.state)
-    console.log("====================render of contact us ====================",this.fieldRenderer())
     return (
-      <form onSubmit={this.handleSubmit} className={`contact-us-form`}>
+      <form onSubmit={this.handleSubmit} className={`contact-us-form ${this.state.form.loader ? "loader" : ""}`} >
         {this.fieldRenderer()}
       </form>
     )
