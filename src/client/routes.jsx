@@ -8,7 +8,7 @@ import {Redirect} from "react-router";
 import CONSTANTS from "./constants/constants";
 import ClientUtils from "./utility/ClientUtils";
 import Notification from "./components/custom-components/notification/notification";
-import {WebFormWorkflowDecider} from "./components";
+import {WebformWorkflowDecider} from "./components";
 
 const Root = ({ route, children }) => {
     return (
@@ -40,7 +40,7 @@ const routes = [
       {
         path: CONSTANTS.ROUTES.OPEN.SERVICES,
         exact: true,
-        component: WebFormWorkflowDecider
+        component: WebformWorkflowDecider
       },
       {
         path: "/user-management",
