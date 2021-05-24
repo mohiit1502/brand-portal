@@ -31,6 +31,11 @@ class ContentManagerApi {
         method: "GET",
         path: "/api/mixpanelConfig",
         handler: this.getMixpanelConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/webformConfig",
+        handler: this.getWebformConfiguration
       }
     ]);
   }
@@ -57,6 +62,19 @@ class ContentManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_HELP_CONFIGURATION, mixpanelPayload);
+    }
+  }
+
+  async getWebformConfiguration(request, h) {
+    console.log("[ContentManagerApi::getWebformConfiguration] API request for Webform configuration has started");
+    console.log("[ContentManagerApi::getWebformConfiguration] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.WEBFORMDESCRIPTOR");
+      console.log("[ContentManagerApi::getWebformConfiguration] API request for Webform configuration has completed");
+      return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      console.log("[ContentManagerApi::getWebformConfiguration] Error occured in API request for Webform configuration:", err);
+      return h.response(err).code(err.status);
     }
   }
 
@@ -115,7 +133,7 @@ class ContentManagerApi {
       let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
       response = JSON.parse(response);
       const projectToken = response.projectToken;
-      const enableTracking = response.enableTracking;
+      const enableTracking = false;//response.enableTracking;
       mixpanel.setToken(projectToken, enableTracking);
       console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has completed");
       return h.response({projectToken, enableTracking}).code(CONSTANTS.STATUS_CODE_SUCCESS);

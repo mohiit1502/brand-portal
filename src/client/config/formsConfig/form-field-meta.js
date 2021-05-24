@@ -1092,6 +1092,13 @@ const FORMFIELDCONFIG = {
           "disableAddItem": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "getItemListFromChild": "getItemListFromChild",
+          "sellerNameType": "text",
+          "getItemListFromChild": "getItemListFromChild",
+          "prebounceChangeHandler": "disableSubmitButton",
+          "onChangeUrl": "onChange",
+          "onChangeSellerName": "onChange",
+          "fieldLoader": false,
+          "bubbleValue": "bubbleValue",
           "itemList": [{
             "id": "item-0",
             "url": {
@@ -1109,8 +1116,6 @@ const FORMFIELDCONFIG = {
               "label": "Seller Name",
               "required": "true",
               "value": "",
-              // type: "select",
-              "pattern": "null",
               "disabled": true,
               "options": [],
               "subtitle": "",
@@ -1118,8 +1123,8 @@ const FORMFIELDCONFIG = {
               "error": "",
               "validators": {
                 "validateLength": {
-                  "minLength": "3",
-                  "error": "Minimum length is 3 characters"
+                  "minLength": "2",
+                  "error": "Minimum length is 2 characters"
                 }
               }
             }

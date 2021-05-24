@@ -12,6 +12,7 @@ import FORMFIELDCONFIG from "../../config/formsConfig/form-field-meta";
 import WEBFORMCONFIG from "../../config/contentDescriptors/webform";
 import ContentRenderer from "../../utility/ContentRenderer";
 import "./WebformWorkflowDecider.component.scss";
+import Http from "../../utility/Http";
 
 class WebformWorkflowDecider extends React.Component {
   constructor(props) {
@@ -21,10 +22,45 @@ class WebformWorkflowDecider extends React.Component {
     this.commonClickHandler = this.commonClickHandler.bind(this);
     this.props.dispatchMetadata(FORMFIELDCONFIG);
     this.dispatchWebformState = this.props.dispatchWebformState;
+    const webformConfig = WEBFORMCONFIG;
+
+    this.getMetaData();
+  }
+
+  getMetaData() {
+    try {
+      Http.get("/api/webformConfig")
+        .then(response => {
+          if (response.body) {
+            try {
+              response = JSON.parse(response.body);
+              this.setState({webformConfig: response});
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        });
+
+        Http.get("/api/formConfig")
+        .then(response => {
+          if (response.body) {
+            try {
+              response = JSON.parse(response.body);
+              response = FORMFIELDCONFIG;
+              this.props.dispatchMetadata(response);
+            } catch (e) {
+                console.log(e);
+            }
+          }
+        });
+
+      } catch (err) {
+        console.log(err);
+    }
+
   }
 
   componentDidMount() {
-    
   }
 
   commonClickHandler(e) {
@@ -39,7 +75,7 @@ class WebformWorkflowDecider extends React.Component {
         childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
 
       } else if (this.props.webformWorkflow === "1") {
-        childComponent = (<Webform getContent={this.getContent}/>);
+        childComponent = (<Webform getContent={this.getContent} dispatchWebformState={this.dispatchWebformState}/>);
         configuration = WEBFORMCONFIG.webform;
       } else {
         configuration = WEBFORMCONFIG.landingPageConfig;
