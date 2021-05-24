@@ -2,13 +2,22 @@
 
 .c-WebformLandingPage {
     padding: 1.5rem 2.5rem;
-    .header{
-        font-weight: bold;
-        padding-bottom: 1.5rem;
-
+    .btn {
+        width: 150px;
+        &.btn-primary {
+            background: white;
+            color: #006799;
+            border: 1px solid #006799;
+            opacity: 1;
+        }
     }
-    .btn-primary {
-        background: $background-blue !important;
-        color: #006799;
-      }
+
+    .content-header {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.08;
+        margin-top: 0.5rem;
+        min-height: 50px;
+        color: #0D6799;
+    }
 }
