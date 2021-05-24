@@ -160,7 +160,7 @@ const WEBFORMCONFIG = {
           "button1": {
             "buttonText": "Submit a New IP Claim",
             "key": "submit_claim",
-            "classes": "btn submit_claim btn-sm",
+            "classes": "btn submit_claim btn-sm pb-5",
             "onClick": "commonClickHandler",
             "value": 1
           }
