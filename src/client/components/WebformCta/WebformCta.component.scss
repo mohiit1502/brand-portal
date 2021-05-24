@@ -1,6 +1,5 @@
 @import "../../styles/override/variables";
 .c-WebformCta {
-    padding: 1.5rem 2.5rem;
 
     .btn{
         font-weight: bold;
@@ -8,9 +7,10 @@
         margin-left: 0.5rem;
         margin-right: 0.5rem;
         height: auto ;
-        
+        padding: 5px;
         min-width: 100px;
         min-height: 44px;
+        text-align: center;
         &.learn-more {
             background: #8797A5;
             text-decoration: underline;
@@ -19,7 +19,6 @@
 
         &.get-started {
             background: #FAECC3;
-            color: #006799;
         }
         &.submit_claim {
             text-decoration: underline;
@@ -27,18 +26,25 @@
     }
 
     .customDivider1 {
-        width: 100%;
+        width: 90%;
     }
     .customDivider2 {
         width: 10%;
         height: 10px;
         background: black;
     }
+
+    .c-Tile__content__body {
+        flex-direction: column;
+    }
+
     .tile-content {
         font-size: 20px;
+        height: 12rem;
     }
     .tile-header {
-        color: #286799;
+        color: $tile-header-text;
+        min-height: 0px !important;
     }
     
     .content-block {
@@ -49,11 +55,13 @@
         &.message{
             padding-left: 8rem;
             padding-right: 0rem;
-            color: #32658A;
         }
         &.buttonsPanel1{
             padding-right: 8rem;
             padding-left: 0rem;
+        }
+        .c-Tile__content__symbol {
+            height: 150px;
         }
         padding-left: 8rem;
         padding-right: 8rem;

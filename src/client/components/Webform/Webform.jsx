@@ -258,8 +258,8 @@ class Webform extends React.Component {
       items: getItems(inputData.urlItems.itemList)
     };
     this.loader("loader", true);
-    Http.post("", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
-    //Http.get("/api/formConfig", null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
+    //Http.post("", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
+    Http.get("/api/formConfig", null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
     .then(res => {
         this.loader("loader", false);
         this.props.dispatchWebformState("2");
@@ -293,13 +293,16 @@ class Webform extends React.Component {
 
   render() {
     return (
-      <div className={`c-Webform ${this.state.loader ? " loader" : ""}`}>
-        <div className="row justify-content-center">
-        <div className="col-lg-7 col-md-6 col-6 pl-3 pr-3">
+      <div className={`c-Webform  row justify-content-center ${this.state.loader ? " loader" : ""}`}> 
+        <div className="col-lg-8 col-md-6 col-6 pl-3 pr-3">
+          <div className="h4 font-weight-bold">
+                  {
+                    this.props.configuration && this.props.configuration.header && this.props.configuration.header.text ? this.props.configuration.header.text : ""
+                  }
+          </div>
           <form onSubmit={this.handleSubmit} className="web-form mb-4 mr-3" >
             { this.getFieldRenders()}
           </form>
-        </div>
       </div>
       </div>
     );
@@ -308,6 +311,7 @@ class Webform extends React.Component {
 }
 
 Webform.propTypes = {
+  configuration: PropTypes.object,
   dispatchWebformState: PropTypes.func,
   showNotification: PropTypes.func
 };

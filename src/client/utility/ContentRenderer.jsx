@@ -115,8 +115,9 @@ export default class ContentRenderer {
     } else if (node.startsWith("anchor")) {
       const metaData = content[node];
       return (<React.Fragment>
-        <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}</a>
+        <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}
         {metaData.image && imagesAll[metaData.image] ? <img className="d-inline-block" src={imagesAll[metaData.image]}/> : ""}
+        </a>
       </React.Fragment>);
     } else {
       return null;

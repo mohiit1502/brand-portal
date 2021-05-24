@@ -1,21 +1,20 @@
 .c-WebformWorkflowDecider {
     .page-title{
         font-weight: bold;
-        //padding-bottom: 0.5rem;
-        margin-top: 1.5rem;
-        padding-bottom: 0.3rem;
-        margin-left: 4rem;
-        color: #286799;
+        font-size: 2rem;
+        padding: 1rem 9rem;
+        //background: linear-gradient(to bottom, #8cd3f7, white);
+
     }
 
     .page-header {
         font-weight: bold;
-        margin-left: 6rem;
-        margin-top: 1rem;
         padding-bottom: 0.5rem;
-
     }
 
+    .page-body {
+        padding: 1rem 11rem;
+    }
     .message-content {
         font-size: 20px;
     }

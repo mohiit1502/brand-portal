@@ -13,7 +13,14 @@ const WebformLandingPage = props => {
   });
   return (
     <div className="c-WebformLandingPage">
-      <div className="ml-3 px-5">{contentRenders}</div>
+      <div className="page-body">
+          <div className="page-header h4 font-weight-bold">
+            {
+              props.configuration.header.text
+            }
+          </div>
+          <div>{contentRenders}</div>
+      </div>
     </div>
   );
 };

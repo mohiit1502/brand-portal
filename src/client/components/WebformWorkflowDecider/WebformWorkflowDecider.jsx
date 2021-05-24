@@ -75,8 +75,9 @@ class WebformWorkflowDecider extends React.Component {
         childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
 
       } else if (this.props.webformWorkflow === "1") {
-        childComponent = (<Webform getContent={this.getContent} dispatchWebformState={this.dispatchWebformState}/>);
         configuration = WEBFORMCONFIG.webform;
+        childComponent = (<Webform getContent={this.getContent} configuration= {configuration} dispatchWebformState={this.dispatchWebformState}/>);
+
       } else {
         configuration = WEBFORMCONFIG.landingPageConfig;
         childComponent = (<WebformLandingPage  configuration= {configuration} getContent={this.getContent}/>);
@@ -85,14 +86,9 @@ class WebformWorkflowDecider extends React.Component {
       return (
         <div className="c-WebformWorkflowDecider">
           <HomeHeader isWebform={true}/>
-          <div className="px-5 py-3">
-            <div className="row h3 page-title">
-              Walmart IP Services
-            </div>
-            <div className={`row h4 page-header pt-1 ${configuration.header.text ? configuration.header.text : ""}`}>
-              {
-                configuration.header.text
-              }
+          <div className="">
+            <div className={`page-title ${configuration && configuration.titleClass ? configuration.titleClass : ""}`}>
+                Walmart IP Services
             </div>
             {childComponent}
           </div>

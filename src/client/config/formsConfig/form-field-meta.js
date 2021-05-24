@@ -1262,7 +1262,7 @@ const FORMFIELDCONFIG = {
           "type": "_formFieldsHeader"
         },
         "webFormActions": {
-          "containerClasses": "pb-5",
+          "containerClasses": "pb-5 mb-5",
           "colClasses": "web-form-button-panel text-right",
           "type": "_buttonsPanel",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
