@@ -879,31 +879,44 @@ const FORMFIELDCONFIG = {
           "error": "",
           "fieldOk": false,
           "inputId": "title",
-          "invalidError": "Please enter the title for your support",
+          "invalidError": "Please provide a short description of the request",
           "key": "title",
           "label": "Title",
           "layout": "2.1.6",
-          "patternErrorMessage": "Please enter the title for your support",
+          "patternErrorMessage": "Please provide a short description of the request",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "maxLength": 60,
+              "error": "Max. length is 60"
+            }
+          }
         },
         "details" : {
           "containerClasses": "mt-3 contact-us-form-row w-100",
           "colClasses": "contact-us-form-details",
           "error": "",
           "inputId": "details",
-          "invalidError": "Please enter details about your issue.",
+          "invalidError": "Please provide additional information about the request",
           "key": "details",
           "label": "Details",
-          "patternErrorMessage": "Please enter details about your issue.",
+          "patternErrorMessage": "Please provide additional information about the request",
           "preventHTMLRequiredValidation": true,
+          "placeholder": "Please provide additional information about the request",
           "required": true,
           "subtitle": "",
           "type": "textarea",
           "value": "",
+          "validators": {
+            "validateLength": {
+              "maxLength": 1000,
+              "error": "Max. length is 1000"
+            }
+          }
         },
         "sendActions":{
           "containerClasses": "mt-3 contact-us-form-row w-100",
