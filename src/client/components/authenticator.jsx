@@ -109,7 +109,7 @@ class Authenticator extends React.Component {
       mixpanelPayload.IS_USER_ENABLED = profile && profile.isUserEnabled ? profile.isUserEnabled : "";
       mixpanelPayload.IS_ORG_ENABLED = profile && profile.isOrgEnabled ? profile.isOrgEnabled : "";
       const workflow = profile && profile.workflow && profile.workflow.code ? profile.workflow.code : 0;
-      mixpanelPayload.WORK_FLOW = MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflow] || "CODE_NOT_FOUND";
+      mixpanelPayload.WORK_FLOW = MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[workflow] || "CODE_NOT_FOUND";
     } catch (e) {
       console.error(e);
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
