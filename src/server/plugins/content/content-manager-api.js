@@ -133,7 +133,7 @@ class ContentManagerApi {
       let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
       response = JSON.parse(response);
       const projectToken = response.projectToken;
-      const enableTracking = false;//response.enableTracking;
+      const enableTracking = response.enableTracking;
       mixpanel.setToken(projectToken, enableTracking);
       console.log("[ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has completed");
       return h.response({projectToken, enableTracking}).code(CONSTANTS.STATUS_CODE_SUCCESS);

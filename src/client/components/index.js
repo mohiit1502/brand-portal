@@ -2,7 +2,6 @@
 /* PLOP_INJECT_IMPORT */
 import WebformCta from './WebformCta';
 import UrlItemList from './UrlItemList';
-import JoinCta from './JoinCta';
 import Webform from './Webform';
 import WebformLandingPage from './WebformLandingPage';
 import WebformWorkflowDecider from './WebformWorkflowDecider';
@@ -52,7 +51,6 @@ export {
   /* PLOP_INJECT_EXPORT */
 	WebformCta,
   UrlItemList,
-	JoinCta,
 	Webform,
   WebformLandingPage,
   WebformWorkflowDecider,

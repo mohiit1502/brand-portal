@@ -87,7 +87,7 @@ class WebformWorkflowDecider extends React.Component {
         <div className="c-WebformWorkflowDecider">
           <HomeHeader isWebform={true}/>
           <div className="">
-            <div className={`page-title ${configuration && configuration.titleClass ? configuration.titleClass : ""}`}>
+            <div className={`page-title mp-blue ${configuration && configuration.titleClass ? configuration.titleClass : ""}`}>
                 Walmart IP Services
             </div>
             {childComponent}
