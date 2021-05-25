@@ -106,7 +106,7 @@ const MIXPANEL_CONSTANTS = {
         loginfaq: "FREQUENTLY_ASKED_QUESTIONS",
         faq: "FREQUENTLY_ASKED_QUESTIONS",
         user: "USER_MANAGEMENT",
-        brand: "USER_MANAGEMENT",
+        brand: "BRAND_MANAGEMENT",
         claim: "CLAIM_SUBMISSION",
         contact: "CONTACT_US"
     },

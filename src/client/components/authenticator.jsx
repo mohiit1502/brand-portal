@@ -79,6 +79,7 @@ class Authenticator extends React.Component {
     return this.setState({isOnboarded: !!status});
   }
 
+  // eslint-disable-next-line complexity
   async getProfileInfo () {
     const mixpanelPayload = {
       API: "/api/userInfo",
@@ -95,6 +96,20 @@ class Authenticator extends React.Component {
       this.setOnboardStatus(profile.organization);
       this.setState({profileInformationLoaded: true});
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.EMAIL_VERIFIED = profile && profile.emailVerified ? profile.emailVerified : "";
+      mixpanelPayload.ORGANISATION_NAME = profile && profile.organization ? profile.organization.name : "";
+      mixpanelPayload.ORGANISATION_STATUS = profile && profile.organization ? profile.organization.status : "";
+      mixpanelPayload.STATUS = profile && profile.status ? profile.status : "";
+      mixpanelPayload.REGISTRATION_MODE = profile && profile.registrationMode ? profile.registrationMode : "";
+      mixpanelPayload.FIRST_NAME = profile && profile.firstName ? profile.firstName : "";
+      mixpanelPayload.LAST_NAME = profile && profile.lastName ? profile.lastName : "";
+      mixpanelPayload.ROLE = profile && profile.role ? profile.role.name : "";
+      mixpanelPayload.USER_TYPE = profile && profile.type ? profile.type : "";
+      mixpanelPayload.STATUS_DETAILS = profile && profile.statusDetails ? profile.statusDetails : "";
+      mixpanelPayload.IS_USER_ENABLED = profile && profile.isUserEnabled ? profile.isUserEnabled : "";
+      mixpanelPayload.IS_ORG_ENABLED = profile && profile.isOrgEnabled ? profile.isOrgEnabled : "";
+      const workflow = profile && profile.workflow && profile.workflow.code ? profile.workflow.code : 0;
+      mixpanelPayload.WORK_FLOW = MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflow] || "CODE_NOT_FOUND";
     } catch (e) {
       console.error(e);
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});

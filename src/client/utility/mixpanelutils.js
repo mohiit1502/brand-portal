@@ -124,7 +124,7 @@ export default class MixpanelUtils {
             if (!userId || userId !== userProfile.email) {
                 //mixpanel.reset();
                 MixpanelUtils.setAlias(userProfile);
-                mixpanel.identify(userId);
+                mixpanel.identify(userProfile.email);
                 MixpanelUtils.setUserProfile(userProfile);
                 MixpanelUtils.setSuperProperties(userProfile);
                 MixpanelUtils.trackEvent(eventName);
