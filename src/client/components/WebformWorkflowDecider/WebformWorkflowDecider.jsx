@@ -12,6 +12,7 @@ import FORMFIELDCONFIG from "../../config/formsConfig/form-field-meta";
 import WEBFORMCONFIG from "../../config/contentDescriptors/webform";
 import ContentRenderer from "../../utility/ContentRenderer";
 import "./WebformWorkflowDecider.component.scss";
+import Http from "../../utility/Http";
 
 class WebformWorkflowDecider extends React.Component {
   constructor(props) {
@@ -19,12 +20,46 @@ class WebformWorkflowDecider extends React.Component {
     const contentRenderer = new ContentRenderer();
     this.getContent = contentRenderer.getContent.bind(this);
     this.commonClickHandler = this.commonClickHandler.bind(this);
-    this.props.dispatchMetadata(FORMFIELDCONFIG);
     this.dispatchWebformState = this.props.dispatchWebformState;
+    this.state = {
+      webformConfig: WEBFORMCONFIG
+    };
   }
 
   componentDidMount() {
-    
+    try {
+      this.setState({webformConfig: WEBFORMCONFIG});
+      Http.get("/api/webformConfig")
+        .then(response => {
+          if (response.body) {
+            try {
+              response = JSON.parse(response.body);
+              this.setState({webformConfig: response});
+            } catch (e) {
+              console.log(e);
+            }
+          }
+        });
+
+        this.props.dispatchMetadata(FORMFIELDCONFIG);
+        Http.get("/api/formConfig")
+        .then(response => {
+          if (response.body) {
+            try {
+              response = JSON.parse(response.body);
+              //response = FORMFIELDCONFIG;
+              this.props.dispatchMetadata(response);
+            } catch (e) {
+                console.log(e);
+            }
+          }
+        });
+
+      } catch (err) {
+        console.log(err);
+        this.props.dispatchMetadata(FORMFIELDCONFIG);
+        this.setState({webformConfig: WEBFORMCONFIG});
+    }
   }
 
   commonClickHandler(e) {
@@ -34,29 +69,25 @@ class WebformWorkflowDecider extends React.Component {
 
   render() {
       let configuration, childComponent;
-      if (this.props.webformWorkflow === "2") {
-        configuration = WEBFORMCONFIG.ctaPageConfig;
+      if (this.state.webformConfig && this.props.webformWorkflow === "2") {
+        configuration = this.state.webformConfig.ctaPageConfig;
         childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
 
-      } else if (this.props.webformWorkflow === "1") {
-        childComponent = (<Webform getContent={this.getContent}/>);
-        configuration = WEBFORMCONFIG.webform;
+      } else if (this.state.webformConfig && this.props.webformWorkflow === "1") {
+        configuration = this.state.webformConfig.webform;
+        childComponent = (<Webform getContent={this.getContent} configuration= {configuration} dispatchWebformState={this.dispatchWebformState}/>);
+
       } else {
-        configuration = WEBFORMCONFIG.landingPageConfig;
+        configuration = this.state.webformConfig.landingPageConfig;
         childComponent = (<WebformLandingPage  configuration= {configuration} getContent={this.getContent}/>);
       }
 
       return (
         <div className="c-WebformWorkflowDecider">
           <HomeHeader isWebform={true}/>
-          <div className="px-5 py-3">
-            <div className="row h3 page-title">
-              Walmart IP Services
-            </div>
-            <div className={`row h4 page-header pt-1 ${configuration.header.text ? configuration.header.text : ""}`}>
-              {
-                configuration.header.text
-              }
+          <div className="">
+            <div className={`page-title mp-blue ${configuration && configuration.titleClass ? configuration.titleClass : ""}`}>
+                Walmart IP Services
             </div>
             {childComponent}
           </div>

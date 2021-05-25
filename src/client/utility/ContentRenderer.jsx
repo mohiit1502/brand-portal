@@ -1,5 +1,3 @@
-/* eslint-disable max-statements */
-/* eslint-disable complexity */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-params */
 import React from "react";
@@ -63,21 +61,25 @@ export default class ContentRenderer {
     }
   }
 
+  getPartialContent(content, node, classes, isPartial) {
+    const partial = content[node];
+    const partialRenders = Object.keys(partial).map(partialNodeKey => {
+      const node1 = partial[partialNodeKey];
+      if (partialNodeKey.startsWith("chunk")) {
+        return <span className={classes ? classes : ""}>{node1}</span>;
+      } else if (partialNodeKey.startsWith("anchor")) {
+        return <a href={node1.href} className={classes ? classes : ""} >{node1.text}</a>;
+      } else {
+        return null;
+      }
+    });
+    return isPartial ? <span className={classes ? classes : ""}>{partialRenders}</span> :
+      <div className={classes ? classes : ""}>{partialRenders}</div>;
+  }
+
   getContent(content, node, classes, isPartial) {
     if (node.startsWith("partial")) {
-      const partial = content[node];
-      const partialRenders = Object.keys(partial).map(partialNodeKey => {
-        const node1 = partial[partialNodeKey];
-        if (partialNodeKey.startsWith("chunk")) {
-          return <span className={classes ? classes : ""}>{node1}</span>;
-        } else if (partialNodeKey.startsWith("anchor")) {
-          return <a href={node1.href} className={classes ? classes : ""} >{node1.text}</a>;
-        } else {
-          return null;
-        }
-      });
-      return isPartial ? <span className={classes ? classes : ""}>{partialRenders}</span> :
-        <div className={classes ? classes : ""}>{partialRenders}</div>;
+      return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
       if (typeof (content[node]) === "string") {
         return (<p className={classes ? classes : ""}>{content[node]}</p>);
@@ -115,8 +117,9 @@ export default class ContentRenderer {
     } else if (node.startsWith("anchor")) {
       const metaData = content[node];
       return (<React.Fragment>
-        <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}</a>
+        <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}
         {metaData.image && imagesAll[metaData.image] ? <img className="d-inline-block" src={imagesAll[metaData.image]}/> : ""}
+        </a>
       </React.Fragment>);
     } else {
       return null;

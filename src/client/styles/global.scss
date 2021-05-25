@@ -191,6 +191,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   margin-left: 12px;
 }
 
+.ml-8 {
+  margin-left: 8rem;
+}
+
 .mt-12 {
   margin-top: 12px;
 }
@@ -439,6 +443,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   cursor: pointer;
   top: 0.2rem;
   right: 1rem;
+}
+
+.mp-blue {
+  color: $market-place-blue
 }
 
 @-webkit-keyframes rotating {

@@ -30,17 +30,15 @@ const UrlItemList = props => {
         label: "Seller Name",
         required: true,
         value: "",
-        type: "text",
-        // type: "select",
-        pattern: null,
+        type: props.sellerNameType ?  props.sellerNameType : "text",
         disabled: true,
         dropdownOptions: [],
         subtitle: "",
         error: "",
         validators: {
           validateLength: {
-            minLength: 3,
-            error: "Minimum length is 3 characters"
+            minLength: 2,
+            error: "Minimum length is 2 characters"
           }
         }
       }
@@ -59,6 +57,7 @@ const UrlItemList = props => {
     const itemListClone = [...itemList];
     itemListClone.splice(index, 1);
     updateItemList(itemListClone);
+    props.parentRef.getItemListFromChild(itemListClone);
   };
 
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
@@ -66,9 +65,9 @@ const UrlItemList = props => {
       <div className="col-8">
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
           required={item.url.required}
-          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={props.onChange}
+          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={props.parentRef[props.onChangeUrl]}
           disabled={item.url.disabled} error={item.url.error}
-          loader={props.fieldLoader && props.currentItem === i}/>
+          loader={props.fieldLoader && itemUrlId === i}/>
       </div>
       <div className="col-4">
         <div className="row">
@@ -76,9 +75,10 @@ const UrlItemList = props => {
             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
               label={item.sellerName.label}
               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
-              pattern={item.sellerName.pattern}
-              onChange={props.onChange} disabled={item.sellerName.disabled}
-              dropdownOptions={item.sellerName.dropdownOptions}/>
+              pattern={item.sellerName.pattern} validators={item.sellerName.validators}
+               bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
+              onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}}
+              dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
           <div className="col-4">
             {

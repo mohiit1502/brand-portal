@@ -13,7 +13,7 @@ const Tile = props => {
       <div className="c-Tile__content">
         <div className="c-Tile__content__symbol"><img src={images[props.data.svg]} alt=""/></div>
         {
-          typeof props.data.header === "string" ? <div className="c-Tile__content__header">{props.data.header}</div> :
+          props && props.data && typeof props.data.header === "string" ? <div className="c-Tile__content__header">{props.data.header}</div> :
           <div className={`c-Tile__content__header ${props.data.header.classes ? props.data.header.classes : ""}`}>{props.data.header.text}</div>
         }
         <div className="c-Tile__content__body">{contentRenders}</div>
