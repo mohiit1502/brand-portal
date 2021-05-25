@@ -116,6 +116,7 @@ class Authenticator extends React.Component {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
     } finally {
+      mixpanel.setUserProperty(this.props.userProfile);
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.LOGIN.GET_USER_PROFILE, mixpanelPayload);
     }
   }
@@ -172,8 +173,8 @@ class Authenticator extends React.Component {
     const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     if (this.state.isLoggedIn) {
+      mixpanel.login(this.state.logInId, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
       if (this.state.profileInformationLoaded) {
-        mixpanel.login(this.props.userProfile, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");

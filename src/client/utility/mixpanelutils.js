@@ -59,6 +59,7 @@ export default class MixpanelUtils {
             }
         }
     }
+
     static setUserProfile(userProfile) {
         try {
             if (userProfile) {
@@ -72,7 +73,7 @@ export default class MixpanelUtils {
                     ORG_NAME: userProfile.organization ? userProfile.organization.name : "",
                     USER_ROLE: userProfile.role ? userProfile.role.name : "",
                     USER_TYPE: userProfile.type ? userProfile.type : "",
-                    LAST_UPDATED_BY: userProfile.lastUpdatedBy ? userProfile.lastUpdatedBy : "",
+                    LAST_UPDATED_BY: userProfile.lastUpdatedBy ? userProfile.lastUpdatedBy : ""
                 };
                 mixpanel.people.set(payload);
             }
@@ -80,6 +81,7 @@ export default class MixpanelUtils {
            console.log(e);
        }
     }
+
     static setSuperProperties(userProfile) {
         try {
             if (userProfile) {
@@ -95,6 +97,7 @@ export default class MixpanelUtils {
         console.log(e);
         }
     }
+
     static trackEvent(eventName, payload) {
         if (MixpanelUtils.enableTracking) {
             try {
@@ -106,32 +109,40 @@ export default class MixpanelUtils {
             }
         }
     }
-    static setAlias(userProfile) {
+
+    static setAlias(logInId) {
         try {
-        const userId = userProfile.email;
-            if (userId) {
-                mixpanel.alias(userId);
+            if (logInId) {
+                mixpanel.alias(logInId);
             }
         } catch (e) {
             console.log(e);
         }
 
     }
-    static login(userProfile, eventName) {
+
+    static login(logInId, eventName) {
         if (MixpanelUtils.enableTracking) {
             try {
-            const userId = mixpanel.get_property("$user_id");
-            if (!userId || userId !== userProfile.email) {
-                //mixpanel.reset();
-                MixpanelUtils.setAlias(userProfile);
-                mixpanel.identify(userProfile.email);
-                MixpanelUtils.setUserProfile(userProfile);
-                MixpanelUtils.setSuperProperties(userProfile);
-                MixpanelUtils.trackEvent(eventName);
-            }
+                const userId = mixpanel.get_property("$user_id");
+                if (!userId || userId !== logInId) {
+                    //mixpanel.reset();
+                    MixpanelUtils.setAlias(logInId);
+                    mixpanel.identify(logInId);
+                    MixpanelUtils.trackEvent(eventName);
+                }
             } catch (e) {
                 console.log(e);
             }
+        }
+    }
+
+    static setUserProperty(userProfile) {
+        try {
+            MixpanelUtils.setUserProfile(userProfile);
+            MixpanelUtils.setSuperProperties(userProfile);
+        } catch (e) {
+            console.log(e);
         }
     }
 
