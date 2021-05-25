@@ -828,7 +828,7 @@ const FORMFIELDCONFIG = {
       },
       "fields": {
         "area": {
-          "containerClasses": "mt-3 contact-us-form-row",
+          "containerClasses": "mt-3 contact-us-form-row w-100",
           "colClasses": "contact-us-form-area",
           "disabled": false,
           "dropdownOptions" : [
@@ -873,7 +873,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "title" : {
-          "containerClasses": "mt-3 contact-us-form-row",
+          "containerClasses": "mt-3 contact-us-form-row w-100",
           "colClasses": "contact-us-form-title",
           "disabled": false,
           "error": "",
@@ -891,7 +891,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "details" : {
-          "containerClasses": "mt-3 contact-us-form-row",
+          "containerClasses": "mt-3 contact-us-form-row w-100",
           "colClasses": "contact-us-form-details",
           "error": "",
           "inputId": "details",
@@ -906,7 +906,7 @@ const FORMFIELDCONFIG = {
           "value": "",
         },
         "sendActions":{
-          "containerClasses": "mt-3 contact-us-form-row",
+          "containerClasses": "mt-3 contact-us-form-row w-100",
           "colClasses": "contact-us-button-panel text-right",
           "excludeRowContainer": true,
           "excludeColContainer": true,

@@ -747,8 +747,8 @@ class UserManagerApi {
       };
       const payload = request.payload;
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.CONTACT_US_ENDPOINT");
-      const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
+      const USER_CONTACT_US_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.CONTACT_US_ENDPOINT");
+      const url = `${BASE_URL}${USER_CONTACT_US_PATH}`;
 
       const response = await ServerHttp.post(url, options, payload);
       console.log("[UserManagerApi::contactUs] API request for to send support mail has completed");

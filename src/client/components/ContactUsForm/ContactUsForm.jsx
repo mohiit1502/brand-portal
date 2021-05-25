@@ -81,8 +81,6 @@ class ContactUsForm extends React.Component{
   }
 
   checkEnableSubmit(){
-    console.log("Check enable submit")
-    console.log(this.state);
     const form = {...this.state.form}
     const isSubmitEnabled =  form.inputData.area.value && form.inputData.title.value
             && form.inputData.details.value;
