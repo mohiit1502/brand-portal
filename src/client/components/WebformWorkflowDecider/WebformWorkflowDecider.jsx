@@ -20,15 +20,15 @@ class WebformWorkflowDecider extends React.Component {
     const contentRenderer = new ContentRenderer();
     this.getContent = contentRenderer.getContent.bind(this);
     this.commonClickHandler = this.commonClickHandler.bind(this);
-    this.props.dispatchMetadata(FORMFIELDCONFIG);
     this.dispatchWebformState = this.props.dispatchWebformState;
-    const webformConfig = WEBFORMCONFIG;
-
-    this.getMetaData();
+    this.state = {
+      webformConfig: WEBFORMCONFIG
+    };
   }
 
-  getMetaData() {
+  componentDidMount() {
     try {
+      this.setState({webformConfig: WEBFORMCONFIG});
       Http.get("/api/webformConfig")
         .then(response => {
           if (response.body) {
@@ -41,6 +41,7 @@ class WebformWorkflowDecider extends React.Component {
           }
         });
 
+        this.props.dispatchMetadata(FORMFIELDCONFIG);
         Http.get("/api/formConfig")
         .then(response => {
           if (response.body) {
@@ -56,11 +57,9 @@ class WebformWorkflowDecider extends React.Component {
 
       } catch (err) {
         console.log(err);
+        this.props.dispatchMetadata(FORMFIELDCONFIG);
+        this.setState({webformConfig: WEBFORMCONFIG});
     }
-
-  }
-
-  componentDidMount() {
   }
 
   commonClickHandler(e) {
@@ -70,16 +69,16 @@ class WebformWorkflowDecider extends React.Component {
 
   render() {
       let configuration, childComponent;
-      if (this.props.webformWorkflow === "2") {
-        configuration = WEBFORMCONFIG.ctaPageConfig;
+      if (this.state.webformConfig && this.props.webformWorkflow === "2") {
+        configuration = this.state.webformConfig.ctaPageConfig;
         childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
 
-      } else if (this.props.webformWorkflow === "1") {
-        configuration = WEBFORMCONFIG.webform;
+      } else if (this.state.webformConfig && this.props.webformWorkflow === "1") {
+        configuration = this.state.webformConfig.webform;
         childComponent = (<Webform getContent={this.getContent} configuration= {configuration} dispatchWebformState={this.dispatchWebformState}/>);
 
       } else {
-        configuration = WEBFORMCONFIG.landingPageConfig;
+        configuration = this.state.webformConfig.landingPageConfig;
         childComponent = (<WebformLandingPage  configuration= {configuration} getContent={this.getContent}/>);
       }
 
