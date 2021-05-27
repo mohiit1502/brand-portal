@@ -130,6 +130,9 @@ const MIXPANEL_CONSTANTS = {
         brands: "VIEW_BRAND_LIST",
         claims: "VIEW_CLAIM_LIST",
         users: "VIEW_USER_LIST"
+    },
+    GENERIC_ERROR: {
+        GENERIC_ERROR: "GENERIC_ERROR"
     }
 };
 
