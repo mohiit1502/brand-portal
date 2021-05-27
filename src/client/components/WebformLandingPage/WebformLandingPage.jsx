@@ -21,7 +21,6 @@ const WebformLandingPage = props => {
             }
           </div>
           <div>{contentRenders}</div>
-          <CaptchValidator/>
       </div>
     </div>
   );
