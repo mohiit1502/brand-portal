@@ -1,12 +1,14 @@
 .c-Tile {
 
   color: #2E2E2E;
-
+  padding-top: 2px;
+  padding-bottom: 5px;
   .c-Tile__content {
     //box-shadow: 0 2px 4px;
     padding: 2.875rem 1.875rem;
     height: 100%;
     background: #f5fafb;
+    margin-bottom: 1rem;
 
     .c-Tile__content__symbol {
       margin-bottom: 1.4rem;
@@ -58,6 +60,21 @@
 
         }
       }
+
+      p{
+        text-align: center;
+        padding: 0.1rem 0.3rem;
+      }
+
+      a{
+        padding: 0.1rem 0.3rem;
+        padding-right: 0px;
+        font-size: medium;
+        font-weight: bold;
+        color: #398fc5;
+        text-decoration: none;
+      }
+
     }
 
   }

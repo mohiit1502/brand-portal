@@ -133,7 +133,7 @@ class Authenticator extends React.Component {
   }
 
   isRootPath (pathname) {
-    return pathname === CONSTANTS.ROUTES.ROOT_PATH;
+    return pathname === CONSTANTS.ROUTES.PROTECTED.ROOT_PATH;
   }
 
   isOneOfRedirectPaths (pathname) {
@@ -141,8 +141,8 @@ class Authenticator extends React.Component {
   }
 
   isOnboardingPath (pathname) {
-    for (const i in CONSTANTS.ROUTES.ONBOARD) {
-      if (pathname === CONSTANTS.ROUTES.ONBOARD[i]) {
+    for (const i in CONSTANTS.ROUTES.PROTECTED.ONBOARD) {
+      if (pathname === CONSTANTS.ROUTES.PROTECTED.ONBOARD[i]) {
         return true;
       }
     }
@@ -153,16 +153,16 @@ class Authenticator extends React.Component {
     let path = "";
     switch (role) {
       case CONSTANTS.USER.ROLES.SUPERADMIN:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_SUPERADMIN;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_SUPERADMIN;
         break;
       case CONSTANTS.USER.ROLES.ADMIN:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_ADMIN;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_ADMIN;
         break;
       case CONSTANTS.USER.ROLES.REPORTER:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_REPORTER;
         break;
        default:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_REPORTER;
     }
     return path;
   }
@@ -180,32 +180,41 @@ class Authenticator extends React.Component {
             const redirectURI = window.localStorage.getItem("redirectURI");
             window.localStorage.removeItem("redirectURI");
             // return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
-            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CONSTANTS.ROUTES.DASHBOARD} />;
+            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CONSTANTS.ROUTES.PROTECTED.DASHBOARD} />;
           } else {
-            return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
+            return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
           }
         // } else if (this.props.userProfile.workflow.code === 1) {
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
-          return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
+          return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
-          return <Redirect to={CONSTANTS.ROUTES.DASHBOARD}/>;
+          return <Redirect to={CONSTANTS.ROUTES.PROTECTED.DASHBOARD}/>;
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else {
-        return !this.state.userInfoError ? <div className="fill-parent loader" /> : <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>;
+        if(!this.state.userInfoError){
+          return <div className="fill-parent loader" />
+        }else if(this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND"){
+          Cookies.expire("auth_session_token");
+          Cookies.expire("session_token_login_id")
+          window.location.replace("/api/falcon/logout");
+          return null;
+        }else{
+          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>
+        }
       }
-    } else if (this.isRootPath(this.props.location.pathname)) {
+    }else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
       window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
       return null;
-      // return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
+      // return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ROOT_PATH} />;
     } else {
-      return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
+      return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ROOT_PATH} />;
     }
   }
 }

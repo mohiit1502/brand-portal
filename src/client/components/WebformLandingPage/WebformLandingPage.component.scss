@@ -1,0 +1,18 @@
+
+.c-WebformLandingPage {
+    .btn {
+        width: 150px;
+        &.btn-primary {
+            background: white;
+            border: 1px solid;
+            opacity: 1;
+        }
+    }
+
+    .content-header {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.08;
+        margin-top: 0.5rem;
+    }
+}

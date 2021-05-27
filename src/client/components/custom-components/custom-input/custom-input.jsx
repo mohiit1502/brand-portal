@@ -10,7 +10,7 @@ import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent} from "../../index";
+import {ButtonsPanel, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
 
 class CustomInput extends React.Component {
 
@@ -297,7 +297,7 @@ class CustomInput extends React.Component {
       >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
-          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlueValidation && this.onBlur} maxLength={this.state.maxLength}
+          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlueValidation ? this.onBlur : undefined} maxLength={this.state.maxLength}
           onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
@@ -355,6 +355,8 @@ class CustomInput extends React.Component {
         return <ErrorComponent {...this.props} />
       case "_formFieldsHeader" :
         return <HeaderFormComponent {...this.props} />
+      case "_urlItems" :
+      return <UrlItemList {...this.props} />
     }
     return null;
   }

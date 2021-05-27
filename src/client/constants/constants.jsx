@@ -81,41 +81,46 @@ const CONSTANTS = {
   },
 
   ROUTES: {
-    ROOT_PATH: "/",
-    // DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users/user-list",
-    DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users",
-    DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
-    DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
+    PROTECTED: {
+      ROOT_PATH: "/",
+      // DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users/user-list",
+      DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users",
+      DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
+      DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
 
-    ONBOARD: {
-      COMPANY_REGISTER: "/onboard/company",
-      BRAND_REGISTER: "/onboard/brand"
+      ONBOARD: {
+        COMPANY_REGISTER: "/onboard/company",
+        BRAND_REGISTER: "/onboard/brand"
+      },
+
+      USER_MGMT: {
+        // USER_LIST: "/users/user-list",
+        USER_LIST: "/users",
+        USER_APPROVAL: "/users/user-approval"
+      },
+
+      BRANDS: {
+        BRANDS_LIST: "/brands"
+      },
+
+      CLAIMS: {
+        CLAIMS_LIST: "/claims",
+        CLAIM_DETAILS: "/claims/:claim_id"
+      },
+
+      PROFILE: {
+        USER: "/profile"
+      },
+
+      HELP: {
+        HELP: "/help"
+      },
+
+      DASHBOARD: "/dashboard"
     },
-
-    USER_MGMT: {
-      // USER_LIST: "/users/user-list",
-      USER_LIST: "/users",
-      USER_APPROVAL: "/users/user-approval"
-    },
-
-    BRANDS: {
-      BRANDS_LIST: "/brands"
-    },
-
-    CLAIMS: {
-      CLAIMS_LIST: "/claims",
-      CLAIM_DETAILS: "/claims/:claim_id"
-    },
-
-    PROFILE: {
-      USER: "/profile"
-    },
-
-    HELP: {
-      HELP: "/help"
-    },
-
-    DASHBOARD: "/dashboard"
+    OPEN: {
+      SERVICES: "/ipServices"
+    }
   },
 
   NAVIGATION_PANEL: [

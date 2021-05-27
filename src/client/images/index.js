@@ -2,6 +2,7 @@ import Access from "./access.svg";
 import Alert from "./alert.svg";
 import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
+import ArrowRight from "./arrow-right.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
@@ -54,6 +55,7 @@ export {
     Alert,
     Arrow,
     ArrowDown,
+    ArrowRight,
     BlackBGCheck,
     BrandList,
     BrandsIcon,
