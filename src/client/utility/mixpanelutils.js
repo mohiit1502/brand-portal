@@ -150,10 +150,18 @@ export default class MixpanelUtils {
         if (MixpanelUtils.enableTracking) {
             try {
             MixpanelUtils.trackEvent(eventName, payLoad);
-            mixpanel.reset();
+            MixpanelUtils.clearCookies();
             } catch (e) {
                 console.log(e);
             }
+        }
+    }
+
+    static clearCookies() {
+        try {
+            mixpanel.reset();
+        } catch (e) {
+            console.log(e);
         }
     }
 }

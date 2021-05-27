@@ -199,7 +199,8 @@ class Authenticator extends React.Component {
           return <div className="fill-parent loader" />
         }else if(this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND"){
           Cookies.expire("auth_session_token");
-          Cookies.expire("session_token_login_id")
+          Cookies.expire("session_token_login_id");
+          mixpanel.clearCookies();
           window.location.replace("/api/falcon/logout");
           return null;
         }else{
