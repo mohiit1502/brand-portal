@@ -258,6 +258,7 @@ class Webform extends React.Component {
       items: getItems(inputData.urlItems.itemList)
     };
     this.loader("loader", true);
+    console.log(payload);
     //Http.post("", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
     Http.get("/api/formConfig", null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
     .then(res => {
@@ -266,7 +267,7 @@ class Webform extends React.Component {
       })
       .catch(err => {
         this.loader("loader", false);
-        this.props.dispatchWebformState("1");
+        this.props.dispatchWebformState("0");
         console.log(err);
       });
   }
