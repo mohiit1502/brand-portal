@@ -203,7 +203,7 @@ class Authenticator extends React.Component {
           window.location.replace("/api/falcon/logout");
           return null;
         }else{
-          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>
+          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem" {...this.state}/>
         }
       }
     }else if (this.isRootPath(this.props.location.pathname)) {
