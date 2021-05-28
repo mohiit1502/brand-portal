@@ -279,7 +279,8 @@ class ClaimManagerApi {
       const payload = request.payload;
       delete headers.Consumer_id;
       delete headers.ROPRO_USER_ID;
-      const headers = {
+      headers.WBP.MARKETPLACE = "US";
+      const options = {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
