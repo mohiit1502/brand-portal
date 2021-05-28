@@ -74,7 +74,9 @@ export default class FilterUtil {
             }
         } else {
             this.toggleFilterVisibility(showFilter);
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILTER_EVENTS.APPLY_FILTER, mixpanelPayload);
+            if (mixpanelPayload && mixpanelPayload.APPLIED_FILTER.length > 0) {
+                mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILTER_EVENTS.APPLY_FILTER, mixpanelPayload);
+            }
         }
         let i = 1;
         filteredList.forEach(record => record.sequence = i++);

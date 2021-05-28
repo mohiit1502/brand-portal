@@ -1,7 +1,10 @@
 import mixpanel from "../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
+import Helper from "./helper";
+import CONSTANTS from "../constants/constants";
 
 export default class SearchUtil {
+    static  mixpanelSearchEventhandler = Helper.debounce(mixpanel.trackEvent, CONSTANTS.APIDEBOUNCETIMEOUT);
     static getFilteredList(dataList, searchText, identifier) {
         // eslint-disable-next-line complexity
         const filteredList = dataList.filter(record => {
@@ -47,7 +50,7 @@ export default class SearchUtil {
                 filteredList = this.multiSort(filteredList);
             }
         } else {
-            mixpanel.trackEvent(MIXPANEL_CONSTANTS.SEARCH_EVENT.APPLY_SEARCH, mixpanelPayload);
+            SearchUtil.mixpanelSearchEventhandler(MIXPANEL_CONSTANTS.SEARCH_EVENT.APPLY_SEARCH, mixpanelPayload);
         }
         let i = 1;
         filteredList.forEach(record => record.sequence = i++);
