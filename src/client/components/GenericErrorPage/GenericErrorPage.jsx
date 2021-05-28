@@ -1,21 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable complexity */
+import React from "react";
+import PropTypes from "prop-types";
 import CONSTANTS from "../../constants/constants";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 import * as images from "../../images";
-import './GenericErrorPage.component.scss';
+import "./GenericErrorPage.component.scss";
 
 const GenericErrorPage = props => {
   const mixpanelPayload = {
-    $email: props.logInId ? props.logInId : "NOT_FOUND",
     IS_GENERIC: props.generic,
-    IS_LOGGED_IN: props.isLoggedIn,
-    IS_ONBOARDED: props.isOnboarded,
-    IS_PROFILE_LOADED: props.profileInformationLoaded,
-    USER_INFO_ERROR: props.userInfoError,
     MESSAGE: props.generic ? props.message || "Try to refresh this page or try again later." : "Seller Error"
   };
+
+  if (props.logInId) mixpanelPayload.$email = props.logInId;
+  if (props.isLoggedIn) mixpanelPayload.IS_LOGGED_IN = props.isLoggedIn;
+  if (props.isOnboarded) mixpanelPayload.IS_ONBOARDED = props.isOnboarded;
+  if (props.profileInformationLoaded) mixpanelPayload.IS_PROFILE_LOADED = props.profileInformationLoaded;
+  if (props.userInfoError) mixpanelPayload.USER_INFO_ERROR =  props.userInfoError;
   mixpanel.trackEvent(MIXPANEL_CONSTANTS.GENERIC_ERROR.GENERIC_ERROR, mixpanelPayload);
 
   return (<div className={`${props.containerClass ? props.containerClass + " " : ""} mx-auto c-GenericErrorPage page-error text-center`} style={{maxWidth: "600px"}}>
