@@ -41,7 +41,7 @@ const StatusModalTemplate = props => {
               </div>
             </div>
             { props.meta.ADDITIONAL_MESSAGE &&
-              <div className="row mt-2">
+              <div className="row mt-4">
               <div className="col">
                 <span className="status-description">
                 {
