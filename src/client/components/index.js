@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import ContactUsForm from './ContactUsForm';
 import WebformCta from './WebformCta';
 import UrlItemList from './UrlItemList';
 import Webform from './Webform';
@@ -49,6 +50,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	ContactUsForm,
 	WebformCta,
   UrlItemList,
 	Webform,
