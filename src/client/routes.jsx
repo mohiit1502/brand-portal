@@ -8,6 +8,7 @@ import {Redirect} from "react-router";
 import CONSTANTS from "./constants/constants";
 import ClientUtils from "./utility/ClientUtils";
 import Notification from "./components/custom-components/notification/notification";
+import {WebformWorkflowDecider} from "./components";
 
 const Root = ({ route, children }) => {
     return (
@@ -27,14 +28,19 @@ Root.propTypes = {
 
 const routes = [
    {
-    path: CONSTANTS.ROUTES.ROOT_PATH,
+    path: CONSTANTS.ROUTES.PROTECTED.ROOT_PATH,
     component: withRouter(Root),
     init: "./init-top",
     routes: [
       {
-        path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES),
+        path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES.PROTECTED),
         exact: true,
         component: Authenticator
+      },
+      {
+        path: CONSTANTS.ROUTES.OPEN.SERVICES,
+        exact: true,
+        component: WebformWorkflowDecider
       },
       {
         path: "/user-management",
