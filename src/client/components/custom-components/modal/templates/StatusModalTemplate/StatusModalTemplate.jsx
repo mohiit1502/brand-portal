@@ -3,12 +3,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import "./StatusModalTemplate.component.scss";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import "./StatusModalTemplate.component.scss";
+import ContentRenderer from "../../../../../utility/ContentRenderer";
 
 const StatusModalTemplate = props => {
-
+  const contentRenderer = new ContentRenderer();
   // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
   const baseUrl = window.location.origin;
   const logoutUrl = props.logoutUrl && props.logoutUrl.replace("__domain__", baseUrl);
@@ -39,6 +40,19 @@ const StatusModalTemplate = props => {
                 </span>
               </div>
             </div>
+            { props.meta.ADDITIONAL_MESSAGE &&
+              <div className="row mt-2">
+              <div className="col">
+                <span className="status-description">
+                {
+                  Object.keys(props.meta.ADDITIONAL_MESSAGE).map(node => {
+                    return contentRenderer.getContent(props.meta.ADDITIONAL_MESSAGE, node);
+                  })
+                }
+                </span>
+              </div>
+            </div>
+            }
             <div className="row mt-4">
               <div className="col">
                 <a className="btn btn-sm btn-primary px-5" href={logoutUrl}onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
