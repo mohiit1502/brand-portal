@@ -85,8 +85,9 @@ class Authenticator extends React.Component {
       API: "/api/userInfo",
       $email: this.state.logInId
     };
+    let profile;
     try {
-      let profile = this.props.userProfile;
+      profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
         // profile.workflow.code=1;
@@ -95,7 +96,6 @@ class Authenticator extends React.Component {
       }
       this.setOnboardStatus(profile.organization);
       this.setState({profileInformationLoaded: true});
-      mixpanel.setUserProperty(profile);
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.EMAIL_VERIFIED = profile && profile.emailVerified ? profile.emailVerified : "";
       mixpanelPayload.ORGANISATION_NAME = profile && profile.organization ? profile.organization.name : "";
@@ -118,6 +118,7 @@ class Authenticator extends React.Component {
       mixpanelPayload.ERROR = e.message ? e.message : e;
       mixpanelPayload.USER_INFO_ERROR = e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC";
     } finally {
+      mixpanel.setUserProperty(profile);
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.LOGIN.GET_USER_PROFILE, mixpanelPayload);
     }
   }
