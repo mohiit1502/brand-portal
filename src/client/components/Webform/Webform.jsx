@@ -16,7 +16,7 @@ import Http from "../../utility/Http";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "handleCaptcha"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -162,16 +162,26 @@ class Webform extends React.Component {
         return {
           ...state
         };
-      }, () => this.checkToEnableSubmit());
+      }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
     }
   }
-
+  handleCaptcha(isHuman, error) {
+    this.setState(state => {
+      state = {...state};
+      state.form.inputData.captchValidator.isHuman = isHuman;
+      state.form.inputData.captchValidator.error = error;
+      return {
+        ...state
+      };
+    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+  }
   // eslint-disable-next-line complexity
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
     const userUndetaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected && form.inputData.user_undertaking_5.selected;
     const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
-    const bool = isValidItemList && userUndetaking  && form.inputData.claimType.value &&
+    const isHuman = (!form.inputData.captchValidator) ||  (form.inputData.captchValidator.isHuman && !form.inputData.captchValidator.error);
+    const bool = isValidItemList && userUndetaking  && isHuman && form.inputData.claimType.value &&
       form.inputData.firstName.value && form.inputData.lastName.value &&
       form.inputData.ownerName.value && form.inputData.companyName.value &&
       form.inputData.brandName.value &&
@@ -258,15 +268,15 @@ class Webform extends React.Component {
       items: getItems(inputData.urlItems.itemList)
     };
     this.loader("loader", true);
-    //Http.post("", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
-    Http.get("/api/formConfig", null, null, this.props.showNotification, "Claim submitted succesfully", "Something Went wrong please try again")
+    console.log(payload);
+    Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
     .then(res => {
         this.loader("loader", false);
         this.props.dispatchWebformState("2");
       })
       .catch(err => {
         this.loader("loader", false);
-        this.props.dispatchWebformState("1");
+        this.props.dispatchWebformState("0");
         console.log(err);
       });
   }

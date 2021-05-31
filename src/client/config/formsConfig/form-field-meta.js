@@ -1375,6 +1375,20 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"
         },
+        "captchValidator": {
+          "captchaFieldName": "Please enter captcha ",
+          "isHuman": false,
+          "containerClasses": "mt-4",
+          "error": "",
+          "errorMessage": "Please make sure captcha is valid",
+          "inputId": "captchValidator",
+          "key": "captchValidator",
+          "onSubmit": "handleCaptcha",
+          //"layout": "20.1.0",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "submitButtonLabel": "Submit Captch",
+          "type": "_captchValidator",
+        },
         "webFormActions": {
           "containerClasses": "pb-5 mb-5",
           "colClasses": "web-form-button-panel text-right",

@@ -1,0 +1,28 @@
+@import "../../styles/override/variables";
+.c-CaptchaValidator {
+    width: fit-content;
+    height: fit-content;
+    border: 1px;
+    border-color: rgb(168, 164, 164);
+    border-style: solid;
+    .imageContainer {
+      border: 1px;
+      border-color: rgb(121, 116, 116);
+      border-style: solid;
+
+      .refresh {
+          height: 20px;
+          width: 20px;
+          text-align: right;
+      }
+  }
+
+  .btn {
+    &.btn-primary {
+        background: $market-place-blue !important;
+        border: 1px solid;
+        opacity: 1;
+    }
+    }
+
+}
