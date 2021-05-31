@@ -33,7 +33,7 @@
     "build": "clap build",
     "generate": "plop",
     "prod-start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 clap -n -x electrode/build prod",
-    "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
+    "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 ONEOPS_ENVIRONMENT=stg clap dev; fi",
     "test": "clap check",
     "coverage": "clap check",
     "prod": "echo 'Starting standalone server in PROD mode'; NODE_ENV=production node ./lib/server/",
@@ -85,7 +85,8 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "reselect-immutable-helpers": "^1.2.2",
-    "resize-observer-polyfill": "^1.5.1"
+    "resize-observer-polyfill": "^1.5.1",
+    "svg-captcha": "^1.4.0"
   },
   "devDependencies": {
     "@loadable/babel-plugin": "^5.10.0",
