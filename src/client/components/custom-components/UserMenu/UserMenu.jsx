@@ -20,7 +20,7 @@ class UserMenu extends React.Component {
     const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
     const workflowCode = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     const mixpanelPayload = {
-      WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0] || "CODE_NOT_FOUND"
+      WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0] || "CODE_NOT_FOUND"
     };
     return (
             <li className="nav-item dropdown nav-item-profile ml-4">

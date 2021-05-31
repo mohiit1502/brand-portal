@@ -79,13 +79,15 @@ class Authenticator extends React.Component {
     return this.setState({isOnboarded: !!status});
   }
 
+  // eslint-disable-next-line complexity
   async getProfileInfo () {
-    const mixpanelPayload = {
+    let mixpanelPayload = {
       API: "/api/userInfo",
       $email: this.state.logInId
     };
+    let profile;
     try {
-      let profile = this.props.userProfile;
+      profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
         //profile.workflow.code=1;
@@ -100,7 +102,11 @@ class Authenticator extends React.Component {
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
+      mixpanelPayload.USER_INFO_ERROR = e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC";
     } finally {
+      mixpanel.setUserProperty(profile);
+      const getUserProfilePayload = mixpanel.populateProfileInfo(profile);
+      mixpanelPayload = {...mixpanelPayload, ...getUserProfilePayload};
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.LOGIN.GET_USER_PROFILE, mixpanelPayload);
     }
   }
@@ -157,8 +163,8 @@ class Authenticator extends React.Component {
     const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     if (this.state.isLoggedIn) {
+      mixpanel.login(this.state.logInId, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
       if (this.state.profileInformationLoaded) {
-        mixpanel.login(this.props.userProfile, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");
@@ -183,11 +189,12 @@ class Authenticator extends React.Component {
           return <div className="fill-parent loader" />
         }else if(this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND"){
           Cookies.expire("auth_session_token");
-          Cookies.expire("session_token_login_id")
+          Cookies.expire("session_token_login_id");
+          mixpanel.clearCookies();
           window.location.replace("/api/falcon/logout");
           return null;
         }else{
-          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem"/>
+          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem" {...this.state}/>
         }
       }
     }else if (this.isRootPath(this.props.location.pathname)) {

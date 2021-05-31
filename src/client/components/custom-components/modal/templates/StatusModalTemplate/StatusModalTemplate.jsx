@@ -3,17 +3,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import "./StatusModalTemplate.component.scss";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import "./StatusModalTemplate.component.scss";
+import ContentRenderer from "../../../../../utility/ContentRenderer";
 
+// eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
-
+  const contentRenderer = new ContentRenderer();
   // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
   const baseUrl = window.location.origin;
   const logoutUrl = props.logoutUrl && props.logoutUrl.replace("__domain__", baseUrl);
   const mixpanelPayload = {
-    WORK_FLOW: MIXPANEL_CONSTANTS.LOGOUT_WORKFLOW_MAPPING[props.meta && props.meta.CODE ? props.meta.CODE : 0] || "CODE_NOT_FOUND"
+    WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[props.meta && props.meta.CODE ? props.meta.CODE : 0] || "CODE_NOT_FOUND"
   };
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
@@ -32,11 +34,30 @@ const StatusModalTemplate = props => {
                 </span>
               </div>
             </div>
-            <div className="row mt-2">
+            { props.meta.SUBTITLE &&
+              <div className="row mt-1">
               <div className="col">
-                <span className="status-description">
-                  {props.meta.MESSAGE}
-                </span>
+                <div className={`subtitle ${props.meta.SUBTITLE && props.meta.SUBTITLE.classes ? props.meta.SUBTITLE.classes : ""}`}>
+                {
+                  typeof (props.meta.SUBTITLE) === "string" ? props.meta.SUBTITLE :
+                    Object.keys(props.meta.SUBTITLE.content).map(node => {
+                    return contentRenderer.getContent(props.meta.SUBTITLE.content, node);
+                  })
+                }
+                </div>
+              </div>
+            </div>
+            }
+            <div className="row mt-1">
+              <div className="col">
+                <div className={`status-description ${props.meta.MESSAGE && props.meta.MESSAGE.classes ? props.meta.MESSAGE.classes : ""}`}>
+                {
+                  typeof (props.meta.MESSAGE) === "string" ? props.meta.MESSAGE :
+                    Object.keys(props.meta.MESSAGE.content).map(node => {
+                    return contentRenderer.getContent(props.meta.MESSAGE.content, node);
+                  })
+                }
+                </div>
               </div>
             </div>
             <div className="row mt-4">
