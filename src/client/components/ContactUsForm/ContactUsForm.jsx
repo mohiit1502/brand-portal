@@ -101,15 +101,18 @@ class ContactUsForm extends React.Component{
       const details = form.inputData.details.value;
       const payload = {area,title,details};
       return Http.post(url,payload).then(res => {
-          this.resetForm();
+          if(res.body){
+            this.resetForm();
+            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS,form.successNotificationMessage);
+          }else{
+            this.props.showNotification(NOTIFICATION_TYPE.ERROR,form.failedNotificationMessage);
+          }
           this.loader("form",false);
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS,"Request successfully submitted. Our agents will process your request");
         }
       ).catch(err => {
         this.loader("form",false);
-        this.props.showNotification(NOTIFICATION_TYPE.ERROR,"Sorry request cannot be processed at the moment");
+        this.props.showNotification(NOTIFICATION_TYPE.ERROR,form.failedNotificationMessage);
         console.log(err);
-
       })
     }
   }
