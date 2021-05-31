@@ -99,6 +99,7 @@ class CompanyManagerApi {
       mixpanelPayload.BRAND_NAME = payload && payload.brand &&  payload.brand.name;
       mixpanelPayload.COMPANY_NAME = payload && payload.org && payload.org.name;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
       console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has completed");
@@ -137,6 +138,7 @@ class CompanyManagerApi {
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.TRADEMARK_NUMBER = request.params && request.params.trademarkNumber;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       console.log("[CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has completed");
@@ -178,6 +180,7 @@ class CompanyManagerApi {
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.FILE_NAME = filename;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("[CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has completed");
@@ -218,6 +221,7 @@ class CompanyManagerApi {
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.FILE_NAME = filename;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
@@ -259,6 +263,7 @@ class CompanyManagerApi {
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.COMPANY_NAME = name;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options, {name});
       console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has completed");

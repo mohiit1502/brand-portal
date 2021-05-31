@@ -89,6 +89,7 @@ class ResetPasswordTemplate extends Component {
       this.loader("form", true);
       const mixpanelPayload = {
         API: url,
+        WORK_FLOW: "EDIT_USER_PROFILE"
       };
       return Http.post(url, payload, null, null, this.props.showNotification, this.state.form.passwordChangedMessage, this.state.form.failureMessage)
         .then(res => {
@@ -149,7 +150,7 @@ class ResetPasswordTemplate extends Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCEL_CHANGE_PASSWORD);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.CANCEL_CHANGE_PASSWORD, {WORK_FLOW: "EDIT_USER_PROFILE"});
   }
 
   render() {

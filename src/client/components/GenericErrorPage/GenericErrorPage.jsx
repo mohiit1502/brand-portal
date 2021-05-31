@@ -1,11 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable complexity */
+import React from "react";
+import PropTypes from "prop-types";
 import CONSTANTS from "../../constants/constants";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 import * as images from "../../images";
-import './GenericErrorPage.component.scss';
+import "./GenericErrorPage.component.scss";
 
 const GenericErrorPage = props => {
-  return <div className={`${props.containerClass ? props.containerClass + " " : ""} mx-auto c-GenericErrorPage page-error text-center`} style={{maxWidth: "600px"}}>
+  const mixpanelPayload = {
+    IS_GENERIC: props.generic,
+    MESSAGE: props.generic ? props.message || "Try to refresh this page or try again later." : "Seller Error"
+  };
+
+  if (props.logInId) mixpanelPayload.$email = props.logInId;
+  if (props.isLoggedIn) mixpanelPayload.IS_LOGGED_IN = props.isLoggedIn;
+  if (props.isOnboarded) mixpanelPayload.IS_ONBOARDED = props.isOnboarded;
+  if (props.profileInformationLoaded) mixpanelPayload.IS_PROFILE_LOADED = props.profileInformationLoaded;
+  if (props.userInfoError) mixpanelPayload.USER_INFO_ERROR =  props.userInfoError;
+  mixpanel.trackEvent(MIXPANEL_CONSTANTS.GENERIC_ERROR.GENERIC_ERROR, mixpanelPayload);
+
+  return (<div className={`${props.containerClass ? props.containerClass + " " : ""} mx-auto c-GenericErrorPage page-error text-center`} style={{maxWidth: "600px"}}>
     <img className="c-GenericErrorPage__image" src={images[props.image || "PageError"]} alt="Page Error" />
     {
       !props.generic ?
@@ -29,15 +44,20 @@ const GenericErrorPage = props => {
           <p className="c-GenericErrorPage__message">{props.message || <span>Try to <a href={window.location.pathname}>refresh</a> this page or try again later.</span>}</p>
         </React.Fragment>
     }
-    </div>;
+    </div>);
 };
 
 GenericErrorPage.propTypes = {
   containerClass: PropTypes.string,
   generic: PropTypes.bool,
-  image: PropTypes.string,
   header: PropTypes.string,
-  message: PropTypes.string
+  image: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
+  isOnboarded: PropTypes.bool,
+  logInId: PropTypes.string,
+  message: PropTypes.string,
+  profileInformationLoaded: PropTypes.bool,
+  userInfoError: PropTypes.string
 };
 
 export default GenericErrorPage;

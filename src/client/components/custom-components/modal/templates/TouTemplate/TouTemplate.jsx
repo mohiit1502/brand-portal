@@ -111,7 +111,7 @@ const TouTemplate = props => {
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
               {page === pages.TOU_ACCEPTANCE ?
                 <button type="button" className="btn btn-primary px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.ACTIVE)}>Agree</button>
-                : <button type="button" className="btn btn-danger px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED)}>Decline</button>}
+                : <button type="button" className="btn btn-primary btn-decline  px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED)}>Decline</button>}
             </div>
           </div>
         </div>

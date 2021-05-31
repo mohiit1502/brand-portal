@@ -1,6 +1,6 @@
 {
   "name": "ropro-brandportal",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
@@ -85,7 +85,8 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "reselect-immutable-helpers": "^1.2.2",
-    "resize-observer-polyfill": "^1.5.1"
+    "resize-observer-polyfill": "^1.5.1",
+    "svg-captcha": "^1.4.0"
   },
   "devDependencies": {
     "@loadable/babel-plugin": "^5.10.0",

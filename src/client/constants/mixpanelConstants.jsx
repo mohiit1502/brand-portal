@@ -22,7 +22,7 @@ const MIXPANEL_CONSTANTS = {
     },
     CLAIM_LIST_WORKFLOW: {
         VIEW_CLAIMS: "VIEW_CLAIMS",
-        VIEW_CLAIM_DETAILS: "VIEW_CLAIM_DETAILS"
+        VIEW_CLAIM_DETAILS: "VIEW_CLAIM_DETAILS",
     },
     BRAND_LIST_WORKFLOW: {
         VIEW_BRANDS: "VIEW_BRANDS",
@@ -85,6 +85,12 @@ const MIXPANEL_CONSTANTS = {
     TOU_TEMPLATE: {
         TOU_VERIFICATION: "TOU_VERIFICATION"
     },
+    SEARCH_EVENT: {
+        APPLY_SEARCH: "APPLY_SEARCH"
+    },
+    FILTER_EVENTS: {
+        APPLY_FILTER: "APPLY_FILTER"
+    },
     ADD_NEW_TEMPLATE_MAPPING: {
         NewClaimTemplate: "ADD_NEW_CLAIM",
         NewBrandTemplate: "ADD_BRAND",
@@ -100,7 +106,7 @@ const MIXPANEL_CONSTANTS = {
         loginfaq: "FREQUENTLY_ASKED_QUESTIONS",
         faq: "FREQUENTLY_ASKED_QUESTIONS",
         user: "USER_MANAGEMENT",
-        brand: "USER_MANAGEMENT",
+        brand: "BRAND_MANAGEMENT",
         claim: "CLAIM_SUBMISSION",
         contact: "CONTACT_US"
     },
@@ -109,7 +115,7 @@ const MIXPANEL_CONSTANTS = {
         topReportedBrands: "CLAIM_SUBMITTED_BY_BRAND",
         topReporters: "CLAIM_SUBMITTED_BY_USER"
     },
-    LOGOUT_WORKFLOW_MAPPING: {
+    MIXPANEL_WORKFLOW_MAPPING: {
         0: "NOT_IN_A_WORKFLOW",
         1: "PORTAL_REGISTRATION",
         2: "PORTAL_VERIFICATION",
@@ -119,6 +125,17 @@ const MIXPANEL_CONSTANTS = {
         32: "REQUEST_ACCESS",
         64: "USER_VERIFICATION",
         128: "TOU_VERIFICATION"
+    },
+    TABLE_LIST_TO_WORKFLOW_MAPPING: {
+        brands: "VIEW_BRAND_LIST",
+        claims: "VIEW_CLAIM_LIST",
+        users: "VIEW_USER_LIST"
+    },
+    GENERIC_ERROR: {
+        GENERIC_ERROR: "GENERIC_ERROR"
+    },
+    CONTACT_US: {
+        CONTACT_US: "CONTACT_US"
     }
 };
 
