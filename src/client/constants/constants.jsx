@@ -54,7 +54,7 @@ const CONSTANTS = {
       },
       CODE: 8,
       IMAGE: "Alert",
-      MESSAGE: "We have not been to verify the information provided for your application.",
+      MESSAGE: "We have not been able to verify the information provided for your application.",
       TITLE: "Application On Hold"
     },
     USER_ACCESS_REVOKED: {

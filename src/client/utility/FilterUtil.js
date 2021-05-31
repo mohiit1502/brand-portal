@@ -29,7 +29,7 @@ export default class FilterUtil {
         }
         return filteredList;
     }
-    static getAplliedFilterIDs (appliedFilters) {
+    static getAppliedFilterIDs (appliedFilters) {
         const filterSelectedByName = [];
         // eslint-disable-next-line no-unused-expressions
         appliedFilters && appliedFilters.map(filter => {
@@ -65,7 +65,7 @@ export default class FilterUtil {
             this.setState({appliedFilter: appliedFilters});
         }
         const mixpanelPayload = {
-            APPLIED_FILTER: FilterUtil.getAplliedFilterIDs(appliedFilters),
+            APPLIED_FILTER: FilterUtil.getAppliedFilterIDs(appliedFilters),
             WORK_FLOW: MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] ?  MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] : "WORK_FLOW_NOT_FOUND"
         };
         if (isSearch) {
