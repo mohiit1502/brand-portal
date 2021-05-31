@@ -8,6 +8,7 @@ import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 import "./StatusModalTemplate.component.scss";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
 
+// eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
   const contentRenderer = new ContentRenderer();
   // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];
@@ -33,26 +34,32 @@ const StatusModalTemplate = props => {
                 </span>
               </div>
             </div>
-            <div className="row mt-1">
+            { props.meta.SUBTITLE &&
+              <div className="row mt-1">
               <div className="col">
-                <span className="status-description">
-                  {props.meta.MESSAGE}
-                </span>
-              </div>
-            </div>
-            { props.meta.ADDITIONAL_MESSAGE &&
-              <div className="row mt-4">
-              <div className="col">
-                <span className="status-description">
+                <div className={`subtitle ${props.meta.SUBTITLE && props.meta.SUBTITLE.classes ? props.meta.SUBTITLE.classes : ""}`}>
                 {
-                  Object.keys(props.meta.ADDITIONAL_MESSAGE).map(node => {
-                    return contentRenderer.getContent(props.meta.ADDITIONAL_MESSAGE, node);
+                  typeof (props.meta.SUBTITLE) === "string" ? props.meta.SUBTITLE :
+                    Object.keys(props.meta.SUBTITLE.content).map(node => {
+                    return contentRenderer.getContent(props.meta.SUBTITLE.content, node);
                   })
                 }
-                </span>
+                </div>
               </div>
             </div>
             }
+            <div className="row mt-1">
+              <div className="col">
+                <div className={`status-description ${props.meta.MESSAGE && props.meta.MESSAGE.classes ? props.meta.MESSAGE.classes : ""}`}>
+                {
+                  typeof (props.meta.MESSAGE) === "string" ? props.meta.MESSAGE :
+                    Object.keys(props.meta.MESSAGE.content).map(node => {
+                    return contentRenderer.getContent(props.meta.MESSAGE.content, node);
+                  })
+                }
+                </div>
+              </div>
+            </div>
             <div className="row mt-4">
               <div className="col">
                 <a className="btn btn-sm btn-primary px-5" href={logoutUrl}onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>

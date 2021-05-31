@@ -42,19 +42,22 @@ const CONSTANTS = {
       CODE: 4
     },
     PORTAL_ACCESS_REVOKED: {
-      ADDITIONAL_MESSAGE: {
-        "partial1": {
-        "chunk1": "Please contact us at ",
-        "anchor1": {
-            "text": "brandportal@walmart.com",
-            "href": "mailto:brandportal@walmart.com"
-          },
-          "chunk2": " if you would still like to create an account",
+      MESSAGE: {
+        "classes": "mt-4 mx-4 access-revoke",
+        "content": {
+          "partial1": {
+          "chunk1": "Please contact us at ",
+          "anchor1": {
+              "text": "brandportal@walmart.com",
+              "href": "mailto:brandportal@walmart.com"
+            },
+            "chunk2": " if you would still like to create an account",
+          }
         }
       },
       CODE: 8,
       IMAGE: "Alert",
-      MESSAGE: "We have not been able to verify the information provided for your application.",
+      SUBTITLE: "We have not been able to verify the information provided for your application.",
       TITLE: "Application On Hold"
     },
     USER_ACCESS_REVOKED: {
