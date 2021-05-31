@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import "./WebformLandingPage.component.scss";
-import { CaptchValidator } from "..";
 
 const WebformLandingPage = props => {
   const [contentConfig, setContentConfig] = useState({});

@@ -10,7 +10,7 @@ import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CaptchValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
+import {ButtonsPanel, CaptchaValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
 
 class CustomInput extends React.Component {
 
@@ -358,7 +358,7 @@ class CustomInput extends React.Component {
       case "_urlItems" :
       return <UrlItemList {...this.props} />
       case "_captchValidator" :
-        return <CaptchValidator {...this.props} />
+        return <CaptchaValidator {...this.props} />
     }
     return null;
   }
