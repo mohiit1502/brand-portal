@@ -768,9 +768,13 @@ class UserManagerApi {
     }
   }
 
-  async contactUs(request,h){
+  async contactUs(request, h) {
     console.log("[UserManagerApi::Contact Us] API Request to send an email for support");
-    console.log("[UserManagerApi::loginSuccessRedirect] User ID: ", request.state && request.state.session_token_login_id);
+    console.log("[UserManagerApi::contactUs] User ID: ", request.state && request.state.session_token_login_id);
+    const mixpanelPayload = {
+      METHOD: "POST",
+      API: "/api/users/contactUs"
+    };
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {
@@ -781,12 +785,23 @@ class UserManagerApi {
       const USER_CONTACT_US_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.CONTACT_US_ENDPOINT");
       const url = `${BASE_URL}${USER_CONTACT_US_PATH}`;
 
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
       const response = await ServerHttp.post(url, options, payload);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[UserManagerApi::contactUs] API request for to send support mail has completed");
       return h.response(response.body).code(response.status);
-    }catch(err){
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       console.log("[UserManagerApi::contactUs] API request for to send support mail failed");
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.CONTACT_US, mixpanelPayload);
     }
   }
 

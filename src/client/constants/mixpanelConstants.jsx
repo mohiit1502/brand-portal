@@ -133,6 +133,9 @@ const MIXPANEL_CONSTANTS = {
     },
     GENERIC_ERROR: {
         GENERIC_ERROR: "GENERIC_ERROR"
+    },
+    CONTACT_US: {
+        CONTACT_US: "CONTACT_US"
     }
 };
 
