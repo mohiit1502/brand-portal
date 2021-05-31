@@ -3,6 +3,7 @@ import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
+const svgCaptcha = require("svg-captcha");
 
 class ContentManagerApi {
   constructor() {
@@ -36,6 +37,11 @@ class ContentManagerApi {
         method: "GET",
         path: "/api/webformConfig",
         handler: this.getWebformConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/generateCaptcha",
+        handler: this.generateCaptcha
       }
     ]);
   }
@@ -140,6 +146,19 @@ class ContentManagerApi {
     } catch (err) {
       console.log("[ContentManagerApi::getMixpanelConfiguration] Error occured in API request for mixpanel field configuration:", err);
       return h.response(err).code(err.status);
+    }
+  }
+  async generateCaptcha(request, h) {
+    try {
+    const captcha = svgCaptcha.create({
+      noise: 3,
+      height: 60,
+      //color: true,
+      // background: "#FF56FF"
+    });
+    return h.response({data: captcha.data, text: captcha.text}).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      return h.response(err).code(CONSTANTS.STATUS_CODE_NOT_FOUND);
     }
   }
 }

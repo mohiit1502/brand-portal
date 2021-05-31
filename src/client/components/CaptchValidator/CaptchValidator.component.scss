@@ -1,7 +1,7 @@
 @import "../../styles/override/variables";
 .c-CaptchValidator {
     width: fit-content;
-    height: auto;
+    height: fit-content;
     border: 1px;
     border-color: rgb(168, 164, 164);
     border-style: solid;
@@ -11,6 +11,8 @@
       border-style: solid;
 
       .refresh {
+          height: 20px;
+          width: 20px;
           text-align: right;
       }
   }

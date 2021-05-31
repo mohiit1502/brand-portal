@@ -1375,6 +1375,17 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"
         },
+        "captchValidator": {
+          "isHuman": false,
+          "containerClasses": "mt-4",
+          "error": "",
+          "inputId": "captchValidator",
+          "key": "captchValidator",
+          "onSubmit": "handleCaptch",
+          //"layout": "20.1.0",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_captchValidator",
+        },
         "webFormActions": {
           "containerClasses": "pb-5 mb-5",
           "colClasses": "web-form-button-panel text-right",
