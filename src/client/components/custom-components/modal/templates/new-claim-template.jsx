@@ -546,6 +546,7 @@ class NewClaimTemplate extends React.Component {
           form.inputData.itemList[i].sellerName.value ="";
           mixpanelPayload.API_SUCCESS = true;
           mixpanelPayload.SELLERS_NAMES = res.body.map(seller => {return seller.value});
+          res.body = res.body.filter(seller=>seller.value ? true : false);
           if(res.body.length != 0) {
             res.body.unshift({value: "All", id: "_all"});
             form.inputData.itemList[i].sellerName.options = res.body;

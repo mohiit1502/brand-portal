@@ -131,7 +131,7 @@ export default class MixpanelUtils {
                     //mixpanel.reset();
                     MixpanelUtils.setAlias(logInId);
                     mixpanel.identify(logInId);
-                    MixpanelUtils.trackEvent(eventName);
+                    MixpanelUtils.trackEvent(eventName, {$email: logInId});
                 }
             } catch (e) {
                 console.log(e);

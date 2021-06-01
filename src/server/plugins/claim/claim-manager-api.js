@@ -284,6 +284,10 @@ class ClaimManagerApi {
     try {
       const headers = ServerUtils.getHeaders(request);
       const payload = request.payload;
+      payload.metaInfo = {
+        userAgent: request.headers["user-agent"],
+        clientIp: request.info.remoteAddress
+      };
       delete headers.Consumer_id;
       delete headers.ROPRO_USER_ID;
       headers.WBP = {
@@ -293,7 +297,7 @@ class ClaimManagerApi {
         headers
       };
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
-      const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
+      const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
       //const response = await ServerHttp.post(url, options, payload);
       const response = { body: {}, status: 200};
