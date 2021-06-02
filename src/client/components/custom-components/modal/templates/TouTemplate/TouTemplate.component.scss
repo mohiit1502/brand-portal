@@ -77,6 +77,13 @@ $header-color : white;
         .btn-primary {
           background: $heading-blue !important;
           color: white;
+
+          &.btn-decline {
+            background: white !important;
+            color: $market-place-blue !important;
+            border: 1px solid;
+            opacity: 1;
+          }
         }
 
         .btn-secondary {

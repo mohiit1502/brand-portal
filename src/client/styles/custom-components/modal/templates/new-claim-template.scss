@@ -18,6 +18,14 @@
         height: calc(100% - 130px);
         overflow: auto;
         padding: 1.5rem;
+        & .c-ButtonsPanel {
+          position: absolute;
+          padding: 0px !important;
+          margin: 0px;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+        }
 
         .claim-type-and-patent {
           .col-4:first-of-type {padding-right: 0.75rem;}
