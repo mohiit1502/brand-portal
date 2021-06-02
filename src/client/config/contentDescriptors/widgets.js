@@ -32,7 +32,7 @@ const WIDGETCONFIG = {
               "name": "closed",
               "label": "Closed",
               "mapper": "workFlowCounts.status",
-              "value": "REJECTED,ACCEPTED"
+              "value": "REJECTED,ACCEPTED,ACCEPTED_ON_AUDIT,REJECTED_ON_AUDIT"
             }
           ]
         },
