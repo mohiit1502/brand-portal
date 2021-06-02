@@ -290,9 +290,7 @@ class ClaimManagerApi {
       };
       delete headers.Consumer_id;
       delete headers.ROPRO_USER_ID;
-      headers.WBP = {
-        MARKETPLACE: "US"
-      };
+      headers["WBP.MARKETPLACE"] = "US";
       const options = {
         headers
       };
