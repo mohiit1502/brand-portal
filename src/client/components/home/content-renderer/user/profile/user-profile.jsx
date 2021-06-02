@@ -121,7 +121,7 @@ class UserProfile extends React.Component {
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD, {WORK_FLOW: "EDIT_USER_PROFILE"});
   }
 
   disableInput (disable) {
@@ -129,7 +129,7 @@ class UserProfile extends React.Component {
     if (disable && this.isDirty()) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE, {WORK_FLOW: "EDIT_USER_PROFILE"});
     } else {
       const form = {...this.state.form};
       form.isDisabled = disable;
@@ -142,7 +142,7 @@ class UserProfile extends React.Component {
         }
       });
       this.setState({form});
-      if (!disable) mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE);
+      if (!disable) mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.EDIT_PROFILE, {WORK_FLOW: "EDIT_USER_PROFILE"});
     }
   }
 
@@ -176,7 +176,8 @@ class UserProfile extends React.Component {
       const url = this.state.form.apiPath;
       if (this.isDirty()) {
         const mixpanelPayload = {
-          API: url
+          API: url,
+          WORK_FLOW: "EDIT_USER_PROFILE"
         };
         return Http.put(`${url}/${payload.user.loginId}`, payload, null, null, this.props.showNotification, this.state.form.profileSaveMessage)
           .then(async res => {

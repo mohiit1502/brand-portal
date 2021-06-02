@@ -94,6 +94,7 @@ class ClaimManagerApi {
       mixpanelPayload.ITEM_ID = request.query && request.query.payload;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers["WM_QOS.CORRELATION_ID"];
 
       let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      
       let responseBody = [];
@@ -133,6 +134,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       console.log("[ClaimManagerApi::getClaimTypes] API request for Get Claim type has completed");
@@ -170,6 +172,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -206,6 +209,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -252,6 +256,7 @@ class ClaimManagerApi {
       mixpanelPayload.USPTO_URL = payload && payload.usptoUrl;
       mixpanelPayload.USPTO_VERIFICATION = payload && payload.usptoVerification;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
