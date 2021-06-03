@@ -37,11 +37,11 @@ const routes = [
         exact: true,
         component: Authenticator
       },
-      // {
-      //   path: CONSTANTS.ROUTES.OPEN.SERVICES,
-      //   exact: true,
-      //   component: WebformWorkflowDecider
-      // },
+      {
+        path: CONSTANTS.ROUTES.OPEN.SERVICES,
+        exact: true,
+        component: WebformWorkflowDecider
+      },
       {
         path: "/user-management",
         component: () => <Redirect to="/users/user-list" />

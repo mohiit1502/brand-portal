@@ -16,7 +16,7 @@ import Http from "../../utility/Http";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "handleCaptcha"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "handleCaptcha", "resetWebformStatus"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -95,9 +95,9 @@ class Webform extends React.Component {
   }
 
   onChange (evt, key) {
-    evt.persist();
+    evt.persist && evt.persist();
     if (evt && evt.target) {
-      evt.target.checkValidity();
+      evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
       let index = -1;
       if (key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" && key.split("-")[1]) {
@@ -180,7 +180,7 @@ class Webform extends React.Component {
     const form = {...this.state.form};
     const userUndetaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected && form.inputData.user_undertaking_5.selected;
     const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
-    const isHuman = (!form.inputData.captchValidator) ||  (form.inputData.captchValidator.isHuman && !form.inputData.captchValidator.error);
+    const isHuman = (!form.inputData.captchValidator) ||  (form.inputData.captchValidator.value);
     const bool = isValidItemList && userUndetaking  && isHuman && form.inputData.claimType.value &&
       form.inputData.firstName.value && form.inputData.lastName.value &&
       form.inputData.ownerName.value && form.inputData.companyName.value &&
@@ -197,6 +197,45 @@ class Webform extends React.Component {
     this.setState({form}, callback && callback());
   }
 
+  resetWebformStatus () {
+    const form = {...this.state.form};
+    form.inputData.firstName.value = "";
+    form.inputData.lastName.value = "";
+    form.inputData.ownerName.value = "";
+    form.inputData.companyName.value = "";
+    form.inputData.brandName.value = "";
+    form.inputData.address_1.value = "";
+    form.inputData.address_2.value = "";
+    form.inputData.city.value = "";
+    form.inputData.state.value = "";
+    form.inputData.zip.value = "";
+    form.inputData.city.value = "";
+    form.inputData.zip.error = "";
+    form.inputData.urlItems.itemList = form.inputData.urlItems.itemList.slice(0, 1);
+    form.inputData.urlItems.itemList[0].url.value = "";
+    form.inputData.urlItems.itemList[0].sellerName.value = "";
+    form.inputData.comments.value = "";
+    form.inputData.user_undertaking_1.selected = false;
+    form.inputData.user_undertaking_2.selected = false;
+    form.inputData.user_undertaking_3.selected = false;
+    form.inputData.user_undertaking_4.selected = false;
+    form.inputData.user_undertaking_5.selected = false;
+    form.inputData.signature.value = "";
+    form.inputData.phone.value = "";
+    form.inputData.phone.error = "";
+    form.inputData.emailId.value = "";
+    form.inputData.emailId.error = "";
+    form.inputData.comments.error = "";
+    form.inputData.comments.value = "";
+    form.inputData.digitalSignature.value = "";
+    form.inputData.urlItems.itemList[0].sellerName.disabled = true;
+    form.inputData.urlItems.itemList[0].url.error = "";
+    form.inputData.urlItems.itemList[0].sellerName.error = "";
+    form.inputData.comments.error = "";
+    if (form.inputData.captchValidator) form.inputData.captchValidator.value = false;
+
+    this.setState({form});
+  }
   checkToEnableItemButton () {
     const state = {...this.state};
     let shouldDisable = false;
@@ -272,10 +311,12 @@ class Webform extends React.Component {
     Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
     .then(res => {
         this.loader("loader", false);
+        this.resetWebformStatus();
         this.props.dispatchWebformState("2");
       })
       .catch(err => {
         this.loader("loader", false);
+        this.resetWebformStatus();
         this.props.dispatchWebformState("0");
         console.log(err);
       });

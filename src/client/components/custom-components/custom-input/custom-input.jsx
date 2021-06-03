@@ -51,7 +51,7 @@ class CustomInput extends React.Component {
   }
 
   onChangeLocal(evt, key) {
-    evt.persist();
+    evt.persist && evt.persist();
     const trimmedValue = this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
     if (evt && evt.target) {
       this.setState(() => {
@@ -358,7 +358,7 @@ class CustomInput extends React.Component {
       case "_urlItems" :
       return <UrlItemList {...this.props} />
       case "_captchValidator" :
-        return <CaptchaValidator {...this.props} />
+        return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />
     }
     return null;
   }

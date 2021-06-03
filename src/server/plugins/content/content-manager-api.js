@@ -40,8 +40,8 @@ class ContentManagerApi {
       },
       {
         method: "GET",
-        path: "/api/generateCaptcha",
-        handler: this.generateCaptcha
+        path: "/api/getCaptchaConfig",
+        handler: this.getCaptchaConfiguration
       }
     ]);
   }
@@ -148,17 +148,16 @@ class ContentManagerApi {
       return h.response(err).code(err.status);
     }
   }
-  async generateCaptcha(request, h) {
+  async getCaptchaConfiguration(request, h) {
+    console.log("[ContentManagerApi::getCaptchaConfiguration] API request for reCaptcha configuration has started");
     try {
-    const captcha = svgCaptcha.create({
-      noise: 3,
-      height: 60,
-      //color: true,
-      // background: "#FF56FF"
-    });
-    return h.response({data: captcha.data, text: captcha.text}).code(CONSTANTS.STATUS_CODE_SUCCESS);
+      let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.CAPTCHA_CONFIGURATION");
+      response = JSON.parse(response);
+      console.log("[ContentManagerApi::getCaptchaConfiguration] API request for reCaptcha configuration has completed");
+      return h.response(response).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      return h.response(err).code(CONSTANTS.STATUS_CODE_NOT_FOUND);
+      console.log("[ContentManagerApi::getCaptchaConfiguration] Error occured in API request for reCaptcha configuration:", err);
+      return h.response(err).code(err.status);
     }
   }
 }
