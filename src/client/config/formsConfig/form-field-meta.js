@@ -793,6 +793,7 @@ const FORMFIELDCONFIG = {
           },
           "signature": {
             "label": "Digital Signature",
+            "containerClasses": "signature",
             "error": "",
             "disabled": false,
             "required": true,

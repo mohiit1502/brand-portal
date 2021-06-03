@@ -6,6 +6,7 @@
     .modal-content {
       height:  100%;
       max-height:  60rem;
+      position: relative;
       .modal-header{
         height: 65px;
         font-size: 27px;
@@ -13,16 +14,17 @@
         color: white;
 
       }
-
       .modal-body {
         height: calc(100% - 130px);
         overflow: auto;
         padding: 1.5rem;
+        position: static;
+        & .c-ButtonsPanel {
           position: absolute;
           padding: 0px !important;
-          margin: 0px !important;
-          bottom: 0 !important;
-          right: 0 !important;
+          margin: 0px;
+          bottom: 0;
+          right: 0;
           width: 100%;
         }
 
@@ -70,12 +72,17 @@
         .status-description {
           font-size: 14px;
         }
-      }
+
+        .signature {
+          padding-bottom: 4rem !important;
+        }
+
 
       .modal-footer{
         height: 80px;
         background: $background-blue;
         border-bottom: 9px solid #7ac4e4;
+        z-index: 1000;
         //box-shadow: 0px -4px 4px 0px rgba(0,0,0,0.15);
       }
 
@@ -89,5 +96,6 @@
         padding-left: 1rem;
       }
     }
+  }
   }
 }
