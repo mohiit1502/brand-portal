@@ -18,12 +18,11 @@
         height: calc(100% - 130px);
         overflow: auto;
         padding: 1.5rem;
-        & .c-ButtonsPanel {
           position: absolute;
           padding: 0px !important;
-          margin: 0px;
-          bottom: 0;
-          right: 0;
+          margin: 0px !important;
+          bottom: 0 !important;
+          right: 0 !important;
           width: 100%;
         }
 

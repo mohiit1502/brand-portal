@@ -850,7 +850,10 @@ const FORMFIELDCONFIG = {
         "passwordGuidance": "",
         "passwordMismatchError": "\"New Password\" and \"Confirm Password\" do not match",
         "passwordPolicyMessage": "Password doesn't adhere to Walmart Brand Portal's Security policy.",
-        "toastMessageExistingErrors": "Please resolve existing errors before proceeding!"
+        "toastMessageExistingErrors": "Please resolve existing errors before proceeding!",
+        "falconPasswordMismatchError": "Password did not match.",
+        "falconPasswordPolicyError": "The specified password does not meet defined policy.",
+        "falconSamePasswordError": "New password matches old password."
       },
       "fields": {
         "currentPassword": {

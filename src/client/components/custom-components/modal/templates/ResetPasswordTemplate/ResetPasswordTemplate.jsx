@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+/* eslint-disable filenames/match-regex */
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import Helper from "../../../../../utility/helper";
@@ -7,7 +8,7 @@ import ContentRenderer from "../../../../../utility/ContentRenderer";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import CONSTANTS from "../../../../../constants/constants";
-import './ResetPasswordTemplate.component.scss';
+import "./ResetPasswordTemplate.component.scss";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 
@@ -18,12 +19,12 @@ class ResetPasswordTemplate extends Component {
     functions.forEach(name => this[name] = this[name].bind(this));
     this.loader = Helper.loader.bind(this);
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
-    const resetPasswordConfiguration = this.props.resetPasswordConfiguration ? this.props.resetPasswordConfiguration : {}
+    const resetPasswordConfiguration = this.props.resetPasswordConfiguration ? this.props.resetPasswordConfiguration : {};
     this.state = {
       section: {...resetPasswordConfiguration.sectionConfig},
       form: {
         inputData: resetPasswordConfiguration.fields,
-        ...resetPasswordConfiguration.formConfig,
+        ...resetPasswordConfiguration.formConfig
       }
     };
   }
@@ -68,7 +69,7 @@ class ResetPasswordTemplate extends Component {
         hasError = true;
         inputObj.error = inputObj.validators && inputObj.validators.validateRequired && inputObj.validators.validateRequired.error;
       }
-    })
+    });
     hasError = hasError || form.passwordsDifferent || form.error;
     if (hasError) {
       this.props.showNotification(NOTIFICATION_TYPE.ERROR, form.toastMessageExistingErrors);
@@ -102,19 +103,19 @@ class ResetPasswordTemplate extends Component {
           this.loader("form", false);
           err = err.error;
           if (err.status === CONSTANTS.STATUS_CODE_400) {
-            if (err.message && err.message.toLowerCase() === CONSTANTS.ERRORMESSAGES.PASSWORDMISMATCH.toLowerCase()) {
+            if (form.falconPasswordMismatchError && err.message && err.message.toLowerCase() === form.falconPasswordMismatchError.toLowerCase()) {
               this.setState(state => {
                 state = {...state};
                 state.form.error = state.form.incorrectPasswordError;
                 return true;
               });
-            } else if (err.message && err.message.toLowerCase() === CONSTANTS.ERRORMESSAGES.SAMEPASSWORD.toLowerCase() && !form.passwordsDifferent) {
+            } else if (form.falconSamePasswordError && err.message && err.message.toLowerCase() === form.falconSamePasswordError.toLowerCase() && !form.passwordsDifferent) {
               this.setState(state => {
                 state = {...state};
                 state.form.error = form.old5PasswordsError;
                 return true;
               });
-            } else if (err.message && err.message.toLowerCase() === CONSTANTS.ERRORMESSAGES.PASSWORDPOLICYMESSAGE.toLowerCase()) {
+            } else if (form.falconPasswordPolicyError && err.message && err.message.toLowerCase() === form.falconPasswordPolicyError.toLowerCase()) {
               this.setState(state => {
                 state = {...state};
                 state.form.error = form.passwordPolicyMessage;
@@ -179,7 +180,7 @@ class ResetPasswordTemplate extends Component {
       </div>
     );
   }
-};
+}
 
 
 ResetPasswordTemplate.propTypes = {
