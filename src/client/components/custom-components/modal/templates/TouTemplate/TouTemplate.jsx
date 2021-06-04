@@ -51,7 +51,7 @@ const TouTemplate = props => {
         mixpanelPayload.ERROR = e.message ? e.message : e;
       }) .finally(() => {
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.TOU_TEMPLATE.TOU_VERIFICATION, mixpanelPayload);
-        mixpanel.clearCookies();
+        outgoingStatus === CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED && mixpanel.clearCookies();
         outgoingStatus === CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED && (window.location.pathname = "/logout");
       });
   };
@@ -112,7 +112,7 @@ const TouTemplate = props => {
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
               {page === pages.TOU_ACCEPTANCE ?
                 <button type="button" className="btn btn-primary px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.ACTIVE)}>Agree</button>
-                : <button type="button" className="btn btn-primary btn-decline px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED)}>Decline</button>}
+                : <button type="button" className="btn btn-primary btn-outline-primary px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED)}>Decline</button>}
             </div>
           </div>
         </div>

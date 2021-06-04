@@ -717,6 +717,7 @@ const FORMFIELDCONFIG = {
             }
           },
           "user_undertaking_1": {
+            "category": "userUnderTaking",
             "containerClasses": "mb-2",
             "checkBoxClasses": "user-undertaking",
             "excludeRowContainer": true,
@@ -734,6 +735,7 @@ const FORMFIELDCONFIG = {
             "type": "_checkBox"
           },
           "user_undertaking_2": {
+            "category": "userUnderTaking",
             "containerClasses": "mb-2",
             "checkBoxClasses": "user-undertaking",
             "excludeRowContainer": true,
@@ -751,6 +753,7 @@ const FORMFIELDCONFIG = {
             "type": "_checkBox"
           },
           "user_undertaking_3": {
+            "category": "userUnderTaking",
             "containerClasses": "mb-2",
             "checkBoxClasses": "user-undertaking",
             "excludeRowContainer": true,
@@ -768,6 +771,7 @@ const FORMFIELDCONFIG = {
             "type": "_checkBox"
           },
           "user_undertaking_4": {
+            "category": "userUnderTaking",
             "containerClasses": "mb-2",
             "checkBoxClasses": "user-undertaking",
             "excludeRowContainer": true,

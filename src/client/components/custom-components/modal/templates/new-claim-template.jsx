@@ -47,9 +47,6 @@ class NewClaimTemplate extends React.Component {
     this.getBrands();
   }
 
-  componentDidUpdate() {
-  }
-
   loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
@@ -217,7 +214,7 @@ class NewClaimTemplate extends React.Component {
 
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndetaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && form.inputData.user_undertaking_3.selected && form.inputData.user_undertaking_4.selected;
+    const userUndetaking = Object.keys(form.inputData).filter(key => form.inputData[key]["category"] === "userUnderTaking" ? true : false).reduce((boolResult, undertaking) => !!(boolResult && form.inputData[undertaking].selected), true);
     const bool = userUndetaking && form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
@@ -494,14 +491,6 @@ class NewClaimTemplate extends React.Component {
                   {this.getFieldRenders()}
               </form>
             </div>
-           {/* <div className="modal-footer">
-              <div className="btn btn-sm cancel-btn text-primary" type="button" >Cancel</div>
-              {
-                <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" >
-                  Submit
-                </button>
-              }
-            </div> */}
           </div>
         </div>
       </div>
