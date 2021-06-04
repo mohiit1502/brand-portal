@@ -278,9 +278,6 @@ const CONSTANTS = {
   },
 
   ERRORMESSAGES: {
-    PASSWORDMISMATCH: "Password did not match.",
-    PASSWORDPOLICYMESSAGE: "The specified password does not meet defined policy.",
-    SAMEPASSWORD: "New password matches old password.",
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
     EMAILERROR: "Please enter a valid Email ID",
     PHONEERROR: "Please enter a valid phone number"
@@ -296,6 +293,11 @@ const CONSTANTS = {
   },
   MIXPANEL: {
     PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
+  },
+  WEBFORM: {
+    CLAIM_SUBMISSION: "1",
+    CTA: "2",
+    LANDING_PAGE: "0"
   },
 
   POPOVERSELECTOR: "tutorialPopover",

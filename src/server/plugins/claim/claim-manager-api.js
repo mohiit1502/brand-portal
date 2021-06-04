@@ -297,8 +297,7 @@ class ClaimManagerApi {
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
-      //const response = await ServerHttp.post(url, options, payload);
-      const response = { body: {}, status: 200};
+      const response = await ServerHttp.post(url, options, payload);
       console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {

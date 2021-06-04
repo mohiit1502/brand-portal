@@ -13,6 +13,7 @@ import WEBFORMCONFIG from "../../config/contentDescriptors/webform";
 import ContentRenderer from "../../utility/ContentRenderer";
 import "./WebformWorkflowDecider.component.scss";
 import Http from "../../utility/Http";
+import CONSTANTS from "../../constants/constants";
 
 class WebformWorkflowDecider extends React.Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class WebformWorkflowDecider extends React.Component {
           if (response.body) {
             try {
               response = JSON.parse(response.body);
-              //response = FORMFIELDCONFIG;
+              response = FORMFIELDCONFIG;
               this.props.dispatchMetadata(response);
             } catch (e) {
                 console.log(e);
@@ -69,11 +70,11 @@ class WebformWorkflowDecider extends React.Component {
 
   render() {
       let configuration, childComponent;
-      if (this.state.webformConfig && this.props.webformWorkflow === "2") {
+      if (this.state.webformConfig && this.props.webformWorkflow === CONSTANTS.WEBFORM.CTA) {
         configuration = this.state.webformConfig.ctaPageConfig;
         childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
 
-      } else if (this.state.webformConfig && this.props.webformWorkflow === "1") {
+      } else if (this.state.webformConfig && this.props.webformWorkflow === CONSTANTS.WEBFORM.CLAIM_SUBMISSION) {
         configuration = this.state.webformConfig.webform;
         childComponent = (<Webform getContent={this.getContent} configuration= {configuration} dispatchWebformState={this.dispatchWebformState}/>);
 
