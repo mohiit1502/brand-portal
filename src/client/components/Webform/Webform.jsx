@@ -16,7 +16,7 @@ import Http from "../../utility/Http";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -26,7 +26,7 @@ class Webform extends React.Component {
     });
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {emailId: false, phone: false};
-    const webformConfiguration = this.props.webformConfiguration ? this.props.webformConfiguration : {};
+    const webformConfiguration = this.props.webformConfiguration ? {...this.props.webformConfiguration} : {};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.validateState = Validator.validateState.bind(this);
     //this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -35,7 +35,7 @@ class Webform extends React.Component {
       section: {...webformConfiguration.sectionConfig},
       form: {
         ...webformConfiguration.formConfig,
-        inputData: {...webformConfiguration.fields}
+        inputData: webformConfiguration.fields
       },
       loader: false
     };
@@ -69,7 +69,7 @@ class Webform extends React.Component {
       return {
         ...state
       };
-    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+    }, this.checkToEnableItemButton);
   }
 
   bubbleValue (evt, key, error) {
@@ -92,7 +92,7 @@ class Webform extends React.Component {
     return {
       ...state
     };
-    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+    }, this.checkToEnableItemButton);
   }
 
   onChange (evt, key) {
@@ -128,12 +128,8 @@ class Webform extends React.Component {
         return {
           ...state
         };
-      }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+      }, this.checkToEnableItemButton);
     }
-  }
-
-  selectHandlersLocal (key, state, value) {
-    return state;
   }
 
   customChangeHandler (value) {
@@ -161,12 +157,11 @@ class Webform extends React.Component {
       }
       this.setState(state => {
         state = {...state};
-        state = this.selectHandlersLocal(key, state, value);
         state.form.inputData[key].value = value;
         return {
           ...state
         };
-      }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+      }, this.checkToEnableItemButton);
     }
   }
 
@@ -188,12 +183,13 @@ class Webform extends React.Component {
       form.inputData.digitalSignature.value;
 
     form.isSubmitDisabled = !bool;
-    form.inputData.webFormActions.buttons.submit.disabled = false;//!bool;
+    form.inputData.webFormActions.buttons.submit.disabled = !bool;
     this.setState({form}, callback && callback());
   }
 
   resetWebformStatus (callback) {
     const form = {...this.state.form};
+    form.inputData.claimType.value = "";
     form.inputData.firstName.value = "";
     form.inputData.lastName.value = "";
     form.inputData.ownerName.value = "";
@@ -229,9 +225,9 @@ class Webform extends React.Component {
     if (form.inputData.captchValidator) form.inputData.captchValidator.value = false;
     this.setState(() => {
       const stateCloned = {...this.state};
-      stateCloned.form = {...form};
+      stateCloned.form = form;
       return stateCloned;
-    }, callback);
+    }, callback && callback);
   }
   checkToEnableItemButton () {
     const state = {...this.state};
@@ -252,7 +248,7 @@ class Webform extends React.Component {
     state.form.inputData[evt.target.id].selected = !state.form.inputData[evt.target.id].selected;
     this.setState({
       ...state
-    }, this.checkToEnableSubmit);
+    });
   }
 
   handleSubmit(evt) {
@@ -308,11 +304,11 @@ class Webform extends React.Component {
       console.log(payload);
       Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
       .then(res => {
-          this.resetWebformStatus(() => this.props.dispatchWebformState("2"));
+          this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA));
           this.loader("loader", false);
         })
         .catch(err => {
-          this.resetWebformStatus(() => this.props.dispatchWebformState("0"));
+          this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.LANDING_PAGE));
           this.loader("loader", false);
           console.log(err);
         });
@@ -361,7 +357,8 @@ class Webform extends React.Component {
 Webform.propTypes = {
   configuration: PropTypes.object,
   dispatchWebformState: PropTypes.func,
-  showNotification: PropTypes.func
+  showNotification: PropTypes.func,
+  webformConfiguration: PropTypes.object
 };
 
 const mapStateToProps = state => {

@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line filenames/match-regex
 import React from "react";
@@ -5,8 +6,8 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
-import "./StatusModalTemplate.component.scss";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
+import "./StatusModalTemplate.component.scss";
 
 // eslint-disable-next-line complexity
 const StatusModalTemplate = props => {

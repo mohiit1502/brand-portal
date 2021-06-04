@@ -78,11 +78,15 @@ $header-color : white;
           background: $heading-blue !important;
           color: white;
 
-          &.btn-decline {
+          &.btn-outline-primary{
             background: white !important;
-            color: $market-place-blue !important;
+            color: $black !important;
             border: 1px solid;
             opacity: 1;
+          }
+          &.btn-outline-primary:hover{
+            color: white !important;
+            background: $market-place-blue !important;
           }
         }
 

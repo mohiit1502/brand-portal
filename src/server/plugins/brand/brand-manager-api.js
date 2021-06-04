@@ -202,7 +202,6 @@ class BrandManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
-
       const response = await ServerHttp.get(url, options, request.query);
       console.log("[BrandManagerApi::checkUnique] API request for Brand Uniqueness has completed");
       mixpanelPayload.RESPONSE_STATUS = response.status;

@@ -37,6 +37,7 @@ export default class MixpanelUtils {
             }
         }
     }
+
     static getToken() {
         if (MixpanelUtils.enableTracking) {
             try {
@@ -47,6 +48,7 @@ export default class MixpanelUtils {
             }
         }
     }
+
     static intializeMixpanel(projectToken, enableTracking) {
         if (enableTracking) {
             try {
@@ -170,18 +172,18 @@ export default class MixpanelUtils {
     static populateProfileInfo(profile) {
         const mixpanelPayload = {};
         if(profile) {
-            mixpanelPayload.EMAIL_VERIFIED = profile && profile.emailVerified ? profile.emailVerified : "";
-            mixpanelPayload.ORGANISATION_NAME = profile && profile.organization ? profile.organization.name : "";
-            mixpanelPayload.ORGANISATION_STATUS = profile && profile.organization ? profile.organization.status : "";
-            mixpanelPayload.STATUS = profile && profile.status ? profile.status : "";
-            mixpanelPayload.REGISTRATION_MODE = profile && profile.registrationMode ? profile.registrationMode : "";
-            mixpanelPayload.FIRST_NAME = profile && profile.firstName ? profile.firstName : "";
-            mixpanelPayload.LAST_NAME = profile && profile.lastName ? profile.lastName : "";
-            mixpanelPayload.ROLE = profile && profile.role ? profile.role.name : "";
-            mixpanelPayload.USER_TYPE = profile && profile.type ? profile.type : "";
-            mixpanelPayload.STATUS_DETAILS = profile && profile.statusDetails ? profile.statusDetails : "";
-            mixpanelPayload.IS_USER_ENABLED = profile && profile.isUserEnabled ? profile.isUserEnabled : "";
-            mixpanelPayload.IS_ORG_ENABLED = profile && profile.isOrgEnabled ? profile.isOrgEnabled : "";
+            mixpanelPayload.EMAIL_VERIFIED = profile && profile.emailVerified;
+            mixpanelPayload.ORGANISATION_NAME = profile && profile.organization ? profile.organization.name : "NOT_SET";
+            mixpanelPayload.ORGANISATION_STATUS = profile && profile.organization ? profile.organization.status : "NOT_SET";
+            mixpanelPayload.STATUS = profile && profile.status ? profile.status : "NOT_SET";
+            mixpanelPayload.REGISTRATION_MODE = profile && profile.registrationMode ? profile.registrationMode : "NOT_SET";
+            mixpanelPayload.FIRST_NAME = profile && profile.firstName ? profile.firstName : "NOT_SET";
+            mixpanelPayload.LAST_NAME = profile && profile.lastName ? profile.lastName : "NOT_SET";
+            mixpanelPayload.ROLE = profile && profile.role ? profile.role.name : "NOT_SET";
+            mixpanelPayload.USER_TYPE = profile && profile.type ? profile.type : "NOT_SET";
+            mixpanelPayload.STATUS_DETAILS = profile && profile.statusDetails ? profile.statusDetails : "NOT_SET";
+            mixpanelPayload.IS_USER_ENABLED = profile && profile.isUserEnabled;
+            mixpanelPayload.IS_ORG_ENABLED = profile && profile.isOrgEnabled;
             const workflow = profile && profile.workflow && profile.workflow.code ? profile.workflow.code : 0;
             mixpanelPayload.WORK_FLOW = MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[workflow] || "CODE_NOT_FOUND";
         }
