@@ -305,7 +305,7 @@ class CustomInput extends React.Component {
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
-          <span className="label-text"> { this.state.label } </span>
+          <span className={`label-text${this.state.required ? " required" : ""}`}> { this.state.label } </span>
         </label>
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }

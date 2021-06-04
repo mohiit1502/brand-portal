@@ -7,5 +7,16 @@
     .btn {
         width: 150px;
     }
-
+    .label-text {
+        color: #333;
+    }
+    .required {
+        &::after {
+            content: url("../../images/astrick.svg");
+            background-size: 1.45rem;
+            position: absolute;
+            top: -0.5rem;
+            margin-left: 0.25rem;
+        }
+    }
 }

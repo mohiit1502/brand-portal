@@ -9,7 +9,7 @@ const CheckBox = props => {
       <div className={`col${props.colClasses ? " " + props.colClasses : ""}`}>
         <div className="form-check">
           <input type="checkbox" id={props.id} className={`form-check-input${props.checkBoxClasses ? " " + props.checkBoxClasses : ""}`} checked={props.selected}
-                 required={props.required} onChange={props.onChange}/>
+                 required={props.required} onChange={props.onChange} required={!props.preventHTMLRequiredValidation ? props.required : false} />
           <label className={`form-check-label${props.labelClasses ? " " + props.labelClasses : ""}`} htmlFor={props.id}>
             {props.label}
             {props.tou && <span><a href={staticContent.TOU} target="_blank">{props.touLink}</a></span>}
@@ -28,6 +28,7 @@ CheckBox.propTypes = {
   labelClasses: PropTypes.string,
   onChange: PropTypes.func,
   parentRef: PropTypes.object,
+  preventHTMLRequiredValidation: PropTypes.bool,
   required: PropTypes.bool
 };
 

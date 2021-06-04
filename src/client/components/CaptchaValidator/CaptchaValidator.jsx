@@ -8,6 +8,7 @@ import "./CaptchaValidator.component.scss";
 
 const CaptchaValidator = props => {
   const [captchaConfig, setCaptchaConfig] = useState(null);
+  const [isValid, setValid] = useState(true);
   useEffect(() => {
     !captchaConfig  &&
     Http.get("/api/getCaptchaConfig")
@@ -18,6 +19,7 @@ const CaptchaValidator = props => {
 
   const verifyCaptcha = res => {
     if (res) {
+      setValid(true);
       const dummyCaptchaEvent = {
         target: {
           value: true
@@ -26,12 +28,21 @@ const CaptchaValidator = props => {
       props.onChange && props.onChange(dummyCaptchaEvent, props.inputId);
     }
   };
+  const onExpired = res => {
+    setValid(false);
+    const dummyCaptchaEvent = {
+      target: {
+        value: false
+      }
+    };
+    props.onChange && props.onChange(dummyCaptchaEvent, props.inputId);
+  };
 
   return (
     <div className="c-CaptchaValidator mx-auto">
       {
         captchaConfig && captchaConfig.enableCaptcha &&
-            <ReCAPTCHA sitekey={captchaConfig.sitekey} onChange={verifyCaptcha}/>
+            <ReCAPTCHA sitekey={captchaConfig.sitekey} onChange={verifyCaptcha} onExpired={onExpired}/>
       }
     </div>
   );

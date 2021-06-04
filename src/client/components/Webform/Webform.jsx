@@ -16,7 +16,7 @@ import Http from "../../utility/Http";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "handleCaptcha", "resetWebformStatus"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "selectHandlersLocal", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -28,6 +28,7 @@ class Webform extends React.Component {
     this.invalid = {emailId: false, phone: false};
     const webformConfiguration = this.props.webformConfiguration ? this.props.webformConfiguration : {};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
+    this.validateState = Validator.validateState.bind(this);
     //this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.trimSpaces = Helper.trimSpaces.bind(this);
     this.state = {
@@ -144,6 +145,9 @@ class Webform extends React.Component {
       form.inputData.ownerName.label = matchedClaimTypeWithMeta.ownerNameIdentifierLabel;
       form.claimTypeSelected = true;
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
+      if (matchedClaimTypeWithMeta.claimType !== "copyright") {
+        form.inputData.user_undertaking_3.required = false;
+      }
       this.setState({form});
     }
   }
@@ -165,16 +169,7 @@ class Webform extends React.Component {
       }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
     }
   }
-  handleCaptcha(isHuman, error) {
-    this.setState(state => {
-      state = {...state};
-      state.form.inputData.captchValidator.isHuman = isHuman;
-      state.form.inputData.captchValidator.error = error;
-      return {
-        ...state
-      };
-    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
-  }
+
   // eslint-disable-next-line complexity
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
@@ -193,11 +188,11 @@ class Webform extends React.Component {
       form.inputData.digitalSignature.value;
 
     form.isSubmitDisabled = !bool;
-    form.inputData.webFormActions.buttons.submit.disabled = !bool;
+    form.inputData.webFormActions.buttons.submit.disabled = false;//!bool;
     this.setState({form}, callback && callback());
   }
 
-  resetWebformStatus () {
+  resetWebformStatus (callback) {
     const form = {...this.state.form};
     form.inputData.firstName.value = "";
     form.inputData.lastName.value = "";
@@ -220,21 +215,23 @@ class Webform extends React.Component {
     form.inputData.user_undertaking_3.selected = false;
     form.inputData.user_undertaking_4.selected = false;
     form.inputData.user_undertaking_5.selected = false;
-    form.inputData.signature.value = "";
+    form.inputData.digitalSignature.value = "";
     form.inputData.phone.value = "";
     form.inputData.phone.error = "";
     form.inputData.emailId.value = "";
     form.inputData.emailId.error = "";
     form.inputData.comments.error = "";
     form.inputData.comments.value = "";
-    form.inputData.digitalSignature.value = "";
     form.inputData.urlItems.itemList[0].sellerName.disabled = true;
     form.inputData.urlItems.itemList[0].url.error = "";
     form.inputData.urlItems.itemList[0].sellerName.error = "";
     form.inputData.comments.error = "";
     if (form.inputData.captchValidator) form.inputData.captchValidator.value = false;
-
-    this.setState({form});
+    this.setState(() => {
+      const stateCloned = {...this.state};
+      stateCloned.form = {...form};
+      return stateCloned;
+    }, callback);
   }
   checkToEnableItemButton () {
     const state = {...this.state};
@@ -260,66 +257,66 @@ class Webform extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    this.disableSubmitButton();
-    const inputData = this.state.form.inputData;
-    const claimType =  inputData.claimType.value;
-    // "metaInfo": {
-    //   "userAgent": "",
-    //   "clientIp": ""
-    // },
-    const reporterInfo =  {
-      firstName: inputData.firstName.value,
-      lastName: inputData.lastName.value,
-      phoneNumber: inputData.phone.value,
-      email: inputData.emailId.value,
-      legalAddress: {
-        address1: inputData.address_1.value,
-        address2: inputData.address_2.value,
-        city: inputData.city.value,
-        country: inputData.country.value,
-        state: inputData.state.value,
-        zip: inputData.zip.value
-      }
-    };
-    const brandInfo = {
-      brandName: inputData.brandName.value,
-      ownerName: inputData.ownerName.value,
-      companyName: inputData.companyName.value
-    };
-    const comments =  inputData.comments.value;
-    const digitalSignatureBy = inputData.digitalSignature.value;
+    if (!this.validateState()) {
+      this.disableSubmitButton();
+      const inputData = this.state.form.inputData;
+      const claimType =  inputData.claimType.value;
+      // "metaInfo": {
+      //   "userAgent": "",
+      //   "clientIp": ""
+      // },
+      const reporterInfo =  {
+        firstName: inputData.firstName.value,
+        lastName: inputData.lastName.value,
+        phoneNumber: inputData.phone.value,
+        email: inputData.emailId.value,
+        legalAddress: {
+          address1: inputData.address_1.value,
+          address2: inputData.address_2.value,
+          city: inputData.city.value,
+          country: inputData.country.value,
+          state: inputData.state.value,
+          zip: inputData.zip.value
+        }
+      };
+      const brandInfo = {
+        brandName: inputData.brandName.value,
+        ownerName: inputData.ownerName.value,
+        companyName: inputData.companyName.value
+      };
+      const comments =  inputData.comments.value;
+      const digitalSignatureBy = inputData.digitalSignature.value;
 
-    const getItems = items => {
-      const itemList = [];
-      items.forEach(item => {
-        const itemUrl = item.url.value.trim();
-          const sellerNames = item.sellerName.value.trim();
-          itemList.push({ itemUrl, sellerName: sellerNames });
-    });
-      return itemList;
-    };
-    const payload = {
-      claimType,
-      reporterInfo,
-      brandInfo,
-      comments,
-      digitalSignatureBy,
-      items: getItems(inputData.urlItems.itemList)
-    };
-    this.loader("loader", true);
-    console.log(payload);
-    Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
-    .then(res => {
-        this.loader("loader", false);
-        this.resetWebformStatus();
-        this.props.dispatchWebformState("2");
-      })
-      .catch(err => {
-        this.loader("loader", false);
-        this.resetWebformStatus();
-        this.props.dispatchWebformState("0");
-        console.log(err);
+      const getItems = items => {
+        const itemList = [];
+        items.forEach(item => {
+          const itemUrl = item.url.value.trim();
+            const sellerNames = item.sellerName.value.trim();
+            itemList.push({ itemUrl, sellerName: sellerNames });
       });
+        return itemList;
+      };
+      const payload = {
+        claimType,
+        reporterInfo,
+        brandInfo,
+        comments,
+        digitalSignatureBy,
+        items: getItems(inputData.urlItems.itemList)
+      };
+      this.loader("loader", true);
+      console.log(payload);
+      Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
+      .then(res => {
+          this.resetWebformStatus(() => this.props.dispatchWebformState("2"));
+          this.loader("loader", false);
+        })
+        .catch(err => {
+          this.resetWebformStatus(() => this.props.dispatchWebformState("0"));
+          this.loader("loader", false);
+          console.log(err);
+        });
+      }
   }
 
   disableSubmitButton() {

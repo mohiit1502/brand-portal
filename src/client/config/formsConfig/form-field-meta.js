@@ -1061,6 +1061,7 @@ const FORMFIELDCONFIG = {
           "layout": "7.1.6",
           "patternPath": "CONSTANTS.REGEX.COMPANY",
           "patternErrorMessage": "Please provide a valid brand name.",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
@@ -1075,11 +1076,20 @@ const FORMFIELDCONFIG = {
           "label": "Address 1",
           "layout": "8.1.6",
           "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please enter valid address"
+              }
+            }
+          }
         },
         "address_2": {
           "disabled": false,
@@ -1090,10 +1100,19 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "layout": "8.2.6",
           "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please enter valid address"
+              }
+            }
+          }
         },
         "city": {
           "disabled": false,
@@ -1103,11 +1122,20 @@ const FORMFIELDCONFIG = {
           "label": "City",
           "layout": "9.1.6",
           "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please enter valid city"
+              }
+            }
+          }
         },
         "country": {
           "disabled": true,
@@ -1117,11 +1145,20 @@ const FORMFIELDCONFIG = {
           "label": "Country",
           "layout": "9.2.6",
           "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": "USA"
+          "value": "USA",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please enter valid country"
+              }
+            }
+          }
         },
         "state": {
           "colClasses": "col-6",
@@ -1132,11 +1169,20 @@ const FORMFIELDCONFIG = {
           "label": "State",
           "layout": "10.1.6",
           "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please enter valid state"
+              }
+            }
+          }
         },
         "zip": {
           "colClasses": "col-6",
@@ -1151,6 +1197,7 @@ const FORMFIELDCONFIG = {
           "maxLength": 10,
           "patternPath": "CONSTANTS.REGEX.ZIP",
           "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
@@ -1172,6 +1219,7 @@ const FORMFIELDCONFIG = {
           "maxLength": 17,
           "patternPath": "CONSTANTS.REGEX.PHONE",
           "prebounceChangeHandler": "prebounceChangeHandler",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
@@ -1192,6 +1240,8 @@ const FORMFIELDCONFIG = {
           "layout": "11.2.6",
           "loader": false,
           "patternPath": "CONSTANTS.REGEX.EMAIL",
+          "patternErrorMessagePath": "CONSTANTS.EMAILERROR",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "email",
@@ -1222,6 +1272,7 @@ const FORMFIELDCONFIG = {
               "value": "",
               "type": "url",
               "pattern": "https?://.+",
+              "preventHTMLRequiredValidation": true,
               "disabled": false,
               "isValid": "false",
               "subtitle": "",
@@ -1236,6 +1287,7 @@ const FORMFIELDCONFIG = {
               "subtitle": "",
               "type": "text",
               "error": "",
+              "preventHTMLRequiredValidation": true,
               "validators": {
                 "validateLength": {
                   "minLength": "2",
@@ -1259,6 +1311,7 @@ const FORMFIELDCONFIG = {
           "rowCount": 2,
           "placeholder": "Please provide additional information about the claim",
           "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "subtitle": "",
           "type": "textarea",
           "value": "",
@@ -1286,6 +1339,7 @@ const FORMFIELDCONFIG = {
           "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __owner_label__, its agent, or the law.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
@@ -1302,6 +1356,7 @@ const FORMFIELDCONFIG = {
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
@@ -1318,6 +1373,7 @@ const FORMFIELDCONFIG = {
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"Copyright\"}",
           "selected": false,
@@ -1334,6 +1390,7 @@ const FORMFIELDCONFIG = {
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
@@ -1350,6 +1407,7 @@ const FORMFIELDCONFIG = {
           "label": "Typing your full name in this box will act as your digital signature.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
@@ -1364,10 +1422,18 @@ const FORMFIELDCONFIG = {
           "key": "digitalSignature",
           "layout": "19.1.8",
           "label": "Digital Signature",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please enter valid input"
+              }
+            }
+          }
         },
         "fieldsHeader_4": {
           "containerClasses": "font-size-12",
@@ -1384,6 +1450,7 @@ const FORMFIELDCONFIG = {
           "inputId": "captchValidator",
           "key": "captchValidator",
           "onSubmit": "handleCaptcha",
+          "required": true,
           //"layout": "20.1.0",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "submitButtonLabel": "Submit Captch",
