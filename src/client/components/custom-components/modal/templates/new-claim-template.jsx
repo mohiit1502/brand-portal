@@ -270,7 +270,7 @@ class NewClaimTemplate extends React.Component {
       });
   }
 
-  resetTemplateStatus () {
+  resetTemplateStatus (evt) {
     const form = {...this.state.form};
     form.inputData.brandName.value = "";
     form.inputData.claimType.value = "";
@@ -297,7 +297,7 @@ class NewClaimTemplate extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_SUBMIT_CLAIM, mixpanelPayload);
+    evt && mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_SUBMIT_CLAIM, mixpanelPayload);
   }
 
   onItemUrlChange (event, i) {
