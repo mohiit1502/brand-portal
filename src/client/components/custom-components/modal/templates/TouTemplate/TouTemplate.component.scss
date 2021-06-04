@@ -77,6 +77,17 @@ $header-color : white;
         .btn-primary {
           background: $heading-blue !important;
           color: white;
+
+          &.btn-outline-primary{
+            background: white !important;
+            color: $black !important;
+            border: 1px solid;
+            opacity: 1;
+          }
+          &.btn-outline-primary:hover{
+            color: white !important;
+            background: $market-place-blue !important;
+          }
         }
 
         .btn-secondary {

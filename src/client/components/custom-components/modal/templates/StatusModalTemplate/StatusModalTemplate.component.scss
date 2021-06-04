@@ -33,6 +33,17 @@
           border: none;
           font-size: 15px;
         }
+        .status-description {
+          color: #333;
+          &.access-revoke{
+            font-size: 1rem !important;
+            //padding-top: 100px;
+          }
+        }
+        .subtitle {
+          color: #333;
+          font-size: 0.8rem;
+        }
       }
     }
   }
