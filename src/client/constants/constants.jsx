@@ -42,10 +42,23 @@ const CONSTANTS = {
       CODE: 4
     },
     PORTAL_ACCESS_REVOKED: {
+      MESSAGE: {
+        "classes": "mt-4 mx-4 access-revoke",
+        "content": {
+          "partial1": {
+          "chunk1": "Please contact us at ",
+          "anchor1": {
+              "text": "brandportal@walmart.com",
+              "href": "mailto:brandportal@walmart.com"
+            },
+            "chunk2": " if you would still like to create an account",
+          }
+        }
+      },
       CODE: 8,
       IMAGE: "Alert",
-      MESSAGE: "Your company account access has been revoked for security reasons",
-      TITLE: "Access Denied"
+      SUBTITLE: "We have not been able to verify the information provided for your application.",
+      TITLE: "Application On Hold"
     },
     USER_ACCESS_REVOKED: {
       CODE: 16,
@@ -260,9 +273,6 @@ const CONSTANTS = {
   },
 
   ERRORMESSAGES: {
-    PASSWORDMISMATCH: "Password did not match.",
-    PASSWORDPOLICYMESSAGE: "The specified password does not meet defined policy.",
-    SAMEPASSWORD: "New password matches old password.",
     ZIPERROR: "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
     EMAILERROR: "Please enter a valid Email ID",
     PHONEERROR: "Please enter a valid phone number"
