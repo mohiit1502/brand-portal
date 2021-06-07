@@ -3,6 +3,7 @@ import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
+const svgCaptcha = require("svg-captcha");
 
 class ContentManagerApi {
   constructor() {
@@ -31,6 +32,16 @@ class ContentManagerApi {
         method: "GET",
         path: "/api/mixpanelConfig",
         handler: this.getMixpanelConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/webformConfig",
+        handler: this.getWebformConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/getCaptchaConfig",
+        handler: this.getCaptchaConfiguration
       }
     ]);
   }
@@ -57,6 +68,19 @@ class ContentManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_HELP_CONFIGURATION, mixpanelPayload);
+    }
+  }
+
+  async getWebformConfiguration(request, h) {
+    console.log("[ContentManagerApi::getWebformConfiguration] API request for Webform configuration has started");
+    console.log("[ContentManagerApi::getWebformConfiguration] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.WEBFORMDESCRIPTOR");
+      console.log("[ContentManagerApi::getWebformConfiguration] API request for Webform configuration has completed");
+      return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      console.log("[ContentManagerApi::getWebformConfiguration] Error occured in API request for Webform configuration:", err);
+      return h.response(err).code(err.status);
     }
   }
 
@@ -121,6 +145,18 @@ class ContentManagerApi {
       return h.response({projectToken, enableTracking}).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       console.log("[ContentManagerApi::getMixpanelConfiguration] Error occured in API request for mixpanel field configuration:", err);
+      return h.response(err).code(err.status);
+    }
+  }
+  async getCaptchaConfiguration(request, h) {
+    console.log("[ContentManagerApi::getCaptchaConfiguration] API request for reCaptcha configuration has started");
+    try {
+      let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.CAPTCHA_CONFIGURATION");
+      response = JSON.parse(response);
+      console.log("[ContentManagerApi::getCaptchaConfiguration] API request for reCaptcha configuration has completed");
+      return h.response(response).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      console.log("[ContentManagerApi::getCaptchaConfiguration] Error occured in API request for reCaptcha configuration:", err);
       return h.response(err).code(err.status);
     }
   }

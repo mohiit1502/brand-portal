@@ -9,6 +9,7 @@ import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
 import "./StatusModalTemplate.component.scss";
 
+// eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
   const contentRenderer = new ContentRenderer();
   // const baseUrl = CONSTANTS.URL.DOMAIN[process.env.NODE_ENV && process.env.NODE_ENV.toUpperCase()];

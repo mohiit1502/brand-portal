@@ -99,8 +99,10 @@ export default class Validator {
       if (obj && obj.required && !obj.value) {
         if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
           return;
-        }
-        obj.error = obj.invalidError;
+        } else if (obj.type  && obj.type === "_checkBox" && obj.required && obj.selected) {
+          return;
+        } else 
+        obj.error = obj.invalidError || "Please Enter Valid Input";
         hasError = true;
       } else {
         obj.error = "";

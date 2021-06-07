@@ -42,8 +42,12 @@ class ClaimManagerApi {
         method: "GET",
         path: "/api/sellers",
         handler: this.getSellers
+      },
+      {
+        method: "POST",
+        path: "/api/claims/webform",
+        handler: this.createWebformClaim
       }
-
     ]);
   }
 
@@ -270,6 +274,35 @@ class ClaimManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_CLAIM, mixpanelPayload);
+    }
+  }
+
+  async createWebformClaim(request, h) {
+    console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has started");
+    console.log("[ClaimManagerApi::createWebformClaim] Client IP adress:", request.info && request.info.remoteAddress);
+    console.log("[ClaimManagerApi::createWebformClaim] Client User Agent:", request.headers["user-agent"]);
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const payload = request.payload;
+      payload.metaInfo = {
+        userAgent: request.headers["user-agent"],
+        clientIp: request.info.remoteAddress
+      };
+      delete headers.Consumer_id;
+      delete headers.ROPRO_USER_ID;
+      headers["WBP.MARKETPLACE"] = "US";
+      const options = {
+        headers
+      };
+      const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
+      const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_CLAIMS_PATH");
+      const url = `${BASE_URL}${CLAIMS_PATH}`;
+      const response = await ServerHttp.post(url, options, payload);
+      console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed");
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log("[ClaimManagerApi::createWebformClaim] Error occured in API request for webform Create Claim:", err);
+      return h.response(err).code(err.status);
     }
   }
 }
