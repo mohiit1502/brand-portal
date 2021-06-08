@@ -14,6 +14,9 @@ const CaptchaValidator = props => {
     Http.get("/api/getCaptchaConfig")
     .then(res => {
       setCaptchaConfig(res.body);
+      if(!res.body.enableCaptcha) {
+        verifyCaptcha(true);
+      }
     }).catch(e => console.log(e));
   });
 
@@ -42,7 +45,12 @@ const CaptchaValidator = props => {
     <div className="c-CaptchaValidator mx-auto">
       {
         captchaConfig && captchaConfig.enableCaptcha &&
-            <ReCAPTCHA sitekey={captchaConfig.sitekey} onChange={verifyCaptcha} onExpired={onExpired}/>
+            <React.Fragment>
+              <ReCAPTCHA sitekey={captchaConfig.sitekey} onChange={verifyCaptcha} onExpired={onExpired}/>
+              <small className={`form-text custom-input-help-text text-danger text-center`}>
+                {props.error}
+              </small>
+            </React.Fragment>
       }
     </div>
   );

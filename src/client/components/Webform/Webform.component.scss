@@ -4,12 +4,13 @@
         padding-bottom: 1.5rem;
     }
 
-    .btn {
+    .submit-btn {
         width: 150px;
     }
     .label-text {
         color: #333;
     }
+    
     .required {
         &::after {
             content: url("../../images/astrick.svg");
@@ -17,6 +18,26 @@
             position: absolute;
             top: -0.5rem;
             margin-left: 0.25rem;
+            size: 0.5rem;
         }
     }
+
+    .custom-input-element:focus+.custom-input-label {
+                & .required {
+                   &::after {
+                       transform: scale(0.7);
+                   }
+               }
+   }
+
+   .has-error {
+        .custom-input-element, .custom-input-label {
+            & .required {
+                &::after {
+                    content: url("../../images/astrick-red.svg") !important;
+                }
+            }
+        }
+    }
+    
 }

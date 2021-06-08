@@ -48,7 +48,7 @@ class WebformWorkflowDecider extends React.Component {
           if (response.body) {
             try {
               response = JSON.parse(response.body);
-              response = FORMFIELDCONFIG;
+              //response = FORMFIELDCONFIG;
               this.props.dispatchMetadata(response);
             } catch (e) {
                 console.log(e);

@@ -16,7 +16,7 @@ import Http from "../../utility/Http";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus", "validateUrlItems"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -94,6 +94,23 @@ class Webform extends React.Component {
     };
     }, this.checkToEnableItemButton);
   }
+
+  validateUrlItems = () => {
+    const form = {...this.state.form};
+    let hasError = false;
+    form.inputData.urlItems.itemList.forEach(item => {
+      if (!item.url.value) {
+        hasError = true;
+        item.url.error = item.invalidError || "Please Enter Valid Input";
+      }
+      if (!item.sellerName.value) {
+        hasError = true;
+        item.sellerName.error = item.invalidError || "Please Enter Valid Input";
+      }
+    });
+    this.setState({form});
+    return hasError;
+  };
 
   onChange (evt, key) {
     evt.persist && evt.persist();

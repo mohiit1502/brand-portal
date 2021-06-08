@@ -101,9 +101,14 @@ export default class Validator {
           return;
         } else if (obj.type  && obj.type === "_checkBox" && obj.required && obj.selected) {
           return;
-        } else 
+        } else  if (obj.type  && obj.type === "_urlItems") {
+          if( obj.required && this.validateUrlItems && this.validateUrlItems()) {
+            hasError = true;
+          }
+        } else {
         obj.error = obj.invalidError || "Please Enter Valid Input";
         hasError = true;
+        }
       } else {
         obj.error = "";
       }

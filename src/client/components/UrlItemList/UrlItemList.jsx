@@ -81,8 +81,8 @@ const UrlItemList = props => {
             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
               label={item.sellerName.label}
               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
-              pattern={item.sellerName.pattern} validators={item.sellerName.validators}
-             bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
+              pattern={item.sellerName.pattern} validators={item.sellerName.validators} error={item.sellerName.error}
+              bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
               onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
               dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
