@@ -26,7 +26,7 @@ class CustomInput extends React.Component {
   componentDidMount() {
     if (this.state.type === "multiselect") {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
-
+    }
       $("[data-toggle='tooltip']")
         .on("mouseleave", e => e.stopImmediatePropagation())
         .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
@@ -34,7 +34,7 @@ class CustomInput extends React.Component {
       $("body")
         .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
         .on("mouseleave", ".tooltip, [data-toggle='tooltip']", () => $(".tooltip").addClass("move-beneath"));
-      }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
