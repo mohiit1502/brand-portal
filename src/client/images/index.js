@@ -32,6 +32,7 @@ import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
 import ProblemSolving from "./group-1473.png";
 import Question from "./question.svg";
+import Refresh from "./refresh.svg";
 import RedCircleCross from "./red-circle-cross.svg";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
@@ -86,6 +87,7 @@ export {
     ProblemSolving,
     Question,
     RedCircleCross,
+    Refresh,
     ShowPassword,
     Sort,
     SortDown,

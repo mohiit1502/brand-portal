@@ -19,6 +19,7 @@ const UrlItemList = props => {
         value: "",
         type: "url",
         pattern: "https?://.+",
+        preventHTMLRequiredValidation: true,
         disabled: false,
         isValid: false,
         subtitle: "",
@@ -35,6 +36,7 @@ const UrlItemList = props => {
         dropdownOptions: [],
         subtitle: "",
         error: "",
+        preventHTMLRequiredValidation: true,
         validators: {
           validateLength: {
             minLength: 2,
@@ -47,7 +49,9 @@ const UrlItemList = props => {
     const itemListClone = [...itemList];
     itemListClone.push(item);
     updateItemList(itemListClone);
-    props.parentRef.getItemListFromChild(itemListClone);
+    if (props.onChangeItem && props.parentRef[props.onChangeItem]) {
+      props.parentRef[props.onChangeItem](itemListClone);
+    }
     // state.form.inputData.itemList.unshift(item);
     // state.form.inputData.itemList.push(item);
     // this.setState(state, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
@@ -57,7 +61,9 @@ const UrlItemList = props => {
     const itemListClone = [...itemList];
     itemListClone.splice(index, 1);
     updateItemList(itemListClone);
-    props.parentRef.getItemListFromChild(itemListClone);
+    if (props.onChangeItem && props.parentRef[props.onChangeItem]) {
+      props.parentRef[props.onChangeItem](itemListClone);
+    }
   };
 
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
@@ -66,7 +72,7 @@ const UrlItemList = props => {
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
           required={item.url.required}
           value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={props.parentRef[props.onChangeUrl]}
-          disabled={item.url.disabled} error={item.url.error}
+          disabled={item.url.disabled} error={item.url.error} onInvalid={() => {}} preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
           loader={props.fieldLoader && itemUrlId === i}/>
       </div>
       <div className="col-4">
@@ -76,8 +82,8 @@ const UrlItemList = props => {
               label={item.sellerName.label}
               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
               pattern={item.sellerName.pattern} validators={item.sellerName.validators}
-               bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
-              onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}}
+             bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
+              onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
               dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
           <div className="col-4">

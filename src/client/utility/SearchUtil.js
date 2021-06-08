@@ -1,5 +1,10 @@
+import mixpanel from "../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
+import Helper from "./helper";
+import CONSTANTS from "../constants/constants";
 
 export default class SearchUtil {
+    static  mixpanelSearchEventhandler = Helper.debounce(mixpanel.trackEvent, CONSTANTS.APIDEBOUNCETIMEOUT);
     static getFilteredList(dataList, searchText, identifier) {
         // eslint-disable-next-line complexity
         const filteredList = dataList.filter(record => {
@@ -25,6 +30,9 @@ export default class SearchUtil {
     // eslint-disable-next-line max-statements
     static uiSearch (evt, isFilter, filteredRecords) {
         const identifier = this.state.identifier;
+        const mixpanelPayload = {
+            WORK_FLOW: MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] ?  MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] : "WORK_FLOW_NOT_FOUND"
+        };
         const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
         let allRecords;
         if (filteredRecords) {
@@ -41,6 +49,8 @@ export default class SearchUtil {
             if (this.state.columnPriority > 0) {
                 filteredList = this.multiSort(filteredList);
             }
+        } else {
+            SearchUtil.mixpanelSearchEventhandler(MIXPANEL_CONSTANTS.SEARCH_EVENT.APPLY_SEARCH, mixpanelPayload);
         }
         let i = 1;
         filteredList.forEach(record => record.sequence = i++);

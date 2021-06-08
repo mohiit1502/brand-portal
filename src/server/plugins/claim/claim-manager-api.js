@@ -42,8 +42,12 @@ class ClaimManagerApi {
         method: "GET",
         path: "/api/sellers",
         handler: this.getSellers
+      },
+      {
+        method: "POST",
+        path: "/api/claims/webform",
+        handler: this.createWebformClaim
       }
-
     ]);
   }
 
@@ -94,6 +98,7 @@ class ClaimManagerApi {
       mixpanelPayload.ITEM_ID = request.query && request.query.payload;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers["WM_QOS.CORRELATION_ID"];
 
       let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      
       let responseBody = [];
@@ -133,6 +138,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       console.log("[ClaimManagerApi::getClaimTypes] API request for Get Claim type has completed");
@@ -170,6 +176,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -206,6 +213,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -252,6 +260,7 @@ class ClaimManagerApi {
       mixpanelPayload.USPTO_URL = payload && payload.usptoUrl;
       mixpanelPayload.USPTO_VERIFICATION = payload && payload.usptoVerification;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -265,6 +274,35 @@ class ClaimManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_CLAIM, mixpanelPayload);
+    }
+  }
+
+  async createWebformClaim(request, h) {
+    console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has started");
+    console.log("[ClaimManagerApi::createWebformClaim] Client IP adress:", request.info && request.info.remoteAddress);
+    console.log("[ClaimManagerApi::createWebformClaim] Client User Agent:", request.headers["user-agent"]);
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const payload = request.payload;
+      payload.metaInfo = {
+        userAgent: request.headers["user-agent"],
+        clientIp: request.info.remoteAddress
+      };
+      delete headers.Consumer_id;
+      delete headers.ROPRO_USER_ID;
+      headers["WBP.MARKETPLACE"] = "US";
+      const options = {
+        headers
+      };
+      const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
+      const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_CLAIMS_PATH");
+      const url = `${BASE_URL}${CLAIMS_PATH}`;
+      const response = await ServerHttp.post(url, options, payload);
+      console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed");
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log("[ClaimManagerApi::createWebformClaim] Error occured in API request for webform Create Claim:", err);
+      return h.response(err).code(err.status);
     }
   }
 }

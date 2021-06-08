@@ -1,5 +1,8 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-return-assign */
+import mixpanel from "../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
+
 export default class FilterUtil {
 
     static applyFiltersUtil(filter, filteredList) {
@@ -26,7 +29,16 @@ export default class FilterUtil {
         }
         return filteredList;
     }
-
+    static getAppliedFilterIDs (appliedFilters) {
+        const filterSelectedByName = [];
+        // eslint-disable-next-line no-unused-expressions
+        appliedFilters && appliedFilters.map(filter => {
+            let res;
+            filter.filterOptions.map(item => { res = res || item.selected;});
+            if (res) { filterSelectedByName.push(filter.id);}
+        });
+        return filterSelectedByName;
+    }
     // eslint-disable-next-line max-params
     static applyFilters(isSearch, filteredList, showFilter, buttonClickAction) {
         const identifier = this.state.identifier;
@@ -52,13 +64,19 @@ export default class FilterUtil {
         if (buttonClickAction === true) {
             this.setState({appliedFilter: appliedFilters});
         }
-
+        const mixpanelPayload = {
+            APPLIED_FILTER: FilterUtil.getAppliedFilterIDs(appliedFilters),
+            WORK_FLOW: MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] ?  MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] : "WORK_FLOW_NOT_FOUND"
+        };
         if (isSearch) {
             if (this.state.columnPriority > 0) {
                 filteredList = this.multiSort(filteredList);
             }
         } else {
             this.toggleFilterVisibility(showFilter);
+            if (mixpanelPayload && mixpanelPayload.APPLIED_FILTER.length > 0) {
+                mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILTER_EVENTS.APPLY_FILTER, mixpanelPayload);
+            }
         }
         let i = 1;
         filteredList.forEach(record => record.sequence = i++);

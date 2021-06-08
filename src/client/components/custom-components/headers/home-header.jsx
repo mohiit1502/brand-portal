@@ -20,9 +20,9 @@ class HomeHeader extends React.Component {
           <img src={headerLogo} />
         </Link>
         {!isWebform &&
-        <>
+        <React.Fragment>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
-                  aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"/>
           </button>
           <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
@@ -37,7 +37,7 @@ class HomeHeader extends React.Component {
               <UserMenu isOnboarded={this.props.isOnboarded}/>
             </ul>
           </div>
-        </>
+        </React.Fragment>
         }
       </nav>
     );

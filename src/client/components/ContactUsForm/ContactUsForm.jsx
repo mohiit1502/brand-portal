@@ -7,6 +7,10 @@ import Validator from "../../utility/validationUtil";
 import Helper from "../../utility/helper";
 import Http from "../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../actions/notification/notification-actions";
+import {toggleModal} from "../../actions/modal-actions";
+import {saveBrandInitiated} from "../../actions/brand/brand-actions";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 class ContactUsForm extends React.Component{
   constructor(props) {
@@ -96,6 +100,13 @@ class ContactUsForm extends React.Component{
     this.validateState();
     if(!this.validateState()){
       let form = {...this.state.form};
+      const mixpanelPayload = {
+        API:  form.api,
+        WORK_FLOW: "CONTACT_US",
+        TITLE: form.inputData.title.value,
+        AREA: form.inputData.area.value,
+        DETAILS: form.inputData.details.value
+      };
       console.log(this.state.form);
       this.loader("form",true);
       const url = form.api;
@@ -111,12 +122,17 @@ class ContactUsForm extends React.Component{
             this.props.showNotification(NOTIFICATION_TYPE.ERROR,form.failedNotificationMessage);
           }
           this.loader("form",false);
+          mixpanelPayload.API_SUCCESS = true;
         }
       ).catch(err => {
         this.loader("form",false);
         this.props.showNotification(NOTIFICATION_TYPE.ERROR,form.failedNotificationMessage);
         console.log(err);
-      })
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      }).finally(() => {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTACT_US.CONTACT_US, mixpanelPayload);
+      });
     }
   }
 

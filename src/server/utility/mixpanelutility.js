@@ -18,24 +18,22 @@ export default class MixpanelUtils {
     static getToken() {
         return MixpanelUtils.token;
     }
-    static trackEvent(eventName, payLoad) {
-        try {
-            if (!MixpanelUtils.getToken()) {
-                MixpanelUtils.intializeMixpanel();
+    static trackEvent(eventName, payload) {
+        if (MixpanelUtils.enableTracking) {
+            try {
+                if (!MixpanelUtils.getToken()) {
+                    MixpanelUtils.intializeMixpanel();
+                }
+                payload = payload ? payload : {};
+                if (payload) {
+                    payload.IS_SERVER = true;
+                    payload.$email = payload.distinct_id;
+                    payload.$user_id = payload.distinct_id;
+                }
+                payload ? mixpanel.track(eventName, payload) : mixpanel.track(eventName);
+            } catch (e) {
+                console.log(e);
             }
-            if (!payLoad) {
-                payLoad = {};
-            }
-            if (payLoad) {
-                payLoad.IS_SERVER = true;
-                payLoad.$email = payLoad.distinct_id;
-                payLoad.$user_id = payLoad.distinct_id;
-            }
-            if (MixpanelUtils.enableTracking) {
-                payLoad ? mixpanel.track(eventName, payLoad) : mixpanel.track(eventName);
-            }
-        } catch (e) {
-            console.log(e);
         }
     }
 }

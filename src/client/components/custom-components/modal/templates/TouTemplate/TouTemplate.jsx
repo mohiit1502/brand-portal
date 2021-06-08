@@ -42,7 +42,6 @@ const TouTemplate = props => {
         props.toggleModal(TOGGLE_ACTIONS.HIDE);
         profile.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE ? CONSTANTS.CODES.PORTAL_DASHBOARD.CODE : CONSTANTS.CODES.PORTAL_REGISTRATION.CODE;
         props.updateUserProfile(profile);
-        outgoingStatus === CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED && (window.location.pathname = "/logout");
         mixpanelPayload.API_SUCCESS = true;
       })
       .catch(e => {
@@ -52,6 +51,8 @@ const TouTemplate = props => {
         mixpanelPayload.ERROR = e.message ? e.message : e;
       }) .finally(() => {
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.TOU_TEMPLATE.TOU_VERIFICATION, mixpanelPayload);
+        outgoingStatus === CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED && mixpanel.clearCookies();
+        outgoingStatus === CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED && (window.location.pathname = "/logout");
       });
   };
 
@@ -111,7 +112,7 @@ const TouTemplate = props => {
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
               {page === pages.TOU_ACCEPTANCE ?
                 <button type="button" className="btn btn-primary px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.ACTIVE)}>Agree</button>
-                : <button type="button" className="btn btn-danger px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED)}>Decline</button>}
+                : <button type="button" className="btn btn-primary btn-outline-primary px-3 ml-3" onClick={() => updateUserStatus(CONSTANTS.USER.STATUS.TOU_NOT_ACCEPTED)}>Decline</button>}
             </div>
           </div>
         </div>
