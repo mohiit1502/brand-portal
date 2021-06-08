@@ -1,4 +1,4 @@
-const FORMFIELDCONFIG = {
+const FORMFIELDCONFIG ={
   "SECTIONSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
@@ -824,11 +824,13 @@ const FORMFIELDCONFIG = {
         "api": "/api/users/contactUs",
         "id": "contactUs",
         "isSubmitDisabled": true,
-        "loader": false
+        "loader": false,
+        "successNotificationMessage" : "Request successfully submitted. Our agents will process your request",
+        "failedNotificationMessage": "Sorry request cannot be processed at the moment"
       },
       "fields": {
         "area": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
+          "containerClasses": "mt-5 contact-us-form-row w-100",
           "colClasses": "contact-us-form-area",
           "disabled": false,
           "dropdownOptions": [
@@ -856,6 +858,11 @@ const FORMFIELDCONFIG = {
               "label": "IP Management Support",
               "value": "IP Management Support",
               "id": "ipManagementSupport"
+            },
+            {
+              "label": "Other",
+              "value": "Other",
+              "id": "other"
             }
           ],
           "error": "",
@@ -863,17 +870,18 @@ const FORMFIELDCONFIG = {
           "inputId": "area",
           "key": "area",
           "label": "Area",
-          "layout": "1.0.6",
+          "layout": "1.1.5",
           "invalidError": "Please select from the drop down",
           "patternErrorMessage": "Please select from the drop down.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "subtitle": "",
           "type": "select",
+          "tooltipContent":"Test tooltip content",
           "value": ""
         },
         "title": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
+          "containerClasses": " contact-us-form-row w-100",
           "colClasses": "contact-us-form-title",
           "disabled": false,
           "error": "",
@@ -882,7 +890,7 @@ const FORMFIELDCONFIG = {
           "invalidError": "Please provide a short description of the request",
           "key": "title",
           "label": "Title",
-          "layout": "2.1.6",
+          "layout": "2.0.5",
           "patternErrorMessage": "Please provide a short description of the request",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -897,13 +905,14 @@ const FORMFIELDCONFIG = {
           }
         },
         "details": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
+          "containerClasses": "contact-us-form-row w-100",
           "colClasses": "contact-us-form-details",
           "error": "",
           "inputId": "details",
           "invalidError": "Please provide additional information about the request",
           "key": "details",
           "label": "Details",
+          "layout": "3.0.7",
           "patternErrorMessage": "Please provide additional information about the request",
           "preventHTMLRequiredValidation": true,
           "placeholder": "Please provide additional information about the request",
@@ -919,10 +928,9 @@ const FORMFIELDCONFIG = {
           }
         },
         "sendActions": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
+          "containerClasses": "contact-us-form-row w-100 m-0",
           "colClasses": "contact-us-button-panel text-right",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
+          "layout": "4.0.7",
           "type": "_buttonsPanel",
           "buttons": {
             "send": {
@@ -1208,42 +1216,43 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "getItemListFromChild": "getItemListFromChild",
           "sellerNameType": "text",
-          "getItemListFromChild": "getItemListFromChild",
           "prebounceChangeHandler": "disableSubmitButton",
           "onChangeUrl": "onChange",
           "onChangeSellerName": "onChange",
           "fieldLoader": false,
           "bubbleValue": "bubbleValue",
-          "itemList": [{
-            "id": "item-0",
-            "url": {
-              "label": "Item URL",
-              "required": "true",
-              "value": "",
-              "type": "url",
-              "pattern": "https?://.+",
-              "disabled": false,
-              "isValid": "false",
-              "subtitle": "",
-              "error": ""
-            },
-            "sellerName": {
-              "label": "Seller Name",
-              "required": "true",
-              "value": "",
-              "disabled": true,
-              "options": [],
-              "subtitle": "",
-              "type": "text",
-              "error": "",
-              "validators": {
-                "validateLength": {
-                  "minLength": "2",
-                  "error": "Minimum length is 2 characters"
+          "itemList": [
+            {
+              "id": "item-0",
+              "url": {
+                "label": "Item URL",
+                "required": "true",
+                "value": "",
+                "type": "url",
+                "pattern": "https?://.+",
+                "disabled": false,
+                "isValid": "false",
+                "subtitle": "",
+                "error": ""
+              },
+              "sellerName": {
+                "label": "Seller Name",
+                "required": "true",
+                "value": "",
+                "disabled": true,
+                "options": [],
+                "subtitle": "",
+                "type": "text",
+                "error": "",
+                "validators": {
+                  "validateLength": {
+                    "minLength": "2",
+                    "error": "Minimum length is 2 characters"
+                  }
                 }
               }
             }
-      }]
+          ]
         },
         "comments": {
           "disabled": false,
@@ -1385,121 +1394,6 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3",
               "disabled": true,
               "text": "Submit",
-              "type": "submit"
-            }
-          }
-        }
-      }
-    },
-    "CONTACTUS":{
-      "formConfig":{
-        "api":"/api/users/contactUs",
-        "id": "contactUs",
-        "isSubmitDisabled":true,
-        "loader": false
-      },
-      "fields": {
-        "area": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-area",
-          "disabled": false,
-          "dropdownOptions" : [
-            {
-              "id" : "technicalSupport",
-              "label": "Technical Support",
-              "value": "Technical Support"
-            },
-            {
-              "label": "Claim Support",
-              "value": "Claim Support",
-              "id": "claimSupport"
-            },
-            {
-              "label": "User Management Support",
-              "value": "User Management Support",
-              "id": "userManagementSupport"
-            },
-            {
-              "label": "Follow-Up",
-              "value": "Follow-Up",
-              "id": "followUp"
-            },
-            {
-              "label": "IP Management Support",
-              "value": "IP Management Support",
-              "id": "ipManagementSupport"
-            }
-          ],
-          "error": "",
-          "fieldOk": false,
-          "inputId": "area",
-          "key": "area",
-          "label": "Area",
-          "layout": "1.0.6",
-          "invalidError": "Please select from the drop down",
-          "patternErrorMessage": "Please select from the drop down.",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "select",
-          "value": ""
-        },
-        "title" : {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-title",
-          "disabled": false,
-          "error": "",
-          "fieldOk": false,
-          "inputId": "title",
-          "invalidError": "Please provide a short description of the request",
-          "key": "title",
-          "label": "Title",
-          "layout": "2.1.6",
-          "patternErrorMessage": "Please provide a short description of the request",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "text",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "maxLength": 60,
-              "error": "Max. length is 60"
-            }
-          }
-        },
-        "details" : {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-details",
-          "error": "",
-          "inputId": "details",
-          "invalidError": "Please provide additional information about the request",
-          "key": "details",
-          "label": "Details",
-          "patternErrorMessage": "Please provide additional information about the request",
-          "preventHTMLRequiredValidation": true,
-          "placeholder": "Please provide additional information about the request",
-          "required": true,
-          "subtitle": "",
-          "type": "textarea",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "maxLength": 1000,
-              "error": "Max. length is 1000"
-            }
-          }
-        },
-        "sendActions":{
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-button-panel text-right",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "type": "_buttonsPanel",
-          "buttons": {
-            "send": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "text": "Send",
               "type": "submit"
             }
           }
