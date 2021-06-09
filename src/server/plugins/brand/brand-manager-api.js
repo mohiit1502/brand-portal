@@ -72,6 +72,7 @@ class BrandManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
 
@@ -116,6 +117,7 @@ class BrandManagerApi {
       mixpanelPayload.USPTO_URL = payload && payload.usptoUrl;
       mixpanelPayload.USPTO_VERIFICATION = payload && payload.usptoVerification;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
 
@@ -155,6 +157,7 @@ class BrandManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.put(url, options, payload);
       console.log("[BrandManagerApi::updateBrand] API request for Update Brand has completed");
@@ -198,6 +201,7 @@ class BrandManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
       const response = await ServerHttp.get(url, options, request.query);
       console.log("[BrandManagerApi::checkUnique] API request for Brand Uniqueness has completed");
       mixpanelPayload.RESPONSE_STATUS = response.status;
