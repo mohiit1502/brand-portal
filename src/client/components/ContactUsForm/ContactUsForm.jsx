@@ -54,9 +54,10 @@ class ContactUsForm extends React.Component{
 
   resetForm(){
     const form = {...this.state.form};
-    form.inputData.area.value = "";
-    form.inputData.title.value = "";
-    form.inputData.details.value = "";
+
+    form.inputData.area.error="";
+    form.inputData.title.error = "";
+    form.inputData.details.error = "";
     this.setState({form});
   }
 
