@@ -3,7 +3,6 @@ import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
-const svgCaptcha = require("svg-captcha");
 
 class ContentManagerApi {
   constructor() {

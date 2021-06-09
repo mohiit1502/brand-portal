@@ -160,6 +160,8 @@ class Webform extends React.Component {
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       if (matchedClaimTypeWithMeta.claimType !== "copyright") {
         form.inputData.user_undertaking_3.required = false;
+      } else {
+        form.inputData.user_undertaking_3.required = true;
       }
       this.setState({form});
     }
