@@ -9,12 +9,14 @@ import Http from "../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../actions/notification/notification-actions";
 import {toggleModal} from "../../actions/modal-actions";
 import {saveBrandInitiated} from "../../actions/brand/brand-actions";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 class ContactUsForm extends React.Component{
   constructor(props) {
     super(props);
 
-    const functions = ["onChange","bubbleValue","handleSubmit","resetForm","setSelectInputValue"]
+    const functions = ["onChange","handleSubmit","resetForm","setSelectInputValue"]
     functions.forEach(func => {this[func] = this[func].bind(this)});
 
     this.validateState = Validator.validateState.bind(this);
@@ -27,7 +29,23 @@ class ContactUsForm extends React.Component{
         inputData: this.props.contactUsForm.fields,
         ...this.props.contactUsForm.formConfig
       }
-    }
+    };
+
+    this.state.form.inputData.area.tooltipContent = (
+      <div className="py-2">
+        <b className="position-absolute text-white tooltip-close-button">x</b>
+        <p className="mt-2 pl-2 text-left font-size-12">
+          <b>Technical Support:</b> Select if you are facing an issue with a system functionality.<br/>
+          <br />
+          <b>Claim Support:</b> Select if you need help with a specific claim.<br />
+          <br/>
+          <b>User Management Support:</b> Select if you need help with managing current or new users.<br />
+          <br/>
+          <b>Follow-Up:</b> Select if you want to follow up on an open ticket.<br />
+          <br/>
+          <b>IP Management Support:</b> Select if you need help with managing your brands.<br />
+        </p>
+      </div>);
   }
 
   componentDidMount() {
@@ -69,21 +87,10 @@ class ContactUsForm extends React.Component{
 
   }
 
-  bubbleValue (evt, key, error) {
-    console.log("Bubble value is called",evt,key,error)
-    const targetVal = evt.target.value;
-    this.setState(state => {
-      state = {...state};
-      state.form.inputData[key].value = targetVal;
-      state.form.inputData[key].error = error;
-      return state;
-    });
-  }
-
   checkEnableSubmit(){
     const form = {...this.state.form}
     const isSubmitEnabled =  form.inputData.area.value && form.inputData.title.value
-            && form.inputData.details.value;
+      && form.inputData.details.value;
     form.inputData.sendActions.buttons.send.disabled = !isSubmitEnabled;
     this.setState({form});
   }
@@ -93,6 +100,13 @@ class ContactUsForm extends React.Component{
     this.validateState();
     if(!this.validateState()){
       let form = {...this.state.form};
+      const mixpanelPayload = {
+        API:  form.api,
+        WORK_FLOW: "CONTACT_US",
+        TITLE: form.inputData.title.value,
+        AREA: form.inputData.area.value,
+        DETAILS: form.inputData.details.value
+      };
       console.log(this.state.form);
       this.loader("form",true);
       const url = form.api;
@@ -101,16 +115,24 @@ class ContactUsForm extends React.Component{
       const details = form.inputData.details.value;
       const payload = {area,title,details};
       return Http.post(url,payload).then(res => {
-          this.resetForm();
+          if(res.body){
+            this.resetForm();
+            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS,form.successNotificationMessage);
+          }else{
+            this.props.showNotification(NOTIFICATION_TYPE.ERROR,form.failedNotificationMessage);
+          }
           this.loader("form",false);
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS,"Request successfully submitted. Our agents will process your request");
+          mixpanelPayload.API_SUCCESS = true;
         }
       ).catch(err => {
         this.loader("form",false);
-        this.props.showNotification(NOTIFICATION_TYPE.ERROR,"Sorry request cannot be processed at the moment");
+        this.props.showNotification(NOTIFICATION_TYPE.ERROR,form.failedNotificationMessage);
         console.log(err);
-
-      })
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      }).finally(() => {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTACT_US.CONTACT_US, mixpanelPayload);
+      });
     }
   }
 
