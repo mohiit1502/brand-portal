@@ -1583,7 +1583,7 @@ const FORMFIELDCONFIG = {
       },
       "fields": {
         "area": {
-          "containerClasses": "mt-5 contact-us-form-row w-100",
+          "containerClasses": "mt-4 contact-us-form-row w-100",
           "colClasses": "contact-us-form-area",
           "disabled": false,
           "dropdownOptions": [
@@ -1630,7 +1630,7 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "select",
-          "tooltipContent": "Test tooltip content",
+          "tooltipRightContent": "",
           "value": ""
         },
         "title": {
