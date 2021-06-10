@@ -28,7 +28,6 @@ class CustomInput extends React.Component {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
     }
     $("[data-toggle='tooltip']")
-      .on("mouseleave", e => e.stopImmediatePropagation())
       .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
       .tooltip();
     $("body")
