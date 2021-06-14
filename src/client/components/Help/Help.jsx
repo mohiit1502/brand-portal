@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useCallback} from "react";
 import HelpMain from "./../HelpMain";
 import HelpSideBar from "./../HelpSideBar";
 import ImageViewer from "../ImageViewer/ImageViewer";
@@ -7,6 +7,7 @@ import helpConfiguration from "../../config/contentDescriptors/help";
 import "./Help.component.scss";
 
 const ACTIVE_TAB = "faq";
+const CONTACT_US_TAB = "contact";
 
 const Help = props => {
 
@@ -25,6 +26,10 @@ const Help = props => {
     })();
   }, []);
 
+  const goToContactUs = useCallback((e) => {
+    e.preventDefault();
+    setActiveTab(CONTACT_US_TAB);
+  })
   return (
     <div className={`${loader ? " loader" : ""}`}>
       { helpConfig && Object.keys(helpConfig).length > 0 &&
@@ -39,7 +44,7 @@ const Help = props => {
               <HelpSideBar categoryHeader={helpConfig.categoryHeader} categories={helpConfig.categories} activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
             <div className="col-10">
-              <HelpMain content={helpConfig.content} activeTab={activeTab} />
+              <HelpMain content={helpConfig.content} activeTab={activeTab} goToContactUs={goToContactUs}/>
             </div>
           </div>
           <ImageViewer />
