@@ -8,13 +8,13 @@ import Accordion from "./../Accordion";
 import ContentRenderer from "../../utility/ContentRenderer";
 import "./FaqSingle.component.scss";
 
-const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher}) => {
+const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher,goToContactUs}) => {
 
   const [expanded, setExpanded] = useState(expandPreState ? expandPreState : false);
   const [contentRenderer, setContentRenderer] = useState();
 
   useEffect(() => {
-    setContentRenderer(new ContentRenderer(data, "c-FaqSingle__helpImage", toggleImageViewerDispatcher));
+    setContentRenderer(new ContentRenderer(data, "c-FaqSingle__helpImage", toggleImageViewerDispatcher,goToContactUs));
   }, [data]);
 
   return (
@@ -27,7 +27,8 @@ const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher}) => {
 FaqSingle.propTypes = {
   data: PropTypes.object,
   expandPreState: PropTypes.bool,
-  toggleImageViewerDispatcher: PropTypes.func
+  toggleImageViewerDispatcher: PropTypes.func,
+  goToContactUs: PropTypes.func
 };
 
 const mapDispatchToProps = {

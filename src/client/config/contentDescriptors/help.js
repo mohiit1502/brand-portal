@@ -39,9 +39,8 @@ const HELPCONFIG = {
           "answer": {
             "partial1": {
               "chunk1": "Please reach out to our support team at: ",
-              "anchor1": {
-                "href": "mailto:brandportal@walmart.com",
-                "text": "brandportal@walmart.com"
+              "link1": {
+                "text": "contact us"
               },
               "chunk2": ". Please be sure to include information about your account, along with details regarding your issue."
             }
@@ -92,9 +91,8 @@ const HELPCONFIG = {
           "answer": {
             "partial1": {
               "chunk1": "Please reach out to our support team at ",
-              "anchor1": {
-                "href": "mailto:brandportal@walmart.com",
-                "text": "brandportal@walmart.com"
+              "link1": {
+                "text": "contact us"
               },
               "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract."
             }
@@ -113,9 +111,8 @@ const HELPCONFIG = {
           "answer": {
             "partial1": {
               "chunk1": "Please reach out to our support team at: ",
-              "anchor1": {
-                "href": "mailto:brandportal@walmart.com",
-                "text": "brandportal@walmart.com"
+              "link1": {
+                "text": "contact us"
               },
               "chunk2": " and include information about your account, along with details regarding your issue."
             }
