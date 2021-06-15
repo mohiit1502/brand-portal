@@ -1461,7 +1461,7 @@ const FORMFIELDCONFIG ={
                 }
               }
             }
-      }]
+          }]
         },
         "comments": {
           "disabled": false,
@@ -1645,12 +1645,12 @@ const FORMFIELDCONFIG ={
         "id": "contactUs",
         "isSubmitDisabled": true,
         "loader": false,
-        "successNotificationMessage" : "Request successfully submitted. Our agents will process your request",
+        "successNotificationMessage": "Request successfully submitted. Our agents will process your request",
         "failedNotificationMessage": "Sorry request cannot be processed at the moment"
       },
       "fields": {
         "area": {
-          "containerClasses": "mt-5 contact-us-form-row w-100",
+          "containerClasses": "mt-4 contact-us-form-row w-100",
           "colClasses": "contact-us-form-area",
           "disabled": false,
           "dropdownOptions": [
@@ -1697,7 +1697,7 @@ const FORMFIELDCONFIG ={
           "required": true,
           "subtitle": "",
           "type": "select",
-          "tooltipContent":"Test tooltip content",
+          "tooltipRightContent": "",
           "value": ""
         },
         "title": {
@@ -1742,6 +1742,7 @@ const FORMFIELDCONFIG ={
           "value": "",
           "validators": {
             "validateLength": {
+              "minLength": 20,
               "maxLength": 1000,
               "error": "Max. length is 1000"
             }

@@ -11,7 +11,7 @@ const HelpMain = ({activeTab, content}) => {
 
   const contentRendered = activeTabContent && activeTabContent.items ? activeTabContent.items.map((item, index) => {
     item.id = `${activeTab}-${index}`;
-    return <FaqSingle key={`${activeTab}-${index}`} data={item} />;
+    return <FaqSingle key={`${activeTab}-${index}`} data={item}/>;
   }) : <div className="c-HelpMain__content__qContainer"><ContactUsForm/></div>;
 
   return (
@@ -26,7 +26,8 @@ const HelpMain = ({activeTab, content}) => {
 
 HelpMain.propTypes = {
   activeTab: PropTypes.string,
-  content: PropTypes.object
+  content: PropTypes.object,
+  goToContactUs: PropTypes.func
 };
 
 export default HelpMain;

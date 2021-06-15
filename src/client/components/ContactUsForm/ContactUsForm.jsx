@@ -57,6 +57,10 @@ class ContactUsForm extends React.Component{
     form.inputData.area.value = "";
     form.inputData.title.value = "";
     form.inputData.details.value = "";
+
+    form.inputData.area.error="";
+    form.inputData.title.error = "";
+    form.inputData.details.error = "";
     this.setState({form});
   }
 
@@ -90,7 +94,7 @@ class ContactUsForm extends React.Component{
   checkEnableSubmit(){
     const form = {...this.state.form}
     const isSubmitEnabled =  form.inputData.area.value && form.inputData.title.value
-            && form.inputData.details.value;
+      && form.inputData.details.value;
     form.inputData.sendActions.buttons.send.disabled = !isSubmitEnabled;
     this.setState({form});
   }

@@ -9,12 +9,12 @@ import { Tile } from "../components";
 
 export default class ContentRenderer {
 
-  constructor(content, commonImageClass, commonClickHandler) {
+  constructor(content, commonImageClass, commonClickHandler,contentOnClickHandler) {
     this.data = content;
     this.commonImageClass = commonImageClass;
     this.commonClickHandler = commonClickHandler;
+    this.contentOnClickHandler = contentOnClickHandler;
   }
-
   insertImages(images) {
     const colClass = images && images.length === 1 ? "col-8" : "col-6";
     return (<div className="row">
