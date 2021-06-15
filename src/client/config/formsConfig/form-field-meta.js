@@ -1685,6 +1685,91 @@ const FORMFIELDCONFIG = {
           }
         }
       }
+    },
+    "BULKCLAIMUPLOAD": {
+      "sectionConfig": {
+        "sectionTitle": "Multiple Claim Upload",
+      },
+      "formConfig": {
+        "headerClasses": "content-header-row h3 p-4",
+        "formClasses": "row content-row p-4 mt-4",
+        "claimDetailsSheetName": "Bulk Upload Sheet",
+        "excelColumnMapping": {
+          "BRAND_ID": 1,
+          "CLAIM_TYPE": 2,
+          "CLAIM_TYPE_IDENTIFIER": 3,
+          "ITEM_URL": 4,
+          "SELLER_NAME": 5,
+          "COMMENTS": 6
+        },
+        "fileType": "xlsx",
+        "maxFileSize": 500000,
+
+      },
+      "fields": {
+        "dragAndDrop": {
+          "containerClasses": "text-center my-3",
+          "DragAndDropText": "Upload your files here or",
+          "errorMessage": "Enter Valid File",
+          "inputId": "dragAndDrop",
+          "key": "dragAndDrop",
+          "layout": "1.1.0",
+          "onChange": "onChange",
+          "type": "_dragAndDrop",
+          "UploadText": "Browse"
+        },
+        "fieldsHeade_1": {
+          "containerClasses": "mt-5  font-weight-bold",
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Before Uploading the file please make sure to take note of the following:",
+          "layout": "2.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "fieldsHeader_2": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "1. The header of the main file- Bulk Upload Sheet should contain 6 columns.",
+          "layout": "3.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "fieldsHeader_3": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "2. Maximum claims that can be uploaded via excel are X",
+          "layout": "4.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "fieldsHeader_4": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "3. All cells have been filled",
+          "layout": "5.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "fieldsHeader_5": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "4. File format-.xlsx/.xls",
+          "layout": "5.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "bulkUploadActions": {
+          "containerClasses": "mt-3",
+          "colClasses": "text-right",
+          "layout": "7.1.0",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "submit": {
+              "classes": "btn btn-primary",
+              "disabled": false,
+              "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+        
+      }
     }
   }
 }

@@ -5,6 +5,7 @@ import ArrowDown from "./arrow-down-dk.png";
 import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
+import BulkUploadDocument from "./BULK_Upload.xlsx";
 import CheckGreen from "./check-grn.svg";
 import ClaimsIcon from "./claims.svg";
 import Confirm from "./confirm.svg";
@@ -39,6 +40,7 @@ import SortUp from "./sort_ascend.svg"
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
+import Upload from "./upload.svg";
 import User from "./user.svg";
 import UsersIcon from "./users.png";
 import UserList from "./User List.jpg";
@@ -57,6 +59,7 @@ export {
     BlackBGCheck,
     BrandList,
     BrandsIcon,
+    BulkUploadDocument,
     ClaimsIcon,
     Confirm,
     ContactUsBG,
@@ -91,6 +94,7 @@ export {
     TimesFailure,
     TimesSuccess,
     TOU,
+    Upload,
     User,
     UsersIcon,
     UserList,

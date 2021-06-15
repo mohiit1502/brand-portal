@@ -4,7 +4,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(pdf)$/,
+        test: /\.(pdf|xlsx)$/,
         use: [
           {
             loader: "file-loader",

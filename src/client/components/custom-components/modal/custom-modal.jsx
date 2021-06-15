@@ -15,6 +15,7 @@ import CompanyVerificationPendingTemplate from "./templates/company-verification
 import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
 import Alert from "../../Alert/Alert";
 import {DateSelector, ResetPasswordTemplate, TouTemplate} from "../../index";
+import NewBulkClaimTemplate from "./templates/new-bulk-claim-template";
 
 
 class CustomModal extends React.Component {
@@ -50,6 +51,7 @@ class CustomModal extends React.Component {
       case "ResetPasswordTemplate": return ResetPasswordTemplate;
       case "StatusModalTemplate": return StatusModalTemplate;
       case "TouTemplate": return TouTemplate;
+      case "NewBulkClaimTemplate": return NewBulkClaimTemplate;
     }
     return null;
   }

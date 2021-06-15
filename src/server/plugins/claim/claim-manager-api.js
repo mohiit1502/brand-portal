@@ -14,6 +14,7 @@ class ClaimManagerApi {
     this.createClaim = this.createClaim.bind(this);
     this.getClaimTypes = this.getClaimTypes.bind(this);
     this.getSellers = this.getSellers.bind(this);
+    this.getBulkSellers = this.getBulkSellers.bind(this);
   }
 
   register(server) {
@@ -42,8 +43,17 @@ class ClaimManagerApi {
         method: "GET",
         path: "/api/sellers",
         handler: this.getSellers
+      },
+      {
+        method: "POST",
+        path: "/api/bulkClaims",
+        handler: this.createBulkClaim
+      },
+      {
+        method: "GET",
+        path: "/api/bulk/sellers",
+        handler: this.getBulkSellers
       }
-
     ]);
   }
 
@@ -270,6 +280,46 @@ class ClaimManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_CLAIM, mixpanelPayload);
+    }
+  }
+
+  async createBulkClaim(request, h) {
+    console.log("[ClaimManagerApi::createBulkClaim] API request for Create Bulk Claim has started");
+    console.log("[ClaimManagerApi::createBulkClaim] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      console.log(request.payload);
+      return h.response(request.payload).code(200);
+      console.log("[ClaimManagerApi::createClaim] API request for Create Bulk Claim has completed");
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log("[ClaimManagerApi::createClaim] Error occured in API request for Create Bulk Claim:", err);
+      return h.response(err).code(err.status);
+    }
+  }
+
+  async getBulkSellers(request, h) {
+    console.log("[ClaimManagerApi::getItemList] API request for Get ItemList has started");
+    console.log("[ClaimManagerApi::getItemList] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      const headers = this.getIQSHeaders(request);
+      const options = {
+        headers
+      };
+      let payload = "select offer.US_WMT_DOTCOM_ITEM_ID,offer.sellerId, rollupoffer.partnerDisplayName FROM catalog_index where offer.US_WMT_DOTCOM_ITEM_ID in __itemIds__ and rollupoffer.partnerDisplayName in __sellerNames__";
+      payload = payload.replace("__itemIds__", request.query.itemsIDs);
+      payload = payload.replace("__sellerNames__", request.query.sellerIds);
+      let url = secrets.IQS_URL;
+      let incrementalTimeouts = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.INCREMENTAL_TIMEOUTS");
+      incrementalTimeouts = incrementalTimeouts && JSON.parse(incrementalTimeouts);
+
+      let response = await ServerUtils.retry(request = { url, options, payload, type: "post" }, [ 1000, 2000, 4000]);
+      let responseBody = response.body.docs;
+
+      console.log("[ClaimManagerApi::getSellers] API request for Get Sellers has completed");
+      return h.response(responseBody).code(response.status);
+    } catch (err) {
+      console.log("[ClaimManagerApi::getItemList] Error occured in API request for Get Sellers:", err);
+      return h.response(err).code(err.status);
     }
   }
 }

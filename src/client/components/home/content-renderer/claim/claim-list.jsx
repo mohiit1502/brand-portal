@@ -8,6 +8,7 @@ import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import filterIcon from "../../../../images/filterIcon.svg";
 import emptyClaims from "../../../../images/empty-claim.png";
+import * as staticContent from "../../../../images";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
 import {dispatchClaims} from "./../../../../actions/claim/claim-actions";
@@ -28,6 +29,7 @@ class ClaimList extends React.Component {
     super(props);
 
     this.addNewClaim = this.addNewClaim.bind(this);
+    this.addBulkNewClaim = this.addBulkNewClaim.bind(this);
     this.createFilters = this.createFilters.bind(this);
     this.fetchClaims = this.fetchClaims.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
@@ -42,6 +44,7 @@ class ClaimList extends React.Component {
     this.applyFilters = FilterUtil.applyFilters.bind(this);
     this.filterMap = {"inprogress": "In Progress", "closed": "Closed"};
     this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
+    this.handleDownloadTemplate = this.handleDownloadTemplate.bind(this);
     this.state = {
       showFilters: false,
       claimList: [],
@@ -222,6 +225,11 @@ class ClaimList extends React.Component {
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
   }
 
+  addBulkNewClaim () {
+    const meta = { templateName: "NewBulkClaimTemplate" };
+    //todo: add mixpanel for button click
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+  }
 
   toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
@@ -334,10 +342,26 @@ class ClaimList extends React.Component {
     this.setState({paginatedList});
   }
 
-  clearFilter(filterID,optionID){
+  clearFilter(filterID,optionID) {
     this.onFilterChange(filterID, optionID);
     this.applyFilters(false,null,null,true)
-    this.toggleFilterVisibility()
+    this.toggleFilterVisibility();
+  }
+
+  handleDownloadTemplate() {
+    //ClientUtils.downloadFile(staticContent.BulkUploadDocument, "BULK_Upload.xlsx");
+    window.start = Date.now();
+    this.loader(true);
+    Http.get("/api/brands?brandStatus=ACCEPTED", null, null, null, null, "Request failed, please try again.")
+      .then(res => {
+        console.log("Time taken for get brands API call", Date.now() - start);
+        const blob = ClientUtils.processBulkUpload(staticContent.BulkUploadDocument, res.body.content);
+        //console.log(blob);
+        this.loader(false);
+      }).catch(err => {
+        console.log(err);
+        this.loader(false);
+      });
   }
 
   render () {
@@ -358,6 +382,12 @@ class ClaimList extends React.Component {
                   <div className="btn btn-primary btn-sm px-3" onClick={this.addNewClaim}>
                     Submit New Claim
                   </div>
+                  <div className="btn btn-primary ml-3 btn-sm px-3" onClick={this.addBulkNewClaim}>
+                    Submit Bulk Claim
+                  </div>
+                  <a className="btn btn-primary btn-download-template ml-3 btn-sm px-3" onClick={this.handleDownloadTemplate}>
+                    Download Claim Template
+                  </a>
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">

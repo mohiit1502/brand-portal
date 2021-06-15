@@ -1,0 +1,42 @@
+@import "../../../override/variables";
+
+.modal.new-bulk-claim-modal {
+  .modal-dialog {
+    height: 60%;
+    .modal-content {
+      max-height:  60rem;
+      position: relative;
+      .modal-header{
+        height: 65px;
+        font-size: 27px;
+        background-color: $modal-header-background-color;
+        color: white;
+
+      }
+      .modal-body {
+        height: calc(100% - 130px);
+        overflow: auto;
+        padding: 1.5rem;
+        position: static;
+        & .c-ButtonsPanel {
+          position: absolute;
+          padding: 0px !important;
+          margin: 0px;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+        }
+
+        .c-ButtonsPanel {
+          .btn {
+            min-width: 150px;
+          }
+        }
+    }
+
+    .c-HeaderFormComponent {
+        margin-left: 1.5rem;
+    }
+  }
+  }
+}

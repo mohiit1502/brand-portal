@@ -33,7 +33,14 @@ $ozark-noir-blue: #0b1e40;
           background: $market-place-blue;
           font-weight: bold;
           font-size: 15px;
+
+          &.btn-download-template {
+            background: white !important;
+            color: $market-place-blue;
+            text-decoration: underline;
+          }
         }
+        
         .input-group {
 
           #search-box {
@@ -210,5 +217,4 @@ $ozark-noir-blue: #0b1e40;
     }
 
   }
-
 }
