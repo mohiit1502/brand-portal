@@ -41,6 +41,21 @@ class ContentRenderer extends React.Component {
           <Route path={CONSTANTS.ROUTES.HELP.HELP}>
             <Help {...this.props}/>
           </Route>
+          <Route path={CONSTANTS.ROUTES.HELP.FAQ}>
+            <Help {...this.props}/>
+          </Route>
+          <Route path={CONSTANTS.ROUTES.HELP.USER}>
+            <Help {...this.props}/>
+          </Route>
+          <Route path={CONSTANTS.ROUTES.HELP.BRAND}>
+            <Help {...this.props}/>
+          </Route>
+          <Route path={CONSTANTS.ROUTES.HELP.CLAIM}>
+            <Help {...this.props}/>
+          </Route>
+          <Route path={CONSTANTS.ROUTES.HELP.CONTACT}>
+            <Help {...this.props}/>
+          </Route>
           <Route path={CONSTANTS.ROUTES.DASHBOARD}>
             <Dashboard {...this.props}/>
           </Route>

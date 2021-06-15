@@ -1,17 +1,14 @@
-import React, {useEffect, useState,useCallback} from "react";
+import React, {useEffect, useState} from "react";
 import HelpMain from "./../HelpMain";
 import HelpSideBar from "./../HelpSideBar";
 import ImageViewer from "../ImageViewer/ImageViewer";
-import Http from "../../utility/Http";
 import helpConfiguration from "../../config/contentDescriptors/help";
 import "./Help.component.scss";
-
-const ACTIVE_TAB = "faq";
-const CONTACT_US_TAB = "contact";
+import {withRouter} from "react-router";
 
 const Help = props => {
 
-  const [activeTab, setActiveTab] = useState(ACTIVE_TAB);
+  const [activeTabUrl, setActiveTabUrl] = useState(props.location.pathname);
   const [helpConfig, setHelpConfig] = useState({});
   const [loader, setLoader] = useState(true);
   useEffect(() => {
@@ -26,10 +23,10 @@ const Help = props => {
     })();
   }, []);
 
-  const goToContactUs = useCallback((e) => {
-    e.preventDefault();
-    setActiveTab(CONTACT_US_TAB);
-  })
+  useEffect(() => {
+    setActiveTabUrl(props.location.pathname)
+  },[props.location.pathname])
+
   return (
     <div className={`${loader ? " loader" : ""}`}>
       { helpConfig && Object.keys(helpConfig).length > 0 &&
@@ -41,10 +38,11 @@ const Help = props => {
           </div>
           <div className="c-Help__content row h-100">
             <div className="col-2 h-100">
-              <HelpSideBar categoryHeader={helpConfig.categoryHeader} categories={helpConfig.categories} activeTab={activeTab} setActiveTab={setActiveTab} />
+              <HelpSideBar categoryHeader={helpConfig.categoryHeader} categories={helpConfig.categories}
+                           activeTab={helpConfig.sectionMap[activeTabUrl]}/>
             </div>
             <div className="col-10">
-              <HelpMain content={helpConfig.content} activeTab={activeTab} goToContactUs={goToContactUs}/>
+              <HelpMain content={helpConfig.content} activeTab={helpConfig.sectionMap[activeTabUrl]}/>
             </div>
           </div>
           <ImageViewer />
@@ -58,4 +56,4 @@ Help.propTypes = {
 
 };
 
-export default Help;
+export default withRouter(Help);
