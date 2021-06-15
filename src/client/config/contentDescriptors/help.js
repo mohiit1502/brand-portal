@@ -3,6 +3,14 @@
 const HELPCONFIG = {
   "header": "Walmart Brand Portal Help Center",
   "categoryHeader": "Help Topics",
+  "sectionMap":{
+    "/help/faq" : "faq",
+    "/help/user" : "user",
+    "/help/brand" : "brand",
+    "/help/claim" : "claim",
+    "/help/contact" : "contact",
+    "/help": "faq"
+  },
   "categories": {
     "faq": {
       "categoryText": "Frequently Asked Questions"
@@ -40,6 +48,7 @@ const HELPCONFIG = {
             "partial1": {
               "chunk1": "Please reach out to our support team at: ",
               "link1": {
+                "onClick": "goToContactUs",
                 "text": "contact us"
               },
               "chunk2": ". Please be sure to include information about your account, along with details regarding your issue."
@@ -92,6 +101,7 @@ const HELPCONFIG = {
             "partial1": {
               "chunk1": "Please reach out to our support team at ",
               "link1": {
+                "onClick": "goToContactUs",
                 "text": "contact us"
               },
               "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract."
@@ -112,6 +122,7 @@ const HELPCONFIG = {
             "partial1": {
               "chunk1": "Please reach out to our support team at: ",
               "link1": {
+                "onClick": "goToContactUs",
                 "text": "contact us"
               },
               "chunk2": " and include information about your account, along with details regarding your issue."

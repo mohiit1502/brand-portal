@@ -125,7 +125,12 @@ const CONSTANTS = {
     },
 
     HELP: {
-      HELP: "/help"
+      HELP: "/help",
+      FAQ:"/help/faq",
+      USER:"/help/user",
+      CLAIM:"/help/claim",
+      BRAND:"/help/brand",
+      CONTACT:"/help/contact"
     },
 
     DASHBOARD: "/dashboard"

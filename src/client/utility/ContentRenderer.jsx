@@ -70,7 +70,7 @@ export default class ContentRenderer {
         } else if (partialNodeKey.startsWith("anchor")) {
           return <a href={node1.href}>{node1.text}</a>;
         } else if (partialNodeKey.startsWith("link")){
-          return <a href={"javascript:void(0)"} onClick= {(e) => this.contentOnClickHandler(e)}>{node1.text}</a>
+          return <a href={"#"} onClick= {(e) => this.contentOnClickHandler(e,node1.onClick)}>{node1.text}</a>
         } else {
           return null;
         }

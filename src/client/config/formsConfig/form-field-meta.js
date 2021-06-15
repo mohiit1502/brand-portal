@@ -1675,6 +1675,7 @@ const FORMFIELDCONFIG = {
           "value": "",
           "validators": {
             "validateLength": {
+              "minLength": 20,
               "maxLength": 1000,
               "error": "Max. length is 1000"
             }
