@@ -1420,6 +1420,7 @@ const FORMFIELDCONFIG ={
           "layout": "12.1.0",
           "type": "_urlItems",
           "disableAddItem": true,
+          "maxItems": 5,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "onChangeItem": "getItemListFromChild",
           "sellerNameType": "text",

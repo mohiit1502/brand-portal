@@ -106,11 +106,12 @@ export default class Validator {
             hasError = true;
           }
         } else {
-        obj.error = obj.invalidError || "Please Enter Valid Input";
+        
+        obj.error = obj.error || obj.invalidError || "Please Enter Valid Input";
         hasError = true;
         }
       } else {
-        obj.error = "";
+        obj.error = obj.error || "";
       }
     });
     this.setState({form});
