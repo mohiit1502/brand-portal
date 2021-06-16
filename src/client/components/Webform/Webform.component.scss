@@ -1,0 +1,19 @@
+.c-Webform {
+    .header{
+        font-weight: bold;
+        padding-bottom: 1.5rem;
+    }
+
+    .submit-btn {
+        width: 150px;
+    }
+    .label-text {
+        color: #333;
+    }
+    
+    .required {
+        &::after {
+            content: "*";
+        }
+    }    
+}

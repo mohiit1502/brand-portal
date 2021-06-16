@@ -19,6 +19,7 @@ const UrlItemList = props => {
         value: "",
         type: "url",
         pattern: "https?://.+",
+        preventHTMLRequiredValidation: true,
         disabled: false,
         isValid: false,
         subtitle: "",
@@ -35,6 +36,7 @@ const UrlItemList = props => {
         dropdownOptions: [],
         subtitle: "",
         error: "",
+        preventHTMLRequiredValidation: true,
         validators: {
           validateLength: {
             minLength: 2,
@@ -70,7 +72,7 @@ const UrlItemList = props => {
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
           required={item.url.required}
           value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={props.parentRef[props.onChangeUrl]}
-          disabled={item.url.disabled} error={item.url.error}
+          disabled={item.url.disabled} error={item.url.error} onInvalid={() => {}} preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
           loader={props.fieldLoader && itemUrlId === i}/>
       </div>
       <div className="col-4">
@@ -79,9 +81,9 @@ const UrlItemList = props => {
             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
               label={item.sellerName.label}
               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
-              pattern={item.sellerName.pattern} validators={item.sellerName.validators}
+              pattern={item.sellerName.pattern} validators={item.sellerName.validators} error={item.sellerName.error}
               bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
-              onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}}
+              onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
               dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
           <div className="col-4">

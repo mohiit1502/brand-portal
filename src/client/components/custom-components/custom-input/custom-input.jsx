@@ -10,7 +10,7 @@ import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
+import {ButtonsPanel, CaptchaValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
 
 class CustomInput extends React.Component {
 
@@ -50,7 +50,7 @@ class CustomInput extends React.Component {
   }
 
   onChangeLocal(evt, key) {
-    evt.persist();
+    evt.persist && evt.persist();
     const trimmedValue = this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
     if (evt && evt.target) {
       this.setState(() => {
@@ -304,7 +304,7 @@ class CustomInput extends React.Component {
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
-          <span className="label-text"> { this.state.label } </span>
+          <span className={`label-text${this.state.required ? " required" : ""}`}> { this.state.label } </span>
         </label>
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
@@ -356,6 +356,8 @@ class CustomInput extends React.Component {
         return <HeaderFormComponent {...this.props} />
       case "_urlItems" :
       return <UrlItemList {...this.props} />
+      case "_captchValidator" :
+        return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />
     }
     return null;
   }

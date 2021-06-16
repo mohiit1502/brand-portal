@@ -1,0 +1,69 @@
+@import "../../styles/override/variables";
+.c-WebformCta {
+
+    .btn{
+        font-weight: bold;
+        font-size: 18px;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        height: auto ;
+        padding: 5px;
+        min-width: 100px;
+        min-height: 44px;
+        text-align: center;
+        &.learn-more {
+            background: #8797A5;
+            text-decoration: underline;
+            color: white;
+        }
+
+        &.get-started {
+            background: #FAECC3;
+        }
+        &.submit_claim {
+            text-decoration: underline;
+        }
+    }
+
+    .customDivider1 {
+        width: 90%;
+    }
+    .customDivider2 {
+        width: 10%;
+        height: 10px;
+        background: black;
+    }
+
+    .c-Tile__content__body {
+        flex-direction: column;
+    }
+
+    .tile-content {
+        font-size: 20px;
+        height: 12rem;
+    }
+    .tile-header {
+        color: $tile-header-text;
+        min-height: 0px !important;
+    }
+    
+    .content-block {
+        display: inline-block;
+    }
+
+    .post-cta-content{
+        &.message{
+            padding-left: 8rem;
+            padding-right: 0rem;
+        }
+        &.buttonsPanel1{
+            padding-right: 8rem;
+            padding-left: 0rem;
+        }
+        .c-Tile__content__symbol {
+            height: 150px;
+        }
+        padding-left: 8rem;
+        padding-right: 8rem;
+    }
+}
