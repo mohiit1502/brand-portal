@@ -8,12 +8,12 @@ import CONSTANTS from "../constants/constants";
 
 export default class ContentRenderer {
 
-  constructor(content, commonImageClass, commonClickHandler) {
+  constructor(content, commonImageClass, commonClickHandler,contentOnClickHandler) {
     this.data = content;
     this.commonImageClass = commonImageClass;
     this.commonClickHandler = commonClickHandler;
+    this.contentOnClickHandler = contentOnClickHandler;
   }
-
   insertImages(images) {
     const colClass = images && images.length === 1 ? "col-8" : "col-6";
     return (<div className="row">
@@ -69,6 +69,8 @@ export default class ContentRenderer {
           return <span>{node1}</span>;
         } else if (partialNodeKey.startsWith("anchor")) {
           return <a href={node1.href}>{node1.text}</a>;
+        } else if (partialNodeKey.startsWith("link")){
+          return <a href={"#"} onClick= {(e) => this.contentOnClickHandler(e,node1.onClick)}>{node1.text}</a>
         } else {
           return null;
         }

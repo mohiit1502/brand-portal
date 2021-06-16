@@ -4,8 +4,9 @@ import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 import "./HelpSideBar.component.scss";
+import {withRouter} from "react-router";
 
-const HelpSideBar = ({activeTab, categoryHeader, categories, setActiveTab}) => {
+const HelpSideBar = ({activeTab, categoryHeader, categories,...props}) => {
   const helpSectionEvents = (eventName, payLoad) => {
     let helpId = payLoad.id;
     helpId = helpId.split("-")[0];
@@ -17,7 +18,8 @@ const HelpSideBar = ({activeTab, categoryHeader, categories, setActiveTab}) => {
     mixpanel.trackEvent(eventName, updatedPayload);
   };
   const onClickHandler = categoryKey => {
-    setActiveTab(categoryKey);
+    let path = "/help/"+categoryKey;
+    props.history.push(path);
     helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_MENU, {id: categoryKey});
   };
 
@@ -46,4 +48,4 @@ HelpSideBar.propTypes = {
   setActiveTab: PropTypes.func
 };
 
-export default HelpSideBar;
+export default withRouter(HelpSideBar);
