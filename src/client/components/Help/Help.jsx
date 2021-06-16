@@ -4,6 +4,7 @@ import HelpSideBar from "./../HelpSideBar";
 import ImageViewer from "../ImageViewer/ImageViewer";
 import helpConfiguration from "../../config/contentDescriptors/help";
 import "./Help.component.scss";
+import Http from "./../../../client/utility/Http"
 import {withRouter} from "react-router";
 
 const Help = props => {

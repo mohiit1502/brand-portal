@@ -111,7 +111,6 @@ class ContactUsForm extends React.Component{
         AREA: form.inputData.area.value,
         DETAILS: form.inputData.details.value
       };
-      console.log(this.state.form);
       this.loader("form",true);
       const url = form.api;
       const area = form.inputData.area.value;
