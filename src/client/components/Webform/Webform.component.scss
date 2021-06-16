@@ -13,31 +13,7 @@
     
     .required {
         &::after {
-            content: url("../../images/astrick.svg");
-            background-size: 1.45rem;
-            position: absolute;
-            top: -0.5rem;
-            margin-left: 0.25rem;
-            size: 0.5rem;
+            content: "*";
         }
-    }
-
-    .custom-input-element:focus+.custom-input-label {
-                & .required {
-                   &::after {
-                       transform: scale(0.7);
-                   }
-               }
-   }
-
-   .has-error {
-        .custom-input-element, .custom-input-label {
-            & .required {
-                &::after {
-                    content: url("../../images/astrick-red.svg") !important;
-                }
-            }
-        }
-    }
-    
+    }    
 }

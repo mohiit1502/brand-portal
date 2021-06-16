@@ -2,4 +2,9 @@
 .c-CaptchaValidator {
     width: fit-content;
     height: fit-content;
+    
+    & .loader {
+        min-width: 300px;
+        min-height: 75px;
+    }
 }

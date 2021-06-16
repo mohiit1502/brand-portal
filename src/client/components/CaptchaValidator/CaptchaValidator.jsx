@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import CustomInput from "../custom-components/custom-input/custom-input";
-import {Refresh} from "../../images";
 import Http from "../../utility/Http";
 import ReCAPTCHA from "react-google-recaptcha";
 import "./CaptchaValidator.component.scss";
@@ -18,7 +16,7 @@ const CaptchaValidator = props => {
         verifyCaptcha(true);
       }
     }).catch(e => console.log(e));
-  });
+  }, [captchaConfig]);
 
   const verifyCaptcha = res => {
     if (res) {
@@ -42,7 +40,7 @@ const CaptchaValidator = props => {
   };
 
   return (
-    <div className="c-CaptchaValidator mx-auto">
+    <div className={`c-CaptchaValidator mx-auto ${!captchaConfig ? " loader" : ""}`}>
       {
         captchaConfig && captchaConfig.enableCaptcha &&
             <React.Fragment>

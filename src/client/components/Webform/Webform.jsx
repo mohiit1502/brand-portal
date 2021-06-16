@@ -265,6 +265,7 @@ class Webform extends React.Component {
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.inputData[evt.target.id].selected = !state.form.inputData[evt.target.id].selected;
+    state.form.inputData[evt.target.id].error = state.form.inputData[evt.target.id].selected ? "" : state.form.inputData[evt.target.id].error;
     this.setState({
       ...state
     });
