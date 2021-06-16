@@ -229,7 +229,6 @@ class Webform extends React.Component {
     form.inputData.user_undertaking_2.selected = false;
     form.inputData.user_undertaking_3.selected = false;
     form.inputData.user_undertaking_4.selected = false;
-    form.inputData.user_undertaking_5.selected = false;
     form.inputData.digitalSignature.value = "";
     form.inputData.phone.value = "";
     form.inputData.phone.error = "";
@@ -322,7 +321,7 @@ class Webform extends React.Component {
       };
       this.loader("loader", true);
       console.log(payload);
-      Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
+      Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
       .then(res => {
           this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA));
           this.loader("loader", false);
