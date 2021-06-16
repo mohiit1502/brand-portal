@@ -5,7 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import "./CaptchaValidator.component.scss";
 
 const CaptchaValidator = props => {
-  const [captchaConfig, setCaptchaConfig] = useState(null);
+  const [captchaConfig, setCaptchaConfig] = useState();
   const [isValid, setValid] = useState(true);
   useEffect(() => {
     !captchaConfig  &&

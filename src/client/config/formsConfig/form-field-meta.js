@@ -1499,7 +1499,7 @@ const FORMFIELDCONFIG ={
           "excludeColContainer": true,
           "id": "user_undertaking_1",
           "inputId": "user_undertaking_1",
-          "invalidError": "Please select Check box",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_1",
           "layout": "14.1.0",
           "label": "",
@@ -1518,7 +1518,7 @@ const FORMFIELDCONFIG ={
           "excludeColContainer": true,
           "id": "user_undertaking_2",
           "inputId": "user_undertaking_2",
-          "invalidError": "Please select Check box",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_2",
           "layout": "15.1.0",
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
@@ -1536,7 +1536,7 @@ const FORMFIELDCONFIG ={
           "excludeColContainer": true,
           "id": "user_undertaking_3",
           "inputId": "user_undertaking_3",
-          "invalidError": "Please select Check box",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_3",
           "layout": "16.1.0",
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
@@ -1554,7 +1554,7 @@ const FORMFIELDCONFIG ={
           "excludeColContainer": true,
           "id": "user_undertaking_4",
           "inputId": "user_undertaking_4",
-          "invalidError": "Please select Check box",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_4",
           "layout": "17.1.0",
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
@@ -1566,27 +1566,16 @@ const FORMFIELDCONFIG ={
           "selected": false,
           "type": "_checkBox"
         },
-        "user_undertaking_5": {
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_5",
-          "inputId": "user_undertaking_5",
-          "invalidError": "Please select Check box",
-          "key": "user_undertaking_5",
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
           "layout": "18.1.0",
-          "label": "Typing your full name in this box will act as your digital signature.",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "selected": false,
-          "type": "_checkBox"
+          "type": "_formFieldsHeader"
         },
         "digitalSignature": {
           "disabled": false,
-          "containerClasses": "mt-4",
+          "containerClasses": "",
           "disableDefaultBlueValidation": true,
           "error": "",
           "inputId": "digitalSignature",
@@ -1606,7 +1595,7 @@ const FORMFIELDCONFIG ={
             }
           }
         },
-        "fieldsHeader_4": {
+        "fieldsHeader_5": {
           "containerClasses": "font-size-12",
           "header": "Please review your contact information and make sure it is correct before clicking Submit.",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
