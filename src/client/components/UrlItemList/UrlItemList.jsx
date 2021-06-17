@@ -7,6 +7,7 @@ import "./UrlItemList.component.scss";
 const UrlItemList = props => {
   const [itemList, updateItemList] = useState(props.itemList);
   const [itemUrlId, setItemUrlId] = useState(0);
+  const [enableAddItem, setEnableAddItem] = useState(true);
 
   const addToItemList = () => {
     const item = {
@@ -52,6 +53,9 @@ const UrlItemList = props => {
     if (props.onChangeItem && props.parentRef[props.onChangeItem]) {
       props.parentRef[props.onChangeItem](itemListClone);
     }
+    if (props.maxItems && itemListClone.length >= props.maxItems) {
+      setEnableAddItem(false);
+    }
     // state.form.inputData.itemList.unshift(item);
     // state.form.inputData.itemList.push(item);
     // this.setState(state, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
@@ -63,6 +67,9 @@ const UrlItemList = props => {
     updateItemList(itemListClone);
     if (props.onChangeItem && props.parentRef[props.onChangeItem]) {
       props.parentRef[props.onChangeItem](itemListClone);
+    }
+    if (props.maxItems && itemListClone.length <= props.maxItems) {
+      setEnableAddItem(true);
     }
   };
 
@@ -89,7 +96,7 @@ const UrlItemList = props => {
           <div className="col-4">
             {
               i === 0 &&
-              <div className={`btn btn-sm btn-block btn-primary${props.disableAddItem && " disabled" || ""}`} onClick={addToItemList} >
+              <div className={`btn btn-sm btn-block btn-primary${(props.disableAddItem || !enableAddItem) && " disabled" || ""}`} onClick={addToItemList} >
                 <img src={images.Plus} className="plus-icon make-it-white"/> Item </div> ||
               <button className="btn btn-sm btn-block cancel-btn text-primary" type="button" onClick={() => removeFromItemList(i)}>Remove</button>
             }

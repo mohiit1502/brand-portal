@@ -320,7 +320,6 @@ class Webform extends React.Component {
         items: getItems(inputData.urlItems.itemList)
       };
       this.loader("loader", true);
-      console.log(payload);
       Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
       .then(res => {
           this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA));
