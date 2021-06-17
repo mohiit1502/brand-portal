@@ -63,9 +63,12 @@ const StatusModalTemplate = props => {
             </div>
             <div className="row mt-4">
               <div className="col">
-                <a className="btn btn-sm btn-primary px-5" href={logoutUrl}onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
+                <a className="btn btn-sm btn-primary px-5" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
                   Logout
                 </a>
+                {props.meta.ADDITIONAL_ACTION && <a className="additional-action d-block mt-2" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
+                  {props.meta.ADDITIONAL_ACTION}
+                </a>}
               </div>
             </div>
           </div>

@@ -1,8 +1,6 @@
 import fetch from "node-fetch";
 import queryString from "query-string";
 import ServerHttpError from "./ServerHttpError";
-import CONSTANTS from "../../client/constants/constants";
-import ClientHttpError from "../../client/utility/ClientHttpError";
 
 export default class ServerHttp {
 
@@ -39,10 +37,13 @@ export default class ServerHttp {
   }
 
   static async crud (urlString, options, method) {
+    const start = Date.now();
     try {
       !urlString && console.log("No URL!!");
       console.log("1. ===== Crud Request Start. Requesting URL: ", urlString)
       const response = await fetch(urlString, options);
+      const end = Date.now();
+      console.log("API: " + urlString + " --- Response Time: "  + (end - start));
       const {ok, status, headers} = response;
       if (ok) {
         console.log("2. Response is OK with status: ", status);
@@ -54,6 +55,8 @@ export default class ServerHttp {
       console.log(errorString, err);
       throw new ServerHttpError(status, err.error, err.message);
     } catch (e) {
+      const end = Date.now();
+      console.log("Catching API: " + urlString + " failed --- Response Time: "  + (end - start));
       const errorString = `6. Caught in ServerHttp.${method}: `;
       console.error(errorString, e);
       throw new ServerHttpError(e.status || 500, e);

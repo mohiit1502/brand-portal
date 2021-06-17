@@ -132,7 +132,7 @@ class ClaimDetailsTemplate extends React.Component {
                   </div>
                   <div className="row mt-3">
                     <div className="col text-right">
-                      <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>
+                      <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Done</div>
                     </div>
                   </div>
                 </React.Fragment>

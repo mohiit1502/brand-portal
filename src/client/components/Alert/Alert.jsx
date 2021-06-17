@@ -45,7 +45,7 @@ const Alert = props => {
             </div>
             <div className="row mt-3">
               <div className="col">
-                {/*<div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Okay</div>*/}
+                {/*<div className="btn btn-sm btn-outline-primary px-5" onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Done</div>*/}
                 <input type="button" className="btn btn-sm btn-outline-primary mr-3" value="Cancel"  onClick={cancelDiscardChanges} />
                 <input type="button" className="btn btn-primary" value="Discard" onClick={discardChanges} />
               </div>
