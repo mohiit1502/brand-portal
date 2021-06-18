@@ -336,7 +336,7 @@ class Webform extends React.Component {
         });
     } else {
       this.setState({
-        formError: this.state.form.formError || "Please Remove all the Errors before proceeding with the form"
+        formError: this.state.form.formError
       });
     }
   }

@@ -1111,7 +1111,7 @@ const FORMFIELDCONFIG ={
         "loader": false,
         "isSubmitDisabled": true,
         "claimTypeSelected": false,
-        "formError": "Please Remove all the Errors before proceeding with the form"
+        "formError": ""
       },
       "fields": {
         "fieldsHeader_1": {
