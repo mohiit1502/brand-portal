@@ -19,7 +19,7 @@ const UrlItemList = props => {
         required: true,
         value: "",
         type: "url",
-        pattern: "https?://.+",
+       // pattern: "https?://.+",
         preventHTMLRequiredValidation: true,
         disabled: false,
         isValid: false,
@@ -78,7 +78,9 @@ const UrlItemList = props => {
       <div className="col-8">
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
           required={item.url.required}
-          value={item.url.value} type={item.url.type} pattern={item.url.pattern} onChange={props.parentRef[props.onChangeUrl]}
+          value={item.url.value} type={item.url.type}
+          pattern={props.pattern ? props.pattern : "" }  patternErrorMessage={props.patternErrorMessage ? props.patternErrorMessage : "" }
+          onChange={props.parentRef[props.onChangeUrl]}
           disabled={item.url.disabled} error={item.url.error} onInvalid={() => {}} preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
           loader={props.fieldLoader && itemUrlId === i}/>
       </div>
@@ -89,7 +91,7 @@ const UrlItemList = props => {
               label={item.sellerName.label}
               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
               pattern={item.sellerName.pattern} validators={item.sellerName.validators} error={item.sellerName.error}
-              bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : ()=>{}}
+              bubbleValue = {props.bubbleValue && props.parentRef[props.bubbleValue] ? props.parentRef[props.bubbleValue] : () => {}}
               onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
               dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
@@ -111,6 +113,7 @@ UrlItemList.propTypes = {
   formData: PropTypes.object,
   formId: PropTypes.string,
   items: PropTypes.array,
+  patternErrorMessage: PropTypes.string,
   parentRef: PropTypes.object
 };
 
