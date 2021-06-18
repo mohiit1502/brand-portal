@@ -15,5 +15,8 @@
         &::after {
             content: "*";
         }
-    }    
+    }  
+    .form-error {
+        color: #dc3545;
+    }  
 }

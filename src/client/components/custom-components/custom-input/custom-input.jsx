@@ -317,7 +317,7 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     return (
       <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
-        <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
+        <label className={`custom-input-label custom-input-label-textarea ${this.state.required ? " required" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />

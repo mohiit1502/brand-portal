@@ -37,7 +37,8 @@ class Webform extends React.Component {
         ...webformConfiguration.formConfig,
         inputData: webformConfiguration.fields
       },
-      loader: false
+      loader: false,
+      formError: ""
     };
     const formatter = new InputFormatter();
     const handlers = formatter.on(`#${this.state.section.id}-${this.state.form.inputData.phone.inputId}-custom-input`);
@@ -274,6 +275,10 @@ class Webform extends React.Component {
     evt.preventDefault();
     if (!this.validateState()) {
       this.disableSubmitButton();
+      this.setState({
+        formError: "",
+        loader: true
+      });
       const inputData = this.state.form.inputData;
       const claimType =  inputData.claimType.value;
       // "metaInfo": {
@@ -320,18 +325,20 @@ class Webform extends React.Component {
         items: getItems(inputData.urlItems.itemList)
       };
       this.loader("loader", true);
-      console.log(payload);
       Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
       .then(res => {
           this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA));
           this.loader("loader", false);
         })
         .catch(err => {
-          this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.LANDING_PAGE));
           this.loader("loader", false);
           console.log(err);
         });
-      }
+    } else {
+      this.setState({
+        formError: this.state.form.formError
+      });
+    }
   }
 
   disableSubmitButton() {
@@ -363,6 +370,12 @@ class Webform extends React.Component {
                     this.props.configuration && this.props.configuration.header && this.props.configuration.header.text ? this.props.configuration.header.text : ""
                   }
           </div>
+          {
+            this.state.formError &&
+            <small className={`form-text custom-input-help-text form-error`}>
+            {this.state.formError}
+            </small>
+         }
           <form onSubmit={this.handleSubmit} className="web-form mb-4 mr-3" >
             { this.getFieldRenders()}
           </form>

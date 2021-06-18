@@ -646,6 +646,7 @@ const FORMFIELDCONFIG ={
           "onChangeSellerName": "setSelectInputValue",
           "onChangeItem": "getItemListFromChild",
           "onChangeUrl": "onChange",
+          "pattern": "https?://.+",
           "fieldLoader": false,
           "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "prebounceChangeHandler": "disableSubmitButton",
@@ -1109,7 +1110,8 @@ const FORMFIELDCONFIG ={
         "id": "webForm",
         "loader": false,
         "isSubmitDisabled": true,
-        "claimTypeSelected": false
+        "claimTypeSelected": false,
+        "formError": ""
       },
       "fields": {
         "fieldsHeader_1": {
@@ -1420,7 +1422,9 @@ const FORMFIELDCONFIG ={
           "layout": "12.1.0",
           "type": "_urlItems",
           "disableAddItem": true,
-          "maxItems": 5,
+          "maxItems": 10,
+          "pattern": "https?://.+",
+          "patternErrorMessage": "Please provide a valid Item URL",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "onChangeItem": "getItemListFromChild",
           "sellerNameType": "text",

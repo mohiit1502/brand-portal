@@ -40,7 +40,7 @@ const CaptchaValidator = props => {
   };
 
   return (
-    <div className={`c-CaptchaValidator mx-auto ${!captchaConfig ? " loader" : ""}`}>
+    <div className={`c-CaptchaValidator mx-auto ${!captchaConfig ? " captcha-container loader" : ""}`}>
       {
         captchaConfig && captchaConfig.enableCaptcha &&
             <React.Fragment>
