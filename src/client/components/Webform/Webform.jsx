@@ -128,14 +128,14 @@ class Webform extends React.Component {
         state = {...state};
         if (index > -1) {
           if (key.split("-")[0] === "url") {
-            state.form.inputData.urlItems.itemList[index].sellerName.value = "";
+            state.form.inputData.urlItems.itemList[index][key].error = "";
             state.form.inputData.urlItems.itemList[index].sellerName.disabled = false;
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.disableAddItem = true;
           } else  {
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.itemList[index][key].error = "";
-            state.form.inputData.urlItems.itemList[index].url.error = "";
+            //state.form.inputData.urlItems.itemList[index].url.error = "";
             state.form.inputData.urlItems.disableAddItem = false;
           }
         } else {
