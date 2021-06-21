@@ -1,21 +1,22 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import CustomInput from "../custom-components/custom-input/custom-input";
-import {Refresh} from "../../images";
 import Http from "../../utility/Http";
 import ReCAPTCHA from "react-google-recaptcha";
 import "./CaptchaValidator.component.scss";
 
 const CaptchaValidator = props => {
-  const [captchaConfig, setCaptchaConfig] = useState(null);
+  const [captchaConfig, setCaptchaConfig] = useState();
   const [isValid, setValid] = useState(true);
   useEffect(() => {
     !captchaConfig  &&
     Http.get("/api/getCaptchaConfig")
     .then(res => {
       setCaptchaConfig(res.body);
+      if(!res.body.enableCaptcha) {
+        verifyCaptcha(true);
+      }
     }).catch(e => console.log(e));
-  });
+  }, [captchaConfig]);
 
   const verifyCaptcha = res => {
     if (res) {
@@ -39,10 +40,15 @@ const CaptchaValidator = props => {
   };
 
   return (
-    <div className="c-CaptchaValidator mx-auto">
+    <div className={`c-CaptchaValidator mx-auto ${!captchaConfig ? " captcha-container loader" : ""}`}>
       {
         captchaConfig && captchaConfig.enableCaptcha &&
-            <ReCAPTCHA sitekey={captchaConfig.sitekey} onChange={verifyCaptcha} onExpired={onExpired}/>
+            <React.Fragment>
+              <ReCAPTCHA sitekey={captchaConfig.sitekey} onChange={verifyCaptcha} onExpired={onExpired}/>
+              <small className={`form-text custom-input-help-text text-danger text-center`}>
+                {props.error}
+              </small>
+            </React.Fragment>
       }
     </div>
   );

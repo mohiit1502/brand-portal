@@ -14,6 +14,11 @@ const CheckBox = props => {
             {props.label}
             {props.tou && <span><a href={staticContent.TOU} target="_blank">{props.touLink}</a></span>}
           </label>
+          { props.error &&
+            <small className={`form-text custom-input-help-text has-error`}>
+            {props.error}
+            </small>
+          }
         </div>
       </div>
     </div>
@@ -24,6 +29,7 @@ CheckBox.propTypes = {
   containerClasses: PropTypes.string,
   colClasses: PropTypes.string,
   checkBoxClasses: PropTypes.string,
+  error: PropTypes.string,
   id: PropTypes.string,
   labelClasses: PropTypes.string,
   onChange: PropTypes.func,
