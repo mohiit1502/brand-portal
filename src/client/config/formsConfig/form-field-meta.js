@@ -1412,7 +1412,6 @@ const FORMFIELDCONFIG ={
           "value": ""
         },
         "urlItems": {
-          "bubbleValue": "bubbleValue",
           "disableAddItem": true,
           "error": "",
           "fieldLoader": false,
