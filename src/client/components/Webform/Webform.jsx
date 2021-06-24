@@ -146,7 +146,6 @@ class Webform extends React.Component {
           state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
           state.form.inputData[key].value = targetVal;
         }
-        this.invalid[key] = false;
         return {
           ...state
         };
