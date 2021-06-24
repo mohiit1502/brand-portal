@@ -14,6 +14,7 @@ import ContentRenderer from "../../utility/ContentRenderer";
 import "./WebformWorkflowDecider.component.scss";
 import Http from "../../utility/Http";
 import CONSTANTS from "../../constants/constants";
+import mixpanel from "../../utility/mixpanelutils";
 
 class WebformWorkflowDecider extends React.Component {
   constructor(props) {
@@ -55,6 +56,12 @@ class WebformWorkflowDecider extends React.Component {
             }
           }
         });
+        if (!mixpanel.getToken()) {
+          Http.get("/api/mixpanelConfig")
+          .then(res => {
+            mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
+          }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+        }
 
       } catch (err) {
         console.log(err);

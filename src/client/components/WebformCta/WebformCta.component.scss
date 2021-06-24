@@ -4,8 +4,7 @@
     .btn{
         font-weight: bold;
         font-size: 18px;
-        margin-left: 0.5rem;
-        margin-right: 0.5rem;
+        margin: 0.5rem 0.5rem 0rem 0.5rem;
         height: auto ;
         padding: 5px;
         min-width: 100px;
@@ -41,10 +40,11 @@
     .tile-content {
         font-size: 20px;
         height: 12rem;
+        overflow: auto;
     }
     .tile-header {
         color: $tile-header-text;
-        min-height: 0px !important;
+        min-height: 2rem;
     }
     
     .content-block {

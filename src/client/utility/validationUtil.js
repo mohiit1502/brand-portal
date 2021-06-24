@@ -338,6 +338,7 @@ export default class Validator {
   }
 
   static onInvalid (evt, key) {
+    evt.preventDefault();
     const form = this.state.form;
     const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
     if (matchedField) {

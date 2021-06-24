@@ -15,7 +15,11 @@ const CaptchaValidator = props => {
       if(!res.body.enableCaptcha) {
         verifyCaptcha(true);
       }
-    }).catch(e => console.log(e));
+    }).catch(e => {
+      setCaptchaConfig({});
+      verifyCaptcha(true);
+      console.log(e)
+    });
   }, [captchaConfig]);
 
   const verifyCaptcha = res => {
