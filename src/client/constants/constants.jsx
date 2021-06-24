@@ -76,7 +76,8 @@ const CONSTANTS = {
       CODE: 64,
       IMAGE: "EmailIcon",
       MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
-      TITLE: "Email verification required"
+      TITLE: "Email verification required",
+      ADDITIONAL_ACTION: "Resend Verification Email"
     },
     TOU_VERIFICATION: {
       CODE: 128,
