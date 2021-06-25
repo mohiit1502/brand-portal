@@ -2,9 +2,9 @@
 
 .modal.new-bulk-claim-modal {
   .modal-dialog {
-    height: 60%;
+    height: 70%;
     .modal-content {
-      max-height:  60rem;
+      max-height:  50rem;
       position: relative;
       .modal-header{
         height: 65px;
@@ -16,7 +16,8 @@
       .modal-body {
         height: calc(100% - 130px);
         overflow: auto;
-        padding: 1.5rem;
+        overflow-x: hidden;
+        padding: 0rem !important;
         position: static;
         & .c-ButtonsPanel {
           position: absolute;
@@ -31,6 +32,14 @@
           .btn {
             min-width: 150px;
           }
+        }
+
+        .form-check, .signature {
+          margin-left: 2rem;
+          margin-right: 1rem;
+        }
+        .invisible {
+          display: none;
         }
     }
 

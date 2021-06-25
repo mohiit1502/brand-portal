@@ -27,6 +27,10 @@
         width: 75%;
         height: 200px;
         border: 4px dashed #8d8d8a;
+        transition:  1s;
+        &.scale-down {
+            transform: scale(0.75);
+        }
     }
     
     .upload-icon {
@@ -53,7 +57,7 @@
         justify-content: left;
         width: 75%;
         text-align: left !important;
-        
+        transform: scale(1.25);
     } 
       
     .file-name {
@@ -72,7 +76,12 @@
         color: red;
         margin-right: -10px;
     }
+
     .file-error-message {
         color: red;
+    }
+
+    .uploaded-image {
+        height: 6rem;
     }
 }

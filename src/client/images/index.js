@@ -18,6 +18,7 @@ import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
+import FileUploaded from "./file-uploaded.svg";
 import GreenCircleCheck from "./green-circle-check.svg";
 import Group from "./group-23.svg";
 import GroupPeople from "./group-1474.png";
@@ -71,6 +72,7 @@ export {
     Event,
     Exclamation,
     FieldLoader,
+    FileUploaded,
     Filter,
     GreenCircleCheck,
     Group,

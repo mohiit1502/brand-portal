@@ -20,6 +20,7 @@ import {FilterType, Paginator} from "../../../index";
 import SortUtil from "../../../../utility/SortUtil";
 import SearchUtil from "../../../../utility/SearchUtil";
 import FilterUtil from "../../../../utility/FilterUtil";
+import DocumentActions from "../../../../utility/docOps";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
@@ -349,14 +350,12 @@ class ClaimList extends React.Component {
   }
 
   handleDownloadTemplate() {
-    //ClientUtils.downloadFile(staticContent.BulkUploadDocument, "BULK_Upload.xlsx");
     window.start = Date.now();
     this.loader(true);
     Http.get("/api/brands?brandStatus=ACCEPTED", null, null, null, null, "Request failed, please try again.")
       .then(res => {
         console.log("Time taken for get brands API call", Date.now() - start);
-        const blob = ClientUtils.processBulkUpload(staticContent.BulkUploadDocument, res.body.content);
-        //console.log(blob);
+        DocumentActions.processBulkUpload(staticContent.BulkUploadDocument, res.body.content, 100); //todo: removing this static number
         this.loader(false);
       }).catch(err => {
         console.log(err);
@@ -383,7 +382,7 @@ class ClaimList extends React.Component {
                     Submit New Claim
                   </div>
                   <div className="btn btn-primary ml-3 btn-sm px-3" onClick={this.addBulkNewClaim}>
-                    Submit Bulk Claim
+                    Upload Claims
                   </div>
                   <a className="btn btn-primary btn-download-template ml-3 btn-sm px-3" onClick={this.handleDownloadTemplate}>
                     Download Claim Template

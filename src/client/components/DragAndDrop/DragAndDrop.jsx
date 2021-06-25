@@ -1,5 +1,6 @@
 import React, { useRef, useState} from "react";
 import PropTypes from "prop-types";
+import {FileUploaded} from "../../images/index";
 import "./DragAndDrop.component.scss";
 
 const DragAndDrop = props => {
@@ -17,12 +18,14 @@ const DragAndDrop = props => {
     const handleFiles = files => {
       if (files && validateFile(files[0])) {
           setInputFile(files[0]);
-          setErrorMessage("");
+          //setErrorMessage("");
+          props.onChange && props.onChange(files && files[0], props.inputId);
       } else {
           setInputFile(null);
-          setErrorMessage(props.errorMessage || "Enter Valid file");
+          //setErrorMessage(props.error || "Enter Valid file");
+          props.onChange && props.onChange(files && files[0], props.inputId, props.errorMessage);
       }
-      props.onChange && props.onChange(props.inputId, files && files[0], "");  //todo
+        //todo
     };
 
     const fileDrop = e => {
@@ -45,8 +48,9 @@ const DragAndDrop = props => {
 
     const removeFile = () => {
         setInputFile(null);
-        setErrorMessage("");
-        props.onChange && props.onChange(props.inputId, inputFile, errorMessage);
+        //setErrorMessage("");
+        fileInputRef.current.files = null;
+        props.onChange && props.onChange(null, props.inputId);
     };
 
     const handleDrag = e => {
@@ -55,37 +59,42 @@ const DragAndDrop = props => {
 
     return (
         <React.Fragment>
-            <div className="c-DragAndDrop">
-                    <div className="drop-container mx-auto"
+            <div className={`c-DragAndDrop ${!props.display ? "invisible" : ""}`}>
+                    <div className={`drop-container mx-auto ${inputFile ? "scale-down" : ""}`}
                       onDragOver={handleDrag}
                       onDragEnter={handleDrag}
                       onDragLeave={handleDrag}
                       onDrop={fileDrop}
                       onClick={fileInputClicked}
                     >
-                        <div className="drop-message">
-                            <div className="upload-icon d-inline-block" />
-                            <div className="drag-and-drop-text ml-2 d-inline-block">
-                            {props.DragAndDropText}
+                    {
+                        !inputFile ?
+                        <div>
+                            <div className="drop-message">
+                                <div className="upload-icon d-inline-block" />
+                                <div className="drag-and-drop-text ml-2 d-inline-block">
+                                {props.dragAndDropText}
+                                </div>
+                                <button className="btn btn-primary ml-3 d-inline-block" type="button" onClick={() => {}}>{props.UploadText}</button>
                             </div>
-                            <button className="btn btn-primary ml-3 d-inline-block">{props.UploadText}</button>
-                        </div>
-                        <input
-                          ref={fileInputRef}
-                          className="file-input"
-                          type="file" accept={props.inputType || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-                          onChange={filesSelected}
-                        />
+                            <input
+                            ref={fileInputRef}
+                            className="file-input"
+                            type="file" accept={props.inputType || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+                            onChange={filesSelected}
+                            />
+                        </div> : <img className="uploaded-image" src ={FileUploaded} />
+                    }
                     </div>
                         {
                             inputFile &&
-                                <div className="file-display-container  mx-auto" key={inputFile.name}>
+                                <div className="file-display-container  font-weight-bold mx-auto" key={inputFile.name}>
                                     <span className={`file-name ${inputFile.invalid ? "file-error" : ""}`}>{inputFile.name}</span>
                                     <div className="file-remove ml-3" onClick={() => removeFile(inputFile.name)}>x</div>
                                 </div>
                         }
                         {
-                            errorMessage && <span className="file-error-message">{errorMessage}</span>
+                            props.error && <span className="file-error-message">{ props.error}</span>
                         }
             </div>
         </React.Fragment>

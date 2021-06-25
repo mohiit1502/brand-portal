@@ -208,4 +208,14 @@ export default class Helper {
     const value = typeof incoming === "object" ? incoming.target.value : incoming;
     return value.replace(/  +/g, ' ').replace(/^\s+/g, "");
   }
+
+  static getItemsIDFromURL(itemUrl) {
+    if (itemUrl.endsWith("/")) {
+      itemUrl = itemUrl.substring(0, itemUrl.length - 1);
+    }
+    const slash = itemUrl.lastIndexOf("/");
+    const qMark = itemUrl.lastIndexOf("?") === -1 ? itemUrl.length : itemUrl.lastIndexOf("?");
+    const itemID = itemUrl.substring(slash + 1, qMark);
+    return itemID;
+  }
 }

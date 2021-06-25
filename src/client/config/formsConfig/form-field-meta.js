@@ -1691,16 +1691,17 @@ const FORMFIELDCONFIG = {
         "sectionTitle": "Multiple Claim Upload",
       },
       "formConfig": {
+        "id": "newbulkclaim",
         "headerClasses": "content-header-row h3 p-4",
         "formClasses": "row content-row p-4 mt-4",
         "claimDetailsSheetName": "Bulk Upload Sheet",
         "excelColumnMapping": {
-          "BRAND_ID": 1,
-          "CLAIM_TYPE": 2,
-          "CLAIM_TYPE_IDENTIFIER": 3,
-          "ITEM_URL": 4,
-          "SELLER_NAME": 5,
-          "COMMENTS": 6
+        "brandName": 1,
+        "claimType": 2,
+        "claimTypeIdentifier": 3,
+        "itemUrl": 4,
+        "sellerName": 5,
+        "comments": 6
         },
         "fileType": "xlsx",
         "maxFileSize": 500000,
@@ -1709,12 +1710,16 @@ const FORMFIELDCONFIG = {
       "fields": {
         "dragAndDrop": {
           "containerClasses": "text-center my-3",
-          "DragAndDropText": "Upload your files here or",
-          "errorMessage": "Enter Valid File",
+          "display": true,
+          "dragAndDropText": "Upload your files here or",
+          "error": "",
           "inputId": "dragAndDrop",
+          "invalidError": "Please upload a File before proceeding..",
           "key": "dragAndDrop",
           "layout": "1.1.0",
           "onChange": "onChange",
+          "required": true,
+          //"renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_dragAndDrop",
           "UploadText": "Browse"
         },
@@ -1724,6 +1729,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "Before Uploading the file please make sure to take note of the following:",
           "layout": "2.1.0",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_formFieldsHeader"
         },
         "fieldsHeader_2": {
@@ -1731,6 +1737,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "1. The header of the main file- Bulk Upload Sheet should contain 6 columns.",
           "layout": "3.1.0",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_formFieldsHeader"
         },
         "fieldsHeader_3": {
@@ -1738,6 +1745,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "2. Maximum claims that can be uploaded via excel are X",
           "layout": "4.1.0",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_formFieldsHeader"
         },
         "fieldsHeader_4": {
@@ -1745,6 +1753,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "3. All cells have been filled",
           "layout": "5.1.0",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_formFieldsHeader"
         },
         "fieldsHeader_5": {
@@ -1752,21 +1761,167 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "4. File format-.xlsx/.xls",
           "layout": "5.1.0",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_formFieldsHeader"
         },
+        "fieldsHeader_6": {
+         "containerClasses": "mr-4",
+         "colClasses": "font-weight-bold",
+          "header": "Please enter the email id on which you would like to get notified once claims are processed",
+          "layout": "8.1.8",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "emailId": {
+          "containerClasses": "mr-4",
+          "disabled": false,
+          "disableDefaultBlueValidation": true,
+          "error": "",
+          "inputId": "emailId",
+          "invalidError": "Please enter a valid Email ID",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
+          "key": "emailId",
+          "label": "Email",
+          "layout": "8.2.4",
+          "patternPath": "CONSTANTS.REGEX.EMAIL",
+          "preventHTMLRequiredValidation": true,
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "type": "email",
+          "value": ""
+        },
+        "user_undertaking_1": {
+            "category": "userUnderTaking",
+            "containerClasses": "mb-2",
+            "checkBoxClasses": "user-undertaking",
+            "excludeRowContainer": true,
+            "excludeColContainer": true,
+            "id": "user_undertaking_1",
+            "inputId": "user_undertaking_1",
+            "key": "user_undertaking_1",
+            "layout": "9.1.0",
+            "label": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.",
+            "labelClasses": "user-undertaking-label",
+            "onChange": "undertakingtoggle",
+            "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+            "required": true,
+            "selected": false,
+            "type": "_checkBox"
+          },
+          "user_undertaking_2": {
+            "category": "userUnderTaking",
+            "containerClasses": "mb-2",
+            "checkBoxClasses": "user-undertaking",
+            "excludeRowContainer": true,
+            "excludeColContainer": true,
+            "id": "user_undertaking_2",
+            "inputId": "user_undertaking_2",
+            "key": "user_undertaking_2",
+            "layout": "10.1.0",
+            "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
+            "labelClasses": "user-undertaking-label",
+            "onChange": "undertakingtoggle",
+            "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+            "required": true,
+            "selected": false,
+            "type": "_checkBox"
+          },
+          "user_undertaking_3": {
+            "category": "userUnderTaking",
+            "containerClasses": "mb-2",
+            "checkBoxClasses": "user-undertaking",
+            "excludeRowContainer": true,
+            "excludeColContainer": true,
+            "id": "user_undertaking_3",
+            "inputId": "user_undertaking_3",
+            "key": "user_undertaking_3",
+            "layout": "11.1.0",
+            "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
+            "labelClasses": "user-undertaking-label",
+            "onChange": "undertakingtoggle",
+            "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+            "required": true,
+            "selected": false,
+            "type": "_checkBox"
+          },
+          "user_undertaking_4": {
+            "category": "userUnderTaking",
+            "containerClasses": "mb-2",
+            "checkBoxClasses": "user-undertaking",
+            "excludeRowContainer": true,
+            "excludeColContainer": true,
+            "id": "user_undertaking_4",
+            "inputId": "user_undertaking_4",
+            "key": "user_undertaking_4",
+            "layout": "12.1.0",
+            "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
+            "labelClasses": "user-undertaking-label",
+            "onChange": "undertakingtoggle",
+            "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+            "required": true,
+            "selected": false,
+            "type": "_checkBox"
+          },
+          "fieldsHeader_7": {
+            "containerClasses": "font-weight-bold mt-2",
+            "header": "Typing your full name in this box will act as your digital signature",
+            "layout": "13.1.0",
+            "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+            "type": "_formFieldsHeader"
+          },
+          "signature": {
+            "label": "Digital Signature",
+            "containerClasses": "signature",
+            "error": "",
+            "disabled": false,
+            "required": true,
+            "inputId": "signature",
+            "invalidError": "Please enter a valid Input",
+            "value": "",
+            "key": "signature",
+            "layout": "14.1.8",
+            "preventHTMLRequiredValidation": true,
+            "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+            "type": "text",
+            "pattern": null,
+            "subtitle": "",
+            "onChange": "onChange"
+          },
         "bulkUploadActions": {
-          "containerClasses": "mt-3",
+          "containerClasses": "mt-3 mb-3",
           "colClasses": "text-right",
-          "layout": "7.1.0",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
           "type": "_buttonsPanel",
           "buttons": {
-            "submit": {
-              "classes": "btn btn-primary",
+            "upload": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
+              "onClick": "handleUpload",
+             // "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": false}",
+              "text": "Upload",
+              "type": "button"
+            }
+          },
+        },
+        "bulkUploadActions2": {
+          "containerClasses": "mt-3 mb-3",
+          "colClasses": "text-right",
+          "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "back": {
+              "classes": "btn btn-sm cancel-btn text-primary",
               "disabled": false,
-              "text": "Submit",
+              "onClick": "gotoUploadPage",
+              "text": "Back",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
+             // "renderCondition": "{\"keyPath\": \"isParsingDone\", \"keyLocator\": \"state\", \"value\": true}",
+              "text" : "Submit",
               "type": "submit"
             }
-          }
+          },
         }
         
       }
