@@ -108,21 +108,23 @@ export default class DocumentActions {
   static processBulkUpload (selectedFile, brands, maxRowCount) {
     const brandDetails = brands;
     const start = Date.now();
-    const claimType = ["Counterfeit,Trademark,Patent,Copyright"];
+    const totalBrands = brands.length;
+    const claimTypeFormulae = ['"Counterfeit,Trademark,Patent,Copyright"'];
+    const brandFormulae = [`test!$A$3:$A${totalBrands + 3}`]; //todo: to change it to actual hidden file name:   test refers to hidden file name
     const wb = new exceljsMin.Workbook();
     fetch(selectedFile)
       .then(res => res.arrayBuffer())
       .then(buffer => {
         wb.xlsx.load(buffer).then(workbook => {
         DocumentActions.generateHiddenForm(workbook, brandDetails);
-        DocumentActions.generateBulkUploadForm(workbook, {brandDetails, claimType}, maxRowCount);
+        DocumentActions.generateBulkUploadForm(workbook, {brandDetails, brandFormulae, claimTypeFormulae}, maxRowCount);
 
         let writeTime = Date.now();
         workbook.xlsx.writeBuffer().then(data => {
           console.log("TIME FOR writing  EXCEL:", Date.now() - writeTime);
           const blob = new Blob([data], { type: this.blobType });
           const link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);    //enhancements possible
+          link.href = window.URL.createObjectURL(blob);    //enhancements possible for download implementation
           link.download = `test-${+new Date()}.xlsx`;
           link.click();
           const end = Date.now();
@@ -155,27 +157,21 @@ testSheet.protect("the-password").then(() => {
 console.log("time for Hidden form generation", Date.now() - start);
 }
 
-static generateBulkUploadForm = (workbook, { brandDetails, claimType}, maxRows) => {
+static generateBulkUploadForm = (workbook, { brandDetails, brandFormulae, claimTypeFormulae}, maxRows) => {
         let start = Date.now();
-        //let brands_ = ['"test1 test321,test2,test3,test4,test4,test4"'];
-        let brands = brandDetails.map(brand =>  brand.brandName ? brand.brandName : false);
-        const totalBrands = brands.length;
-
-        //brands = brands.slice(0,16);
-        brands = brands.toString();
-        brands = [`"${brands}"`];
+        const totalBrands = brandDetails.length;
         const updateSheet = workbook.getWorksheet("Bulk Upload Sheet");
         for (let v = 2; v <= maxRows; v++) {
             updateSheet.getCell(`A${v}`).dataValidation = {
                 type: "list",
                 allowBlank: false,
-                formulae: brands,
+                formulae: brandFormulae,
                 showErrorMessage: false
             };
             updateSheet.getCell(`B${v}`).dataValidation = {
                 type: "list",
                 allowBlank: false,
-                formulae: claimType,
+                formulae: claimTypeFormulae,
                 showErrorMessage: false
             };
             updateSheet.getCell(`C${v}`).value = {
