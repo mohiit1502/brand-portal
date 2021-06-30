@@ -1,10 +1,12 @@
+@import "./../../../../../styles/override/variables";
+
 .modal {
   background-color: rgba(230, 242, 247, 0.5);
 }
-    //top: 61px;
-    // .modal-content {
-    //     box-shadow: 0 3px 3px 1px #bbb;
-    // }
+//top: 61px;
+// .modal-content {
+//     box-shadow: 0 3px 3px 1px #bbb;
+// }
 .c-StatusModalTemplate{
   .modal-dialog{
     width: 530px;
@@ -43,6 +45,13 @@
         .subtitle {
           color: #333;
           font-size: 0.8rem;
+        }
+        .additional-action {
+          cursor: pointer;
+          color: $ozark-noir-blue;
+          font-size: 12px;
+          text-decoration: underline;
+          font-weight: bold;
         }
       }
     }
