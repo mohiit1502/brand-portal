@@ -92,7 +92,7 @@ class BrandList extends React.Component {
                 SELECTED_BRAND_USPTO_URL: data.usptoUrl,
                 SELECTED_BRAND_TRADEMARK_NUMBER: data.trademarkNumber
               }
-              
+
               const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader(false));
               response.then(res => {
                 this.fetchBrands();
@@ -192,7 +192,7 @@ class BrandList extends React.Component {
   // }
 
   async fetchBrands () {
-    this.loader(true);
+    !this.props.brands && this.loader(true);
     const response = (await Http.get("/api/brands", "", () => this.loader(false))).body;
 
     let brandList = [];
@@ -276,6 +276,9 @@ class BrandList extends React.Component {
   }
 
   async componentDidMount() {
+    if (this.props.brands) {
+      this.checkAndApplyDashboardFilter(this.props.brands);
+    }
     const brandList = await this.fetchBrands();
     this.checkAndApplyDashboardFilter(brandList);
     const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
@@ -530,6 +533,7 @@ BrandList.propTypes = {
   dispatchWidgetAction: PropTypes.func,
   toggleModal: PropTypes.func,
   saveBrandCompleted: PropTypes.func,
+  brands: PropTypes.array,
   brandEdit: PropTypes.object,
   showNotification: PropTypes.func,
   userProfile: PropTypes.object,
@@ -538,6 +542,7 @@ BrandList.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    brands: state.brandEdit.brandList,
     brandEdit: state.brandEdit,
     filter: state.dashboard.filter,
     modal: state.modal,

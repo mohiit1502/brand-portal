@@ -238,7 +238,7 @@ class UserList extends React.Component {
       return "";
   }
   async fetchUserData () {
-    this.loader(true);
+    !this.props.users && this.loader(true);
     let userList = (await Http.get("/api/users", "", () => this.loader(false))).body;
     userList = userList.content.map((user, i) => {
       const newUser = {
@@ -361,6 +361,9 @@ class UserList extends React.Component {
   }
 
   async componentDidMount() {
+    if (this.props.users) {
+      this.checkAndApplyDashboardFilter(this.props.users);
+    }
     const userList = await this.fetchUserData();
     this.checkAndApplyDashboardFilter(userList);
     const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
@@ -636,6 +639,7 @@ UserList.propTypes = {
   toggleModal: PropTypes.func,
   saveUserCompleted: PropTypes.func,
   showNotification: PropTypes.func,
+  users: PropTypes.array,
   userEdit: PropTypes.object,
   userProfile: PropTypes.object,
   widgetAction: PropTypes.bool
@@ -645,6 +649,7 @@ const mapStateToProps = state => {
   return {
     filter: state.dashboard.filter,
     modal: state.modal,
+    users: state.userEdit.get("userList"),
     userEdit: state.userEdit,
     userProfile: state.user.profile,
     widgetAction: state.dashboard.widgetAction

@@ -28,6 +28,10 @@ $ozark-noir-blue: #0b1e40;
       max-height: 100%;
       .action-row {
         height: $action-row-height;
+        .button-refresh-list {
+          cursor: pointer;
+        }
+
         .btn{
           border-radius: 42px;
           background: $market-place-blue;
