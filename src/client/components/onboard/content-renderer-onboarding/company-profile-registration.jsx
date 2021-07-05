@@ -6,7 +6,7 @@ import $ from "jquery";
 import {dispatchCompanyState} from "./../../../actions/company/company-actions";
 import Http from "../../../utility/Http";
 import CustomInput from "../../custom-components/custom-input/custom-input";
-import {showNotification} from "../../../actions/notification/notification-actions";
+import {NOTIFICATION_TYPE, showNotification} from "../../../actions/notification/notification-actions";
 import {CustomInterval} from "../../../utility/timer-utils";
 import CONSTANTS from "../../../constants/constants";
 import Helper from "../../../utility/helper";
@@ -201,7 +201,13 @@ class CompanyProfileRegistration extends React.Component {
         this.setState({updatedForm}, this.checkToEnableSubmit);
       }, 700);
     } catch (e) {
-      console.log(e);
+      const form = {...this.state.form};
+      form.inputData[type].uploading = false;
+      form.inputData.companyOnboardingActions.buttons.clear.disabled = false;
+      form.inputData.companyOnboardingActions.buttons.submit.disabled = false;
+      this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Couldn't upload the document, please try again.");
+      this.setState({form}, this.checkToEnableSubmit);
+      console.log(e)
     }
   }
 
