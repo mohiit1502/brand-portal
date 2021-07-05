@@ -50,7 +50,7 @@ const StackedBarChart = props => {
 
     const stackGenerator = stack()
       .keys(keys)
-      .order(stackOrderAscending);
+//       .order(stackOrderAscending);
     const layers = stackGenerator(data);
     const extent = [0, max(layers, layer => max(layer, sequence => sequence[1]))];
 
