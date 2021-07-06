@@ -2,8 +2,6 @@
 import fetch from "node-fetch";
 import queryString from "query-string";
 import ServerHttpError from "./ServerHttpError";
-import CONSTANTS from "../../client/constants/constants";
-import ClientHttpError from "../../client/utility/ClientHttpError";
 import mixpanel from "../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../constants/mixpanel-constants";
 
@@ -50,11 +48,9 @@ export default class ServerHttp {
     try {
       !urlString && console.log("No URL!!");
       console.log("1. ===== Crud Request Start. Requesting URL: ", urlString);
-
       requestStartTime = Date.now();
       const response = await fetch(urlString, options);
       requestEndTime = Date.now();
-
       const {ok, status, headers} = response;
       if (ok) {
         console.log("2. Response is OK with status: ", status);
