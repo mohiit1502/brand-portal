@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import fetch from "node-fetch";
 import queryString from "query-string";
 import ServerHttpError from "./ServerHttpError";

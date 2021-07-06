@@ -8,7 +8,11 @@ import Http from "../../../../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../../../constants/constants";
 import "./StatusModalTemplate.component.scss";
+import Http from "../../../../../utility/Http";
+import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
+import CONSTANTS from "../../../../../constants/constants";
 
+// eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
   const {showNotification, meta, user} = props;
   const {logoutUrl, profile} = user;

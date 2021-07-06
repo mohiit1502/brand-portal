@@ -99,11 +99,19 @@ export default class Validator {
       if (obj && obj.required && !obj.value) {
         if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
           return;
-        }
-        obj.error = obj.invalidError;
+        } else if (obj.type  && obj.type === "_checkBox" && obj.required && obj.selected) {
+          return;
+        } else  if (obj.type  && obj.type === "_urlItems") {
+          if( obj.required && this.validateUrlItems && this.validateUrlItems()) {
+            hasError = true;
+          }
+        } else {
+        
+        obj.error = obj.error || obj.invalidError || "Please Enter Valid Input";
         hasError = true;
+        }
       } else {
-        obj.error = "";
+        obj.error = obj.error || "";
       }
     });
     this.setState({form});
@@ -330,6 +338,7 @@ export default class Validator {
   }
 
   static onInvalid (evt, key) {
+    evt.preventDefault();
     const form = this.state.form;
     const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
     if (matchedField) {

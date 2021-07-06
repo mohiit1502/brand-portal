@@ -64,6 +64,7 @@ class BrandManagerApi {
         headers
       };
 
+      console.log("[BrandManagerApi::getBrands] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request,"BRAND_CONFIG.BASE_URL");
       // const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
@@ -105,6 +106,7 @@ class BrandManagerApi {
         headers
       };
 
+      console.log("[BrandManagerApi::createBrand] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8092";
       const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
@@ -150,6 +152,7 @@ class BrandManagerApi {
         headers
       };
 
+      console.log("[BrandManagerApi::updateBrand] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
       const url = `${BASE_URL}${BRANDS_PATH}/${request.params.brandId}`;
@@ -191,6 +194,7 @@ class BrandManagerApi {
         headers
       };
 
+      console.log("[BrandManagerApi::checkUnique] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UNIQUENESS_CHECK_PATH");
       // const UNIQUENSS_CHECK_PATH = `/ropro/umf/v1/brands/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");

@@ -2,6 +2,9 @@ import Access from "./access.svg";
 import Alert from "./alert.svg";
 import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
+import ArrowRight from "./arrow-right.svg";
+import Astrick from "./astrick.svg";
+import AstrickRed from "./astrick-red.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
@@ -31,6 +34,7 @@ import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
 import ProblemSolving from "./group-1473.png";
 import Question from "./question.svg";
+import Refresh from "./refresh.svg";
 import RedCircleCross from "./red-circle-cross.svg";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
@@ -54,6 +58,9 @@ export {
     Alert,
     Arrow,
     ArrowDown,
+    ArrowRight,
+    Astrick,
+    AstrickRed,
     BlackBGCheck,
     BrandList,
     BrandsIcon,
@@ -84,6 +91,7 @@ export {
     ProblemSolving,
     Question,
     RedCircleCross,
+    Refresh,
     ShowPassword,
     Sort,
     SortDown,
