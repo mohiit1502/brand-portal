@@ -1,14 +1,13 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import mixpanel from "../../../../../utility/mixpanelutils";
-import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
-import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
-import "./StatusModalTemplate.component.scss";
+import mixpanel from "../../../../../utility/mixpanelutils";
 import Http from "../../../../../utility/Http";
-import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
+import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 import CONSTANTS from "../../../../../constants/constants";
+import "./StatusModalTemplate.component.scss";
 
 // eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
