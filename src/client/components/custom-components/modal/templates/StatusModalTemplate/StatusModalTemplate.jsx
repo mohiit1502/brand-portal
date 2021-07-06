@@ -14,7 +14,6 @@ import CONSTANTS from "../../../../../constants/constants";
 
 // eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
-  const {showNotification, user} = props;
   const {showNotification, meta, user} = props;
   const {logoutUrl, profile} = user;
   const [loader, setLoader] = useState(false);
