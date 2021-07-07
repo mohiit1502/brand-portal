@@ -608,7 +608,6 @@ const FORMFIELDCONFIG = {
             "required": true,
             "pattern": null,
             "subtitle": "",
-            "subtitle": "",
             "type": "select",
             "value": "",
           },
@@ -623,11 +622,10 @@ const FORMFIELDCONFIG = {
             "value": "",
             "type": "text",
             "pattern": null,
-            "disabled": true,
             "isValid": false,
             "subtitle": "",
             "error": "",
-            "onChange": "onChange", 
+            "onChange": "onChange",
           },
           "fieldsHeader_3": {
             "excludeColContainer": true,
@@ -1539,7 +1537,6 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "getItemListFromChild": "getItemListFromChild",
           "sellerNameType": "text",
-          "getItemListFromChild": "getItemListFromChild",
           "prebounceChangeHandler": "disableSubmitButton",
           "onChangeUrl": "onChange",
           "onChangeSellerName": "onChange",
@@ -1747,121 +1744,6 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3",
               "disabled": false,
               "text": "Submit",
-              "type": "submit"
-            }
-          }
-        }
-      }
-    },
-    "CONTACTUS":{
-      "formConfig":{
-        "api":"/api/users/contactUs",
-        "id": "contactUs",
-        "isSubmitDisabled":true,
-        "loader": false
-      },
-      "fields": {
-        "area": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-area",
-          "disabled": false,
-          "dropdownOptions" : [
-            {
-              "id" : "technicalSupport",
-              "label": "Technical Support",
-              "value": "Technical Support"
-            },
-            {
-              "label": "Claim Support",
-              "value": "Claim Support",
-              "id": "claimSupport"
-            },
-            {
-              "label": "User Management Support",
-              "value": "User Management Support",
-              "id": "userManagementSupport"
-            },
-            {
-              "label": "Follow-Up",
-              "value": "Follow-Up",
-              "id": "followUp"
-            },
-            {
-              "label": "IP Management Support",
-              "value": "IP Management Support",
-              "id": "ipManagementSupport"
-            }
-          ],
-          "error": "",
-          "fieldOk": false,
-          "inputId": "area",
-          "key": "area",
-          "label": "Area",
-          "layout": "1.0.6",
-          "invalidError": "Please select from the drop down",
-          "patternErrorMessage": "Please select from the drop down.",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "select",
-          "value": ""
-        },
-        "title" : {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-title",
-          "disabled": false,
-          "error": "",
-          "fieldOk": false,
-          "inputId": "title",
-          "invalidError": "Please provide a short description of the request",
-          "key": "title",
-          "label": "Title",
-          "layout": "2.1.6",
-          "patternErrorMessage": "Please provide a short description of the request",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "text",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "maxLength": 60,
-              "error": "Max. length is 60"
-            }
-          }
-        },
-        "details" : {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-details",
-          "error": "",
-          "inputId": "details",
-          "invalidError": "Please provide additional information about the request",
-          "key": "details",
-          "label": "Details",
-          "patternErrorMessage": "Please provide additional information about the request",
-          "preventHTMLRequiredValidation": true,
-          "placeholder": "Please provide additional information about the request",
-          "required": true,
-          "subtitle": "",
-          "type": "textarea",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "maxLength": 1000,
-              "error": "Max. length is 1000"
-            }
-          }
-        },
-        "sendActions":{
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-button-panel text-right",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "type": "_buttonsPanel",
-          "buttons": {
-            "send": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "text": "Send",
               "type": "submit"
             }
           }

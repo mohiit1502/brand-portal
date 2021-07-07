@@ -50,6 +50,7 @@ class ClaimList extends React.Component {
       filters: [],
       appliedFilter: [],
       loader: false,
+      nonBlockingLoader: false,
       searchText: "",
       unsortedList: [],
       identifier: "claims",
@@ -112,10 +113,10 @@ class ClaimList extends React.Component {
   }
 
 
-  loader (enable) {
+  loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
-      stateClone.loader = enable;
+      stateClone[type] = enable;
       return stateClone;
     });
   }
@@ -182,8 +183,11 @@ class ClaimList extends React.Component {
   }
 
   async fetchClaims () {
-    !this.props.claims && this.loader(true);
-    const response = (await Http.get("/api/claims", "", () => this.loader(false))).body;
+    !this.props.claims ? this.loader("loader", true) : this.loader("nonBlockingLoader", true);
+    const response = (await Http.get("/api/claims", "", () => {
+      this.loader("loader", false);
+      this.loader("nonBlockingLoader", false);
+    })).body;
 
     let claimList = [];
 
@@ -364,7 +368,7 @@ class ClaimList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
-                    {/*<img className="button-refresh-list mr-3" src={Refresh} onClick={this.fetchClaims} />*/}
+                    {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Details"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>

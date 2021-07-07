@@ -339,23 +339,30 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   z-index: 1050;
 }
 
-.loader:before {
-  display: block;
-  content: "";
-  position: absolute;
-  background-color: transparent;
-  background-image: url("./../images/Spinner Transparent BG.svg");
-  background-size: #{$loader-size};
-  background-repeat: no-repeat;
-  background-position: center;
-  height: $size-max;
-  width: $size-max;
-  -webkit-animation: rotating 2s linear infinite;
-  -moz-animation: rotating 2s linear infinite;
-  -ms-animation: rotating 2s linear infinite;
-  -o-animation: rotating 2s linear infinite;
-  animation: rotating 2s linear infinite;
-  z-index: 1050;
+.loader {
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    background-image: url("./../images/Spinner Transparent BG.svg");
+    background-size: #{$loader-size};
+    background-repeat: no-repeat;
+    background-position: center;
+    height: $size-max;
+    width: $size-max;
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    -o-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
+    z-index: 1050;
+  }
+  &.list-loader {
+    &:before {
+      background-size: 1.8rem;
+    }
+  }
 }
 
 .loader:after {
@@ -407,7 +414,7 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
     background-size: 1.45rem;
     top: 0.34rem;
   }
-  
+
   &.col-4:before {
     right: 0.3rem;
   }
