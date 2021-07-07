@@ -1,6 +1,9 @@
+/* eslint-disable max-statements */
 import fetch from "node-fetch";
 import queryString from "query-string";
 import ServerHttpError from "./ServerHttpError";
+import mixpanel from "../utility/mixpanelutility";
+import {MIXPANEL_CONSTANTS} from "../constants/mixpanel-constants";
 
 export default class ServerHttp {
 
@@ -37,13 +40,17 @@ export default class ServerHttp {
   }
 
   static async crud (urlString, options, method) {
-    const start = Date.now();
+    let requestStartTime;
+    let requestEndTime;
+    const mixpanelPayload = {
+      URL: urlString
+    };
     try {
       !urlString && console.log("No URL!!");
-      console.log("1. ===== Crud Request Start. Requesting URL: ", urlString)
+      console.log("1. ===== Crud Request Start. Requesting URL: ", urlString);
+      requestStartTime = Date.now();
       const response = await fetch(urlString, options);
-      const end = Date.now();
-      console.log("API: " + urlString + " --- Response Time: "  + (end - start));
+      requestEndTime = Date.now();
       const {ok, status, headers} = response;
       if (ok) {
         console.log("2. Response is OK with status: ", status);
@@ -55,13 +62,15 @@ export default class ServerHttp {
       console.log(errorString, err);
       throw new ServerHttpError(status, err.error, err.message);
     } catch (e) {
-      const end = Date.now();
-      console.log("Catching API: " + urlString + " failed --- Response Time: "  + (end - start));
+      requestEndTime  = requestEndTime ? requestEndTime : Date.now();
       const errorString = `6. Caught in ServerHttp.${method}: `;
       console.error(errorString, e);
       throw new ServerHttpError(e.status || 500, e);
     } finally {
+      mixpanelPayload.RESPONSE_TIME = requestEndTime - requestStartTime;
+      console.log("Total Response Time:", requestEndTime - requestStartTime);
       console.log("7. === Crud Request End!");
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.SERVER_HTTP.SERVER_RESPONSE_TIME, mixpanelPayload);
     }
   }
 }

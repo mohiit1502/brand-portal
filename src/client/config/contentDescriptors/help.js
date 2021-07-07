@@ -3,6 +3,14 @@
 const HELPCONFIG = {
   "header": "Walmart Brand Portal Help Center",
   "categoryHeader": "Help Topics",
+  "sectionMap": {
+    "/help/faq": "faq",
+    "/help/user": "user",
+    "/help/brand": "brand",
+    "/help/claim": "claim",
+    "/help/contact": "contact",
+    "/help": "faq"
+  },
   "categories": {
     "faq": {
       "categoryText": "Frequently Asked Questions"
@@ -38,12 +46,17 @@ const HELPCONFIG = {
           "type": "simple",
           "answer": {
             "partial1": {
-              "chunk1": "Please reach out to our support team at: ",
+              "chunk1": "Please reach out to our support team at ",
+              "link1": {
+                "onClick": "goToContactUs",
+                "text": "contact us"
+              },
+              "chunk2": " tab in the help section or mail to ",
               "anchor1": {
                 "href": "mailto:brandportal@walmart.com",
                 "text": "brandportal@walmart.com"
               },
-              "chunk2": ". Please be sure to include information about your account, along with details regarding your issue."
+              "chunk3": ". Please be sure to include information about your account, along with details regarding your issue."
             }
           }
         },
@@ -91,12 +104,17 @@ const HELPCONFIG = {
           "type": "simple",
           "answer": {
             "partial1": {
-              "chunk1": "Please reach out to our support team at ",
+              "chunk1": "Please reach out to our support team from ",
+              "link1": {
+                "onClick": "goToContactUs",
+                "text": "contact us"
+              },
+              "chunk2": " tab in the help section or mail to ",
               "anchor1": {
                 "href": "mailto:brandportal@walmart.com",
                 "text": "brandportal@walmart.com"
               },
-              "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract."
+              "chunk3": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract."
             }
           }
         },
@@ -112,12 +130,17 @@ const HELPCONFIG = {
           "type": "simple",
           "answer": {
             "partial1": {
-              "chunk1": "Please reach out to our support team at: ",
+              "chunk1": "Please reach out to our support team at ",
+              "link1": {
+                "onClick": "goToContactUs",
+                "text": "contact us"
+              },
+              "chunk2": " tab in the help section or mail to ",
               "anchor1": {
                 "href": "mailto:brandportal@walmart.com",
                 "text": "brandportal@walmart.com"
               },
-              "chunk2": " and include information about your account, along with details regarding your issue."
+              "chunk3": " and include information about your account, along with details regarding your issue."
             }
           }
         }
@@ -181,7 +204,7 @@ const HELPCONFIG = {
           "type": "simple",
           "answer": {
             "para1": "You have the flexibility to assign particular roles and permissions to your users. There are three types of roles:",
-            "para2": "Super Admin: The super admin will have access to all features within Walmart Brand Portal, including adding additional admins and reporters, adding new brands, submitting IP claims, and keeping track of all submitted claims in the claims dashboard.",
+            "para2": "Super Administrator: The super administrator will have access to all features within Walmart Brand Portal, including adding additional admins and reporters, adding new brands, submitting IP claims, and keeping track of all submitted claims in the claims dashboard.",
             "para3": "Admin: The admin will have access to most features within Walmart Brand Portal, including adding additional reporters, adding new brands, submitting IP claims, and keeping track of all submitted claims in the claims dashboard.",
             "para4": "Reporter: The reporter role will be able to submit IP claims and see the claims dashboard."
           }
@@ -343,7 +366,7 @@ const HELPCONFIG = {
       ]
     },
     "contact": {
-      "header": "Contact Us",
+      "header": "Contact Us"
     }
   }
 }

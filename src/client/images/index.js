@@ -3,6 +3,8 @@ import Alert from "./alert.svg";
 import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
 import ArrowRight from "./arrow-right.svg";
+import Astrick from "./astrick.svg";
+import AstrickRed from "./astrick-red.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
@@ -58,6 +60,8 @@ export {
     Arrow,
     ArrowDown,
     ArrowRight,
+    Astrick,
+    AstrickRed,
     BlackBGCheck,
     BrandList,
     BrandsIcon,

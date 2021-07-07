@@ -11,12 +11,13 @@ import CONSTANTS from "../../constants/constants";
 import InputFormatter from "../../utility/phoneOps";
 import {showNotification} from "../../actions/notification/notification-actions";
 import Http from "../../utility/Http";
-
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus", "validateUrlItems"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -37,7 +38,8 @@ class Webform extends React.Component {
         ...webformConfiguration.formConfig,
         inputData: webformConfiguration.fields
       },
-      loader: false
+      loader: false,
+      formError: ""
     };
     const formatter = new InputFormatter();
     const handlers = formatter.on(`#${this.state.section.id}-${this.state.form.inputData.phone.inputId}-custom-input`);
@@ -46,6 +48,8 @@ class Webform extends React.Component {
 
   componentDidMount() {
     this.getClaimTypes();
+    const mixpanelPayload = {WORK_FLOW: "WEB_FORM"};
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.VIEW_WEB_FORM, mixpanelPayload);
   }
 
   getClaimTypes () {
@@ -95,9 +99,27 @@ class Webform extends React.Component {
     }, this.checkToEnableItemButton);
   }
 
+  validateUrlItems = () => {
+    const form = {...this.state.form};
+    let hasError = false;
+    form.inputData.urlItems.itemList.forEach(item => {
+      if (!item.url.value) {
+        hasError = true;
+        item.url.error = item.invalidError || "Please Enter Valid Input";
+      }
+      if (!item.sellerName.value) {
+        hasError = true;
+        item.sellerName.error = item.invalidError || "Please Enter Valid Input";
+      }
+    });
+    this.setState({form});
+    return hasError;
+  };
+
   onChange (evt, key) {
     evt.persist && evt.persist();
     if (evt && evt.target) {
+      this.invalid[key] = false;
       evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
       let index = -1;
@@ -110,20 +132,19 @@ class Webform extends React.Component {
         state = {...state};
         if (index > -1) {
           if (key.split("-")[0] === "url") {
-            state.form.inputData.urlItems.itemList[index].sellerName.value = "";
+            state.form.inputData.urlItems.itemList[index][key].error = "";
             state.form.inputData.urlItems.itemList[index].sellerName.disabled = false;
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.disableAddItem = true;
           } else  {
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.itemList[index][key].error = "";
-            state.form.inputData.urlItems.itemList[index].url.error = "";
+            //state.form.inputData.urlItems.itemList[index].url.error = "";
             state.form.inputData.urlItems.disableAddItem = false;
           }
         } else {
           state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
           state.form.inputData[key].value = targetVal;
-          this.invalid[key] = false;
         }
         return {
           ...state
@@ -143,6 +164,8 @@ class Webform extends React.Component {
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       if (matchedClaimTypeWithMeta.claimType !== "copyright") {
         form.inputData.user_undertaking_3.required = false;
+      } else {
+        form.inputData.user_undertaking_3.required = true;
       }
       this.setState({form});
     }
@@ -210,7 +233,6 @@ class Webform extends React.Component {
     form.inputData.user_undertaking_2.selected = false;
     form.inputData.user_undertaking_3.selected = false;
     form.inputData.user_undertaking_4.selected = false;
-    form.inputData.user_undertaking_5.selected = false;
     form.inputData.digitalSignature.value = "";
     form.inputData.phone.value = "";
     form.inputData.phone.error = "";
@@ -246,15 +268,40 @@ class Webform extends React.Component {
   undertakingtoggle (evt, undertaking, index) {
     const state = {...this.state};
     state.form.inputData[evt.target.id].selected = !state.form.inputData[evt.target.id].selected;
+    state.form.inputData[evt.target.id].error = state.form.inputData[evt.target.id].selected ? "" : state.form.inputData[evt.target.id].error;
     this.setState({
       ...state
     });
+  }
+
+  mixpanelBatchEventUtil(eventName, payload) {
+    const items = payload.items;
+    const mixpanelPayload = items && items.map(item => {
+        const eventPayload = {};
+        eventPayload.SELLER_NAME = item.sellerName;
+        eventPayload.ITEM_URL = item.itemUrl;
+        eventPayload.CLAIM_TYPE = payload.claimType;
+        eventPayload.BRAND_NAME = payload.brandInfo.brandName;
+        eventPayload.COMPANY_NAME = payload.brandInfo.companyName;
+        eventPayload.OWNER_NAME = payload.brandInfo.companyName;
+        eventPayload.$email = payload.reporterInfo.email;
+        eventPayload.$user_id = payload.reporterInfo.email;
+        eventPayload.WORK_FLOW = "WEB_FORM";
+        return eventPayload;
+    });
+    mixpanel.trackEventBatch(eventName, mixpanelPayload);
   }
 
   handleSubmit(evt) {
     evt.preventDefault();
     if (!this.validateState()) {
       this.disableSubmitButton();
+      this.setState({
+        formError: "",
+        loader: true
+      });
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM_CLICKED, {WORK_FLOW: "WEB_FORM"});
+
       const inputData = this.state.form.inputData;
       const claimType =  inputData.claimType.value;
       // "metaInfo": {
@@ -300,19 +347,41 @@ class Webform extends React.Component {
         digitalSignatureBy,
         items: getItems(inputData.urlItems.itemList)
       };
+      const mixpanelPayload = {
+        API: "/api/claims/webform",
+        BRAND_INFO: brandInfo,
+        WORK_FLOW: "WEB_FORM",
+        $email: reporterInfo.email,
+        $user_id: reporterInfo.email,
+        $name: `${reporterInfo.firstName} ${reporterInfo.lastName}`,
+        ITEMS: getItems(inputData.urlItems.itemList),
+        CLAIM_TYPE: claimType,
+        BRAND_NAME: brandInfo.brandName,
+        COMPANY_NAME: brandInfo.companyName,
+        OWNER_NAME: brandInfo.companyName
+      };
+
       this.loader("loader", true);
-      console.log(payload);
-      Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted succesfully", "Something went wrong, please try again..!")
+      Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
       .then(res => {
           this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA));
+          mixpanelPayload.API_SUCCESS = true;
           this.loader("loader", false);
+          this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.WEBFORM.SUBMITTED_CLAIM_DEATILS, payload);
         })
         .catch(err => {
-          this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.LANDING_PAGE));
           this.loader("loader", false);
+          mixpanelPayload.API_SUCCESS = false;
+          mixpanelPayload.ERROR = err.message ? err.message : err;
           console.log(err);
+        }).finally( e => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM, mixpanelPayload);
         });
-      }
+    } else {
+      this.setState({
+        formError: this.state.form.formError
+      });
+    }
   }
 
   disableSubmitButton() {
@@ -344,6 +413,12 @@ class Webform extends React.Component {
                     this.props.configuration && this.props.configuration.header && this.props.configuration.header.text ? this.props.configuration.header.text : ""
                   }
           </div>
+          {
+            this.state.formError &&
+            <small className={`form-text custom-input-help-text form-error`}>
+            {this.state.formError}
+            </small>
+         }
           <form onSubmit={this.handleSubmit} className="web-form mb-4 mr-3" >
             { this.getFieldRenders()}
           </form>

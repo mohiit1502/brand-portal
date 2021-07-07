@@ -1,3 +1,8 @@
+
 .c-CheckBox {
-  
+    .has-error {
+       padding-top: 0px !important;
+        margin-top: -3px !important;
+        color: #dc3545;
+    }
 }

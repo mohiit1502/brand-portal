@@ -2,11 +2,15 @@
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import "./WebformCta.component.scss";
+import mixpanel from "../../utility/mixpanelutils";
+import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
 const WebformCta = function(props) {
   const [contentConfig, setContentConfig] = useState({});
   useEffect(() => {
       setContentConfig(props.configuration.content ? props.configuration.content : {});
+      const mixpanelPayload = {WORK_FLOW: "WEB_FORM"};
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.VIEW_WEBFORM_CTA, mixpanelPayload);
   }, [props.configuration]);
 
   const contentRenders = contentConfig && props.getContent && Object.keys(contentConfig).map(node => {

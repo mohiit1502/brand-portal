@@ -126,9 +126,14 @@ const CONSTANTS = {
         USER: "/profile"
       },
 
-      HELP: {
-        HELP: "/help"
-      },
+    HELP: {
+      HELP: "/help",
+      FAQ:"/help/faq",
+      USER:"/help/user",
+      CLAIM:"/help/claim",
+      BRAND:"/help/brand",
+      CONTACT:"/help/contact"
+    },
 
       DASHBOARD: "/dashboard"
     },

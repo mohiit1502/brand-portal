@@ -1,4 +1,4 @@
-const FORMFIELDCONFIG = {
+const FORMFIELDCONFIG ={
   "SECTIONSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
@@ -563,115 +563,113 @@ const FORMFIELDCONFIG = {
         "brandNameSelected": false
       },
       "fields": {
-          "fieldsHeader_1": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Select your brand",
-            "layout": "1.1.0",
-            "type": "_formFieldsHeader"
-          },
-          "brandName": {
-            "disabled": false,
-            "dropdownOptions": [],
-            "error": "",
-            "inputId": "brandName",
-            "key": "brandName",
-            "label": "Brand Name",
-            "onChange": "setSelectInputValue",
-            "pattern": null,
-            "realign": true,
-            "required": true,
-            "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
-            "type": "select",
-            "unpadSubtitle": true,
-            "value": ""
-          },
-          "fieldsHeader_2": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Select the type of infringement you are reporting",
-            "layout": "3.1.0",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "claimType": {
-            "customChangeHandler": "customChangeHandler",
-            "disabled": false,
-            "dropdownOptions": [],
-            "error": "",
-            "inputId": "claimType",
-            "label": "Claim Type",
-            "key": "claimType",
-            "layout": "4.1.4",
-            "onChange": "setSelectInputValue",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "pattern": null,
-            "subtitle": "",
-            "type": "select",
-            "value": "",
-          },
-          "claimTypeIdentifier": {
-            "disabled": false,
-            "label": "Claim Type Identifier",
-            "key": "claimTypeIdentifier",
-            "layout": "4.2.4",
-            "inputId": "claimTypeIdentifier",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "value": "",
-            "type": "text",
-            "pattern": null,
-            "isValid": false,
-            "subtitle": "",
-            "error": "",
-            "onChange": "onChange",
-          },
-          "fieldsHeader_3": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Please fill out the following details to submit your claim",
-            "layout": "5.1.0",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "urlItems": {
-            "disabled": "false",
-            "error": "",
-            "inputId": "items",
-            "key": "items",
-            "layout": "6.1.0",
-            "type": "_urlItems",
-            "disableAddItem": true,
-            "onChangeSellerName": "setSelectInputValue",
-            "onChangeItem": "getItemListFromChild",
-            "onChangeUrl": "onChange",
-            "fieldLoader": false,
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "getItemListFromChild": "getItemListFromChild",
-            "prebounceChangeHandler": "disableSubmitButton",
-            "sellerNameType": "multiselect",
-            "itemList": [{
+        "fieldsHeader_1": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Select your brand",
+          "layout": "1.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "brandName": {
+          "disabled": false,
+          "dropdownOptions": [],
+          "error": "",
+          "inputId": "brandName",
+          "key": "brandName",
+          "label": "Brand Name",
+          "onChange": "setSelectInputValue",
+          "pattern": null,
+          "realign": true,
+          "required": true,
+          "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
+          "type": "select",
+          "unpadSubtitle": true,
+          "value": ""
+        },
+        "fieldsHeader_2": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Select the type of infringement you are reporting",
+          "layout": "3.1.0",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "claimType": {
+          "customChangeHandler": "customChangeHandler",
+          "disabled": false,
+          "dropdownOptions": [],
+          "error": "",
+          "inputId": "claimType",
+          "label": "Claim Type",
+          "key": "claimType",
+          "layout": "4.1.4",
+          "onChange": "setSelectInputValue",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "pattern": null,
+          "subtitle": "",
+          "type": "select",
+          "value": ""
+        },
+        "claimTypeIdentifier": {
+          "disabled": true,
+          "label": "Claim Type Identifier",
+          "key": "claimTypeIdentifier",
+          "layout": "4.2.4",
+          "inputId": "claimTypeIdentifier",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "value": "",
+          "type": "text",
+          "pattern": null,
+          "isValid": false,
+          "subtitle": "",
+          "error": "",
+          "onChange": "onChange"
+        },
+        "fieldsHeader_3": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Please fill out the following details to submit your claim",
+          "layout": "5.1.0",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "urlItems": {
+          "disableAddItem": true,
+          "error": "",
+          "fieldLoader": false,
+          "inputId": "items",
+          "isSellerNameDisabled": true,
+          "key": "items",
+          "layout": "6.1.0",
+          "type": "_urlItems",
+          "onChangeSellerName": "setSelectInputValue",
+          "onChangeItem": "getItemListFromChild",
+          "onChangeUrl": "onChange",
+          "prebounceChangeHandler": "disableSubmitButton",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "itemList": [
+            {
               "id": "item-0",
               "url": {
                 "label": "Item URL",
-                "required": "true",
+                "required": true,
                 "value": "",
                 "type": "url",
                 "pattern": "https?://.+",
                 "disabled": false,
-                "isValid": "false",
+                "isValid": false,
                 "subtitle": "",
                 "error": ""
               },
               "sellerName": {
                 "dropdownOptions": [],
                 "label": "Seller Name",
-                "required": "true",
+                "required": true,
                 "value": "",
                 "pattern": null,
                 "disabled": true,
-                "options": [],
                 "subtitle": "",
                 "type": "multiselect",
                 "error": "",
@@ -682,158 +680,159 @@ const FORMFIELDCONFIG = {
                   }
                 }
               }
-            }]
-          },
-          "comments": {
-            "containerClasses": "mb-3",
-            "disabled": false,
-            "error": "",
-            "inputId": "comments",
-            "key": "comments",
-            "layout": "7.1.0",
-            "label": "Comments",
-            "pattern": null,
-            "prebounceChangeHandler": "trimSpaces",
-            "required": true,
-            "rowCount": 2,
-            "subtitle": "",
-            "type": "textarea",
-            "value": "",
-            "placeholder":"Please provide additional information about the claim",
-            "onChange": "onChange",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "validators": {
-              "validateRequired": {
-                "errorMessages": {
-                  "dataMsgRequired": "Please be sure to provide details regarding your claim."
-                }
-              },
-              "validateLength": {
-                "minLength": 20,
-                "error": "Comment should be 20 characters long!"
-              }
             }
-          },
-          "user_undertaking_1": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_1",
-            "inputId": "user_undertaking_1",
-            "key": "user_undertaking_1",
-            "layout": "8.1.0",
-            "label": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "user_undertaking_2": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_2",
-            "inputId": "user_undertaking_2",
-            "key": "user_undertaking_2",
-            "layout": "9.1.0",
-            "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "user_undertaking_3": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_3",
-            "inputId": "user_undertaking_3",
-            "key": "user_undertaking_3",
-            "layout": "10.1.0",
-            "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "user_undertaking_4": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_4",
-            "inputId": "user_undertaking_4",
-            "key": "user_undertaking_4",
-            "layout": "11.1.0",
-            "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "fieldsHeader_4": {
-            "containerClasses": "font-weight-bold mt-2",
-            "header": "Typing your full name in this box will act as your digital signature",
-            "layout": "12.1.0",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "signature": {
-            "label": "Digital Signature",
-            "containerClasses": "signature",
-            "error": "",
-            "disabled": false,
-            "required": true,
-            "inputId": "signature",
-            "value": "",
-            "key": "signature",
-            "layout": "13.1.8",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "text",
-            "pattern": null,
-            "subtitle": "",
-            "onChange": "onChange"
-          },
-          "userActions": {
-            "containerClasses": "modal-footer action-footer",
-            "colClasses": "text-right",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "layout": "14.1.0",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "resetTemplateStatus",
-                "text": "Cancel",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
-                "disabled": true,
-               "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-               "text" : "Submit",
-                "type": "submit"
+          ]
+        },
+        "comments": {
+          "containerClasses": "mb-3",
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "layout": "7.1.0",
+          "label": "Comments",
+          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "required": true,
+          "rowCount": 2,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+          "placeholder": "Please provide additional information about the claim",
+          "onChange": "onChange",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "validators": {
+            "validateRequired": {
+              "errorMessages": {
+                "dataMsgRequired": "Please be sure to provide details regarding your claim."
               }
+            },
+            "validateLength": {
+              "minLength": 20,
+              "error": "Comment should be 20 characters long!"
             }
           }
-      },
+        },
+        "user_undertaking_1": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_1",
+          "inputId": "user_undertaking_1",
+          "key": "user_undertaking_1",
+          "layout": "8.1.0",
+          "label": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_2": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_2",
+          "inputId": "user_undertaking_2",
+          "key": "user_undertaking_2",
+          "layout": "9.1.0",
+          "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_3": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_3",
+          "inputId": "user_undertaking_3",
+          "key": "user_undertaking_3",
+          "layout": "10.1.0",
+          "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_4": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "key": "user_undertaking_4",
+          "layout": "11.1.0",
+          "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
+          "layout": "12.1.0",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "signature": {
+          "label": "Digital Signature",
+          "containerClasses": "signature",
+          "error": "",
+          "disabled": false,
+          "required": true,
+          "inputId": "signature",
+          "value": "",
+          "key": "signature",
+          "layout": "13.1.8",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "text",
+          "pattern": null,
+          "subtitle": "",
+          "onChange": "onChange"
+        },
+        "userActions": {
+          "containerClasses": "modal-footer action-footer",
+          "colClasses": "text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "layout": "14.1.0",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
+              "disabled": true,
+              "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+              "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+      }
     },
     "RESETPASSWORD": {
       "sectionConfig": {
@@ -1098,121 +1097,6 @@ const FORMFIELDCONFIG = {
         }
       }
     },
-    "CONTACTUS": {
-      "formConfig": {
-        "api": "/api/users/contactUs",
-        "id": "contactUs",
-        "isSubmitDisabled": true,
-        "loader": false
-      },
-      "fields": {
-        "area": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-area",
-          "disabled": false,
-          "dropdownOptions": [
-            {
-              "id": "technicalSupport",
-              "label": "Technical Support",
-              "value": "Technical Support"
-            },
-            {
-              "label": "Claim Support",
-              "value": "Claim Support",
-              "id": "claimSupport"
-            },
-            {
-              "label": "User Management Support",
-              "value": "User Management Support",
-              "id": "userManagementSupport"
-            },
-            {
-              "label": "Follow-Up",
-              "value": "Follow-Up",
-              "id": "followUp"
-            },
-            {
-              "label": "IP Management Support",
-              "value": "IP Management Support",
-              "id": "ipManagementSupport"
-            }
-          ],
-          "error": "",
-          "fieldOk": false,
-          "inputId": "area",
-          "key": "area",
-          "label": "Area",
-          "layout": "1.0.6",
-          "invalidError": "Please select from the drop down",
-          "patternErrorMessage": "Please select from the drop down.",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "select",
-          "value": ""
-        },
-        "title": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-title",
-          "disabled": false,
-          "error": "",
-          "fieldOk": false,
-          "inputId": "title",
-          "invalidError": "Please provide a short description of the request",
-          "key": "title",
-          "label": "Title",
-          "layout": "2.1.6",
-          "patternErrorMessage": "Please provide a short description of the request",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "text",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "maxLength": 60,
-              "error": "Max. length is 60"
-            }
-          }
-        },
-        "details": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-form-details",
-          "error": "",
-          "inputId": "details",
-          "invalidError": "Please provide additional information about the request",
-          "key": "details",
-          "label": "Details",
-          "patternErrorMessage": "Please provide additional information about the request",
-          "preventHTMLRequiredValidation": true,
-          "placeholder": "Please provide additional information about the request",
-          "required": true,
-          "subtitle": "",
-          "type": "textarea",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "maxLength": 1000,
-              "error": "Max. length is 1000"
-            }
-          }
-        },
-        "sendActions": {
-          "containerClasses": "mt-3 contact-us-form-row w-100",
-          "colClasses": "contact-us-button-panel text-right",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "type": "_buttonsPanel",
-          "buttons": {
-            "send": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "text": "Send",
-              "type": "submit"
-            }
-          }
-        }
-      }
-    },
     "WEBFORM": {
       "sectionConfig": {
         "headerClasses": "content-header-row h3 p-4",
@@ -1223,7 +1107,8 @@ const FORMFIELDCONFIG = {
         "id": "webForm",
         "loader": false,
         "isSubmitDisabled": true,
-        "claimTypeSelected": false
+        "claimTypeSelected": false,
+        "formError": ""
       },
       "fields": {
         "fieldsHeader_1": {
@@ -1527,53 +1412,54 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "urlItems": {
-          "disabled": false,
-          "error": "",
-          "inputId": "items",
-          "key": "items",
-          "layout": "12.1.0",
-          "type": "_urlItems",
           "disableAddItem": true,
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "getItemListFromChild": "getItemListFromChild",
-          "sellerNameType": "text",
-          "prebounceChangeHandler": "disableSubmitButton",
-          "onChangeUrl": "onChange",
-          "onChangeSellerName": "onChange",
+          "error": "",
           "fieldLoader": false,
-          "bubbleValue": "bubbleValue",
+          "inputId": "items",
+          "isSellerNameDisabled": false,
+          "layout": "12.1.0",
+          "key": "items",
+          "maxItems": 10,
+          "onChangeItem": "getItemListFromChild",
+          "prebounceChangeHandler": "disableSubmitButton",
+          "onChangeSellerName": "onChange",
+          "onChangeUrl": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "type": "_urlItems",
           "itemList": [{
             "id": "item-0",
             "url": {
               "label": "Item URL",
-              "required": "true",
+              "required": true,
               "value": "",
               "type": "url",
               "pattern": "https?://.+",
+              "patternErrorMessage": "Please provide a valid Item URL",
               "preventHTMLRequiredValidation": true,
               "disabled": false,
-              "isValid": "false",
+              "isValid": false,
               "subtitle": "",
               "error": ""
             },
             "sellerName": {
               "label": "Seller Name",
-              "required": "true",
+              "required": true,
               "value": "",
-              "disabled": true,
-              "options": [],
+              "disabled": false,
+              "dropdownOptions": [],
               "subtitle": "",
               "type": "text",
               "error": "",
               "preventHTMLRequiredValidation": true,
               "validators": {
                 "validateLength": {
-                  "minLength": "2",
-                  "error": "Minimum length is 2 characters"
+                  "minLength": "3",
+                  "error": "Minimum length is 3 characters"
                 }
               }
             }
-      }]
+          }]
         },
         "comments": {
           "disabled": false,
@@ -1611,6 +1497,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_1",
           "inputId": "user_undertaking_1",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_1",
           "layout": "14.1.0",
           "label": "",
@@ -1629,6 +1516,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_2",
           "inputId": "user_undertaking_2",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_2",
           "layout": "15.1.0",
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
@@ -1646,6 +1534,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_3",
           "inputId": "user_undertaking_3",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_3",
           "layout": "16.1.0",
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
@@ -1663,6 +1552,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_4",
           "inputId": "user_undertaking_4",
+          "invalidError": "Please select this field to proceed",
           "key": "user_undertaking_4",
           "layout": "17.1.0",
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
@@ -1674,26 +1564,16 @@ const FORMFIELDCONFIG = {
           "selected": false,
           "type": "_checkBox"
         },
-        "user_undertaking_5": {
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_5",
-          "inputId": "user_undertaking_5",
-          "key": "user_undertaking_5",
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
           "layout": "18.1.0",
-          "label": "Typing your full name in this box will act as your digital signature.",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "selected": false,
-          "type": "_checkBox"
+          "type": "_formFieldsHeader"
         },
         "digitalSignature": {
           "disabled": false,
-          "containerClasses": "mt-4",
+          "containerClasses": "",
           "disableDefaultBlueValidation": true,
           "error": "",
           "inputId": "digitalSignature",
@@ -1713,7 +1593,7 @@ const FORMFIELDCONFIG = {
             }
           }
         },
-        "fieldsHeader_4": {
+        "fieldsHeader_5": {
           "containerClasses": "font-size-12",
           "header": "Please review your contact information and make sure it is correct before clicking Submit.",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1721,6 +1601,10 @@ const FORMFIELDCONFIG = {
         },
         "captchValidator": {
           "captchaFieldName": "Please enter captcha ",
+          "captchConfig": {
+            "enableCaptcha": true,
+            "sitekey": "6LdfLwsbAAAAABESWTlTiqJxIfiGoYlfnWfjS5Ea","serverkey":"6LdfLwsbAAAAAIIMTb41C5BU7Ndu54u27UueWhV6"
+          },
           "isHuman": false,
           "containerClasses": "mt-4",
           "error": "",
@@ -1733,6 +1617,7 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "submitButtonLabel": "Submit Captch",
           "type": "_captchValidator",
+          "value": false
         },
         "webFormActions": {
           "containerClasses": "pb-5 mb-5",
@@ -1744,6 +1629,130 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3",
               "disabled": false,
               "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "CONTACTUS": {
+      "formConfig": {
+        "api": "/api/users/contactUs",
+        "id": "contactUs",
+        "isSubmitDisabled": true,
+        "loader": false,
+        "successNotificationMessage": "Request successfully submitted. Our agents will process your request",
+        "failedNotificationMessage": "Sorry request cannot be processed at the moment"
+      },
+      "fields": {
+        "area": {
+          "containerClasses": "mt-4 contact-us-form-row w-100",
+          "colClasses": "contact-us-form-area",
+          "disabled": false,
+          "dropdownOptions": [
+            {
+              "id": "technicalSupport",
+              "label": "Technical Support",
+              "value": "Technical Support"
+            },
+            {
+              "label": "Claim Support",
+              "value": "Claim Support",
+              "id": "claimSupport"
+            },
+            {
+              "label": "User Management Support",
+              "value": "User Management Support",
+              "id": "userManagementSupport"
+            },
+            {
+              "label": "Follow-Up",
+              "value": "Follow-Up",
+              "id": "followUp"
+            },
+            {
+              "label": "IP Management Support",
+              "value": "IP Management Support",
+              "id": "ipManagementSupport"
+            },
+            {
+              "label": "Other",
+              "value": "Other",
+              "id": "other"
+            }
+          ],
+          "error": "",
+          "fieldOk": false,
+          "inputId": "area",
+          "key": "area",
+          "label": "Area",
+          "layout": "1.1.5",
+          "invalidError": "Please select from the drop down",
+          "patternErrorMessage": "Please select from the drop down.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "select",
+          "tooltipRightContent": "",
+          "value": ""
+        },
+        "title": {
+          "containerClasses": " contact-us-form-row w-100",
+          "colClasses": "contact-us-form-title",
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "title",
+          "invalidError": "Please provide a short description of the request",
+          "key": "title",
+          "label": "Title",
+          "layout": "2.0.5",
+          "patternErrorMessage": "Please provide a short description of the request",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "maxLength": 60,
+              "error": "Max. length is 60"
+            }
+          }
+        },
+        "details": {
+          "containerClasses": "contact-us-form-row w-100",
+          "colClasses": "contact-us-form-details",
+          "error": "",
+          "inputId": "details",
+          "invalidError": "Please provide additional information about the request",
+          "key": "details",
+          "label": "Details",
+          "layout": "3.0.7",
+          "patternErrorMessage": "Please provide additional information about the request",
+          "preventHTMLRequiredValidation": true,
+          "placeholder": "Please provide additional information about the request",
+          "required": true,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "minLength": 20,
+              "maxLength": 1000,
+              "error": "Max. length is 1000"
+            }
+          }
+        },
+        "sendActions": {
+          "containerClasses": "contact-us-form-row w-100 m-0",
+          "colClasses": "contact-us-button-panel text-right",
+          "layout": "4.0.7",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "send": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14",
+              "text": "Send",
               "type": "submit"
             }
           }

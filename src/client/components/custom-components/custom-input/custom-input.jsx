@@ -26,15 +26,14 @@ class CustomInput extends React.Component {
   componentDidMount() {
     if (this.state.type === "multiselect") {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
+    }
+    $("[data-toggle='tooltip']")
+      .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
+      .tooltip();
+    $("body")
+      .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
+      .on("mouseleave", ".tooltip, [data-toggle='tooltip']", () => $(".tooltip").addClass("move-beneath"));
 
-      $("[data-toggle='tooltip']")
-        .on("mouseleave", e => e.stopImmediatePropagation())
-        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
-        .tooltip();
-      $("body")
-        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
-        .on("mouseleave", ".tooltip, [data-toggle='tooltip']", () => $(".tooltip").addClass("move-beneath"));
-      }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -122,9 +121,9 @@ class CustomInput extends React.Component {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     const content = (<React.Fragment>
       <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-        id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
-        pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
-        data-toggle="dropdown" autoComplete="off" />
+             id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
+             pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
+             data-toggle="dropdown" autoComplete="off" />
       <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
         {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
         {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
@@ -296,9 +295,9 @@ class CustomInput extends React.Component {
         ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : this.state.fieldAlert ? " field-alert" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
-          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlueValidation ? this.onBlur : undefined} maxLength={this.state.maxLength}
-          onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
+               id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
+               pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlueValidation ? this.onBlur : undefined} maxLength={this.state.maxLength}
+               onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
           : <span className="icon-hide-password" onClick={() => this.setState({type: "password"})} />)}
@@ -317,8 +316,8 @@ class CustomInput extends React.Component {
   getTextAreaInputType () {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     return (
-      <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
-        <label className={`custom-input-label custom-input-label-textarea`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
+      <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}${errorClass ? " " + errorClass : ""}`}>
+        <label className={`custom-input-label custom-input-label-textarea ${this.state.required ? " required" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
           required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} placeholder={this.state.placeholder ? this.state.placeholder : ""} />
