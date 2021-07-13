@@ -136,7 +136,8 @@ const MIXPANEL_CONSTANTS = {
     },
     CONTACT_US: {
         CONTACT_US: "CONTACT_US"
-    }
+    },
+    RESEND_SELF_INVITE: "RESEND_SELF_INVITE"
 };
 
 export default MIXPANEL_CONSTANTS;

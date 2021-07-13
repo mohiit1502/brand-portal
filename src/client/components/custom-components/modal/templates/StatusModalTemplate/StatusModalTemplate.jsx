@@ -37,6 +37,7 @@ const StatusModalTemplate = props => {
             showNotification(NOTIFICATION_TYPE.SUCCESS, `Verification email sent to: ${email} `);
           } else if (res.body === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
             showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${email} has already been activated.`);
+            mixpanelPayload.emailAlreadyVerified = true;
           } else {
             showNotification(NOTIFICATION_TYPE.ERROR, `Verification email could not be sent to: ${email} `);
           }
@@ -49,7 +50,7 @@ const StatusModalTemplate = props => {
         })
         .finally(() => {
           setLoader(false);
-          // mixpanel.trackEvent(MIXPANEL_CONSTANTS.RESEND_INVITE, mixpanelPayload);
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.RESEND_SELF_INVITE, mixpanelPayload);
         });
     } else {
       showNotification(NOTIFICATION_TYPE.ERROR, `Email not available, please refresh the page!`);
