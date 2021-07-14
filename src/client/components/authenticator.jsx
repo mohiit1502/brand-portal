@@ -10,11 +10,15 @@ import CONSTANTS from "../constants/constants";
 import Cookies from "electrode-cookies";
 import Http from "../utility/Http";
 import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions";
+import {dispatchClaims} from "../actions/claim/claim-actions";
+import {dispatchBrands} from "../actions/brand/brand-actions";
+import {dispatchUsers} from "../actions/user/user-actions";
 import {dispatchMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
 import mixpanel from "../utility/mixpanelutils";
+import {preLoadApiUtil} from "../utility/preLoadApiUtil";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 
 class Authenticator extends React.Component {
@@ -23,6 +27,25 @@ class Authenticator extends React.Component {
     super(props);
     const COOKIE_NAME = "auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
+
+    this.fetchClaims = preLoadApiUtil.fetchClaims.bind(this);
+    this.fetchBrands = preLoadApiUtil.fetchBrands.bind(this);
+    this.fetchUsers = preLoadApiUtil.fetchUsers.bind(this);
+
+    this.majorRoutes = {
+      "claims": {
+        fetcher: this.fetchClaims,
+        dispatcher: this.props.dispatchClaims
+      },
+      "brands": {
+        fetcher: this.fetchBrands,
+        dispatcher: this.props.dispatchBrands
+      },
+      "users": {
+        fetcher: this.fetchUsers,
+        dispatcher: this.props.dispatchUsers
+      }
+    }
 
     this.state = {
       isLoggedIn: !!sessionCookie,
@@ -42,6 +65,7 @@ class Authenticator extends React.Component {
     }
     if (this.state.isLoggedIn) {
       this.initMetaData();
+      this.preLoadData();
       this.getProfileInfo();
       this.prepareLogoutEnvironment();
     } else {
@@ -53,6 +77,13 @@ class Authenticator extends React.Component {
     if (prevProps.userProfile !== this.props.userProfile) {
       //this.setOnboardStatus(this.props.userProfile.organization);
     }
+  }
+
+  preLoadData() {
+    Object.keys(this.majorRoutes).forEach(currentPath => {
+      const sectionObj = this.majorRoutes[currentPath];
+      sectionObj.fetcher(sectionObj.dispatcher);
+    })
   }
 
   initMetaData() {
@@ -230,7 +261,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   dispatchMetadata,
   updateUserProfile,
-  dispatchLogoutUrl
+  dispatchLogoutUrl,
+  dispatchClaims,
+  dispatchBrands,
+  dispatchUsers
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authenticator);

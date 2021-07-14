@@ -59,6 +59,7 @@ class DashboardManagerApi {
       mixpanelPayload.ROLE = params && params.role;
       mixpanelPayload.API_SUCCESS = true;
 
+      console.log("[DashboardManagerApi::getDashboard] Params", params);
       const response = await graphQLUtility.execute(request, "_all", params);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       // const response = await graphQLUtility.execute(request, "_all", request.params);
@@ -95,6 +96,7 @@ class DashboardManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.DATA_RANGE = params && params.dateRange;
 
+      console.log("[DashboardManagerApi::getReportedClaimsType] Params", params);
       const response = await graphQLUtility.execute(request, "claimsByType_filtered", params);
       console.log("[DashboardManagerApi::getReportedClaimsType] API request for Claim Submitted by Type has completed");
       mixpanelPayload.RESPONSE_STATUS = response.status;
@@ -130,6 +132,7 @@ class DashboardManagerApi {
       mixpanelPayload.DATA_RANGE = params && params.dateRange;
       mixpanelPayload.CLAIM_TYPE = params && params.claimType === "__claimType__" ? "ALL" : params.claimType;
 
+      console.log("[DashboardManagerApi::getTopReportedBrands] Params", params);
       const response = await graphQLUtility.execute(request, "claimsByBrands_filtered", params);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[DashboardManagerApi::getTopReportedBrands] API request for Top Reported brands  has completed");
@@ -165,6 +168,7 @@ class DashboardManagerApi {
       mixpanelPayload.DATA_RANGE = params && params.dateRange;
       mixpanelPayload.CLAIM_TYPE = params && params.claimType === "__claimType__" ? "ALL" : params.claimType;
 
+      console.log("[DashboardManagerApi::getTopReporters] Params", params);
       const response = await graphQLUtility.execute(request, "claimsByUsers_filtered", params);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[DashboardManagerApi::getTopReporters] API request for Top Reporters has completed");

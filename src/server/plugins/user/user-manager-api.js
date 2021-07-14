@@ -134,6 +134,7 @@ class UserManagerApi {
       const options = {headers};
       const HEALTHCHECK_PATH = await ServerUtils.ccmGet(request, "HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
+      console.log("[UserManagerApi::checkHealth] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       console.log("[UserManagerApi::checkHealth] API request for check health has completed");
       console.log("[UserManagerApi::checkHealth] Health check response: ", response);
       return h.response(response.body).code(response.status);
@@ -156,6 +157,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::checkHealth] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
@@ -196,6 +198,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::reinviteUser] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       let INVITE_USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_REINVITE");
       INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
@@ -237,6 +240,7 @@ class UserManagerApi {
         headers
       };
 
+      console.log("[UserManagerApi::resetPassword] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       console.log(payload);
       let RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
@@ -275,6 +279,7 @@ class UserManagerApi {
         method: "GET",
         headers
       };
+      console.log("[UserManagerApi::getUsers] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
@@ -312,6 +317,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::checkUnique] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.UNIQUENESS_CHECK_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
@@ -353,6 +359,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::createUser] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
@@ -395,6 +402,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::updateUserStatus] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
@@ -433,6 +441,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::updateTouStatus] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const payload = request.payload;
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
@@ -469,6 +478,7 @@ class UserManagerApi {
       const options = {
         headers: { ...headers, "Content-Type": "text/plain" }
       };
+      console.log("[UserManagerApi::updateTouStatus] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
@@ -499,6 +509,7 @@ class UserManagerApi {
         headers
       };
 
+      console.log("[UserManagerApi::getNewUserRoles] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
@@ -536,6 +547,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::getNewUserBrands] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
@@ -569,6 +581,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::getUserInfo] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
@@ -769,7 +782,7 @@ class UserManagerApi {
   }
 
   async contactUs(request, h) {
-    console.log("[UserManagerApi::Contact Us] API Request to send an email for support");
+    console.log("[UserManagerApi::contactUs] API Request to send an email for support");
     console.log("[UserManagerApi::contactUs] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
@@ -780,6 +793,7 @@ class UserManagerApi {
       const options = {
         headers
       };
+      console.log("[UserManagerApi::contactUs] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const payload = request.payload;
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_CONTACT_US_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.CONTACT_US_ENDPOINT");
