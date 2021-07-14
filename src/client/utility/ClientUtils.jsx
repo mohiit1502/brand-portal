@@ -1,6 +1,5 @@
 import queryString from "query-string";
 import {Redirect} from "react-router";
-import React from "react";
 
 export default class ClientUtils {
 

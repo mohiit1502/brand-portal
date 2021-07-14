@@ -96,7 +96,7 @@ class ClaimManagerApi {
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers["WM_QOS.CORRELATION_ID"];
 
-      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      
+      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );
       let responseBody = [];
       if ( response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         responseBody = this.parseSellersFromResponse( response.body.docs );
@@ -127,6 +127,7 @@ class ClaimManagerApi {
         headers
       };
 
+      console.log("[ClaimManagerApi::getClaimTypes] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIM_TYPES_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIM_TYPES_PATH");
       const url = `${BASE_URL}${CLAIM_TYPES_PATH}`;
@@ -165,6 +166,7 @@ class ClaimManagerApi {
         headers
       };
 
+      console.log("[ClaimManagerApi::getClaims] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
@@ -202,6 +204,7 @@ class ClaimManagerApi {
         headers
       };
 
+      console.log("[ClaimManagerApi::getClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = `${await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
       const url = `${BASE_URL}${CLAIMS_PATH}`;
@@ -245,6 +248,7 @@ class ClaimManagerApi {
         headers
       };
 
+      console.log("[ClaimManagerApi::createClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;

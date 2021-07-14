@@ -87,6 +87,7 @@ class CompanyManagerApi {
         method: "POST",
         headers
       };
+      console.log("[CompanyManagerApi::registerOrganization] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const payload = request.payload;
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const REGISTER_ORG_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.REGISTER_ORG_PATH");
@@ -129,6 +130,7 @@ class CompanyManagerApi {
         headers
       };
 
+      console.log("[CompanyManagerApi::checkTrademarkValidity] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8092";
       const TM_VALIDITY_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.TM_VALIDITY_PATH");
@@ -168,6 +170,7 @@ class CompanyManagerApi {
       const options = {
         headers
       };
+      console.log("[CompanyManagerApi::uploadAdditionalDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const fd = new FormData();
@@ -213,6 +216,7 @@ class CompanyManagerApi {
       const fd = new FormData();
 
       fd.append("file", file, {filename});
+      console.log("[CompanyManagerApi::uploadBusinessDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BUSINESS_DOC_PATH");
       const url = `${BASE_URL}${BUSINESS_DOC_PATH}`;
@@ -255,6 +259,7 @@ class CompanyManagerApi {
         headers
       };
 
+      console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const COMPANY_NAME_UNIQUENESS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.COMPANY_NAME_UNIQUENESS_PATH");
       const url = `${BASE_URL}${COMPANY_NAME_UNIQUENESS_PATH}`;

@@ -65,6 +65,7 @@ class UserList extends React.Component {
       searchText: "",
       showFilters: false,
       loader: false,
+      nonBlockingLoader: false,
       userRole,
       unsortedList: [],
       dropdown: {
@@ -85,7 +86,7 @@ class UserList extends React.Component {
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.status && data.status === CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.USER.OPTIONS.PAYLOAD.ACTIVE : CONSTANTS.USER.OPTIONS.PAYLOAD.SUSPEND;
-              this.loader(true);
+              this.loader("loader", true);
               const mixpanelPayload = {
                 API: "/api/users/",
                 WORK_FLOW: "VIEW_USER_LIST",
@@ -95,7 +96,7 @@ class UserList extends React.Component {
                 SELECTED_USER_NAME: data.username,
                 SELECTED_USER_BRANDS: data.brands
               }
-              const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`, {}, "", () => this.loader(false));
+              const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`, {}, "", () => this.loader("loader", false));
               response.then(() => {
                 this.fetchUserData();
                 mixpanelPayload.API_SUCCESS = true;
@@ -121,7 +122,7 @@ class UserList extends React.Component {
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
             disabled: true,
             clickCallback: (evt, option, data) => {
-              this.loader(true);
+              this.loader("loader", true);
               const mixpanelPayload = {
                 API: "/api/users/reinvite",
                 WORK_FLOW: "VIEW_USER_LIST",
@@ -131,7 +132,7 @@ class UserList extends React.Component {
                 SELECTED_USER_NAME: data.username,
                 SELECTED_USER_BRANDS: data.brands
               }
-              Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader(false))
+              Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader("loader", false))
                 .then(res => {
                   if (res.body === true) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
@@ -207,10 +208,10 @@ class UserList extends React.Component {
     };
   }
 
-  loader (enable) {
+  loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
-      stateClone.loader = enable;
+      stateClone[type] = enable;
       return stateClone;
     });
   }
@@ -238,8 +239,11 @@ class UserList extends React.Component {
       return "";
   }
   async fetchUserData () {
-    this.loader(true);
-    let userList = (await Http.get("/api/users", "", () => this.loader(false))).body;
+    !this.props.users ? this.loader("loader", true) : this.loader("nonBlockingLoader", true);
+    let userList = (await Http.get("/api/users", "", () => {
+      this.loader("loader", false);
+      this.loader("nonBlockingLoader", false);
+    })).body;
     userList = userList.content.map((user, i) => {
       const newUser = {
         id: user.email,
@@ -361,6 +365,9 @@ class UserList extends React.Component {
   }
 
   async componentDidMount() {
+    if (this.props.users) {
+      this.checkAndApplyDashboardFilter(this.props.users);
+    }
     const userList = await this.fetchUserData();
     this.checkAndApplyDashboardFilter(userList);
     const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
@@ -513,6 +520,7 @@ class UserList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
+                    {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Details"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
@@ -636,6 +644,7 @@ UserList.propTypes = {
   toggleModal: PropTypes.func,
   saveUserCompleted: PropTypes.func,
   showNotification: PropTypes.func,
+  users: PropTypes.array,
   userEdit: PropTypes.object,
   userProfile: PropTypes.object,
   widgetAction: PropTypes.bool
@@ -645,6 +654,7 @@ const mapStateToProps = state => {
   return {
     filter: state.dashboard.filter,
     modal: state.modal,
+    users: state.userEdit.get("userList"),
     userEdit: state.userEdit,
     userProfile: state.user.profile,
     widgetAction: state.dashboard.widgetAction
