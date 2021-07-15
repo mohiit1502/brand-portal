@@ -61,6 +61,7 @@ class BrandList extends React.Component {
       searchText: "",
       showFilters: false,
       loader: false,
+      nonBlockingLoader: false,
       userRole,
       unsortedList: [],
       dropdown: {
@@ -82,7 +83,7 @@ class BrandList extends React.Component {
               const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
               const payload = {status: outgoingStatus};
-              this.loader(true);
+              this.loader("loader", true);
               const mixpanelPayload = {
                 API: "/api/brands/",
                 WORK_FLOW: "VIEW_BRAND_LIST",
@@ -92,8 +93,8 @@ class BrandList extends React.Component {
                 SELECTED_BRAND_USPTO_URL: data.usptoUrl,
                 SELECTED_BRAND_TRADEMARK_NUMBER: data.trademarkNumber
               }
-              
-              const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader(false));
+
+              const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader("loader",false));
               response.then(res => {
                 this.fetchBrands();
                 mixpanelPayload.API_SUCCESS = true;
@@ -159,10 +160,10 @@ class BrandList extends React.Component {
     };
   }
 
-  loader (enable) {
+  loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
-      stateClone.loader = enable;
+      stateClone[type] = enable;
       return stateClone;
     });
   }
@@ -192,8 +193,11 @@ class BrandList extends React.Component {
   // }
 
   async fetchBrands () {
-    this.loader(true);
-    const response = (await Http.get("/api/brands", "", () => this.loader(false))).body;
+    !this.props.brands ? this.loader("loader", true) : this.loader("nonBlockingLoader", true);
+    const response = (await Http.get("/api/brands", "", () => {
+      this.loader("loader", false)
+      this.loader("nonBlockingLoader", false)
+    })).body;
 
     let brandList = [];
 
@@ -276,6 +280,9 @@ class BrandList extends React.Component {
   }
 
   async componentDidMount() {
+    if (this.props.brands) {
+      this.checkAndApplyDashboardFilter(this.props.brands);
+    }
     const brandList = await this.fetchBrands();
     this.checkAndApplyDashboardFilter(brandList);
     const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
@@ -408,6 +415,7 @@ class BrandList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
+                    {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Brand Details"
                       onChange={(evt) => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
@@ -530,6 +538,7 @@ BrandList.propTypes = {
   dispatchWidgetAction: PropTypes.func,
   toggleModal: PropTypes.func,
   saveBrandCompleted: PropTypes.func,
+  brands: PropTypes.array,
   brandEdit: PropTypes.object,
   showNotification: PropTypes.func,
   userProfile: PropTypes.object,
@@ -538,6 +547,7 @@ BrandList.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    brands: state.brandEdit.brandList,
     brandEdit: state.brandEdit,
     filter: state.dashboard.filter,
     modal: state.modal,

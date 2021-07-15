@@ -406,7 +406,7 @@ class NewClaimTemplate extends React.Component {
         WORK_FLOW: "ADD_NEW_CLAIM"
       };
       this.loader("loader", true);
-      return Http.post("/api/claims", payload)
+      return Http.post("/api/claims", payload, null, null, this.props.showNotification, null, "Something went wrong, please try again..!")
         .then(res => {
           const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
           this.resetTemplateStatus();
