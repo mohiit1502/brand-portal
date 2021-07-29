@@ -18,7 +18,6 @@ const StatusModalTemplate = props => {
   const contentRenderer = new ContentRenderer();
   const baseUrl = window.location.origin;
   const logoutUrlSuperlated = logoutUrl && logoutUrl.replace("__domain__", baseUrl);
-  const meta = props.meta;
   const mixpanelPayload = {
     WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[meta && meta.CODE ? meta.CODE : 0] || "CODE_NOT_FOUND"
   };
