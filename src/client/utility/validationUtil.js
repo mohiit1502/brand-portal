@@ -96,6 +96,10 @@ export default class Validator {
     Object.keys(form.inputData).forEach(key => {
       const obj = {...form.inputData[key]};
       form.inputData[key] = obj;
+      if (obj.error) {
+        hasError = true;
+        return;
+      }
       if (obj && obj.required && !obj.value) {
         if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
           return;
