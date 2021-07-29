@@ -1,0 +1,38 @@
+.c-WebformWorkflowDecider {
+    .page-title{
+        font-weight: bold;
+        font-size: 2rem;
+        padding: 1rem 9rem;
+        //background: linear-gradient(to bottom, #8cd3f7, white);
+
+    }
+
+    .page-header {
+        font-weight: bold;
+        padding-bottom: 0.5rem;
+    }
+
+    .page-body {
+        padding: 1rem 11rem;
+    }
+    .message-content {
+        font-size: 20px;
+    }
+
+    @media only screen and (min-width: 1800px) {
+        .page-title{
+            font-weight: bold;
+            font-size: 2rem;
+            padding: 1rem 8rem;
+            padding-top: 4rem;
+        } 
+        .page-body {
+            padding: 1rem 11rem;
+        }
+    }
+    @media only screen and (max-width: 1400px) {
+        .page-title{
+            padding: 1rem 6.5rem;
+        }
+    }
+}

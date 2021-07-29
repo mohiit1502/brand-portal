@@ -8,7 +8,9 @@ import Http from "../../../../../utility/Http";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../../../constants/constants";
 import "./StatusModalTemplate.component.scss";
+import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 
+// eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
   const {showNotification, meta, user} = props;
   const {logoutUrl, profile} = user;
@@ -16,6 +18,7 @@ const StatusModalTemplate = props => {
   const contentRenderer = new ContentRenderer();
   const baseUrl = window.location.origin;
   const logoutUrlSuperlated = logoutUrl && logoutUrl.replace("__domain__", baseUrl);
+  const meta = props.meta;
   const mixpanelPayload = {
     WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[meta && meta.CODE ? meta.CODE : 0] || "CODE_NOT_FOUND"
   };
@@ -56,19 +59,25 @@ const StatusModalTemplate = props => {
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div className={`modal-content${loader ? " loader" : ""}`}>
-          <div className="modal-body text-center">
-            <div className="row">
+          {meta.HEADER && <div className="modal-header font-weight-bold align-items-center">
+            {meta.HEADER}
+            <button type="button" className="close text-white" aria-label="Close" onClick={() => props.toggleModal(TOGGLE_ACTIONS.HIDE)}>
+              <span className="close-btn" aria-hidden="true">&times;</span>
+            </button>
+          </div>}
+          <div className={`modal-body${meta.TYPE !== "NON_STATUS" ? " text-center" : ""} p-4`}>
+            {meta.image && <div className="row">
               <div className="col">
                 <img src={meta.image} alt="IMAGE_STATUS" height={120}/>
               </div>
-            </div>
-            <div className="row mt-3">
+            </div>}
+            {meta.TITLE && <div className="row mt-3">
               <div className="col">
                 <span className="status-header font-weight-bold">
                   {meta.TITLE}
                 </span>
               </div>
-            </div>
+            </div>}
             { meta.SUBTITLE &&
               <div className="row mt-1">
               <div className="col">
@@ -96,10 +105,13 @@ const StatusModalTemplate = props => {
               </div>
             </div>
             <div className="row mt-4">
-              <div className="col">
-                <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
-                  Logout
-                </a>
+              <div className={`col${meta.TYPE === "NON_STATUS" ? " text-right" : ""}`}>
+                {meta.TYPE === "NON_STATUS"
+                  ? <button className="btn btn-sm btn-primary px-5" onClick={() => props.toggleModal(TOGGLE_ACTIONS.HIDE)}>{meta.BUTTON_TEXT}</button>
+                  : <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>
+                    Logout
+                  </a>
+                }
                 {meta.ADDITIONAL_ACTION && <a className="additional-action d-block mt-2" onClick={resendInvite}>
                   {meta.ADDITIONAL_ACTION}
                 </a>}
@@ -114,6 +126,7 @@ const StatusModalTemplate = props => {
 
 StatusModalTemplate.props = {
   meta: PropTypes.object,
+  toggleModal: PropTypes.func,
   showNotification: PropTypes.func,
   user: PropTypes.object
 };
@@ -125,6 +138,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  toggleModal,
   showNotification
 }
 

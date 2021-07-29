@@ -602,7 +602,7 @@ class UserManagerApi {
       console.log("[UserManagerApi::getUserInfo] Error occured in API request for get User information:", err);
       if (err.status === 520) {
         if (err.error.message && err.error.message.indexOf("404") !== -1) {
-          return h.response(err).code(404);
+         return h.response(err).code(404);
         } else {
           return h.response(err).code(err.status);
         }
@@ -724,7 +724,7 @@ class UserManagerApi {
       console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");
       return h.redirect(redirectUri);
     } catch (e) {
-      console.log("[UserManagerApi::redirectToFalcon] Error occured in API request for Redirect to Falcon:", e);
+      console.log("[UserManagerApi::redirectToFalcon] Error occurred in API request for Redirect to Falcon:", e);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e;
       throw e;

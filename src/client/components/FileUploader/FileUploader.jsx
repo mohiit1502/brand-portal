@@ -28,7 +28,7 @@ const FileUploader = props => {
   })
 
   return (
-    <div className="c-FileUploader form-row primary-file-upload mb-3">
+    <div className={`c-FileUploader form-row primary-file-upload mb-3${props.containerClasses ? " " + props.containerClasses : ""}`}>
       <div className="col">
         <div className="file-upload-title mb-2">
           {props.label} <Tooltip placement={"right"}

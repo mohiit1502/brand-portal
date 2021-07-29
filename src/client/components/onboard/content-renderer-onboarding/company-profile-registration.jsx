@@ -184,7 +184,7 @@ class CompanyProfileRegistration extends React.Component {
 
   render() {
     if (this.state.redirectToBrands) {
-      return <Redirect to={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER}/>;
+      return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.BRAND_REGISTER}/>;
     }
     const section = this.state.section;
     return (

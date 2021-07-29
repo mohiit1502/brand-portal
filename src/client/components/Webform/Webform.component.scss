@@ -1,0 +1,27 @@
+.c-Webform {
+    .header{
+        font-weight: bold;
+        padding-bottom: 1.5rem;
+    }
+    &.loader::before {
+            position: fixed;
+            height: 75vh;
+    }
+
+    &.loader::after {
+            position: fixed;
+    }
+
+    .label-text {
+        color: #333;
+    }
+
+    .required {
+        &::after {
+            content: "*";
+        }
+    }
+    .form-error {
+        color: #dc3545;
+    }
+}

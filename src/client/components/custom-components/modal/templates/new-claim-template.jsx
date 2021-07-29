@@ -292,7 +292,6 @@ class NewClaimTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
     evt && mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_SUBMIT_CLAIM, mixpanelPayload);
   }

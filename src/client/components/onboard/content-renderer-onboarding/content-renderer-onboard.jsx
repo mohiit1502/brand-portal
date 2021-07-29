@@ -16,10 +16,10 @@ class ContentRendererOnboard extends React.Component {
       <div className="content-page-onboard row">
         <div className="col content-page-onboard__col pb-4">
           <Switch>
-            <Route path={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}>
+            <Route path={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}>
               <CompanyProfileRegistration {...this.props}/>
             </Route>
-            <Route path={CONSTANTS.ROUTES.ONBOARD.BRAND_REGISTER}>
+            <Route path={CONSTANTS.ROUTES.PROTECTED.ONBOARD.BRAND_REGISTER}>
               <BrandRegistration {...this.props}/>
             </Route>
           </Switch>

@@ -12,12 +12,15 @@
       left: 0;
     }
     .modal-content{
-      padding: 24px;
       box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.16);
       .modal-header{
-
+        height: 65px;
+        font-size: 27px;
+        background-color: $modal-header-background-color;
+        color: white;
       }
       .modal-body{
+        border-bottom: 9px solid #7ac4e4;
         .btn-primary {
           background: #006799;
           font-weight: bold;
