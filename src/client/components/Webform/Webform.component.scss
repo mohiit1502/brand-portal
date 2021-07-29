@@ -16,11 +16,11 @@
         color: #333;
     }
 
-    .required {
-        &::after {
-            content: "*";
-        }
-    }
+    //.required {
+    //    &::after {
+    //        content: "*";
+    //    }
+    //}
     .form-error {
         color: #dc3545;
     }
