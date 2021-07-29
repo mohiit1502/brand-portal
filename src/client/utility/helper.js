@@ -4,6 +4,7 @@ import * as d3 from "d3";
 import Http from "./Http";
 import mixpanel from "../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
+import moment from "moment";
 
 export default class Helper {
   static toCamelCaseFirstUpper(incoming) {
@@ -207,5 +208,19 @@ export default class Helper {
   static trimSpaces(incoming) {
     const value = typeof incoming === "object" ? incoming.target.value : incoming;
     return value.replace(/  +/g, ' ').replace(/^\s+/g, "");
+  }
+
+  static getDateFromTimeStamp(timestamp){
+    try {
+      const dateParts= timestamp.split('T');
+      let dateString ;
+      if(dateParts && dateParts[0])
+        dateString = dateParts[0];
+      return moment(dateString).format('MM-DD-YYYY');
+    }
+    catch(e){
+      console.log(e);
+    }
+    return "";
   }
 }

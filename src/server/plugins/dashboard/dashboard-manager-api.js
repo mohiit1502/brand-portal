@@ -58,6 +58,7 @@ class DashboardManagerApi {
       mixpanelPayload.distinct_id = params && params.emailId;
       mixpanelPayload.ROLE = params && params.role;
       mixpanelPayload.API_SUCCESS = true;
+
       console.log("[DashboardManagerApi::getDashboard] Params", params);
       const response = await graphQLUtility.execute(request, "_all", params);
       mixpanelPayload.RESPONSE_STATUS = response.status;

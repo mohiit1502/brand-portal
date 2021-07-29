@@ -27,8 +27,10 @@ export default class MixpanelUtils {
                 payload = payload ? payload : {};
                 if (payload) {
                     payload.IS_SERVER = true;
-                    payload.$email = payload.distinct_id;
-                    payload.$user_id = payload.distinct_id;
+                    if (payload.distinct_id) {
+                      payload.$email = payload.distinct_id;
+                      payload.$user_id = payload.distinct_id;
+                    }
                 }
                 payload ? mixpanel.track(eventName, payload) : mixpanel.track(eventName);
             } catch (e) {

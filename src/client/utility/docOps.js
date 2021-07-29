@@ -2,6 +2,7 @@ import {CustomInterval} from "./timer-utils";
 import Http from "./Http";
 import mixpanel from "../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
+import {NOTIFICATION_TYPE} from "../actions/notification/notification-actions";
 
 export default class DocumentActions {
 
@@ -57,6 +58,12 @@ export default class DocumentActions {
       }, 700);
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
+      const form = {...this.state.form};
+      form.inputData[type].uploading = false;
+      form.inputData.companyOnboardingActions.buttons.clear.disabled = false;
+      form.inputData.companyOnboardingActions.buttons.submit.disabled = false;
+      this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Couldn't upload the document, please try again.");
+      this.setState({form}, this.checkToEnableSubmit);
       console.log(e);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
