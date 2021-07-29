@@ -155,7 +155,7 @@ class ContentManagerApi {
       console.log("[ContentManagerApi::getCaptchaConfiguration] API request for reCaptcha configuration has completed");
       return h.response(response).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
-      console.log("[ContentManagerApi::getCaptchaConfiguration] Error occured in API request for reCaptcha configuration:", err);
+      console.log("[ContentManagerApi::getCaptchaConfiguration] Error occurred in API request for reCaptcha configuration:", err);
       return h.response(err).code(err.status);
     }
   }

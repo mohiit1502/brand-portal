@@ -20,11 +20,6 @@ const WebformCta = function(props) {
   return (
     <div className="c-WebformCta">
       <div className="page-body">
-          <div className="page-header h4 font-weight-bold">
-            {
-              props.configuration.header.text
-            }
-          </div>
           <div className="">{contentRenders}</div>
       </div>
     </div>

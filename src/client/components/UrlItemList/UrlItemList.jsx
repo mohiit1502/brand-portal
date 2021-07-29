@@ -63,6 +63,7 @@ const UrlItemList = props => {
   };
 
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
+    item = {...item};
     return (<div key={i} className="c-UrlItem row item-url-list">
       <div className="col-8">
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}

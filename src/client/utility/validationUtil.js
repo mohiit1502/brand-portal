@@ -23,7 +23,7 @@ export default class Validator {
   static validateRequired (target, validationObj) {
     const formFieldValue = target.value
     if (validationObj && formFieldValue === "") {
-      return Validator.errorPrefix + validationObj.errorMessages.dataMsgRequired
+      return Validator.errorPrefix + validationObj.error
     } else {
       return ""
     }
@@ -52,7 +52,7 @@ export default class Validator {
       const formFieldRegex = new RegExp(formFieldRegexString)
       const compliesRegex = formFieldRegex.test(formFieldValue)
       if (!compliesRegex) {
-        return Validator.errorPrefix + validationObj.errorMessages.dataMsgRegex
+        return Validator.errorPrefix + validationObj.error
       } else {
         return ""
       }
@@ -99,16 +99,15 @@ export default class Validator {
       if (obj && obj.required && !obj.value) {
         if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
           return;
-        } else if (obj.type  && obj.type === "_checkBox" && obj.required && obj.selected) {
+        } else if (obj.type && obj.type === "_checkBox" && obj.selected) {
           return;
-        } else  if (obj.type  && obj.type === "_urlItems") {
+        } else if (obj.type  && obj.type === "_urlItems") {
           if( obj.required && this.validateUrlItems && this.validateUrlItems()) {
             hasError = true;
           }
         } else {
-        
-        obj.error = obj.error || obj.invalidError || "Please Enter Valid Input";
-        hasError = true;
+          obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
+          hasError = true;
         }
       } else {
         obj.error = obj.error || "";

@@ -98,7 +98,7 @@ export default class ContentRenderer {
       </div>);
     } else if (node.startsWith("button")) {
       return (
-        <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key} 
+        <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
         onClick={content[node].onClick ? this[content[node].onClick] : () => {}}
         href={content[node].href ? content[node].href: ""} value={content[node].value ? content[node].value : 0} >
           {content[node].buttonText}
@@ -144,9 +144,9 @@ export default class ContentRenderer {
 
 
   static layoutFields (inputData, id) {
-    const laidoutFields = [];
+    let laidoutFields = [];
     inputData && Object.keys(inputData).forEach(id => {
-      const field = inputData[id];
+      const field = {...inputData[id]};
       let layout = inputData[id].layout;
       layout = field.layout && field.layout.indexOf(".") > -1 && layout.split(".");
       if (layout) {
@@ -170,8 +170,8 @@ export default class ContentRenderer {
       }
     });
 
-    laidoutFields.filter(item => item.length !== 0);
-
+    laidoutFields = laidoutFields.filter(item => item.length !== 0);
+    laidoutFields && laidoutFields.sort((row1, row2) => row1[0].row > row2[0].row);
     laidoutFields && laidoutFields.forEach(row => {
       row.sort((item1, item2) => item1.order > item2.order);
     });

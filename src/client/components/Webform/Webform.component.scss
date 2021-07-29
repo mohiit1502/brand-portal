@@ -12,19 +12,16 @@
             position: fixed;
     }
 
-    .submit-btn {
-        width: 150px;
-    }
     .label-text {
         color: #333;
     }
-    
+
     .required {
         &::after {
             content: "*";
         }
-    }  
+    }
     .form-error {
         color: #dc3545;
-    }  
+    }
 }

@@ -83,24 +83,23 @@ class WebformWorkflowDecider extends React.Component {
 
       } else if (this.state.webformConfig && this.props.webformWorkflow === CONSTANTS.WEBFORM.CLAIM_SUBMISSION) {
         configuration = this.state.webformConfig.webform;
-        childComponent = (<Webform getContent={this.getContent} configuration= {configuration} dispatchWebformState={this.dispatchWebformState}/>);
-
-      } else {
-        configuration = this.state.webformConfig.landingPageConfig;
-        childComponent = (<WebformLandingPage  configuration= {configuration} getContent={this.getContent}/>);
+        childComponent = this.props.webformFieldsConfiguration
+          ? <Webform
+              getContent={this.getContent}
+              webformFieldsConfiguration={this.props.webformFieldsConfiguration}
+              configuration={configuration}
+              dispatchWebformState={this.dispatchWebformState}/>
+          : null;
       }
 
       return (
         <div className="c-WebformWorkflowDecider">
-          <HomeHeader isWebform={true}/>
+          <HomeHeader isWebform={true} hideHelp={this.props.webformWorkflow !== CONSTANTS.WEBFORM.CLAIM_SUBMISSION} config={this.state.webformConfig ? this.state.webformConfig.webform : {}} />
           <div className="">
-            <div className={`page-title mp-blue ${configuration && configuration.titleClass ? configuration.titleClass : ""}`}>
-                Walmart IP Services
-            </div>
             {childComponent}
           </div>
           <div className="fixed-bottom">
-            <Footer/>
+            <Footer isWebform={true}/>
           </div>
         </div>
       );
@@ -110,15 +109,19 @@ class WebformWorkflowDecider extends React.Component {
 WebformWorkflowDecider.propTypes = {
   dispatchMetadata: PropTypes.func,
   dispatchWebformState: PropTypes.func,
-  webformWorkflow: PropTypes.number
+  webformWorkflow: PropTypes.string,
+  webformFieldsConfiguration: PropTypes.object
 };
+
 const mapDispatchToProps = {
   dispatchMetadata,
   dispatchWebformState
 };
+
 const mapStateToProps = state => {
   return {
-    webformWorkflow: state.webform.state
+    webformWorkflow: state.webform.state,
+    webformFieldsConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.WEBFORM
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(WebformWorkflowDecider);
