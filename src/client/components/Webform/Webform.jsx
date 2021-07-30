@@ -450,7 +450,7 @@ class Webform extends React.Component {
   render() {
     const config = this.props.configuration;
     return (
-      <div className={`c-Webform mt-4rem row justify-content-center ${this.state.loader ? " loader" : ""}`}>
+      <div className={`c-Webform mt-4rem d-flex justify-content-center ${this.state.loader ? " loader" : ""}`}>
         <div className="col-lg-8 col-md-6 col-6 pl-3 pr-3">
           {config
           && <div>
