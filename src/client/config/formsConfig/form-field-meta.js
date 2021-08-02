@@ -1270,15 +1270,10 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
-          "required": true,
+          "required": false,
           "subtitle": "",
           "type": "text",
-          "value": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Address 2 is required"
-            }
-          }
+          "value": ""
         },
         "city": {
           "disabled": false,

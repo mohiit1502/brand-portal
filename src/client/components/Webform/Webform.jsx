@@ -9,16 +9,18 @@ import Helper from "../../utility/helper";
 import Validator from "../../utility/validationUtil";
 import CONSTANTS from "../../constants/constants";
 import InputFormatter from "../../utility/phoneOps";
+import {dispatchMetadata} from "../../actions/content/content-actions";
 import {showNotification} from "../../actions/notification/notification-actions";
+import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
 import Http from "../../utility/Http";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
-import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
+import FORMFIELDCONFIG from "../../config/formsConfig/form-field-meta";
 
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "resetWebformStatus", "validateUrlItems"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems"];
     functions.forEach(name => this[name] = this[name].bind(this));
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
@@ -28,39 +30,56 @@ class Webform extends React.Component {
     });
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {emailId: false, phone: false};
-    const webformFieldsConfiguration = this.props.webformFieldsConfiguration ? {...this.props.webformFieldsConfiguration} : {};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.validateState = Validator.validateState.bind(this);
     //this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
     this.trimSpaces = Helper.trimSpaces.bind(this);
-    const fields = {};
-    webformFieldsConfiguration && webformFieldsConfiguration.fields
-    && Object.keys(webformFieldsConfiguration.fields)
-      .forEach(field => fields[field] = {...webformFieldsConfiguration.fields[field]});
     this.state = {
-      section: {...webformFieldsConfiguration.sectionConfig},
-      form: {
-        ...webformFieldsConfiguration.formConfig,
-        inputData: {...fields}
-      },
       loader: false,
       formError: ""
     };
-    const formatter = new InputFormatter();
-    const handlers = formatter.on(`#${this.state.section.id}-${this.state.form.inputData.phone.inputId}-custom-input`);
-    this.prebounceChangeHandler = handlers.inputHandler;
   }
 
   componentDidMount() {
-    this.getClaimTypes();
+    this.props.dispatchMetadata(FORMFIELDCONFIG);
+    Http.get("/api/formConfig")
+      .then(response => {
+        if (response.body) {
+          try {
+            response = JSON.parse(response.body);
+            //response = FORMFIELDCONFIG;
+            const fields = {};
+            const webformFieldsConfiguration = response && response.SECTIONSCONFIG && response.SECTIONSCONFIG.WEBFORM ? response.SECTIONSCONFIG.WEBFORM : {};
+            webformFieldsConfiguration && webformFieldsConfiguration.fields && Object.keys(webformFieldsConfiguration.fields)
+              .forEach(field => fields[field] = {...webformFieldsConfiguration.fields[field]});
+            this.setState(() => {
+              const state = {...this.state};
+              state.section = {...webformFieldsConfiguration.sectionConfig};
+              state.form = {
+                ...webformFieldsConfiguration.formConfig,
+                inputData: {...fields}
+              }
+              const options = this.getClaimTypes();
+              const formatter = new InputFormatter();
+              const handlers = formatter.on(`#${state.section.id}-${state.form.inputData.phone.inputId}-custom-input`);
+              this.prebounceChangeHandler = handlers.inputHandler;
+              state.form.inputData.claimType.claimTypesWithMeta = options;
+              state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
+              return state;
+            });
+            this.props.dispatchMetadata(response);
+          } catch (e) {
+            this.props.dispatchMetadata(FORMFIELDCONFIG);
+            console.log(e);
+          }
+        }
+      });
     const mixpanelPayload = {WORK_FLOW: "WEB_FORM"};
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.VIEW_WEB_FORM, mixpanelPayload);
   }
 
   getClaimTypes() {
-    const state = {...this.state};
-    const form = state.form;
-    const options = [
+    return [
       {
         claimType: "trademark",
         label: "Trademark",
@@ -94,9 +113,6 @@ class Webform extends React.Component {
         underTakingOwnerLabel: "copyright owner"
       }
     ];
-    form.inputData.claimType.claimTypesWithMeta = options;
-    form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
-    this.setState(state);
   }
 
   getItemListFromChild(itemList) {
@@ -243,48 +259,6 @@ class Webform extends React.Component {
     this.setState({form}, callback && callback());
   }
 
-  resetWebformStatus(callback) {
-    const form = {...this.state.form};
-    form.inputData.claimType.value = "";
-    form.inputData.firstName.value = "";
-    form.inputData.lastName.value = "";
-    form.inputData.ownerName.value = "";
-    form.inputData.companyName.value = "";
-    form.inputData.brandName.value = "";
-    form.inputData.address_1.value = "";
-    form.inputData.address_2.value = "";
-    form.inputData.city.value = "";
-    form.inputData.state.value = "";
-    form.inputData.zip.value = "";
-    form.inputData.city.value = "";
-    form.inputData.zip.error = "";
-    form.inputData.urlItems.itemList = form.inputData.urlItems.itemList.slice(0, 1);
-    form.inputData.urlItems.itemList[0].url.value = "";
-    form.inputData.urlItems.itemList[0].sellerName.value = "";
-    form.inputData.comments.value = "";
-    form.inputData.user_undertaking_1.selected = false;
-    form.inputData.user_undertaking_2.selected = false;
-    form.inputData.user_undertaking_3.selected = false;
-    form.inputData.user_undertaking_4.selected = false;
-    form.inputData.digitalSignature.value = "";
-    form.inputData.phone.value = "";
-    form.inputData.phone.error = "";
-    form.inputData.emailId.value = "";
-    form.inputData.emailId.error = "";
-    form.inputData.comments.error = "";
-    form.inputData.comments.value = "";
-    form.inputData.urlItems.itemList[0].sellerName.disabled = true;
-    form.inputData.urlItems.itemList[0].url.error = "";
-    form.inputData.urlItems.itemList[0].sellerName.error = "";
-    form.inputData.comments.error = "";
-    if (form.inputData.captchaValidator) form.inputData.captchaValidator.value = false;
-    this.setState(() => {
-      const stateCloned = {...this.state};
-      stateCloned.form = form;
-      return stateCloned;
-    }, callback && callback);
-  }
-
   checkToEnableItemButton() {
     const state = {...this.state};
     let shouldDisable = false;
@@ -398,7 +372,6 @@ class Webform extends React.Component {
       this.loader("loader", true);
       Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
         .then(res => {
-          // this.resetWebformStatus(() => this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA));
           this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA);
           mixpanelPayload.API_SUCCESS = true;
           this.loader("loader", false);
@@ -489,6 +462,7 @@ class Webform extends React.Component {
 
 Webform.propTypes = {
   configuration: PropTypes.object,
+  dispatchMetadata: PropTypes.func,
   dispatchWebformState: PropTypes.func,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
@@ -496,6 +470,7 @@ Webform.propTypes = {
 };
 
 const mapDispatchToProps = {
+  dispatchMetadata,
   showNotification,
   toggleModal
 };
