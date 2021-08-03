@@ -12,7 +12,7 @@ import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
 import {ButtonsPanel, CaptchaValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
 
-class CustomInput extends React.Component {
+class CustomInput extends React.PureComponent {
 
   constructor (props) {
     super(props);
