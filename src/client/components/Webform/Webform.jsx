@@ -41,33 +41,14 @@ class Webform extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatchMetadata(FORMFIELDCONFIG);
+    this.updateStateAndFormatters(FORMFIELDCONFIG)
     Http.get("/api/formConfig")
       .then(response => {
         if (response.body) {
           try {
             response = JSON.parse(response.body);
             //response = FORMFIELDCONFIG;
-            const fields = {};
-            const webformFieldsConfiguration = response && response.SECTIONSCONFIG && response.SECTIONSCONFIG.WEBFORM ? response.SECTIONSCONFIG.WEBFORM : {};
-            webformFieldsConfiguration && webformFieldsConfiguration.fields && Object.keys(webformFieldsConfiguration.fields)
-              .forEach(field => fields[field] = {...webformFieldsConfiguration.fields[field]});
-            this.setState(() => {
-              const state = {...this.state};
-              state.section = {...webformFieldsConfiguration.sectionConfig};
-              state.form = {
-                ...webformFieldsConfiguration.formConfig,
-                inputData: {...fields}
-              }
-              const options = this.getClaimTypes();
-              const formatter = new InputFormatter();
-              const handlers = formatter.on(`#${state.section.id}-${state.form.inputData.phone.inputId}-custom-input`);
-              this.prebounceChangeHandler = handlers.inputHandler;
-              state.form.inputData.claimType.claimTypesWithMeta = options;
-              state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
-              return state;
-            });
-            this.props.dispatchMetadata(response);
+            this.updateStateAndFormatters(response);
           } catch (e) {
             this.props.dispatchMetadata(FORMFIELDCONFIG);
             console.log(e);
@@ -76,6 +57,33 @@ class Webform extends React.Component {
       });
     const mixpanelPayload = {WORK_FLOW: "WEB_FORM"};
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.VIEW_WEB_FORM, mixpanelPayload);
+  }
+
+  updateStateAndFormatters(root) {
+    try {
+      const fields = {};
+      const webformFieldsConfiguration = root && root.SECTIONSCONFIG && root.SECTIONSCONFIG.WEBFORM ? root.SECTIONSCONFIG.WEBFORM : {};
+      webformFieldsConfiguration && webformFieldsConfiguration.fields && Object.keys(webformFieldsConfiguration.fields)
+        .forEach(field => fields[field] = {...webformFieldsConfiguration.fields[field]});
+      this.setState(() => {
+        const state = {...this.state};
+        state.section = {...webformFieldsConfiguration.sectionConfig};
+        state.form = {
+          ...webformFieldsConfiguration.formConfig,
+          inputData: {...fields}
+        }
+        const options = this.getClaimTypes();
+        const formatter = new InputFormatter();
+        const handlers = formatter.on(`#${state.section.id}-${state.form.inputData.phone.inputId}-custom-input`);
+        this.prebounceChangeHandler = handlers.inputHandler;
+        state.form.inputData.claimType.claimTypesWithMeta = options;
+        state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
+        return state;
+      });
+      this.props.dispatchMetadata(root);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   getClaimTypes() {
