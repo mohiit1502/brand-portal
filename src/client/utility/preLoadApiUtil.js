@@ -5,7 +5,6 @@ class PreLoadApiUtil {
   fetchClaims(dispatcher) {
     Http.get("/api/claims")
       .then(res => {
-        console.log(res);
         let claimList = [];
         const content = res.body.data.content;
         if (content) {
@@ -35,7 +34,6 @@ class PreLoadApiUtil {
             return newBrand;
           });
         }
-        console.log(res);
         dispatcher({brandList});
       })
       .catch(e => {
@@ -46,7 +44,6 @@ class PreLoadApiUtil {
   fetchUsers(dispatcher) {
     Http.get("/api/users")
       .then(res => {
-        console.log(res);
         let userList = [];
         const content = res.body.content;
         userList = content.map((user, i) => {

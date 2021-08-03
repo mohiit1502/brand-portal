@@ -369,7 +369,7 @@ const FORMFIELDCONFIG = {
         "emailId": {
           "containerClasses": "contact-details",
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
           "inputId": "emailId",
@@ -388,7 +388,7 @@ const FORMFIELDCONFIG = {
         },
         "phone": {
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
           "inputId": "phone",
@@ -1366,18 +1366,16 @@ const FORMFIELDCONFIG = {
         },
         "phone": {
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
+          "id": "phone",
           "inputId": "phone",
-          "invalidError": "Phone Number format is incorrect",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
           "isUnique": true,
           "key": "phone",
           "label": "Phone Number",
           "layout": "11.1.6",
           "maxLength": 17,
-          "patternPath": "CONSTANTS.REGEX.PHONE",
           "prebounceChangeHandler": "prebounceChangeHandler",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1387,25 +1385,23 @@ const FORMFIELDCONFIG = {
           "validators": {
             "validateRequired": {
               "error": "Phone number is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
+              "error": "Please enter a valid Phone Number"
             }
           }
         },
         "emailId": {
           "containerClasses": "contact-details",
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
-          "fieldOk": false,
+          "id": "emailId",
           "inputId": "emailId",
-          "invalidError": "Please adhere to standard Email Address format",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
-          "isUnique": true,
           "key": "emailId",
           "label": "Email Address",
           "layout": "11.2.6",
-          "loader": false,
-          "patternPath": "CONSTANTS.REGEX.EMAIL",
-          "patternErrorMessagePath": "CONSTANTS.EMAILERROR",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1414,6 +1410,10 @@ const FORMFIELDCONFIG = {
           "validators": {
             "validateRequired": {
               "error": "Email address is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+              "error": "Please enter a valid Email Address"
             }
           }
         },
@@ -1604,7 +1604,7 @@ const FORMFIELDCONFIG = {
         "digitalSignature": {
           "disabled": false,
           "containerClasses": "",
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "inputId": "digitalSignature",
           "key": "digitalSignature",

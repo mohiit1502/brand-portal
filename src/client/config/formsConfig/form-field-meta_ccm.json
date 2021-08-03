@@ -369,7 +369,7 @@
         "emailId": {
           "containerClasses": "contact-details",
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
           "inputId": "emailId",
@@ -387,7 +387,7 @@
         },
         "phone": {
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
           "inputId": "phone",

@@ -23,7 +23,7 @@ export default class Validator {
   static validateRequired (target, validationObj) {
     const formFieldValue = target.value
     if (validationObj && formFieldValue === "") {
-      return Validator.errorPrefix + validationObj.error
+      return validationObj.error
     } else {
       return ""
     }
@@ -35,13 +35,13 @@ export default class Validator {
       (validationObj && (validationObj.minLength && length < validationObj.minLength)) ||
       (validationObj.maxLength && length > validationObj.maxLength)
     ) {
-      return Validator.errorPrefix + validationObj.error
+      return validationObj.error
     } else {
       return ""
     }
   }
 
-  static validateRegex (target, validationObj, regexSelector) {
+  static validateRegex (target, validationObj, parentRef, regexSelector) {
     const formFieldValue = target.value.trim();
     if (validationObj) {
       const formFieldRegexString =
@@ -52,7 +52,7 @@ export default class Validator {
       const formFieldRegex = new RegExp(formFieldRegexString)
       const compliesRegex = formFieldRegex.test(formFieldValue)
       if (!compliesRegex) {
-        return Validator.errorPrefix + validationObj.error
+        return validationObj.error
       } else {
         return ""
       }
@@ -69,10 +69,10 @@ export default class Validator {
       const currentYear = new Date().getFullYear()
       const currentMonth = new Date().getMonth()
       if (year > 2032 || month > 12 || month < 1) {
-        return Validator.errorPrefix + validationObj.errorMessages.dataMsgRegex
+        return validationObj.errorMessages.dataMsgRegex
       }
       if (year < currentYear || (year === currentYear && month < currentMonth + 1)) {
-        return Validator.errorPrefix + validationObj.errorMessages.dataMsgMonthYear
+        return validationObj.errorMessages.dataMsgMonthYear
       } else {
         return ""
       }
