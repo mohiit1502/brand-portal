@@ -277,6 +277,9 @@ export default class Validator {
         mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
       }).catch (err => {
         error = err.error;
+        if (error) {
+          error = typeof error === "object" ? error.message ? error.message : "Uniqueness Check Failed, please try again!" : error;
+        }
         inputData.companyName.isUnique = false;
         inputData.companyName.fieldOk = false;
         inputData.companyName.requestAdministratorAccess = true;
