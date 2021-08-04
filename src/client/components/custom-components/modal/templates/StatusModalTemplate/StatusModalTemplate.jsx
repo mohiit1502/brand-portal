@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
@@ -18,12 +18,19 @@ const StatusModalTemplate = props => {
   const {showNotification, meta, user} = props;
   const {logoutUrl, profile} = user;
   const [loader, setLoader] = useState(false);
+  const [displayAdditionalActionLocal, setDisplayAdditionalActionLocal] = useState();
+  const [remaining, setRemaining] = useState();
   const contentRenderer = new ContentRenderer();
   const baseUrl = window.location.origin;
   const logoutUrlSuperlated = logoutUrl && logoutUrl.replace("__domain__", baseUrl);
   const mixpanelPayload = {
-    WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[props.meta && props.meta.CODE ? props.meta.CODE : 0] || "CODE_NOT_FOUND"
+    WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[meta && meta.CODE ? meta.CODE : 0] || "CODE_NOT_FOUND"
   };
+
+  useEffect(() => {
+    setDisplayAdditionalActionLocal(props.meta.displayAdditionalAction);
+    setRemaining(props.meta.remaining);
+  }, [props.meta.displayAdditionalAction, props.meta.remaining])
 
   const resendInvite = () => {
     const email = profile ? profile.email : "";
@@ -32,13 +39,20 @@ const StatusModalTemplate = props => {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[64]
     };
     if (email) {
-      Http.post("/api/users/reinvite", {email}, "")
+      Http.post("/api/users/reinvite", {email, workflow: "user_mail_verification"})
         .then(res => {
-          if (res.body === true) {
-            showNotification(NOTIFICATION_TYPE.SUCCESS, `Verification email sent to: ${email} `);
-          } else if (res.body === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-            showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${email} has already been activated.`);
-            mixpanelPayload.emailAlreadyVerified = true;
+          if (res.body) {
+            const config = res.body.emailConfig;
+            if ((typeof res.body === "boolean" && res.body === true) || res.body.status === true) {
+              showNotification(NOTIFICATION_TYPE.SUCCESS, `Verification email sent to: ${email} `);
+            } else if (res.body.status === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+              showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${email} has already been activated.`);
+              mixpanelPayload.emailAlreadyVerified = true;
+            }
+            if (config) {
+              setDisplayAdditionalActionLocal(config.count < config.limit);
+              setRemaining(config.limit - config.count);
+            }
           } else {
             showNotification(NOTIFICATION_TYPE.ERROR, `Verification email could not be sent to: ${email} `);
           }
@@ -115,9 +129,16 @@ const StatusModalTemplate = props => {
                     Logout
                   </a>
                 }
-                {meta.ADDITIONAL_ACTION && <a className="additional-action d-block mt-2" onClick={resendInvite}>
-                  {meta.ADDITIONAL_ACTION}
-                </a>}
+                {props.meta.ADDITIONAL_ACTION &&
+                (displayAdditionalActionLocal === undefined ?
+                    <div className="list-loader loader d-block mt-3" style={{height: "1.8rem"}} />
+                    : displayAdditionalActionLocal &&
+                    <div className="d-block">
+                      <a className="additional-action mt-2" onClick={resendInvite}>{props.meta.ADDITIONAL_ACTION}</a>
+                      {remaining && typeof remaining === "number" && <p className="font-size-12 font-weight-bold mt-1">You can resend ({remaining}) more time/s</p>}
+                    </div>
+                )
+                }
               </div>
             </div>
           </div>
