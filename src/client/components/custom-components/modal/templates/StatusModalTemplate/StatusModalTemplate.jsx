@@ -133,8 +133,8 @@ const StatusModalTemplate = props => {
                 (displayAdditionalActionLocal === undefined ?
                     <div className="list-loader loader d-block mt-3" style={{height: "1.8rem"}} />
                     : displayAdditionalActionLocal &&
-                    <div className="d-block">
-                      <a className="additional-action mt-2" onClick={resendInvite}>{meta.ADDITIONAL_ACTION}</a>
+                    <div className="line-height-reset mt-2">
+                      <a className="additional-action" onClick={resendInvite}>{meta.ADDITIONAL_ACTION}</a>
                       {remaining && typeof remaining === "number" && <p className="font-size-12 font-weight-bold mt-1">You can resend ({remaining}) more time/s</p>}
                     </div>
                 )
