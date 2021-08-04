@@ -292,7 +292,6 @@ class NewClaimTemplate extends React.Component {
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
     evt && mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.CANCEL_SUBMIT_CLAIM, mixpanelPayload);
   }
@@ -406,7 +405,7 @@ class NewClaimTemplate extends React.Component {
         WORK_FLOW: "ADD_NEW_CLAIM"
       };
       this.loader("loader", true);
-      return Http.post("/api/claims", payload)
+      return Http.post("/api/claims", payload, null, null, this.props.showNotification, null, "Something went wrong, please try again..!")
         .then(res => {
           const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
           this.resetTemplateStatus();

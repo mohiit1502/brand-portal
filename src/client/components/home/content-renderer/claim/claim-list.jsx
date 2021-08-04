@@ -6,7 +6,7 @@ import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
-import filterIcon from "../../../../images/filterIcon.svg";
+import {FilterBlue} from "../../../../images";
 import emptyClaims from "../../../../images/empty-claim.png";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
@@ -50,6 +50,7 @@ class ClaimList extends React.Component {
       filters: [],
       appliedFilter: [],
       loader: false,
+      nonBlockingLoader: false,
       searchText: "",
       unsortedList: [],
       identifier: "claims",
@@ -112,10 +113,10 @@ class ClaimList extends React.Component {
   }
 
 
-  loader (enable) {
+  loader (type, enable) {
     this.setState(state => {
       const stateClone = {...state};
-      stateClone.loader = enable;
+      stateClone[type] = enable;
       return stateClone;
     });
   }
@@ -127,6 +128,9 @@ class ClaimList extends React.Component {
     if (isClaimDetailPath) {
       const ticketId = location.substring(location.indexOf("/claims/") + 8);
       this.showClaimDetails(ticketId);
+    }
+    if (this.props.claims) {
+      this.checkAndApplyDashboardFilter(this.props.claims);
     }
     const claimList = await this.fetchClaims();
     this.checkAndApplyDashboardFilter(claimList);
@@ -179,8 +183,11 @@ class ClaimList extends React.Component {
   }
 
   async fetchClaims () {
-    this.loader(true);
-    const response = (await Http.get("/api/claims", "", () => this.loader(false))).body;
+    !this.props.claims ? this.loader("loader", true) : this.loader("nonBlockingLoader", true);
+    const response = (await Http.get("/api/claims", "", () => {
+      this.loader("loader", false);
+      this.loader("nonBlockingLoader", false);
+    })).body;
 
     let claimList = [];
 
@@ -361,12 +368,13 @@ class ClaimList extends React.Component {
                 </div>
                 <div className="col-lg-4 col-6 text-right pr-0">
                   <div className="input-group input-group-sm">
+                    {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Details"
                            onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 " >
-                          <img src={filterIcon} height="20px"/> Filter
+                          <img src={FilterBlue} height="20px"/> Filter
                         </div>
                       </div>
                     </div>

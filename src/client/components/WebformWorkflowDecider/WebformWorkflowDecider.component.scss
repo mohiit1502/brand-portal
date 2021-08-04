@@ -30,4 +30,9 @@
             padding: 1rem 11rem;
         }
     }
+    @media only screen and (max-width: 1400px) {
+        .page-title{
+            padding: 1rem 6.5rem;
+        }
+    }
 }

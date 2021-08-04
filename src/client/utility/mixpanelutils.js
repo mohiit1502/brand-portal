@@ -12,13 +12,13 @@ export default class MixpanelUtils {
                     elementCloned.event = eventName;
                     elementCloned.properties = element;
                     elementCloned.properties.IS_SERVER = false;
-                    elementCloned.properties.USER_TYPE = mixpanel.get_property("USER_TYPE");
-                    elementCloned.properties.$email = mixpanel.get_property("$email");
-                    elementCloned.properties.USER_ROLE = mixpanel.get_property("ROLE");
-                    elementCloned.properties.$name = mixpanel.get_property("$name");
+                    if (mixpanel.get_property("USER_TYPE")) elementCloned.properties.USER_TYPE = mixpanel.get_property("USER_TYPE");
+                    if (mixpanel.get_property("$email")) elementCloned.properties.$email = mixpanel.get_property("$email");
+                    if (mixpanel.get_property("ROLE")) elementCloned.properties.USER_ROLE = mixpanel.get_property("ROLE");
+                    if (mixpanel.get_property("$name")) elementCloned.properties.$name = mixpanel.get_property("$name");
                     // eslint-disable-next-line camelcase
-                    elementCloned.properties.$user_id = mixpanel.get_property("$user_id");
-                    elementCloned.properties.distinct_id = mixpanel.get_property("$user_id");
+                    if (mixpanel.get_property("$user_id")) elementCloned.properties.$user_id = mixpanel.get_property("$user_id");
+                    if (mixpanel.get_property("$user_id")) elementCloned.properties.distinct_id = mixpanel.get_property("$user_id");
                     elementCloned.properties.token = mixpanel.get_config("token");
                     return elementCloned;
                 });

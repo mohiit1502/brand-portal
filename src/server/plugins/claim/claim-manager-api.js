@@ -100,7 +100,7 @@ class ClaimManagerApi {
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers["WM_QOS.CORRELATION_ID"];
 
-      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );      
+      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );
       let responseBody = [];
       if ( response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         responseBody = this.parseSellersFromResponse( response.body.docs );
@@ -207,6 +207,7 @@ class ClaimManagerApi {
       const options = {
         headers
       };
+
       console.log("[ClaimManagerApi::getClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = `${await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
@@ -250,6 +251,7 @@ class ClaimManagerApi {
       const options = {
         headers
       };
+
       console.log("[ClaimManagerApi::createClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
@@ -281,6 +283,10 @@ class ClaimManagerApi {
 
   async createWebformClaim(request, h) {
     //todo: Adding mixpanel events
+    const mixpanelPayload = {
+      METHOD: "POST",
+      API: "/api/claims/webform"
+    };
     console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has started");
     console.log("[ClaimManagerApi::createWebformClaim] Client IP adress:", request.info && request.info.remoteAddress);
     console.log("[ClaimManagerApi::createWebformClaim] Client User Agent:", request.headers["user-agent"]);
@@ -302,12 +308,26 @@ class ClaimManagerApi {
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = payload && payload.reporterInfo && payload.reporterInfo.email;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.CLAIM_TYPE = payload && payload.claimType;
+      mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.BRAND_INFO = payload && payload.brandInfo;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
       const response = await ServerHttp.post(url, options, payload);
       console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
       console.log("[ClaimManagerApi::createWebformClaim] Error occured in API request for webform Create Claim:", err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
       return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_WEBFORM_CLAIM, mixpanelPayload);
     }
   }
 }

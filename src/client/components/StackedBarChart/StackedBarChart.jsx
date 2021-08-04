@@ -9,8 +9,7 @@ import {
   scaleBand,
   scaleLinear,
   select,
-  stack,
-  stackOrderAscending
+  stack
 } from "d3";
 import d3Tip from "d3-tip"
 import useResizeObserver from "./../../hooks/useResizeObserver";
@@ -50,7 +49,6 @@ const StackedBarChart = props => {
 
     const stackGenerator = stack()
       .keys(keys)
-      .order(stackOrderAscending);
     const layers = stackGenerator(data);
     const extent = [0, max(layers, layer => max(layer, sequence => sequence[1]))];
 

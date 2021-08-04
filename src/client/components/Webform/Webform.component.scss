@@ -3,20 +3,25 @@
         font-weight: bold;
         padding-bottom: 1.5rem;
     }
-
-    .submit-btn {
-        width: 150px;
+    &.loader::before {
+            position: fixed;
+            height: 75vh;
     }
+
+    &.loader::after {
+            position: fixed;
+    }
+
     .label-text {
         color: #333;
     }
-    
-    .required {
-        &::after {
-            content: "*";
-        }
-    }  
+
+    //.required {
+    //    &::after {
+    //        content: "*";
+    //    }
+    //}
     .form-error {
         color: #dc3545;
-    }  
+    }
 }

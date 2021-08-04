@@ -9,6 +9,7 @@ import BlackBGCheck from "./BlackBGCheck.png";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
 import CheckGreen from "./check-grn.svg";
+import CheckGreenLine from "./color.svg";
 import ClaimsIcon from "./claims.svg";
 import Confirm from "./confirm.svg";
 import ContactUsBG from "./Group 52@2x.png";
@@ -20,6 +21,7 @@ import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
+import FilterBlue from "./filterIcon.svg";
 import GreenCircleCheck from "./green-circle-check.svg";
 import Group from "./group-23.svg";
 import GroupPeople from "./group-1474.png";
@@ -29,6 +31,7 @@ import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.jpg";
 import InviteUserForm from "./AddUser.jpg";
 import Login from "./Login.jpg";
+import MPBackgroundPart from "./background-brand-portal-1.svg";
 import PageError from "./page-error.svg";
 import Paste from "./content-paste.svg";
 import Plus from "./plus.svg";
@@ -38,8 +41,8 @@ import Refresh from "./refresh.svg";
 import RedCircleCross from "./red-circle-cross.svg";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
-import SortDown from "./sort_descend.svg"
-import SortUp from "./sort_ascend.svg"
+import SortDown from "./sort_descend.svg";
+import SortUp from "./sort_ascend.svg";
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
@@ -54,58 +57,60 @@ import YellowBGExclamation from "./YellowBGExclamation.png";
 import YellowBGKey from "./YellowBGKey.png";
 
 export {
-    Access,
-    Alert,
-    Arrow,
-    ArrowDown,
-    ArrowRight,
-    Astrick,
-    AstrickRed,
-    BlackBGCheck,
-    BrandList,
-    BrandsIcon,
-    ClaimsIcon,
-    Confirm,
-    ContactUsBG,
-    CreateBrandButton,
-    CreateBrandForm,
-    CheckGreen,
-    DashboardIcon,
-    EmailIcon,
-    Event,
-    Exclamation,
-    FieldLoader,
-    Filter,
-    GreenCircleCheck,
-    Group,
-    GroupPeople,
-    Help,
-    HidePassword,
-    Info,
-    InviteUser,
-    InviteUserForm,
-    Login,
-    PageError,
-    Paste,
-    Plus,
-    ProblemSolving,
-    Question,
-    RedCircleCross,
-    Refresh,
-    ShowPassword,
-    Sort,
-    SortDown,
-    SortUp,
-    TimesFailure,
-    TimesSuccess,
-    TOU,
-    User,
-    UsersIcon,
-    UserList,
-    Verified,
-    Verify,
-    Warning,
-    WMWhite,
-    YellowBGExclamation,
-    YellowBGKey
+  Access,
+  Alert,
+  Arrow,
+  ArrowDown,
+  ArrowRight,
+  Astrick,
+  AstrickRed,
+  BlackBGCheck,
+  BrandList,
+  BrandsIcon,
+  ClaimsIcon,
+  Confirm,
+  ContactUsBG,
+  CreateBrandButton,
+  CreateBrandForm,
+  CheckGreen,
+  CheckGreenLine,
+  DashboardIcon,
+  EmailIcon,
+  Event,
+  Exclamation,
+  FieldLoader,
+  Filter,
+  GreenCircleCheck,
+  Group,
+  GroupPeople,
+  Help,
+  HidePassword,
+  Info,
+  InviteUser,
+  InviteUserForm,
+  Login,
+  MPBackgroundPart,
+  PageError,
+  Paste,
+  Plus,
+  ProblemSolving,
+  Question,
+  RedCircleCross,
+  Refresh,
+  ShowPassword,
+  Sort,
+  SortDown,
+  SortUp,
+  TimesFailure,
+  TimesSuccess,
+  TOU,
+  User,
+  UsersIcon,
+  UserList,
+  Verified,
+  Verify,
+  Warning,
+  WMWhite,
+  YellowBGExclamation,
+  YellowBGKey
 };

@@ -12,7 +12,7 @@ import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
 import {ButtonsPanel, CaptchaValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
 
-class CustomInput extends React.Component {
+class CustomInput extends React.PureComponent {
 
   constructor (props) {
     super(props);
@@ -102,12 +102,16 @@ class CustomInput extends React.Component {
     return false;
   }
 
-  onBlur (evt) {
+  onBlur (evt, key) {
     const pattern = new RegExp(this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath));
     const patternErrorMessage = this.state.patternErrorMessage ? this.state.patternErrorMessage : Helper.search(this.state.patternErrorMessagePath);
-
-    if (pattern && !pattern.test(evt.target.value)) {
+    if (this.state.required && !evt.target.value) {
+      const error = (this.state.validators && this.state.validators.validateRequired && this.state.validators.validateRequired.error) || patternErrorMessage
+      this.setState({error})
+      this.state.bubbleValue && this.state.bubbleValue(evt, key, error);
+    } else if (pattern && !pattern.test(evt.target.value)) {
       this.setState({error: patternErrorMessage});
+      this.state.bubbleValue && this.state.bubbleValue(evt, key, patternErrorMessage);
     } else {
       this.state.error === patternErrorMessage && this.setState({error: ""});
     }
@@ -296,7 +300,7 @@ class CustomInput extends React.Component {
       >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
                id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
-               pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlueValidation ? this.onBlur : undefined} maxLength={this.state.maxLength}
+               pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlurValidation ? (evt) => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
                onChange={ e => { this.onChangeLocal(e, this.state.inputId); }} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
@@ -316,7 +320,7 @@ class CustomInput extends React.Component {
   getTextAreaInputType () {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     return (
-      <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}`}>
+      <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}${errorClass ? " " + errorClass : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea ${this.state.required ? " required" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
@@ -356,7 +360,7 @@ class CustomInput extends React.Component {
         return <HeaderFormComponent {...this.props} />
       case "_urlItems" :
       return <UrlItemList {...this.props} />
-      case "_captchValidator" :
+      case "_captchaValidator" :
         return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />
     }
     return null;
