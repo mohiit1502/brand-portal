@@ -73,9 +73,9 @@ class Webform extends React.Component {
           inputData: {...fields}
         }
         const options = this.getClaimTypes();
-        const formatter = new InputFormatter();
-        const handlers = formatter.on(`#${state.section.id}-${state.form.inputData.phone.inputId}-custom-input`);
-        this.prebounceChangeHandler = handlers.inputHandler;
+        // const formatter = new InputFormatter();
+        // const handlers = formatter.on(`#${state.section.id}-${state.form.inputData.phone.inputId}-custom-input`);
+        // this.prebounceChangeHandler = handlers.inputHandler;
         state.form.inputData.claimType.claimTypesWithMeta = options;
         state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
         return state;
