@@ -51,6 +51,7 @@ class CustomInput extends React.PureComponent {
 
   onChangeLocal(evt, key) {
     evt.persist && evt.persist();
+    evt.target.value = evt.target.value.trim();
     const trimmedValue = this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
     if (evt && evt.target) {
       this.setState(() => {
