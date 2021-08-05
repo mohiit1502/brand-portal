@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Home from "client/components/home";
+import Home from "../../../src/client/components/home/home";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import rootReducer from "client/reducers";
 import { BrowserRouter } from "react-router-dom";
+import 'regenerator-runtime';
 
 describe("Home", () => {
   let component;
