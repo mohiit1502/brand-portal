@@ -1305,13 +1305,13 @@ const FORMFIELDCONFIG = {
             "validateRequired": {
               "error": "Country is required"
             },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z]+$",
+              "error": "Please enter a valid Country name"
+            },
             "validateLength": {
               "minLength": "2",
               "error": "Minimum length is 2 characters"
-            },
-            "validateRegex": {
-              "dataRuleRegex": "[a-zA-Z]{2,}",
-              "error": "Please enter a valid Country name"
             }
           }
         },
@@ -1355,13 +1355,13 @@ const FORMFIELDCONFIG = {
             "validateRequired": {
               "error": "Zip/Postal Code is required"
             },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9]+$",
+              "error": "Please enter a valid Country name"
+            },
             "validateLength": {
               "minLength": "3",
               "error": "Minimum length is 3 characters"
-            },
-            "validateRegex": {
-              "dataRuleRegex": "[a-zA-Z0-9]{3,}",
-              "error": "Please enter a valid Country name"
             }
           }
         },
