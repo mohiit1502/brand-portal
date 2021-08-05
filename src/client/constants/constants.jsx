@@ -254,7 +254,7 @@ const CONSTANTS = {
     CONTACTEMAIL: "IPInvest@walmart.com",
     COPYRIGHTTEXT: "© 2021 Walmart. All rights reserved.",
     PRIVACYTEXT: "Privacy Policy",
-    PRIVACYURL: ""
+    PRIVACYURL: "https://corporate.walmart.com/privacy-security"
   },
 
   NOTIFICATIONPOPUP: {
