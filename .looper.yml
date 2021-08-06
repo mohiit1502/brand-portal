@@ -15,9 +15,8 @@ flows:
     - call: sonar
   sonar:
     - sonar("Sonar"):
-      - sonar-scanner
-      - hygieia.publishSonar()
-    - hygieia.publishBuild()
+        - (name sonar) sonar-scanner -Dproject.settings=sonar-project.properties
+        - hygieia.publishSonar()
 
   electrode_build:
     - shell (name electrode_build): |
