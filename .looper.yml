@@ -14,8 +14,9 @@ flows:
     - call: electrode_build
     - call: sonar
   sonar:
-    - sonar-scanner
-    - hygieia.publishSonar()
+    - sonar("Sonar"):
+      - sonar-scanne
+      - hygieia.publishSonar()
     - hygieia.publishBuild()
 
   electrode_build:
