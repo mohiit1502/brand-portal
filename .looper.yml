@@ -15,7 +15,7 @@ flows:
     - call: sonar
   sonar:
     - sonar("Sonar"):
-      - sonar-scanne
+      - sonar-scanner
       - hygieia.publishSonar()
     - hygieia.publishBuild()
 
