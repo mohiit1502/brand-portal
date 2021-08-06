@@ -15,7 +15,17 @@ flows:
     - call: sonar
   sonar:
     - sonar("Sonar"):
-        - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties
+        - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal
+          -Dsonar.projectName=brand-portal
+          -Dsonar.projectVersion=1.0.1
+          -Dsonar.sources=src
+          -Dsonar.tests=src
+          -Dsonar.test.inclusions=src/**/*test.js
+          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.testExecutionReportPaths=test_report.xml
+          -Dsonar.host.url=https://sonar.wal-mart.com
+          -Dsonar.branch.name=dev/sonarIntegration
+          -Dproject.settings=sonar-project.properties
         - hygieia.publishSonar()
 
   electrode_build:
