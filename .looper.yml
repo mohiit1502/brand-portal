@@ -7,10 +7,16 @@ checkoutDir: repo
 tools:
   nodejs:
     - 8.16.1
+  sonarscanner: 4.1.0.1829
 
 flows:
   default:
     - call: electrode_build
+    - call: sonar
+  sonar:
+    - sonar-scanner
+    - hygieia.publishSonar()
+    - hygieia.publishBuild()
 
   electrode_build:
     - shell (name electrode_build): |
