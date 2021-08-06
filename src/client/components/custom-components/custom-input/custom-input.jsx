@@ -51,8 +51,10 @@ class CustomInput extends React.PureComponent {
 
   onChangeLocal(evt, key) {
     evt.persist && evt.persist();
-    evt.target.value = evt.target.value.trimStart();
-    evt.target.value = Helper.trimSpaces(evt.target.value);
+    if (this.state.type !== "_captchaValidator" && typeof evt.target.value === "string") {
+      evt.target.value = evt.target.value.trimStart();
+      evt.target.value = Helper.trimSpaces(evt.target.value);
+    }
     const trimmedValue = this.state.prebounceChangeHandler && this.state.prebounceChangeHandler(evt);
     if (evt && evt.target) {
       this.setState(() => {
