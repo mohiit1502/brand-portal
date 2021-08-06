@@ -20,12 +20,12 @@ flows:
           -Dsonar.projectVersion=1.0.1
           -Dsonar.sources=src
           -Dsonar.tests=src
-          -Dsonar.test.inclusions=src/**/*test.js
-          -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-          -Dsonar.testExecutionReportPaths=test_report.xml
+          -Dsonar.test.inclusions=repo/src/**/*test.js
+          -Dsonar.javascript.lcov.reportPaths=repo/coverage/lcov.info
+          -Dsonar.testExecutionReportPaths=repo/test_report.xml
           -Dsonar.host.url=https://sonar.wal-mart.com
           -Dsonar.branch.name=dev/sonarIntegration
-          -Dproject.settings=sonar-project.properties
+          -Dproject.settings=repo/sonar-project.properties
         - hygieia.publishSonar()
 
   electrode_build:
