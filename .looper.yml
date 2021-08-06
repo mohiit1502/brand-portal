@@ -9,24 +9,29 @@ tools:
     - 8.16.1
   sonarscanner: 4.1.0.1829
 
+trigger:
+  pr:
+    - call: unit-test
+    - call: run-sonar-pr
+
 flows:
   default:
     - call: electrode_build
     - call: sonar
+  test:
+    - npm install
+    - npm test
   sonar:
-    - sonar("Sonar"):
-        - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal
-          -Dsonar.projectName=brand-portal
-          -Dsonar.projectVersion=1.0.1
-          -Dsonar.sources=src
-          -Dsonar.tests=src
-          -Dsonar.test.inclusions=repo/src/**/*test.js
-          -Dsonar.javascript.lcov.reportPaths=repo/coverage/lcov.info
-          -Dsonar.testExecutionReportPaths=repo/test_report.xml
-          -Dsonar.host.url=https://sonar.wal-mart.com
-          -Dsonar.branch.name=dev/sonarIntegration
-          -Dproject.settings=repo/sonar-project.properties
+    - sonar("Sonar"): |
+        sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.branch.name=${TRIGGER_BRANCH} -Dsonar.projectKey=brand-portal
         - hygieia.publishSonar()
+  run-sonar-pr:
+    - sonar("Sonar"):
+        sonar-scanner -X -Dproject.settings=sonar-project.properties
+        -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
+        -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
+        -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
+        -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
 
   electrode_build:
     - shell (name electrode_build): |
