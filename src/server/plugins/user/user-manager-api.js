@@ -59,6 +59,11 @@ class UserManagerApi {
         handler: this.checkUnique
       },
       {
+        method: "GET",
+        path: "/api/users/getEmailConfig",
+        handler: this.getEmailConfig
+      },
+      {
         method: "POST",
         path: "/api/users",
         handler: this.createUser
@@ -342,6 +347,45 @@ class UserManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.EMAIL_UNIQUENESS, mixpanelPayload);
+    }
+  }
+
+  async getEmailConfig(request, h) {
+    console.log("[UserManagerApi::getEmailConfig] API request to get user's email configuration has started");
+    console.log("[UserManagerApi::getEmailConfig] User ID: ", request.state && request.state.session_token_login_id);
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/users/getEmailConfig"
+    };
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      const options = {
+        headers
+      };
+      console.log("[UserManagerApi::getEmailConfig] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      let EMAIL_CONFIG_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.EMAIL_CONFIG_PATH");
+      EMAIL_CONFIG_PATH && (EMAIL_CONFIG_PATH = EMAIL_CONFIG_PATH.replace("__email__", request.query.email));
+      const url = `${BASE_URL}${EMAIL_CONFIG_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.EMAIL = request.query && request.query.email;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
+      const response = await ServerHttp.get(url, options);
+      console.log("[UserManagerApi::getEmailConfig] API request to get user's email configuration has completed");
+      mixpanelPayload.RESPONSE_STATUS = response.status;
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[UserManagerApi::getEmailConfig] Error occurred in API request to get user's email configuration:", err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_EMAIL_CONFIG, mixpanelPayload);
     }
   }
 
