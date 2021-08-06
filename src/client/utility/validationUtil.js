@@ -30,7 +30,8 @@ export default class Validator {
   }
 
   static validateLength (target, validationObj) {
-    const length = target.value ? target.value.length : 0
+    const value = target.value ? target.value.trim() : "";
+    const length = value.length;
     if (
       (validationObj && (validationObj.minLength && length < validationObj.minLength)) ||
       (validationObj.maxLength && length > validationObj.maxLength)

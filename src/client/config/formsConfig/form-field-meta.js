@@ -1189,8 +1189,6 @@ const FORMFIELDCONFIG = {
           "key": "ownerName",
           "label": "Owner Name",
           "layout": "6.0.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please provide a valid owner name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1212,8 +1210,6 @@ const FORMFIELDCONFIG = {
           "key": "companyName",
           "label": "Company Name",
           "layout": "6.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid company name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1229,8 +1225,6 @@ const FORMFIELDCONFIG = {
           "key": "brandName",
           "label": "Brand Name",
           "layout": "7.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid brand name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1245,7 +1239,6 @@ const FORMFIELDCONFIG = {
           "key": "address_1",
           "label": "Address 1",
           "layout": "8.1.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1267,7 +1260,6 @@ const FORMFIELDCONFIG = {
           "label": "Address 2",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "layout": "8.2.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": false,
@@ -1282,7 +1274,6 @@ const FORMFIELDCONFIG = {
           "key": "city",
           "label": "City",
           "layout": "9.1.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1297,13 +1288,12 @@ const FORMFIELDCONFIG = {
           }
         },
         "country": {
-          "disabled": true,
+          "disabled": false,
           "error": "",
           "inputId": "country",
           "key": "country",
           "label": "Country",
           "layout": "9.2.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1314,6 +1304,14 @@ const FORMFIELDCONFIG = {
           "validators": {
             "validateRequired": {
               "error": "Country is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z]+$",
+              "error": "Please enter a valid Country name"
+            },
+            "validateLength": {
+              "minLength": "2",
+              "error": "Minimum length is 2 characters"
             }
           }
         },
@@ -1325,7 +1323,6 @@ const FORMFIELDCONFIG = {
           "key": "state",
           "label": "State",
           "layout": "10.1.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1344,14 +1341,10 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "error": "",
           "inputId": "zip",
-          "invalidError": "Zip/Postal Code should be in format [xxxxx] or [xxxxx-xxxx].",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "key": "zip",
           "label": "ZIP",
           "layout": "10.2.6",
           "maxLength": 10,
-          "patternPath": "CONSTANTS.REGEX.ZIP",
-          "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1361,6 +1354,14 @@ const FORMFIELDCONFIG = {
           "validators": {
             "validateRequired": {
               "error": "Zip/Postal Code is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9]+$",
+              "error": "Please enter a valid Country name"
+            },
+            "validateLength": {
+              "minLength": "3",
+              "error": "Minimum length is 3 characters"
             }
           }
         },
@@ -1375,7 +1376,7 @@ const FORMFIELDCONFIG = {
           "key": "phone",
           "label": "Phone Number",
           "layout": "11.1.6",
-          "maxLength": 17,
+          "maxLength": 15,
           "prebounceChangeHandler": "prebounceChangeHandler",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1387,8 +1388,12 @@ const FORMFIELDCONFIG = {
               "error": "Phone number is required"
             },
             "validateRegex": {
-              "dataRuleRegex": "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
-              "error": "Please enter a valid Phone Number"
+              "dataRuleRegex": "^[0-9\\- ]+$",
+              "error": "Please enter all numbers."
+            },
+            "validateLength": {
+              "minLength": "7",
+              "error": "Minimum length is 7 characters"
             }
           }
         },
