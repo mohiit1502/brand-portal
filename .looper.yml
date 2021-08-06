@@ -23,7 +23,7 @@ flows:
     - npm test
   sonar:
     - sonar("Sonar"): |
-        sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.branch.name=${TRIGGER_BRANCH} -Dsonar.projectKey=brand-portal
+        sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.projectKey=brand-portal
         - hygieia.publishSonar()
   run-sonar-pr:
     - sonar("Sonar"):
