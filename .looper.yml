@@ -9,31 +9,15 @@ tools:
     - 8.16.1
   sonarscanner: 4.1.0.1829
 
-trigger:
-  pr:
-    - call: unit-test
-    - call: run-sonar-pr
-
 flows:
   default:
     - call: electrode_build
     - call: sonar
-  test:
-    - npm install
-    - npm test
   sonar:
-    - sonar("Sonar"): |
-        sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.projectKey=brand-portal
-        - hygieia.publishSonar()
-  run-sonar-pr:
     - sonar("Sonar"):
-        sonar-scanner -X -Dproject.settings=sonar-project.properties
-        -Dsonar.projectKey=brand-portal
-        -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
-        -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
-        -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
-        -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
-        -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+        - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal
+          -Dproject.settings=sonar-project.properties
+        - hygieia.publishSonar()
 
   electrode_build:
     - shell (name electrode_build): |
