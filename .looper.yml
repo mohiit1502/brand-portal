@@ -23,11 +23,13 @@ flows:
     - npm test
   sonar:
     - sonar("Sonar"): |
-        sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.branch.name=${TRIGGER_BRANCH} -Dsonar.projectKey=brand-portal
+        sonar-scanner -X -Dproject.settings=sonar-project.properties -Dsonar.projectKey=brand-portal
         - hygieia.publishSonar()
   run-sonar-pr:
     - sonar("Sonar"):
         sonar-scanner -X -Dproject.settings=sonar-project.properties
+        -Dsonar.projectKey=brand-portal
+        -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
         -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
         -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
         -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
