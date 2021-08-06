@@ -1145,8 +1145,6 @@ const FORMFIELDCONFIG = {
           "key": "firstName",
           "label": "First Name",
           "layout": "5.1.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid First name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
@@ -1156,6 +1154,10 @@ const FORMFIELDCONFIG = {
           "validators": {
             "validateRequired": {
               "error": "First Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
             }
           }
         },
@@ -1167,8 +1169,6 @@ const FORMFIELDCONFIG = {
           "key": "lastName",
           "label": "Last Name",
           "layout": "5.2.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid Last name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
@@ -1178,6 +1178,10 @@ const FORMFIELDCONFIG = {
           "validators": {
             "validateRequired": {
               "error": "Last Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
             }
           }
         },
@@ -1306,7 +1310,7 @@ const FORMFIELDCONFIG = {
               "error": "Country is required"
             },
             "validateRegex": {
-              "dataRuleRegex": "^[a-zA-Z]+$",
+              "dataRuleRegex": "^[a-zA-Z\\s]+$",
               "error": "Please enter a valid Country name"
             },
             "validateLength": {
@@ -1357,7 +1361,7 @@ const FORMFIELDCONFIG = {
             },
             "validateRegex": {
               "dataRuleRegex": "^[a-zA-Z0-9]+$",
-              "error": "Please enter a valid Country name"
+              "error": "Please enter a valid Zip Code"
             },
             "validateLength": {
               "minLength": "3",
@@ -1388,7 +1392,7 @@ const FORMFIELDCONFIG = {
               "error": "Phone number is required"
             },
             "validateRegex": {
-              "dataRuleRegex": "^[0-9\\- ]+$",
+              "dataRuleRegex": "^[0-9]+$",
               "error": "Please enter all numbers."
             },
             "validateLength": {
@@ -1410,7 +1414,7 @@ const FORMFIELDCONFIG = {
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "type": "email",
+          "type": "text",
           "value": "",
           "validators": {
             "validateRequired": {
