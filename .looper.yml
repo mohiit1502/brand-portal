@@ -17,11 +17,13 @@ flows:
   default:
     - call: electrode_build
     - call: sonar
+  pr:
+    - call: electrode_pr
+    - call: sonar
   sonar:
     - sonar("Sonar"):
-    - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
-    - hygieia.publishBuild()
-    - hygieia.publishSonar()
+      - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties
+      - hygieia.publishSonar()
 
 
 #flows:
