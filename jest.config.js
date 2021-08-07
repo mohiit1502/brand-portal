@@ -19,7 +19,10 @@ const jestDefaultConfig = {
   transformIgnorePatterns: [
     "<rootDir>/node_modules/(?!(react-dates|@babel)/)"
   ],
+  collectCoverage: true,
   testResultsProcessor: "jest-sonar-reporter",
+  coverageDirectory: "./coverage",
+  testEnvironment: "jsdom"
 };
 
 module.exports = jestDefaultConfig;
