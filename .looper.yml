@@ -17,9 +17,6 @@ flows:
   default:
     - call: electrode_build
     - call: sonar
-#  pr:
-#    - call: electrode_pr
-#    - call: sonar
   sonar:
     - sonar("Sonar"):
     - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
@@ -40,3 +37,6 @@ flows:
 #  electrode_build:
 #    - shell (name electrode_build): |
 #        curl -H "Accept: application/vnd.github.VERSION.raw" "${ELECTRODE_BUILD_URL}" | bash
+#  pr:
+#    - call: electrode_pr
+#    - call: sonar
