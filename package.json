@@ -34,8 +34,8 @@
     "generate": "plop",
     "prod-start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 clap -n -x electrode/build prod",
     "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
-    "test": "jest --coverage",
-    "coverage": "jest --coverage",
+    "test": "jest",
+    "coverage": "jest",
     "prod": "echo 'Starting standalone server in PROD mode'; NODE_ENV=production node ./lib/server/",
     "heroku-postbuild": "clap build",
     "cdn-publish": "clap cdn/publish",
@@ -94,7 +94,6 @@
     "@loadable/babel-plugin": "^5.10.0",
     "@loadable/webpack-plugin": "^5.7.1",
     "@walmart/electrode-build-utils": "^1.1.0",
-    "babel-jest": "^23.6.0",
     "electrode-archetype-react-app-dev": "^6.3.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
@@ -107,6 +106,11 @@
     "node-sass": "^4.14.1",
     "plop": "^2.7.1",
     "regenerator-runtime": "^0.13.9"
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "test-reporter.xml",
+    "indent": 4
   },
   "private": true
 }
