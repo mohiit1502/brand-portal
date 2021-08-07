@@ -20,9 +20,11 @@ flows:
   pr:
     - call: electrode_pr
     - call: sonar
-  sonar("Sonar"): sonar-scanner -Dproject.settings=repo/sonar-project.properties
-    - hygieia.publishSonar()
+  sonar:
+    - sonar("Sonar"):
+    - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
     - hygieia.publishBuild()
+    - hygieia.publishSonar()
 
 
 #flows:
