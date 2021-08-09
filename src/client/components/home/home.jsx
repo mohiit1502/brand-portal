@@ -4,9 +4,7 @@ import HomeHeader from "../custom-components/headers/home-header";
 import Leftnav from "../custom-components/left-nav/left-nav";
 import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
-// import StorageSrvc, {STORAGE_TYPES} from "../../utility/StorageSrvc";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
-// import Tooltip from "./../../utility/tooltiplib";
 import CONSTANTS from "../../constants/constants";
 import * as images from "./../../images";
 import "../../styles/home/home.scss";
@@ -21,17 +19,8 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    // const profile = this.storageSrvc.getJSONItem("userProfile");
-    // Tooltip.register();
-    // Tooltip.showTooltip(document.getElementById("nav-item-3-31"));
     const profile = this.props.userProfile;
     this.updateProfile(profile);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.displayAdditionalAction !== this.props.displayAdditionalAction) {
-      this.updateProfile((this.props.userProfile));
-    }
   }
 
   updateProfile (profile) {
@@ -49,9 +38,7 @@ class Home extends React.Component {
             const templateKey = Object.keys(CONSTANTS.CODES).find(item => CONSTANTS.CODES[item].CODE === workflowDecider.code);
             let template = templateKey && CONSTANTS.CODES[templateKey];
             const image = images[template.IMAGE];
-            const displayAdditionalAction = this.props.displayAdditionalAction;
-            const remaining = this.props.remaining;
-            template = {templateName: "StatusModalTemplate", image, displayAdditionalAction, remaining, ...template};
+            template = {templateName: "StatusModalTemplate", image, ...template};
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
           } else if (genericTemplateCodes.includes(workflowDecider.code)) {
             const userProfile = this.props.userProfile;
@@ -85,11 +72,9 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  displayAdditionalAction: PropTypes.bool,
   isNew: PropTypes.bool,
   location: PropTypes.object,
   isOnboarded: PropTypes.bool,
-  remaining: PropTypes.number,
   toggleModal: PropTypes.func,
   userProfile: PropTypes.object
 };

@@ -134,12 +134,10 @@ class UserList extends React.Component {
               }
               Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader("loader", false))
                 .then(res => {
-                  if (res.body) {
-                    if ((typeof res.body === "boolean" && res.body === true) || res.body.status === true) {
-                      this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
-                    } else if (res.body.status === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-                      this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has already been activated.`);
-                    }
+                  if (res.body === true) {
+                    this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
+                  } else if (res.body === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+                    this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has already been activated.`);
                   } else {
                     this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
                   }
