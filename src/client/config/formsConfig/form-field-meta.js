@@ -369,7 +369,7 @@ const FORMFIELDCONFIG = {
         "emailId": {
           "containerClasses": "contact-details",
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
           "inputId": "emailId",
@@ -380,6 +380,7 @@ const FORMFIELDCONFIG = {
           "label": "Email",
           "layout": "5.1.6",
           "loader": false,
+          "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
           "patternPath": "CONSTANTS.REGEX.EMAIL",
           "required": true,
           "type": "email",
@@ -387,7 +388,7 @@ const FORMFIELDCONFIG = {
         },
         "phone": {
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
           "inputId": "phone",
@@ -636,43 +637,40 @@ const FORMFIELDCONFIG = {
           "type": "_formFieldsHeader"
         },
         "urlItems": {
-          "disabled": "false",
+          "disableAddItem": true,
           "error": "",
+          "fieldLoader": false,
           "inputId": "items",
+          "isSellerNameDisabled": true,
           "key": "items",
           "layout": "6.1.0",
           "type": "_urlItems",
-          "disableAddItem": true,
           "onChangeSellerName": "setSelectInputValue",
           "onChangeItem": "getItemListFromChild",
           "onChangeUrl": "onChange",
-          "fieldLoader": false,
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "getItemListFromChild": "getItemListFromChild",
           "prebounceChangeHandler": "disableSubmitButton",
-          "sellerNameType": "multiselect",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "itemList": [
             {
               "id": "item-0",
               "url": {
                 "label": "Item URL",
-                "required": "true",
+                "required": true,
                 "value": "",
                 "type": "url",
                 "pattern": "https?://.+",
                 "disabled": false,
-                "isValid": "false",
+                "isValid": false,
                 "subtitle": "",
                 "error": ""
               },
               "sellerName": {
                 "dropdownOptions": [],
                 "label": "Seller Name",
-                "required": "true",
+                "required": true,
                 "value": "",
                 "pattern": null,
                 "disabled": true,
-                "options": [],
                 "subtitle": "",
                 "type": "multiselect",
                 "error": "",
@@ -706,9 +704,7 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "validators": {
             "validateRequired": {
-              "errorMessages": {
-                "dataMsgRequired": "Please be sure to provide details regarding your claim."
-              }
+              "error": "Please be sure to provide details regarding your claim."
             },
             "validateLength": {
               "minLength": 20,
@@ -1103,22 +1099,24 @@ const FORMFIELDCONFIG = {
     "WEBFORM": {
       "sectionConfig": {
         "headerClasses": "content-header-row h3 p-4",
-        "formClasses": "row content-row p-4 mt-4",
-        "sectionTitle": "DMCA Claim Form"
+        "formClasses": "row content-row p-4 mt-4"
       },
       "formConfig": {
         "id": "webForm",
         "loader": false,
         "isSubmitDisabled": true,
-        "claimTypeSelected": false
+        "claimTypeSelected": false,
+        "formError": ""
       },
       "fields": {
         "fieldsHeader_1": {
-          "header": "Please, select the type of infringement you're reporting",
+          "containerClasses": "font-weight-bold",
+          "header": "Type of infringement",
           "layout": "1.1.0",
           "type": "_formFieldsHeader"
         },
         "claimType": {
+          "containerClasses": "mb-3",
           "customChangeHandler": "customChangeHandler",
           "disabled": false,
           "error": "",
@@ -1132,17 +1130,11 @@ const FORMFIELDCONFIG = {
           "type": "select",
           "value": ""
         },
-        "fieldsHeader_2": {
-          "header": "Please complete the following fields and click submit to submit your report.",
+        "fieldsHeader_3": {
+          "containerClasses": "font-weight-bold",
+          "header": "Contact Information",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "layout": "3.1.0",
-          "type": "_formFieldsHeader"
-        },
-        "fieldsHeader_3": {
-          "containerClasses": "font-size-27 font-weight-bold",
-          "header": "Enter Your Contact Information",
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "layout": "4.1.0",
           "type": "_formFieldsHeader"
         },
         "firstName": {
@@ -1150,66 +1142,78 @@ const FORMFIELDCONFIG = {
           "error": "",
           "id": "firstName",
           "inputId": "firstName",
-          "invalidError": "Please enter a valid First Name",
           "key": "firstName",
           "label": "First Name",
           "layout": "5.1.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid First name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
           "type": "text",
           "value": "",
-          "initValuePath": "firstName"
+          "initValuePath": "firstName",
+          "validators": {
+            "validateRequired": {
+              "error": "First Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
+            }
+          }
         },
         "lastName": {
           "disabled": false,
           "error": "",
           "id": "lastName",
           "inputId": "lastName",
-          "invalidError": "Please enter a valid Last Name",
           "key": "lastName",
           "label": "Last Name",
           "layout": "5.2.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid Last name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
           "type": "text",
           "value": "",
-          "initValuePath": "lastName"
+          "initValuePath": "lastName",
+          "validators": {
+            "validateRequired": {
+              "error": "Last Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
+            }
+          }
         },
         "ownerName": {
           "disabled": false,
           "error": "",
           "id": "ownerName",
           "inputId": "ownerName",
-          "invalidError": "Please enter valid Owner Name",
           "key": "ownerName",
           "label": "Owner Name",
           "layout": "6.0.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please provide a valid owner name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
           "value": "",
-          "initValuePath": "ownerName"
+          "initValuePath": "ownerName",
+          "validators": {
+            "validateRequired": {
+              "error": "Owner Name is required"
+            }
+          }
         },
         "companyName": {
           "disabled": false,
           "error": "",
           "id": "companyName",
           "inputId": "companyName",
-          "invalidError": "Please enter valid Company Name",
+          "invalidError": "Company Name is required",
           "key": "companyName",
           "label": "Company Name",
           "layout": "6.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid company name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1221,12 +1225,11 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "error": "",
           "inputId": "brandName",
-          "invalidError": "Please enter valid Company Name",
+          "invalidError": "Brand is required",
           "key": "brandName",
           "label": "Brand Name",
           "layout": "7.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid brand name.",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
@@ -1240,12 +1243,18 @@ const FORMFIELDCONFIG = {
           "key": "address_1",
           "label": "Address 1",
           "layout": "8.1.6",
-          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Address 1 is required"
+            }
+          }
         },
         "address_2": {
           "disabled": false,
@@ -1255,8 +1264,9 @@ const FORMFIELDCONFIG = {
           "label": "Address 2",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "layout": "8.2.6",
-          "pattern": null,
-          "required": true,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "required": false,
           "subtitle": "",
           "type": "text",
           "value": ""
@@ -1268,26 +1278,46 @@ const FORMFIELDCONFIG = {
           "key": "city",
           "label": "City",
           "layout": "9.1.6",
-          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "City is required"
+            }
+          }
         },
         "country": {
-          "disabled": true,
+          "disabled": false,
           "error": "",
           "inputId": "country",
           "key": "country",
           "label": "Country",
           "layout": "9.2.6",
-          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": "USA"
+          "value": "USA",
+          "validators": {
+            "validateRequired": {
+              "error": "Country is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z\\s]+$",
+              "error": "Please enter a valid Country name"
+            },
+            "validateLength": {
+              "minLength": "2",
+              "error": "Minimum length is 2 characters"
+            }
+          }
         },
         "state": {
           "colClasses": "col-6",
@@ -1297,116 +1327,159 @@ const FORMFIELDCONFIG = {
           "key": "state",
           "label": "State",
           "layout": "10.1.6",
-          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "State/Province/Region is required"
+            }
+          }
         },
         "zip": {
           "colClasses": "col-6",
           "disabled": false,
           "error": "",
           "inputId": "zip",
-          "invalidError": "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "key": "zip",
           "label": "ZIP",
           "layout": "10.2.6",
           "maxLength": 10,
-          "patternPath": "CONSTANTS.REGEX.ZIP",
-          "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Zip/Postal Code is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9]+$",
+              "error": "Please enter a valid Zip Code"
+            },
+            "validateLength": {
+              "minLength": "3",
+              "error": "Minimum length is 3 characters"
+            }
+          }
         },
         "phone": {
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
           "fieldOk": false,
+          "id": "phone",
           "inputId": "phone",
-          "invalidError": "Please enter a valid phone number",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
           "isUnique": true,
           "key": "phone",
           "label": "Phone Number",
           "layout": "11.1.6",
-          "maxLength": 17,
-          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "maxLength": 15,
           "prebounceChangeHandler": "prebounceChangeHandler",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Phone number is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[0-9]+$",
+              "error": "Please enter all numbers."
+            },
+            "validateLength": {
+              "minLength": "7",
+              "error": "Minimum length is 7 characters"
+            }
+          }
         },
         "emailId": {
           "containerClasses": "contact-details",
           "disabled": false,
-          "disableDefaultBlueValidation": true,
+          "disableDefaultBlurValidation": true,
           "error": "",
-          "fieldOk": false,
+          "id": "emailId",
           "inputId": "emailId",
-          "invalidError": "Please enter a valid Email ID",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
-          "isUnique": true,
           "key": "emailId",
-          "label": "Email Adress",
+          "label": "Email Address",
           "layout": "11.2.6",
-          "loader": false,
-          "patternPath": "CONSTANTS.REGEX.EMAIL",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "type": "email",
-          "value": ""
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Email address is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+              "error": "Please enter a valid Email Address"
+            }
+          }
         },
         "urlItems": {
-          "disabled": false,
-          "error": "",
-          "inputId": "items",
-          "key": "items",
-          "layout": "12.1.0",
-          "type": "_urlItems",
           "disableAddItem": true,
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "getItemListFromChild": "getItemListFromChild",
-          "sellerNameType": "text",
-          "prebounceChangeHandler": "disableSubmitButton",
+          "error": "",
+          "fieldLoader": false,
+          "inputId": "items",
+          "isSellerNameDisabled": false,
+          "layout": "12.1.0",
+          "key": "items",
+          "maxItems": 10,
           "onChangeItem": "getItemListFromChild",
+          "prebounceChangeHandler": "disableSubmitButton",
           "onChangeSellerName": "onChange",
           "onChangeUrl": "onChange",
-          "fieldLoader": false,
-          "bubbleValue": "bubbleValue",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "type": "_urlItems",
           "itemList": [
             {
               "id": "item-0",
               "url": {
                 "label": "Item URL",
-                "required": "true",
+                "required": true,
                 "value": "",
                 "type": "url",
                 "pattern": "https?://.+",
+                "patternErrorMessage": "Please adhere to URL format",
+                "preventHTMLRequiredValidation": true,
                 "disabled": false,
-                "isValid": "false",
+                "isValid": false,
                 "subtitle": "",
-                "error": ""
+                "error": "",
+                "validators": {
+                  "validateRequired": {
+                    "error": "Item URL is required"
+                  }
+                }
               },
               "sellerName": {
                 "label": "Seller Name",
-                "required": "true",
+                "required": true,
                 "value": "",
-                "disabled": true,
-                "options": [],
+                "disabled": false,
+                "dropdownOptions": [],
                 "subtitle": "",
                 "type": "text",
                 "error": "",
+                "preventHTMLRequiredValidation": true,
                 "validators": {
+                  "validateRequired": {
+                    "error": "Seller Name is required"
+                  },
                   "validateLength": {
-                    "minLength": "2",
-                    "error": "Minimum length is 2 characters"
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
                   }
                 }
               }
@@ -1427,14 +1500,13 @@ const FORMFIELDCONFIG = {
           "rowCount": 2,
           "placeholder": "Please provide additional information about the claim",
           "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
           "subtitle": "",
           "type": "textarea",
           "value": "",
           "validators": {
             "validateRequired": {
-              "errorMessages": {
-                "dataMsgRequired": "Please be sure to provide details regarding your claim."
-              }
+              "error": "Please be sure to provide details regarding your claim."
             },
             "validateLength": {
               "minLength": 20,
@@ -1454,10 +1526,16 @@ const FORMFIELDCONFIG = {
           "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __owner_label__, its agent, or the law.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
-          "type": "_checkBox"
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
         },
         "user_undertaking_2": {
           "checkBoxClasses": "user-undertaking",
@@ -1470,10 +1548,16 @@ const FORMFIELDCONFIG = {
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
-          "type": "_checkBox"
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
         },
         "user_undertaking_3": {
           "checkBoxClasses": "user-undertaking",
@@ -1486,10 +1570,16 @@ const FORMFIELDCONFIG = {
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"Copyright\"}",
           "selected": false,
-          "type": "_checkBox"
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
         },
         "user_undertaking_4": {
           "checkBoxClasses": "user-undertaking",
@@ -1502,70 +1592,85 @@ const FORMFIELDCONFIG = {
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "selected": false,
-          "type": "_checkBox"
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
         },
-        "user_undertaking_5": {
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_5",
-          "inputId": "user_undertaking_5",
-          "key": "user_undertaking_5",
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
           "layout": "18.1.0",
-          "label": "Typing your full name in this box will act as your digital signature.",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "selected": false,
-          "type": "_checkBox"
+          "type": "_formFieldsHeader"
         },
         "digitalSignature": {
           "disabled": false,
-          "containerClasses": "mt-4",
-          "disableDefaultBlueValidation": true,
+          "containerClasses": "",
+          "disableDefaultBlurValidation": true,
           "error": "",
           "inputId": "digitalSignature",
           "key": "digitalSignature",
           "layout": "19.1.8",
           "label": "Digital Signature",
+          "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Digital Signature is required"
+            }
+          }
         },
-        "fieldsHeader_4": {
-          "containerClasses": "font-size-12",
-          "header": "Please review your contact information and make sure it is correct before clicking Submit.",
+        "fieldsHeader_5": {
+          "containerClasses": "font-weight-bold",
+          "colClasses": "pt-2",
+          "header": "Please review your contact information and make sure it's correct before clicking 'Submit Claim'",
+          "layout": "21.1.8",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"
         },
-        "captchValidator": {
+        "captchaValidator": {
           "captchaFieldName": "Please enter captcha ",
+          "captchaConfig": {
+            "enableCaptcha": true,
+            "sitekey": "6LdfLwsbAAAAABESWTlTiqJxIfiGoYlfnWfjS5Ea",
+            "serverkey": "6LdfLwsbAAAAAIIMTb41C5BU7Ndu54u27UueWhV6"
+          },
           "isHuman": false,
-          "containerClasses": "mt-4",
+          "containerClasses": "mb-4",
           "error": "",
-          "errorMessage": "Please make sure captcha is valid",
-          "inputId": "captchValidator",
-          "key": "captchValidator",
+          "errorMessage": "Captcha Validation is required",
+          "inputId": "captchaValidator",
+          "key": "captchaValidator",
           "onSubmit": "handleCaptcha",
+          "required": true,
+          "layout": "20.1.0",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "submitButtonLabel": "Submit Captch",
-          "type": "_captchValidator"
+          "submitButtonLabel": "Submit Captcha",
+          "type": "_captchaValidator",
+          "value": false
         },
         "webFormActions": {
           "containerClasses": "pb-5 mb-5",
           "colClasses": "web-form-button-panel text-right",
+          "layout": "21.2.4",
           "type": "_buttonsPanel",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "buttons": {
             "submit": {
-              "classes": "btn btn-sm btn-primary submit-btn px-3",
+              "classes": "btn btn-primary padded-button",
               "disabled": false,
-              "text": "Submit",
+              "onClick": "handleSubmit",
+              "text": "Submit Claim",
               "type": "submit"
             }
           }
@@ -1630,7 +1735,7 @@ const FORMFIELDCONFIG = {
           "required": true,
           "subtitle": "",
           "type": "select",
-          "tooltipRightContent": "",
+          "tooltipContent": "",
           "value": ""
         },
         "title": {
@@ -1675,9 +1780,9 @@ const FORMFIELDCONFIG = {
           "value": "",
           "validators": {
             "validateLength": {
-              "minLength": 20,
               "maxLength": 1000,
-              "error": "Max. length is 1000"
+              "minLength": 20,
+              "error": "Details should be between 20 to 1000 charecters long."
             }
           }
         },

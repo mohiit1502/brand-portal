@@ -4,7 +4,7 @@ const initialState =  {
   viewerState: {show: false, imageSrc: ""}
 };
 
-const helpReducer = (store = initialState, action) => {
+const contentReducer = (store = initialState, action) => {
   switch (action.type) {
     case TOGGLE_IMAGE_VIEWER:
     case DISPATCH_META_DATA:
@@ -14,4 +14,4 @@ const helpReducer = (store = initialState, action) => {
   }
 };
 
-export default helpReducer;
+export default contentReducer;

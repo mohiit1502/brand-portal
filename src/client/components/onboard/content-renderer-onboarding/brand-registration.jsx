@@ -170,7 +170,7 @@ class BrandRegistration extends React.Component {
 
   render() {
     if (this.state.redirectToCompanyReg) {
-      return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER} />;
+      return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER} />;
     }
 
     const form = this.state.form;

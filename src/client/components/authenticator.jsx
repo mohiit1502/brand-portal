@@ -73,12 +73,6 @@ class Authenticator extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.userProfile !== this.props.userProfile) {
-      //this.setOnboardStatus(this.props.userProfile.organization);
-    }
-  }
-
   preLoadData() {
     Object.keys(this.majorRoutes).forEach(currentPath => {
       const sectionObj = this.majorRoutes[currentPath];
@@ -121,6 +115,17 @@ class Authenticator extends React.Component {
       profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
+           if (!profile.emailVerified) {
+            Http.get("/api/users/getEmailConfig", {email: profile.email})
+             .then(response => {
+               const config = response.body;
+               this.setState({
+                 displayAdditionalAction: config ? config.count < config.limit : true,
+                 remaining: config.limit - config.count
+               });
+             }).catch(e => this.setState({displayAdditionalAction: true}));
+           }
+
         // profile.workflow.code=1;
         //profile = JSON.parse("{\"firstName\":\"Test\",\"lastName\":\"Mohsin\",\"phoneCountry\":\"1\",\"phoneNumber\":\"(234) 567-8901\",\"emailVerified\":true,\"isUserEnabled\":true,\"organization\":{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\",\"status\":\"Accepted\"},\"role\":{\"id\":\"6a429471-3675-4490-93db-5aadf5412a8b\",\"name\":\"Super Admin\",\"description\":\"Brand Rights Owner\"},\"brands\":[{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\"}],\"type\":\"Internal\",\"registrationMode\":\"SelfRegistered\",\"email\":\"wm.ropro+testbike@gmail.com\",\"status\":\"Active\",\"statusDetails\":\"Status updated by: system\",\"createdBy\":\"wm.ropro+testbike@gmail.com\",\"createTs\":\"2020-09-15T07:15:18.965Z\",\"lastUpdatedBy\":\"wm.ropro+testbike@gmail.com\",\"lastUpdateTs\":\"2020-09-21T10:06:07.633Z\",\"isOrgEnabled\":true,\"workflow\":{\"code\":4,\"workflow\":\"portal_dashboard\",\"defaultView\":\"portal-view-users\",\"roleCode\":1,\"roleView\":\"SUPER_ADMIN\"}}");
         this.props.updateUserProfile(profile);
@@ -149,12 +154,11 @@ class Authenticator extends React.Component {
   }
 
   removeSessionProfile () {
-    // this.storageSrvc.removeItem("userProfile");
     this.props.updateUserProfile(undefined);
   }
 
   isRootPath (pathname) {
-    return pathname === CONSTANTS.ROUTES.ROOT_PATH;
+    return pathname === CONSTANTS.ROUTES.PROTECTED.ROOT_PATH;
   }
 
   isOneOfRedirectPaths (pathname) {
@@ -162,8 +166,8 @@ class Authenticator extends React.Component {
   }
 
   isOnboardingPath (pathname) {
-    for (const i in CONSTANTS.ROUTES.ONBOARD) {
-      if (pathname === CONSTANTS.ROUTES.ONBOARD[i]) {
+    for (const i in CONSTANTS.ROUTES.PROTECTED.ONBOARD) {
+      if (pathname === CONSTANTS.ROUTES.PROTECTED.ONBOARD[i]) {
         return true;
       }
     }
@@ -174,16 +178,16 @@ class Authenticator extends React.Component {
     let path = "";
     switch (role) {
       case CONSTANTS.USER.ROLES.SUPERADMIN:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_SUPERADMIN;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_SUPERADMIN;
         break;
       case CONSTANTS.USER.ROLES.ADMIN:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_ADMIN;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_ADMIN;
         break;
       case CONSTANTS.USER.ROLES.REPORTER:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_REPORTER;
         break;
        default:
-        path = CONSTANTS.ROUTES.DEFAULT_REDIRECT_PATH_REPORTER;
+        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_REPORTER;
     }
     return path;
   }
@@ -200,16 +204,14 @@ class Authenticator extends React.Component {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");
             window.localStorage.removeItem("redirectURI");
-            // return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
-            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CONSTANTS.ROUTES.DASHBOARD} />;
+            return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CONSTANTS.ROUTES.PROTECTED.DASHBOARD} />;
           } else {
-            return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
+            return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
           }
-        // } else if (this.props.userProfile.workflow.code === 1) {
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
-          return <Redirect to={CONSTANTS.ROUTES.ONBOARD.COMPANY_REGISTER}/>;
+          return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
-          return <Redirect to={CONSTANTS.ROUTES.DASHBOARD}/>;
+          return <Redirect to={CONSTANTS.ROUTES.PROTECTED.DASHBOARD}/>;
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {
@@ -234,9 +236,8 @@ class Authenticator extends React.Component {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
       window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
       return null;
-      // return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
     } else {
-      return <Redirect to={CONSTANTS.ROUTES.ROOT_PATH} />;
+      return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ROOT_PATH} />;
     }
   }
 }
