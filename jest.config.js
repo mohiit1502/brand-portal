@@ -9,11 +9,6 @@ const jestDefaultConfig = {
     "json-summary",
     "text-summary"
   ],
-  // modulePathIgnorePatterns: ["<rootDir>/coverage/","<rootDir>/src/**/*.scss"],
-  collectCoverageFrom: [
-    'src/**/*.js',
-    'src/**/*.jsx'
-    ],
   modulePaths: ["<rootDir>/node_modules", "<rootDir>/src"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
   transform: {
