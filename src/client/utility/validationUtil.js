@@ -23,25 +23,26 @@ export default class Validator {
   static validateRequired (target, validationObj) {
     const formFieldValue = target.value
     if (validationObj && formFieldValue === "") {
-      return Validator.errorPrefix + validationObj.errorMessages.dataMsgRequired
+      return validationObj.error
     } else {
       return ""
     }
   }
 
   static validateLength (target, validationObj) {
-    const length = target.value ? target.value.length : 0
+    const value = target.value ? target.value.trim() : "";
+    const length = value.length;
     if (
       (validationObj && (validationObj.minLength && length < validationObj.minLength)) ||
       (validationObj.maxLength && length > validationObj.maxLength)
     ) {
-      return Validator.errorPrefix + validationObj.error
+      return validationObj.error
     } else {
       return ""
     }
   }
 
-  static validateRegex (target, validationObj, regexSelector) {
+  static validateRegex (target, validationObj, parentRef, regexSelector) {
     const formFieldValue = target.value.trim();
     if (validationObj) {
       const formFieldRegexString =
@@ -52,7 +53,7 @@ export default class Validator {
       const formFieldRegex = new RegExp(formFieldRegexString)
       const compliesRegex = formFieldRegex.test(formFieldValue)
       if (!compliesRegex) {
-        return Validator.errorPrefix + validationObj.errorMessages.dataMsgRegex
+        return validationObj.error
       } else {
         return ""
       }
@@ -69,10 +70,10 @@ export default class Validator {
       const currentYear = new Date().getFullYear()
       const currentMonth = new Date().getMonth()
       if (year > 2032 || month > 12 || month < 1) {
-        return Validator.errorPrefix + validationObj.errorMessages.dataMsgRegex
+        return validationObj.errorMessages.dataMsgRegex
       }
       if (year < currentYear || (year === currentYear && month < currentMonth + 1)) {
-        return Validator.errorPrefix + validationObj.errorMessages.dataMsgMonthYear
+        return validationObj.errorMessages.dataMsgMonthYear
       } else {
         return ""
       }
@@ -96,14 +97,25 @@ export default class Validator {
     Object.keys(form.inputData).forEach(key => {
       const obj = {...form.inputData[key]};
       form.inputData[key] = obj;
+      if (obj.error) {
+        hasError = true;
+        return;
+      }
       if (obj && obj.required && !obj.value) {
         if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
           return;
+        } else if (obj.type && obj.type === "_checkBox" && obj.selected) {
+          return;
+        } else if (obj.type  && obj.type === "_urlItems") {
+          if( obj.required && this.validateUrlItems && this.validateUrlItems()) {
+            hasError = true;
+          }
+        } else {
+          obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
+          hasError = true;
         }
-        obj.error = obj.invalidError;
-        hasError = true;
       } else {
-        obj.error = "";
+        obj.error = obj.error || "";
       }
     });
     this.setState({form});
@@ -266,6 +278,9 @@ export default class Validator {
         mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
       }).catch (err => {
         error = err.error;
+        if (error) {
+          error = typeof error === "object" ? error.message ? error.message : "Uniqueness Check Failed, please try again!" : error;
+        }
         inputData.companyName.isUnique = false;
         inputData.companyName.fieldOk = false;
         inputData.companyName.requestAdministratorAccess = true;
@@ -330,6 +345,7 @@ export default class Validator {
   }
 
   static onInvalid (evt, key) {
+    evt.preventDefault();
     const form = this.state.form;
     const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
     if (matchedField) {

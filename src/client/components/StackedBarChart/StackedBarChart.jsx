@@ -9,8 +9,7 @@ import {
   scaleBand,
   scaleLinear,
   select,
-  stack,
-  stackOrderAscending
+  stack
 } from "d3";
 import d3Tip from "d3-tip"
 import useResizeObserver from "./../../hooks/useResizeObserver";

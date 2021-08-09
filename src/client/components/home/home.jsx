@@ -28,6 +28,12 @@ class Home extends React.Component {
     this.updateProfile(profile);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.displayAdditionalAction !== this.props.displayAdditionalAction) {
+      this.updateProfile((this.props.userProfile));
+    }
+  }
+
   updateProfile (profile) {
     this.setState({profile}, () => {
       const workflowDecider = profile && profile.workflow;
@@ -43,7 +49,9 @@ class Home extends React.Component {
             const templateKey = Object.keys(CONSTANTS.CODES).find(item => CONSTANTS.CODES[item].CODE === workflowDecider.code);
             let template = templateKey && CONSTANTS.CODES[templateKey];
             const image = images[template.IMAGE];
-            template = {templateName: "StatusModalTemplate", image, ...template};
+            const displayAdditionalAction = this.props.displayAdditionalAction;
+            const remaining = this.props.remaining;
+            template = {templateName: "StatusModalTemplate", image, displayAdditionalAction, remaining, ...template};
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
           } else if (genericTemplateCodes.includes(workflowDecider.code)) {
             const userProfile = this.props.userProfile;
@@ -77,9 +85,11 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
+  displayAdditionalAction: PropTypes.bool,
   isNew: PropTypes.bool,
   location: PropTypes.object,
   isOnboarded: PropTypes.bool,
+  remaining: PropTypes.number,
   toggleModal: PropTypes.func,
   userProfile: PropTypes.object
 };

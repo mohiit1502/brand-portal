@@ -2,7 +2,6 @@ const CONSTANTS = {
 
   URL: {
     LOGOUT: "https://retaillink.login.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
-    // LOGOUT: "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
     LOGIN_REDIRECT: "/api/falcon/login",
     REGISTER_REDIRECT: "/api/falcon/register",
     DOMAIN: {
@@ -10,7 +9,6 @@ const CONSTANTS = {
       STAGING: "http://brandportal.ropro.stg.walmart.com",
       // TODO correct production URL below
       PRODUCTION: "https://brandportal.walmart.com"
-      // PRODUCTION: "http://brandportal.ropro.stg.walmart.com"
     },
     DOMAIN_SERVER: {
       DEVELOPMENT: "http://localhost:2992",
@@ -95,35 +93,34 @@ const CONSTANTS = {
   },
 
   ROUTES: {
-    ROOT_PATH: "/",
-    // DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users/user-list",
-    DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users",
-    DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
-    DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
+    PROTECTED: {
+      ROOT_PATH: "/",
+      DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users",
+      DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
+      DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
 
-    ONBOARD: {
-      COMPANY_REGISTER: "/onboard/company",
-      BRAND_REGISTER: "/onboard/brand"
-    },
+      ONBOARD: {
+        COMPANY_REGISTER: "/onboard/company",
+        BRAND_REGISTER: "/onboard/brand"
+      },
 
-    USER_MGMT: {
-      // USER_LIST: "/users/user-list",
-      USER_LIST: "/users",
-      USER_APPROVAL: "/users/user-approval"
-    },
+      USER_MGMT: {
+        USER_LIST: "/users",
+        USER_APPROVAL: "/users/user-approval"
+      },
 
-    BRANDS: {
-      BRANDS_LIST: "/brands"
-    },
+      BRANDS: {
+        BRANDS_LIST: "/brands"
+      },
 
-    CLAIMS: {
-      CLAIMS_LIST: "/claims",
-      CLAIM_DETAILS: "/claims/:claim_id"
-    },
+      CLAIMS: {
+        CLAIMS_LIST: "/claims",
+        CLAIM_DETAILS: "/claims/:claim_id"
+      },
 
-    PROFILE: {
-      USER: "/profile"
-    },
+      PROFILE: {
+        USER: "/profile"
+      },
 
     HELP: {
       HELP: "/help",
@@ -134,7 +131,11 @@ const CONSTANTS = {
       CONTACT:"/help/contact"
     },
 
-    DASHBOARD: "/dashboard"
+      DASHBOARD: "/dashboard"
+    },
+    OPEN: {
+      SERVICES: "/ipServices"
+    }
   },
 
   NAVIGATION_PANEL: [
@@ -249,7 +250,7 @@ const CONSTANTS = {
     CONTACTEMAIL: "IPInvest@walmart.com",
     COPYRIGHTTEXT: "© 2021 Walmart. All rights reserved.",
     PRIVACYTEXT: "Privacy Policy",
-    PRIVACYURL: ""
+    PRIVACYURL: "https://corporate.walmart.com/privacy-security"
   },
 
   NOTIFICATIONPOPUP: {
@@ -270,8 +271,8 @@ const CONSTANTS = {
   REGEX: {
     CLAIMDETAILSPATH: "^\/claims\/[a-zA-Z0-9\-]*$",
     COMPANY: "[a-zA-Z0-9., ]+",
-    EMAIL: "\\S+@\\S+\.\\S+",
-    NAMES: "[a-zA-Z0-9. ]+",
+    EMAIL: "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+    NAMES: "^[a-zA-Z0-9. ]+$",
     PASSWORD: "^(?=.*[A-Z]{1,})(?=.*[a-z]{1,})(?=.*[0-9]{1,})(?=.*[~!@#$%^&*()\\-_=+{};:,<.>]{1,}).{8,}$",
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$",
@@ -294,6 +295,11 @@ const CONSTANTS = {
   },
   MIXPANEL: {
     PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
+  },
+  WEBFORM: {
+    CLAIM_SUBMISSION: "1",
+    CTA: "2",
+    LANDING_PAGE: "0"
   },
 
   POPOVERSELECTOR: "tutorialPopover",

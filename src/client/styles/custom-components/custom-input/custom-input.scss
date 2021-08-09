@@ -284,6 +284,10 @@ $dropdown-select-background: #E7F3F8;
       @extend .text-danger;
       @extend .border-danger;
     }
+    
+    ::placeholder {
+      color: #be2228 !important;
+    }
   }
 }
 

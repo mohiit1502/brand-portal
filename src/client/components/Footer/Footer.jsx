@@ -15,7 +15,7 @@ const Footer = props => {
 
   return (
     <div className="c-Footer">
-      <div className="row">
+      {!props.isWebform && <div className="row">
         <div className="col">
           <nav className="navbar navbar-expand-lg login-footer-nav">
             <div className="c-Footer__logoSocialContainer">
@@ -39,7 +39,7 @@ const Footer = props => {
             </div>
           </nav>
         </div>
-      </div>
+      </div>}
       <div className="row">
         <div className="col">
           <div className="c-Footer__copyrightContainer">
