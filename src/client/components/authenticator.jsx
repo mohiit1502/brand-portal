@@ -73,12 +73,6 @@ class Authenticator extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.userProfile !== this.props.userProfile) {
-      //this.setOnboardStatus(this.props.userProfile.organization);
-    }
-  }
-
   preLoadData() {
     Object.keys(this.majorRoutes).forEach(currentPath => {
       const sectionObj = this.majorRoutes[currentPath];
@@ -149,7 +143,6 @@ class Authenticator extends React.Component {
   }
 
   removeSessionProfile () {
-    // this.storageSrvc.removeItem("userProfile");
     this.props.updateUserProfile(undefined);
   }
 
@@ -200,12 +193,10 @@ class Authenticator extends React.Component {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");
             window.localStorage.removeItem("redirectURI");
-            // return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CURRENT_USER_DEFAULT_PATH}/>;
             return redirectURI ? <Redirect to={redirectURI} /> : <Redirect to={CONSTANTS.ROUTES.PROTECTED.DASHBOARD} />;
           } else {
             return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
           }
-        // } else if (this.props.userProfile.workflow.code === 1) {
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
         } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
@@ -234,7 +225,6 @@ class Authenticator extends React.Component {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
       window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
       return null;
-      // return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ROOT_PATH} />;
     } else {
       return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ROOT_PATH} />;
     }

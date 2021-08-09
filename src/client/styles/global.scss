@@ -19,10 +19,6 @@
 $min-viewport-width: 1024px;
 $min-viewport-height: 768px;
 
-.view-container {
-  // @extend .container-fluid;
-}
-
 html, body {
   &, .js-content {
     &, .route-wrapper {

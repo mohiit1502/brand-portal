@@ -9,7 +9,6 @@ const Tile = props => {
   const contentRenders = Object.keys(bodyContent).map(node => contentRenderer.getContent(bodyContent, node));
 
   return (
-    // <div className={`c-Tile col ${props.data.classes ? props.data.classes : ""}`} style={{background: "url("}>
     <div className={`c-Tile col ${props.data.classes ? props.data.classes : ""}`}>
       <div className={`c-Tile__content ${props.data.contentClasses ? props.data.contentClasses : ""}`}>
         {props.data.svg && <div className="c-Tile__content__symbol"><img src={images[props.data.svg]} alt=""/></div>}
