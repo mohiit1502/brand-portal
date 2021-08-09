@@ -2,7 +2,6 @@ const CONSTANTS = {
 
   URL: {
     LOGOUT: "https://retaillink.login.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
-    // LOGOUT: "https://retaillink.login.stg.wal-mart.com/ssologout?postLogoutRedirect=__domain__/logout",
     LOGIN_REDIRECT: "/api/falcon/login",
     REGISTER_REDIRECT: "/api/falcon/register",
     DOMAIN: {
@@ -10,7 +9,6 @@ const CONSTANTS = {
       STAGING: "http://brandportal.ropro.stg.walmart.com",
       // TODO correct production URL below
       PRODUCTION: "https://brandportal.walmart.com"
-      // PRODUCTION: "http://brandportal.ropro.stg.walmart.com"
     },
     DOMAIN_SERVER: {
       DEVELOPMENT: "http://localhost:2992",
@@ -97,7 +95,6 @@ const CONSTANTS = {
   ROUTES: {
     PROTECTED: {
       ROOT_PATH: "/",
-      // DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users/user-list",
       DEFAULT_REDIRECT_PATH_SUPERADMIN: "/users",
       DEFAULT_REDIRECT_PATH_ADMIN: "/brands",
       DEFAULT_REDIRECT_PATH_REPORTER: "/claims",
@@ -108,7 +105,6 @@ const CONSTANTS = {
       },
 
       USER_MGMT: {
-        // USER_LIST: "/users/user-list",
         USER_LIST: "/users",
         USER_APPROVAL: "/users/user-approval"
       },

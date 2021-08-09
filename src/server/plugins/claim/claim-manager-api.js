@@ -282,7 +282,6 @@ class ClaimManagerApi {
   }
 
   async createWebformClaim(request, h) {
-    //todo: Adding mixpanel events
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/claims/webform"
