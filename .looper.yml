@@ -22,7 +22,7 @@ flows:
     - call: sonar
   sonar:
     - sonar("Sonar"):
-      - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties
+      - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties
       - hygieia.publishSonar()
 
 
