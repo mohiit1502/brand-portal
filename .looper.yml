@@ -90,19 +90,20 @@ flows:
 #            url: "$BUILD_URL/console"
 #
   slack-postMessage-start:
-    - var(SHORT_SHA):
-        echo $GITHUB_BRANCH_HEAD_SHA | cut -c -6
-    - slack.postMessage:
-        message: "Deploying '$GITHUB_BRANCH_NAME' branch ($SHORT_SHA) to `$Environment` - $BUILD_TAG"
-        channelId: '#${slackChannel}'
-        iconEmoji: ':looper:'
-        username: 'Looper'
-        attachments:
-        - fallback: "Build $BUILD_URL/console"
-          actions:
-          - type: "button"
-            text: "Go to build"
-            url: "$BUILD_URL/console"
+    - echo "This is called posrMSG start"
+#    - var(SHORT_SHA):
+#        echo $GITHUB_BRANCH_HEAD_SHA | cut -c -6
+#    - slack.postMessage:
+#        message: "Deploying '$GITHUB_BRANCH_NAME' branch ($SHORT_SHA) to `$Environment` - $BUILD_TAG"
+#        channelId: '#${slackChannel}'
+#        iconEmoji: ':looper:'
+#        username: 'Looper'
+#        attachments:
+#        - fallback: "Build $BUILD_URL/console"
+#          actions:
+#          - type: "button"
+#            text: "Go to build"
+#            url: "$BUILD_URL/console"
 #  sonar:
 #    - sonar("Sonar"):
 #        - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
