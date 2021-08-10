@@ -18,9 +18,8 @@ checkoutDir: repo
 
 flows:
   default:
-    - echo "This is called"
     try:
-      - call: slack-postMessage-start
+      - echo "Default"
 #      - echo `npm --version`
 #      - printenv
 #      - shell (name pub_type): |
@@ -89,8 +88,8 @@ flows:
 #            text: "Go to build"
 #            url: "$BUILD_URL/console"
 #
-  slack-postMessage-start:
-    - echo "This is called posrMSG start"
+#  slack-postMessage-start:
+#    - echo "This is called posrMSG start"
 #    - var(SHORT_SHA):
 #        echo $GITHUB_BRANCH_HEAD_SHA | cut -c -6
 #    - slack.postMessage:
