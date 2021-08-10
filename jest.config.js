@@ -1,13 +1,15 @@
 "use strict";
 
+// Please refer to : https://jestjs.io/docs/configuration for different configurations
 const rootDir = process.cwd();
 const jestDefaultConfig = {
   rootDir,
-  roots: ["<rootDir>/src"],
+  roots: ["<rootDir>/src","<rootDir>/test/client"],
   coverageReporters: [
     "lcov",
     "json-summary",
-    "text-summary"
+    "text-summary",
+    "text"
   ],
   modulePaths: ["<rootDir>/node_modules", "<rootDir>/src"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
@@ -17,8 +19,9 @@ const jestDefaultConfig = {
     "\\.(css|less|scss)$": "<rootDir>/config/jest/fileTransformer.js"
   },
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!(react-dates|@babel)/)"
+    "<rootDir>/node_modules/(?!(react-dates|@babel|@jest|enzyme)/)"
   ],
+  // testPathIgnorePatterns -- to ignore files in coverage
   collectCoverage: true,
   testResultsProcessor: "jest-sonar-reporter",
   coverageDirectory: "./coverage",
