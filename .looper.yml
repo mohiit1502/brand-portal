@@ -105,15 +105,15 @@ flows:
 #          - type: "button"
 #            text: "Go to build"
 #            url: "$BUILD_URL/console"
-#  sonar:
-#    - sonar("Sonar"):
-#        - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
-#          -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
-#          -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
-#          -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
-#          -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
-#          -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
-#    - hygieia.publishSonar()
+  sonar:
+    - sonar("Sonar"):
+        - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
+          -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
+          -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
+          -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
+          -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
+          -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+    - hygieia.publishSonar()
 #
 #    sonar_build:
 #      - dir(repo):
