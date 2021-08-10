@@ -19,8 +19,8 @@ checkoutDir: repo
 flows:
   default:
     - echo "This is called"
-#    try:
-#      - call: slack-postMessage-start
+    try:
+      - call: slack-postMessage-start
 #      - echo `npm --version`
 #      - printenv
 #      - shell (name pub_type): |
@@ -36,13 +36,14 @@ flows:
 #        cat pipeline_params.properties | grep -w "APP_ARTIFACT_NAME\:" | cut -d ":" -f2
 #      - call: sonar_build
 #      - call: slack-postMessage-end
-#    catch:
-#      - call: slack-postMessage-error
+    catch:
+      - call: slack-postMessage-error
 #      - fail("Error performing build - $flowErrorMessage")
-#    finally:
+    finally:
+      - echo "Test"
 #      - hygieia.publishBuild()
   pr:
-    - echo "Test"
+    - echo "PR Build Test"
 #    - echo `node --version`
 #    - echo `npm --version`
 #    - echo "$GITHUB_PR_URL"
@@ -88,20 +89,20 @@ flows:
 #            text: "Go to build"
 #            url: "$BUILD_URL/console"
 #
-#  slack-postMessage-start:
-#    - var(SHORT_SHA):
-#        echo $GITHUB_BRANCH_HEAD_SHA | cut -c -6
-#    - slack.postMessage:
-#        message: "Deploying '$GITHUB_BRANCH_NAME' branch ($SHORT_SHA) to `$Environment` - $BUILD_TAG"
-#        channelId: '#${slackChannel}'
-#        iconEmoji: ':looper:'
-#        username: 'Looper'
-#        attachments:
-#        - fallback: "Build $BUILD_URL/console"
-#          actions:
-#          - type: "button"
-#            text: "Go to build"
-#            url: "$BUILD_URL/console"
+  slack-postMessage-start:
+    - var(SHORT_SHA):
+        echo $GITHUB_BRANCH_HEAD_SHA | cut -c -6
+    - slack.postMessage:
+        message: "Deploying '$GITHUB_BRANCH_NAME' branch ($SHORT_SHA) to `$Environment` - $BUILD_TAG"
+        channelId: '#${slackChannel}'
+        iconEmoji: ':looper:'
+        username: 'Looper'
+        attachments:
+        - fallback: "Build $BUILD_URL/console"
+          actions:
+          - type: "button"
+            text: "Go to build"
+            url: "$BUILD_URL/console"
 #  sonar:
 #    - sonar("Sonar"):
 #        - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
