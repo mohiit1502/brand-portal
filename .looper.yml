@@ -60,7 +60,8 @@ flows:
 #        git branch -D ${GITHUB_PR_TARGET_BRANCH}
 #      fi
 #
-#  slack-postMessage-error:
+  slack-postMessage-error:
+    - echo "Slack post mas error"
 #    - slack.postMessage:
 #        message: "Build ERROR on '$BUILD_TAG' to $Environment"
 #        channelId: '#${slackChannel}'
