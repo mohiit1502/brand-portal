@@ -4,41 +4,118 @@ tools:
   nodejs: 8.16.1
   sonarscanner: 4.2.0.1873
 
+envs:
+  global:
+    variables:
+      slackChannel: "testlopper"
+      APP_SHA: ""
+      APP_VERSION: ""
+      APP_ARTIFACT_REPOSITORY: ""
+      APP_ARTIFACT_NAME: ""
+
+
 checkoutDir: repo
-
-
-
-#envs:
-#  global:
-#    variables:
-#      ELECTRODE_BUILD_URL: https://18041b6190de461274b48dd40fc75c7c5f8eac53@gecgithub01.walmart.com/api/v3/repos/electrode-ops/build/contents/bootstrap.sh?ref=master
 
 flows:
   default:
-    - call: electrode_build
-    - call: sonar
+    try:
+      - call: slack-postMessage-start
+      - echo `npm --version`
+      - printenv
+      - shell (name pub_type): |
+        echo "Publish Type: ${PUBLISH_TYPE}"
+      - call: electrode_build
+      - var(APP_SHA):
+        cat pipeline_params.properties | grep -w "APP_SHA\:" | cut -d ":" -f2
+      - var(APP_VERSION):
+        cat pipeline_params.properties | grep -w "APP_VERSION\:" | cut -d ":" -f2
+      - var(APP_ARTIFACT_REPOSITORY):
+        cat pipeline_params.properties | grep -w "APP_ARTIFACT_REPOSITORY\:" | cut -d ":" -f2
+      - var(APP_ARTIFACT_NAME):
+        cat pipeline_params.properties | grep -w "APP_ARTIFACT_NAME\:" | cut -d ":" -f2
+      - call: sonar_build
+      - call: slack-postMessage-end
+    catch:
+      - call: slack-postMessage-error
+      - fail("Error performing build - $flowErrorMessage")
+    finally:
+      - hygieia.publishBuild()
   pr:
+    - echo `node --version`
+    - echo `npm --version`
+    - echo "$GITHUB_PR_URL"
     - call: electrode_pr
     - call: sonar
+
+  sonar-fetch-remote-fix-ref:
+    shell: |
+      #!/bin/bash
+      git fetch --no-tags --all
+      if [[ ! -z "${GITHUB_PR_TARGET_BRANCH}" ]]
+      then
+        git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
+        git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
+        git branch -D ${GITHUB_PR_TARGET_BRANCH}
+      fi
+
+  slack-postMessage-error:
+    - slack.postMessage:
+        message: "Build ERROR on '$BUILD_TAG' to $Environment"
+        channelId: '#${slackChannel}'
+        iconEmoji: ':looper:'
+        username: 'Looper'
+        attachments:
+        - fallback: "Build $BUILD_URL/console"
+          color: "#ff0000"
+          actions:
+          - type: "button"
+            text: "Go to build"
+            url: "$BUILD_URL/console"
+
+  slack-postMessage-end:
+    - slack.postMessage:
+        message: "Finished deployment '$BUILD_TAG' to `$Environment` successfully."
+        channelId: '#${slackChannel}'
+        iconEmoji: ':looper:'
+        username: 'Looper'
+        attachments:
+        - fallback: "Build $BUILD_URL/console"
+          color: "#42f445"
+          actions:
+          - type: "button"
+            text: "Go to build"
+            url: "$BUILD_URL/console"
+
+  slack-postMessage-start:
+    - var(SHORT_SHA):
+        echo $GITHUB_BRANCH_HEAD_SHA | cut -c -6
+    - slack.postMessage:
+        message: "Deploying '$GITHUB_BRANCH_NAME' branch ($SHORT_SHA) to `$Environment` - $BUILD_TAG"
+        channelId: '#${slackChannel}'
+        iconEmoji: ':looper:'
+        username: 'Looper'
+        attachments:
+        - fallback: "Build $BUILD_URL/console"
+          actions:
+          - type: "button"
+            text: "Go to build"
+            url: "$BUILD_URL/console"
   sonar:
     - sonar("Sonar"):
-      - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties
-      - hygieia.publishSonar()
+        - (name sonar) sonar-scanner -Dproject.settings=repo/sonar-project.properties
+          -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
+          -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
+          -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
+          -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
+          -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+    - hygieia.publishSonar()
 
-
-#flows:
-#  default:
-#    - call: electrode_build
-#    - call: sonar
+    sonar_build:
+      - dir(repo):
+          - sonar("Sonar"):
+              - (name sonar) sonar-scanner -Dproject.settings=sonar-project.properties
+          - hygieia.publishSonar()
 #  sonar:
 #    - sonar("Sonar"):
-#        - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal
-#          -Dproject.settings=sonar-project.properties
-#        - hygieia.publishSonar()
-#
-#  electrode_build:
-#    - shell (name electrode_build): |
-#        curl -H "Accept: application/vnd.github.VERSION.raw" "${ELECTRODE_BUILD_URL}" | bash
-#  pr:
-#    - call: electrode_pr
-#    - call: sonar
+#      - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties
+#      - hygieia.publishSonar()
