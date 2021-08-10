@@ -48,18 +48,19 @@ flows:
     - echo `node --version`
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
+    - call: sonar-fetch-remote-fix-ref
     - call: sonar
 
-#  sonar-fetch-remote-fix-ref:
-#    shell: |
-#      #!/bin/bash
-#      git fetch --no-tags --all
-#      if [[ ! -z "${GITHUB_PR_TARGET_BRANCH}" ]]
-#      then
-#        git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
-#        git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
-#        git branch -D ${GITHUB_PR_TARGET_BRANCH}
-#      fi
+  sonar-fetch-remote-fix-ref:
+    shell: |
+      #!/bin/bash
+      git fetch --no-tags --all
+      if [[ ! -z "${GITHUB_PR_TARGET_BRANCH}" ]]
+      then
+        git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
+        git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
+        git branch -D ${GITHUB_PR_TARGET_BRANCH}
+      fi
 #
   slack-postMessage-error:
     - echo "Slack post mas error"
