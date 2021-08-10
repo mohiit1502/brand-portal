@@ -45,11 +45,10 @@ flows:
 #      - hygieia.publishBuild()
   pr:
     - echo "PR Build Test"
-#    - echo `node --version`
-#    - echo `npm --version`
-#    - echo "$GITHUB_PR_URL"
-#    - call: electrode_pr
-#    - call: sonar
+    - echo `node --version`
+    - echo "$GITHUB_PR_URL"
+    - call: electrode_pr
+    - call: sonar
 
 #  sonar-fetch-remote-fix-ref:
 #    shell: |
