@@ -4,7 +4,7 @@
 const rootDir = process.cwd();
 const jestDefaultConfig = {
   rootDir,
-  roots: ["<rootDir>/src","<rootDir>/test/client"],
+  roots: ["<rootDir>/src","<rootDir>/test"],
   coverageReporters: [
     "lcov",
     "json-summary",
@@ -12,7 +12,7 @@ const jestDefaultConfig = {
     "text"
   ],
   modulePaths: ["<rootDir>/node_modules", "<rootDir>/src"],
-  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
+  setupFilesAfterEnv: ["./setUpTests.js"],
   transform: {
     "^.+\\.jsx?$": "babel-jest",
     "\\.(jpg|jpeg|png|gif|styl|svg|pdf)$": "<rootDir>/config/jest/fileTransformer.js",
