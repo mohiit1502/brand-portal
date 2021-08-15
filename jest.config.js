@@ -12,7 +12,7 @@ const jestDefaultConfig = {
     "text"
   ],
   modulePaths: ["<rootDir>/node_modules", "<rootDir>/src"],
-  setupFilesAfterEnv: ["./setUpTests.js"],
+  setupFilesAfterEnv: ["<rootDir>/setUpTests.js"],
   transform: {
     "^.+\\.jsx?$": "babel-jest",
     "\\.(jpg|jpeg|png|gif|styl|svg|pdf)$": "<rootDir>/config/jest/fileTransformer.js",
