@@ -11,7 +11,7 @@ const jestDefaultConfig = {
     "text-summary",
     "text"
   ],
-  modulePaths: ["<rootDir>/node_modules", "<rootDir>/src"],
+  modulePaths: ["<rootDir>/node_modules"],
   setupFilesAfterEnv: ["<rootDir>/setUpTests.js"],
   transform: {
     "^.+\\.jsx?$": "babel-jest",
