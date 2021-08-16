@@ -6,7 +6,7 @@ import successResponse from "./../mocks/success-response.json";
 import headerResponse from "./../mocks/headers-response.json";
 import failureResponseWithErrorMessage from "../mocks/failure-response-with-error-message.json";
 import failureResponseWithoutErrorMessage from "../mocks/failure-response-without-error-message.json";
-import classUnderTest from "./../../../src/server/plugins/brand/brand-manager-api"
+import classUnderTest from "./../../../src/server/plugins/brand/brand-manager-api";
 import {configure} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import ServerHttpError from "../../../src/server/utility/ServerHttpError";
@@ -20,10 +20,12 @@ let ccmGetMethod;
 let serverHttpMethod;
 let mixPanelTrackEventMethod
 
+jest.mock("/secrets/secrets.json", ()=>({
+  secrets: 'Test Secrets'
+}), { virtual: true });
+
 const setUp = () => {
-
   server = new Hapi.Server();
-
   getHeadersMethod = jest.spyOn(ServerUtils,"getHeaders")
     .mockResolvedValueOnce(headerResponse);
   ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")

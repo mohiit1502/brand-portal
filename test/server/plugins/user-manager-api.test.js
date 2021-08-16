@@ -15,6 +15,10 @@ let ccmGetMethod;
 let serverHttpMethod;
 let mixPanelTrackEventMethod;
 
+jest.mock("/secrets/secrets.json", ()=>({
+  secrets: 'Test Secrets'
+}), { virtual: true });
+
 // {
 //   method: "GET",
 //     // url: "/ping",

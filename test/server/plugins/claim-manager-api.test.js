@@ -9,13 +9,16 @@ import ServerHttpError from "../../../src/server/utility/ServerHttpError";
 import failureResponseWithErrorMessage from "../mocks/failure-response-with-error-message.json";
 import failureResponseWithoutErrorMessage from "../mocks/failure-response-without-error-message.json";
 
-
 let server;
 let getHeadersMethod;
 let ccmGetMethod;
 let serverHttpMethod;
 let mixPanelTrackEventMethod
 let randomStringGeneratorMethod;
+
+jest.mock("/secrets/secrets.json", ()=>({
+  secrets: 'Test Secrets'
+}), { virtual: true });
 
 const setUp = () => {
 

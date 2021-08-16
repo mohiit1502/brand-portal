@@ -8,14 +8,15 @@ import successResponse from "../mocks/success-response.json";
 import ServerHttpError from "../../../src/server/utility/ServerHttpError";
 import failureResponseWithErrorMessage from "../mocks/failure-response-with-error-message.json";
 import failureResponseWithoutErrorMessage from "../mocks/failure-response-without-error-message.json";
-import contentResposne from "./../mocks/content-response.json";
 
 let server;
-let getHeadersMethod;
 let ccmGetMethod;
-let serverHttpMethod;
 let mixPanelTrackEventMethod;
 let mixPanelSetTokenMethod;
+
+jest.mock("/secrets/secrets.json", ()=>({
+  secrets: 'Test Secrets'
+}), { virtual: true });
 
 const endPoints = [
   {
