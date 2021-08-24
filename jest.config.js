@@ -4,7 +4,7 @@
 const rootDir = process.cwd();
 const jestDefaultConfig = {
   rootDir,
-  roots: ["<rootDir>/src","<rootDir>/test/"],
+  roots: ["<rootDir>/src","<rootDir>/test/client","<rootDir>/test/server/plugins"],
   coverageReporters: [
     "lcov",
     "json-summary",
