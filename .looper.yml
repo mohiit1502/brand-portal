@@ -11,9 +11,29 @@ flows:
     - call: electrode_build
     - call: sonar
   pr:
+    - echo "$GITHUB_PR_URL"
     - call: electrode_pr
+    - call: sonar-fetch-remote-fix-ref
     - call: sonar
+
+  sonar-fetch-remote-fix-ref:
+    shell: |
+      #!/bin/bash
+      git fetch --no-tags --all
+      if [[ ! -z "${GITHUB_PR_TARGET_BRANCH}" ]]
+      then
+        git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
+        git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
+        git branch -D ${GITHUB_PR_TARGET_BRANCH}
+      fi
+
   sonar:
     - sonar("Sonar"):
-        - (name sonar) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties
-        - hygieia.publishSonar()
+      - (name sonar) sonar-scanner -Dsonar.projectKey=brand-portal
+          -Dproject.settings=repo/sonar-project.properties
+          -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
+          -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
+          -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
+          -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
+          -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+    - hygieia.publishSonar()
