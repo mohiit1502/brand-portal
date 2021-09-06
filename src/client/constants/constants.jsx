@@ -134,6 +134,8 @@ const CONSTANTS = {
       DASHBOARD: "/dashboard"
     },
     OPEN: {
+      LOGIN_TYPE_CTA: "/login",
+      REGISTER_TYPE_CTA: "/register",
       SERVICES: "/ipServices"
     }
   },

@@ -28,7 +28,7 @@ const Footer = props => {
                   <a className="nav-link" href="#">Home</a>
                 </li> */}
                 <li className="nav-item mx-1 d-flex align-items-center">
-                  <a className="nav-link btn login-btn" href={CONSTANTS.URL.LOGIN_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);}}>Login</a>
+                  <a className="nav-link btn login-btn py-1" href={CONSTANTS.URL.LOGIN_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);}}>Login</a>
                   {/*<img className="nav-link" src={youtube}/>*/}
                 </li>
                 <li className="nav-item ml-1">

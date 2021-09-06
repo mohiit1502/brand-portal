@@ -19,11 +19,13 @@ const userRegistration = (store, action) => {
       return {...store, ...{ email: action.value }};
     case "UPDATE_PHONE":
       return {...store, ...{ phone: action.value }};
-
+    case "LOGIN_ACTION":
+      return {...store, action: "login"};
+    case "REGISTER_ACTION":
+      return {...store, action: "register"};
   }
   return store || {};
 };
-
 
 export default combineReducers({
   webform,

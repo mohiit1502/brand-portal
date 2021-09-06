@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import LoginTypeCta from './LoginTypeCta';
 import CaptchaValidator from './CaptchaValidator';
 import ContactUsForm from './ContactUsForm';
 import WebformCta from './WebformCta';
@@ -51,6 +52,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	LoginTypeCta,
 	CaptchaValidator,
 	ContactUsForm,
 	WebformCta,

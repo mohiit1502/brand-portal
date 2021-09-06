@@ -179,7 +179,7 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "error": "",
           "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
           "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
@@ -477,7 +477,7 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "error": "",
           "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
           "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
@@ -708,7 +708,8 @@ const FORMFIELDCONFIG = {
             },
             "validateLength": {
               "minLength": 20,
-              "error": "Comment should be 20 characters long!"
+              "maxLength": 2000,
+              "error": "Comments should be between 20 and 2000 characters!"
             }
           }
         },

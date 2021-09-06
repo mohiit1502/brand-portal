@@ -6,6 +6,8 @@ import ArrowRight from "./arrow-right.svg";
 import Astrick from "./astrick.svg";
 import AstrickRed from "./astrick-red.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
+import BPDarkLogo from "./BP_Logo_darkBG.svg";
+import BPLightLogo from "./BP_Logo_lightBG.svg";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
 import CheckGreen from "./check-grn.svg";
@@ -65,6 +67,8 @@ export {
   Astrick,
   AstrickRed,
   BlackBGCheck,
+  BPDarkLogo,
+  BPLightLogo,
   BrandList,
   BrandsIcon,
   ClaimsIcon,
