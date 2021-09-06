@@ -51,23 +51,23 @@
       .nav-item {
         .nav-link {
           font-size: 1rem;
-          color: $white;
+          color: white;
           cursor: pointer;
 
           &.login-btn {
             // width : 90px;
-            border: 1px solid $white;
+            border: 1px solid white;
             padding: 6px 25px;
 
             &:hover {
-              background: $white;
+              background: white;
               color: $blue;
               border-color: $blue;
             }
           }
 
           &:hover {
-            color: $white;
+            color: white;
             font-weight: bolder;
           }
         }
