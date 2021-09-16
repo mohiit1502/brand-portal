@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 const DASHBOARDQUERY = {
   brandSummary_default: "brandsInfo (orgId: \"__orgId__\" emailId: \"__emailId__\" role: \"__role__\") { totalItemsFetched workFlowCounts { status count } }",
   claimSummary_default: "claimsInfo (orgId: \"__orgId__\" emailId: \"__emailId__\" role: \"__role__\") { totalItemsFetched workFlowCounts { status count } }",

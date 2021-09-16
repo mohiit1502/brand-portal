@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable max-statements */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable camelcase */
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
@@ -74,6 +76,7 @@ class CompanyManagerApi {
     };
   }
 
+  /* eslint-disable complexity */
   async registerOrganization (request, h) {
     const mixpanelPayload = {
       METHOD: "POST",

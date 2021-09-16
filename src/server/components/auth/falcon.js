@@ -8,7 +8,7 @@ class Falcon {
 
   async generateFalconRedirectURL (request, action, clientTypeVar) {
     try {
-      const IAM = await ServerUtils.ccmGet(request,"IAM");
+      const IAM = await ServerUtils.ccmGet(request, "IAM");
       const clientId = secrets.CLIENT_ID;
       const nonce = ServerUtils.randomStringGenerator(secrets.NONCE_STRING_LENGTH).toUpperCase();
       const clientType = clientTypeVar || secrets.CLIENT_TYPE;

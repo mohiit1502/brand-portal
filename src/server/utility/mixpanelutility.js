@@ -1,4 +1,7 @@
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-expressions */
+
 const Mixpanel = require("mixpanel");
 let  mixpanel;
 
@@ -18,7 +21,8 @@ export default class MixpanelUtils {
     static getToken() {
         return MixpanelUtils.token;
     }
-    static trackEvent(eventName, payload) {
+    static trackEvent(eventName, incomingPayload) {
+        let payload = incomingPayload;
         if (MixpanelUtils.enableTracking) {
             try {
                 if (!MixpanelUtils.getToken()) {

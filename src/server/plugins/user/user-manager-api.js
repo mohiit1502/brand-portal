@@ -2,6 +2,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable no-magic-numbers */
 import falcon from "../../components/auth/falcon";
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
@@ -15,7 +16,8 @@ const ttl = 12 * 60 * 60 * 1000;
 class UserManagerApi {
 
   constructor() {
-    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus","contactUs"]
+    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus", "contactUs"];
+    /* eslint-disable no-return-assign*/
     functions.forEach(name => this[name] = this[name].bind(this));
     this.name = "UserManagerApi";
   }
@@ -100,8 +102,8 @@ class UserManagerApi {
       },
       {
         method: "POST",
-        path:"/api/users/contactUs",
-        handler:this.contactUs
+        path: "/api/users/contactUs",
+        handler: this.contactUs
       },
       {
         method: "delete",
@@ -248,7 +250,7 @@ class UserManagerApi {
       console.log("[UserManagerApi::resetPassword] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       console.log(payload);
-      let RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
+      const RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
       const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
 
       mixpanelPayload.URL = url;
@@ -673,7 +675,6 @@ class UserManagerApi {
       }
       const {id_token} = await this.getAccessToken(request, query.code);
       const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
-      // const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
 
@@ -707,21 +708,6 @@ class UserManagerApi {
       h.unstate("auth_session_token");
       h.unstate("session_token_login_id");
       h.unstate("client_type");
-      // h.state("auth_session_token", "", {
-      //   ttl: 1,
-      //   isSecure: false,
-      //   isHttpOnly: false
-      // });
-      // h.state("session_token_login_id", "", {
-      //   ttl: 1,
-      //   isSecure: false,
-      //   isHttpOnly: false
-      // });
-      // h.state("client_type", "", {
-      //   ttl: 1,
-      //   isSecure: false,
-      //   isHttpOnly: false
-      // });
 
       mixpanelPayload.API_SUCCESS = true;
       console.log("[UserManagerApi::logout] API request for Logout has completed");
@@ -818,7 +804,6 @@ class UserManagerApi {
         "WM_CONSUMER.NAME": secrets["WM_CONSUMER.NAME"]
       };
       const options = {headers};
-
       const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
       console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has completed");
       mixpanelPayload.URL = url;
