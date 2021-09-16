@@ -1,6 +1,11 @@
+/* eslint-disable camelcase */
+/* eslint-disable new-cap */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
+
 import nj from "node-jose";
 import {CONSTANTS} from "../constants/server-constants";
-import ServerHttp from './ServerHttp';
+import ServerHttp from "./ServerHttp";
 // import ccmLocal from "./../config/ccmFailoverBackup.json";
 const secrets = require(CONSTANTS.PATH);
 
@@ -65,25 +70,25 @@ class ServerUtils {
       await request.app.loadCCM();
       return request.app.ccmGet(path);
     } catch (e) {
-      console.log("Error at CCM Access: ", e)
+      console.log("Error at CCM Access: ", e);
       console.log("Triggering failover config access...");
       throw e;
       // return ServerUtils.search(path, ccmLocal);
     }
   }
-  async retry( request, incrementalTimeouts){
-    for (let attempt = 0 ; attempt <= incrementalTimeouts.length ; attempt++ ){
-        try{
-          const requestType = request.type && request.type.toLowerCase() ;
+  async retry (request, incrementalTimeouts) {
+    for (let attempt = 0; attempt <= incrementalTimeouts.length; attempt++) {
+        try {
+          const requestType = request.type && request.type.toLowerCase();
 
-          console.log ( "[WBP] Making request for request type " + requestType );
-          console.log( "[WBP] Requested function is " , ServerHttp[ requestType ] );
-          const response = ServerHttp[ requestType ] && await ServerHttp[ requestType ]( request.url, request.options, request.payload);
-          return response ? response : { status : 500 , body : { } }
-      } catch( err ){
-        console.error("[WBP] Error while retrying: ", err );
-        console.log("[WBP] Retry Attemp: ",attempt+1);
-        incrementalTimeouts.length > attempt ? await new Promise( resolve => setTimeout(()=>resolve() ,incrementalTimeouts[ attempt ] )) : {} ;
+          console.log("[WBP] Making request for request type ", requestType);
+          console.log("[WBP] Requested function is ", ServerHttp[requestType]);
+          const response = ServerHttp[requestType] && await ServerHttp[requestType](request.url, request.options, request.payload);
+          return response ? response : {status: 500, body: {}};
+      } catch (err) {
+        console.error("[WBP] Error while retrying: ", err);
+        console.log("[WBP] Retry Attemp: ", attempt + 1);
+        incrementalTimeouts.length > attempt ? await new Promise(resolve => setTimeout(() => resolve(), incrementalTimeouts[attempt])) : {};
       }
     }
     return null;

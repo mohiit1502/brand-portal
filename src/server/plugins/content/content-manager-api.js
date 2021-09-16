@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
+/* eslint-disable max-statements */
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";

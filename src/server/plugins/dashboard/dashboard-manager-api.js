@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
 import graphQLUtility from "./../../utility/graphQL-utility";
 import Helper from "../../utility/helper";
 import mixpanel from "../../utility/mixpanelutility";
@@ -50,7 +51,7 @@ class DashboardManagerApi {
       METHOD: "GET"
     };
     try {
-      const paramsDecoded = request.params && Buffer.from(request.params.params, 'base64').toString();
+      const paramsDecoded = request.params && Buffer.from(request.params.params, "base64").toString();
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
@@ -86,7 +87,7 @@ class DashboardManagerApi {
     };
     try {
       // console.log(request.params)
-      const paramsDecoded = request.params && Buffer.from(request.params.params, 'base64').toString();
+      const paramsDecoded = request.params && Buffer.from(request.params.params, "base64").toString();
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
@@ -121,7 +122,7 @@ class DashboardManagerApi {
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_BRAND"
     };
     try {
-      const paramsDecoded = request.params && Buffer.from(request.params.params, 'base64').toString();
+      const paramsDecoded = request.params && Buffer.from(request.params.params, "base64").toString();
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 
@@ -157,7 +158,7 @@ class DashboardManagerApi {
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_USER"
     };
     try {
-      const paramsDecoded = request.params && Buffer.from(request.params.params, 'base64').toString();
+      const paramsDecoded = request.params && Buffer.from(request.params.params, "base64").toString();
       let params = paramsDecoded && paramsDecoded.split("/");
       params = Helper.arrayToObj(params);
 

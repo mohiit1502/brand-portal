@@ -1,3 +1,6 @@
+/* eslint-disable no-magic-numbers */
+/* eslint-disable no-unused-expressions */
+
 export default class Helper {
     getName() {
         const funcNameRegex = /function (.{1,})\(/;
@@ -9,9 +12,10 @@ export default class Helper {
     }
 
     static getDateRange(dateKey) {
-      let date = new Date();
+      const date = new Date();
       const dateInMonth = date.getDate();
-      let fromDate, toDate;
+      let fromDate;
+      let toDate;
       if (dateKey.includes("-to-")) {
         const parts = dateKey.split("-to-");
         fromDate = parts[0];
@@ -20,25 +24,25 @@ export default class Helper {
       }
       switch (dateKey) {
         case "last7days":
-          date.setDate(dateInMonth + 1)
+          date.setDate(dateInMonth + 1);
           toDate = JSON.stringify(date).substring(1, 11);
           date.setDate(date.getDate() - 7);
           fromDate = JSON.stringify(date).substring(1, 11);
           return {fromDate, toDate};
         case "last30days":
-          date.setDate(dateInMonth + 1)
+          date.setDate(dateInMonth + 1);
           toDate = JSON.stringify(date).substring(1, 11);
           date.setDate(date.getDate() - 30);
           fromDate = JSON.stringify(date).substring(1, 11);
           return {fromDate, toDate};
         case "last60days":
-          date.setDate(dateInMonth + 1)
+          date.setDate(dateInMonth + 1);
           toDate = JSON.stringify(date).substring(1, 11);
           date.setDate(date.getDate() - 60);
           fromDate = JSON.stringify(date).substring(1, 11);
           return {fromDate, toDate};
         case "last90days":
-          date.setDate(dateInMonth + 1)
+          date.setDate(dateInMonth + 1);
           toDate = JSON.stringify(date).substring(1, 11);
           date.setDate(date.getDate() - 90);
           fromDate = JSON.stringify(date).substring(1, 11);
@@ -46,9 +50,9 @@ export default class Helper {
         case "alltime":
         default:
           fromDate = "1970-01-01";
-          date.setDate(dateInMonth + 1)
+          date.setDate(dateInMonth + 1);
           toDate = JSON.stringify(date).substring(1, 11);
-          return {fromDate, toDate}
+          return {fromDate, toDate};
       }
     }
 
@@ -58,7 +62,7 @@ export default class Helper {
         if (item.indexOf(":") > -1) {
           returnObj[item.substring(0, item.indexOf(":"))] = item.substring(item.indexOf(":") + 1);
         }
-      })
+      });
       return returnObj;
     }
 }
