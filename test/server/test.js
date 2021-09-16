@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 const nj = require("node-jose");
 
@@ -30,6 +30,6 @@ const decryptToken = function (idToken) {
       reject(err);
     }
   });
-}
+};
 
 decryptToken(token);
