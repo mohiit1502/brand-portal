@@ -14,12 +14,13 @@ import "../../../../../styles/home/content-renderer/user/profile/user-profile.sc
 import CONSTANTS from "../../../../../constants/constants";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import Cookies from "electrode-cookies";
 
 class UserProfile extends React.Component {
 
   constructor (props) {
     super(props);
-    const functions = ["bubbleValue", "displayChangePassword", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
+    const functions = ["bubbleValue", "displayChangePassword", "displayManageProfileNotification", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
     functions.forEach(name => this[name] = this[name].bind(this));
     this.validateState = Validator.validateState.bind(this);
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
@@ -34,7 +35,8 @@ class UserProfile extends React.Component {
         ...userProfileConfiguration.formConfig,
         inputData: {...userProfileConfiguration.fields},
         // underwritingChecked: false,
-      }
+      },
+      isSeller: Cookies.get("client_type") === "seller"
     };
 
     const formatter = new InputFormatter();
@@ -118,6 +120,13 @@ class UserProfile extends React.Component {
     }
   }
 
+  displayManageProfileNotification () {
+    let template = this.props.modalsMeta && this.props.modalsMeta.PASSWORD_RESET_SELLER;
+    template = {templateName: "StatusModalTemplate", image: "", ...template};
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_SELLER_MANAGE_PROFILE, {WORK_FLOW: "EDIT_USER_PROFILE"});
+  }
+
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
@@ -160,7 +169,7 @@ class UserProfile extends React.Component {
       const loginId = this.state.form.inputData.emailId.value;
       const firstName = this.state.form.inputData.firstName.value;
       const lastName = this.state.form.inputData.lastName.value;
-      const phoneNumber = this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000"; //[note:to handle VIP phone number validation] 
+      const phoneNumber = this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000"; //[note:to handle VIP phone number validation]
       const payload = {
         user: {
           loginId,
@@ -225,6 +234,7 @@ UserProfile.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
     userProfileContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.USERPROFILE,
     shouldDiscard: state.modal.shouldDiscard,
     userProfile: state.user.profile

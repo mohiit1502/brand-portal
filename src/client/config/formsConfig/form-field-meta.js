@@ -1058,11 +1058,19 @@ const FORMFIELDCONFIG = {
           "type": "_buttonsPanel",
           "buttons": {
             "changePassword": {
-              "classes": "btn btn-outline-primary btn-sm px-3",
+              "classes": "btn btn-outline-primary btn-sm px-3 reset-password",
               "onClick": "displayChangePassword",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}",
               "text": "Change Password",
               "type": "button"
-            }
+            },
+            "manage": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14 manage-profile",
+              "onClick": "displayManageProfileNotification",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
+              "text": "Manage Seller Center Profile",
+              "type": "submit"
+            },
           }
         },
         "editActions": {
@@ -1075,21 +1083,21 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-primary btn-sm px-4",
               "handlerArg": false,
               "onClick": "disableInput",
-              "renderCondition": "{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true}",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "text": "Edit",
               "type": "button"
             },
             "cancel": {
               "classes": "btn btn-link font-size-14 px-4 mr-3",
               "handlerArg": true,
-              "renderCondition": "{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false}",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "onClick": "disableInput",
               "text": "Cancel",
               "type": "button"
             },
             "save": {
               "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "renderCondition": "{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false}",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "text": "Save",
               "type": "submit"
             }

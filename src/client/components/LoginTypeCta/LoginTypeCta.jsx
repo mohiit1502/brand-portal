@@ -5,6 +5,7 @@ import {useLocation} from "react-router-dom";
 import {dispatchLoginAction, dispatchRegisterAction} from "../../actions";
 import {BPDarkLogo} from "./../../images";
 import "./LoginTypeCta.component.scss";
+import CONSTANTS from "../../constants/constants";
 
 const LoginTypeCta = props => {
   const {action, dispatchLoginAction, dispatchRegisterAction} = props;
@@ -32,12 +33,12 @@ const LoginTypeCta = props => {
                 <span className="page-header mb-2"><span>{action ? action === "login" ? "Log In" : "Register" : ""}</span></span>
                 <p className="sub-title mb-0">Streamline {action === "login" ? "login" : "registration"} by using one of your existing</p>
                 <p className="sub-title">Walmart accounts.</p>
-                <a href={action === "login" ? "/api/falcon/login" : "/api/falcon/register"} className="app-btn d-block mt-2">{action ? action === "login" ? "Log in with Seller Center" : "Use Seller Center Account" : ""}</a>
+                <a href={`${CONSTANTS.URL.LOGIN_REDIRECT}?clientType=seller`} className="app-btn d-block mt-2">{action ? action === "login" ? "Use Seller Center Account" : "Use Seller Center Account" : ""}</a>
                 <div className="OrSeperator w-100 d-flex my-4">
                   <hr /><span>OR</span><hr />
                 </div>
                 {action === "register" && <p className="sub-title">Don't have a Walmart account?</p>}
-                <a href={action === "login" ? "/api/falcon/login" : "/api/falcon/register"} className="app-btn d-block secondary-btn mt-2">{action ? action === "login" ? "Use Brand Portal log in" : "Register with Brand Portal" : ""}</a>
+                <a href={action === "login" ? `${CONSTANTS.URL.LOGIN_REDIRECT}?clientType=supplier` : `${CONSTANTS.URL.REGISTER_REDIRECT}?clientType=supplier`} className="app-btn d-block secondary-btn mt-2">{action ? action === "login" ? "Use Brand Portal log in" : "Register with Brand Portal" : ""}</a>
               </div>
             </div>
           </div>

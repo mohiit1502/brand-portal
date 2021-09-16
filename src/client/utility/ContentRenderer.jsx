@@ -77,14 +77,16 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
-  getContent(content, node, classes, isPartial) {
+  getContent(content, node, classes, isPartial, dynamicReplacements) {
     if (node.startsWith("partial")) {
       return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
+      let text = typeof (content[node]) === "string" ? content[node] : content[node].text;
+      dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => text = text.replaceAll(key, dynamicReplacements[key]));
       if (typeof (content[node]) === "string") {
-        return (<p className={classes ? classes : ""}>{content[node]}</p>);
+        return (<p className={classes ? classes : ""}>{text}</p>);
       } else {
-        return <p className={content[node].classes ? content[node].classes : ""}>{content[node].text}</p>;
+        return <p className={content[node].classes ? content[node].classes : ""}>{text}</p>;
       }
     } else if (node.startsWith("list")) {
       return this.getListContent(content[node]);
@@ -245,10 +247,19 @@ export default class ContentRenderer {
     let shouldRender = true;
     if (renderCondition) {
       renderCondition = JSON.parse(renderCondition);
-      const keyLocator = ContentRenderer.getValueLocator.call(this, renderCondition.keyLocator);
-      const key = Helper.search(renderCondition.keyPath, keyLocator);
-      const value = renderCondition.valueLocator ? Helper.search(renderCondition.valuePath, ContentRenderer.getValueLocator.call(this, renderCondition.valueLocator)) : renderCondition.value;
-      shouldRender = key === value;
+      if (renderCondition.length) {
+        shouldRender = renderCondition.reduce((acc, condition) => {
+          const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
+          const key = Helper.search(condition.keyPath, keyLocator);
+          const value = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition.value;
+          return acc && key === value;
+        }, true)
+      } else {
+        const keyLocator = ContentRenderer.getValueLocator.call(this, renderCondition.keyLocator);
+        const key = Helper.search(renderCondition.keyPath, keyLocator);
+        const value = renderCondition.valueLocator ? Helper.search(renderCondition.valuePath, ContentRenderer.getValueLocator.call(this, renderCondition.valueLocator)) : renderCondition.value;
+        shouldRender = key === value;
+      }
     }
     return shouldRender;
   }

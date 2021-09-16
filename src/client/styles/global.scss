@@ -248,7 +248,7 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 }
 
 .font-size-15 {
-  font-size: 15px;
+  font-size: 15px !important;
 }
 
 .font-size-18 {
@@ -331,6 +331,18 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .min-height-unset {
   min-height: unset !important;
+}
+
+.border-unset {
+  border: unset !important;
+}
+
+.background-unset {
+  background: unset !important;
+}
+
+.margin-unset {
+  margin: unset !important;
 }
 
 .padded-button {
@@ -485,7 +497,11 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 }
 
 .mp-blue {
-  color: $market-place-blue
+  color: $market-place-blue !important;
+}
+
+.bg-blue {
+  background: $background-blue;
 }
 
 .tiles-background-dark {

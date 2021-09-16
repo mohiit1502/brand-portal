@@ -6,7 +6,7 @@ export const TOGGLE_ACTIONS = {
 
 export const toggleModal = (toggleAction, meta) => {
   let action = {type: "TOGGLE_MODAL", value: toggleAction};
-  action = meta? {...action, ...meta} : action;
+  action = meta ? {...action, ...meta} : action;
   return action;
 };
 

@@ -13,10 +13,9 @@ import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions
 import {dispatchClaims} from "../actions/claim/claim-actions";
 import {dispatchBrands} from "../actions/brand/brand-actions";
 import {dispatchUsers} from "../actions/user/user-actions";
-import {dispatchMetadata} from "../actions/content/content-actions";
+import {dispatchFormFieldMetadata, dispatchModalsMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
-import FORMFIELDCONFIG from "../config/formsConfig/form-field-meta";
 import mixpanel from "../utility/mixpanelutils";
 import {preLoadApiUtil} from "../utility/preLoadApiUtil";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
@@ -31,19 +30,33 @@ class Authenticator extends React.Component {
     this.fetchClaims = preLoadApiUtil.fetchClaims.bind(this);
     this.fetchBrands = preLoadApiUtil.fetchBrands.bind(this);
     this.fetchUsers = preLoadApiUtil.fetchUsers.bind(this);
+    this.fetchModalConfig = preLoadApiUtil.fetchModalConfig.bind(this);
+    this.fetchFormFieldConfig = preLoadApiUtil.fetchFormFieldConfig.bind(this);
 
     this.majorRoutes = {
-      "claims": {
-        fetcher: this.fetchClaims,
-        dispatcher: this.props.dispatchClaims
+      "dynamic": {
+        "claims": {
+          fetcher: this.fetchClaims,
+          dispatcher: this.props.dispatchClaims
+        },
+        "brands": {
+          fetcher: this.fetchBrands,
+          dispatcher: this.props.dispatchBrands
+        },
+        "users": {
+          fetcher: this.fetchUsers,
+          dispatcher: this.props.dispatchUsers
+        }
       },
-      "brands": {
-        fetcher: this.fetchBrands,
-        dispatcher: this.props.dispatchBrands
-      },
-      "users": {
-        fetcher: this.fetchUsers,
-        dispatcher: this.props.dispatchUsers
+      "static": {
+        "formFields": {
+          fetcher: this.fetchFormFieldConfig,
+          dispatcher: this.props.dispatchFormFieldMetadata
+        },
+        "modals": {
+          fetcher: this.fetchModalConfig,
+          dispatcher: this.props.dispatchModalsMetadata
+        }
       }
     }
 
@@ -74,31 +87,18 @@ class Authenticator extends React.Component {
   }
 
   preLoadData() {
-    Object.keys(this.majorRoutes).forEach(currentPath => {
-      const sectionObj = this.majorRoutes[currentPath];
+    Object.keys(this.majorRoutes.dynamic).forEach(currentPath => {
+      const sectionObj = this.majorRoutes.dynamic[currentPath];
       sectionObj.fetcher(sectionObj.dispatcher);
     })
   }
 
   initMetaData() {
-    try {
-      this.props.dispatchMetadata(FORMFIELDCONFIG);
-      Http.get("/api/formConfig")
-        .then(response => {
-          if (response.body) {
-            try {
-              response = JSON.parse(response.body);
-              // response = FORMFIELDCONFIG;
-              this.props.dispatchMetadata(response);
-            } catch (e) {
-              this.props.dispatchMetadata(FORMFIELDCONFIG);
-            }
-          }
-        });
-    } catch (err) {
-      console.log(err);
+    Object.keys(this.majorRoutes.static).forEach(currentPath => {
+      const sectionObj = this.majorRoutes.static[currentPath];
+      sectionObj.fetcher(sectionObj.dispatcher);
+    })
   }
-}
 
   setOnboardStatus (status) {
     return this.setState({isOnboarded: !!status});
@@ -115,7 +115,7 @@ class Authenticator extends React.Component {
       profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo")).body;
-        // profile.workflow.code=1;
+        // profile.workflow.code=128;
         //profile = JSON.parse("{\"firstName\":\"Test\",\"lastName\":\"Mohsin\",\"phoneCountry\":\"1\",\"phoneNumber\":\"(234) 567-8901\",\"emailVerified\":true,\"isUserEnabled\":true,\"organization\":{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\",\"status\":\"Accepted\"},\"role\":{\"id\":\"6a429471-3675-4490-93db-5aadf5412a8b\",\"name\":\"Super Admin\",\"description\":\"Brand Rights Owner\"},\"brands\":[{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\"}],\"type\":\"Internal\",\"registrationMode\":\"SelfRegistered\",\"email\":\"wm.ropro+testbike@gmail.com\",\"status\":\"Active\",\"statusDetails\":\"Status updated by: system\",\"createdBy\":\"wm.ropro+testbike@gmail.com\",\"createTs\":\"2020-09-15T07:15:18.965Z\",\"lastUpdatedBy\":\"wm.ropro+testbike@gmail.com\",\"lastUpdateTs\":\"2020-09-21T10:06:07.633Z\",\"isOrgEnabled\":true,\"workflow\":{\"code\":4,\"workflow\":\"portal_dashboard\",\"defaultView\":\"portal-view-users\",\"roleCode\":1,\"roleView\":\"SUPER_ADMIN\"}}");
         this.props.updateUserProfile(profile);
       }
@@ -183,6 +183,7 @@ class Authenticator extends React.Component {
 
   // eslint-disable-next-line complexity
   render () {
+    const {modalsMeta} = this.props;
     const role = this.props.userProfile && this.props.userProfile.role ? this.props.userProfile.role.name : "";
     const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
@@ -197,11 +198,11 @@ class Authenticator extends React.Component {
           } else {
             return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
           }
-        } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === modalsMeta.PORTAL_REGISTRATION.CODE && !this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER}/>;
-        } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === modalsMeta.PORTAL_DASHBOARD.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Redirect to={CONSTANTS.ROUTES.PROTECTED.DASHBOARD}/>;
-        } else if (WORKFLOW_CODE === CONSTANTS.CODES.PORTAL_REGISTRATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
+        } else if (WORKFLOW_CODE === modalsMeta.PORTAL_REGISTRATION.CODE && this.isOnboardingPath(this.props.location.pathname)) {
           return <Onboarder {...this.props} {...this.state} />;
         } else {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
@@ -237,6 +238,7 @@ Authenticator.propTypes = {
   dispatchMetadata: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,
+  modalsMeta: PropTypes.object,
   updateUserProfile: PropTypes.func,
   userProfile: PropTypes.object
 };
@@ -244,12 +246,14 @@ Authenticator.propTypes = {
 const mapStateToProps = state => {
   return {
     isNew: state.company.isNew,
-    userProfile: state.user.profile
+    userProfile: state.user.profile,
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
   };
 };
 
 const mapDispatchToProps = {
-  dispatchMetadata,
+  dispatchFormFieldMetadata,
+  dispatchModalsMetadata,
   updateUserProfile,
   dispatchLogoutUrl,
   dispatchClaims,

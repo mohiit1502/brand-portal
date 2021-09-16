@@ -29,6 +29,11 @@ class ContentManagerApi {
       },
       {
         method: "GET",
+        path: "/api/modalConfig",
+        handler: this.getModalConfiguration
+      },
+      {
+        method: "GET",
         path: "/api/mixpanelConfig",
         handler: this.getMixpanelConfiguration
       },
@@ -128,6 +133,31 @@ class ContentManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_FORM_FIELD_CONFIGURATION, mixpanelPayload);
+    }
+  }
+
+  async getModalConfiguration(request, h) {
+    console.log("[ContentManagerApi::getModalConfiguration] API request for modal configuration has started");
+    console.log("[ContentManagerApi::getModalConfiguration] User ID: ", request.state && request.state.session_token_login_id);
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/modalConfig"
+    };
+    try {
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.MODALSCONFIG");
+      mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      console.log("[ContentManagerApi::getModalConfiguration] API request for modal configuration has completed");
+      return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[ContentManagerApi::getModalConfiguration] Error occurred in API request for modal configuration:", err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_MODAL_CONFIGURATION, mixpanelPayload);
     }
   }
 
