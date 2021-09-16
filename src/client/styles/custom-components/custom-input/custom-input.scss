@@ -112,7 +112,7 @@ $dropdown-select-background: #E7F3F8;
     overflow: auto;
     box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.15);
     color: $ozark-noir-blue;
-    @extend .py-0;
+
     .dropdown-item {
       cursor: pointer;
       height: 38px;
@@ -281,10 +281,8 @@ $dropdown-select-background: #E7F3F8;
         .label-text{
           color: #be2228;
         }
-      @extend .text-danger;
-      @extend .border-danger;
     }
-    
+
     ::placeholder {
       color: #be2228 !important;
     }

@@ -14,6 +14,7 @@ import { Provider } from "react-redux";
 import rootReducer from "./reducers";
 import { renderRoutes } from "react-router-config";
 import { ElectrodeApplication } from "@walmart/electrode-application";
+import "node_modules/bootstrap/scss/bootstrap.scss";
 import "./styles/global.scss";
 
 // Redux configure store with Hot Module Reload

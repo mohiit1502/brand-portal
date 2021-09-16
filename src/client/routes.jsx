@@ -8,7 +8,7 @@ import {Redirect} from "react-router";
 import CONSTANTS from "./constants/constants";
 import ClientUtils from "./utility/ClientUtils";
 import Notification from "./components/custom-components/notification/notification";
-import {WebformWorkflowDecider} from "./components";
+import {LoginTypeCta, WebformWorkflowDecider} from "./components";
 
 const Root = ({ route, children }) => {
     return (
@@ -36,6 +36,16 @@ const routes = [
         path: ClientUtils.getAllValuesFromRecursiveTree(CONSTANTS.ROUTES.PROTECTED),
         exact: true,
         component: Authenticator
+      },
+      {
+        path: CONSTANTS.ROUTES.OPEN.LOGIN_TYPE_CTA,
+        exact: true,
+        component: LoginTypeCta
+      },
+      {
+        path: CONSTANTS.ROUTES.OPEN.REGISTER_TYPE_CTA,
+        exact: true,
+        component: LoginTypeCta
       },
       {
         path: CONSTANTS.ROUTES.OPEN.SERVICES,

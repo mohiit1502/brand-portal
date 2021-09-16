@@ -457,7 +457,7 @@ class BrandList extends React.Component {
                                 {
                                   filter.filterOptions.map(option => {
                                     return (
-                                      <li key={option.id} >
+                                      <li className="my-3" key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
                                             onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>

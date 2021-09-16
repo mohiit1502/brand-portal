@@ -6,6 +6,8 @@ import ArrowRight from "./arrow-right.svg";
 import Astrick from "./astrick.svg";
 import AstrickRed from "./astrick-red.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
+import BPDarkLogo from "./BP_Logo_darkBG.svg";
+import BPLightLogo from "./BP_Logo_lightBG.svg";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
 import CheckGreen from "./check-grn.svg";
@@ -39,10 +41,12 @@ import ProblemSolving from "./group-1473.png";
 import Question from "./question.svg";
 import Refresh from "./refresh.svg";
 import RedCircleCross from "./red-circle-cross.svg";
+import ShieldTick from "./brandRegisteredIcon.png";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
 import SortDown from "./sort_descend.svg";
 import SortUp from "./sort_ascend.svg";
+import SuccessCheck from "./SuccessCheck.svg";
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
@@ -65,6 +69,8 @@ export {
   Astrick,
   AstrickRed,
   BlackBGCheck,
+  BPDarkLogo,
+  BPLightLogo,
   BrandList,
   BrandsIcon,
   ClaimsIcon,
@@ -80,6 +86,7 @@ export {
   Exclamation,
   FieldLoader,
   Filter,
+  FilterBlue,
   GreenCircleCheck,
   Group,
   GroupPeople,
@@ -97,10 +104,12 @@ export {
   Question,
   RedCircleCross,
   Refresh,
+  ShieldTick,
   ShowPassword,
   Sort,
   SortDown,
   SortUp,
+  SuccessCheck,
   TimesFailure,
   TimesSuccess,
   TOU,

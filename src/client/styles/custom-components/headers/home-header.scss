@@ -29,8 +29,7 @@ $dropdown-white : #F9F9F9;
         font-weight: bold;
         &.login-btn{
           width : 90px;
-          border : 1px solid $white;
-          @extend .py-1;
+          border : 1px solid #fff;
         }
         &.user-name{
           display: flex;

@@ -1,5 +1,7 @@
 import Http from "./Http";
 import Helper from "./helper";
+import FORMFIELDMETA from "../config/formsConfig/form-field-meta";
+import MODALMETA from "../config/modals-meta";
 
 class PreLoadApiUtil {
   fetchClaims(dispatcher) {
@@ -70,6 +72,46 @@ class PreLoadApiUtil {
         dispatcher({userList});
       });
   }
+
+    fetchModalConfig(dipatcher) {
+        try {
+            dipatcher(MODALMETA);
+            Http.get("/api/modalConfig")
+                .then(response => {
+                    if (response.body) {
+                        try {
+                            response = JSON.parse(response.body);
+                            response = MODALMETA;
+                            dipatcher(response);
+                        } catch (e) {
+                            dipatcher(MODALMETA);
+                        }
+                    }
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    fetchFormFieldConfig (dipatcher) {
+        try {
+            dipatcher(FORMFIELDMETA);
+            Http.get("/api/formConfig")
+                .then(response => {
+                    if (response.body) {
+                        try {
+                            response = JSON.parse(response.body);
+                            response = FORMFIELDMETA;
+                            dipatcher(response);
+                        } catch (e) {
+                            dipatcher(FORMFIELDMETA);
+                        }
+                    }
+                });
+        } catch (err) {
+            console.log(err);
+        }
+    }
 }
 
 const preLoadApiUtil = new PreLoadApiUtil();

@@ -666,6 +666,7 @@ class UserManagerApi {
     };
     try {
       const query = request.query;
+      const clientType = request.query.clientType;
       // eslint-disable-next-line camelcase
       if (!query.code) {
         return h.redirect("/api/falcon/login");
@@ -676,8 +677,9 @@ class UserManagerApi {
       const loginId = user.loginId;
       const authToken = user["iam-token"];
 
-      h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false});
-      h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false});
+      h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      clientType && h.state("client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
 
       mixpanelPayload.distinct_id = loginId;
       mixpanelPayload.API_SUCCESS = true;
@@ -702,17 +704,24 @@ class UserManagerApi {
       API: "/logout"
     };
     try {
-      // h.unstate("auth_session_token");
-      h.state("auth_session_token", "", {
-        ttl: 1,
-        isSecure: false,
-        isHttpOnly: false
-      });
-      h.state("session_token_login_id", "", {
-        ttl: 1,
-        isSecure: false,
-        isHttpOnly: false
-      });
+      h.unstate("auth_session_token");
+      h.unstate("session_token_login_id");
+      h.unstate("client_type");
+      // h.state("auth_session_token", "", {
+      //   ttl: 1,
+      //   isSecure: false,
+      //   isHttpOnly: false
+      // });
+      // h.state("session_token_login_id", "", {
+      //   ttl: 1,
+      //   isSecure: false,
+      //   isHttpOnly: false
+      // });
+      // h.state("client_type", "", {
+      //   ttl: 1,
+      //   isSecure: false,
+      //   isHttpOnly: false
+      // });
 
       mixpanelPayload.API_SUCCESS = true;
       console.log("[UserManagerApi::logout] API request for Logout has completed");
@@ -762,7 +771,11 @@ class UserManagerApi {
       API: "/api/falcon/{action}"
     };
     try {
-      const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action);
+      const clientType = request.query.clientType;
+      // if (!clientType) {
+      //   return h.redirect(`/${request.params.action}`)
+      // }
+      const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action, clientType);
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.REDIRECT_URI = redirectUri;
       console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");

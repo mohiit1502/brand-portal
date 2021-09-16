@@ -38,7 +38,7 @@ const FileUploader = props => {
         {
           !props.uploading && !props.id &&
           <label
-            className={`btn btn-sm btn-primary upload-btn mb-2${props.disabled ? " disabled" : ""}`}>
+            className={`btn btn-sm btn-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
             {props.buttonText}
             <input type="file" className="d-none" onChange={props.onChange}
                    disabled={props.disabled}/>

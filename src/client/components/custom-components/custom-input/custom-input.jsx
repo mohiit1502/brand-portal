@@ -302,7 +302,7 @@ class CustomInput extends React.PureComponent {
       <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-2" : " mb-3"}${errorClass ? " " + errorClass : ""}
         ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : this.state.fieldAlert ? " field-alert" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
-        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
+        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
                id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
                pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlurValidation ? (evt) => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
                onChange={ e => {
@@ -311,7 +311,7 @@ class CustomInput extends React.PureComponent {
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
           : <span className="icon-hide-password" onClick={() => this.setState({type: "password"})} />)}
-        <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+        <label className={`custom-input-label${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}${this.state.value === "" ? " custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className={`label-text${this.state.required ? " required" : ""}`}> { this.state.label } </span>

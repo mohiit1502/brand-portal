@@ -27,61 +27,6 @@ const CONSTANTS = {
   },
 
   CODES: {
-    PORTAL_REGISTRATION: {
-      CODE: 1
-    },
-    PORTAL_VERIFICATION: {
-      CODE: 2,
-      IMAGE: "Arrow",
-      MESSAGE: "Once complete, we will send a confirmation to your registered email.\n Please login using the shared link.",
-      TITLE: "Your company and brand details are being verified"
-    },
-    PORTAL_DASHBOARD: {
-      CODE: 4
-    },
-    PORTAL_ACCESS_REVOKED: {
-      MESSAGE: {
-        "classes": "mt-4 mx-4 access-revoke",
-        "content": {
-          "partial1": {
-          "chunk1": "Please contact us at ",
-          "anchor1": {
-              "text": "brandportal@walmart.com",
-              "href": "mailto:brandportal@walmart.com"
-            },
-            "chunk2": " if you would still like to create an account",
-          }
-        }
-      },
-      CODE: 8,
-      IMAGE: "Alert",
-      SUBTITLE: "We have not been able to verify the information provided for your application.",
-      TITLE: "Application On Hold"
-    },
-    USER_ACCESS_REVOKED: {
-      CODE: 16,
-      IMAGE: "RedCircleCross",
-      MESSAGE: "Your account access has been revoked for security reasons",
-      TITLE: "Access Denied"
-    },
-    REQUEST_ACCESS: {
-      CODE: 32,
-      IMAGE: "GreenCircleCheck",
-      MESSAGE: "Access Request, awaiting approval.",
-      TITLE: "Access requested"
-    },
-    USER_VERIFICATION: {
-      CODE: 64,
-      IMAGE: "EmailIcon",
-      MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
-      TITLE: "Email verification required",
-      ADDITIONAL_ACTION: "Resend Verification Email"
-    },
-    TOU_VERIFICATION: {
-      CODE: 128,
-      FILE: "test.pdf",
-      GENERIC: true
-    },
     ERRORCODES: {
       FORBIDDEN: "403",
       FOURNOTFOUR: "404",
@@ -134,6 +79,8 @@ const CONSTANTS = {
       DASHBOARD: "/dashboard"
     },
     OPEN: {
+      LOGIN_TYPE_CTA: "/login",
+      REGISTER_TYPE_CTA: "/register",
       SERVICES: "/ipServices"
     }
   },
