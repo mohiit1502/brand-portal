@@ -7,8 +7,9 @@ import {
   UPDATE_FORM_VALUES,
   DISPATCH_USERS
 } from "../../actions/user/user-actions";
-import Immutable from "immutable"
+import Immutable from "immutable";
 
+/* eslint-disable new-cap */
 const initialState = Immutable.Map({
   formErrors: {},
   formValues: {}
@@ -32,7 +33,7 @@ export const userEdit = (state = initialState, action) => {
     case UPDATE_FORM_VALUES:
       return state.mergeDeep(action.value);
     case DISPATCH_USERS:
-      return state.set("userList", action.value.userList)
+      return state.set("userList", action.value.userList);
     case SAVE_USER_INITIATED: {
       return state.mergeDeep({ save: true });
     }

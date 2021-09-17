@@ -1,5 +1,4 @@
-/* eslint-disable max-depth */
-/* eslint-disable max-statements */
+/* eslint-disable max-depth, max-statements, no-console, no-magic-numbers */
 import React from "react";
 import { connect } from "react-redux";
 import Login from "./login/login";
@@ -34,31 +33,31 @@ class Authenticator extends React.Component {
     this.fetchFormFieldConfig = preLoadApiUtil.fetchFormFieldConfig.bind(this);
 
     this.majorRoutes = {
-      "dynamic": {
-        "claims": {
+      dynamic: {
+        claims: {
           fetcher: this.fetchClaims,
           dispatcher: this.props.dispatchClaims
         },
-        "brands": {
+        brands: {
           fetcher: this.fetchBrands,
           dispatcher: this.props.dispatchBrands
         },
-        "users": {
+        users: {
           fetcher: this.fetchUsers,
           dispatcher: this.props.dispatchUsers
         }
       },
-      "static": {
-        "formFields": {
+      static: {
+        formFields: {
           fetcher: this.fetchFormFieldConfig,
           dispatcher: this.props.dispatchFormFieldMetadata
         },
-        "modals": {
+        modals: {
           fetcher: this.fetchModalConfig,
           dispatcher: this.props.dispatchModalsMetadata
         }
       }
-    }
+    };
 
     this.state = {
       isLoggedIn: !!sessionCookie,
@@ -74,7 +73,7 @@ class Authenticator extends React.Component {
       Http.get("/api/mixpanelConfig")
       .then(res => {
         mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
-      }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+      }).catch(() => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
     }
     if (this.state.isLoggedIn) {
       this.initMetaData();
@@ -90,14 +89,14 @@ class Authenticator extends React.Component {
     Object.keys(this.majorRoutes.dynamic).forEach(currentPath => {
       const sectionObj = this.majorRoutes.dynamic[currentPath];
       sectionObj.fetcher(sectionObj.dispatcher);
-    })
+    });
   }
 
   initMetaData() {
     Object.keys(this.majorRoutes.static).forEach(currentPath => {
       const sectionObj = this.majorRoutes.static[currentPath];
       sectionObj.fetcher(sectionObj.dispatcher);
-    })
+    });
   }
 
   setOnboardStatus (status) {
@@ -123,6 +122,7 @@ class Authenticator extends React.Component {
       this.setState({profileInformationLoaded: true});
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
+      /* eslint-disable no-undef */
       console.error(e);
       this.setState({userInfoError: e.status === 404 ? "USER_INFO_ERROR_NOT_FOUND" : "USER_INFO_ERROR_GENERIC"});
       mixpanelPayload.API_SUCCESS = false;
@@ -184,8 +184,6 @@ class Authenticator extends React.Component {
   // eslint-disable-next-line complexity
   render () {
     const {modalsMeta} = this.props;
-    const role = this.props.userProfile && this.props.userProfile.role ? this.props.userProfile.role.name : "";
-    const CURRENT_USER_DEFAULT_PATH = this.getCurrentUserDefaultPath(role);
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     if (this.state.isLoggedIn) {
       mixpanel.login(this.state.logInId, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
@@ -207,20 +205,18 @@ class Authenticator extends React.Component {
         } else {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
-      } else {
-        if(!this.state.userInfoError){
-          return <div className="fill-parent loader" />
-        }else if(this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND"){
+      } else if (!this.state.userInfoError) {
+          return <div className="fill-parent loader" />;
+        } else if (this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND") {
           Cookies.expire("auth_session_token");
           Cookies.expire("session_token_login_id");
           mixpanel.clearCookies();
           window.location.replace("/api/falcon/logout");
           return null;
-        }else{
-          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem" {...this.state}/>
+        } else {
+          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem" {...this.state}/>;
         }
-      }
-    }else if (this.isRootPath(this.props.location.pathname)) {
+    } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
@@ -233,6 +229,11 @@ class Authenticator extends React.Component {
 }
 
 Authenticator.propTypes = {
+  dispatchFormFieldMetadata: PropTypes.func,
+  dispatchModalsMetadata: PropTypes.func,
+  dispatchClaims: PropTypes.func,
+  dispatchBrands: PropTypes.func,
+  dispatchUsers: PropTypes.func,
   dispatchLogoutUrl: PropTypes.func,
   dispatchMixpanelConfig: PropTypes.func,
   dispatchMetadata: PropTypes.func,

@@ -48,12 +48,12 @@ module.exports = plop => {
           skipIfExists: true
         },
         {
-          // Action type 'append' injects a template into an existing file
+          // Action type "append" injects a template into an existing file
           type: "append",
           path: "src/client/components/index.js",
           // Pattern tells plop where in the file to inject the template
           pattern: `/* PLOP_INJECT_IMPORT */`,
-          template: `import {{pascalCase name}} from './{{pascalCase name}}';`
+          template: `import {{pascalCase name}} from "./{{pascalCase name}}";`
         },
         {
           type: "append",
@@ -125,7 +125,7 @@ module.exports = plop => {
           type: "append",
           path: "src/client/pages/index.js",
           pattern: `/* PLOP_INJECT_IMPORT */`,
-          template: `import {{pascalCase name}} from './{{pascalCase name}}';`
+          template: `import {{pascalCase name}} from "./{{pascalCase name}}";`
         },
         {
           type: "append",
@@ -161,7 +161,7 @@ module.exports = plop => {
           type: "append",
           path: "src/services/index.js",
           pattern: `/* PLOP_INJECT_IMPORT */`,
-          template: `import {{camelCase name}} from './{{camelCase name}}';`
+          template: `import {{camelCase name}} from "./{{camelCase name}}";`
         },
         {
           type: "append",
@@ -197,7 +197,7 @@ module.exports = plop => {
           type: "append",
           path: "src/hooks/index.js",
           pattern: `/* PLOP_INJECT_IMPORT */`,
-          template: `import {{camelCase name}} from './{{camelCase name}}';`
+          template: `import {{camelCase name}} from "./{{camelCase name}}";`
         },
         {
           type: "append",

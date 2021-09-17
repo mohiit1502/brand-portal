@@ -1,3 +1,3 @@
-import LoginTypeCta from './LoginTypeCta.jsx';
+import LoginTypeCta from "./LoginTypeCta.jsx";
 
 export default LoginTypeCta;

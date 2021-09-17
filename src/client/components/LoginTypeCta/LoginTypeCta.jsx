@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow, filenames/match-regex */
 import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -14,14 +15,15 @@ const LoginTypeCta = props => {
   useEffect(() => {
     if (!action && location.pathname) {
       if (location.pathname.endsWith("/login")) {
-        dispatchLoginAction()
+        dispatchLoginAction();
       } else if (location.pathname.endsWith("/register")) {
         dispatchRegisterAction();
       }
     }
-  }, [action, location])
+  }, [action, location]);
 
-  return <div className="c-LoginTypeCta">
+  /* eslint-disable no-nested-ternary */
+  return (<div className="c-LoginTypeCta">
       <div className="page-container css-0 d-flex flex-column">
         <div className="logoBox">
           <img src={BPDarkLogo} alt="WBP Dark Logo" className="logo" />
@@ -59,22 +61,24 @@ const LoginTypeCta = props => {
           </div>
         </div>
       </div>
-    </div>
+    </div>);
 };
 
 LoginTypeCta.propTypes = {
-  action: PropTypes.string
+  action: PropTypes.string,
+  dispatchLoginAction: PropTypes.func,
+  dispatchRegisterAction: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     action: state.userRegistration.action
-  }
-}
+  };
+};
 
 const mapDispatchToProps = {
   dispatchLoginAction,
   dispatchRegisterAction
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginTypeCta);

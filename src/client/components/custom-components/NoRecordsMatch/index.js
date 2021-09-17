@@ -1,3 +1,3 @@
-import NoRecordsMatch from './NoRecordsMatch.jsx';
+import NoRecordsMatch from "./NoRecordsMatch.jsx";
 
 export default NoRecordsMatch;

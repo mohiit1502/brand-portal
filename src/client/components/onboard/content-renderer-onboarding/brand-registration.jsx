@@ -20,15 +20,17 @@ class BrandRegistration extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "gotoCompanyRegistration", "submitOnboardingForm", "undertakingtoggle"];
-    const debounceFunctions = {"brandDebounce": "checkBrandUniqueness", "trademarkDebounce": "checkTrademarkValidity"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const brandConfiguration = this.props.brandContent ? this.props.brandContent : {}
+    const brandConfiguration = this.props.brandContent ? this.props.brandContent : {};
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       redirectToCompanyReg: !this.props.org,
       section: {...brandConfiguration.sectionConfig},
@@ -56,6 +58,7 @@ class BrandRegistration extends React.Component {
     this.setState({form});
   }
 
+  /* eslint-disable no-magic-numbers */
   onKeyPress(evt, key) {
     if (key === "trademarkNumber" && ((evt.which < 48 || evt.which > 57) && !CONSTANTS.ALLOWED_KEY_CODES.includes(evt.which))) {
       evt.preventDefault();
@@ -108,6 +111,7 @@ class BrandRegistration extends React.Component {
 
   gotoCompanyRegistration () {
     const steps = this.props.steps ? [...this.props.steps] : [];
+    /* eslint-disable no-unused-expressions */
     steps && steps[1] && (steps[1].complete = false);
     this.props.updateOrgData(this.state, "brand");
     this.props.dispatchBrandState(this.state);
@@ -115,19 +119,20 @@ class BrandRegistration extends React.Component {
     this.setState({redirectToCompanyReg: true});
   }
 
+  /* eslint-disable no-empty */
   async updateProfileInfo () {
     try {
       const profile = (await Http.get("/api/userInfo")).body;
       this.props.updateUserProfile(profile);
     } catch (e) {
-      console.error(e);
     }
   }
 
+  /* eslint-disable max-statements */
   async submitOnboardingForm(evt) {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, {WORK_FLOW: "COMPANY_ONBOARDING"});
     evt.preventDefault();
-    let mixpanelPayload = {
+    const mixpanelPayload = {
       API: "/api/org/register",
       WORK_FLOW: "COMPANY_ONBOARDING"
     };
@@ -189,6 +194,7 @@ class BrandRegistration extends React.Component {
               </div>
             </div>
           </div>
+          {/* eslint-disable react/jsx-handler-names */}
           <form className="brand-reg-form pl-4" onSubmit={this.submitOnboardingForm}>
             {this.getFieldRenders()}
           </form>
@@ -200,6 +206,7 @@ class BrandRegistration extends React.Component {
 
 BrandRegistration.propTypes = {
   brandState: PropTypes.object,
+  brandContent: PropTypes.object,
   dispatchBrandState: PropTypes.func,
   dispatchNewRequest: PropTypes.func,
   dispatchSteps: PropTypes.func,

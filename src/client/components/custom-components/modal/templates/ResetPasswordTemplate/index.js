@@ -1,3 +1,3 @@
-import ResetPasswordTemplate from './ResetPasswordTemplate.jsx';
+import ResetPasswordTemplate from "./ResetPasswordTemplate.jsx";
 
 export default ResetPasswordTemplate;

@@ -1,3 +1,3 @@
-import Widget from './Widget.jsx';
+import Widget from "./Widget.jsx";
 
 export default Widget;

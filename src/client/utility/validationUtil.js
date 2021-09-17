@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expression, max-params, no-magic-numbers, no-unused-expressions */
 import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
@@ -13,19 +14,19 @@ export default class Validator {
     const {validators} = this.props;
     let errorMsg;
     validators && Object.keys(validators).every(validation => {
-      errorMsg = Validator[validation](evt.target, validators[validation], parentRef)
-      this.setState({error: errorMsg})
+      errorMsg = Validator[validation](evt.target, validators[validation], parentRef);
+      this.setState({error: errorMsg});
       return !errorMsg;
     });
     return errorMsg;
   }
 
   static validateRequired (target, validationObj) {
-    const formFieldValue = target.value
+    const formFieldValue = target.value;
     if (validationObj && formFieldValue === "") {
-      return validationObj.error
+      return validationObj.error;
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -36,9 +37,9 @@ export default class Validator {
       (validationObj && (validationObj.minLength && length < validationObj.minLength)) ||
       (validationObj.maxLength && length > validationObj.maxLength)
     ) {
-      return validationObj.error
+      return validationObj.error;
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -49,36 +50,37 @@ export default class Validator {
         validationObj.dataRuleRegex &&
         (validationObj.dataRuleRegex[regexSelector]
           ? validationObj.dataRuleRegex[regexSelector]
-          : validationObj.dataRuleRegex)
-      const formFieldRegex = new RegExp(formFieldRegexString)
-      const compliesRegex = formFieldRegex.test(formFieldValue)
+          : validationObj.dataRuleRegex);
+      const formFieldRegex = new RegExp(formFieldRegexString);
+      const compliesRegex = formFieldRegex.test(formFieldValue);
       if (!compliesRegex) {
-        return validationObj.error
+        return validationObj.error;
       } else {
-        return ""
+        return "";
       }
     } else {
-      return ""
+      return "";
     }
   }
 
+  /* eslint-disable mo-magic-numbers */
   static validateDate (target, validationObj) {
-    const formFieldValue = target.value
+    const formFieldValue = target.value;
     if (validationObj) {
-      const month = +formFieldValue.substring(0, formFieldValue.indexOf("/"))
-      const year = +formFieldValue.substring(formFieldValue.indexOf("/") + 1)
-      const currentYear = new Date().getFullYear()
-      const currentMonth = new Date().getMonth()
+      const month = +formFieldValue.substring(0, formFieldValue.indexOf("/"));
+      const year = +formFieldValue.substring(formFieldValue.indexOf("/") + 1);
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
       if (year > 2032 || month > 12 || month < 1) {
-        return validationObj.errorMessages.dataMsgRegex
+        return validationObj.errorMessages.dataMsgRegex;
       }
       if (year < currentYear || (year === currentYear && month < currentMonth + 1)) {
-        return validationObj.errorMessages.dataMsgMonthYear
+        return validationObj.errorMessages.dataMsgMonthYear;
       } else {
-        return ""
+        return "";
       }
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -94,6 +96,7 @@ export default class Validator {
   static validateState () {
     const form = {...this.state.form};
     let hasError = false;
+    /* eslint-disable complexity */
     Object.keys(form.inputData).forEach(key => {
       const obj = {...form.inputData[key]};
       form.inputData[key] = obj;
@@ -107,7 +110,7 @@ export default class Validator {
         } else if (obj.type && obj.type === "_checkBox" && obj.selected) {
           return;
         } else if (obj.type  && obj.type === "_urlItems") {
-          if( obj.required && this.validateUrlItems && this.validateUrlItems()) {
+          if (obj.required && this.validateUrlItems && this.validateUrlItems()) {
             hasError = true;
           }
         } else {
@@ -122,46 +125,44 @@ export default class Validator {
     return hasError;
   }
 
-  static validateForm (props, formMeta, toIgnoreKeys, isPreLoadValidation) {
-    let error = false
-    const formErrorsClone = Object.assign({}, props.formErrors)
-    const formValues = props.formValues
+  static validateForm (props, formMeta, toIgnoreKeys) {
+    let error = false;
+    const formErrorsClone = Object.assign({}, props.formErrors);
+    const formValues = props.formValues;
     formErrorsClone &&
-    Object.keys(formErrorsClone).map((key) => {
+    Object.keys(formErrorsClone).map(key => {
       if (
         toIgnoreKeys &&
         formMeta[key] !== undefined &&
-        toIgnoreKeys.indexOf(formMeta[key]["id"]) === -1
+        toIgnoreKeys.indexOf(formMeta[key].id) === -1
       ) {
         if (formErrorsClone[key] !== "") {
-          error = true
+          error = true;
         }
       }
-    })
-    formValues && Object.keys(formValues).map((key) => {
-      const validation = formMeta[key] && formMeta[key].validation
-      const fieldValue = formValues[key]
+    });
+    formValues && Object.keys(formValues).map(key => {
+      const validation = formMeta[key] && formMeta[key].validation;
+      const fieldValue = formValues[key];
       if (validation && validation.required && validation.required.isRequired) {
         if (
           toIgnoreKeys &&
           formMeta[key] !== undefined &&
-          toIgnoreKeys.indexOf(formMeta[key]["id"]) === -1
+          toIgnoreKeys.indexOf(formMeta[key].id) === -1
         ) {
           if (fieldValue === "") {
-            formErrorsClone[key] = validation.required.error_message
-            error = true
-          } else {
-            if (formErrorsClone[key] === validation.required.error_message) {
-              formErrorsClone[key] = ""
+            formErrorsClone[key] = validation.required.error_message;
+            error = true;
+          } else if (formErrorsClone[key] === validation.required.error_message) {
+              formErrorsClone[key] = "";
             }
-          }
         }
       }
-    })
+    });
     props.updateFormErrors({
       formErrors: {...formErrorsClone}
-    })
-    return error
+    });
+    return error;
   }
 
   // =============================== Backend Validations ====================================
@@ -223,14 +224,14 @@ export default class Validator {
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
     Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
-      .then (res => {
+      .then(res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, inputData.trademarkNumber);
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.USPTO_VERIFICATION_STATUS = res.body.usptoVerification;
         mixpanelPayload.USPTO_URL = res.body.usptoUrl;
         mixpanelPayload.IS_VALID_TRADEMARK = (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED");
       })
-      .catch (err => {
+      .catch(err => {
         inputData.trademarkNumber.isValid = true;
         inputData.trademarkNumber.error = false;
         inputData.trademarkNumber.fieldOk = false;
@@ -259,7 +260,7 @@ export default class Validator {
     form.inputData = inputData;
     inputData.companyName.disabled = true;
     inputData.companyName.loader = true;
-    inputData.companyOnboardingActions.buttons = {...inputData.companyOnboardingActions.buttons}
+    inputData.companyOnboardingActions.buttons = {...inputData.companyOnboardingActions.buttons};
     inputData.companyOnboardingActions.buttons.clear.disabled = true;
     this.setState(state);
     let error;
@@ -276,9 +277,10 @@ export default class Validator {
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
-      }).catch (err => {
+      }).catch(err => {
         error = err.error;
         if (error) {
+          /* eslint-disable no-nested-ternary */
           error = typeof error === "object" ? error.message ? error.message : "Uniqueness Check Failed, please try again!" : error;
         }
         inputData.companyName.isUnique = false;

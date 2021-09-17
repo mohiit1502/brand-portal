@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-regex, no-unused-expressions */
 import React, {memo, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -7,15 +8,15 @@ import "./ClaimTabular.component.scss";
 import {MemoizedTable} from "../index";
 
 const ClaimTabular = props => {
-  const statusMap = {"work in progress": "open", submitted: "submitted", closed: "closed"}
+  const statusMap = {"work in progress": "open", submitted: "submitted", closed: "closed"};
   const [state, setState] = useState({
     claimCount: {
       open: 0,
       closed: 0,
       submitted: 0
     },
-    selectedTab: "open",
-  })
+    selectedTab: "open"
+  });
   const {
     fetchComplete,
     tableMeta,
@@ -39,10 +40,10 @@ const ClaimTabular = props => {
     const claimCountClone = {...stateCloned.claimCount};
     stateCloned.claimCount = claimCountClone;
     props.data && props.data.forEach(item => {
-      item.createdByName = item.firstName + " " + item.lastName;
-      const iteratedItemStatus = statusMap[item.claimStatus.toLowerCase()]
+      item.createdByName = `${item.firstName  } ${  item.lastName}`;
+      const iteratedItemStatus = statusMap[item.claimStatus.toLowerCase()];
       claimCountClone[iteratedItemStatus]++;
-    })
+    });
     setState(stateCloned);
   }, [props.data]);
 
@@ -52,10 +53,10 @@ const ClaimTabular = props => {
       <ul className={widgetStackItem.tabContainerClasses}>
         {
           widgetStackItem && widgetStackItem.tabs && widgetStackItem.tabs.map(tab => {
-            return <li key={tab.id} id={tab.id} className={`${widgetStackItem.tabClasses}${tab.id === state.selectedTab ? " active" : ""}`} onClick={() => setState({...state, selectedTab: tab.id})}>
+            return (<li key={tab.id} id={tab.id} className={`${widgetStackItem.tabClasses}${tab.id === state.selectedTab ? " active" : ""}`} onClick={() => setState({...state, selectedTab: tab.id})}>
               <p className="item-label">{tab.label}</p>
               <p className="item-count">{state.claimCount[tab.id]}</p>
-            </li>
+            </li>);
           })
         }
       </ul>
@@ -90,6 +91,7 @@ ClaimTabular.propTypes = {
   data: PropTypes.array,
   fetchComplete: PropTypes.bool,
   widget: PropTypes.object,
+  widgetCommon: PropTypes.object,
   widgetActionDispatcher: PropTypes.func,
   widgetStackItem: PropTypes.object
 };

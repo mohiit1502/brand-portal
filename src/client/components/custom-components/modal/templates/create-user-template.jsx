@@ -1,11 +1,10 @@
-/* eslint-disable react/jsx-handler-names */
+/* eslint-disable react/jsx-handler-names, no-unused-expressions, max-statements, complexity */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {saveUserInitiated} from "../../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {showNotification} from "../../../../actions/notification/notification-actions";
-import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
 import InputFormatter from "./../../../../utility/phoneOps";
@@ -22,8 +21,10 @@ class CreateUserTemplate extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "setSelectInputValue", "setMultiSelectInputValue", "handleSubmit", "prepopulateInputFields", "handleSubmit", "resetTemplateStatus"];
-    const debounceFunctions = {"emailDebounce": "onEmailChange"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {emailDebounce: "onEmailChange"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -32,8 +33,7 @@ class CreateUserTemplate extends React.Component {
     this.invalid = {emailId: false, phone: false};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const newUserContent = this.props.newUserContent ? this.props.newUserContent : {}
-    const inputDataConfig =
+    const newUserContent = this.props.newUserContent ? this.props.newUserContent : {};
 
     this.state = {
       section: {...newUserContent.sectionConfig},
@@ -232,11 +232,11 @@ class CreateUserTemplate extends React.Component {
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_CREATED_USER_CLICKED, mixpanelClickEventPayload);
-    let brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
+    const brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
     // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
     // eslint-disable-next-line no-unused-expressions
     // !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
-    let brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
+    const brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
     const loginId = this.state.form.inputData.emailId.value;
     // brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
@@ -272,7 +272,7 @@ class CreateUserTemplate extends React.Component {
       API: url,
       INVITEE_COMPANY_NAME: this.props.userProfile && this.props.userProfile.organization && this.props.userProfile.organization.name,
       INVITEE_EMAIL: loginId,
-      INVITEE_BRANDS: brandsSelected && brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => {return v.value}),
+      INVITEE_BRANDS: brandsSelected && brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => {return v.value;}),
       INVITEE_ROLE: role && role.name,
       IS_UPDATE_USER: this.state.form && this.state.form.isUpdateTemplate,
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
@@ -288,7 +288,6 @@ class CreateUserTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("form", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -306,7 +305,6 @@ class CreateUserTemplate extends React.Component {
           mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
-          console.log(err);
           this.loader("form", false);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;

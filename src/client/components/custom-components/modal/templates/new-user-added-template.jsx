@@ -19,6 +19,7 @@ class NewUserAddedTemplate extends React.Component {
   }
 
   getDescriptionString() {
+    /* eslint-disable no-magic-numbers */
     return `An invitation has been sent to ${this.props.modal.data.email} which will expire in ${this.props.modal.data.status === CONSTANTS.USER.STATUS.PENDING_SUPPLIER ? 72 : 24} hours. \n The user profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
   }
 

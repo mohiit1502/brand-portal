@@ -3,15 +3,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Http from "../../../../../utility/Http";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
-import {dispatchDiscardChanges, TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions"
-import {showNotification} from "../../../../../actions/notification/notification-actions"
+import {dispatchDiscardChanges, TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
+import {showNotification} from "../../../../../actions/notification/notification-actions";
 import InputFormatter from "../../../../../utility/phoneOps";
 import Helper from "../../../../../utility/helper";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
 import Validator from "../../../../../utility/validationUtil";
-// import FORMFIELDCONFIG from "./../../../../../config/formsConfig/form-field-meta";
 import "../../../../../styles/home/content-renderer/user/profile/user-profile.scss";
-import CONSTANTS from "../../../../../constants/constants";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
 import Cookies from "electrode-cookies";
@@ -21,20 +19,21 @@ class UserProfile extends React.Component {
   constructor (props) {
     super(props);
     const functions = ["bubbleValue", "displayChangePassword", "displayManageProfileNotification", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
-    functions.forEach(name => this[name] = this[name].bind(this));
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     this.validateState = Validator.validateState.bind(this);
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {firstName: false, lastName: false, companyName: false, phone: false};
-    const userProfileConfiguration = this.props.userProfileContent ? this.props.userProfileContent : {}
+    const userProfileConfiguration = this.props.userProfileContent ? this.props.userProfileContent : {};
 
     this.state = {
       section: {...userProfileConfiguration.sectionConfig},
       form: {
         ...userProfileConfiguration.formConfig,
-        inputData: {...userProfileConfiguration.fields},
-        // underwritingChecked: false,
+        inputData: {...userProfileConfiguration.fields}
       },
       isSeller: Cookies.get("client_type") === "seller"
     };
@@ -155,12 +154,6 @@ class UserProfile extends React.Component {
     }
   }
 
-  // toggleUnderwritingCheck () {
-  //   const form = {...this.state.form};
-  //   form.underwritingChecked = !form.underwritingChecked;
-  //   this.setState({form});
-  // }
-
   async saveUser (evt) {
     evt.preventDefault();
 
@@ -211,6 +204,7 @@ class UserProfile extends React.Component {
     return null;
   }
 
+  /* eslint-disable react/jsx-handler-names */
   render () {
     return (
       <div className={`user-profile-content h-100${this.state.form.loader ? " loader" : ""}`}>
@@ -225,11 +219,13 @@ class UserProfile extends React.Component {
 
 UserProfile.propTypes = {
   dispatchDiscardChanges: PropTypes.func,
+  modalsMeta: PropTypes.object,
   shouldDiscard: PropTypes.bool,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   userProfile: PropTypes.object,
-  updateUserProfile: PropTypes.func
+  updateUserProfile: PropTypes.func,
+  userProfileContent: PropTypes.object
 };
 
 const mapStateToProps = state => {

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 
 import mixpanel from "../../utility/mixpanelutils";
@@ -9,11 +10,6 @@ import WMBPDarkLogo from "./../../images/WMWhite-horizontal.svg";
 import "./Footer.component.scss";
 
 const Footer = props => {
-
-  const scrollAction = () => {
-    $("#LoginFAQ").addClass("scrolled");
-    setTimeout(() => $("#LoginFAQ").removeClass("scrolled"), 1000);
-  };
 
   return (
     <div className="c-Footer">
@@ -30,13 +26,13 @@ const Footer = props => {
                   <a className="nav-link" href="#">Home</a>
                 </li> */}
                 <li className="nav-item mx-1 d-flex align-items-center">
-                  <a className="nav-link btn login-btn py-1" href={CONSTANTS.URL.LOGIN_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);}}>Login</a>
-                  {/*<Link className="nav-link btn login-btn py-1" to="/login" onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);}}>Login</Link>*/}
+                  {/*<a className="nav-link btn login-btn py-1" href={CONSTANTS.URL.LOGIN_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);}}>Login</a>*/}
+                  <Link className="nav-link btn login-btn py-1" to="/login" onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);}}>Login</Link>
                   {/*<img className="nav-link" src={youtube}/>*/}
                 </li>
                 <li className="nav-item ml-1">
-                  <a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>Register</a>
-                  {/*<Link className="nav-link" to="/register" onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>Register</Link>*/}
+                  {/*<a className="nav-link" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>Register</a>*/}
+                  <Link className="nav-link" to="/register" onClick={() => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);}}>Register</Link>
                   {/*<img className="nav-link" src={walmart}/>*/}
                 </li>
               </ul>
@@ -60,7 +56,7 @@ const Footer = props => {
 };
 
 Footer.propTypes = {
-
+  isWebform: PropTypes.bool
 };
 
 export default Footer;

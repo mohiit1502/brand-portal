@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {CSSTransition} from "react-transition-group";
+import * as $ from "jquery";
 import {toggleImageViewer} from "../../actions/content/content-actions";
 import * as imagesAll from "./../../images";
 import "./ImageViewer.component.scss";

@@ -8,8 +8,8 @@ export const toggleImageViewer = viewerState => {
 
 export const dispatchFormFieldMetadata = metadata => {
   return {type: DISPATCH_FORM_FIELD_META_DATA, value: {metadata}};
-}
+};
 
 export const dispatchModalsMetadata = metadata => {
   return {type: DISPATCH_MODALS_META_DATA, value: {metadata}};
-}
+};

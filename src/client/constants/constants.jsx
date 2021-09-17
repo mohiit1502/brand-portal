@@ -1,3 +1,5 @@
+/* eslint-disable no-magic-numbers */
+
 const CONSTANTS = {
 
   URL: {
@@ -69,11 +71,11 @@ const CONSTANTS = {
 
     HELP: {
       HELP: "/help",
-      FAQ:"/help/faq",
-      USER:"/help/user",
-      CLAIM:"/help/claim",
-      BRAND:"/help/brand",
-      CONTACT:"/help/contact"
+      FAQ: "/help/faq",
+      USER: "/help/user",
+      CLAIM: "/help/claim",
+      BRAND: "/help/brand",
+      CONTACT: "/help/contact"
     },
 
       DASHBOARD: "/dashboard"
@@ -143,7 +145,7 @@ const CONSTANTS = {
     },
     VALUES: {
       STATUS: {
-        "Suspended": "Inactive",
+        Suspended: "Inactive",
         "Pending Supplier Activation": "Pending Activation"
       }
     }

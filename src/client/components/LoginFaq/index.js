@@ -1,3 +1,3 @@
-import LoginFaq from './LoginFaq.jsx';
+import LoginFaq from "./LoginFaq.jsx";
 
 export default LoginFaq;

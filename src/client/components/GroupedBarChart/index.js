@@ -1,3 +1,3 @@
-import GroupedBarChart from './GroupedBarChart.jsx';
+import GroupedBarChart from "./GroupedBarChart.jsx";
 
 export default GroupedBarChart;

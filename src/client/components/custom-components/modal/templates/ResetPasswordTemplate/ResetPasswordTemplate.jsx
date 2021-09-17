@@ -1,4 +1,4 @@
-/* eslint-disable filenames/match-regex */
+/* eslint-disable filenames/match-regex, no-unused-expressions */
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -16,7 +16,9 @@ class ResetPasswordTemplate extends Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "validateForm"];
-    functions.forEach(name => this[name] = this[name].bind(this));
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     this.loader = Helper.loader.bind(this);
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     const resetPasswordConfiguration = this.props.resetPasswordConfiguration ? this.props.resetPasswordConfiguration : {};
@@ -78,6 +80,7 @@ class ResetPasswordTemplate extends Component {
     return hasError;
   }
 
+  /* eslint-disable consistent-return */
   async handleSubmit(evt) {
     evt.preventDefault();
     const form = this.state.form;
@@ -93,12 +96,13 @@ class ResetPasswordTemplate extends Component {
         WORK_FLOW: "EDIT_USER_PROFILE"
       };
       return Http.post(url, payload, null, null, this.props.showNotification, this.state.form.passwordChangedMessage, this.state.form.failureMessage)
-        .then(res => {
+        .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.loader("form", false);
           mixpanelPayload.API_SUCCESS = true;
         })
+        /* eslint-disable complexity */
         .catch(err => {
           this.loader("form", false);
           err = err.error;
@@ -123,7 +127,6 @@ class ResetPasswordTemplate extends Component {
               });
             }
           }
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -163,6 +166,7 @@ class ResetPasswordTemplate extends Component {
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {section.sectionTitle}
+              {/* eslint-disable react/jsx-handler-names */}
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -187,6 +191,7 @@ ResetPasswordTemplate.propTypes = {
   modal: PropTypes.object,
   toggleModal: PropTypes.func,
   data: PropTypes.object,
+  resetPasswordConfiguration: PropTypes.object,
   showNotification: PropTypes.func
 };
 

@@ -1,3 +1,3 @@
-import WebformWorkflowDecider from './WebformWorkflowDecider.jsx';
+import WebformWorkflowDecider from "./WebformWorkflowDecider.jsx";
 
 export default WebformWorkflowDecider;

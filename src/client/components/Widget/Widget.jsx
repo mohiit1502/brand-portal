@@ -7,7 +7,7 @@ const contentComponentMap = {
   VERTICALGROUPEDBAR: ChartsContainer,
   SUMMARY: Summary,
   HORIZONTALSTACKEDBAR: ChartsContainer
-}
+};
 
 const Widget = props => {
   const {
@@ -17,7 +17,7 @@ const Widget = props => {
     userProfile,
     widgetCommon: {
       layoutClasses: commonLayoutClasses = "",
-      widgetStyle: commonWidgetStyle = {},
+      widgetStyle: commonWidgetStyle = {}
     },
     widget: {
       API,

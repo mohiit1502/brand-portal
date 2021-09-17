@@ -1,3 +1,5 @@
+/* eslint-disable quote-props */
+
 const WEBFORMCONFIG = {
   "webform": {
     "titleClass": "ml-8",

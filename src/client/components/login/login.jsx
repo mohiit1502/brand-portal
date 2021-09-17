@@ -4,7 +4,6 @@ import LoginHeader from "../custom-components/headers/login-header";
 import Hero from "../Hero";
 import TilesContainer from "../TilesContainer";
 import LoginFaq from "./../LoginFaq";
-import ContactUsPrompt from "../ContactUsPrompt";
 import Footer from "../Footer";
 import Http from "../../utility/Http";
 import loginConfig from "./../../config/contentDescriptors/landingPageTiles";
@@ -23,6 +22,7 @@ class Login extends React.Component {
     };
   }
 
+  /* eslint-disable react/no-did-mount-set-state */
   componentDidMount() {
     try {
       this.setState({loginConfig});
@@ -31,7 +31,7 @@ class Login extends React.Component {
         .then(res => {
           mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
-        }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+        }).catch(() => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
       } else {
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.VISIT_HOME_PAGE);
       }
@@ -43,29 +43,28 @@ class Login extends React.Component {
           stateCloned.loginConfig = loginConfigResponse;
           return stateCloned;
         }))
-        .catch(e => this.setState({loginConfig}));
+        .catch(() => this.setState({loginConfig}));
     } catch (e) {
       this.setState({loginConfig});
-      console.log(e);
     }
   }
 
   render() {
-    const loginConfig = this.state.loginConfig;
-    return <div className="login-container view-container">
+    const loginConfigState = this.state.loginConfig;
+    return (<div className="login-container view-container">
               <LoginHeader/>
               <Hero />
               {
-                loginConfig && Object.keys(loginConfig).length > 0 &&
+                loginConfigState && Object.keys(loginConfigState).length > 0 &&
                 <React.Fragment>
-                  <TilesContainer tiles={loginConfig.TILES}/>
-                  <LoginFaq faq={loginConfig.FAQ}/>
+                  <TilesContainer tiles={loginConfigState.TILES}/>
+                  <LoginFaq faq={loginConfigState.FAQ}/>
                 </React.Fragment>
               }
               {/* TODO below commented until better communication modes available this needs to be uncommented at a later stage */}
               {/* <ContactUsPrompt /> */}
               <Footer />
-            </div>;
+            </div>);
   }
 }
 

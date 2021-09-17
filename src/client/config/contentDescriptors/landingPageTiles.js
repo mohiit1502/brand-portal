@@ -127,6 +127,6 @@ const LOGINCONFIG = {
       }
     ]
   }
-}
+};
 
 export default LOGINCONFIG;

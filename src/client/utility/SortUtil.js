@@ -32,11 +32,12 @@ export default class SortUtil {
         const sortedList = SortUtil.multiSortUtil(unsortedList, sortingColumns, 0);
         let i = 1;
         const columnPriority = sortingColumns.length > 0 ? this.state.columnPriority : 0;
-        sortedList.forEach(item => item.sequence = i++);
+        sortedList.forEach(item => {
+          item.sequence = i++;
+        });
         this.setState({filteredList: sortedList, columnPriority});
         return sortedList;
       } catch (e) {
-        console.log(e);
         return unsortedList;
       }
   }
@@ -46,8 +47,7 @@ export default class SortUtil {
     const id = columns.accessor;
     const sortType = columns.sortState.type;
     const sortedList = unSortedList;
-    if (!columns || columns.length === 0 || !unSortedList || unSortedList.length === 0)
-      return unSortedList;
+    if (!columns || columns.length === 0 || !unSortedList || unSortedList.length === 0) {return unSortedList;}
     sortedList.sort((a, b) => {
       if (sortType === CONSTANTS.SORTSTATE.DATETYPE || sortType === CONSTANTS.SORTSTATE.NUMERICTYPE) {
         const aValue = (sortType === CONSTANTS.SORTSTATE.DATETYPE) ? new Date(a[id]) : a[id];
@@ -64,35 +64,34 @@ export default class SortUtil {
     return sortedList;
   }
 
+  /* eslint-disable max-statements */
   static multiSortUtil(unSortedList, columns, i) {
     let result = [];
-    if(i>=columns.length || !unSortedList || unSortedList.length == 0)
-      return unSortedList;
-    let sortedList  = this.sortList([...unSortedList], columns[i]);
+    if (i >= columns.length || !unSortedList || unSortedList.length === 0) {return unSortedList;}
+    const sortedList  = this.sortList([...unSortedList], columns[i]);
     let initRow = sortedList[0];
-    let tempList = []; 
+    let tempList = [];
     tempList.push(initRow);
     const colName = columns[i].accessor;
     const sortType = columns[i].sortState.type;
-    for(let j = 1;j < sortedList.length;j++) {
-      let a = initRow[colName],b = sortedList[j][colName];
+    for (let j = 1; j < sortedList.length; j++) {
+      let a = initRow[colName];
+      let b = sortedList[j][colName];
       if (sortType === CONSTANTS.SORTSTATE.ARRAYTYPE) {
-        a = initRow[colName].join(",")
-        b = sortedList[j][colName].join(",")
+        a = initRow[colName].join(",");
+        b = sortedList[j][colName].join(",");
       }
-      if(a===b) {
+      if (a === b) {
           tempList.push(sortedList[j]);
         } else {
-        if(tempList.length > 1)
-            tempList = this.multiSortUtil(tempList, columns, i + 1);
+        if (tempList.length > 1) {tempList = this.multiSortUtil(tempList, columns, i + 1);}
         result = result.concat(tempList);
         tempList = [];
         tempList.push(sortedList[j]);
         initRow = sortedList[j];
       }
     }
-    if(tempList.length > 1)
-        tempList = this.multiSortUtil(tempList, columns, i + 1);
+    if (tempList.length > 1) {tempList = this.multiSortUtil(tempList, columns, i + 1);}
     result = result.concat(tempList);
     return result;
   }

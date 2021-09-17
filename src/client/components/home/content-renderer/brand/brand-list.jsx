@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions, no-magic-numbers */
 import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/brand/brand-list.scss";
@@ -27,6 +28,7 @@ import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class BrandList extends React.Component {
 
+  /* eslint-disable max-statements */
   constructor (props) {
     super(props);
 
@@ -45,7 +47,7 @@ class BrandList extends React.Component {
     this.uiSearch = SearchUtil.uiSearch.bind(this);
     this.applyFilters = FilterUtil.applyFilters.bind(this);
     const userRole = props.userProfile && props.userProfile.role && props.userProfile.role.name;
-    this.filterMap = {"pending": "Pending Verification", "verified": "Verified"};
+    this.filterMap = {pending: "Pending Verification", verified: "Verified"};
     this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
     this.state = {
       page: {
@@ -87,37 +89,21 @@ class BrandList extends React.Component {
               const mixpanelPayload = {
                 API: "/api/brands/",
                 WORK_FLOW: "VIEW_BRAND_LIST",
-                SELECTED_BRAND_NAME:data.brandName,
+                SELECTED_BRAND_NAME: data.brandName,
                 SELECTED_BRAND_UPDATED_STATUS: outgoingStatus,
                 SELECTED_BRAND_USRPTO_VERIFICATION: data.usptoUrl,
                 SELECTED_BRAND_USPTO_URL: data.usptoUrl,
                 SELECTED_BRAND_TRADEMARK_NUMBER: data.trademarkNumber
-              }
+              };
 
-              const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader("loader",false));
-              response.then(res => {
+              const response = Http.put(`/api/brands/${data.brandId}`, payload, "", () => this.loader("loader", false));
+              response.then(() => {
                 this.fetchBrands();
                 mixpanelPayload.API_SUCCESS = true;
                 mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRAND_LIST_WORKFLOW.UPDATE_BRAND_STATUS, mixpanelPayload);
               });
             }
-          },
-          // TODO disabled for MVP, enable for sprint 3
-          // {
-          //   id: 3,
-          //   value: CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE,
-          //   disabled: restConfig.IS_MVP || (restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DELETE.ROLES.map(role => role.toLocaleLowerCase()).includes(userRole ? userRole.toLowerCase() : "") : false),
-          //   notMvp: true,
-          //   clickCallback: (evt, option, data) => {
-          //     const payload = {
-          //       status: "Delete"
-          //     };
-          //     const response = Http.put(`/api/brands/${data.brandId}`, payload);
-          //     response.then(res => {
-          //       this.fetchBrands();
-          //     });
-          //   }
-          // }
+          }
         ]
       },
       identifier: "brands",
@@ -135,7 +121,7 @@ class BrandList extends React.Component {
           Header: "BRAND NAME",
           accessor: "brandName",
           sortState: {
-            level: CONSTANTS.SORTSTATE.RESET,
+            level: CONSTANTS.SORTSTATE.RESET
           }
         },
         {
@@ -144,7 +130,7 @@ class BrandList extends React.Component {
           sortState: {
             level: CONSTANTS.SORTSTATE.DESCENDING,
             type: CONSTANTS.SORTSTATE.DATETYPE,
-            priorityLevel: 1,
+            priorityLevel: 1
           }
         },
         {
@@ -152,7 +138,7 @@ class BrandList extends React.Component {
           accessor: "brandStatus",
           sortState: {
             level: CONSTANTS.SORTSTATE.ASCENDING,
-            priorityLevel: 0,
+            priorityLevel: 0
           }
         }
       ],
@@ -180,23 +166,11 @@ class BrandList extends React.Component {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRAND_LIST_WORKFLOW.EDIT_BRAND, mixpanelPayload);
   }
 
-  // paginationCallback (page) {
-  //
-  //   const pageState = {...this.state.page};
-  //   pageState.offset = page.offset;
-  //   pageState.size = page.size;
-  //   const paginatedList = [...page.list];
-  //   const filteredList = [...page.list];
-  //   this.createFilters(paginatedList);
-  //
-  //   this.setState({page: pageState, paginatedList, filteredList});
-  // }
-
   async fetchBrands () {
     !this.props.brands ? this.loader("loader", true) : this.loader("nonBlockingLoader", true);
     const response = (await Http.get("/api/brands", "", () => {
-      this.loader("loader", false)
-      this.loader("nonBlockingLoader", false)
+      this.loader("loader", false);
+      this.loader("nonBlockingLoader", false);
     })).body;
 
     let brandList = [];
@@ -227,18 +201,20 @@ class BrandList extends React.Component {
     });
     const brandList = [...this.state.brandList];
     let i = 1;
-    brandList.forEach(brand => brand.sequence = i++)
-    this.setState({filters, filteredList: brandList, unsortedList: brandList, appliedFilter:[]}, () => {
+    brandList.forEach(brand => {
+      brand.sequence = i++;
+    });
+    this.setState({filters, filteredList: brandList, unsortedList: brandList, appliedFilter: []}, () => {
       this.uiSearch();
-      this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""})
+      this.props.dispatchFilter({...this.props.filter, "widget-brand-summary": ""});
     });
     this.toggleFilterVisibility();
   }
 
-  clearFilter(filterID,optionID){
+  clearFilter(filterID, optionID) {
     this.onFilterChange(filterID, optionID);
-    this.applyFilters(false,null,null,true)
-    this.toggleFilterVisibility()
+    this.applyFilters(false, null, null, true);
+    this.toggleFilterVisibility();
   }
 
   createFilters(paginatedList) {
@@ -250,12 +226,6 @@ class BrandList extends React.Component {
       brandsSet.add(brand.brandName);
       statusSet.add(brand.brandStatus);
     });
-
-    // const brandsFilter = {
-    //   id: "brandName",
-    //   name: "Brands",
-    //   filterOptions: Array.from(brandsSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
-    // };
 
     const statusFilter = {
       id: "brandStatus",
@@ -290,24 +260,28 @@ class BrandList extends React.Component {
   }
 
   checkAndApplyDashboardFilter(brandList) {
-    const filterValue = this.filterMap[this.props.filter["widget-brand-summary"]]
+    const filterValue = this.filterMap[this.props.filter["widget-brand-summary"]];
     this.createFilters(brandList);
     const stateCloned = {...this.state};
-    const brandStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "brandStatus")
+    const brandStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "brandStatus");
     const dashboardFilter = brandStatusFilter && brandStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
     if (this.props.filter && this.props.filter["widget-brand-summary"]) {
-      this.setState(state => {
+      this.setState(() => {
         dashboardFilter && (dashboardFilter.selected = true);
         return stateCloned;
-      }, () => this.applyFilters(false, brandList, false,true))
+      }, () => this.applyFilters(false, brandList, false, true));
       // })
     } else {
-      this.setState(state => {
+      this.setState(() => {
         let i = 1;
-        brandStatusFilter && brandStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
-        brandList.forEach(brand => brand.sequence = i++)
+        brandStatusFilter && brandStatusFilter.filterOptions.forEach(filterOption => {
+          filterOption.selected = false;
+        });
+        brandList.forEach(brand => {
+          brand.sequence = i++;
+        });
         return stateCloned;
-      }, () => this.applyFilters(false, brandList, false,false))
+      }, () => this.applyFilters(false, brandList, false, false));
     }
   }
 
@@ -360,12 +334,6 @@ class BrandList extends React.Component {
     });
   }
 
-  // changePageSize(size) {
-  //   const page = {...this.state.page};
-  //   page.size = size;
-  //   this.setState({page});
-  // }
-
   toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
       state = {...state};
@@ -378,22 +346,9 @@ class BrandList extends React.Component {
     this.setState({paginatedList});
   }
 
-  // eslint-disable-next-line complexity
+  /* eslint-disable react/jsx-handler-names, complexity */
   render () {
     const brands = this.state.filteredList ? this.state.filteredList : this.state.brandList;
-//     const viewerShip = () => {
-//       const from = this.state.page.offset * this.state.page.size + 1;
-//       const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
-//       const total = this.state.brandList.length;
-//       if (this.state.brandList.length && to >= from) {
-//         return (<div>Viewing <span className="count font-weight-bold" >{from} - {to}</span> of {total} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL}</div>);
-//         // return `Viewing ${from} - ${to} of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}`;
-//       } else if (this.state.brandList.length && to <= from) {
-//         return (<div>Viewing <span className="count font-weight-bold">0</span> of ${total} ${CONSTANTS.BRAND.SECTION_TITLE_PLURAL}</div>);
-//       }
-//       return "";
-//     };
-
     const enableSectionAccess = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.BRANDS.SECTION_ACCESS.map(role => role.toLowerCase()).includes(this.state.userRole.toLowerCase()) : true;
     const enableBrandCreate = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.BRANDS.CREATE.map(role => role.toLowerCase()).includes(this.state.userRole.toLowerCase()) : true;
     return enableSectionAccess ? (
@@ -417,7 +372,7 @@ class BrandList extends React.Component {
                   <div className="input-group input-group-sm">
                     {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Brand Details"
-                      onChange={(evt) => this.uiSearch(evt, false)}/>
+                      onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 " >
@@ -428,9 +383,6 @@ class BrandList extends React.Component {
                   </div>
                 </div>
               </div>
-              {/*{this.props.filter && this.props.filter["widget-brand-summary"] && this.props.filter["widget-brand-summary"] !== "all" &&*/}
-              {/*<FilterType filterText={`Brand Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-brand-summary"*/}
-              {/*            clearFilterHandler={this.props.dispatchFilter}/>}*/}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 pr-4 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
                   <div className="custom-dropdown-menu mt-n4 no-border-radius px-5 w-100">
@@ -460,7 +412,7 @@ class BrandList extends React.Component {
                                       <li className="my-3" key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                            onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
+                                            onChange={() => {this.onFilterChange(filter.id, option.id);}}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>
@@ -494,35 +446,6 @@ class BrandList extends React.Component {
                       }
                     </div>
                   </div>
-                  {/*<div className="row brand-list-table-manage-row px-4 h-10 align-items-center ">*/}
-                  {/*  <div className="col">*/}
-                  {/*    { viewerShip() }*/}
-                  {/*  </div>*/}
-                  {/*  <div className="col text-center">*/}
-                  {/*    <PaginationNav list={this.state.brandList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="col text-right">*/}
-                  {/*    {*/}
-                  {/*      !!this.state.brandList.length && <span className="showing-content pr-2">Showing</span>*/}
-                  {/*    }*/}
-                  {/*    {*/}
-                  {/*      !!this.state.brandList.length && <button type="button" className="btn btn-sm brand-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"*/}
-                  {/*        aria-haspopup="true" aria-expanded="false">*/}
-                  {/*        {this.state.page.size} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;*/}
-                  {/*      </button>*/}
-                  {/*    }*/}
-
-                  {/*    <div className="dropdown-menu brand-count-dropdown-menu">*/}
-                  {/*      {*/}
-                  {/*        this.state.page.sizeOptions.map(val => {*/}
-                  {/*          return (<a key={val} className="dropdown-item"*/}
-                  {/*            onClick={() => {this.changePageSize(val);}}> {val} {CONSTANTS.BRAND.SECTION_TITLE_PLURAL} </a>);*/}
-                  {/*        })*/}
-                  {/*      }*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</div>*/}
-                  {/*<Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />*/}
                 </div>
               </div>
               <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />
@@ -535,7 +458,9 @@ class BrandList extends React.Component {
 }
 
 BrandList.propTypes = {
+  dispatchFilter: PropTypes.func,
   dispatchWidgetAction: PropTypes.func,
+  filter: PropTypes.object,
   toggleModal: PropTypes.func,
   saveBrandCompleted: PropTypes.func,
   brands: PropTypes.array,

@@ -1,7 +1,8 @@
+/* eslint-disable no-magic-numbers, no-unused-expressions */
 export default class InputFormatter {
 
   static inputTypeIgnoreList = ["deleteContentBackward", "deleteContentForward"];
-  
+
   constructor(initOpts) {
     this.initOpts = initOpts;
     this.on = this.on.bind(this);
@@ -131,14 +132,8 @@ export default class InputFormatter {
       this.handleKeydown.call(event.target, event, digitChars)(format, replaceChar, maxLengthKeys[maxLengthKeys.length - 1]);
     };
 
-    // inputEl.addEventListener("input", inputHandler);
     inputEl && inputEl.addEventListener("keydown", keydownHandler);
 
     return {inputHandler, keydownHandler};
   }
-
-  // off() {
-  //   inputEl.removeEventListener("input", inputHandler);
-  //   inputEl.removeEventListener("keydown", keydownHandler);
-  // }
 }

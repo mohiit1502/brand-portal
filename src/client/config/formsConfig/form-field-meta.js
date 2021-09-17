@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 const FORMFIELDCONFIG = {
   "SECTIONSCONFIG": {
     "COMPANYREG": {
@@ -1070,7 +1071,7 @@ const FORMFIELDCONFIG = {
               "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
               "text": "Manage Seller Center Profile",
               "type": "submit"
-            },
+            }
           }
         },
         "editActions": {
@@ -1642,7 +1643,7 @@ const FORMFIELDCONFIG = {
         "fieldsHeader_5": {
           "containerClasses": "font-weight-bold",
           "colClasses": "pt-2",
-          "header": "Please review your contact information and make sure it's correct before clicking 'Submit Claim'",
+          "header": "Please review your contact information and make sure it's correct before clicking \"Submit Claim\"",
           "layout": "21.1.8",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"
@@ -1811,5 +1812,5 @@ const FORMFIELDCONFIG = {
       }
     }
   }
-}
+};
 export default FORMFIELDCONFIG;

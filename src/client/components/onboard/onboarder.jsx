@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {dispatchSteps} from "./../../actions/company/company-actions";
+import {dispatchSteps} from "../../actions/company/company-actions";
 import HomeHeader from "../custom-components/headers/home-header";
 import ContentRendererOnboard from "./content-renderer-onboarding/content-renderer-onboard";
 import Stepper from "../custom-components/stepper/stepper";
@@ -67,7 +67,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   dispatchSteps
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarder);
 
