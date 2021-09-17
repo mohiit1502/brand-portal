@@ -14,7 +14,7 @@ class Tooltip extends React.Component {
 
     return (
       <img alt="i" className={this.props.classes} src={this.props.icon} data-toggle="tooltip" data-placement={this.props.placement} data-html="true"
-           title={ReactDOMServer.renderToString(this.props.content)}/>
+        title={ReactDOMServer.renderToString(this.props.content)}/>
     );
   }
 }

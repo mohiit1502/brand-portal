@@ -538,8 +538,10 @@ class UserList extends React.Component {
                         this.state.filteredList.length > 0 &&
                         <CustomTable data={[...this.state.filteredList]} columns={this.state.userListColumns} template={UserApprovalTable}
                           templateProps={{
-                            fetchRolesForUser: this.fetchRolesForUser, fetchBrandsForUser: this.fetchBrandsForUser,
-                            setSelectInputValue: this.setSelectInputValue, setMultiSelectInputValue: this.setMultiSelectInputValue
+                            fetchRolesForUser: this.fetchRolesForUser,
+                            fetchBrandsForUser: this.fetchBrandsForUser,
+                            setSelectInputValue: this.setSelectInputValue,
+                            setMultiSelectInputValue: this.setMultiSelectInputValue
                           }}/>
                       }
                     </div>
