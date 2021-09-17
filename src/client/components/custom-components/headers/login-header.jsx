@@ -35,27 +35,27 @@ class LoginHeader extends React.Component {
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item px-4">
-              <a className="nav-link register-button" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {
-              {/*<Link className="nav-link register-button" to="/register" onClick={() => {*/}
+              {/*<a className="nav-link register-button" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {*/}
+              <Link className="nav-link register-button" to="/register" onClick={() => {
                 dispatchRegisterAction();
                 $("a.nav-link.register-button").addClass("disabled");
                 mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);
               }}>
                 Register
-              {/*</Link>*/}
-              </a>
+              </Link>
+              {/*</a>*/}
             </li>
             <li className="mx-2 nav-item middle-list" />
             <li className="nav-item pl-4 d-flex align-items-center">
-              <a className="nav-link login-button" href={this.state.loginRedirectLink} onClick={() => {
-              // <Link className="nav-link login-button" to="/login" onClick={() => {
+              {/*<a className="nav-link login-button" href={this.state.loginRedirectLink} onClick={() => {*/}
+              <Link className="nav-link login-button" to="/login" onClick={() => {
                 dispatchLoginAction();
                 $("a.nav-link.login-button").addClass("disabled");
                 mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_LOGIN);
               } }>
                 Login
-              {/*</Link>*/}
-              </a>
+              </Link>
+              {/*</a>*/}
             </li>
           </ul>
         </div>
