@@ -1,9 +1,10 @@
+/* eslint-disable filenames/match-regex, react/jsx-handler-names, no-invalid-this, max-statements */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import moment from "moment";
-import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions"
+import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions";
 import { dispatchCustomDate, dispatchFilter } from "../../actions/dashboard/dashboard-actions";
 import {DatePickerWrapper} from "../index";
 import Helper from "../../utility/helper";
@@ -13,22 +14,25 @@ import "./DateSelector.component.scss";
 
 const propTypes = {
   currentFilters: PropTypes.object,
+  dispatchCustomDate: PropTypes.func,
   dispatchFilter: PropTypes.func,
+  initialDate: PropTypes.object,
+  meta: PropTypes.object,
   updateChart: PropTypes.func,
   toggleModal: PropTypes.func,
-  modal: PropTypes.object,
-}
+  modal: PropTypes.object
+};
 
 class DateSelector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       date: props.initialDate,
-      endDate: '',
-      endValueDate: '',
-      startDate: '',
-      startValueDate: ''
-    }
+      endDate: "",
+      endValueDate: "",
+      startDate: "",
+      startValueDate: ""
+    };
     this.getStats = this.getStats.bind(this);
     this.getStatsFromServer = this.getStatsFromServer.bind(this);
   }
@@ -42,9 +46,6 @@ class DateSelector extends React.Component {
   getStatsFromServer() {
     const state = { ...this.state };
     this.setState(state);
-
-    //get orgId - If we want to call Chart from this Component
-    const orgId = `${this.props.modal.orgId}`;
   }
 
   getStats(e) {
@@ -52,36 +53,36 @@ class DateSelector extends React.Component {
     const currentFilters = this.props.currentFilters;
     const updateChartMeta = {...this.props.meta.updateChartMeta};
     const widgetId = this.props.meta.widgetId;
-    const startValueDate = moment(this.state.startDate).format('YYYY-MM-DD');
-    const endValueDate = moment(this.state.endDate).add(1, 'd').format('YYYY-MM-DD');
-    const ldf = moment.localeData().longDateFormat('LL');
-    const startDateView = moment.utc(this.state.startDate, [ldf]).format('MMM DD, YYYY');
-    const endDateView = moment(this.state.endDate, [ldf]).format('MMM DD, YYYY');
+    const startValueDate = moment(this.state.startDate).format("YYYY-MM-DD");
+    const endValueDate = moment(this.state.endDate).add(1, "d").format("YYYY-MM-DD");
+    const ldf = moment.localeData().longDateFormat("LL");
+    const startDateView = moment.utc(this.state.startDate, [ldf]).format("MMM DD, YYYY");
+    const endDateView = moment(this.state.endDate, [ldf]).format("MMM DD, YYYY");
 
-    const dateConcatenatedToView = startDateView + " to " + endDateView;
-    const dateConcatenatedToSubmit = startValueDate + "-to-" + endValueDate;
+    const dateConcatenatedToView = `${startDateView  } to ${  endDateView}`;
+    const dateConcatenatedToSubmit = `${startValueDate  }-to-${  endValueDate}`;
     this.props.dispatchCustomDate({[widgetId]: dateConcatenatedToView});
     let currentWidgetFilters = currentFilters[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
-      currentFilters[widgetId] = currentWidgetFilters
+      currentFilters[widgetId] = currentWidgetFilters;
     }
-    currentWidgetFilters.value = dateConcatenatedToSubmit
-    currentWidgetFilters.viewValue = dateConcatenatedToView
+    currentWidgetFilters.value = dateConcatenatedToSubmit;
+    currentWidgetFilters.viewValue = dateConcatenatedToView;
     currentWidgetFilters.dateRange = "customDate";
     currentWidgetFilters.orgId = currentFilters.orgId;
     currentWidgetFilters.emailId = currentFilters.emailId;
     currentWidgetFilters.role = currentFilters.role;
     this.props.dispatchFilter(currentFilters);
     Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: updateChartMeta.filters});
-    this.props.toggleModal(TOGGLE_ACTIONS.HIDE)
+    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     this.getStatsFromServer();
   }
 
   resetTemplateStatus = () => {
     this.setState({
-      startDate: '',
-      endDate: ''
+      startDate: "",
+      endDate: ""
     });
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
   }

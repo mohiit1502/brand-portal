@@ -1,5 +1,4 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable max-params */
+/* eslint-disable no-nested-ternary, max-params, no-unused-expressions, no-magic-numbers, max-statements, complexity */
 import React from "react";
 import * as imagesAll from "./../images";
 import CustomInput from "../components/custom-components/custom-input/custom-input";
@@ -9,7 +8,7 @@ import { Tile } from "../components";
 
 export default class ContentRenderer {
 
-  constructor(content, commonImageClass, commonClickHandler,contentOnClickHandler) {
+  constructor(content, commonImageClass, commonClickHandler, contentOnClickHandler) {
     this.data = content;
     this.commonImageClass = commonImageClass;
     this.commonClickHandler = commonClickHandler;
@@ -82,7 +81,9 @@ export default class ContentRenderer {
       return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
       let text = typeof (content[node]) === "string" ? content[node] : content[node].text;
-      dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => text = text.replaceAll(key, dynamicReplacements[key]));
+      dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
+        text = text.replaceAll(key, dynamicReplacements[key]);
+      });
       if (typeof (content[node]) === "string") {
         return (<p className={classes ? classes : ""}>{text}</p>);
       } else {
@@ -95,14 +96,14 @@ export default class ContentRenderer {
     } else  if (node.startsWith("buttonsPanel")) {
       return (<div className={content[node].classes ? content[node].classes : ""}>
         {
-          Object.keys(content[node].buttons).map((button, key) => this.getContent(content[node].buttons, button))
+          Object.keys(content[node].buttons).map(button => this.getContent(content[node].buttons, button))
         }
       </div>);
     } else if (node.startsWith("button")) {
       return (
         <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
-        onClick={content[node].onClick ? this[content[node].onClick] : () => {}}
-        href={content[node].href ? content[node].href: ""} value={content[node].value ? content[node].value : 0} >
+          onClick={content[node].onClick ? this[content[node].onClick] : () => {}}
+          href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
           {content[node].buttonText}
         </button>
       );
@@ -128,7 +129,6 @@ export default class ContentRenderer {
     }
   }
 
-  // eslint-disable-next-line complexity
   // Accordion specific rendering
   generateContentDOM(expanded, expandPreState) {
     const accNode = document.getElementById(this.data.id);
@@ -144,8 +144,7 @@ export default class ContentRenderer {
     );
   }
 
-
-  static layoutFields (inputData, id) {
+  static layoutFields (inputData, idIncoming) {
     let laidoutFields = [];
     inputData && Object.keys(inputData).forEach(id => {
       const field = {...inputData[id]};
@@ -180,13 +179,13 @@ export default class ContentRenderer {
 
     return laidoutFields && laidoutFields.map((fieldRow, key1) => {
       if (this && this.state.form.excludeRowContainer) {
-        return ContentRenderer.getFieldRendersLaid.call(this, id, key1, fieldRow);
+        return ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow);
       } else {
         const rowClass = fieldRow[0] && fieldRow[0].field.containerClasses;
-        return fieldRow[0] && fieldRow[0].field.excludeRowContainer ? ContentRenderer.getFieldRendersLaid.call(this, id, key1, fieldRow)
+        return fieldRow[0] && fieldRow[0].field.excludeRowContainer ? ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow)
           : (
               <div className={`form-row${rowClass ? ` ${  rowClass}` : ""}`} key={key1}>
-                {ContentRenderer.getFieldRendersLaid.call(this, id, key1, fieldRow)}
+                {ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow)}
               </div>
             );
       }
@@ -204,6 +203,7 @@ export default class ContentRenderer {
               {ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id)}
             </div>;
       }
+      return null;
     });
   }
 
@@ -225,7 +225,6 @@ export default class ContentRenderer {
       if (form.conditionalRenders) {
         const conditionalRenders = [];
         Object.keys(form.conditionalRenders).map(fragmentKey => {
-          const fragmentId = form.conditionalRenders[fragmentKey].id;
           const fragmentFields = form.conditionalRenders[fragmentKey].complyingFields;
           const fragmentCondition = form.conditionalRenders[fragmentKey].condition;
           const path = `${fragmentCondition.locator}.${fragmentCondition.flag}`;
@@ -240,7 +239,9 @@ export default class ContentRenderer {
       } else {
         return ContentRenderer.layoutFields.call(this, form.inputData, form.id || section.id);
       }
-    } catch (e) { console.log(e);}
+    /* eslint-disable no-empty */
+    } catch (e) {}
+    return null;
   }
 
   static evaluateRenderDependency (renderCondition) {
@@ -253,7 +254,7 @@ export default class ContentRenderer {
           const key = Helper.search(condition.keyPath, keyLocator);
           const value = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition.value;
           return acc && key === value;
-        }, true)
+        }, true);
       } else {
         const keyLocator = ContentRenderer.getValueLocator.call(this, renderCondition.keyLocator);
         const key = Helper.search(renderCondition.keyPath, keyLocator);
@@ -266,14 +267,16 @@ export default class ContentRenderer {
 
   static getValueLocator (locator) {
     switch (locator) {
-      case "parentRef":
-        return this;
       case "CONSTANTS":
         return CONSTANTS;
       case "state":
         return this.state;
       case "props":
         return this.props;
+      case "parentRef":
+      default:
+        return this;
+
     }
   }
 

@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, no-magic-numbers, no-unused-expressions, max-statements, no-empty, no-invalid-this, no-loop-func */
 import CONSTANTS from "../constants/constants";
 import * as d3 from "d3";
 import Http from "./Http";
@@ -27,6 +27,7 @@ export default class Helper {
         fieldObj.loader = enable;
         return stateClone;
       } catch (e) {}
+      return state;
     });
   }
 
@@ -44,7 +45,7 @@ export default class Helper {
       let i = 0;
       while (i < pathArr.length) {
         if (typeof recurredObject === "object" && recurredObject.length !== undefined) {
-          recurredObject = recurredObject.find(itemInner => itemInner[pathArr[i]] === selector)
+          recurredObject = recurredObject.find(itemInner => itemInner[pathArr[i]] === selector);
         } else {
           recurredObject = recurredObject[pathArr[i]];
         }
@@ -83,9 +84,9 @@ export default class Helper {
       let accumulated = "";
       const first = Helper.toCamelCaseIndividual(strParts[0]);
       if (strParts.length > 1) {
-        accumulated = strParts.slice(1).reduce((acc, curr) => Helper.toCamelCaseIndividual(acc) + " " + Helper.toCamelCaseIndividual(curr));
+        accumulated = strParts.slice(1).reduce((acc, curr) => `${Helper.toCamelCaseIndividual(acc)  } ${  Helper.toCamelCaseIndividual(curr)}`);
       }
-      return first + " " + accumulated;
+      return `${first  } ${  accumulated}`;
     }
     return Helper.toCamelCaseIndividual(incoming);
   }
@@ -115,26 +116,27 @@ export default class Helper {
     };
   }
 
-  static wrap(text, width) {
-    text.each(function () {
-      const text = d3.select(this),
-        words = text.text().match(/.{1,6}/g).reverse(),
-        lineHeight = 0.75,
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy"));
-      let word, line = [], lineNumber = 0, tspan = text.text(null).append("tspan").attr("x", -8).attr("y", y).attr("dy", ((words.length > 1) ? (dy - 0.25 ) : dy) + "em");
+  static wrap(textIncoming, width) {
+    textIncoming.each(function () {
+      const text = d3.select(this);
+      const words = text.text().match(/.{1,6}/g).reverse();
+      const lineHeight = 0.75;
+      const y = text.attr("y");
+      const dy = parseFloat(text.attr("dy"));
+      let word;
+      let line = [];
+      let lineNumber = 0;
+      /* eslint-disable no-cond-assign */
+      let tspan = text.text(null).append("tspan").attr("x", -8).attr("y", y).attr("dy", `${(words.length > 1) ? (dy - 0.25) : dy}em`);
       while (word = words.pop()) {
-        if(lineNumber === 1)
-          break;
+        if (lineNumber === 1) {break;}
         line.push(word);
         tspan.text(line.join(" "));
-        // console.log("computed", tspan.node().getComputedTextLength())
-        // console.log("width", width)
         if (tspan.node().getComputedTextLength() > width) {
           line.pop();
           tspan.text(line.join(" "));
           line = [word];
-          tspan = text.append("tspan").attr("x", -8).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+          tspan = text.append("tspan").attr("x", -8).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy  }em`).text(word);
         }
       }
     });
@@ -151,16 +153,16 @@ export default class Helper {
       if (filter === "dateRange" && filterValue === "customDate") {
         filterValue = filterData.value;
       }
-      params = (filter === "claimType" && filterValue === "__claimType__") ? params: params.replace(`__${filter}__`, filter + ":" + filterValue);
-    })
+      params = (filter === "claimType" && filterValue === "__claimType__") ? params : params.replace(`__${filter}__`, `${filter  }:${  filterValue}`);
+    });
     if (params.indexOf("__") > -1) {
       const firstUS = params.indexOf("__");
       const preParam = params.substring(0, firstUS);
       const restParam = params.substring(firstUS + 2);
       const secondUS = preParam.length + restParam.indexOf("__") + 4;
-      const param = params.substring(firstUS, secondUS)
+      const param = params.substring(firstUS, secondUS);
       const paramTrimmed = param.substring(2, param.lastIndexOf("__"));
-      params = params.replace(param, paramTrimmed + ":" + param);
+      params = params.replace(param, `${paramTrimmed  }:${  param}`);
     }
     const mixpanelPayload = {
       API: baseUrl,
@@ -178,7 +180,6 @@ export default class Helper {
           mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
-          console.log(err)
           chartsContainerMeta.setLoader(false);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
@@ -192,11 +193,13 @@ export default class Helper {
   }
 
   static getParamsEncoded (url, user) {
-    let baseUrl, params, interpolatedUrl;
+    let baseUrl;
+    let params;
+    let interpolatedUrl;
     if (url && url.indexOf("__") > -1) {
       baseUrl = url.substring(0, url.indexOf("__"));
       params = url.substring(url.indexOf("__"));
-      const paramsInterpolated = params && user && user.role && params.replace("__orgId__", "orgId:" + user.organization.id).replace("__emailId__", "emailId:" + user.email).replace("__role__", "role:" + user.role.name);
+      const paramsInterpolated = params && user && user.role && params.replace("__orgId__", `orgId:${  user.organization.id}`).replace("__emailId__", `emailId:${  user.email}`).replace("__role__", `role:${  user.role.name}`);
       const paramsEncoded = btoa(paramsInterpolated);
       interpolatedUrl = baseUrl + paramsEncoded;
     } else {
@@ -207,20 +210,16 @@ export default class Helper {
 
   static trimSpaces(incoming) {
     const value = typeof incoming === "object" ? incoming.target.value : incoming;
-    return value.replace(/  +/g, ' ').replace(/^\s+/g, "");
+    return value.replace(/  +/g, " ").replace(/^\s+/g, "");
   }
 
-  static getDateFromTimeStamp(timestamp){
+  static getDateFromTimeStamp(timestamp) {
     try {
-      const dateParts= timestamp.split('T');
-      let dateString ;
-      if(dateParts && dateParts[0])
-        dateString = dateParts[0];
-      return moment(dateString).format('MM-DD-YYYY');
-    }
-    catch(e){
-      console.log(e);
-    }
+      const dateParts = timestamp.split("T");
+      let dateString;
+      if (dateParts && dateParts[0]) {dateString = dateParts[0];}
+      return moment(dateString).format("MM-DD-YYYY");
+    } catch (e) {}
     return "";
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers, no-undef */
 import {CustomInterval} from "./timer-utils";
 import Http from "./Http";
 import mixpanel from "../utility/mixpanelutils";
@@ -30,10 +31,10 @@ export default class DocumentActions {
       form.inputData[key].uploading = false;
       form.inputData.companyOnboardingActions.buttons.clear.disabled = form.inputData[otherType].uploading;
       this.setState({form});
-      console.log(err);
     }
   }
 
+  /* eslint-disable max-statements */
   static async uploadDocument (file, interval, type) {
     const mixpanelPayload = {
       DOCUMENT_TYPE: type,
@@ -66,7 +67,6 @@ export default class DocumentActions {
       form.inputData.companyOnboardingActions.buttons.submit.disabled = false;
       this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Couldn't upload the document, please try again.");
       this.setState({form}, this.checkToEnableSubmit);
-      console.log(e);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e.message ? e.message : e;
     }

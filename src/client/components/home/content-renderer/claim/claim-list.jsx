@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions, no-magic-numbers */
 import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/claim/claim-list.scss";
@@ -24,6 +25,7 @@ import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
 class ClaimList extends React.Component {
 
+  /* eslint-disable max-statements */
   constructor (props) {
     super(props);
 
@@ -40,7 +42,7 @@ class ClaimList extends React.Component {
     this.multiSort = SortUtil.multiSort.bind(this);
     this.uiSearch = SearchUtil.uiSearch.bind(this);
     this.applyFilters = FilterUtil.applyFilters.bind(this);
-    this.filterMap = {"inprogress": "In Progress", "closed": "Closed"};
+    this.filterMap = {inprogress: "In Progress", closed: "Closed"};
     this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
     this.state = {
       showFilters: false,
@@ -146,24 +148,27 @@ class ClaimList extends React.Component {
   }
 
   checkAndApplyDashboardFilter(claimList) {
-    const filterValue = this.filterMap[this.props.filter["widget-claim-summary"]]
+    const filterValue = this.filterMap[this.props.filter["widget-claim-summary"]];
     this.createFilters(claimList);
     const stateCloned = {...this.state};
-    const claimStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "claimStatus")
+    const claimStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "claimStatus");
     const dashboardFilter = claimStatusFilter && claimStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
     if (this.props.filter && this.props.filter["widget-claim-summary"]) {
-      this.setState(state => {
+      this.setState(() => {
         dashboardFilter && (dashboardFilter.selected = true);
         return stateCloned;
-      }, () => this.applyFilters(false, claimList, false,true))
-      // })
+      }, () => this.applyFilters(false, claimList, false, true));
     } else {
-      this.setState(state => {
+      this.setState(() => {
         let i = 1;
-        claimStatusFilter && claimStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
-        claimList.forEach(claim => claim.sequence = i++)
+        claimStatusFilter && claimStatusFilter.filterOptions.forEach(filterOption => {
+          filterOption.selected = false;
+        });
+        claimList.forEach(claim => {
+          claim.sequence = i++;
+        });
         return stateCloned;
-      }, () => this.applyFilters(false, claimList, false,false))
+      }, () => this.applyFilters(false, claimList, false, false));
     }
   }
 
@@ -197,7 +202,7 @@ class ClaimList extends React.Component {
         newClaim.original = brand;
         const firstName = brand.firstName ? helper.toCamelCaseIndividual(brand.firstName) : "";
         const lastName = brand.lastName ? helper.toCamelCaseIndividual(brand.lastName) : "";
-        newClaim.createdByName = firstName + " " + lastName;
+        newClaim.createdByName = `${firstName  } ${  lastName}`;
         newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
         return newClaim;
       });
@@ -247,9 +252,11 @@ class ClaimList extends React.Component {
     });
     const claimList = [...this.props.claims];
     let i = 1;
-    claimList.forEach(claim => claim.sequence = i++)
-    this.setState({filters, filteredList: claimList, unsortedList: claimList, appliedFilter:[]}, () => {
-      this.uiSearch()
+    claimList.forEach(claim => {
+      claim.sequence = i++;
+    });
+    this.setState({filters, filteredList: claimList, unsortedList: claimList, appliedFilter: []}, () => {
+      this.uiSearch();
       this.props.dispatchFilter({...this.props.filter, "widget-claim-summary": ""});
     });
 
@@ -341,12 +348,13 @@ class ClaimList extends React.Component {
     this.setState({paginatedList});
   }
 
-  clearFilter(filterID,optionID){
+  clearFilter(filterID, optionID) {
     this.onFilterChange(filterID, optionID);
-    this.applyFilters(false,null,null,true)
-    this.toggleFilterVisibility()
+    this.applyFilters(false, null, null, true);
+    this.toggleFilterVisibility();
   }
 
+  /* eslint-disable react/jsx-handler-names */
   render () {
     const claims = this.state.filteredList ? this.state.filteredList : this.props.claims;
     return (
@@ -370,7 +378,7 @@ class ClaimList extends React.Component {
                   <div className="input-group input-group-sm">
                     {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by Claim Details"
-                           onChange={evt => this.uiSearch(evt, false)}/>
+                      onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 " >
@@ -410,7 +418,7 @@ class ClaimList extends React.Component {
                                       <li className="my-3" key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                                 onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
+                                            onChange={() => {this.onFilterChange(filter.id, option.id);}}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>
@@ -432,9 +440,6 @@ class ClaimList extends React.Component {
               <div className="filter-pin-row">
                 <FilterType filters ={this.state.appliedFilter} clearFilter={this.clearFilter}/>
               </div>
-              {/*{this.props.filter && this.props.filter["widget-claim-summary"] && this.props.filter["widget-claim-summary"] !== "all" &&*/}
-              {/*<FilterType filterText={`Claim Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-claim-summary"*/}
-              {/*            clearFilterHandler={this.props.dispatchFilter}/>}*/}
               <div className={`row claim-list-row align-items-start${this.state.loader && " loader"}`}>
                 <div className="col pt-4 h-100">
                   <div className="row claim-list-table-row mb-5 px-4 h-90">
@@ -442,7 +447,7 @@ class ClaimList extends React.Component {
                       {
                         this.props.claims ?
                           <CustomTable sortHandler={this.sortAndNormalise} data={[...this.state.paginatedList]} columns={this.state.columns} template={ClaimListTable}
-                                     templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
+                            templateProps={{Dropdown, dropdownOptions: this.state.dropdown, loader: this.state.loader}}/>
                           : (!this.state.loader && <div className="row align-items-center h-100">
                           <div className="col text-center">
                             <img src={emptyClaims} height={95}/>
@@ -470,6 +475,7 @@ ClaimList.propTypes = {
   dispatchClaims: PropTypes.func,
   dispatchFilter: PropTypes.func,
   dispatchWidgetAction: PropTypes.func,
+  fetchClaimsCompleted: PropTypes.bool,
   filter: PropTypes.object,
   history: PropTypes.object,
   fetchClaimCompleted: PropTypes.bool,

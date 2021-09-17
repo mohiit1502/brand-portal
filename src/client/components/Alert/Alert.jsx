@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import { TOGGLE_ACTIONS, toggleModal, dispatchDiscardChanges } from "../../actions/modal-actions";
-import AlertIcon from "../../images/alertIconNew.svg"
+import AlertIcon from "../../images/alertIconNew.svg";
 import "./Alert.component.scss";
 
 const Alert = props => {

@@ -19,18 +19,19 @@ class CompanyProfileRegistration extends React.Component {
     super(props);
     const functions = ["bubbleValue", "onChange", "resetCompanyRegistration", "gotoBrandRegistration", "cancelRequestCompanyAccess", "undertakingToggle"];
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
-    const debounceFunctions = {"companyDebounce": "checkCompanyNameAvailability"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {companyDebounce: "checkCompanyNameAvailability"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
     this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
     this.cancelSelection = DocumentActions.cancelSelection.bind(this);
-    // this.uploadAdditionalDocument = DocumentActions.displayProgressAndUpload.bind(this, "additionalDoc");
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {zip: false};
-    const companyConfiguration = this.props.companyContent ? this.props.companyContent : {}
+    const companyConfiguration = this.props.companyContent ? this.props.companyContent : {};
 
     this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
       redirectToBrands: false,
@@ -67,7 +68,7 @@ class CompanyProfileRegistration extends React.Component {
       !form.inputData.companyName.error &&
       !form.inputData.zip.error;
     form.isSubmitDisabled = !bool;
-    form.inputData.companyOnboardingActions.buttons = {...form.inputData.companyOnboardingActions.buttons}
+    form.inputData.companyOnboardingActions.buttons = {...form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = !bool;
     form.inputData.additionalDoc.disabled = !bool;
     form.inputData.businessRegistrationDoc.disabled = !bool;
@@ -90,15 +91,15 @@ class CompanyProfileRegistration extends React.Component {
   onChange (evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
+      /* eslint-disable no-unused-expressions */
       evt.target.pattern && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
         if (key === "companyName") {
-          // state.form.inputData[key].isUnique = false;
           evt.persist();
           state.form.inputData.companyName.fieldOk = false;
           state.form.isSubmitDisabled = true;
-          state.form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons}
+          state.form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
           state.form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
           state.form.inputData.additionalDoc.disabled = true;
           state.form.inputData.businessRegistrationDoc.disabled = true;
@@ -130,9 +131,10 @@ class CompanyProfileRegistration extends React.Component {
       state = {...state};
       state.form.requestAdministratorAccess = false;
       return state;
-    })
+    });
   }
 
+  /* eslint-disable max-statements */
   resetCompanyRegistration () {
     const state = {...this.state};
     const form = state.form = {...state.form};
@@ -152,7 +154,7 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.companyName.disabled = false;
     form.requestAdministratorAccess = false;
     form.isSubmitDisabled = true;
-    form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons}
+    form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
     form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
@@ -200,6 +202,7 @@ class CompanyProfileRegistration extends React.Component {
               </div>
             </div>
           </div>
+          {/* eslint-disable react/jsx-handler-names */}
           <form className="company-reg-form mb-4 pl-4" onSubmit={this.gotoBrandRegistration}>
             { this.getFieldRenders()}
             {/*  // TODO CODE: USERAPPROVAL - Uncomment below line once user approval flow is in progress*/}
@@ -211,6 +214,7 @@ class CompanyProfileRegistration extends React.Component {
 }
 
 CompanyProfileRegistration.propTypes = {
+  companyContent: PropTypes.object,
   companyState: PropTypes.object,
   dispatchCompanyState: PropTypes.func,
   showNotification: PropTypes.func,
@@ -221,7 +225,7 @@ CompanyProfileRegistration.propTypes = {
 const mapStateToProps = state => {
   return {
     companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
-    companyState: state.company && state.company.companyState,
+    companyState: state.company && state.company.companyState
   };
 };
 
@@ -229,6 +233,5 @@ const mapDispatchToProps = {
   dispatchCompanyState,
   showNotification
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyProfileRegistration);

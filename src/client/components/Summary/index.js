@@ -1,3 +1,3 @@
-import Summary from './Summary.jsx';
+import Summary from "./Summary.jsx";
 
 export default Summary;

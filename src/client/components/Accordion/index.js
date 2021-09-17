@@ -1,3 +1,3 @@
-import Accordion from './Accordion.jsx';
+import Accordion from "./Accordion.jsx";
 
 export default Accordion;

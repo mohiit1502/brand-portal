@@ -369,6 +369,6 @@ const HELPCONFIG = {
       "header": "Contact Us"
     }
   }
-}
+};
 
 export default HELPCONFIG;

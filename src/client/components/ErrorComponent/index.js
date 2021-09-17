@@ -1,3 +1,3 @@
-import ErrorComponent from './ErrorComponent.jsx';
+import ErrorComponent from "./ErrorComponent.jsx";
 
 export default ErrorComponent;

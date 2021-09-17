@@ -1,3 +1,3 @@
-import WidgetContainer from './WidgetContainer.jsx';
+import WidgetContainer from "./WidgetContainer.jsx";
 
 export default WidgetContainer;

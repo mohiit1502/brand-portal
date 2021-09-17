@@ -1,12 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect } from 'react-router-dom';
-import HomeHeader from "../custom-components/headers/home-header";
+ import HomeHeader from "../custom-components/headers/home-header";
 import Leftnav from "../custom-components/left-nav/left-nav";
 import ContentRenderer from "./content-renderer/content-renderer";
 import PropTypes from "prop-types";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
-import CONSTANTS from "../../constants/constants";
 import * as images from "./../../images";
 import "../../styles/home/home.scss";
 import {withRouter} from "react-router";
@@ -43,7 +41,7 @@ class Home extends React.Component {
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
           } else if (genericTemplateCodes.includes(workflowDecider.code)) {
             template = {templateName: template.TEMPLATE, userProfile, ...template};
-            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template})
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
           }
         }
       }
@@ -78,6 +76,7 @@ Home.propTypes = {
   isNew: PropTypes.bool,
   location: PropTypes.object,
   isOnboarded: PropTypes.bool,
+  modal: PropTypes.object,
   modalsMeta: PropTypes.object,
   toggleModal: PropTypes.func,
   userProfile: PropTypes.object
@@ -88,7 +87,7 @@ const mapStateToProps = state => {
     modal: state.modal,
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
   };
-}
+};
 
 const mapDispatchToProps = {
   toggleModal

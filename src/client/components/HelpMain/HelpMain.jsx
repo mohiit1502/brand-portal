@@ -7,7 +7,6 @@ import ContactUsForm from "../ContactUsForm";
 const HelpMain = ({activeTab, content}) => {
 
   const activeTabContent = content && content[activeTab];
-  const isSingleQuestion = !(activeTabContent && activeTabContent.items);
 
   const contentRendered = activeTabContent && activeTabContent.items ? activeTabContent.items.map((item, index) => {
     item.id = `${activeTab}-${index}`;

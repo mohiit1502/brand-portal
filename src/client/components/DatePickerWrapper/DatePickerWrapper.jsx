@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
+import React, {useState} from "react";
+import PropTypes from "prop-types";
 
 import "react-dates/initialize";
 import {SingleDatePicker} from "react-dates";
 import {isInclusivelyAfterDay, isInclusivelyBeforeDay} from "react-dates/esm";
 import moment from "moment";
 import {SingleDatePickerPhrases} from "react-dates/esm/defaultPhrases";
-import './DatePickerWrapper.component.scss';
+import "./DatePickerWrapper.component.scss";
 
 const defaultProps = {
   // example props for the demo
@@ -14,14 +14,14 @@ const defaultProps = {
   initialDate: null,
 
   // input related props
-  id: 'date',
-  // placeholder: 'Select Date',
+  id: "date",
+  // placeholder: "Select Date",
   disabled: false,
   required: false,
-  screenReaderInputMessage: '',
+  screenReaderInputMessage: "",
   showClearDate: false,
   showDefaultInputIcon: false,
-  customInputIcon: <p></p>,
+  customInputIcon: <p />,
   inputIconPosition: "after",
   block: false,
   small: false,
@@ -61,10 +61,10 @@ const defaultProps = {
   hideKeyboardShortcutsPanel: true,
 
   // internationalization props
-  displayFormat: () => moment.localeData().longDateFormat('LL'),
-  monthFormat: 'MMMM YYYY',
+  displayFormat: () => moment.localeData().longDateFormat("LL"),
+  monthFormat: "MMMM YYYY",
   phrases: SingleDatePickerPhrases,
-  weekDayFormat: 'ddd'
+  weekDayFormat: "ddd"
 };
 
 const DatePickerWrapper = props => {
@@ -87,8 +87,8 @@ const DatePickerWrapper = props => {
           date={date}
           focused={focused}
           isOutsideRange={isOutsideRange}
-          onDateChange={(date) => setDate(date)}
-          onFocusChange={({focused}) => setFocused(focused)}
+          onDateChange={dateInner => setDate(dateInner)}
+          onFocusChange={({focusedInner}) => setFocused(focusedInner)}
         />
         <label className={`custom-input-label custom-input-label-placeholder${focused || date ? " shiftup-custom-input-label" : ""}${!focused && date ? " text-black" : ""}`} htmlFor={props.id}>
           <span className="label-text"> {label} </span>
@@ -100,7 +100,13 @@ const DatePickerWrapper = props => {
 
 DatePickerWrapper.propTypes = {
   date: PropTypes.object,
-  setDate: PropTypes.func
+  endDate: PropTypes.object,
+  focusedLabel: PropTypes.string,
+  id: PropTypes.string,
+  isOutsideRange: PropTypes.bool,
+  label: PropTypes.string,
+  setDate: PropTypes.func,
+  startDate: PropTypes.object
 };
 
 DatePickerWrapper.defaultProps = defaultProps;

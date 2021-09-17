@@ -1,5 +1,4 @@
-/* eslint-disable max-statements */
-/* eslint-disable no-return-assign */
+/* eslint-disable max-statements, no-return-assign */
 import mixpanel from "../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 
@@ -80,6 +79,7 @@ export default class FilterUtil {
         }
         let i = 1;
         filteredList.forEach(record => record.sequence = i++);
+        /* eslint-disable no-unused-expressions */
         this.setState({filteredList, unsortedList: filteredList}, () => {!isSearch && this.uiSearch(null, true, filteredList);});
 
     }

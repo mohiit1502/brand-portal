@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow, no-undef */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -5,7 +6,6 @@ import {Link} from "react-router-dom";
 
 import {dispatchLoginAction, dispatchRegisterAction} from "../../../actions";
 
-import CONSTANTS from "../../../constants/constants";
 import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 import WMBPLightLogo from "./../../../images/wmbplightLogo.svg";
@@ -18,11 +18,6 @@ class LoginHeader extends React.Component {
     this.state = {
       loginRedirectLink: "/api/falcon/login"
     };
-  }
-
-  scrollAction() {
-    $("#LoginFAQ").addClass("scrolled");
-    setTimeout(() => $("#LoginFAQ").removeClass("scrolled"), 1000);
   }
 
   render() {
@@ -40,9 +35,8 @@ class LoginHeader extends React.Component {
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item px-4">
-              {/* <Link className="nav-link" to="LoginFAQ" smooth={true} duration={500} activeClass="active" spy={true} offset={-700}>FAQ</Link> */}
               <a className="nav-link register-button" href={CONSTANTS.URL.REGISTER_REDIRECT} onClick={() => {
-              // <Link className="nav-link register-button" to="/register" onClick={() => {
+              {/*<Link className="nav-link register-button" to="/register" onClick={() => {*/}
                 dispatchRegisterAction();
                 $("a.nav-link.register-button").addClass("disabled");
                 mixpanel.trackEvent(MIXPANEL_CONSTANTS.HOME_PAGE_EVENTS.CLICK_ON_REGISTER);
@@ -51,8 +45,7 @@ class LoginHeader extends React.Component {
               {/*</Link>*/}
               </a>
             </li>
-            {/*<li  className="mx-2 nav-item"><strong>|</strong></li>*/}
-            <li  className="mx-2 nav-item middle-list"></li>
+            <li className="mx-2 nav-item middle-list" />
             <li className="nav-item pl-4 d-flex align-items-center">
               <a className="nav-link login-button" href={this.state.loginRedirectLink} onClick={() => {
               // <Link className="nav-link login-button" to="/login" onClick={() => {
@@ -81,6 +74,6 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = {
   dispatchLoginAction,
   dispatchRegisterAction
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginHeader);

@@ -1,8 +1,4 @@
-/* eslint-disable complexity */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable max-params */
-/* eslint-disable max-statements */
-import React from "react";
+/* eslint-disable complexity, no-unused-expressions, max-params, max-statements, no-magic-numbers, no-undef, no-unused-vars */
 import fetch from "node-fetch";
 import queryString from "query-string";
 import ClientHttpError from "./ClientHttpError";
@@ -75,7 +71,6 @@ export default class Http {
     Http.displayToast(status, toastCallback, null, toastMessageFailure);
     callback && typeof callback === "function" && callback();
     const err = await response.json();
-    console.log(err);
     throw new ClientHttpError(status, err.error, err.message);
   }
 
@@ -88,7 +83,9 @@ export default class Http {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status) || CONSTANTS.CODES.ERRORCODES.UNAUTHORIZED === status) {
       toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
-      setTimeout( () => window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT, 1000);
+      setTimeout(() => {
+        window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
+      }, 1000);
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(status.toString())) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Request failed, please try again.");
     } else if (status === CONSTANTS.STATUS_CODE_SUCCESS) {

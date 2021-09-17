@@ -9,7 +9,6 @@ import Http from "../../utility/Http";
 import Helper from "../../utility/helper";
 import widgetConfig from "./../../config/contentDescriptors/widgets";
 import AUTH_CONFIG from "../../config/authorizations";
-import * as images from "./../../images";
 import "./Dashboard.component.scss";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
@@ -28,7 +27,7 @@ class Dashboard extends React.PureComponent {
       },
       error: false,
       fetchComplete: false
-    }
+    };
   }
 
   componentDidMount() {
@@ -40,11 +39,12 @@ class Dashboard extends React.PureComponent {
       .then(response => {
         // console.log(response);
         const filters = {...this.props.currentFilters};
-        filters["orgId"] = user.organization.id;
-        filters["emailId"] = user.email;
-        filters["role"] = user.role && user.role.name;
+        filters.orgId = user.organization.id;
+        filters.emailId = user.email;
+        filters.role = user.role && user.role.name;
         if (response.body && response.body.errors && response.body.errors.length > 0) {
           this.props.dispatchFilter(filters);
+          /* eslint-disable no-throw-literal */
           throw "error";
         }
         const data = response.body && response.body.data;
@@ -58,18 +58,17 @@ class Dashboard extends React.PureComponent {
             claimsByUsers: data.topReporters
           },
           fetchComplete: true
-        })
+        });
         filters["widget-claims-by-type"] = {dateRange: "last30days"};
         filters["widget-claims-by-brand"] = {dateRange: "last30days"};
         filters["widget-claims-by-user"] = {dateRange: "last30days"};
         this.props.dispatchFilter(filters);
       })
-      .catch(e => {
-        console.log(e)
+      .catch(() => {
         this.setState({
           error: true,
           fetchComplete: true
-        })
+        });
       });
       const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.VIEW_DASHBOARD, mixpanelPayload);
@@ -104,13 +103,13 @@ Dashboard.propTypes = {
 const mapDispatchToProps = {
   dispatchFilter,
   showNotification
-}
+};
 
 const mapStateToProps = state => {
   return {
     currentFilters: state.dashboard.filter,
     userProfile: state.user.profile
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
