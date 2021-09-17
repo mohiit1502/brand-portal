@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable filenames/match-regex, no-unused-expressions, no-magic-numbers */
 import React, {memo} from "react";
 import PropTypes from "prop-types";
 import Widget from "./../Widget";
 import "./WidgetContainer.component.scss";
-import AUTH_CONFIG from "../../config/authorizations";
-import widgetConfig from "../../config/contentDescriptors/widgets";
 
 const WidgetContainer = props => {
 
@@ -38,10 +36,9 @@ const WidgetContainer = props => {
         const widget = widgetMeta.widget;
         const widgetData = data[widget.DATAMAPPER];
         const widgetStackItem = widgetStack[widget.TYPE];
-        const opts = {authConfig, currentFilters, key: `widget-${key1}-${key2}`, data: widgetData, fetchComplete, userProfile, widgetCommon, widgetStackItem, widget}
+        const opts = {authConfig, currentFilters, key: `widget-${key1}-${key2}`, data: widgetData, fetchComplete, userProfile, widgetCommon, widgetStackItem, widget};
         widget.DETAILS.colClass = widgetMeta.span ? `col-${widgetMeta.span}` : "";
-        // widget.TYPE === "CLAIMTABULAR" && (opts.tableMeta = tableMeta.CLAIM)
-        return <Widget {...opts} />;
+        return <Widget key={key1} {...opts} />;
       });
     });
   };

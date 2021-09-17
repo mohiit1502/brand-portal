@@ -1,3 +1,5 @@
+/* eslint-disable quote-props */
+
 const TRADEMARK_COLOR = "#3483B9";
 const COUNTERFEIT_COLOR = "#1F4F94";
 const COPYRIGHT_COLOR = "#71C5DF";
@@ -165,27 +167,27 @@ const WIDGETCONFIG = {
             {
               "name": "Counterfeit",
               "label": "Counterfeit",
-              "color": COUNTERFEIT_COLOR,
+              "color": COUNTERFEIT_COLOR
             },
             {
               "name": "Trademark",
               "label": "Trademark",
-              "color": TRADEMARK_COLOR,
+              "color": TRADEMARK_COLOR
             },
             {
               "name": "Copyright",
               "label": "Copyright",
-              "color": COPYRIGHT_COLOR,
+              "color": COPYRIGHT_COLOR
             },
             {
               "name": "Patent",
               "label": "Patent",
-              "color": PATENT_COLOR,
+              "color": PATENT_COLOR
             },
             {
               "name": "Items",
               "label": "# of Items",
-              "color": ITEMS_COLOR,
+              "color": ITEMS_COLOR
             }
           ]
         }
@@ -219,9 +221,9 @@ const WIDGETCONFIG = {
               "trademark": "Trademark",
               "patent": "Patent",
               "counterfeit": "Counterfeit",
-              "copyright": "Copyright",
+              "copyright": "Copyright"
             }
-          },
+          }
         ],
         "chart": {
           "layerKey": "brandName",
@@ -232,22 +234,22 @@ const WIDGETCONFIG = {
             {
               "name": "Counterfeit",
               "label": "Counterfeit",
-              "color": COUNTERFEIT_COLOR,
+              "color": COUNTERFEIT_COLOR
             },
             {
               "name": "Trademark",
               "label": "Trademark",
-              "color": TRADEMARK_COLOR,
+              "color": TRADEMARK_COLOR
             },
             {
               "name": "Copyright",
               "label": "Copyright",
-              "color": COPYRIGHT_COLOR,
+              "color": COPYRIGHT_COLOR
             },
             {
               "name": "Patent",
               "label": "Patent",
-              "color": PATENT_COLOR,
+              "color": PATENT_COLOR
             }
           ]
         }
@@ -285,9 +287,9 @@ const WIDGETCONFIG = {
               "trademark": "Trademark",
               "patent": "Patent",
               "counterfeit": "Counterfeit",
-              "copyright": "Copyright",
+              "copyright": "Copyright"
             }
-          },
+          }
         ],
         "body": {},
         "legend": {
@@ -295,22 +297,22 @@ const WIDGETCONFIG = {
             {
               "name": "Counterfeit",
               "label": "Counterfeit",
-              "color": COUNTERFEIT_COLOR,
+              "color": COUNTERFEIT_COLOR
             },
             {
               "name": "Trademark",
               "label": "Trademark",
-              "color": TRADEMARK_COLOR,
+              "color": TRADEMARK_COLOR
             },
             {
               "name": "Copyright",
               "label": "Copyright",
-              "color": COPYRIGHT_COLOR,
+              "color": COPYRIGHT_COLOR
             },
             {
               "name": "Patent",
               "label": "Patent",
-              "color": PATENT_COLOR,
+              "color": PATENT_COLOR
             }
           ]
         }
@@ -354,7 +356,7 @@ const WIDGETCONFIG = {
       "footer": {
         "layoutClasses": "d-block py-875 mt-4",
         "contentClasses": "text-center footer-text",
-        "position": "center",
+        "position": "center"
       }
     },
     "VERTICALGROUPEDBAR": {
@@ -393,6 +395,6 @@ const WIDGETCONFIG = {
       }
     }
   }
-}
+};
 
 export default WIDGETCONFIG;

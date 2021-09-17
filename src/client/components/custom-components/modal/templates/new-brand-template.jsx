@@ -1,3 +1,4 @@
+/* eslint-disable max-statements, no-magic-numbers */
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -18,8 +19,10 @@ class NewBrandTemplate extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
-    const debounceFunctions = {"brandDebounce": "checkBrandUniqueness", "trademarkDebounce": "checkTrademarkValidity"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -141,7 +144,6 @@ class NewBrandTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("form", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -161,7 +163,6 @@ class NewBrandTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("form", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -202,6 +203,7 @@ class NewBrandTemplate extends React.Component {
     }
   }
 
+  /* eslint-disable react/jsx-handler-names */
   render() {
     const form = this.state.form;
     const section = this.state.section;

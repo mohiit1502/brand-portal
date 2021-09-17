@@ -38,6 +38,7 @@ class NewClaimAddedTemplate extends React.Component {
     this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
   }
 
+  /* eslint-disable react/jsx-handler-names */
   render() {
     return (
       <div className="modal show" id="singletonModal" tabIndex="-1" role="dialog">

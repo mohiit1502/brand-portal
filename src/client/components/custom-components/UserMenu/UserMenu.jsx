@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 import CONSTANTS from "../../../constants/constants";
-import profilePic from "../../../images/user-profile.png"
+import profilePic from "../../../images/user-profile.png";
 import "../../../styles/custom-components/headers/home-header.scss";
 import mixpanel from "../../../utility/mixpanelutils";
 

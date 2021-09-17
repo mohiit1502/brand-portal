@@ -1,10 +1,10 @@
+/* eslint-disable react/jsx-handler-names, no-magic-numbers, no-empty */
 import React from "react";
 import { connect } from "react-redux";
 import "../../../../styles/home/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
-import Http from "../../../../utility/Http";
 import filterIcon from "../../../../images/filter-sc.svg";
 import greenCircleCheck from "../../../../images/green-circle-check.svg";
 import redCircleCross from "../../../../images/red-circle-cross.svg";
@@ -79,12 +79,10 @@ class UserList extends React.Component {
     this.setState({page: pageState, paginatedList, filteredList});
   }
 
-  async approveUser(user, role, brand) {
-    console.log(user, role, brand);
+  async approveUser() {
   }
 
-  async rejectUser(user) {
-    console.log(user);
+  async rejectUser() {
   }
 
   async fetchUserData () {
@@ -251,6 +249,7 @@ class UserList extends React.Component {
   applyFilters() {
 
     let paginatedList = [...this.state.paginatedList];
+    /* eslint-disable max-nested-callbacks */
     this.state.filters.map(filter => {
       const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
 
@@ -421,7 +420,7 @@ class UserList extends React.Component {
     this.fetchBrandsForUser(user);
   }
 
-  setSelectInputValue (value, key) {
+  setSelectInputValue (value) {
     if (value) {
       // this.setState(state => {
       //   state = {...state};
@@ -512,7 +511,7 @@ class UserList extends React.Component {
                                       <li key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                            onChange={evt => {this.onFilterChange(filter.id, option.id);}}/>
+                                            onChange={() => {this.onFilterChange(filter.id, option.id);}}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>

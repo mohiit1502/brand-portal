@@ -1,3 +1,5 @@
+/* eslint-disable quote-props */
+
 const MODALSMETA = {
   "MODALSCONFIG": {
     "PORTAL_REGISTRATION": {
@@ -172,6 +174,6 @@ const MODALSMETA = {
       "TYPE": "NOTIFICATION"
     }
   }
-}
+};
 
 export default MODALSMETA;

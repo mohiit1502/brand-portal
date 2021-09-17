@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-regex, no-empty */
 import Http from "./Http";
 import Helper from "./helper";
 import FORMFIELDMETA from "../config/formsConfig/form-field-meta";
@@ -15,7 +16,7 @@ class PreLoadApiUtil {
             newClaim.original = claim;
             const firstName = claim.firstName ? Helper.toCamelCaseIndividual(claim.firstName) : "";
             const lastName = claim.lastName ? Helper.toCamelCaseIndividual(claim.lastName) : "";
-            newClaim.createdByName = firstName + " " + lastName;
+            newClaim.createdByName = `${firstName  } ${  lastName}`;
             newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
             return newClaim;
           });
@@ -38,9 +39,7 @@ class PreLoadApiUtil {
         }
         dispatcher({brandList});
       })
-      .catch(e => {
-        console.log(e);
-      });
+      .catch(() => {});
   }
 
   fetchUsers(dispatcher) {
@@ -88,9 +87,7 @@ class PreLoadApiUtil {
                         }
                     }
                 });
-        } catch (err) {
-            console.log(err);
-        }
+        } catch (err) {}
     }
 
     fetchFormFieldConfig (dipatcher) {
@@ -108,9 +105,7 @@ class PreLoadApiUtil {
                         }
                     }
                 });
-        } catch (err) {
-            console.log(err);
-        }
+        } catch (err) {}
     }
 }
 

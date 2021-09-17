@@ -7,7 +7,7 @@ export default class SearchUtil {
     static  mixpanelSearchEventhandler = Helper.debounce(mixpanel.trackEvent, CONSTANTS.APIDEBOUNCETIMEOUT);
     static getFilteredList(dataList, searchText, identifier) {
         // eslint-disable-next-line complexity
-        const filteredList = dataList.filter(record => {
+        return dataList.filter(record => {
             switch (identifier) {
                 case "brands": return record.brandName && record.brandName.toLowerCase().indexOf(searchText) !== -1
                 || record.dateAdded && record.dateAdded.toLowerCase().indexOf(searchText) !== -1
@@ -25,7 +25,6 @@ export default class SearchUtil {
                 default: return true;
             }
         });
-        return filteredList;
     }
     // eslint-disable-next-line max-statements
     static uiSearch (evt, isFilter, filteredRecords) {
@@ -53,7 +52,8 @@ export default class SearchUtil {
             SearchUtil.mixpanelSearchEventhandler(MIXPANEL_CONSTANTS.SEARCH_EVENT.APPLY_SEARCH, mixpanelPayload);
         }
         let i = 1;
-        filteredList.forEach(record => record.sequence = i++);
+        filteredList.forEach(record => {record.sequence = i++;});
+        /* eslint-disable no-unused-expressions */
         this.setState({filteredList, unsortedList: filteredList, searchText}, () => {!isFilter && this.applyFilters(true, filteredList);});
     }
 }

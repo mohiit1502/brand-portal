@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-regex, no-magic-numbers, no-shadow, no-unused-expressions, max-statements, complexity */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -16,7 +17,6 @@ import CONSTANTS from "../../../../../constants/constants";
 import * as images from "./../../../../../images";
 import "./StatusModalTemplate.component.scss";
 
-// eslint-disable-next-line complexity
 const StatusModalTemplate = props => {
   const {modalsMeta, meta, showNotification, toggleModal, updateUserProfile, user} = props;
   const {logoutUrl, profile} = user;
@@ -47,8 +47,7 @@ const StatusModalTemplate = props => {
           }
           mixpanelPayload.API_SUCCESS = true;
         })
-        .catch((e) => {
-          console.log(e);
+        .catch(e => {
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = e.message ? e.message : e;
         })
@@ -59,14 +58,14 @@ const StatusModalTemplate = props => {
     } else {
       showNotification(NOTIFICATION_TYPE.ERROR, `Email not available, please refresh the page!`);
     }
-  }
+  };
 
-  const getDynamicReplacementConfig = (node) => {
+  const getDynamicReplacementConfig = node => {
     const dynamicReplacementConfig = node.dynamicReplacementConfig;
     dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
       const replacement = dynamicReplacementConfig[key];
       if (replacement.indexOf(".") > -1) {
-        let replacementPath = replacement.split(".");
+        const replacementPath = replacement.split(".");
         let i = 0;
         let traverser = replacementPath[i++];
         if (traverser === "profile") {
@@ -77,17 +76,17 @@ const StatusModalTemplate = props => {
           dynamicReplacementConfig[key] = traverser;
         }
       }
-    })
+    });
     return dynamicReplacementConfig;
-  }
+  };
 
   const linkConfirmation = () => {
-    toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKING_CONFIRM})
-  }
+    toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKING_CONFIRM});
+  };
 
   const hideModal = () => {
     toggleModal(TOGGLE_ACTIONS.HIDE);
-  }
+  };
 
   const linkAccounts = () => {
     setLoader(true);
@@ -103,11 +102,11 @@ const StatusModalTemplate = props => {
     return Http.put(`/api/users/${user.profile.email}`, payload, null, null, showNotification, "Accounts linked successfully!")
       .then(async res => {
         updateUserProfile(res.body);
-        toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKED})
+        toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKED});
         mixpanelPayload.API_SUCCESS = true;
       })
       .catch(err => {
-        showNotification(NOTIFICATION_TYPE.ERROR, "Accounts could not be linked, please try again!")
+        showNotification(NOTIFICATION_TYPE.ERROR, "Accounts could not be linked, please try again!");
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
@@ -115,7 +114,7 @@ const StatusModalTemplate = props => {
         setLoader(false);
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.ACCOUNT_LINKING.ACCOUNT_LINKING_ATTEMPTED, mixpanelPayload);
       });
-  }
+  };
 
   const runPrimaryAction = (action, actionParam) => {
     switch (action) {
@@ -130,18 +129,18 @@ const StatusModalTemplate = props => {
         history.push(CONSTANTS.ROUTES.PROTECTED.DASHBOARD);
         break;
       case "navigation":
-        window.open(actionParam,'_blank');
+        window.open(actionParam, "_blank");
         // window.location.href = actionParam;
         break;
       default:
         hideModal();
     }
-  }
+  };
 
   const runSecondaryAction = action => {
     switch (action) {
       case "logout":
-        mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload)
+        mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
         window.location.href = logoutUrlSuperlated;
         break;
       case "resendInvite":
@@ -153,7 +152,7 @@ const StatusModalTemplate = props => {
       default:
         hideModal();
     }
-  }
+  };
 
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
@@ -165,7 +164,7 @@ const StatusModalTemplate = props => {
               <span className="close-btn" aria-hidden="true">&times;</span>
             </button>
           </div>}
-          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? " " + meta.BODY_CLASSES : ""}`}>
+          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}`}>
             {(images[meta.IMAGE] || meta.image) && <div className="row">
               <div className="col">
                 <img src={images[meta.IMAGE] || meta.image} alt="IMAGE_STATUS" height={meta.HEIGHT || 120}/>
@@ -192,7 +191,7 @@ const StatusModalTemplate = props => {
               </div>
             </div>
             }
-            <div className={`row mt-1 body-content${meta.BODY_CONTENT_CLASSES ? " " + meta.BODY_CONTENT_CLASSES : ""}`}>
+            <div className={`row mt-1 body-content${meta.BODY_CONTENT_CLASSES ? ` ${  meta.BODY_CONTENT_CLASSES}` : ""}`}>
               <div className="col">
                 <div className={`status-description ${meta.MESSAGE && meta.MESSAGE.classes ? meta.MESSAGE.classes : ""}`}>
                 {
@@ -205,21 +204,21 @@ const StatusModalTemplate = props => {
                 </div>
               </div>
             </div>
-            <div className={`row${meta.TYPE === "NOTIFICATION" ? "" : " mt-4"} footer${meta.FOOTER_CLASSES ? " " + meta.FOOTER_CLASSES : ""}`}>
+            <div className={`row${meta.TYPE === "NOTIFICATION" ? "" : " mt-4"} footer${meta.FOOTER_CLASSES ? ` ${  meta.FOOTER_CLASSES}` : ""}`}>
               <div className={`col${meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION" ? " text-right" : ""}
-                        ${meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.containerClasses ? " " + meta.PRIMARY_ACTION.containerClasses : ""}`}>
+                        ${meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.containerClasses ? ` ${  meta.PRIMARY_ACTION.containerClasses}` : ""}`}>
                 {meta.TYPE === "NON_STATUS" || meta.TYPE === "CTA" || meta.TYPE === "NOTIFICATION"
-                  ? <button className={`btn btn-sm btn-primary${meta.TYPE !== "NOTIFICATION" ? " px-5" : ""}${meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.classes ? " " + meta.PRIMARY_ACTION.classes : ""}`}
-                            onClick={() => runPrimaryAction(meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.action ? meta.PRIMARY_ACTION.action : "",
+                  ? <button className={`btn btn-sm btn-primary${meta.TYPE !== "NOTIFICATION" ? " px-5" : ""}${meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.classes ? ` ${  meta.PRIMARY_ACTION.classes}` : ""}`}
+                    onClick={() => runPrimaryAction(meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.action ? meta.PRIMARY_ACTION.action : "",
                                 meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.actionParam ? meta.PRIMARY_ACTION.actionParam : "")}>
-                    {meta.BUTTON_TEXT || (typeof meta.PRIMARY_ACTION === "object" ? meta.PRIMARY_ACTION.text: meta.PRIMARY_ACTION)}
+                    {meta.BUTTON_TEXT || (typeof meta.PRIMARY_ACTION === "object" ? meta.PRIMARY_ACTION.text : meta.PRIMARY_ACTION)}
                   </button>
                   : <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload)}>
                     {meta.PRIMARY_ACTION || "Logout"}
                   </a>
                 }
-                {meta.ADDITIONAL_ACTION && <button className={`additional-action btn btn-link${meta.TYPE !== "NOTIFICATION" ? " mx-auto d-block mt-2" : " font-size-15"}${meta.ADDITIONAL_ACTION.classes ? " " + meta.ADDITIONAL_ACTION.classes : ""}`}
-                            onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>
+                {meta.ADDITIONAL_ACTION && <button className={`additional-action btn btn-link${meta.TYPE !== "NOTIFICATION" ? " mx-auto d-block mt-2" : " font-size-15"}${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
+                  onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>
                   {typeof meta.ADDITIONAL_ACTION === "object" ? meta.ADDITIONAL_ACTION.text : meta.ADDITIONAL_ACTION}
                 </button>}
               </div>
@@ -231,8 +230,9 @@ const StatusModalTemplate = props => {
   );
 };
 
-StatusModalTemplate.props = {
+StatusModalTemplate.propTypes = {
   meta: PropTypes.object,
+  modalsMeta: PropTypes.object,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func,
   updateUserProfile: PropTypes.func,
@@ -250,6 +250,6 @@ const mapDispatchToProps = {
   showNotification,
   toggleModal,
   updateUserProfile
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatusModalTemplate);

@@ -7,7 +7,7 @@ import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
-import {FilterBlue} from "../../../../images";
+import FilterBlue from "../../../../images/filterIcon.svg";
 import emptyClaims from "../../../../images/empty-claim.png";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";

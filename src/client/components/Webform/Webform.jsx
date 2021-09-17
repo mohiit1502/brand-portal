@@ -1,5 +1,4 @@
-/* eslint-disable max-statements */
-/* eslint-disable filenames/match-regex */
+/* eslint-disable max-statements, filenames/match-regex, no-unused-expressions, camelcase, no-empty */
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -8,7 +7,6 @@ import "./Webform.component.scss";
 import Helper from "../../utility/helper";
 import Validator from "../../utility/validationUtil";
 import CONSTANTS from "../../constants/constants";
-import InputFormatter from "../../utility/phoneOps";
 import {dispatchMetadata} from "../../actions/content/content-actions";
 import {showNotification} from "../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
@@ -21,7 +19,9 @@ class Webform extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems"];
-    functions.forEach(name => this[name] = this[name].bind(this));
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
 
     const debounceFunctions = {emailDebounce: "onEmailChange"};
     Object.keys(debounceFunctions).forEach(name => {
@@ -41,7 +41,7 @@ class Webform extends React.Component {
   }
 
   componentDidMount() {
-    this.updateStateAndFormatters(FORMFIELDCONFIG)
+    this.updateStateAndFormatters(FORMFIELDCONFIG);
     Http.get("/api/formConfig")
       .then(response => {
         if (response.body) {
@@ -51,7 +51,6 @@ class Webform extends React.Component {
             this.updateStateAndFormatters(response);
           } catch (e) {
             this.props.dispatchMetadata(FORMFIELDCONFIG);
-            console.log(e);
           }
         }
       });
@@ -64,26 +63,23 @@ class Webform extends React.Component {
       const fields = {};
       const webformFieldsConfiguration = root && root.SECTIONSCONFIG && root.SECTIONSCONFIG.WEBFORM ? root.SECTIONSCONFIG.WEBFORM : {};
       webformFieldsConfiguration && webformFieldsConfiguration.fields && Object.keys(webformFieldsConfiguration.fields)
-        .forEach(field => fields[field] = {...webformFieldsConfiguration.fields[field]});
+        .forEach(field => {
+          fields[field] = {...webformFieldsConfiguration.fields[field]};
+        });
       this.setState(() => {
         const state = {...this.state};
         state.section = {...webformFieldsConfiguration.sectionConfig};
         state.form = {
           ...webformFieldsConfiguration.formConfig,
           inputData: {...fields}
-        }
+        };
         const options = this.getClaimTypes();
-        // const formatter = new InputFormatter();
-        // const handlers = formatter.on(`#${state.section.id}-${state.form.inputData.phone.inputId}-custom-input`);
-        // this.prebounceChangeHandler = handlers.inputHandler;
         state.form.inputData.claimType.claimTypesWithMeta = options;
         state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
         return state;
       });
       this.props.dispatchMetadata(root);
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) {}
   }
 
   getClaimTypes() {
@@ -156,6 +152,7 @@ class Webform extends React.Component {
     }, this.checkToEnableItemButton);
   }
 
+  /* eslint-disable no-invalid-this */
   validateUrlItems = () => {
     const form = {...this.state.form};
     let hasError = false;
@@ -196,7 +193,6 @@ class Webform extends React.Component {
           } else {
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.itemList[index][key].error = "";
-            //state.form.inputData.urlItems.itemList[index].url.error = "";
             state.form.inputData.urlItems.disableAddItem = false;
           }
         } else {
@@ -230,9 +226,7 @@ class Webform extends React.Component {
 
   setSelectInputValue(value, key) {
     if (value) {
-      let index = -1;
       if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
-        index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
       this.setState(state => {
@@ -281,7 +275,7 @@ class Webform extends React.Component {
     this.setState(state);
   }
 
-  undertakingtoggle(evt, undertaking, index) {
+  undertakingtoggle(evt) {
     const state = {...this.state};
     state.form.inputData[evt.target.id].selected = !state.form.inputData[evt.target.id].selected;
     state.form.inputData[evt.target.id].error = state.form.inputData[evt.target.id].selected ? "" : state.form.inputData[evt.target.id].error;
@@ -320,10 +314,6 @@ class Webform extends React.Component {
 
       const inputData = this.state.form.inputData;
       const claimType = inputData.claimType.value;
-      // "metaInfo": {
-      //   "userAgent": "",
-      //   "clientIp": ""
-      // },
       const reporterInfo = {
         firstName: inputData.firstName.value,
         lastName: inputData.lastName.value,
@@ -379,7 +369,7 @@ class Webform extends React.Component {
 
       this.loader("loader", true);
       Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
-        .then(res => {
+        .then(() => {
           this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA);
           mixpanelPayload.API_SUCCESS = true;
           this.loader("loader", false);
@@ -389,8 +379,7 @@ class Webform extends React.Component {
           this.loader("loader", false);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
-          console.log(err);
-        }).finally(e => {
+        }).finally(() => {
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM, mixpanelPayload);
       });
     } else {
@@ -428,6 +417,7 @@ class Webform extends React.Component {
     });
   }
 
+  /* eslint-disable complexity */
   render() {
     const config = this.props.configuration;
     return (
@@ -436,11 +426,11 @@ class Webform extends React.Component {
           {config
           && <div>
             {config.header && config.header.text &&
-            <p className={config.header.classes ? " " + config.header.classes : ""}>{config.header.text}</p>}
+            <p className={config.header.classes ? ` ${  config.header.classes}` : ""}>{config.header.text}</p>}
             {config.subText && config.subText.text &&
-            <p className={config.subText.classes ? " " + config.subText.classes : ""}>{config.subText.text}</p>}
-            {config.disclaimer && <p className={config.disclaimer.classes ? " " + config.disclaimer.classes : ""}
-                                     onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.SHOW,
+            <p className={config.subText.classes ? ` ${  config.subText.classes}` : ""}>{config.subText.text}</p>}
+            {config.disclaimer && <p className={config.disclaimer.classes ? ` ${  config.disclaimer.classes}` : ""}
+              onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.SHOW,
                                        {
                                          templateName: "StatusModalTemplate",
                                          MESSAGE: config.disclaimer.modalDisclaimerText,

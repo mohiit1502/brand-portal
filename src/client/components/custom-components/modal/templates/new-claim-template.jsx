@@ -1,14 +1,10 @@
-/* eslint-disable complexity */
-/* eslint-disable max-statements */
-/* eslint-disable react/jsx-handler-names */
+/* eslint-disable complexity, max-statements, no-unused-expressions, react/jsx-handler-names */
 import React from "react";
 import {connect} from "react-redux";
-import PlusIcon from "../../../../images/plus.svg";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import PropTypes from "prop-types";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {dispatchClaims} from "../../../../actions/claim/claim-actions";
-import CustomInput from "../../custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import {showNotification} from "../../../../actions/notification/notification-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
@@ -25,7 +21,9 @@ class NewClaimTemplate extends React.Component {
   constructor(props) {
       super(props);
       const functions = ["bubbleValue", "checkToEnableItemButton", "checkToEnableSubmit", "customChangeHandler", "disableSubmitButton", "enableSubmitButton", "fetchClaims", "getClaimTypes", "getBrands", "getItemListFromChild", "handleSubmit", "loader", "onChange", "onItemUrlChange", "resetTemplateStatus", "selectHandlersLocal", "setSelectInputValue", "undertakingtoggle"];
-      functions.forEach(name => this[name] = this[name].bind(this));
+      functions.forEach(name => {
+        this[name] = this[name].bind(this);
+      });
       this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -179,7 +177,7 @@ class NewClaimTemplate extends React.Component {
     }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
   }
 
-  undertakingtoggle (evt, undertaking, index) {
+  undertakingtoggle (evt) {
     const state = {...this.state};
     state.form.inputData[evt.target.id].selected = !state.form.inputData[evt.target.id].selected;
     this.setState({
@@ -214,7 +212,7 @@ class NewClaimTemplate extends React.Component {
 
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndetaking = Object.keys(form.inputData).filter(key => form.inputData[key]["category"] === "userUnderTaking" ? true : false).reduce((boolResult, undertaking) => !!(boolResult && form.inputData[undertaking].selected), true);
+    const userUndetaking = Object.keys(form.inputData).filter(key => form.inputData[key].category === "userUnderTaking" ? true : false).reduce((boolResult, undertaking) => !!(boolResult && form.inputData[undertaking].selected), true);
     const bool = userUndetaking && form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
@@ -261,9 +259,8 @@ class NewClaimTemplate extends React.Component {
         state.loader = false;
         this.setState(state);
         //this.loader("loader", false);
-      }).catch(err => {
+      }).catch(() => {
         this.loader("loader", false);
-        console.log(err);
       });
   }
 
@@ -379,10 +376,10 @@ class NewClaimTemplate extends React.Component {
         items.forEach(item => {
           const itemUrl = item.url.value.trim();
           if (item.sellerName.value && typeof item.sellerName.value === "object") {
-            item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl: itemUrl, sellerName}));
+            item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl, sellerName}));
           } else if (item.sellerName.value) {
             const sellerNames = item.sellerName.value.trim();
-            itemList.push({ itemUrl: itemUrl, sellerName: sellerNames });
+            itemList.push({ itemUrl, sellerName: sellerNames });
           }
       });
         return itemList;
@@ -417,11 +414,10 @@ class NewClaimTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("loader", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
-        .finally( () => {
+        .finally(() => {
           this.enableSubmitButton();
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_NEW_CLAIM, mixpanelPayload);
         });
@@ -439,7 +435,7 @@ class NewClaimTemplate extends React.Component {
         newClaim.original = brand;
         const firstName = brand.firstName ? Helper.toCamelCaseIndividual(brand.firstName) : "";
         const lastName = brand.lastName ? Helper.toCamelCaseIndividual(brand.lastName) : "";
-        newClaim.createdByName = firstName + " " + lastName;
+        newClaim.createdByName = `${firstName  } ${  lastName}`;
         return newClaim;
       });
     }

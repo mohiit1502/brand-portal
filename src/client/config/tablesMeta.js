@@ -1,3 +1,5 @@
+/* eslint-disable quote-props */
+
 const TABLESMETA = {
   "TABLES": {
     "CLAIM": {
@@ -27,6 +29,6 @@ const TABLESMETA = {
       ]
     }
   }
-}
+};
 
 export default TABLESMETA;

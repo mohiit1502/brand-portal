@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions, filenames/match-regex, complexity */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -19,11 +20,11 @@ const TouTemplate = props => {
     TOU_ACCEPTANCE: "touAcceptance",
     TOU_REJECTION: "touRejection",
     INVITATION_ACCEPTANCE: "invitationAcceptance"
-  }
+  };
 
-  const [page, setPage] = useState(pages.INVITATION_ACCEPTANCE)
+  const [page, setPage] = useState(pages.INVITATION_ACCEPTANCE);
 
-  const updateUserStatus = (outgoingStatus) => {
+  const updateUserStatus = outgoingStatus => {
     setLoader(true);
     const profile = props.meta.userProfile;
     const payload = {...profile};
@@ -36,16 +37,15 @@ const TouTemplate = props => {
       USER_STATUS: profile.status
     };
     Http.put(`/api/users/updateTouStatus/${outgoingStatus}`, payload, null, null, props.showNotification, null, "Unable to complete Operation, please try again!")
-      .then((res) => {
+      .then(() => {
         setLoader(false);
-        const profile = {...props.meta.userProfile};
+        const profileInner = {...props.meta.userProfile};
         props.toggleModal(TOGGLE_ACTIONS.HIDE);
-        profile.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE ? CONSTANTS.CODES.PORTAL_DASHBOARD.CODE : CONSTANTS.CODES.PORTAL_REGISTRATION.CODE;
-        props.updateUserProfile(profile);
+        profileInner.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE ? CONSTANTS.CODES.PORTAL_DASHBOARD.CODE : CONSTANTS.CODES.PORTAL_REGISTRATION.CODE;
+        props.updateUserProfile(profileInner);
         mixpanelPayload.API_SUCCESS = true;
       })
       .catch(e => {
-        console.log(e);
         setLoader(false);
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = e.message ? e.message : e;
@@ -59,6 +59,7 @@ const TouTemplate = props => {
   const profile = props.meta.userProfile;
   const invitedBy = `${profile.createdFirstName} ${profile.createdLastName}  (${profile.createdBy})`;
   const inviteDateParts = profile.createTs && profile.createTs.split("T");
+  /* eslint-disable no-magic-numbers */
   const invitedOn = inviteDateParts && inviteDateParts.length === 2 &&
     `${moment(inviteDateParts[0]).format("MMM DD, YYYY")} ${inviteDateParts[1].substring(0, inviteDateParts[1].lastIndexOf("."))}`;
   const bpAccount = profile && profile.organization && profile.organization.name;
@@ -71,7 +72,7 @@ const TouTemplate = props => {
             {page === pages.INVITATION_ACCEPTANCE ? "Welcome to Walmart Brand Portal" : "TERMS OF USE"}
           </div>
           <div className="modal-body position-relative" style={{overflowY: page === pages.TOU_ACCEPTANCE ? "scroll" : "unset"}}>
-            <div className={`invitation-acceptance d-inline-block position-absolute w-100 font-size-20${page === pages.INVITATION_ACCEPTANCE ? " visible": ""}`}>
+            <div className={`invitation-acceptance d-inline-block position-absolute w-100 font-size-20${page === pages.INVITATION_ACCEPTANCE ? " visible" : ""}`}>
               <div className="d-inline-block">
                 <p className="ml-3 mr-5 pl-3 pr-5" style={{lineHeight: "2.5rem"}}>You've been invited to join the following Brand Portal account. Please indicate below whether you'd like to accept or decline this invitation.</p>
                 <div className="row ml-3 mt-5 pt-4">
@@ -90,23 +91,22 @@ const TouTemplate = props => {
                 </div>
               </div>
             </div>
-            <div className={`tou-acceptance position-absolute mx-auto w-100 px-5${page === pages.TOU_ACCEPTANCE ? " visible": ""}`}>
+            <div className={`tou-acceptance position-absolute mx-auto w-100 px-5${page === pages.TOU_ACCEPTANCE ? " visible" : ""}`}>
               <p>To continue, please read and agree to the Terms of Use.</p>
               <hr />
               <object data={staticContent.TOU} type="application/pdf" width="100%" height="470">
                 alt : <a href="TOU.pdf">Terms of Use.pdf</a>
               </object>
             </div>
-            <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible": ""}`}>
-              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? " (" + profile.companyName + ")": ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
+            <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible" : ""}`}>
+              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? ` (${  profile.companyName  })` : ""}`}"s</b> invitation to join their Walmart Brand Portal account.</p>
               <p className="ml-3 pl-3">Please click the "Decline" button to confirm.</p>
             </div>
           </div>
           <div className="modal-footer position-relative">
-            <div className={`btn-panel invitation-buttons-panel position-absolute${page === pages.INVITATION_ACCEPTANCE ? " visible": ""}`}>
+            <div className={`btn-panel invitation-buttons-panel position-absolute${page === pages.INVITATION_ACCEPTANCE ? " visible" : ""}`}>
               {page === pages.INVITATION_ACCEPTANCE &&
-              <><button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>
-              <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button></>}
+              <><button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>"             "<button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button></>}
             </div>
             <div className={`btn-panel tou-buttons-panel position-absolute${page === pages.TOU_ACCEPTANCE || page === pages.TOU_REJECTION ? " visible" : ""}`}>
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
