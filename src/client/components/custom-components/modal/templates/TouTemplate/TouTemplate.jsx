@@ -31,7 +31,7 @@ const TouTemplate = props => {
     const mixpanelPayload = {
       API: "/api/users/updateTouStatus/",
       WORK_FLOW: "TOU_VERIFICATION",
-      TOU_ACCEPTED: outgoingStatus === "Active" ? true : false,
+      TOU_ACCEPTED: outgoingStatus === "Active",
       CREATED_BY: profile.createdBy,
       ORG_NAME: profile.organization.name,
       USER_STATUS: profile.status
@@ -106,7 +106,10 @@ const TouTemplate = props => {
           <div className="modal-footer position-relative">
             <div className={`btn-panel invitation-buttons-panel position-absolute${page === pages.INVITATION_ACCEPTANCE ? " visible" : ""}`}>
               {page === pages.INVITATION_ACCEPTANCE &&
-              <><button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>"             "<button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button></>}
+              <div>
+                <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>
+                <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button>
+              </div>}
             </div>
             <div className={`btn-panel tou-buttons-panel position-absolute${page === pages.TOU_ACCEPTANCE || page === pages.TOU_REJECTION ? " visible" : ""}`}>
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
