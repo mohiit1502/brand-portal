@@ -5,8 +5,9 @@ import FORMFIELDMETA from "../config/formsConfig/form-field-meta";
 import MODALMETA from "../config/modals-meta";
 
 class PreLoadApiUtil {
-  fetchClaims(dispatcher) {
-    Http.get("/api/claims")
+
+  fetchClaims(dispatcher, logoutUrl) {
+    Http.get("/api/claims", "", null, null, "", "", () => this.logout(logoutUrl))
       .then(res => {
         let claimList = [];
         const content = res.body.data.content;
@@ -45,9 +46,8 @@ class PreLoadApiUtil {
   fetchUsers(dispatcher) {
     Http.get("/api/users")
       .then(res => {
-        let userList = [];
         const content = res.body.content;
-        userList = content.map((user, i) => {
+        let userList = content.map((user, i) => {
           const newUser = {
             id: user.email,
             loginId: user.email,

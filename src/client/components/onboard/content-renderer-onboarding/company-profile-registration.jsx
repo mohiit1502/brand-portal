@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
+import Cookies from "electrode-cookies";
 import $ from "jquery";
 import {dispatchCompanyState} from "../../../actions/company/company-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
@@ -36,9 +37,11 @@ class CompanyProfileRegistration extends React.Component {
     this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
       redirectToBrands: false,
       section: {...companyConfiguration.sectionConfig},
+      clientType: Cookies.get("client_type"),
       form: {
         ...companyConfiguration.formConfig,
-        inputData: {...companyConfiguration.fields}
+        inputData: {...companyConfiguration.fields},
+        formPopulated: false
       }
     };
   }
@@ -49,6 +52,34 @@ class CompanyProfileRegistration extends React.Component {
     };
     $("[data-toggle='tooltip']").tooltip();
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
+    if (this.props.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
+      this.prepopulateInputFields(this.props.profile);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.profile && this.props.profile !== prevProps.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
+      this.prepopulateInputFields(this.props.profile);
+    }
+  }
+
+  prepopulateInputFields (data) {
+    const form = {...this.state.form};
+    const seller = data.sellerInfo;
+    if (seller) {
+      const concatAddressFields = ["address1", "address2", "address3", "address4"];
+      const orgAddress = seller.orgAddress;
+      form.inputData.companyName.value = seller.legalName;
+      form.inputData.address.value = Object.keys(orgAddress).filter(key => concatAddressFields.indexOf(key) > -1).map(key => orgAddress[key]).filter(key => key).join(", ");
+      form.inputData.city.value = orgAddress.city || "";
+      form.inputData.state.value = orgAddress.state || "";
+      form.inputData.zip.value = orgAddress.postalCode || "";
+      form.inputData.country.value = orgAddress.country || "US";
+      form.formPopulated = true;
+
+      form.isUpdateTemplate = true;
+      this.setState({form}, () => this.companyDebounce());
+    }
   }
 
   undertakingToggle () {
@@ -217,15 +248,17 @@ CompanyProfileRegistration.propTypes = {
   companyContent: PropTypes.object,
   companyState: PropTypes.object,
   dispatchCompanyState: PropTypes.func,
+  modal: PropTypes.object,
+  profile: PropTypes.object,
   showNotification: PropTypes.func,
-  updateOrgData: PropTypes.func,
-  modal: PropTypes.object
+  updateOrgData: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
-    companyState: state.company && state.company.companyState
+    companyState: state.company && state.company.companyState,
+    profile: state.user && state.user.profile
   };
 };
 

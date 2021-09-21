@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow, filenames/match-regex */
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {useLocation} from "react-router-dom";
@@ -8,14 +8,21 @@ import {BPDarkLogo} from "./../../images";
 import "./LoginTypeCta.component.scss";
 import CONSTANTS from "../../constants/constants";
 
+/* eslint-disable complexity */
 const LoginTypeCta = props => {
   const {action, dispatchLoginAction, dispatchRegisterAction} = props;
   const location = useLocation();
+  const [error, setError] = useState();
 
   useEffect(() => {
     if (!action && location.pathname) {
       if (location.pathname.endsWith("/login")) {
         dispatchLoginAction();
+        if (location.search) {
+          const index = location.search.lastIndexOf("=");
+          const error = index > -1 ? location.search.substring(index + 1) : location.search;
+          setError(error === "true");
+        }
       } else if (location.pathname.endsWith("/register")) {
         dispatchRegisterAction();
       }
@@ -32,6 +39,10 @@ const LoginTypeCta = props => {
           <div className="content-container">
             <div className="padder p-4">
               <div className="tab-content text-center">
+                {error && <div className="cta-error">
+                  <p className="error-message">Your Walmart Brand Portal account has been linked to your Seller Center username and password. To access Brand Portal, use your Seller Center log in.</p>
+                  <span className="close-button" onClick={() => setError(false)}>×</span>
+                </div>}
                 <span className="page-header mb-2"><span>{action ? action === "login" ? "Log In" : "Register" : ""}</span></span>
                 <p className="sub-title mb-0">Streamline {action === "login" ? "login" : "registration"} by using one of your existing</p>
                 <p className="sub-title">Walmart accounts.</p>

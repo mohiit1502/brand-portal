@@ -7,11 +7,7 @@ module.exports = function (config, settings) {
           base: "ChromeHeadless",
           flags: ["--no-sandbox"]
         }
-      },
-      files: [
-        "test/client/components/**/*.spec.js",
-        // "src/client/components/**/*.test.js"
-      ],
+      }
     })
   );
 };

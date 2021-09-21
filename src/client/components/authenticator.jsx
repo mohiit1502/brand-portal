@@ -64,7 +64,8 @@ class Authenticator extends React.Component {
       isOnboarded: false,
       profileInformationLoaded: false,
       userInfoError: false,
-      logInId: Cookies.get("session_token_login_id")
+      logInId: Cookies.get("session_token_login_id"),
+      clientType: Cookies.get("client_type")
     };
   }
 
@@ -76,19 +77,29 @@ class Authenticator extends React.Component {
       }).catch(() => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
     }
     if (this.state.isLoggedIn) {
-      this.initMetaData();
-      this.preLoadData();
-      this.getProfileInfo();
-      this.prepareLogoutEnvironment();
+      this.prepareLogoutEnvironment(() => {
+        this.initMetaData();
+        this.preLoadData();
+        this.getProfileInfo();
+      });
     } else {
       this.removeSessionProfile();
     }
   }
 
+  logout(logoutUrl, error) {
+    Cookies.expire("auth_session_token");
+    Cookies.expire("session_token_login_id");
+    Cookies.expire("client_type");
+    const replacer = error ? `${window.location.origin}/login?error=true` : `${window.location.origin}/login`;
+    logoutUrl = logoutUrl.replace("__domain__/logout", replacer);
+    window.location.href = logoutUrl;
+  }
+
   preLoadData() {
     Object.keys(this.majorRoutes.dynamic).forEach(currentPath => {
       const sectionObj = this.majorRoutes.dynamic[currentPath];
-      sectionObj.fetcher(sectionObj.dispatcher);
+      sectionObj.fetcher(sectionObj.dispatcher, this.props.logoutUrl);
     });
   }
 
@@ -113,8 +124,12 @@ class Authenticator extends React.Component {
     try {
       profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
-        profile = (await Http.get("/api/userInfo")).body;
-        // profile.workflow.code=128;
+        profile = (await Http.get("/api/userInfo", "", null, null,
+          "", "", () => this.logout(this.props.logoutUrl))).body;
+        if (this.state.clientType && this.state.clientType === "supplier" && profile.isAccountLinked) {
+          this.logout(this.props.logoutUrl, "error");
+        }
+        // profile.workflow.code = 1;
         //profile = JSON.parse("{\"firstName\":\"Test\",\"lastName\":\"Mohsin\",\"phoneCountry\":\"1\",\"phoneNumber\":\"(234) 567-8901\",\"emailVerified\":true,\"isUserEnabled\":true,\"organization\":{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\",\"status\":\"Accepted\"},\"role\":{\"id\":\"6a429471-3675-4490-93db-5aadf5412a8b\",\"name\":\"Super Admin\",\"description\":\"Brand Rights Owner\"},\"brands\":[{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\"}],\"type\":\"Internal\",\"registrationMode\":\"SelfRegistered\",\"email\":\"wm.ropro+testbike@gmail.com\",\"status\":\"Active\",\"statusDetails\":\"Status updated by: system\",\"createdBy\":\"wm.ropro+testbike@gmail.com\",\"createTs\":\"2020-09-15T07:15:18.965Z\",\"lastUpdatedBy\":\"wm.ropro+testbike@gmail.com\",\"lastUpdateTs\":\"2020-09-21T10:06:07.633Z\",\"isOrgEnabled\":true,\"workflow\":{\"code\":4,\"workflow\":\"portal_dashboard\",\"defaultView\":\"portal-view-users\",\"roleCode\":1,\"roleView\":\"SUPER_ADMIN\"}}");
         this.props.updateUserProfile(profile);
       }
@@ -136,10 +151,11 @@ class Authenticator extends React.Component {
     }
   }
 
-  prepareLogoutEnvironment () {
+  prepareLogoutEnvironment (callback) {
     fetch("/api/logoutProvider")
       .then(res => res.text())
-      .then(res => this.props.dispatchLogoutUrl(res));
+      .then(res => this.props.dispatchLogoutUrl(res))
+      .finally(() => callback && callback());
   }
 
   removeSessionProfile () {
@@ -164,7 +180,7 @@ class Authenticator extends React.Component {
   }
 
   getCurrentUserDefaultPath = role => {
-    let path = "";
+    let path;
     switch (role) {
       case CONSTANTS.USER.ROLES.SUPERADMIN:
         path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_SUPERADMIN;
@@ -206,16 +222,10 @@ class Authenticator extends React.Component {
           return <Home {...this.props} {...this.state} isNew={this.props.isNew} />;
         }
       } else if (!this.state.userInfoError) {
-          return <div className="fill-parent loader" />;
-        } else if (this.state.userInfoError === "USER_INFO_ERROR_NOT_FOUND") {
-          Cookies.expire("auth_session_token");
-          Cookies.expire("session_token_login_id");
-          mixpanel.clearCookies();
-          window.location.replace("/api/falcon/logout");
-          return null;
-        } else {
-          return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem" {...this.state}/>;
-        }
+        return <div className="fill-parent loader" />;
+      } else {
+        return <GenericErrorPage generic={this.state.userInfoError !== "USER_INFO_ERROR_NOT_FOUND"} containerClass="mt-12rem" {...this.state}/>;
+      }
     } else if (this.isRootPath(this.props.location.pathname)) {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
@@ -239,6 +249,7 @@ Authenticator.propTypes = {
   dispatchMetadata: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,
+  logoutUrl: PropTypes.string,
   modalsMeta: PropTypes.object,
   updateUserProfile: PropTypes.func,
   userProfile: PropTypes.object
@@ -247,6 +258,7 @@ Authenticator.propTypes = {
 const mapStateToProps = state => {
   return {
     isNew: state.company.isNew,
+    logoutUrl: state.user.logoutUrl,
     userProfile: state.user.profile,
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
   };
