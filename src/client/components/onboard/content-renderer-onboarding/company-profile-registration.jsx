@@ -210,6 +210,9 @@ class CompanyProfileRegistration extends React.Component {
     if (this.state.form.inputData.additionalDoc.id) {
       org.additionalDocId = this.state.form.inputData.additionalDoc.id;
     }
+    if (this.state.clientType === "seller") {
+      org.sellerInfo = this.props.profile.sellerInfo;
+    }
     this.props.updateOrgData(org, "company");
     this.setState({redirectToBrands: true});
     this.props.dispatchCompanyState(this.state);
