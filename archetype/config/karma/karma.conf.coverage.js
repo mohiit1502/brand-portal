@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 module.exports = function (config, settings) {
   config.set(
     Object.assign({}, settings, {
@@ -11,7 +13,7 @@ module.exports = function (config, settings) {
       webpack: { //kind of a copy of your webpack config
         devtool: 'inline-source-map', //just do inline source maps instead of the default
         module: {
-          loaders: [
+          rules: [
             { test: /\.(pdf)$/, loader: 'file-loader' }
           ]
         }
