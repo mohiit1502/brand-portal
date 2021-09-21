@@ -47,7 +47,7 @@ class PreLoadApiUtil {
     Http.get("/api/users")
       .then(res => {
         const content = res.body.content;
-        let userList = content.map((user, i) => {
+        const userList = content.map((user, i) => {
           const newUser = {
             id: user.email,
             loginId: user.email,
