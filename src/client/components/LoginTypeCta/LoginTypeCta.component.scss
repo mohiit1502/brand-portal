@@ -33,6 +33,24 @@
         box-shadow: 0 0 5px 1px #e7e7e7;
         background-color: #fff;
 
+        .tab-content {
+          max-width: 25rem;
+          .error-message {
+            margin-bottom: unset;
+          }
+          .close-button {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 1px 0 #fff;
+            cursor: pointer;
+            color: #888;
+            top: 1rem;
+            right: 1.2rem;
+            line-height: 1.5rem;
+          }
+        }
+
         .page-header {
           width: 100%;
           display: block;
