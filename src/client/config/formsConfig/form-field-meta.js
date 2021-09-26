@@ -4,7 +4,9 @@ const FORMFIELDCONFIG = {
     "COMPANYREG": {
       "sectionConfig": {
         "sectionTitle": "Create Company Profile",
-        "sectionSubTitle": "Please provide the information in the form below to create your company profile."
+        "sectionSellerTitle": "Confirm Company Profile",
+        "sectionSubTitle": "Please provide the information in the form below to create your company profile.",
+        "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
         "id": "companyreg",

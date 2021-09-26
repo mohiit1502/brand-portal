@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
-import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "./../../../actions/company/company-actions";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "../../../actions/company/company-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
@@ -153,6 +153,8 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
+      data.sellerInfo = this.props.org.sellerInfo;
+      this.props.org.sellerInfo && delete this.props.org.sellerInfo;
       mixpanelPayload.BRAND_NAME = brand && brand.name;
       mixpanelPayload.COMPANY_NAME = this.props.org && this.props.org.name;
       mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
@@ -178,7 +180,6 @@ class BrandRegistration extends React.Component {
       return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER} />;
     }
 
-    const form = this.state.form;
     const section = this.state.section;
 
     return (

@@ -105,17 +105,16 @@ export default class Validator {
         return;
       }
       if (obj && obj.required && !obj.value) {
-        if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
-          return;
-        } else if (obj.type && obj.type === "_checkBox" && obj.selected) {
-          return;
-        } else if (obj.type  && obj.type === "_urlItems") {
-          if (obj.required && this.validateUrlItems && this.validateUrlItems()) {
+        if (!((key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal")
+          || (obj.type && obj.type === "_checkBox" && obj.selected))) {
+          if (obj.type && obj.type === "_urlItems") {
+            if (obj.required && this.validateUrlItems && this.validateUrlItems()) {
+              hasError = true;
+            }
+          } else {
+            obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
             hasError = true;
           }
-        } else {
-          obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
-          hasError = true;
         }
       } else {
         obj.error = obj.error || "";
@@ -321,7 +320,7 @@ export default class Validator {
     if (emailId.value && emailId.error !== emailId.invalidError) {
       this.loader("fieldLoader", true);
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
-        const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
+        const unique = res.body.uniquenessStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
         const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.disabled = false;
         emailId.loader = false;
@@ -329,7 +328,7 @@ export default class Validator {
         emailId.error = emailId.error !== emailId.invalidError && error;
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
-        uniquenessCheckStatus = res.body.krakenUniqueStatus;
+        uniquenessCheckStatus = res.body.uniquenessStatus;
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_EMAIL_UNIQUE = unique;
       }).catch(err => {

@@ -68,13 +68,13 @@ class CompanyProfileRegistration extends React.Component {
     const seller = data.sellerInfo;
     if (seller) {
       const concatAddressFields = ["address1", "address2", "address3", "address4"];
-      const orgAddress = seller.orgAddress;
+      const organizationAddress = seller.organizationAddress;
       form.inputData.companyName.value = seller.legalName;
-      form.inputData.address.value = Object.keys(orgAddress).filter(key => concatAddressFields.indexOf(key) > -1).map(key => orgAddress[key]).filter(key => key).join(", ");
-      form.inputData.city.value = orgAddress.city || "";
-      form.inputData.state.value = orgAddress.state || "";
-      form.inputData.zip.value = orgAddress.postalCode || "";
-      form.inputData.country.value = orgAddress.country || "US";
+      form.inputData.address.value = organizationAddress ? Object.keys(organizationAddress).filter(key => concatAddressFields.indexOf(key) > -1).map(key => organizationAddress[key]).filter(key => key).join(", ") : "";
+      form.inputData.city.value = organizationAddress.city || "";
+      form.inputData.state.value = organizationAddress.state || "";
+      form.inputData.zip.value = organizationAddress.postalCode || "";
+      form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
       form.isUpdateTemplate = true;
@@ -210,6 +210,9 @@ class CompanyProfileRegistration extends React.Component {
     if (this.state.form.inputData.additionalDoc.id) {
       org.additionalDocId = this.state.form.inputData.additionalDoc.id;
     }
+    if (this.state.clientType === "seller") {
+      org.sellerInfo = this.props.profile.sellerInfo;
+    }
     this.props.updateOrgData(org, "company");
     this.setState({redirectToBrands: true});
     this.props.dispatchCompanyState(this.state);
@@ -226,10 +229,10 @@ class CompanyProfileRegistration extends React.Component {
           <div className="row title-row mb-4 pl-4">
             <div className="col">
               <div className="company-registration-title">
-                {section.sectionTitle}
+                {this.state.clientType && this.state.clientType === "seller" ? section.sectionSellerTitle : section.sectionTitle}
               </div>
               <div className="company-registration-subtitle">
-                {section.sectionSubTitle}
+                {this.state.clientType && this.state.clientType === "seller" ? section.sectionSellerSubTitle : section.sectionSubTitle}
               </div>
             </div>
           </div>
