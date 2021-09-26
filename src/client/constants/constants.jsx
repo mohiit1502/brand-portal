@@ -121,6 +121,7 @@ const CONSTANTS = {
       NEW: "New",
       PENDING: "Pending Activation",
       PENDING_SUPPLIER: "Pending Supplier Activation",
+      PENDING_SELLER: "Pending Seller Activation",
       REJECTED: "Rejected",
       SUSPENDED: "Suspended",
       TOU_NOT_ACCEPTED: "Invitation Not Accepted"
@@ -145,7 +146,8 @@ const CONSTANTS = {
     VALUES: {
       STATUS: {
         Suspended: "Inactive",
-        "Pending Supplier Activation": "Pending Activation"
+        "Pending Supplier Activation": "Pending Activation",
+        "Pending Seller Activation": "Pending Activation"
       }
     }
   },

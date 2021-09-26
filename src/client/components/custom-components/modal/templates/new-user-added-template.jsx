@@ -20,7 +20,7 @@ class NewUserAddedTemplate extends React.Component {
 
   getDescriptionString() {
     /* eslint-disable no-magic-numbers */
-    return `An invitation has been sent to ${this.props.modal.data.email} which will expire in ${this.props.modal.data.status === CONSTANTS.USER.STATUS.PENDING_SUPPLIER ? 72 : 24} hours. \n The user profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
+    return `An invitation has been sent to ${this.props.modal.data.email} which will expire in ${this.props.modal.data.status === CONSTANTS.USER.STATUS.PENDING_SUPPLIER || this.props.modal.data.status === CONSTANTS.USER.STATUS.PENDING_SELLER ? 72 : 24} hours. \n The user profile will become active once ${this.props.modal.data.firstName} completes account setup.`;
   }
 
   render() {
@@ -31,7 +31,7 @@ class NewUserAddedTemplate extends React.Component {
             <div className="modal-body text-center p-4">
               <div className="row">
                 <div className="col">
-                  <img src={NewUserSVG} width={87}/>
+                  <img alt="User Added" src={NewUserSVG} width={87}/>
                 </div>
               </div>
               <div className="row mt-3">

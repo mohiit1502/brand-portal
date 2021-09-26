@@ -282,6 +282,7 @@ class UserList extends React.Component {
     const userStatuses = Object.values(CONSTANTS.USER.STATUS);
     userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.REJECTED), 1);
     userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.PENDING_SUPPLIER), 1);
+    userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.PENDING_SELLER), 1);
 
     paginatedList.map(user => {
       user.brands.map(brand => {
@@ -476,7 +477,7 @@ class UserList extends React.Component {
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 " >
-                          <img src={filterIcon} height="20px"/> Filter
+                          <img alt="Filter" src={filterIcon} height="20px"/> Filter
                         </div>
                       </div>
                     </div>
