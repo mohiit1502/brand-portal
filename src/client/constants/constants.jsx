@@ -126,9 +126,8 @@ const CONSTANTS = {
       TOU_NOT_ACCEPTED: "Invitation Not Accepted"
     },
     UNIQUENESS_CHECK_STATUS: {
-      EMAIL: "EMAIL",
-      DENY: "DENY",
-      KRAKEN: "KRAKEN"
+      ALLOW: "ALLOW",
+      DENY: "DENY"
     },
     OPTIONS: {
       DISPLAY: {
