@@ -124,7 +124,7 @@ class Authenticator extends React.Component {
     try {
       profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
-        profile = (await Http.get("/api/userInfo", "", null, null,
+        profile = (await Http.get("/api/userInfo", {clientType: this.state.clientType}, null, null,
           "", "", () => this.logout(this.props.logoutUrl))).body;
         if (this.state.clientType && this.state.clientType === "supplier" && profile.accountLinked) {
           this.logout(this.props.logoutUrl, "error");
