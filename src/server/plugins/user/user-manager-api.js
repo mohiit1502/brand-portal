@@ -629,6 +629,7 @@ class UserManagerApi {
     try {
       const headers = ServerUtils.getHeaders(request);
       console.log("[UserManagerApi:getUserInfo Headers: ", headers);
+      console.log("[UserManagerApi:getUserInfo Headers: ", h.state);
       const options = {
         headers
       };
@@ -676,6 +677,7 @@ class UserManagerApi {
       const query = request.query;
       const clientType = request.query.clientType;
       console.log("Setting clientType post login redirect: ", clientType);
+      console.log("Setting clientType post login redirect: ", request.query.auth);
       // eslint-disable-next-line camelcase
       if (!query.code) {
         return h.redirect("/api/falcon/login");
@@ -685,10 +687,11 @@ class UserManagerApi {
       const loginId = user.loginId;
       const authToken = user["iam-token"];
 
+      console.log("Before set: ", h.state);
       h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
       h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
-      clientType && h.state("client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
-
+      h.state("client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      console.log("After set: ", h.state);
       mixpanelPayload.distinct_id = loginId;
       mixpanelPayload.API_SUCCESS = true;
 
