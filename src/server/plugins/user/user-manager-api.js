@@ -628,8 +628,9 @@ class UserManagerApi {
     };
     try {
       const headers = ServerUtils.getHeaders(request);
+      headers.ROPRO_CLIENT_TYPE = request.query.clientType;
       console.log("[UserManagerApi:getUserInfo Headers: ", headers);
-      console.log("[UserManagerApi:getUserInfo Headers: ", h.state);
+      console.log("[UserManagerApi:getUserInfo Headers: ", request.state);
       const options = {
         headers
       };
