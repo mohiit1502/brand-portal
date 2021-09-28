@@ -165,8 +165,8 @@ class UserManagerApi {
         headers
       };
       console.log("[UserManagerApi::checkHealth] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      // const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      const BASE_URL = "http://localhost:8091";
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
@@ -288,8 +288,8 @@ class UserManagerApi {
         headers
       };
       console.log("[UserManagerApi::getUsers] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      // const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      const BASE_URL = "http://localhost:8091";
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
@@ -327,8 +327,8 @@ class UserManagerApi {
         headers
       };
       console.log("[UserManagerApi::checkUnique] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      // const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      const BASE_URL = "http://localhost:8091";
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.UNIQUENESS_CHECK_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
       // const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
@@ -409,8 +409,8 @@ class UserManagerApi {
         headers
       };
       console.log("[UserManagerApi::createUser] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      // const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      const BASE_URL = "http://localhost:8091";
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
