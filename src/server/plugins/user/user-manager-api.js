@@ -405,6 +405,9 @@ class UserManagerApi {
     try {
       const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };
@@ -635,8 +638,8 @@ class UserManagerApi {
         headers
       };
       console.log("[UserManagerApi::getUserInfo] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      // const BASE_URL = "http://localhost:8091";
+      // const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      const BASE_URL = "http://localhost:8091";
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
 

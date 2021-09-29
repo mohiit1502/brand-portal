@@ -22,7 +22,7 @@ class ServerUtils {
       Consumer_id: "6aa8057e-8795-450a-b349-4ba99b633d2e",
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
-      ROPRO_CLIENT_TYPE: request.state.client_type,
+      ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
       ROPRO_CLIENT_ID:	"temp-client-id",
       ROPRO_CORRELATION_ID: this.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
     };

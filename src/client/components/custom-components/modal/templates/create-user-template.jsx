@@ -2,6 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import Cookies from "electrode-cookies";
 import {saveUserInitiated} from "../../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {showNotification} from "../../../../actions/notification/notification-actions";
@@ -36,6 +37,7 @@ class CreateUserTemplate extends React.Component {
     const newUserContent = this.props.newUserContent ? this.props.newUserContent : {};
 
     this.state = {
+      clientType: Cookies.get("client_type"),
       section: {...newUserContent.sectionConfig},
       form: {
         ...newUserContent.formConfig,
@@ -233,16 +235,11 @@ class CreateUserTemplate extends React.Component {
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_CREATED_USER_CLICKED, mixpanelClickEventPayload);
     const brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
-    // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
-    // eslint-disable-next-line no-unused-expressions
-    // !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
     const brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
     const loginId = this.state.form.inputData.emailId.value;
-    // brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
     const firstName = this.state.form.inputData.firstName.value;
     const lastName = this.state.form.inputData.lastName.value;
-    // console.log(this.state.form.inputData.role.dropdownOptions);
     const selectedRole = this.state.form.inputData.role.dropdownOptions[ClientUtils.where(this.state.form.inputData.role.dropdownOptions, {value: this.state.form.inputData.role.value})];
     const role = {
       id: selectedRole.id,
@@ -259,10 +256,8 @@ class CreateUserTemplate extends React.Component {
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000", //[note:to handle VIP phone number validation]
-        //phoneNumber: this.state.form.inputData.phone.value,
         type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
       }
-      // krakenUniqueWorkflow: this.state.uniquenessCheckStatus
     };
 
     isThirdParty && (payload.user.companyName = this.state.form.inputData.companyName.value);
@@ -278,7 +273,7 @@ class CreateUserTemplate extends React.Component {
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
     };
     if (this.state.form.isUpdateTemplate) {
-      return Http.put(`${url}/${payload.user.email}`, payload, null, null, this.props.showNotification, "User has been updated successfully", "Unable to update the user!")
+      return Http.put(`${url}/${payload.user.email}`, payload, {clientType: this.state.clientType}, null, this.props.showNotification, "User has been updated successfully", "Unable to update the user!")
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
