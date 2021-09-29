@@ -72,6 +72,7 @@ class CompanyManagerApi {
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"abcd",
+      ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
       ROPRO_CORRELATION_ID: ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
     };
   }
