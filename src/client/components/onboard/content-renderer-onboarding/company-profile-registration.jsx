@@ -73,7 +73,7 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.address.value = organizationAddress ? Object.keys(organizationAddress).filter(key => concatAddressFields.indexOf(key) > -1).map(key => organizationAddress[key]).filter(key => key).join(", ") : "";
       form.inputData.city.value = organizationAddress.city || "";
       form.inputData.state.value = organizationAddress.state || "";
-      form.inputData.zip.value = organizationAddress.postalCode || "";
+      form.inputData.zip.value = organizationAddress.postalcode || "";
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 

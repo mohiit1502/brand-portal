@@ -99,7 +99,7 @@ class Authenticator extends React.Component {
   preLoadData() {
     Object.keys(this.majorRoutes.dynamic).forEach(currentPath => {
       const sectionObj = this.majorRoutes.dynamic[currentPath];
-      sectionObj.fetcher(sectionObj.dispatcher, this.props.logoutUrl);
+      sectionObj.fetcher(sectionObj.dispatcher, this.props.logoutUrl, this.state.clientType);
     });
   }
 

@@ -6,8 +6,8 @@ import MODALMETA from "../config/modals-meta";
 
 class PreLoadApiUtil {
 
-  fetchClaims(dispatcher, logoutUrl) {
-    Http.get("/api/claims", "", null, null, "", "", () => this.logout(logoutUrl))
+  fetchClaims(dispatcher, logoutUrl, clientType) {
+    Http.get("/api/claims", {clientType}, null, null, "", "", () => this.logout(logoutUrl))
       .then(res => {
         let claimList = [];
         const content = res.body.data.content;
@@ -26,8 +26,8 @@ class PreLoadApiUtil {
       });
   }
 
-  fetchBrands(dispatcher) {
-    Http.get("/api/brands")
+  fetchBrands(dispatcher, logoutUrl, clientType) {
+    Http.get("/api/brands", {clientType})
       .then(res => {
         let brandList = [];
         const content = res.body.content;
