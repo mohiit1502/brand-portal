@@ -268,7 +268,7 @@ export default class Validator {
       COMPANY_NAME: this.state.form.inputData.companyName.value,
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
-    Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value})
+    Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value, clientType: this.state.clientType})
       .then(response => {
         error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
         inputData.companyName.isUnique = !error;

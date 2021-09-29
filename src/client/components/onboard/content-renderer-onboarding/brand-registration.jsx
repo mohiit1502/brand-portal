@@ -159,7 +159,7 @@ class BrandRegistration extends React.Component {
       mixpanelPayload.COMPANY_NAME = this.props.org && this.props.org.name;
       mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
       mixpanelPayload.IS_DOCUMENT_UPLOADED = this.props.org && Boolean(this.props.org.businessRegistrationDocId || this.props.org.additionalDocId);
-      await Http.post("/api/org/register", data);
+      await Http.post("/api/org/register", data, {clientType: this.props.clientType});
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();

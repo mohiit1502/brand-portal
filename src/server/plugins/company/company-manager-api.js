@@ -25,7 +25,7 @@ class CompanyManagerApi {
       {
         method: "GET",
         path: "/api/company/availability",
-        handler: this.checkCompanyNameAvailabililty
+        handler: this.checkCompanyNameAvailability
       },
       {
         method: "POST",
@@ -246,18 +246,18 @@ class CompanyManagerApi {
     }
   }
 
-  async checkCompanyNameAvailabililty (request, h) {
+  async checkCompanyNameAvailability (request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/company/availability"
     };
-    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has started");
-    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] User ID: ", request.state && request.state.session_token_login_id);
+    console.log("[CompanyManagerApi::checkCompanyNameAvailability] API request for Company Name Avaialability has started");
+    console.log("[CompanyManagerApi::checkCompanyNameAvailability] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const name = request.query.name;
 
       const headers = ServerUtils.getHeaders(request);
-
+      !headers.ROPRO_CLIENT_TYPE && (headers.ROPRO_CLIENT_TYPE = request.query.clientType);
       const options = {
         headers
       };
