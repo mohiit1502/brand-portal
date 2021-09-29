@@ -2,6 +2,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import Cookies from "electrode-cookies";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
@@ -245,6 +246,7 @@ class NewBrandTemplate extends React.Component {
 }
 
 NewBrandTemplate.propTypes = {
+  clientType: PropTypes.string,
   data: PropTypes.object,
   modal: PropTypes.object,
   newBrandConfiguration: PropTypes.object,
@@ -255,6 +257,7 @@ NewBrandTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    clientType: Cookies.get("client_type"),
     newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWBRAND,
     modal: state.modal
   };
