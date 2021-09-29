@@ -39,8 +39,8 @@ const TouTemplate = props => {
     Http.put(`/api/users/updateTouStatus/${outgoingStatus}`, payload, null, null, props.showNotification, null, "Unable to complete Operation, please try again!")
       .then(res => {
         setLoader(false);
-        const dashboardConfig = props.modalsMeta ? props.modalsMeta.PORTAL_DASHBOARD : {}
-        const registrationConfig = props.modalsMeta ? props.modalsMeta.PORTAL_REGISTRATION : {}
+        const dashboardConfig = props.modalsMeta ? props.modalsMeta.PORTAL_DASHBOARD : {};
+        const registrationConfig = props.modalsMeta ? props.modalsMeta.PORTAL_REGISTRATION : {};
         const profileInner = {...props.meta.userProfile};
         props.toggleModal(TOGGLE_ACTIONS.HIDE);
         profileInner.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE && res.body ? dashboardConfig.CODE : registrationConfig.CODE;
@@ -137,8 +137,8 @@ TouTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
-  }
-}
+  };
+};
 const mapDispatchToProps = {
   showNotification,
   toggleModal,

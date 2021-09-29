@@ -208,6 +208,7 @@ class BrandRegistration extends React.Component {
 BrandRegistration.propTypes = {
   brandState: PropTypes.object,
   brandContent: PropTypes.object,
+  clientType: PropTypes.string,
   dispatchBrandState: PropTypes.func,
   dispatchNewRequest: PropTypes.func,
   dispatchSteps: PropTypes.func,
