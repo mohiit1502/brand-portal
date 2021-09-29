@@ -194,6 +194,9 @@ class BrandManagerApi {
     try {
       // const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };

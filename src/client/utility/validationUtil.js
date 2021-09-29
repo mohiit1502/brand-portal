@@ -175,6 +175,7 @@ export default class Validator {
     inputData.brandName.loader = true;
     inputData.brandName.disabled = true;
     this.setState(state);
+    params.clientType = this.props.clientType;
     const mixpanelPayload = {
       API: "/api/brands/checkUnique",
       BRAND_NAME: params.brandName,
@@ -222,7 +223,7 @@ export default class Validator {
       TRADEMARK_NUMBER: this.state.form.inputData.trademarkNumber.value,
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
-    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
+    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, {clientType: this.props.clientType}, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
       .then(res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, inputData.trademarkNumber);
         mixpanelPayload.API_SUCCESS = true;

@@ -128,7 +128,9 @@ class CompanyManagerApi {
     console.log("[CompanyManagerApi::checkTrademarkValidity] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
-
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };
