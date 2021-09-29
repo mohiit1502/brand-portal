@@ -50,7 +50,7 @@ export default class DocumentActions {
       const formData = new FormData();
       formData.append("file", file);
       // const uploadResponse = (await Http.postAsFormData(urlMap[type], formData)).body;
-      const uploadResponse = (await Http.postAsFormData(urlMap[type], formData, null, null, this.props.showNotification)).body;
+      const uploadResponse = (await Http.postAsFormData(urlMap[type], formData, {clientType: this.state.clientType}, null, this.props.showNotification)).body;
       interval.stop();
       window.setTimeout(() => {
         const updatedForm = {...this.state.form};
