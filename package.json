@@ -36,7 +36,7 @@
     "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
     "test": "clap check",
     "coverage": "clap check",
-    "prod": "echo 'Starting standalone server in PROD mode'; NODE_ENV=production node ./lib/server/",
+    "prod": "echo \"Starting standalone server in PROD mode\"; NODE_ENV=production node ./lib/server/",
     "heroku-postbuild": "clap build",
     "cdn-publish": "clap cdn/publish",
     "wml-release": "clap wml-build/release"
