@@ -1,29 +1,34 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../../styles/home/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
-import Dropdown from "../../../custom-components/dropdown/dropdown";
+import moment from "moment";
+import Cookies from "electrode-cookies";
+
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import ClientUtils from "../../../../utility/ClientUtils";
-import Http from "../../../../utility/Http";
 import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import {dispatchFilter, dispatchWidgetAction} from "../../../../actions/dashboard/dashboard-actions";
+
+import Dropdown from "../../../custom-components/dropdown/dropdown";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
 import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
-import CONSTANTS from "../../../../constants/constants";
-import restConfig from "../../../../config/rest";
-import AUTH_CONFIG from "../../../../config/authorizations";
-import filterIcon from "../../../../images/filterIcon.svg";
-import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
+
 import SortUtil from "../../../../utility/SortUtil";
 import SearchUtil from "../../../../utility/SearchUtil";
 import FilterUtil from "../../../../utility/FilterUtil";
-import moment from "moment";
 import mixpanel from "../../../../utility/mixpanelutils";
+import ClientUtils from "../../../../utility/ClientUtils";
+import Http from "../../../../utility/Http";
+
+import filterIcon from "../../../../images/filterIcon.svg";
+import kebabIcon from "../../../../images/kebab-icon.png";
+import AUTH_CONFIG from "../../../../config/authorizations";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
+import CONSTANTS from "../../../../constants/constants";
+import restConfig from "../../../../config/rest";
+import "../../../../styles/home/content-renderer/user/user-list.scss";
 
 class UserList extends React.Component {
 
@@ -117,7 +122,7 @@ class UserList extends React.Component {
                 SELECTED_USER_NAME: data.username,
                 SELECTED_USER_BRANDS: data.brands
               };
-              Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader("loader", false))
+              Http.post("/api/users/reinvite", {email: data.loginId}, {clientType: Cookies.get("client_type")}, () => this.loader("loader", false))
                 .then(res => {
                   if (res.body === true) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
