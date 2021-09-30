@@ -50,7 +50,10 @@ const MODALSMETA = {
       "IMAGE": "EmailIcon",
       "MESSAGE": "A verification email has been sent to your email address.\nPlease verify using the link provided.",
       "TITLE": "Email verification required",
-      "ADDITIONAL_ACTION": "Resend Verification Email"
+      "ADDITIONAL_ACTION": {
+        "action": "resendInvite",
+        "text": "Resend Verification Email"
+      }
     },
     "TOU_VERIFICATION": {
       "CODE": 128,

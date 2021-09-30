@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
+import Cookies from "electrode-cookies";
 
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
@@ -36,7 +37,7 @@ const StatusModalTemplate = props => {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[64]
     };
     if (email) {
-      Http.post("/api/users/reinvite", {email}, "")
+      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("client_type")})
         .then(res => {
           if (res.body === true) {
             showNotification(NOTIFICATION_TYPE.SUCCESS, `Verification email sent to: ${email} `);
