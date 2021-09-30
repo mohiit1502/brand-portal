@@ -132,9 +132,9 @@ class UserProfile extends React.Component {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD, {WORK_FLOW: "EDIT_USER_PROFILE"});
   }
 
-  disableInput (disable) {
+  disableInput (disable, preventDirtyCheck) {
     disable = !!disable;
-    if (disable && this.isDirty()) {
+    if (disable && (!preventDirtyCheck && this.isDirty())) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE, {WORK_FLOW: "EDIT_USER_PROFILE"});
@@ -185,7 +185,7 @@ class UserProfile extends React.Component {
           .then(async res => {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
-            this.disableInput(true);
+            this.disableInput(true, false);
             mixpanelPayload.API_SUCCESS = true;
           })
           .catch(err => {
