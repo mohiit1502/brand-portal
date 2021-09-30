@@ -32,8 +32,8 @@ class PaginationNav extends React.Component {
 
     return (
       !!this.props.list.length &&
-        <nav>
-          <ul className="pagination pagination-sm justify-content-center align-items-center m-0">
+        <nav className="d-inline-block">
+          <ul className="pagination pagination-sm justify-content-start align-items-center m-0">
             {previousButton}
             {paginationButtons}
             {nextButton}

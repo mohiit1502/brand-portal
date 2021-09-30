@@ -88,7 +88,7 @@ class Paginator extends Component {
     return (
       <div className="c-Paginator row table-manage-row h-10 mb-4 align-items-center">
         <div className="col text-left">{pageViewInfo}</div>
-        <div className="col text-center">
+        <div className="col text-center overflow-auto">
           <PaginationNav list={records ? records : []} page={this.state.page} updatePage={this.updatePage}/>
         </div>
         <div className="col text-right">{pageSizeSelector}</div>
