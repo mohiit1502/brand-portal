@@ -15,34 +15,29 @@ const LoginTypeCta = props => {
   const [errorMessage, setErrorMessage] = useState();
   const ACCOUNT_LINKING_ERROR = "Your Walmart Brand Portal account has been linked to your Seller Center account. To access the Brand Portal, use your Seller Center username and password to log in.";
   const GENERIC_ERROR = "Please login using your credentials.";
-  const INVALID_LOGIN_ERROR = "We found an existing seller account corresponding to this email. Please continue using Seller Center username and password to login."
+  const INVALID_LOGIN_ERROR = "We found an existing seller account corresponding to this email. Please continue using Seller Center username and password to login.";
 
   useEffect(() => {
     if (!action && location.pathname) {
       if (location.pathname.endsWith("/login")) {
         dispatchLoginAction();
         if (location.search) {
-          let params = location.search;
-          if (params) {
-            params = params.substring(params.indexOf("?") + 1);
-            if (params) {
-              let errorMessage;
-              switch (params) {
-                case "linked":
-                  errorMessage = ACCOUNT_LINKING_ERROR;
-                  break;
-                case "invalid_login":
-                  errorMessage = INVALID_LOGIN_ERROR;
-                  break;
-                case "unauthorized":
-                  errorMessage = GENERIC_ERROR;
-                  break;
-                default:
-                  errorMessage = "";
-              }
-              setErrorMessage(errorMessage);
-            }
+          const params = location.search.indexOf("?") > -1 ? location.search.substring(location.search.indexOf("?") + 1) : location.search;
+          let errorMessage;
+          switch (params) {
+            case "linked":
+              errorMessage = ACCOUNT_LINKING_ERROR;
+              break;
+            case "invalid_login":
+              errorMessage = INVALID_LOGIN_ERROR;
+              break;
+            case "unauthorized":
+              errorMessage = GENERIC_ERROR;
+              break;
+            default:
+              errorMessage = "";
           }
+          setErrorMessage(errorMessage);
         }
       } else if (location.pathname.endsWith("/register")) {
         dispatchRegisterAction();
