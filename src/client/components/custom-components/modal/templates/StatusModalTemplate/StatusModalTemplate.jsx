@@ -99,7 +99,7 @@ const StatusModalTemplate = props => {
         accountLinked: true
       }
     };
-    return Http.put(`/api/users/${user.profile.email}`, payload, null, null, showNotification, "Accounts linked successfully!")
+    return Http.put(`/api/users/${user.profile.email}`, payload, null, null)
       .then(async res => {
         updateUserProfile(res.body);
         toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKED});
