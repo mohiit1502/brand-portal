@@ -82,7 +82,7 @@ export default class Http {
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
       if (urlString && urlString.includes("/userInfo") && unauthorizedCallback && typeof unauthorizedCallback === "function") {
-        unauthorizedCallback("not_found");
+        unauthorizedCallback("unauthorized");
       }
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status) || CONSTANTS.CODES.ERRORCODES.UNAUTHORIZED === status) {
       toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
