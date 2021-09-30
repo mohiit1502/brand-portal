@@ -81,18 +81,17 @@ export default class Http {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
-      if (urlString && urlString.endsWith("/userInfo") && unauthorizedCallback && typeof unauthorizedCallback === "function") {
-        unauthorizedCallback();
+      if (urlString && urlString.includes("/userInfo") && unauthorizedCallback && typeof unauthorizedCallback === "function") {
+        unauthorizedCallback("not_found");
       }
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status) || CONSTANTS.CODES.ERRORCODES.UNAUTHORIZED === status) {
       toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
-      setTimeout(() => {
-        if (unauthorizedCallback && typeof unauthorizedCallback === "function") {
-          unauthorizedCallback();
-        } else {
-          window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
-        }
-      }, 1000);
+      if (unauthorizedCallback && typeof unauthorizedCallback === "function") {
+        unauthorizedCallback("unauthorized");
+      } else {
+        /* eslint-disable no-return-assign */
+        setTimeout(() => window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT, 1000);
+      }
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(status.toString())) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Request failed, please try again.");
     } else if (status === CONSTANTS.STATUS_CODE_SUCCESS) {

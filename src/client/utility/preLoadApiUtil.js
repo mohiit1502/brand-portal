@@ -7,7 +7,7 @@ import MODALMETA from "../config/modals-meta";
 class PreLoadApiUtil {
 
   fetchClaims(dispatcher, logoutUrl, clientType) {
-    Http.get("/api/claims", {clientType}, null, null, "", "", () => this.logout(logoutUrl))
+    Http.get("/api/claims", {clientType}, null, null, "", "", errorType => this.logout(logoutUrl, errorType))
       .then(res => {
         let claimList = [];
         const content = res.body.data.content;
@@ -80,7 +80,7 @@ class PreLoadApiUtil {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
-                            response = MODALMETA;
+                            // response = MODALMETA;
                             dipatcher(response);
                         } catch (e) {
                             dipatcher(MODALMETA);
@@ -98,7 +98,7 @@ class PreLoadApiUtil {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
-                            response = FORMFIELDMETA;
+                            // response = FORMFIELDMETA;
                             dipatcher(response);
                         } catch (e) {
                             dipatcher(FORMFIELDMETA);

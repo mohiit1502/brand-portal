@@ -6,7 +6,6 @@
 import nj from "node-jose";
 import {CONSTANTS} from "../constants/server-constants";
 import ServerHttp from "./ServerHttp";
-// import ccmLocal from "./../config/ccmFailoverBackup.json";
 const secrets = require(CONSTANTS.PATH);
 
 class ServerUtils {
@@ -73,9 +72,9 @@ class ServerUtils {
       console.log("Error at CCM Access: ", e);
       console.log("Triggering failover config access...");
       throw e;
-      // return ServerUtils.search(path, ccmLocal);
     }
   }
+
   async retry (request, incrementalTimeouts) {
     for (let attempt = 0; attempt <= incrementalTimeouts.length; attempt++) {
         try {
@@ -87,7 +86,7 @@ class ServerUtils {
           return response ? response : {status: 500, body: {}};
       } catch (err) {
         console.error("[WBP] Error while retrying: ", err);
-        console.log("[WBP] Retry Attemp: ", attempt + 1);
+        console.log("[WBP] Retry Attempt: ", attempt + 1);
         incrementalTimeouts.length > attempt ? await new Promise(resolve => setTimeout(() => resolve(), incrementalTimeouts[attempt])) : {};
       }
     }

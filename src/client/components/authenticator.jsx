@@ -87,11 +87,11 @@ class Authenticator extends React.Component {
     }
   }
 
-  logout(logoutUrl, error) {
+  logout(logoutUrl, errorType) {
     Cookies.expire("auth_session_token");
     Cookies.expire("session_token_login_id");
     Cookies.expire("client_type");
-    const replacer = error ? `${window.location.origin}/login?error=true` : `${window.location.origin}/login`;
+    const replacer = errorType ? `${window.location.origin}/login?${errorType}` : `${window.location.origin}/login`;
     logoutUrl = logoutUrl.replace("__domain__/logout", replacer);
     window.location.href = logoutUrl;
   }
@@ -125,9 +125,13 @@ class Authenticator extends React.Component {
       profile = this.props.userProfile;
       if (!profile || Object.keys(profile).length === 0) {
         profile = (await Http.get("/api/userInfo", {clientType: this.state.clientType}, null, null,
-          "", "", () => this.logout(this.props.logoutUrl))).body;
-        if (this.state.clientType && this.state.clientType === "supplier" && profile.accountLinked) {
-          this.logout(this.props.logoutUrl, "error");
+          "", "", errorType => this.logout(this.props.logoutUrl, errorType))).body;
+        if (this.state.clientType && this.state.clientType === "supplier" && (profile.accountLinked || profile.source === "PAM")) {
+          if (profile.accountLinked) {
+            this.logout(this.props.logoutUrl, "linked");
+          } else {
+            this.logout(this.props.logoutUrl,  "invalid_login");
+          }
         } else {
           // profile.workflow.code = 1;
           //profile = JSON.parse("{\"firstName\":\"Test\",\"lastName\":\"Mohsin\",\"phoneCountry\":\"1\",\"phoneNumber\":\"(234) 567-8901\",\"emailVerified\":true,\"isUserEnabled\":true,\"organization\":{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\",\"status\":\"Accepted\"},\"role\":{\"id\":\"6a429471-3675-4490-93db-5aadf5412a8b\",\"name\":\"Super Admin\",\"description\":\"Brand Rights Owner\"},\"brands\":[{\"id\":\"640a20c2-3bbd-46e5-9a81-4f97c8bc9f08\"}],\"type\":\"Internal\",\"registrationMode\":\"SelfRegistered\",\"email\":\"wm.ropro+testbike@gmail.com\",\"status\":\"Active\",\"statusDetails\":\"Status updated by: system\",\"createdBy\":\"wm.ropro+testbike@gmail.com\",\"createTs\":\"2020-09-15T07:15:18.965Z\",\"lastUpdatedBy\":\"wm.ropro+testbike@gmail.com\",\"lastUpdateTs\":\"2020-09-21T10:06:07.633Z\",\"isOrgEnabled\":true,\"workflow\":{\"code\":4,\"workflow\":\"portal_dashboard\",\"defaultView\":\"portal-view-users\",\"roleCode\":1,\"roleView\":\"SUPER_ADMIN\"}}");

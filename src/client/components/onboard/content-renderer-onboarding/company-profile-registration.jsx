@@ -66,7 +66,7 @@ class CompanyProfileRegistration extends React.Component {
   prepopulateInputFields (data) {
     const form = {...this.state.form};
     const seller = data.sellerInfo;
-    if (seller) {
+    if (seller && seller.taxClassification === "W9") {
       const concatAddressFields = ["address1", "address2", "address3", "address4"];
       const organizationAddress = seller.organizationAddress;
       form.inputData.companyName.value = seller.legalName;

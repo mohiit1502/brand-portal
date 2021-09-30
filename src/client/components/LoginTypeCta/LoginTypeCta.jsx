@@ -12,16 +12,37 @@ import CONSTANTS from "../../constants/constants";
 const LoginTypeCta = props => {
   const {action, dispatchLoginAction, dispatchRegisterAction} = props;
   const location = useLocation();
-  const [error, setError] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const ACCOUNT_LINKING_ERROR = "Your Walmart Brand Portal account has been linked to your Seller Center account. To access the Brand Portal, use your Seller Center username and password to log in.";
+  const GENERIC_ERROR = "Please login using your credentials.";
+  const INVALID_LOGIN_ERROR = "We found an existing seller account corresponding to this email. Please continue using Seller Center username and password to login."
 
   useEffect(() => {
     if (!action && location.pathname) {
       if (location.pathname.endsWith("/login")) {
         dispatchLoginAction();
         if (location.search) {
-          const index = location.search.lastIndexOf("=");
-          const error = index > -1 ? location.search.substring(index + 1) : location.search;
-          setError(error === "true");
+          let params = location.search;
+          if (params) {
+            params = params.substring(params.indexOf("?") + 1);
+            if (params) {
+              let errorMessage;
+              switch (params) {
+                case "linked":
+                  errorMessage = ACCOUNT_LINKING_ERROR;
+                  break;
+                case "invalid_login":
+                  errorMessage = INVALID_LOGIN_ERROR;
+                  break;
+                case "unauthorized":
+                  errorMessage = GENERIC_ERROR;
+                  break;
+                default:
+                  errorMessage = "";
+              }
+              setErrorMessage(errorMessage);
+            }
+          }
         }
       } else if (location.pathname.endsWith("/register")) {
         dispatchRegisterAction();
@@ -39,9 +60,9 @@ const LoginTypeCta = props => {
           <div className="content-container">
             <div className="padder p-4">
               <div className="tab-content text-center">
-                {error && <div className="cta-error">
-                  <p className="error-message">Your Walmart Brand Portal account has been linked to your Seller Center username and password. To access Brand Portal, use your Seller Center log in.</p>
-                  <span className="close-button" onClick={() => setError(false)}>×</span>
+                {errorMessage && <div className="cta-error">
+                  <p className="error-message">{errorMessage}</p>
+                  <span className="close-button" onClick={() => setErrorMessage("")}>×</span>
                 </div>}
                 <span className="page-header mb-2"><span>{action ? action === "login" ? "Log In" : "Register" : ""}</span></span>
                 <p className="sub-title mb-0">Streamline {action === "login" ? "login" : "registration"} by using one of your existing</p>
@@ -51,7 +72,9 @@ const LoginTypeCta = props => {
                   <hr /><span>OR</span><hr />
                 </div>
                 {action === "register" && <p className="sub-title">Don't have a Walmart account?</p>}
-                <a href={action === "login" ? `${CONSTANTS.URL.LOGIN_REDIRECT}?clientType=supplier` : `${CONSTANTS.URL.REGISTER_REDIRECT}?clientType=supplier`} className="app-btn d-block secondary-btn mt-2">{action ? action === "login" ? "Use Brand Portal log in" : "Register with Brand Portal" : ""}</a>
+                <a href={action === "login" ? `${CONSTANTS.URL.LOGIN_REDIRECT}?clientType=supplier` : `${CONSTANTS.URL.REGISTER_REDIRECT}?clientType=supplier`} className="app-btn d-block secondary-btn mt-2">
+                  {action ? action === "login" ? "Continue with Brand Portal Log In" : "Register with Brand Portal" : ""}
+                </a>
               </div>
             </div>
           </div>

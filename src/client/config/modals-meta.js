@@ -63,21 +63,21 @@ const MODALSMETA = {
         "classes": "mt-4",
         "content": {
           "para1": {
-            "text": "The Walmart [Seller Center] credentials used to log in are associated with the company details found in your existing brand portal account for:",
+            "text": "Confirm and connect your accounts to continue:",
             "classes": "subtitle mx-4"
           },
           "para2": {
+            "text": "The Walmart Seller Center credentials you used to log in are associated with the company details existing in your Brand Portal account for:",
+            "classes": "subtitle mx-4"
+          },
+          "para3": {
             "text": "[__namePlaceholder__]",
             "dynamicReplacementConfig": {"__namePlaceholder__": "profile.organization.name"},
             "classes": "font-weight-bold subtitle mt-2 mb-4 mx-4"
           },
-          "para3": {
-            "text": "In order to access your claims dashboard with your Walmart [Seller Center] log in, you must link these accounts and override your current brand portal log in.",
-            "classes": "subtitle mx-3"
-          },
           "para4": {
-            "text": "This action needs to occur only once, and cannot be undone.",
-            "classes": "subtitle mb-4 mx-4"
+            "text": "In order to access the Brand Portal dashboard, you must connect your accounts to override your initial Brand Portal login credentials.",
+            "classes": "subtitle mx-3"
           }
         }
       },
@@ -85,8 +85,8 @@ const MODALSMETA = {
       "IMAGE": "ShieldTick",
       "TITLE": "Link your accounts to continue",
       "PRIMARY_ACTION": {
-        "text": "Link accounts",
-        "action": "linkConfirmation"
+        "text": "Connect accounts",
+        "action": "linkAccounts"
       },
       "ADDITIONAL_ACTION": {
         "text": "Log out",
@@ -123,11 +123,11 @@ const MODALSMETA = {
         "classes": "mt-4",
         "content": {
           "para1": {
-            "text": "Your account has been successfully updated.",
+            "text": "Success! Your account has been successfully updated.",
             "classes": "subtitle mx-5"
           },
           "para2": {
-            "text": "From now on, you will use your Seller Center user name and password to access the Brand Portal.",
+            "text": "Going forward, please use your Seller Center login credentials to access your Brand Portal account.",
             "classes": "subtitle mx-5"
           }
         }
