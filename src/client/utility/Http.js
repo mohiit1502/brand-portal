@@ -4,6 +4,7 @@ import queryString from "query-string";
 import ClientHttpError from "./ClientHttpError";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
 import CONSTANTS from "../constants/constants";
+import Cookies from "electrode-cookies";
 
 export default class Http {
 
@@ -74,6 +75,23 @@ export default class Http {
     throw new ClientHttpError(status, err.error, err.message);
   }
 
+  static logout(logoutUrl, errorType) {
+    Cookies.expire("auth_session_token");
+    Cookies.expire("session_token_login_id");
+    Cookies.expire("client_type");
+    const replacer = errorType ? `${window.location.origin}/login?${errorType}` : `${window.location.origin}/login`;
+    if (!logoutUrl) {
+      Http.get("/api/logoutProvider")
+        .then(res => {
+          logoutUrl = res.status === 200 && res.body ? res.body.replace("__domain__/logout", replacer) : "/login";
+          window.location.href = logoutUrl;
+        })
+    } else {
+      logoutUrl = logoutUrl ? logoutUrl.replace("__domain__/logout", replacer) : "/login";
+      window.location.href = logoutUrl;
+    }
+  }
+
   static displayToast(status, toastCallback, toastMessageSuccess, toastMessageFailure, unauthorizedCallback, urlString) {
     if (CONSTANTS.CODES.ERRORCODES.SERVERDOWNWRAPPER === status) {
       toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure || "An unexpected error occurred!");
@@ -82,16 +100,11 @@ export default class Http {
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
       if (urlString && urlString.includes("/userInfo") && unauthorizedCallback && typeof unauthorizedCallback === "function") {
-        unauthorizedCallback("unauthorized");
+        Http.logout("","unauthorized");
       }
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status) || CONSTANTS.CODES.ERRORCODES.UNAUTHORIZED === status) {
       toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
-      if (unauthorizedCallback && typeof unauthorizedCallback === "function") {
-        unauthorizedCallback("unauthorized");
-      } else {
-        /* eslint-disable no-return-assign */
-        setTimeout(() => window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT, 1000);
-      }
+      Http.logout("", "unauthorized")
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(status.toString())) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Request failed, please try again.");
     } else if (status === CONSTANTS.STATUS_CODE_SUCCESS) {

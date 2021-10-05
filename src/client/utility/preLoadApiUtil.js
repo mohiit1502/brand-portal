@@ -7,7 +7,7 @@ import MODALMETA from "../config/modals-meta";
 class PreLoadApiUtil {
 
   fetchClaims(dispatcher, logoutUrl, clientType) {
-    Http.get("/api/claims", {clientType}, null, null, "", "", errorType => this.logout(logoutUrl, errorType))
+    Http.get("/api/claims", {clientType})
       .then(res => {
         let claimList = [];
         const content = res.body.data.content;
