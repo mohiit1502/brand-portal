@@ -85,7 +85,7 @@ export default class Http {
         .then(res => {
           logoutUrl = res.status === 200 && res.body ? res.body.replace("__domain__/logout", replacer) : "/login";
           window.location.href = logoutUrl;
-        })
+        });
     } else {
       logoutUrl = logoutUrl ? logoutUrl.replace("__domain__/logout", replacer) : "/login";
       window.location.href = logoutUrl;
@@ -100,11 +100,11 @@ export default class Http {
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FOURNOTFOUR).test(status)) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure);
       if (urlString && urlString.includes("/userInfo") && unauthorizedCallback && typeof unauthorizedCallback === "function") {
-        Http.logout("","unauthorized");
+        Http.logout("", "unauthorized");
       }
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.FORBIDDEN).test(status) || CONSTANTS.CODES.ERRORCODES.UNAUTHORIZED === status) {
       toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Session Expired, redirecting to login...");
-      Http.logout("", "unauthorized")
+      Http.logout("", "unauthorized");
     } else if (new RegExp(CONSTANTS.CODES.ERRORCODES.SERVERERROR).test(status.toString())) {
       toastMessageFailure && toastCallback && typeof toastCallback === "function" && toastCallback(NOTIFICATION_TYPE.ERROR, toastMessageFailure ? toastMessageFailure : "Request failed, please try again.");
     } else if (status === CONSTANTS.STATUS_CODE_SUCCESS) {
