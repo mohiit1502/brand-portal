@@ -123,6 +123,7 @@ class Authenticator extends React.Component {
             Http.logout(this.props.logoutUrl,  "invalid_login");
           }
         } else {
+          /* eslint-disable no-lonely-if */
           if (profile.userExistence && profile.userExistence.indexOf("u-seller") > -1) {
             Http.logout(this.props.logoutUrl,  "unauthorized");
           } else {
