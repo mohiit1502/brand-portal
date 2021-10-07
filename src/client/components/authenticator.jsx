@@ -230,7 +230,7 @@ class Authenticator extends React.Component {
       return <Login {...this.props} />;
     } else if (this.isOneOfRedirectPaths(this.props.location.pathname)) {
       window.localStorage.setItem("redirectURI", this.props.location.pathname);
-      window.location.pathname = CONSTANTS.URL.LOGIN_REDIRECT;
+      window.location.pathname = CONSTANTS.ROUTES.OPEN.LOGIN_TYPE_CTA;
       return null;
     } else {
       return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ROOT_PATH} />;
