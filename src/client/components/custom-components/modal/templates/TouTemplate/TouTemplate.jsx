@@ -1,21 +1,23 @@
-/* eslint-disable no-unused-expressions, filenames/match-regex, complexity */
+/* eslint-disable no-unused-expressions, filenames/match-regex, complexity, no-shadow */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
+import Cookies from "electrode-cookies";
 import moment from "moment";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import {showNotification} from "../../../../../actions/notification/notification-actions";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
 import Http from "../../../../../utility/Http";
-import CONSTANTS from "../../../../../constants/constants";
-import * as staticContent from "./../../../../../images";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import CONSTANTS from "../../../../../constants/constants";
+import * as staticContent from "./../../../../../images";
 import "./TouTemplate.component.scss";
 
 const TouTemplate = props => {
   const [loader, setLoader] = useState(false);
+  const {modalsMeta, toggleModal} = props;
   const pages = {
     TOU_ACCEPTANCE: "touAcceptance",
     TOU_REJECTION: "touRejection",
@@ -36,16 +38,24 @@ const TouTemplate = props => {
       ORG_NAME: profile.organization.name,
       USER_STATUS: profile.status
     };
+    const clientType = Cookies.get("client_type");
     Http.put(`/api/users/updateTouStatus/${outgoingStatus}`, payload, null, null, props.showNotification, null, "Unable to complete Operation, please try again!")
-      .then(res => {
-        setLoader(false);
-        const dashboardConfig = props.modalsMeta ? props.modalsMeta.PORTAL_DASHBOARD : {};
-        const registrationConfig = props.modalsMeta ? props.modalsMeta.PORTAL_REGISTRATION : {};
-        const profileInner = {...props.meta.userProfile};
-        props.toggleModal(TOGGLE_ACTIONS.HIDE);
-        profileInner.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE && res.body ? dashboardConfig.CODE : registrationConfig.CODE;
-        props.updateUserProfile(profileInner);
-        mixpanelPayload.API_SUCCESS = true;
+      .then(() => {
+        Http.get("/api/userInfo", {clientType})
+          .then(res => {
+            const profile = res && res.body;
+            profile && props.updateUserProfile(profile);
+            if (profile && profile.workflow.code === modalsMeta.ACCOUNT_LINKING.CODE) {
+              toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKING});
+            } else {
+              toggleModal(TOGGLE_ACTIONS.HIDE);
+            }
+          })
+          .finally(() => {
+            mixpanelPayload.API_SUCCESS = true;
+            setLoader(false);
+          });
+
       })
       .catch(e => {
         setLoader(false);
@@ -73,7 +83,7 @@ const TouTemplate = props => {
           <div className="modal-header font-weight-bold align-items-center">
             {page === pages.INVITATION_ACCEPTANCE ? "Welcome to Walmart Brand Portal" : "TERMS OF USE"}
           </div>
-          <div className="modal-body position-relative" style={{overflowY: page === pages.TOU_ACCEPTANCE ? "scroll" : "unset"}}>
+          <div className="modal-body position-relative" style={{overflowY: page === pages.TOU_ACCEPTANCE ? "scroll" : "unset", overflowX: "hidden"}}>
             <div className={`invitation-acceptance d-inline-block position-absolute w-100 font-size-20${page === pages.INVITATION_ACCEPTANCE ? " visible" : ""}`}>
               <div className="d-inline-block">
                 <p className="ml-3 mr-5 pl-3 pr-5" style={{lineHeight: "2.5rem"}}>You've been invited to join the following Brand Portal account. Please indicate below whether you'd like to accept or decline this invitation.</p>
@@ -101,7 +111,7 @@ const TouTemplate = props => {
               </object>
             </div>
             <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible" : ""}`}>
-              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? ` (${  profile.companyName  })` : ""}`}"s</b> invitation to join their Walmart Brand Portal account.</p>
+              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? ` (${  profile.companyName  })` : ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
               <p className="ml-3 pl-3">Please click the "Decline" button to confirm.</p>
             </div>
           </div>
