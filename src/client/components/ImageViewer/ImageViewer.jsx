@@ -3,7 +3,7 @@ import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {CSSTransition} from "react-transition-group";
-import * as $ from "jquery";
+import jQuery from "jquery";
 import {toggleImageViewer} from "../../actions/content/content-actions";
 import * as imagesAll from "./../../images";
 import "./ImageViewer.component.scss";
@@ -11,8 +11,8 @@ import "./ImageViewer.component.scss";
 const ImageViewer = props => {
 
   const toggleModal = () => {
-    const modalElements = $(".modal");
-    const backdrop = $(".modal-backdrop");
+    const modalElements = jQuery(".modal");
+    const backdrop = jQuery(".modal-backdrop");
     if (backdrop) {
       backdrop.remove();
     }
