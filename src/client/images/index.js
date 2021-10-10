@@ -1,4 +1,6 @@
 import Access from "./access.svg";
+import AccountLinking from "./Account Linking.png";
+import AccountLinkingSuccess from "./Account Linking Success.png";
 import Alert from "./alert.svg";
 import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
@@ -21,6 +23,7 @@ import DashboardIcon from "./dashboard.png";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
+import FalconLoginForm from "./Falcon Login Form.png";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
 import FilterBlue from "./filterIcon.svg";
@@ -33,6 +36,7 @@ import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.jpg";
 import InviteUserForm from "./AddUser.jpg";
 import Login from "./Login.jpg";
+import LoginTypeCta from "./Login Type CTA.png";
 import MPBackgroundPart from "./background-brand-portal-1.svg";
 import PageError from "./page-error.svg";
 import Paste from "./content-paste.svg";
@@ -62,6 +66,8 @@ import YellowBGKey from "./YellowBGKey.png";
 
 export {
   Access,
+  AccountLinking,
+  AccountLinkingSuccess,
   Alert,
   Arrow,
   ArrowDown,
@@ -84,6 +90,7 @@ export {
   EmailIcon,
   Event,
   Exclamation,
+  FalconLoginForm,
   FieldLoader,
   Filter,
   FilterBlue,
@@ -96,6 +103,7 @@ export {
   InviteUser,
   InviteUserForm,
   Login,
+  LoginTypeCta,
   MPBackgroundPart,
   PageError,
   Paste,
