@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+
 import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import Http from "../../utility/Http";
@@ -6,25 +8,24 @@ import "./CaptchaValidator.component.scss";
 
 const CaptchaValidator = props => {
   const [captchaConfig, setCaptchaConfig] = useState();
-  const [isValid, setValid] = useState(true);
+
+  /* eslint-disable no-use-before-define */
   useEffect(() => {
     !captchaConfig  &&
     Http.get("/api/getCaptchaConfig")
     .then(res => {
       setCaptchaConfig(res.body);
-      if(!res.body.enableCaptcha) {
+      if (!res.body.enableCaptcha) {
         verifyCaptcha(true);
       }
-    }).catch(e => {
+    }).catch(() => {
       setCaptchaConfig({});
       verifyCaptcha(true);
-      console.log(e)
     });
   }, [captchaConfig]);
 
   const verifyCaptcha = res => {
     if (res) {
-      setValid(true);
       const dummyCaptchaEvent = {
         target: {
           value: true
@@ -33,8 +34,7 @@ const CaptchaValidator = props => {
       props.onChange && props.onChange(dummyCaptchaEvent, props.inputId);
     }
   };
-  const onExpired = res => {
-    setValid(false);
+  const onExpired = () => {
     const dummyCaptchaEvent = {
       target: {
         value: false
@@ -61,6 +61,8 @@ const CaptchaValidator = props => {
 CaptchaValidator.propTypes = {
   captchaFieldName: PropTypes.string,
   error: PropTypes.string,
+  inputId: PropTypes.string,
+  onChange: PropTypes.func,
   onSubmit: PropTypes.func,
   submitButtonLabel: PropTypes.string
 };

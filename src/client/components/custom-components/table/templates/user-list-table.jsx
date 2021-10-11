@@ -11,7 +11,7 @@ import sortIconDown from "../../../../images/sort_descend.svg";
 
 const UserListTable = function(props) {
 
-  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps: {loader}, rows, prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     dateAdded: "col-2",
@@ -21,7 +21,6 @@ const UserListTable = function(props) {
     username: "col-2"
   };
   const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
-  const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
   const sortStateReset = CONSTANTS.SORTSTATE.RESET;
 
   const updateDDOptions = (index, values, ddOptions) => {
@@ -97,7 +96,7 @@ const UserListTable = function(props) {
                         sortIcondisplay = sortIconUp;
                     }
                     return (
-                      <div className={`table-head-cell col${classColMap[header.id] ? " " + classColMap[header.id] : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
+                      <div className={`table-head-cell col${classColMap[header.id] ? ` ${  classColMap[header.id]}` : ""}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") }
                         {
                           <img className={"sort-icon"} src={sortIcondisplay} />
@@ -124,12 +123,16 @@ const UserListTable = function(props) {
               return (
                 <div className="table-row row" key={`tr${row.id}`} {...row.getRowProps()}>
                   {
+                    /* eslint-disable complexity, no-nested-ternary */
                     row.cells.map((cell, k) => {
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value && typeof cell.value === "string"
-                            && CONSTANTS.USER.VALUES.STATUS[cell.value] ? CONSTANTS.USER.VALUES.STATUS[cell.value] : cell.value
+                            Array.isArray(cell.value)
+                              ? cell.value.join(", ")
+                              : cell.value && typeof cell.value === "string" && CONSTANTS.USER.VALUES.STATUS[cell.value]
+                                ? CONSTANTS.USER.VALUES.STATUS[cell.value]
+                                : cell.value
                           }
                           {
                             cell.column.id === "username" && cell.row.original.company &&
@@ -170,6 +173,7 @@ UserListTable.propTypes = {
   headerGroups: PropTypes.array,
   rows: PropTypes.array,
   prepareRow: PropTypes.func,
+  sortHandler: PropTypes.func,
   templateProps: PropTypes.object,
   userProfile: PropTypes.object
 };

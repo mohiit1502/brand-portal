@@ -1,3 +1,5 @@
+/* eslint-disable no-empty */
+
 import React from "react";
 import PropTypes from "prop-types";
 import ContentRenderer from "../../utility/ContentRenderer";
@@ -6,7 +8,7 @@ import "./ButtonsPanel.component.scss";
 
 const ButtonsPanel = props => {
 
-  const evaluateButtonText = (button) => {
+  const evaluateButtonText = button => {
     let buttonText = button.text;
     try {
       const buttonCondition = button.textObj && JSON.parse(button.textObj);
@@ -24,18 +26,20 @@ const ButtonsPanel = props => {
       const handler = button.handlerArg !== undefined ? () => parentRef[button.onClick](button.handlerArg) : parentRef[button.onClick];
       const buttonText = evaluateButtonText(button);
       return shouldRender && <button key={key} type={button.type} className={button.classes} onClick={handler}
-                                     disabled={button.disabled}>{buttonText}</button>;
+        disabled={button.disabled}>{buttonText}</button>;
     } catch (e) {}
-  })
+    return null;
+  });
 
   return props.bareButton ? buttons : (
-    <div className={`c-ButtonsPanel form-row${props.containerClasses ? " " + props.containerClasses : ""}`}>
-      <div className={`col${props.colClasses ? " " + props.colClasses : ""}`}>{buttons}</div>
+    <div className={`c-ButtonsPanel form-row${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
+      <div className={`col${props.colClasses ? ` ${  props.colClasses}` : ""}`}>{buttons}</div>
     </div>
   );
 };
 
 ButtonsPanel.propTypes = {
+  bareButton: PropTypes.bool,
   buttons: PropTypes.object,
   colClasses: PropTypes.string,
   containerClasses: PropTypes.string,

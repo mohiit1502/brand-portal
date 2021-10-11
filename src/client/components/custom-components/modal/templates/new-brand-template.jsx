@@ -1,6 +1,8 @@
+/* eslint-disable max-statements, no-magic-numbers */
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import Cookies from "electrode-cookies";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
@@ -18,8 +20,10 @@ class NewBrandTemplate extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
-    const debounceFunctions = {"brandDebounce": "checkBrandUniqueness", "trademarkDebounce": "checkTrademarkValidity"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -141,7 +145,6 @@ class NewBrandTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("form", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -161,7 +164,6 @@ class NewBrandTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("form", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -202,6 +204,7 @@ class NewBrandTemplate extends React.Component {
     }
   }
 
+  /* eslint-disable react/jsx-handler-names */
   render() {
     const form = this.state.form;
     const section = this.state.section;
@@ -243,6 +246,7 @@ class NewBrandTemplate extends React.Component {
 }
 
 NewBrandTemplate.propTypes = {
+  clientType: PropTypes.string,
   data: PropTypes.object,
   modal: PropTypes.object,
   newBrandConfiguration: PropTypes.object,
@@ -253,6 +257,7 @@ NewBrandTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    clientType: Cookies.get("client_type"),
     newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWBRAND,
     modal: state.modal
   };

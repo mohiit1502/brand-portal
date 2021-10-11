@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-console */
+/* eslint-disable no-undef, no-console, camelcase, no-unused-expressions */
 import mixpanel from "mixpanel-browser";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 
@@ -16,7 +15,6 @@ export default class MixpanelUtils {
                     if (mixpanel.get_property("$email")) elementCloned.properties.$email = mixpanel.get_property("$email");
                     if (mixpanel.get_property("ROLE")) elementCloned.properties.USER_ROLE = mixpanel.get_property("ROLE");
                     if (mixpanel.get_property("$name")) elementCloned.properties.$name = mixpanel.get_property("$name");
-                    // eslint-disable-next-line camelcase
                     if (mixpanel.get_property("$user_id")) elementCloned.properties.$user_id = mixpanel.get_property("$user_id");
                     if (mixpanel.get_property("$user_id")) elementCloned.properties.distinct_id = mixpanel.get_property("$user_id");
                     elementCloned.properties.token = mixpanel.get_config("token");
@@ -30,8 +28,8 @@ export default class MixpanelUtils {
                     headers: {Accept: "text/plain", "Content-Type": "application/x-www-form-urlencoded"},
                     body: encodedParams
                 };
-                let response = await fetch("https://api.mixpanel.com/track#past-events-batch", options);
-                response = await response.json();
+                const response = await fetch("https://api.mixpanel.com/track#past-events-batch", options);
+                await response.json();
             } catch (e) {
                 console.log(e);
             }
@@ -47,6 +45,7 @@ export default class MixpanelUtils {
                 //console.log(e);
             }
         }
+        return "";
     }
 
     static intializeMixpanel(projectToken, enableTracking) {
@@ -169,9 +168,10 @@ export default class MixpanelUtils {
         }
     }
 
+    /* eslint-disable complexity, max-statements */
     static populateProfileInfo(profile) {
         const mixpanelPayload = {};
-        if(profile) {
+        if (profile) {
             mixpanelPayload.EMAIL_VERIFIED = profile && profile.emailVerified;
             mixpanelPayload.ORGANISATION_NAME = profile && profile.organization ? profile.organization.name : "NOT_SET";
             mixpanelPayload.ORGANISATION_STATUS = profile && profile.organization ? profile.organization.status : "NOT_SET";

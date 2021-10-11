@@ -1,0 +1,123 @@
+@import "./../../styles/override/variables";
+
+.c-LoginTypeCta {
+  color: #444;
+  .page-container {
+    .logoBox {
+      width: 30%;
+      height: 100%;
+      min-width: 315px;
+      z-index: 99;
+      display: block;
+      text-align: center;
+      background-color: #041e42;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-size: 180%;
+      background-position: 0;
+      background-repeat: no-repeat;
+      .logo {
+        margin-top: 100px;
+        height: 42px;
+        //margin-left: calc(((70% - 480px) / 2) + 30%);
+      }
+    }
+
+    .main-container {
+      position: absolute;
+      margin: 100px auto auto calc(((70% - 480px) / 2) + 30%);
+
+      .content-container {
+        border: 1px solid #e7e7e7;
+        box-shadow: 0 0 5px 1px #e7e7e7;
+        background-color: #fff;
+
+        .tab-content {
+          max-width: 25rem;
+          .error-message {
+            margin-bottom: unset;
+          }
+          .close-button {
+            position: absolute;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 1px 0 #fff;
+            cursor: pointer;
+            color: #888;
+            top: 0.8rem;
+            right: 1rem;
+            line-height: 1.5rem;
+          }
+        }
+
+        .page-header {
+          width: 100%;
+          display: block;
+          font-weight: bold;
+          font-size: 1.75rem;
+        }
+        .sub-title {
+          font-size: 14px;
+        }
+        .app-btn {
+          width: 100%;
+          background: $falcon-blue;
+          border-radius: 2px;
+          padding: 0.75rem 1rem;
+          border: none;
+          color: white;
+          font-size: 14px;
+          transition: all 0.3s;
+
+          &.secondary-btn {
+            background: white;
+            color: $falcon-blue;
+            border: 1px solid $falcon-blue;
+
+            &:hover {
+              background: $falcon-blue;
+              color: white;
+            }
+          }
+
+          &:hover {
+            text-decoration: none;
+            background-color: #1292ed;
+          }
+        }
+        .OrSeperator {
+          hr {
+            display: block;
+            height: 1px;
+            border: 0;
+            border-top: 1px solid #ccc;
+            padding: 0;
+
+            &:nth-child(1), &:nth-child(3) {
+              flex: 1;
+              margin: auto;
+            }
+            &:nth-child(1) {
+              margin-right: 10px;
+            }
+            &:nth-child(3) {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    .footnote-container {
+      font-size: 0.75rem;
+      .policy-link {
+        text-decoration: underline;
+        color: #444;
+        &:hover {
+          color: #1292ed;;
+        }
+      }
+    }
+  }
+}

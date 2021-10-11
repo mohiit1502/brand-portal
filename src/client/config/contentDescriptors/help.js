@@ -51,12 +51,7 @@ const HELPCONFIG = {
                 "onClick": "goToContactUs",
                 "text": "contact us"
               },
-              "chunk2": " tab in the help section or mail to ",
-              "anchor1": {
-                "href": "mailto:brandportal@walmart.com",
-                "text": "brandportal@walmart.com"
-              },
-              "chunk3": ". Please be sure to include information about your account, along with details regarding your issue."
+              "chunk2": ". Please be sure to include information about your account, along with details regarding your issue."
             }
           }
         },
@@ -104,17 +99,12 @@ const HELPCONFIG = {
           "type": "simple",
           "answer": {
             "partial1": {
-              "chunk1": "Please reach out to our support team from ",
+              "chunk1": "Please reach out to our support team at ",
               "link1": {
                 "onClick": "goToContactUs",
                 "text": "contact us"
               },
-              "chunk2": " tab in the help section or mail to ",
-              "anchor1": {
-                "href": "mailto:brandportal@walmart.com",
-                "text": "brandportal@walmart.com"
-              },
-              "chunk3": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract."
+              "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract."
             }
           }
         },
@@ -135,14 +125,60 @@ const HELPCONFIG = {
                 "onClick": "goToContactUs",
                 "text": "contact us"
               },
-              "chunk2": " tab in the help section or mail to ",
-              "anchor1": {
-                "href": "mailto:brandportal@walmart.com",
-                "text": "brandportal@walmart.com"
-              },
-              "chunk3": " and include information about your account, along with details regarding your issue."
+              "chunk2": " and include information about your account, along with details regarding your issue."
             }
           }
+        },
+        {
+          "question": "How do I link my Seller Center account with my Brand Portal account?",
+          "type": "listWithImages",
+          "answer": {
+            "para1": "If you have a Seller Center account and would like to link your accounts, please follow these steps:",
+            "list": {
+              "type": "ol",
+              "subType": "1",
+              "steps": [
+                {
+                  "partial": {
+                    "chunk1": "Select the \"Login\" option on the Brand Portal landing page ",
+                    "anchor1": {
+                      "href": "https://brandportal.walmart.com/",
+                      "text": "(https://brandportal.walmart.com/)"
+                    }
+                  }
+                },
+                {
+                  "main": "Select \"Login with Seller Center\" option",
+                  "image": [
+                    "LoginTypeCta"
+                  ]
+                },
+                {
+                  "main": "Enter your Seller Center account log-in credentials",
+                  "image": [
+                    "FalconLoginForm"
+                  ]
+                },
+                {
+                  "main": "At prompt, validate your brand’s information and select \"Connect Accounts\" to proceed",
+                  "image": [
+                    "AccountLinking"
+                  ]
+                },
+                {
+                  "main": "Select \"Continue to My Account\", to access your Brand Portal account",
+                  "image": [
+                    "AccountLinkingSuccess"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "question": "What happens if I link my Seller Center account with my Brand Portal account?",
+          "type": "simple",
+          "answer": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \"Login with Seller Center\" option and enter your Seller Center credentials to access the Brand Portal."
         }
       ]
     },
@@ -369,6 +405,6 @@ const HELPCONFIG = {
       "header": "Contact Us"
     }
   }
-}
+};
 
 export default HELPCONFIG;

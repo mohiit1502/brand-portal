@@ -1,10 +1,10 @@
-import {createSelector} from 'reselect'
+import {createSelector} from "reselect";
 
-const getData = (data) => data
+const getData = data => data;
 
 export const getClaims = createSelector(
   getData,
-  (dataState) => {
+  dataState => {
     return dataState.claims.claimList;
   }
-)
+);

@@ -1,12 +1,10 @@
 import React from "react";
-import * as images from "./../../images";
 import CONSTANTS from "./../../constants/constants";
 import "./Hero.component.scss";
-import LaptopImage from "./../../images/laptopImage.jpg"
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 
-const Hero = props => {
+const Hero = () => {
   return (
     <div className="c-Hero">
       <div className="row">

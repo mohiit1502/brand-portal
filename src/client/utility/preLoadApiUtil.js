@@ -1,9 +1,13 @@
+/* eslint-disable filenames/match-regex, no-empty */
 import Http from "./Http";
 import Helper from "./helper";
+import FORMFIELDMETA from "../config/formsConfig/form-field-meta";
+import MODALMETA from "../config/modals-meta";
 
 class PreLoadApiUtil {
-  fetchClaims(dispatcher) {
-    Http.get("/api/claims")
+
+  fetchClaims(dispatcher, logoutUrl, clientType) {
+    Http.get("/api/claims", {clientType})
       .then(res => {
         let claimList = [];
         const content = res.body.data.content;
@@ -13,7 +17,7 @@ class PreLoadApiUtil {
             newClaim.original = claim;
             const firstName = claim.firstName ? Helper.toCamelCaseIndividual(claim.firstName) : "";
             const lastName = claim.lastName ? Helper.toCamelCaseIndividual(claim.lastName) : "";
-            newClaim.createdByName = firstName + " " + lastName;
+            newClaim.createdByName = `${firstName  } ${  lastName}`;
             newClaim.statusDetails = newClaim.statusDetails && newClaim.statusDetails !== "null" ? newClaim.statusDetails : "";
             return newClaim;
           });
@@ -22,8 +26,8 @@ class PreLoadApiUtil {
       });
   }
 
-  fetchBrands(dispatcher) {
-    Http.get("/api/brands")
+  fetchBrands(dispatcher, logoutUrl, clientType) {
+    Http.get("/api/brands", {clientType})
       .then(res => {
         let brandList = [];
         const content = res.body.content;
@@ -36,17 +40,14 @@ class PreLoadApiUtil {
         }
         dispatcher({brandList});
       })
-      .catch(e => {
-        console.log(e);
-      });
+      .catch(() => {});
   }
 
   fetchUsers(dispatcher) {
     Http.get("/api/users")
       .then(res => {
-        let userList = [];
         const content = res.body.content;
-        userList = content.map((user, i) => {
+        const userList = content.map((user, i) => {
           const newUser = {
             id: user.email,
             loginId: user.email,
@@ -70,6 +71,42 @@ class PreLoadApiUtil {
         dispatcher({userList});
       });
   }
+
+    fetchModalConfig(dipatcher) {
+        try {
+            dipatcher(MODALMETA);
+            Http.get("/api/modalConfig")
+                .then(response => {
+                    if (response.body) {
+                        try {
+                            response = JSON.parse(response.body);
+                            // response = MODALMETA;
+                            dipatcher(response);
+                        } catch (e) {
+                            dipatcher(MODALMETA);
+                        }
+                    }
+                });
+        } catch (err) {}
+    }
+
+    fetchFormFieldConfig (dipatcher) {
+        try {
+            dipatcher(FORMFIELDMETA);
+            Http.get("/api/formConfig")
+                .then(response => {
+                    if (response.body) {
+                        try {
+                            response = JSON.parse(response.body);
+                            // response = FORMFIELDMETA;
+                            dipatcher(response);
+                        } catch (e) {
+                            dipatcher(FORMFIELDMETA);
+                        }
+                    }
+                });
+        } catch (err) {}
+    }
 }
 
 const preLoadApiUtil = new PreLoadApiUtil();

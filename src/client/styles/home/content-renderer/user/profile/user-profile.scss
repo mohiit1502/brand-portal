@@ -7,10 +7,17 @@
   .password-reset-col{
     button{
       border-radius: 42px;
-      color: $market-place-blue;
       font-weight: bold;
       font-size: 15px;
-      border: $default-input-border;
+
+      &.reset-password {
+        border: $default-input-border;
+        color: $market-place-blue;
+      }
+
+      &.manage-profile {
+        color: white;
+      }
 
       &:hover {
         color: white;

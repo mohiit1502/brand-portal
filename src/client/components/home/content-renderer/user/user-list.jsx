@@ -1,33 +1,38 @@
 import React from "react";
 import { connect } from "react-redux";
-import "../../../../styles/home/content-renderer/user/user-list.scss";
 import PropTypes from "prop-types";
-import Dropdown from "../../../custom-components/dropdown/dropdown";
+import moment from "moment";
+import Cookies from "electrode-cookies";
+
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
-import ClientUtils from "../../../../utility/ClientUtils";
-import Http from "../../../../utility/Http";
 import {saveUserCompleted} from "../../../../actions/user/user-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
-import {dispatchFilter, dispatchWidgetAction} from "./../../../../actions/dashboard/dashboard-actions";
-import PaginationNav from "../../../custom-components/pagination/pagination-nav";
+import {dispatchFilter, dispatchWidgetAction} from "../../../../actions/dashboard/dashboard-actions";
+
+import Dropdown from "../../../custom-components/dropdown/dropdown";
 import CustomTable from "../../../custom-components/table/custom-table";
 import UserListTable from "../../../custom-components/table/templates/user-list-table";
 import NoRecordsMatch from "../../../custom-components/NoRecordsMatch/NoRecordsMatch";
-import CONSTANTS from "../../../../constants/constants";
-import restConfig from "../../../../config/rest";
-import AUTH_CONFIG from "../../../../config/authorizations";
-import filterIcon from "../../../../images/filterIcon.svg";
-import kebabIcon from "../../../../images/kebab-icon.png";
 import {FilterType, Paginator} from "../../../index";
+
 import SortUtil from "../../../../utility/SortUtil";
 import SearchUtil from "../../../../utility/SearchUtil";
 import FilterUtil from "../../../../utility/FilterUtil";
-import moment from "moment";
 import mixpanel from "../../../../utility/mixpanelutils";
+import ClientUtils from "../../../../utility/ClientUtils";
+import Http from "../../../../utility/Http";
+
+import filterIcon from "../../../../images/filterIcon.svg";
+import kebabIcon from "../../../../images/kebab-icon.png";
+import AUTH_CONFIG from "../../../../config/authorizations";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
+import CONSTANTS from "../../../../constants/constants";
+import restConfig from "../../../../config/rest";
+import "../../../../styles/home/content-renderer/user/user-list.scss";
 
 class UserList extends React.Component {
 
+  /* eslint-disable max-statements */
   constructor (props) {
     super(props);
 
@@ -38,8 +43,6 @@ class UserList extends React.Component {
     this.createFilters = this.createFilters.bind(this);
     this.resetFilters = this.resetFilters.bind(this);
     this.fetchUserData = this.fetchUserData.bind(this);
-    // this.paginationCallback = this.paginationCallback.bind(this);
-    // this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
@@ -47,7 +50,7 @@ class UserList extends React.Component {
     this.uiSearch = SearchUtil.uiSearch.bind(this);
     this.applyFilters = FilterUtil.applyFilters.bind(this);
     const userRole = this.props.userProfile && this.props.userProfile.role.name ? this.props.userProfile.role.name.toLowerCase() : "";
-    this.filterMap = {"pending": "Pending Activation", "active": "Active"};
+    this.filterMap = {pending: "Pending Activation", active: "Active"};
     this.sortAndNormalise = SortUtil.sortAndNormalise.bind(this);
 
     this.state = {
@@ -90,12 +93,12 @@ class UserList extends React.Component {
               const mixpanelPayload = {
                 API: "/api/users/",
                 WORK_FLOW: "VIEW_USER_LIST",
-                SELECTED_USER_EMAIL:data.id,
+                SELECTED_USER_EMAIL: data.id,
                 SELECTED_USER_UPDATED_STATUS: outgoingStatus,
                 SELECTED_USER_ROLE: data.role,
                 SELECTED_USER_NAME: data.username,
                 SELECTED_USER_BRANDS: data.brands
-              }
+              };
               const response = Http.put(`/api/users/${data.loginId}/status/${outgoingStatus}`, {}, "", () => this.loader("loader", false));
               response.then(() => {
                 this.fetchUserData();
@@ -104,19 +107,6 @@ class UserList extends React.Component {
               });
             }
           },
-          // TODO comment for MVP, uncomment for sprint 3
-          // {
-          //   id: 3,
-          //   value: CONSTANTS.USER.OPTIONS.DISPLAY.DELETE,
-          //   disabled: true,
-          //   notMvp: true,
-          //   clickCallback: (evt, option, data) => {
-          //     const response = Http.delete(`/api/users/${data.loginId}`);
-          //     response.then(res => {
-          //       this.fetchUserData();
-          //     });
-          //   }
-          // },
           {
             id: 4,
             value: CONSTANTS.USER.OPTIONS.DISPLAY.RESENDINVITE,
@@ -126,25 +116,24 @@ class UserList extends React.Component {
               const mixpanelPayload = {
                 API: "/api/users/reinvite",
                 WORK_FLOW: "VIEW_USER_LIST",
-                SELECTED_USER_EMAIL:data.id,
+                SELECTED_USER_EMAIL: data.id,
                 SELECTED_USER_STATUS: data.status,
                 SELECTED_USER_ROLE: data.role,
                 SELECTED_USER_NAME: data.username,
                 SELECTED_USER_BRANDS: data.brands
-              }
-              Http.post("/api/users/reinvite", {email: data.loginId}, "", () => this.loader("loader", false))
+              };
+              Http.post("/api/users/reinvite", {email: data.loginId}, {clientType: Cookies.get("client_type")}, () => this.loader("loader", false))
                 .then(res => {
                   if (res.body === true) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
                   } else if (res.body === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has already been activated.`);
                   } else {
-                    this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn't be invited.`);
+                    this.props.showNotification(NOTIFICATION_TYPE.ERROR, `User ${data.loginId} couldn"t be invited.`);
                   }
                   mixpanelPayload.API_SUCCESS = true;
                 })
-                .catch( (e) => {
-                  console.log(e);
+                .catch(e => {
                   mixpanelPayload.API_SUCCESS = false;
                   mixpanelPayload.ERROR = e.message ? e.message : e;
                 })
@@ -163,7 +152,7 @@ class UserList extends React.Component {
           canSort: false,
           sortState: {
             level: CONSTANTS.SORTSTATE.RESET,
-            type: CONSTANTS.SORTSTATE.NUMERICTYPE,
+            type: CONSTANTS.SORTSTATE.NUMERICTYPE
           }
         },
         {
@@ -193,7 +182,7 @@ class UserList extends React.Component {
           accessor: "dateAdded",
           sortState: {
             level: CONSTANTS.SORTSTATE.RESET,
-            type: CONSTANTS.SORTSTATE.DATETYPE,
+            type: CONSTANTS.SORTSTATE.DATETYPE
           }
         },
         {
@@ -215,29 +204,19 @@ class UserList extends React.Component {
       return stateClone;
     });
   }
-  // paginationCallback (page) {
-  //   const pageState = {...this.state.page};
-  //   pageState.offset = page.offset;
-  //   pageState.size = page.size;
-  //   const paginatedList = [...page.list];
-  //   const filteredList = [...page.list];
-  //   this.createFilters(paginatedList);
-  //
-  //   this.setState({page: pageState, paginatedList, filteredList});
-  // }
-  getDateFromTimeStamp(timestamp){
+
+  getDateFromTimeStamp(timestamp) {
     try {
-    const dateParts= timestamp.split('T');
-      let dateString ;
-      if(dateParts && dateParts[0])
-        dateString = dateParts[0];
-      return moment(dateString).format('MM-DD-YYYY');
-    }
-    catch(e){
-      console.log(e);
-    }
+    const dateParts = timestamp.split("T");
+      let dateString;
+      if (dateParts && dateParts[0]) {dateString = dateParts[0];}
+      return moment(dateString).format("MM-DD-YYYY");
+      /* eslint-disable no-empty */
+    } catch (e) {}
       return "";
   }
+
+  /* eslint-disable no-unused-expressions */
   async fetchUserData () {
     !this.props.users ? this.loader("loader", true) : this.loader("nonBlockingLoader", true);
     let userList = (await Http.get("/api/users", "", () => {
@@ -272,9 +251,7 @@ class UserList extends React.Component {
     }
 
     this.setState({userList, unsortedList: userList}, () => this.checkAndApplyDashboardFilter(userList));
-    const sortedClaimList = this.multiSort();
-
-    return sortedClaimList;
+    return this.multiSort();
   }
 
   resetFilters() {
@@ -286,18 +263,20 @@ class UserList extends React.Component {
     });
     const userList = [...this.state.userList];
     let i = 1;
-    userList.forEach(user => user.sequence = i++)
-    this.setState({filters, filteredList: userList, unsortedList: userList, appliedFilter:[]}, () => {
+    userList.forEach(user => {
+      user.sequence = i++;
+    });
+    this.setState({filters, filteredList: userList, unsortedList: userList, appliedFilter: []}, () => {
       this.uiSearch();
-      this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""})
+      this.props.dispatchFilter({...this.props.filter, "widget-user-summary": ""});
     });
     this.toggleFilterVisibility();
   }
 
-  clearFilter(filterID,optionID){
+  clearFilter(filterID, optionID) {
     this.onFilterChange(filterID, optionID);
-    this.applyFilters(false,null,null,true)
-    this.toggleFilterVisibility()
+    this.applyFilters(false, null, null, true);
+    this.toggleFilterVisibility();
   }
 
   createFilters(paginatedList) {
@@ -308,6 +287,7 @@ class UserList extends React.Component {
     const userStatuses = Object.values(CONSTANTS.USER.STATUS);
     userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.REJECTED), 1);
     userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.PENDING_SUPPLIER), 1);
+    userStatuses.splice(userStatuses.indexOf(CONSTANTS.USER.STATUS.PENDING_SELLER), 1);
 
     paginatedList.map(user => {
       user.brands.map(brand => {
@@ -374,25 +354,30 @@ class UserList extends React.Component {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_LIST_WORKFLOW.VIEW_USERS, mixpanelPayload);
   }
 
+  /* eslint-disable no-unused-expressions */
   checkAndApplyDashboardFilter(userList) {
-    const filterValue = this.filterMap[this.props.filter["widget-user-summary"]]
+    const filterValue = this.filterMap[this.props.filter["widget-user-summary"]];
     this.createFilters(userList);
     const stateCloned = {...this.state};
-    const userStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "status")
+    const userStatusFilter = stateCloned.filters.length > 0 && stateCloned.filters.find(filter => filter.id === "status");
     const dashboardFilter = userStatusFilter && userStatusFilter.filterOptions.find(filterOption => filterOption.name === filterValue);
     if (this.props.filter && this.props.filter["widget-user-summary"]) {
-      this.setState(state => {
+      this.setState(() => {
         dashboardFilter && (dashboardFilter.selected = true);
         return stateCloned;
-      }, () => this.applyFilters(false, userList, false,true))
+      }, () => this.applyFilters(false, userList, false, true));
       // })
     } else {
-      this.setState(state => {
+      this.setState(() => {
         let i = 1;
-        userStatusFilter && userStatusFilter.filterOptions.forEach(filterOption => filterOption.selected = false);
-        userList.forEach(user => user.sequence = i++)
+        userStatusFilter && userStatusFilter.filterOptions.forEach(filterOption => {
+          filterOption.selected = false;
+        });
+        userList.forEach(user => {
+          user.sequence = i++;
+        });
         return stateCloned;
-      }, () => this.applyFilters(false, userList, false,false))
+      }, () => this.applyFilters(false, userList, false, false));
     }
   }
 
@@ -456,14 +441,6 @@ class UserList extends React.Component {
     });
   }
 
-  // changePageSize(size) {
-  //
-  //   const page = {...this.state.page};
-  //   page.size = size;
-  //   this.setState({page});
-  //
-  // }
-
   toggleFilterVisibility (explicitToggle) {
     this.setState(state => {
       state = {...state};
@@ -476,30 +453,9 @@ class UserList extends React.Component {
     this.setState({paginatedList});
   }
 
+  /* eslint-disable react/jsx-handler-names, complexity */
   render () {
-
     const users = this.state.filteredList ? this.state.filteredList : this.state.userList;
-    // const viewerShip = () => {
-    //   const from = this.state.page.offset * this.state.page.size + 1;
-    //   const to = this.state.page.offset * this.state.page.size + this.state.filteredList.length;
-    //   const total = this.state.userList.length;
-    //   if (this.state.userList.length && to >= from) {
-    //     return (<div>Viewing <span className="count font-weight-bold" >{from} - {to}</span> of {total} {CONSTANTS.USER.SECTION_TITLE_PLURAL}</div>);
-    //   } else if (this.props.claims && this.props.claims.length && to <= from) {
-    //     return (<div>Viewing <span className="count font-weight-bold">0</span> of ${total} ${CONSTANTS.USER.SECTION_TITLE_PLURAL}</div>);
-    //   }
-    //   return "";
-    // };
-
-    // let useFilter = false;
-    // this.state.filters.every(filter => {
-    //   const filterOptionsSelected = filter.filterOptions.filter(filterOption => filterOption.selected && filterOption.value !== "all");
-    //   useFilter = filterOptionsSelected.length > 0;
-    //   return !useFilter;
-    // });
-    // useFilter = this.state.searchText || useFilter;
-    // const pageList = useFilter ? this.state.filteredList : this.state.userList;
-    const pageList = this.state.userList;
     const enableSectionAccess = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && AUTH_CONFIG.USERS.SECTION_ACCESS.map(role => role.toLowerCase()).includes(this.state.userRole) : true;
     const enableUserInvite = restConfig.AUTHORIZATIONS_ENABLED ? this.state.userRole && Object.keys(AUTH_CONFIG.USERS.INVITE).map(role => role.toLowerCase()).includes(this.state.userRole) : true;
     return enableSectionAccess ? (
@@ -522,11 +478,11 @@ class UserList extends React.Component {
                   <div className="input-group input-group-sm">
                     {this.state.nonBlockingLoader && <div className="list-loader mr-3 mt-1 loader" style={{width: "1.5rem"}} />}
                     <input id="search-box" className="form-control form-control-sm " type="search" placeholder="Search by User Details"
-                           onChange={evt => this.uiSearch(evt, false)}/>
+                      onChange={evt => this.uiSearch(evt, false)}/>
                     <div className="input-group-append bg-transparent cursor-pointer" onClick={this.toggleFilterVisibility}>
                       <div className="bg-transparent">
                         <div className="filter-btn pl-4 " >
-                          <img src={filterIcon} height="20px"/> Filter
+                          <img alt="Filter" src={filterIcon} height="20px"/> Filter
                         </div>
                       </div>
                     </div>
@@ -534,7 +490,7 @@ class UserList extends React.Component {
                 </div>
               </div>
               {/*{this.props.filter && this.props.filter["widget-user-summary"] && this.props.filter["widget-user-summary"] !== "all" &&*/}
-              {/*<FilterType filterText={`Profile Status is '__filterType__'`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"*/}
+              {/*<FilterType filterText={`Profile Status is "__filterType__"`} filterMap={this.filterMap} currentFilters={this.props.filter} filterId="widget-user-summary"*/}
               {/*            clearFilterHandler={this.props.dispatchFilter}/>}*/}
               <div className="row filter-dropdown-row">
                 <div className={`col-12 ml-4 pr-0 filter-dropdown-column ${this.state.showFilters ? "show" : ""}`}>
@@ -562,7 +518,7 @@ class UserList extends React.Component {
                                 {
                                   filter.filterOptions.map(option => {
                                     return (
-                                      <li key={option.id} >
+                                      <li className="my-2" key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
                                             onChange={() => {this.onFilterChange(filter.id, option.id);}}/>
@@ -600,32 +556,6 @@ class UserList extends React.Component {
                       }
                     </div>
                   </div>
-                  {/*<div className="row user-list-table-manage-row px-4 h-10 align-items-center">*/}
-                  {/*  <div className="col">*/}
-                  {/*    { viewerShip() }*/}
-                  {/*  </div>*/}
-                  {/*  <div className="col text-center">*/}
-                  {/*    <PaginationNav list={pageList} offset={this.state.page.offset} size={this.state.page.size} callback={this.paginationCallback}/>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="col text-right">*/}
-                  {/*    {*/}
-                  {/*      !!this.state.userList.length && <span className="showing-content pr-2">Showing</span>*/}
-                  {/*    }*/}
-                  {/*    {!!this.state.userList.length && <button type="button" className="btn btn-sm user-count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown"*/}
-                  {/*      aria-haspopup="true" aria-expanded="false">*/}
-                  {/*        {this.state.page.size} {CONSTANTS.USER.SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;*/}
-                  {/*      </button>}*/}
-                  {/*    <div className="dropdown-menu user-count-dropdown-menu">*/}
-                  {/*      {*/}
-                  {/*        this.state.page.sizeOptions.map(val => {*/}
-                  {/*          return (<a key={val} className="dropdown-item"*/}
-                  {/*            onClick={() => {this.changePageSize(val);}}> {val} {CONSTANTS.USER.SECTION_TITLE_PLURAL} </a>);*/}
-                  {/*        })*/}
-                  {/*      }*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</div>*/}
-                  {/*<Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={users} section="USER" updateListAndFilters={this.updateListAndFilters} />*/}
                 </div>
               </div>
               <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={users} section="USER" updateListAndFilters={this.updateListAndFilters} />

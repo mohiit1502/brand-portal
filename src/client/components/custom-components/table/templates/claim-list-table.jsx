@@ -15,10 +15,9 @@ import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 import mixpanel from "../../../../utility/mixpanelutils";
 
 const ClaimListTable = function(props) {
-  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows, prepareRow } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps: {loader}, rows, prepareRow } = props;
   const [claimDetailsloader, setClaimDetailsloader] = useState(false);
   const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
-  const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
   const sortStateReset = CONSTANTS.SORTSTATE.RESET;
 
   const showClaimDetails = async function (row) {
@@ -96,13 +95,13 @@ const ClaimListTable = function(props) {
           {
             rows.map(row => {
               prepareRow(row);
-              return <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
+              return (<div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
                   {row.cells.map((cell, k) => {
-                    return <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
-                        {cell.column.id === "caseNumber" ? <Link className="cursor-pointer text-primary claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value}
-                      </div>;
+                    return (<div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
+                        {cell.column.id === "caseNumber" ? <Link className="cursor-pointer claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value}
+                      </div>);
                   })}
-                </div>;
+                </div>);
             })
           }
         </div> || (loader ? "" : <NoRecordsMatch message="No records matching the filter and/or search criteria" />)
@@ -116,6 +115,7 @@ ClaimListTable.propTypes = {
   headerGroups: PropTypes.array,
   rows: PropTypes.array,
   prepareRow: PropTypes.func,
+  sortHandler: PropTypes.func,
   templateProps: PropTypes.object,
   toggleModal: PropTypes.func
 };

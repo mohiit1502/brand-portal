@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+/* eslint-disable no-magic-numbers */
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import PaginationNav from "../custom-components/pagination/pagination-nav";
 import CONSTANTS from "../../constants/constants";
-import './Paginator.component.scss';
+import "./Paginator.component.scss";
 
 class Paginator extends Component {
 
@@ -22,7 +23,7 @@ class Paginator extends Component {
         sizeOptions: [5, 10, 15, 20, 30],
         list: []
       }
-    }
+    };
   }
 
   componentDidMount() {
@@ -31,7 +32,7 @@ class Paginator extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props.records !== prevProps.records && this.state.page.offset >= 0 && this.state.page.size >= 0) {
       this.updatePage(this.state.page.offset, this.state.page.size);
     }
@@ -43,11 +44,12 @@ class Paginator extends Component {
     pageState.size = size;
     pageState.net.size = list.length;
     pageState.net.pagesCount = Math.ceil(pageState.net.size / pageState.size);
-    pageState.list = pageList;
+    /* eslint-disable no-nested-ternary */
     pageState.offset = offset >= pageState.net.pagesCount ? pageState.net.pagesCount - 1 > 0 ? pageState.net.pagesCount - 1 : 0 : offset;
     const startIndex = pageState.offset * size;
     const endIndex = startIndex + size;
     const pageList = list.slice(startIndex, endIndex);
+    pageState.list = pageList;
 
     if (pageState.offset < 0) return;
     const paginatedList = [...pageList];
@@ -67,26 +69,26 @@ class Paginator extends Component {
     const from = page.offset * page.size + 1;
     const to = page.offset * page.size + this.props.paginatedList.length;
     const total = records && records.length;
-    let pageViewInfo = records && records.length ? <React.Fragment>
+    const pageViewInfo = records && records.length ? (<React.Fragment>
       Viewing <span className="count font-weight-bold" >{to >= from ? `${from} - ${to}` : 0}</span> of {total} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL}
-    </React.Fragment> : ""
+    </React.Fragment>) : "";
 
     const pageSizeSelector = records && records.length ?
-      <React.Fragment>
+      (<React.Fragment>
         <span className="showing-content pr-2">Show</span>
         <button type="button" className="btn btn-sm count-toggle-btn dropdown-toggle px-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {page.size} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
         </button>
         <div className="dropdown-menu count-dropdown-menu">
-          {page.sizeOptions.map(val => <a key={val} className="dropdown-item" onClick={() => {this.changePageSize(val);}}>
-            {val} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL}</a>)}
+          {page.sizeOptions.map(val => (<a key={val} className="dropdown-item" onClick={() => {this.changePageSize(val);}}>
+            {val} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL}</a>))}
         </div>
-      </React.Fragment> : null;
+      </React.Fragment>) : null;
 
     return (
       <div className="c-Paginator row table-manage-row h-10 mb-4 align-items-center">
         <div className="col text-left">{pageViewInfo}</div>
-        <div className="col text-center">
+        <div className="col text-center overflow-auto">
           <PaginationNav list={records ? records : []} page={this.state.page} updatePage={this.updatePage}/>
         </div>
         <div className="col text-right">{pageSizeSelector}</div>
@@ -107,6 +109,6 @@ Paginator.propTypes = {
 Paginator.defaultProps = {
   paginatedList: [],
   records: []
-}
+};
 
 export default Paginator;

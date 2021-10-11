@@ -1,3 +1,3 @@
-import MemoizedTable from './MemoizedTable.jsx';
+import MemoizedTable from "./MemoizedTable.jsx";
 
 export default MemoizedTable;

@@ -1,3 +1,3 @@
-import FaqContainer from './FaqContainer.jsx';
+import FaqContainer from "./FaqContainer.jsx";
 
 export default FaqContainer;

@@ -1,8 +1,10 @@
-import React from 'react';
-import ButtonsPanel from './ButtonsPanel';
+/* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
 
-describe('ButtonsPanel', () => {
-   it('renders without error', () => {
+import React from "react";
+import ButtonsPanel from "./ButtonsPanel";
+
+describe("ButtonsPanel", () => {
+   it("renders without error", () => {
 
    });
 });

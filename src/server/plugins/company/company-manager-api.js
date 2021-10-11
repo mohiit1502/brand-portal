@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable max-statements */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable camelcase */
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
@@ -23,7 +25,7 @@ class CompanyManagerApi {
       {
         method: "GET",
         path: "/api/company/availability",
-        handler: this.checkCompanyNameAvailabililty
+        handler: this.checkCompanyNameAvailability
       },
       {
         method: "POST",
@@ -70,10 +72,12 @@ class CompanyManagerApi {
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
       ROPRO_USER_ID:	request.state.session_token_login_id,
       ROPRO_CLIENT_ID:	"abcd",
+      ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
       ROPRO_CORRELATION_ID: ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
     };
   }
 
+  /* eslint-disable complexity */
   async registerOrganization (request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
@@ -83,6 +87,9 @@ class CompanyManagerApi {
     console.log("[CompanyManagerApi::registerOrganization] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         method: "POST",
         headers
@@ -125,7 +132,9 @@ class CompanyManagerApi {
     console.log("[CompanyManagerApi::checkTrademarkValidity] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const headers = ServerUtils.getHeaders(request);
-
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };
@@ -243,18 +252,20 @@ class CompanyManagerApi {
     }
   }
 
-  async checkCompanyNameAvailabililty (request, h) {
+  async checkCompanyNameAvailability (request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/company/availability"
     };
-    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has started");
-    console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] User ID: ", request.state && request.state.session_token_login_id);
+    console.log("[CompanyManagerApi::checkCompanyNameAvailability] API request for Company Name Avaialability has started");
+    console.log("[CompanyManagerApi::checkCompanyNameAvailability] User ID: ", request.state && request.state.session_token_login_id);
     try {
       const name = request.query.name;
 
       const headers = ServerUtils.getHeaders(request);
-
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };

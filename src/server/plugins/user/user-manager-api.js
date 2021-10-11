@@ -2,6 +2,7 @@
 /* eslint-disable max-statements */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable no-magic-numbers */
 import falcon from "../../components/auth/falcon";
 import {CONSTANTS} from "../../constants/server-constants";
 import ServerHttp from "../../utility/ServerHttp";
@@ -15,7 +16,8 @@ const ttl = 12 * 60 * 60 * 1000;
 class UserManagerApi {
 
   constructor() {
-    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus","contactUs"]
+    const functions = ["checkUnique", "createUser", "deleteUser", "getNewUserBrands", "getNewUserRoles", "getUserInfo", "getUsers", "loginSuccessRedirect", "logout", "register", "reinviteUser", "resetPassword", "updateUser", "updateUserStatus", "updateTouStatus", "contactUs"];
+    /* eslint-disable no-return-assign*/
     functions.forEach(name => this[name] = this[name].bind(this));
     this.name = "UserManagerApi";
   }
@@ -100,8 +102,8 @@ class UserManagerApi {
       },
       {
         method: "POST",
-        path:"/api/users/contactUs",
-        handler:this.contactUs
+        path: "/api/users/contactUs",
+        handler: this.contactUs
       },
       {
         method: "delete",
@@ -164,6 +166,7 @@ class UserManagerApi {
       };
       console.log("[UserManagerApi::checkHealth] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
@@ -248,7 +251,7 @@ class UserManagerApi {
       console.log("[UserManagerApi::resetPassword] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       console.log(payload);
-      let RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
+      const RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
       const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
 
       mixpanelPayload.URL = url;
@@ -286,6 +289,7 @@ class UserManagerApi {
       };
       console.log("[UserManagerApi::getUsers] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
@@ -324,6 +328,7 @@ class UserManagerApi {
       };
       console.log("[UserManagerApi::checkUnique] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.UNIQUENESS_CHECK_PATH");
       UNIQUENESS_CHECK_PATH && (UNIQUENESS_CHECK_PATH = UNIQUENESS_CHECK_PATH.replace("__email__", request.query.email));
       // const USER_PATH = `/ropro/umf/v1/users/${request.query.email}/uniqueness`; //request.app.ccmGet("USER_CONFIG.USER_PATH");
@@ -400,11 +405,15 @@ class UserManagerApi {
     try {
       const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };
       console.log("[UserManagerApi::createUser] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}`;
 
@@ -622,11 +631,15 @@ class UserManagerApi {
     };
     try {
       const headers = ServerUtils.getHeaders(request);
+      headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      console.log("[UserManagerApi:getUserInfo Headers: ", headers);
+      console.log("[UserManagerApi:getUserInfo Headers: ", request.state);
       const options = {
         headers
       };
       console.log("[UserManagerApi::getUserInfo] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
       const url = `${BASE_URL}${USER_SELF_INFO_PATH}`;
 
@@ -666,19 +679,23 @@ class UserManagerApi {
     };
     try {
       const query = request.query;
+      const clientType = request.query.clientType;
+      console.log("Setting clientType post login redirect: ", clientType);
+      console.log("Setting clientType post login redirect: ", request.query.auth);
       // eslint-disable-next-line camelcase
       if (!query.code) {
         return h.redirect("/api/falcon/login");
       }
       const {id_token} = await this.getAccessToken(request, query.code);
       const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
-      // const user = await ServerUtils.decryptToken(id_token);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
 
-      h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false});
-      h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false});
-
+      console.log("Before set: ", h.state);
+      h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      h.state("client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      console.log("After set: ", h.state);
       mixpanelPayload.distinct_id = loginId;
       mixpanelPayload.API_SUCCESS = true;
 
@@ -702,17 +719,9 @@ class UserManagerApi {
       API: "/logout"
     };
     try {
-      // h.unstate("auth_session_token");
-      h.state("auth_session_token", "", {
-        ttl: 1,
-        isSecure: false,
-        isHttpOnly: false
-      });
-      h.state("session_token_login_id", "", {
-        ttl: 1,
-        isSecure: false,
-        isHttpOnly: false
-      });
+      h.unstate("auth_session_token");
+      h.unstate("session_token_login_id");
+      h.unstate("client_type");
 
       mixpanelPayload.API_SUCCESS = true;
       console.log("[UserManagerApi::logout] API request for Logout has completed");
@@ -762,7 +771,11 @@ class UserManagerApi {
       API: "/api/falcon/{action}"
     };
     try {
-      const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action);
+      const clientType = request.query.clientType;
+      // if (!clientType) {
+      //   return h.redirect(`/${request.params.action}`)
+      // }
+      const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action, clientType);
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.REDIRECT_URI = redirectUri;
       console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");
@@ -805,7 +818,6 @@ class UserManagerApi {
         "WM_CONSUMER.NAME": secrets["WM_CONSUMER.NAME"]
       };
       const options = {headers};
-
       const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
       console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has completed");
       mixpanelPayload.URL = url;

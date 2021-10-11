@@ -179,7 +179,7 @@
           "disabled": false,
           "error": "",
           "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
           "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
@@ -477,7 +477,7 @@
           "disabled": false,
           "error": "",
           "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
           "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
@@ -708,7 +708,8 @@
             },
             "validateLength": {
               "minLength": 20,
-              "error": "Comment should be 20 characters long!"
+              "maxLength": 2000,
+              "error": "Comments should be between 20 and 2000 characters!"
             }
           }
         },
@@ -1145,8 +1146,6 @@
           "key": "firstName",
           "label": "First Name",
           "layout": "5.1.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid First name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
@@ -1156,6 +1155,10 @@
           "validators": {
             "validateRequired": {
               "error": "First Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
             }
           }
         },
@@ -1167,8 +1170,6 @@
           "key": "lastName",
           "label": "Last Name",
           "layout": "5.2.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid Last name.",
           "preventHTMLRequiredValidation": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "required": true,
@@ -1178,6 +1179,10 @@
           "validators": {
             "validateRequired": {
               "error": "Last Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
             }
           }
         },
@@ -1189,8 +1194,6 @@
           "key": "ownerName",
           "label": "Owner Name",
           "layout": "6.0.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please provide a valid owner name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1212,8 +1215,6 @@
           "key": "companyName",
           "label": "Company Name",
           "layout": "6.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid company name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1229,8 +1230,6 @@
           "key": "brandName",
           "label": "Brand Name",
           "layout": "7.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid brand name.",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1245,7 +1244,6 @@
           "key": "address_1",
           "label": "Address 1",
           "layout": "8.1.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1267,7 +1265,6 @@
           "label": "Address 2",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "layout": "8.2.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": false,
@@ -1282,7 +1279,6 @@
           "key": "city",
           "label": "City",
           "layout": "9.1.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1297,13 +1293,12 @@
           }
         },
         "country": {
-          "disabled": true,
+          "disabled": false,
           "error": "",
           "inputId": "country",
           "key": "country",
           "label": "Country",
           "layout": "9.2.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1314,6 +1309,14 @@
           "validators": {
             "validateRequired": {
               "error": "Country is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z\\s]+$",
+              "error": "Please enter a valid Country name"
+            },
+            "validateLength": {
+              "minLength": "2",
+              "error": "Minimum length is 2 characters"
             }
           }
         },
@@ -1325,7 +1328,6 @@
           "key": "state",
           "label": "State",
           "layout": "10.1.6",
-          "pattern": null,
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1344,14 +1346,10 @@
           "disabled": false,
           "error": "",
           "inputId": "zip",
-          "invalidError": "Zip/Postal Code should be in format [xxxxx] or [xxxxx-xxxx].",
-          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "key": "zip",
           "label": "ZIP",
           "layout": "10.2.6",
           "maxLength": 10,
-          "patternPath": "CONSTANTS.REGEX.ZIP",
-          "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
@@ -1361,6 +1359,14 @@
           "validators": {
             "validateRequired": {
               "error": "Zip/Postal Code is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9]+$",
+              "error": "Please enter a valid Zip Code"
+            },
+            "validateLength": {
+              "minLength": "3",
+              "error": "Minimum length is 3 characters"
             }
           }
         },
@@ -1375,7 +1381,7 @@
           "key": "phone",
           "label": "Phone Number",
           "layout": "11.1.6",
-          "maxLength": 17,
+          "maxLength": 15,
           "prebounceChangeHandler": "prebounceChangeHandler",
           "preventHTMLRequiredValidation": true,
           "required": true,
@@ -1387,8 +1393,12 @@
               "error": "Phone number is required"
             },
             "validateRegex": {
-              "dataRuleRegex": "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
-              "error": "Please enter a valid Phone Number"
+              "dataRuleRegex": "^[0-9]+$",
+              "error": "Please enter all numbers."
+            },
+            "validateLength": {
+              "minLength": "7",
+              "error": "Minimum length is 7 characters"
             }
           }
         },
@@ -1405,7 +1415,7 @@
           "preventHTMLRequiredValidation": true,
           "required": true,
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "type": "email",
+          "type": "text",
           "value": "",
           "validators": {
             "validateRequired": {
@@ -1624,7 +1634,7 @@
         "fieldsHeader_5": {
           "containerClasses": "font-weight-bold",
           "colClasses": "pt-2",
-          "header": "Please review your contact information and make sure it's correct before clicking 'Submit Claim'",
+          "header": "Please review your contact information and make sure it's correct before clicking \"Submit Claim\"",
           "layout": "21.1.8",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"

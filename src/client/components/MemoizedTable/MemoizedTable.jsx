@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-regex */
 import React, {memo, useMemo} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -10,8 +11,9 @@ const MemoizedTable = props => {
   const {classColMap, data, fetchComplete} = props;
   const columns = useMemo(() => props.columns, []);
   const { getTableBodyProps,  headerGroups,  rows,  prepareRow } = useTable({ columns, data}, useSortBy);
-  const opts = {getTableBodyProps,  headerGroups,  rows,  prepareRow}
+  const opts = {getTableBodyProps,  headerGroups,  rows,  prepareRow};
 
+  /* eslint-disable no-empty */
   const showClaimDetails = async function (row) {
     try {
       const ticketId = row.original && row.original.ticketId;
@@ -19,10 +21,7 @@ const MemoizedTable = props => {
       const response = (await Http.get(claimDetailsUrl)).body;
       const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
       props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-    } catch (e) {
-      // eslint-disable-next-line no-undef
-      console.log(e);
-    }
+    } catch (e) {}
   };
 
   const getHeaders = () => {
@@ -30,14 +29,14 @@ const MemoizedTable = props => {
       return (
         <div className="table-row row align-items-center" style={{height: "unset"}} key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
           {headerGroup.headers.map(header =>
-            <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
+            (<div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
               { header.render("Header") }
-            </div>
+            </div>)
           )}
         </div>
       );
-    })
-  }
+    });
+  };
 
   const getBody = () => {
     return rows.map(row => {
@@ -50,19 +49,20 @@ const MemoizedTable = props => {
                 {cell.column.id === "caseNumber" ? <span className="cursor-pointer text-primary" onClick={() => showClaimDetails(row)}>{cell.value}</span> : cell.value}
                 {cell.column.id === "createByName" && cell.row.original.company && <span className="company-name ml-2 border font-size-12 text-uppercase p-1">{cell.row.original.company}</span>}
               </div>
-            )})
+            );
+            })
           }
         </div>
-      )
-    })
-  }
+      );
+    });
+  };
 
-  const Template = props => (<div className="table-responsive h-100">
+  const Template = () => (<div className="table-responsive h-100">
     <div className="custom-table h-100">
       <div className="table-header pt-4">{getHeaders()}</div>
       <div className="table-body pt-4" {...getTableBodyProps()}>{getBody()}</div>
     </div>
-  </div>)
+  </div>);
 
   return (
     <div className={`c-MemoizedTable${!fetchComplete ? " loader" : ""}`}>
@@ -72,6 +72,7 @@ const MemoizedTable = props => {
 };
 
 MemoizedTable.propTypes = {
+  classColMap: PropTypes.object,
   columns: PropTypes.array,
   data: PropTypes.array,
   fetchComplete: PropTypes.bool,

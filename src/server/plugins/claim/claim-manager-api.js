@@ -1,7 +1,9 @@
 /* eslint-disable max-statements */
 /* eslint-disable no-console */
+/* eslint-disable camelcase */
+/* eslint-disable no-magic-numbers */
 import ServerHttp from "../../utility/ServerHttp";
-import {CONSTANTS} from "./../../constants/server-constants";
+import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
@@ -72,9 +74,7 @@ class ClaimManagerApi {
   }
 
   parseSellersFromResponse = response => {
-    const sellers = response;
-    const sellersParsed = sellers.map(seller => seller['offer.sellerId'] && {value: seller['rollupoffer.partnerDisplayName'], id: seller['offer.sellerId']}).filter(seller => seller);
-    return sellersParsed;
+    return response.map(seller => seller["offer.sellerId"] && {value: seller["rollupoffer.partnerDisplayName"], id: seller["offer.sellerId"]}).filter(seller => seller);
   }
 
   async getSellers(request, h) {
@@ -91,19 +91,19 @@ class ClaimManagerApi {
       };
       let payload = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.IQS_QUERY");
       payload = payload.replace("__itemId__", request.query.payload);
-      let url = secrets.IQS_URL;
+      const url = secrets.IQS_URL;
       let incrementalTimeouts = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.INCREMENTAL_TIMEOUTS");
-      incrementalTimeouts = incrementalTimeouts && JSON.parse( incrementalTimeouts );
+      incrementalTimeouts = incrementalTimeouts && JSON.parse(incrementalTimeouts);
       mixpanelPayload.URL = url;
       mixpanelPayload.ITEM_ID = request.query && request.query.payload;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers["WM_QOS.CORRELATION_ID"];
 
-      let response = await ServerUtils.retry ( request = { url, options, payload, type : "post" } , incrementalTimeouts || [ 50, 80, 100] );
+      const response = await ServerUtils.retry({url, options, payload, type: "post"}, incrementalTimeouts || [50, 80, 100]);
       let responseBody = [];
-      if ( response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-        responseBody = this.parseSellersFromResponse( response.body.docs );
+      if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+        responseBody = this.parseSellersFromResponse(response.body.docs);
       }
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[ClaimManagerApi::getSellers] API request for Get Sellers has completed");
@@ -166,6 +166,9 @@ class ClaimManagerApi {
     };
     try {
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };

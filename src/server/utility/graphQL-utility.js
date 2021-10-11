@@ -1,3 +1,9 @@
+/* eslint-disable quote-props */
+/* eslint-disable filenames/match-regex */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable max-statements */
+/* eslint-disable no-magic-numbers */
 import ServerUtils from "./server-utils";
 import ServerHttp from "./ServerHttp";
 import DASHBOARDQUERY from "../queries/dashboard";
@@ -25,7 +31,7 @@ class GraphQLUtility {
       const BASE_URL = await ServerUtils.ccmGet(request, "DASHBOARD_CONFIG.BASE_URL");
       const GRAPHQL_ENDPOINT = await ServerUtils.ccmGet(request, "DASHBOARD_CONFIG.GRAPHQL_ENDPOINT");
       const url = `${BASE_URL}${GRAPHQL_ENDPOINT}`;
-      let response =  await ServerHttp.post(url, options, payload);
+      const response =  await ServerHttp.post(url, options, payload);
       this.processResponse(response, filters);
       // console.log(response.body.data && response.body.data.topReportedBrands.claimCounts);
       // console.log(response.body.errors);
@@ -41,7 +47,7 @@ class GraphQLUtility {
     if (response.body.errors && response.body.errors.length > 0) {
       return response;
     }
-    response.body.data && Object.keys(response.body.data).map(itemKey => {
+    return response.body.data && Object.keys(response.body.data).map(itemKey => {
       if (Object.keys(this.requireProcessing).includes(itemKey)) {
         const item = response.body.data[itemKey];
         const structure = this.requireProcessing[itemKey];
@@ -49,21 +55,21 @@ class GraphQLUtility {
         if (structure) {
           const keys = Object.keys(structure);
           if (keys && keys.length > 0 && keys[0] === "_all") {
-            updatedItem = item[structure["_all"]];
+            updatedItem = item[structure._all];
           } else {
             item && item.claimCounts && item.claimCounts.length > 0 && item.claimCounts.forEach(subItem => {
               const updatedSubItem = {};
-              keys.forEach(key => updatedSubItem[key] = this.mapValue(key, structure, subItem))
+              keys.forEach(key => {updatedSubItem[key] = this.mapValue(key, structure, subItem);});
               filters && filters.claimType && filters.claimType !== "__claimType__" && (updatedSubItem[filters.claimType] = updatedSubItem.totalClaim);
               updatedItem.push(updatedSubItem);
-            })
+            });
           }
           // console.log(item)
           // console.log(item && item.claimCounts && item.claimCounts[0].claimTypes)
           response.body.data[itemKey] = updatedItem;
         }
       }
-    })
+    });
   }
 
   mapValue(key, structure, item) {
@@ -78,6 +84,7 @@ class GraphQLUtility {
           const matched = parent.find(subItem => subItem[path[1]] === key);
           return matched ? matched.count : 0;
         }
+        return 0;
       } else {
         return 0;
       }
@@ -88,19 +95,20 @@ class GraphQLUtility {
     const payload = {};
     let allQuery = "query{";
     if (query === "_all") {
-      allQuery = allQuery + Object.keys(this.gqlQueries).reduce((allQueries, queryName) => queryName.endsWith("_default") ? allQueries + this.gqlQueries[queryName] : allQueries, "");
+      allQuery += Object.keys(this.gqlQueries).reduce((allQueries, queryName) => queryName.endsWith("_default") ? allQueries + this.gqlQueries[queryName] : allQueries, "");
     } else {
-      allQuery = allQuery + this.gqlQueries[query];
+      allQuery += this.gqlQueries[query];
     }
-    allQuery =  allQuery + "}"
+    allQuery += "}";
     filters.fromDate = "1970-01-01";
     filters.toDate = "";
-    allQuery = this.addFilters(allQuery, filters, query)
+    allQuery = this.addFilters(allQuery, filters, query);
     payload.query = allQuery;
     return payload;
   }
 
-  addFilters(query, filters, queryName) {
+  addFilters(queryInput, filters, queryName) {
+    let query = queryInput;
     filters.orgId && (query = query.replace(/__orgId__/g, filters.orgId));
     filters.emailId && (query = query.replace(/__emailId__/g, filters.emailId));
     filters.role && (query = query.replace(/__role__/g, filters.role));
@@ -112,16 +120,16 @@ class GraphQLUtility {
       // const fromDate = JSON.stringify(now).substring(1, 11);
       query = query.replace(/__fromDate__/g, fromDate);
       query = query.replace(/__toDate__/g, toDate);
-      query = query.replace(/__claimFilter__/g, filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}`: "");
+      query = query.replace(/__claimFilter__/g, filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}` : "");
     } else {
       const now = new Date();
-      now.setDate(now.getDate() + 1)
+      now.setDate(now.getDate() + 1);
       const toDate = JSON.stringify(now).substring(1, 11);
       now.setDate(now.getDate() - 30);
       const fromDate = JSON.stringify(now).substring(1, 11);
       query = query.replace(/__fromDate__/g, fromDate);
       query = query.replace(/__toDate__/g, toDate);
-      query = query.replace(/__claimFilter__/g, filters.claimType && filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}`: "");
+      query = query.replace(/__claimFilter__/g, filters.claimType && filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}` : "");
     }
     return query;
   }

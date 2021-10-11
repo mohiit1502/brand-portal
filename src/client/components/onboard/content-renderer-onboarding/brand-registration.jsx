@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect} from "react-router";
-import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "./../../../actions/company/company-actions";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "../../../actions/company/company-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
@@ -20,15 +20,17 @@ class BrandRegistration extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "gotoCompanyRegistration", "submitOnboardingForm", "undertakingtoggle"];
-    const debounceFunctions = {"brandDebounce": "checkBrandUniqueness", "trademarkDebounce": "checkTrademarkValidity"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const brandConfiguration = this.props.brandContent ? this.props.brandContent : {}
+    const brandConfiguration = this.props.brandContent ? this.props.brandContent : {};
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       redirectToCompanyReg: !this.props.org,
       section: {...brandConfiguration.sectionConfig},
@@ -56,6 +58,7 @@ class BrandRegistration extends React.Component {
     this.setState({form});
   }
 
+  /* eslint-disable no-magic-numbers */
   onKeyPress(evt, key) {
     if (key === "trademarkNumber" && ((evt.which < 48 || evt.which > 57) && !CONSTANTS.ALLOWED_KEY_CODES.includes(evt.which))) {
       evt.preventDefault();
@@ -108,6 +111,7 @@ class BrandRegistration extends React.Component {
 
   gotoCompanyRegistration () {
     const steps = this.props.steps ? [...this.props.steps] : [];
+    /* eslint-disable no-unused-expressions */
     steps && steps[1] && (steps[1].complete = false);
     this.props.updateOrgData(this.state, "brand");
     this.props.dispatchBrandState(this.state);
@@ -115,19 +119,20 @@ class BrandRegistration extends React.Component {
     this.setState({redirectToCompanyReg: true});
   }
 
+  /* eslint-disable no-empty */
   async updateProfileInfo () {
     try {
       const profile = (await Http.get("/api/userInfo")).body;
       this.props.updateUserProfile(profile);
     } catch (e) {
-      console.error(e);
     }
   }
 
+  /* eslint-disable max-statements */
   async submitOnboardingForm(evt) {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, {WORK_FLOW: "COMPANY_ONBOARDING"});
     evt.preventDefault();
-    let mixpanelPayload = {
+    const mixpanelPayload = {
       API: "/api/org/register",
       WORK_FLOW: "COMPANY_ONBOARDING"
     };
@@ -148,11 +153,13 @@ class BrandRegistration extends React.Component {
         org: this.props.org,
         brand
       };
+      data.sellerInfo = this.props.org.sellerInfo;
+      this.props.org.sellerInfo && delete this.props.org.sellerInfo;
       mixpanelPayload.BRAND_NAME = brand && brand.name;
       mixpanelPayload.COMPANY_NAME = this.props.org && this.props.org.name;
       mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
       mixpanelPayload.IS_DOCUMENT_UPLOADED = this.props.org && Boolean(this.props.org.businessRegistrationDocId || this.props.org.additionalDocId);
-      await Http.post("/api/org/register", data);
+      await Http.post("/api/org/register", data, {clientType: this.props.clientType});
       this.loader("form", false);
       const meta = { templateName: "CompanyBrandRegisteredTemplate" };
       this.updateProfileInfo();
@@ -173,7 +180,6 @@ class BrandRegistration extends React.Component {
       return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER} />;
     }
 
-    const form = this.state.form;
     const section = this.state.section;
 
     return (
@@ -189,6 +195,7 @@ class BrandRegistration extends React.Component {
               </div>
             </div>
           </div>
+          {/* eslint-disable react/jsx-handler-names */}
           <form className="brand-reg-form pl-4" onSubmit={this.submitOnboardingForm}>
             {this.getFieldRenders()}
           </form>
@@ -200,6 +207,8 @@ class BrandRegistration extends React.Component {
 
 BrandRegistration.propTypes = {
   brandState: PropTypes.object,
+  brandContent: PropTypes.object,
+  clientType: PropTypes.string,
   dispatchBrandState: PropTypes.func,
   dispatchNewRequest: PropTypes.func,
   dispatchSteps: PropTypes.func,

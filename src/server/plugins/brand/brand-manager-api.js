@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-expressions */
+/* eslint-disable camelcase */
 import ServerHttp from "../../utility/ServerHttp";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
@@ -60,12 +61,15 @@ class BrandManagerApi {
     try {
       const param = request.query && request.query.brandStatus;
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };
 
       console.log("[BrandManagerApi::getBrands] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      const BASE_URL = await ServerUtils.ccmGet(request,"BRAND_CONFIG.BASE_URL");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       // const BASE_URL = request.app.ccmGet("BRAND_CONFIG.BASE_URL");
       const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
       const url = param ? `${BASE_URL}${BRANDS_PATH}?brandStatus=${param}` : `${BASE_URL}${BRANDS_PATH}`;
@@ -190,6 +194,9 @@ class BrandManagerApi {
     try {
       // const payload = request.payload;
       const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
       const options = {
         headers
       };

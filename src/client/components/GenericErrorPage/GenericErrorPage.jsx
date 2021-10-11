@@ -20,7 +20,7 @@ const GenericErrorPage = props => {
   if (props.userInfoError) mixpanelPayload.USER_INFO_ERROR =  props.userInfoError;
   mixpanel.trackEvent(MIXPANEL_CONSTANTS.GENERIC_ERROR.GENERIC_ERROR, mixpanelPayload);
 
-  return (<div className={`${props.containerClass ? props.containerClass + " " : ""} mx-auto c-GenericErrorPage page-error text-center`} style={{maxWidth: "600px"}}>
+  return (<div className={`${props.containerClass ? `${props.containerClass  } ` : ""} mx-auto c-GenericErrorPage page-error text-center`} style={{maxWidth: "600px"}}>
     <img className="c-GenericErrorPage__image" src={images[props.image || "PageError"]} alt="Page Error" />
     {
       !props.generic ?

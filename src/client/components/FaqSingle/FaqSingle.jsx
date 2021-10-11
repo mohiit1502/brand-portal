@@ -1,5 +1,4 @@
-/* eslint-disable filenames/match-regex */
-/* eslint-disable no-use-before-define */
+/* eslint-disable filenames/match-regex, no-use-before-define */
 import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -10,19 +9,21 @@ import "./FaqSingle.component.scss";
 import {withRouter} from "react-router";
 import CONSTANTS from "../../constants/constants";
 
-const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher,...props}) => {
+const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher, ...props}) => {
 
   const [expanded, setExpanded] = useState(expandPreState ? expandPreState : false);
   const [contentRenderer, setContentRenderer] = useState();
 
-  const funcMap = useCallback((e,funcName) => {
-    switch (funcName){
+  const funcMap = useCallback((e, funcName) => {
+    switch (funcName) {
       case "goToContactUs":
         return props.history.push(CONSTANTS.ROUTES.HELP.CONTACT);
+      default:
+        return props.history.push("/");
     }
-  })
+  });
   useEffect(() => {
-    setContentRenderer(new ContentRenderer(data, "c-FaqSingle__helpImage", toggleImageViewerDispatcher,funcMap));
+    setContentRenderer(new ContentRenderer(data, "c-FaqSingle__helpImage", toggleImageViewerDispatcher, funcMap));
   }, [data]);
 
   return (
@@ -34,6 +35,7 @@ const FaqSingle = ({data, expandPreState, toggleImageViewerDispatcher,...props})
 
 FaqSingle.propTypes = {
   data: PropTypes.object,
+  history: PropTypes.object,
   expandPreState: PropTypes.bool,
   toggleImageViewerDispatcher: PropTypes.func,
   goToContactUs: PropTypes.func
@@ -41,6 +43,6 @@ FaqSingle.propTypes = {
 
 const mapDispatchToProps = {
   toggleImageViewerDispatcher: toggleImageViewer
-}
+};
 
 export default withRouter(connect(null, mapDispatchToProps)(FaqSingle));

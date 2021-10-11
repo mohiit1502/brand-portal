@@ -1,3 +1,5 @@
+/* eslint-disable no-magic-numbers */
+
 const CONSTANTS = {
 
   URL: {
@@ -27,61 +29,6 @@ const CONSTANTS = {
   },
 
   CODES: {
-    PORTAL_REGISTRATION: {
-      CODE: 1
-    },
-    PORTAL_VERIFICATION: {
-      CODE: 2,
-      IMAGE: "Arrow",
-      MESSAGE: "Once complete, we will send a confirmation to your registered email.\n Please login using the shared link.",
-      TITLE: "Your company and brand details are being verified"
-    },
-    PORTAL_DASHBOARD: {
-      CODE: 4
-    },
-    PORTAL_ACCESS_REVOKED: {
-      MESSAGE: {
-        "classes": "mt-4 mx-4 access-revoke",
-        "content": {
-          "partial1": {
-          "chunk1": "Please contact us at ",
-          "anchor1": {
-              "text": "brandportal@walmart.com",
-              "href": "mailto:brandportal@walmart.com"
-            },
-            "chunk2": " if you would still like to create an account",
-          }
-        }
-      },
-      CODE: 8,
-      IMAGE: "Alert",
-      SUBTITLE: "We have not been able to verify the information provided for your application.",
-      TITLE: "Application On Hold"
-    },
-    USER_ACCESS_REVOKED: {
-      CODE: 16,
-      IMAGE: "RedCircleCross",
-      MESSAGE: "Your account access has been revoked for security reasons",
-      TITLE: "Access Denied"
-    },
-    REQUEST_ACCESS: {
-      CODE: 32,
-      IMAGE: "GreenCircleCheck",
-      MESSAGE: "Access Request, awaiting approval.",
-      TITLE: "Access requested"
-    },
-    USER_VERIFICATION: {
-      CODE: 64,
-      IMAGE: "EmailIcon",
-      MESSAGE: "A verification email has been sent to your email address.\nPlease verify using the link provided.",
-      TITLE: "Email verification required",
-      ADDITIONAL_ACTION: "Resend Verification Email"
-    },
-    TOU_VERIFICATION: {
-      CODE: 128,
-      FILE: "test.pdf",
-      GENERIC: true
-    },
     ERRORCODES: {
       FORBIDDEN: "403",
       FOURNOTFOUR: "404",
@@ -124,16 +71,18 @@ const CONSTANTS = {
 
     HELP: {
       HELP: "/help",
-      FAQ:"/help/faq",
-      USER:"/help/user",
-      CLAIM:"/help/claim",
-      BRAND:"/help/brand",
-      CONTACT:"/help/contact"
+      FAQ: "/help/faq",
+      USER: "/help/user",
+      CLAIM: "/help/claim",
+      BRAND: "/help/brand",
+      CONTACT: "/help/contact"
     },
 
       DASHBOARD: "/dashboard"
     },
     OPEN: {
+      LOGIN_TYPE_CTA: "/login",
+      REGISTER_TYPE_CTA: "/register",
       SERVICES: "/ipServices"
     }
   },
@@ -172,14 +121,14 @@ const CONSTANTS = {
       NEW: "New",
       PENDING: "Pending Activation",
       PENDING_SUPPLIER: "Pending Supplier Activation",
+      PENDING_SELLER: "Pending Seller Activation",
       REJECTED: "Rejected",
       SUSPENDED: "Suspended",
       TOU_NOT_ACCEPTED: "Invitation Not Accepted"
     },
     UNIQUENESS_CHECK_STATUS: {
-      EMAIL: "EMAIL",
-      DENY: "DENY",
-      KRAKEN: "KRAKEN"
+      ALLOW: "ALLOW",
+      DENY: "DENY"
     },
     OPTIONS: {
       DISPLAY: {
@@ -196,8 +145,9 @@ const CONSTANTS = {
     },
     VALUES: {
       STATUS: {
-        "Suspended": "Inactive",
-        "Pending Supplier Activation": "Pending Activation"
+        Suspended: "Inactive",
+        "Pending Supplier Activation": "Pending Activation",
+        "Pending Seller Activation": "Pending Activation"
       }
     }
   },

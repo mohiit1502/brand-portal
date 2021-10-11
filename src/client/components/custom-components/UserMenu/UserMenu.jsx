@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {Link} from "react-router-dom";
 import CONSTANTS from "../../../constants/constants";
-import profilePic from "../../../images/user-profile.png"
+import profilePic from "../../../images/user-profile.png";
 import "../../../styles/custom-components/headers/home-header.scss";
 import mixpanel from "../../../utility/mixpanelutils";
 
@@ -23,18 +23,18 @@ class UserMenu extends React.Component {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0] || "CODE_NOT_FOUND"
     };
     return (
-            <li className="nav-item dropdown nav-item-profile ml-4">
-              <Link to="#" className="nav-link user-name dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                aria-expanded="false">
-                <img src={profilePic} height="32px" className="pr-2"/>{`${this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
-              </Link>
-              <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
-                {
-                  this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</a>
-                }
-                <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>Logout</a>
-              </div>
-            </li>
+      <li className="nav-item dropdown nav-item-profile ml-4">
+        <Link to="#" className="nav-link user-name dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+          aria-expanded="false">
+          <img src={profilePic} alt="Profile Pic" height="32px" className="pr-2"/>{`${this.props.userProfile && this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile && this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
+        </Link>
+        <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
+          {
+            this.props.isOnboarded && <a className="dropdown-item" href={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</a>
+          }
+          <a className="dropdown-item" href={logoutUrl} onClick={() => {mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);}}>Logout</a>
+        </div>
+      </li>
     );
   }
 }

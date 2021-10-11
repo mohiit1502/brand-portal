@@ -3,38 +3,39 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Http from "../../../../../utility/Http";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
-import {dispatchDiscardChanges, TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions"
-import {showNotification} from "../../../../../actions/notification/notification-actions"
+import {dispatchDiscardChanges, TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
+import {showNotification} from "../../../../../actions/notification/notification-actions";
 import InputFormatter from "../../../../../utility/phoneOps";
 import Helper from "../../../../../utility/helper";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
 import Validator from "../../../../../utility/validationUtil";
-// import FORMFIELDCONFIG from "./../../../../../config/formsConfig/form-field-meta";
 import "../../../../../styles/home/content-renderer/user/profile/user-profile.scss";
-import CONSTANTS from "../../../../../constants/constants";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import Cookies from "electrode-cookies";
 
 class UserProfile extends React.Component {
 
   constructor (props) {
     super(props);
-    const functions = ["bubbleValue", "displayChangePassword", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const functions = ["bubbleValue", "displayChangePassword", "displayManageProfileNotification", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     this.validateState = Validator.validateState.bind(this);
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {firstName: false, lastName: false, companyName: false, phone: false};
-    const userProfileConfiguration = this.props.userProfileContent ? this.props.userProfileContent : {}
+    const userProfileConfiguration = this.props.userProfileContent ? this.props.userProfileContent : {};
 
     this.state = {
       section: {...userProfileConfiguration.sectionConfig},
       form: {
         ...userProfileConfiguration.formConfig,
-        inputData: {...userProfileConfiguration.fields},
-        // underwritingChecked: false,
-      }
+        inputData: {...userProfileConfiguration.fields}
+      },
+      isSeller: Cookies.get("client_type") === "seller"
     };
 
     const formatter = new InputFormatter();
@@ -118,15 +119,22 @@ class UserProfile extends React.Component {
     }
   }
 
+  displayManageProfileNotification () {
+    let template = this.props.modalsMeta && this.props.modalsMeta.PASSWORD_RESET_SELLER;
+    template = {templateName: "StatusModalTemplate", image: "", ...template};
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...template});
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_SELLER_MANAGE_PROFILE, {WORK_FLOW: "EDIT_USER_PROFILE"});
+  }
+
   displayChangePassword() {
     const meta = { templateName: "ResetPasswordTemplate" };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.CHANGE_PASSWORD.DISPLAY_CHANGE_PASSWORD, {WORK_FLOW: "EDIT_USER_PROFILE"});
   }
 
-  disableInput (disable) {
+  disableInput (disable, preventDirtyCheck) {
     disable = !!disable;
-    if (disable && this.isDirty()) {
+    if (disable && (!preventDirtyCheck && this.isDirty())) {
       const meta = { templateName: "Alert" };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.EDIT_USER_PROFILE.CANCEL_EDIT_PROFILE, {WORK_FLOW: "EDIT_USER_PROFILE"});
@@ -146,12 +154,6 @@ class UserProfile extends React.Component {
     }
   }
 
-  // toggleUnderwritingCheck () {
-  //   const form = {...this.state.form};
-  //   form.underwritingChecked = !form.underwritingChecked;
-  //   this.setState({form});
-  // }
-
   async saveUser (evt) {
     evt.preventDefault();
 
@@ -160,7 +162,7 @@ class UserProfile extends React.Component {
       const loginId = this.state.form.inputData.emailId.value;
       const firstName = this.state.form.inputData.firstName.value;
       const lastName = this.state.form.inputData.lastName.value;
-      const phoneNumber = this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000"; //[note:to handle VIP phone number validation] 
+      const phoneNumber = this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000"; //[note:to handle VIP phone number validation]
       const payload = {
         user: {
           loginId,
@@ -183,7 +185,7 @@ class UserProfile extends React.Component {
           .then(async res => {
             this.loader("form", false);
             this.props.updateUserProfile(res.body);
-            this.disableInput(true);
+            this.disableInput(true, false);
             mixpanelPayload.API_SUCCESS = true;
           })
           .catch(err => {
@@ -202,6 +204,7 @@ class UserProfile extends React.Component {
     return null;
   }
 
+  /* eslint-disable react/jsx-handler-names */
   render () {
     return (
       <div className={`user-profile-content h-100${this.state.form.loader ? " loader" : ""}`}>
@@ -216,15 +219,18 @@ class UserProfile extends React.Component {
 
 UserProfile.propTypes = {
   dispatchDiscardChanges: PropTypes.func,
+  modalsMeta: PropTypes.object,
   shouldDiscard: PropTypes.bool,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   userProfile: PropTypes.object,
-  updateUserProfile: PropTypes.func
+  updateUserProfile: PropTypes.func,
+  userProfileContent: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
     userProfileContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.USERPROFILE,
     shouldDiscard: state.modal.shouldDiscard,
     userProfile: state.user.profile

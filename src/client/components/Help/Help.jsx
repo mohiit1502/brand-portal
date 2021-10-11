@@ -1,11 +1,13 @@
+/* eslint-disable filenames/match-regex */
 import React, {useEffect, useState} from "react";
+import PropTypes from "prop-types";
+import {withRouter} from "react-router";
 import HelpMain from "./../HelpMain";
 import HelpSideBar from "./../HelpSideBar";
 import ImageViewer from "../ImageViewer/ImageViewer";
+import Http from "./../../../client/utility/Http";
 import helpConfiguration from "../../config/contentDescriptors/help";
 import "./Help.component.scss";
-import Http from "./../../../client/utility/Http"
-import {withRouter} from "react-router";
 
 const Help = props => {
 
@@ -20,13 +22,14 @@ const Help = props => {
       setHelpConfig(helpConfiguration);
       const response = (await Http.get("/api/helpConfig")).body;
       setHelpConfig(JSON.parse(response));
-      } catch (e) {console.log(e);}
+      /* eslint-disable no-empty */
+      } catch (e) {}
     })();
   }, []);
 
   useEffect(() => {
-    setActiveTabUrl(props.location.pathname)
-  },[props.location.pathname])
+    setActiveTabUrl(props.location.pathname);
+  }, [props.location.pathname]);
 
   return (
     <div className={`${loader ? " loader" : ""}`}>
@@ -40,7 +43,7 @@ const Help = props => {
           <div className="c-Help__content row h-100">
             <div className="col-2 h-100">
               <HelpSideBar categoryHeader={helpConfig.categoryHeader} categories={helpConfig.categories}
-                           activeTab={helpConfig.sectionMap[activeTabUrl]}/>
+                activeTab={helpConfig.sectionMap[activeTabUrl]}/>
             </div>
             <div className="col-10">
               <HelpMain content={helpConfig.content} activeTab={helpConfig.sectionMap[activeTabUrl]}/>
@@ -54,7 +57,7 @@ const Help = props => {
 };
 
 Help.propTypes = {
-
+  location: PropTypes.object
 };
 
 export default withRouter(Help);

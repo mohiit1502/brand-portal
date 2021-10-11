@@ -7,12 +7,12 @@
 
 @font-face {
   font-family: Bogle, serif;
-  //src: url('../assets/fonts/bogle');
+  //src: url("../assets/fonts/bogle");
 }
 
 @font-face {
   font-family: MyriadPro-Regular, sans-serif;
-  src: url('../assets/fonts/myriad/Myriad-Pro-Regular.ttf');
+  src: url("../assets/fonts/myriad/Myriad-Pro-Regular.ttf");
 }
 
 
@@ -248,7 +248,7 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 }
 
 .font-size-15 {
-  font-size: 15px;
+  font-size: 15px !important;
 }
 
 .font-size-18 {
@@ -333,6 +333,18 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   min-height: unset !important;
 }
 
+.border-unset {
+  border: unset !important;
+}
+
+.background-unset {
+  background: unset !important;
+}
+
+.margin-unset {
+  margin: unset !important;
+}
+
 .padded-button {
   padding: 0.8rem 5rem !important;
 }
@@ -364,7 +376,6 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   width: $size-max;
   -webkit-animation: rotating 2s linear infinite;
   -moz-animation: rotating 2s linear infinite;
-  -ms-animation: rotating 2s linear infinite;
   -o-animation: rotating 2s linear infinite;
   animation: rotating 2s linear infinite;
   z-index: 1050;
@@ -384,7 +395,6 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
     width: $size-max;
     -webkit-animation: rotating 2s linear infinite;
     -moz-animation: rotating 2s linear infinite;
-    -ms-animation: rotating 2s linear infinite;
     -o-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
     z-index: 1050;
@@ -485,11 +495,26 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 }
 
 .mp-blue {
-  color: $market-place-blue
+  color: $market-place-blue !important;
+}
+
+.bg-blue {
+  background: $background-blue;
 }
 
 .tiles-background-dark {
   background-color: #e6eff4 !important;
+}
+
+.cta-error {
+  background: #f2dede;
+  color: #a94442;
+  border-color: #ebcccc;
+  padding: 0.75rem 2rem 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  text-align: left;
+  position: relative;
+  margin-bottom: 1rem;
 }
 
 @-webkit-keyframes rotating {

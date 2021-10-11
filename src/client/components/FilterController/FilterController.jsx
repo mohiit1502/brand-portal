@@ -1,19 +1,16 @@
-import React, {memo, useEffect, useState} from "react";
+/* eslint-disable filenames/match-regex, no-shadow, no-use-before-define */
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { dispatchFilter } from "./../../actions/dashboard/dashboard-actions";
-import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions"
+import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions";
 import * as images from "../../images";
 import "./FilterController.component.scss";
-import { showNotification } from "../../actions/notification/notification-actions";
-import DateSelector from '../DateSelector';
 import Helper from "../../utility/helper";
 
 const FilterController = props => {
   const { dispatchFilter, customDate, currentFilters, filters: filterMeta, updateChartMeta, widgetId} = props;
-  const [containerState, setContainerState] = useState({
-    className: "form-group custom-input-form-group custom-select-form-group dropdown mb-0"
-  });
+  const containerState = {className: "form-group custom-input-form-group custom-select-form-group dropdown mb-0"};
   const [fieldState, setFieldState] = useState({
     dateRange: {
       className: `form-control form-control-filter-controller custom-input-element`,
@@ -46,46 +43,47 @@ const FilterController = props => {
       type: "select",
       value: "All"
     }
-  })
+  });
 
   useEffect(() => {
     const fieldStateCloned = {...fieldState};
     if (currentFilters[widgetId] && currentFilters[widgetId].value) {
       fieldStateCloned.dateRange.value = currentFilters[widgetId].viewValue;
     } else if (currentFilters[widgetId] && currentFilters[widgetId].dateRange && currentFilters[widgetId].dateRange !== "customDate") {
-      const dateRange = fieldStateCloned.dateRange.dropdownOptions.find(option => option.id === currentFilters[widgetId].dateRange)
+      const dateRange = fieldStateCloned.dateRange.dropdownOptions.find(option => option.id === currentFilters[widgetId].dateRange);
       fieldStateCloned.dateRange.value = dateRange.label;
     }
     setFieldState(fieldStateCloned);
-  }, [currentFilters[widgetId], customDate])
+  }, [currentFilters[widgetId], customDate]);
 
-  function dispatchDateSelector() {
+  const dispatchDateSelector = () => {
     const meta = { templateName: "DateSelectorTemplate", updateChartMeta: {...updateChartMeta, filters: filterMeta}, orgId: currentFilters.orgId, currentFilters, widgetId };
     props.toggleModal(TOGGLE_ACTIONS.SHOW, { ...meta });
-  }
+  };
 
-  function onChangeHandler(option, filter, currentFilters) {
-    let currentWidgetFilters = currentFilters[widgetId];
+  const onChangeHandler = (option, filter, currentFiltersIncoming) => {
+    let currentWidgetFilters = currentFiltersIncoming[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};
-      currentFilters[widgetId] = currentWidgetFilters
+      currentFiltersIncoming[widgetId] = currentWidgetFilters;
     }
-    currentWidgetFilters[filter.name] = option.value
-    currentWidgetFilters.orgId = currentFilters.orgId;
-    currentWidgetFilters.emailId = currentFilters.emailId;
-    currentWidgetFilters.role = currentFilters.role;
-    Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: filterMeta} );
-    dispatchFilter(currentFilters);
-  }
+    currentWidgetFilters[filter.name] = option.value;
+    currentWidgetFilters.orgId = currentFiltersIncoming.orgId;
+    currentWidgetFilters.emailId = currentFiltersIncoming.emailId;
+    currentWidgetFilters.role = currentFiltersIncoming.role;
+    Helper.updateChart(currentWidgetFilters, {...updateChartMeta, filters: filterMeta});
+    dispatchFilter(currentFiltersIncoming);
+  };
 
   const onClickHandler = (option, filter) => {
-    setFieldState(fieldState => {
-      const fieldStateCloned = { ...fieldState };
+    setFieldState(fieldStateInner => {
+      const fieldStateCloned = { ...fieldStateInner };
       fieldStateCloned[filter.name].value = option.label;
       return fieldStateCloned;
-    })
+    });
+    /*eslint-disable no-unused-expressions*/
     option.handler && option.handler(option, filter, currentFilters);
-  }
+  };
 
   const filterRenders = filterMeta && filterMeta.map((filter, key1) => {
     let ddOptions = [];
@@ -93,16 +91,16 @@ const FilterController = props => {
       if (fieldState[filter.name].dropdownOptions.length === undefined) {
         ddOptions = Object.keys(fieldState[filter.name].dropdownOptions).map((ddSection, key2) => {
           const sectionArray = fieldState[filter.name].dropdownOptions[ddSection];
-          return <div key={key1 + " " + key2} className="border-bottom">
+          return (<div key={`${key1  } ${  key2}`} className="border-bottom">
             {sectionArray.map((option, i) => <a key={option.id || i} className="dropdown-item" onClick={() => onClickHandler(option, filter)}>{option.label}</a>)}
-          </div>
-        })
+          </div>);
+        });
       } else {
-        ddOptions = fieldState[filter.name].dropdownOptions.map((option, i) => <a key={key1 + " " + option.id || i} className="dropdown-item" onClick={() => onClickHandler(option, filter)}>
-          {option.label}</a>);
+        ddOptions = fieldState[filter.name].dropdownOptions.map((option, i) => (<a key={`${key1  } ${  option.id}` || i} className="dropdown-item" onClick={() => onClickHandler(option, filter)}>
+          {option.label}</a>));
       }
     }
-    return <div key={key1} className={filter.classes}>
+    return (<div key={key1} className={filter.classes}>
       <div className={`${containerState.className}`}>
         <input type={fieldState[filter.name] && fieldState[filter.name].type} className={fieldState[filter.name] && fieldState[filter.name].className}
           id={fieldState[filter.name] && fieldState[filter.name].id} value={fieldState[filter.name].value} onChange={() => { }}
@@ -114,7 +112,7 @@ const FilterController = props => {
         <img src={images.ArrowDown} alt="image-arrow-down" className="dropdown-arrow" />
         <div className="dropdown-menu">{ddOptions}</div>
       </div>
-    </div>
+    </div>);
   });
 
   return (
@@ -128,6 +126,8 @@ FilterController.propTypes = {
   customDate: PropTypes.object,
   currentFilters: PropTypes.object,
   dispatchFilter: PropTypes.func,
+  filters: PropTypes.array,
+  toggleModal: PropTypes.func,
   updateChartMeta: PropTypes.object,
   widgetId: PropTypes.string
 };
@@ -135,12 +135,12 @@ FilterController.propTypes = {
 const mapDispatchToProps = {
   dispatchFilter,
   toggleModal
-}
+};
 
 const mapStateToProps = state => {
   return {
     customDate: state.dashboard.customDate
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterController);

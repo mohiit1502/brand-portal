@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router-dom";
 import CONSTANTS from "./../../constants/constants";
 import * as images from "./../../images";
 import "./ContactUsPrompt.component.scss";

@@ -11,13 +11,12 @@ import NoRecordsMatch from "../../NoRecordsMatch";
 
 const BrandListTable = function(props) {
 
-  const { getTableBodyProps, headerGroups, sortHandler, templateProps : {loader}, rows,  prepareRow, templateProps } = props;
+  const { getTableBodyProps, headerGroups, sortHandler, templateProps: {loader}, rows,  prepareRow, templateProps } = props;
   const { Dropdown, dropdownOptions, userProfile } = templateProps;
   const classColMap = {
     sequence: "col-1"
   };
   const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
-  const sortStateDescending = CONSTANTS.SORTSTATE.DESCENDING;
   const sortStateReset = CONSTANTS.SORTSTATE.RESET;
   const updateDDOptions = (index, values, ddOptions) => {
     const statusPending = CONSTANTS.BRAND.STATUS.PENDING.toLowerCase();
@@ -150,6 +149,7 @@ BrandListTable.propTypes = {
   headerGroups: PropTypes.array,
   rows: PropTypes.array,
   prepareRow: PropTypes.func,
+  sortHandler: PropTypes.func,
   templateProps: PropTypes.object,
   userProfile: PropTypes.object
 };

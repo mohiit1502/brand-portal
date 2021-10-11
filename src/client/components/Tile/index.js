@@ -1,3 +1,3 @@
-import Tile from './Tile.jsx';
+import Tile from "./Tile.jsx";
 
 export default Tile;

@@ -9,6 +9,7 @@ class Stepper extends React.Component {
     super(props);
   }
 
+  /* eslint-disable no-nested-ternary */
   render() {
     return (
       <div className="row stepper-row align-items-center">

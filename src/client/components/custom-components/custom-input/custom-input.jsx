@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-expressions, complexity, react/jsx-handler-names, no-magic-numbers */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -16,8 +16,10 @@ class CustomInput extends React.PureComponent {
 
   constructor (props) {
     super(props);
-    const functions = ["changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"]
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const functions = ["changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"];
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     this.validate = Validator.validate.bind(this);
     this.changeHandlerDebounce = Helper.debounce(this.changeHandlers, CONSTANTS.ONCHANGEVALIDATIONTIMEOUT);
     this.state = {...this.props};
@@ -27,12 +29,12 @@ class CustomInput extends React.PureComponent {
     if (this.state.type === "multiselect") {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
     }
-    $("[data-toggle='tooltip']")
+    $("[data-toggle=\"tooltip\"]")
       .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
       .tooltip();
     $("body")
       .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
-      .on("mouseleave", ".tooltip, [data-toggle='tooltip']", () => $(".tooltip").addClass("move-beneath"));
+      .on("mouseleave", ".tooltip, [data-toggle=\"tooltip\"]", () => $(".tooltip").addClass("move-beneath"));
 
   }
 
@@ -110,8 +112,8 @@ class CustomInput extends React.PureComponent {
     const pattern = new RegExp(this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath));
     const patternErrorMessage = this.state.patternErrorMessage ? this.state.patternErrorMessage : Helper.search(this.state.patternErrorMessagePath);
     if (this.state.required && !evt.target.value) {
-      const error = (this.state.validators && this.state.validators.validateRequired && this.state.validators.validateRequired.error) || patternErrorMessage
-      this.setState({error})
+      const error = (this.state.validators && this.state.validators.validateRequired && this.state.validators.validateRequired.error) || patternErrorMessage;
+      this.setState({error});
       this.state.bubbleValue && this.state.bubbleValue(evt, key, error);
     } else if (pattern && !pattern.test(evt.target.value)) {
       this.setState({error: patternErrorMessage});
@@ -129,9 +131,9 @@ class CustomInput extends React.PureComponent {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     const content = (<React.Fragment>
       <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-             id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
-             pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
-             data-toggle="dropdown" autoComplete="off" />
+        id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
+        pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
+        data-toggle="dropdown" autoComplete="off" />
       <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
         {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
         {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
@@ -193,7 +195,7 @@ class CustomInput extends React.PureComponent {
 
   getMultiSelectInput () {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
-    const updateOptions = (e) => {
+    const updateOptions = e => {
       const error = this.validate(e, this.state.parentRef);
       if (!error) {
         const value = e.target.value;
@@ -201,11 +203,11 @@ class CustomInput extends React.PureComponent {
         state = {...state};
         state.value = value;
         return state;
-      }, ( ) => this.state.onChange( value , this.state.inputId, null, false));
+      }, () => this.state.onChange(value, this.state.inputId, null, false));
       } else {
-        this.state.bubbleValue && this.state.bubbleValue( e, this.state.inputId , error );
+        this.state.bubbleValue && this.state.bubbleValue(e, this.state.inputId, error);
       }
-    }
+    };
 
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
@@ -217,17 +219,17 @@ class CustomInput extends React.PureComponent {
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
-          <span className="label-text"> { this.state.label } </span>
+          <span className="label-text"> {this.state.label} </span>
         </label>
         {
-          this.state.dropdownOptions && this.state.dropdownOptions.length>0 && <img src={images.ArrowDown} className="dropdown-arrow"/>
+          this.state.dropdownOptions && this.state.dropdownOptions.length > 0 && <img src={images.ArrowDown} className="dropdown-arrow"/>
         }
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
         {
-         this.state.dropdownOptions && this.state.dropdownOptions.length>0 &&
+         this.state.dropdownOptions && this.state.dropdownOptions.length > 0 &&
         <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
           {
             this.state.dropdownOptions.map((option, i) => {
@@ -294,24 +296,22 @@ class CustomInput extends React.PureComponent {
     return {subtitleText, subtitleClass, errorClass};
   }
 
+  /* eslint-disable no-nested-ternary */
   getTextInputType () {
-
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     const pattern = this.state.pattern ? this.state.pattern : Helper.search(this.state.patternPath);
     return (
-      <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-2" : " mb-3"}${errorClass ? " " + errorClass : ""}
+      <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-2" : " mb-3"}${errorClass ? ` ${errorClass}` : ""}
         ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : this.state.fieldAlert ? " field-alert" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
-        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
-               id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && ((e) => this.state.onKeyPress(e, this.state.inputId))}
-               pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlurValidation ? (evt) => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
-               onChange={ e => {
-                this.onChangeLocal(e, this.state.inputId);
-               }} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
+        <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
+          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && (e => this.state.onKeyPress(e, this.state.inputId))}
+          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlurValidation ? evt => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
+          onChange={e => this.onChangeLocal(e, this.state.inputId)} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
           : <span className="icon-hide-password" onClick={() => this.setState({type: "password"})} />)}
-        <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
+        <label className={`custom-input-label${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}${this.state.value === "" ? " custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
           <span className={`label-text${this.state.required ? " required" : ""}`}> { this.state.label } </span>
@@ -326,7 +326,7 @@ class CustomInput extends React.PureComponent {
   getTextAreaInputType () {
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     return (
-      <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}${errorClass ? " " + errorClass : ""}`}>
+      <div className={`form-group custom-input-form-group form-group-textarea ${this.state.disabled ? "disabled" : ""}${errorClass ? ` ${errorClass}` : ""}`}>
         <label className={`custom-input-label custom-input-label-textarea ${this.state.required ? " required" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>{this.state.label} {!this.state.required ? "(Optional)" : ""}</label>
         <textarea className={`form-control form-control-${this.state.inputId} custom-input-element custom-input-element-textarea`} rows={this.state.rowCount || 4}
           id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value}
@@ -335,7 +335,7 @@ class CustomInput extends React.PureComponent {
           { errorClass ? subtitleText : "" }
         </small>
       </div>
-  );
+    );
   }
 
   render () {
@@ -355,19 +355,19 @@ class CustomInput extends React.PureComponent {
       case "multiselect" :
         return this.getMultiSelectInput();
       case "_checkBox" :
-        return <CheckBox {...this.props}/>
+        return <CheckBox {...this.props}/>;
       case "_fileUploader" :
-        return <FileUploader {...this.props} />
+        return <FileUploader {...this.props} />;
       case "_buttonsPanel" :
-        return <ButtonsPanel {...this.props} />
+        return <ButtonsPanel {...this.props} />;
       case "_error" :
-        return <ErrorComponent {...this.props} />
+        return <ErrorComponent {...this.props} />;
       case "_formFieldsHeader" :
-        return <HeaderFormComponent {...this.props} />
+        return <HeaderFormComponent {...this.props} />;
       case "_urlItems" :
-      return <UrlItemList {...this.props} />
+      return <UrlItemList {...this.props} />;
       case "_captchaValidator" :
-        return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />
+        return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />;
     }
     return null;
   }

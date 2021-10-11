@@ -1,4 +1,6 @@
 import Access from "./access.svg";
+import AccountLinking from "./Account Linking.png";
+import AccountLinkingSuccess from "./Account Linking Success.png";
 import Alert from "./alert.svg";
 import Arrow from "./arrow.png";
 import ArrowDown from "./arrow-down-dk.png";
@@ -6,6 +8,8 @@ import ArrowRight from "./arrow-right.svg";
 import Astrick from "./astrick.svg";
 import AstrickRed from "./astrick-red.svg";
 import BlackBGCheck from "./BlackBGCheck.png";
+import BPDarkLogo from "./BP_Logo_darkBG.svg";
+import BPLightLogo from "./BP_Logo_lightBG.svg";
 import BrandList from "./Brand List.jpg";
 import BrandsIcon from "./brands.png";
 import CheckGreen from "./check-grn.svg";
@@ -19,6 +23,7 @@ import DashboardIcon from "./dashboard.png";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
+import FalconLoginForm from "./Falcon Login Form.png";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
 import FilterBlue from "./filterIcon.svg";
@@ -31,6 +36,7 @@ import Info from "./info-sc.svg";
 import InviteUser from "./Invite User.jpg";
 import InviteUserForm from "./AddUser.jpg";
 import Login from "./Login.jpg";
+import LoginTypeCta from "./Login Type CTA.png";
 import MPBackgroundPart from "./background-brand-portal-1.svg";
 import PageError from "./page-error.svg";
 import Paste from "./content-paste.svg";
@@ -39,10 +45,12 @@ import ProblemSolving from "./group-1473.png";
 import Question from "./question.svg";
 import Refresh from "./refresh.svg";
 import RedCircleCross from "./red-circle-cross.svg";
+import ShieldTick from "./brandRegisteredIcon.png";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
 import SortDown from "./sort_descend.svg";
 import SortUp from "./sort_ascend.svg";
+import SuccessCheck from "./SuccessCheck.svg";
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
 import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
@@ -58,6 +66,8 @@ import YellowBGKey from "./YellowBGKey.png";
 
 export {
   Access,
+  AccountLinking,
+  AccountLinkingSuccess,
   Alert,
   Arrow,
   ArrowDown,
@@ -65,6 +75,8 @@ export {
   Astrick,
   AstrickRed,
   BlackBGCheck,
+  BPDarkLogo,
+  BPLightLogo,
   BrandList,
   BrandsIcon,
   ClaimsIcon,
@@ -78,8 +90,10 @@ export {
   EmailIcon,
   Event,
   Exclamation,
+  FalconLoginForm,
   FieldLoader,
   Filter,
+  FilterBlue,
   GreenCircleCheck,
   Group,
   GroupPeople,
@@ -89,6 +103,7 @@ export {
   InviteUser,
   InviteUserForm,
   Login,
+  LoginTypeCta,
   MPBackgroundPart,
   PageError,
   Paste,
@@ -97,10 +112,12 @@ export {
   Question,
   RedCircleCross,
   Refresh,
+  ShieldTick,
   ShowPassword,
   Sort,
   SortDown,
   SortUp,
+  SuccessCheck,
   TimesFailure,
   TimesSuccess,
   TOU,

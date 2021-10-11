@@ -1,4 +1,4 @@
-/* eslint-disable filenames/match-regex */
+/* eslint-disable filenames/match-regex, no-empty */
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -26,6 +26,7 @@ class WebformWorkflowDecider extends React.Component {
     };
   }
 
+  /* eslint-disable react/no-did-mount-set-state */
   componentDidMount() {
     try {
       this.setState({webformConfig: WEBFORMCONFIG});
@@ -35,9 +36,7 @@ class WebformWorkflowDecider extends React.Component {
             try {
               response = JSON.parse(response.body);
               this.setState({webformConfig: response});
-            } catch (e) {
-              console.log(e);
-            }
+            } catch (e) {}
           }
         });
 
@@ -45,32 +44,31 @@ class WebformWorkflowDecider extends React.Component {
           Http.get("/api/mixpanelConfig")
           .then(res => {
             mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
-          }).catch(e => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+          }).catch(() => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
         }
 
       } catch (err) {
-        console.log(err);
         this.setState({webformConfig: WEBFORMCONFIG});
     }
   }
 
   commonClickHandler(e) {
-    console.log(this.props.webformWorkflow);
     this.dispatchWebformState(e.target.value);
   }
 
   render() {
-      let configuration, childComponent;
+      let configuration;
+      let childComponent;
       if (this.state.webformConfig && this.props.webformWorkflow === CONSTANTS.WEBFORM.CTA) {
         configuration = this.state.webformConfig.ctaPageConfig;
         childComponent = (<WebformCta configuration= {configuration} getContent={this.getContent}/>);
 
       } else if (this.state.webformConfig && this.props.webformWorkflow === CONSTANTS.WEBFORM.CLAIM_SUBMISSION) {
         configuration = this.state.webformConfig.webform;
-        childComponent = <Webform
-              getContent={this.getContent}
-              configuration={configuration}
-              dispatchWebformState={this.dispatchWebformState}/>
+        childComponent = (<Webform
+          getContent={this.getContent}
+          configuration={configuration}
+          dispatchWebformState={this.dispatchWebformState}/>);
       }
 
       return (
