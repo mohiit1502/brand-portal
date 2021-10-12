@@ -23,7 +23,7 @@ import DashboardIcon from "./dashboard.png";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
-import FalconLoginForm from "./Falcon Login Form.png";
+import FalconLoginForm from "./Falcon Login Form.jpg";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
 import FilterBlue from "./filterIcon.svg";
