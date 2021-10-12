@@ -178,7 +178,9 @@ const HELPCONFIG = {
         {
           "question": "What happens if I link my Seller Center account with my Brand Portal account?",
           "type": "simple",
-          "answer": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \"Login with Seller Center\" option and enter your Seller Center credentials to access the Brand Portal."
+          "answer": {
+            "para1": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \"Login with Seller Center\" option and enter your Seller Center credentials to access the Brand Portal."
+          }
         }
       ]
     },
