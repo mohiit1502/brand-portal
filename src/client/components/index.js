@@ -1,17 +1,18 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
-import CaptchaValidator from './CaptchaValidator';
-import ContactUsForm from './ContactUsForm';
-import WebformCta from './WebformCta';
-import UrlItemList from './UrlItemList';
-import Webform from './Webform';
-import WebformLandingPage from './WebformLandingPage';
-import WebformWorkflowDecider from './WebformWorkflowDecider';
-import TouTemplate from './custom-components/modal/templates/TouTemplate';
-import GenericErrorPage from './GenericErrorPage';
-import Paginator from './Paginator';
-import DatePickerWrapper from './DatePickerWrapper';
-import FilterType from './FilterType';
+import LoginTypeCta from "./LoginTypeCta";
+import CaptchaValidator from "./CaptchaValidator";
+import ContactUsForm from "./ContactUsForm";
+import WebformCta from "./WebformCta";
+import UrlItemList from "./UrlItemList";
+import Webform from "./Webform";
+import WebformLandingPage from "./WebformLandingPage";
+import WebformWorkflowDecider from "./WebformWorkflowDecider";
+import TouTemplate from "./custom-components/modal/templates/TouTemplate";
+import GenericErrorPage from "./GenericErrorPage";
+import Paginator from "./Paginator";
+import DatePickerWrapper from "./DatePickerWrapper";
+import FilterType from "./FilterType";
 import Accordion from "./Accordion";
 import Alert from "./Alert";
 import ButtonsPanel from "./ButtonsPanel";
@@ -20,7 +21,7 @@ import ClaimTabular from "./ClaimTabular";
 import ContactUsPrompt from "./ContactUsPrompt";
 import Dashboard from "./Dashboard";
 import DashboardHeader from "./DashboardHeader";
-import DateSelector from './DateSelector';
+import DateSelector from "./DateSelector";
 import ErrorComponent from "./ErrorComponent";
 import FaqContainer from "./FaqContainer";
 import FaqSingle from "./FaqSingle";
@@ -51,6 +52,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	LoginTypeCta,
 	CaptchaValidator,
 	ContactUsForm,
 	WebformCta,

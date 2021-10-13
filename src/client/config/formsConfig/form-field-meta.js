@@ -1,9 +1,12 @@
+/* eslint-disable quote-props */
 const FORMFIELDCONFIG = {
   "SECTIONSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
         "sectionTitle": "Create Company Profile",
-        "sectionSubTitle": "Please provide the information in the form below to create your company profile."
+        "sectionSellerTitle": "Confirm Company Profile",
+        "sectionSubTitle": "Please provide the information in the form below to create your company profile.",
+        "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
         "id": "companyreg",
@@ -179,7 +182,7 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "error": "",
           "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
           "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
@@ -477,7 +480,7 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "error": "",
           "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
           "inputId": "trademarkNumber",
           "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
@@ -708,7 +711,8 @@ const FORMFIELDCONFIG = {
             },
             "validateLength": {
               "minLength": 20,
-              "error": "Comment should be 20 characters long!"
+              "maxLength": 2000,
+              "error": "Comments should be between 20 and 2000 characters!"
             }
           }
         },
@@ -1057,10 +1061,18 @@ const FORMFIELDCONFIG = {
           "type": "_buttonsPanel",
           "buttons": {
             "changePassword": {
-              "classes": "btn btn-outline-primary btn-sm px-3",
+              "classes": "btn btn-outline-primary btn-sm px-3 reset-password",
               "onClick": "displayChangePassword",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}",
               "text": "Change Password",
               "type": "button"
+            },
+            "manage": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14 manage-profile",
+              "onClick": "displayManageProfileNotification",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
+              "text": "Manage Seller Center Profile",
+              "type": "submit"
             }
           }
         },
@@ -1074,21 +1086,21 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-primary btn-sm px-4",
               "handlerArg": false,
               "onClick": "disableInput",
-              "renderCondition": "{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true}",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "text": "Edit",
               "type": "button"
             },
             "cancel": {
               "classes": "btn btn-link font-size-14 px-4 mr-3",
               "handlerArg": true,
-              "renderCondition": "{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false}",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "onClick": "disableInput",
               "text": "Cancel",
               "type": "button"
             },
             "save": {
               "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "renderCondition": "{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false}",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "text": "Save",
               "type": "submit"
             }
@@ -1633,7 +1645,7 @@ const FORMFIELDCONFIG = {
         "fieldsHeader_5": {
           "containerClasses": "font-weight-bold",
           "colClasses": "pt-2",
-          "header": "Please review your contact information and make sure it's correct before clicking 'Submit Claim'",
+          "header": "Please review your contact information and make sure it's correct before clicking \"Submit Claim\"",
           "layout": "21.1.8",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"
@@ -1802,5 +1814,5 @@ const FORMFIELDCONFIG = {
       }
     }
   }
-}
+};
 export default FORMFIELDCONFIG;

@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-regex, no-shadow */
 import React, {memo} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -27,16 +28,16 @@ const Summary = props => {
         footer,
         header,
         templateName
-      },
+      }
     },
     widgetCommon: {widgetClasses: commonWidgetClasses = ""},
     widgetStackItem: {
       contentClasses,
       header: {
-        layoutClasses: headerLayoutClasses = "",
+        layoutClasses: headerLayoutClasses = ""
       },
       body: {
-        layoutClasses: bodyLayoutClasses = "",
+        layoutClasses: bodyLayoutClasses = ""
       },
       footer: {
         layoutClasses: footerLayoutClasses = "",
@@ -46,68 +47,69 @@ const Summary = props => {
   } = props;
 
   const mixpanelAddNewTemplateUtil = (meta, payload) => {
-    const templateName = meta.templateName;
-    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateName];
+    const templateNameInner = meta.templateName;
+    const eventName = MIXPANEL_CONSTANTS.ADD_NEW_TEMPLATE_MAPPING[templateNameInner];
     mixpanel.trackEvent(eventName, payload);
   };
 
-  const onClickHandler = (filterName) => {
+  const onClickHandler = filterName => {
     currentFilters[ID] = filterName;
     dispatchFilter(currentFilters).then(() => history.push(body.href));
-  }
+  };
 
   const getDetails = () => {
-    return <ul className="list-unstyled d-flex justify-content-between">
+    return (<ul className="list-unstyled d-flex justify-content-between">
       {
+        /* eslint-disable complexity */
         body && body.items && body.items.map((item, key) => {
           let itemCount = "-";
           if (item.mapper === "totalItemsFetched") {
             itemCount = data && data.totalItemsFetched > 0 ? data.totalItemsFetched.toString() : "-";
-          } else {
-            if (item.value) {
+          } else if (item.value) {
               if (item.value.indexOf(",") > -1) {
-                const itemsInPayload = item.value.split(",").map(selector => Helper.search(item.mapper, data, selector)).filter(item => item);
+                const itemsInPayload = item.value.split(",").map(selector => Helper.search(item.mapper, data, selector)).filter(itemInner => itemInner);
                 itemCount = itemsInPayload && itemsInPayload.length > 0 ? itemsInPayload.reduce((total, itemInPayload) => total + itemInPayload.count, 0) : 0;
-                itemCount = itemCount > 0 ? itemCount.toString() : "-"
+                itemCount = itemCount > 0 ? itemCount.toString() : "-";
               } else {
                 const itemInPayload = Helper.search(item.mapper, data, item.value);
-                itemCount = itemInPayload && itemInPayload.count > 0 ? itemInPayload.count.toString() : "-"
+                itemCount = itemInPayload && itemInPayload.count > 0 ? itemInPayload.count.toString() : "-";
               }
             } else {
-              itemCount = "-"
+              itemCount = "-";
             }
-          }
-          return <li key={key} className={`list-unstyled d-inline-block`}>
+          return (<li key={key} className={`list-unstyled d-inline-block`}>
             <div className="font-size-12 pb-625 item-status">{item.label}</div>
+            {/* eslint-disable no-nested-ternary */}
             {fetchComplete ? itemCount !== "-"
               ? <span onClick={() => onClickHandler(item.name)} className="font-size-28 item-count">{itemCount}</span>
               // ? <Link to={body.href} onClick={onClickHandler} className="font-size-28 item-count">{itemCount}</Link>
               : <span className="font-size-28">{itemCount}</span> : <div className="item-loader" />}
-          </li>
+          </li>);
         })
       }
-    </ul>
-  }
+    </ul>);
+  };
 
   const triggerAddAction = () => {
     const meta = { templateName };
     const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
     mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-  }
+  };
 
   return (
-    <div className={`c-Summary c-Widget__content${contentClasses ? " " + contentClasses : ""}${commonWidgetClasses ? " " + commonWidgetClasses : ""}`}>
+    <div className={`c-Summary c-Widget__content${contentClasses ? ` ${  contentClasses}` : ""}${commonWidgetClasses ? ` ${  commonWidgetClasses}` : ""}`}>
       <h4 className={headerLayoutClasses}>{header ? header.title : ""}</h4>
       <div className={`Summary-body ${bodyLayoutClasses}`}>
         {getDetails()}
       </div>
-      <footer className={`c-Widget__content__footer${footerLayoutClasses ? " " + footerLayoutClasses : ""}${footerContentClasses ? " " + footerContentClasses : ""}${AuthUtil.isActionAccessible(footer.actionMapper, userProfile) ? "" : " disabled"}`} onClick={triggerAddAction}>{footer && footer.text}</footer>
+      <footer className={`c-Widget__content__footer${footerLayoutClasses ? ` ${  footerLayoutClasses}` : ""}${footerContentClasses ? ` ${  footerContentClasses}` : ""}${AuthUtil.isActionAccessible(footer.actionMapper, userProfile) ? "" : " disabled"}`} onClick={triggerAddAction}>{footer && footer.text}</footer>
     </div>
   );
 };
 
 Summary.propTypes = {
+  currentFilters: PropTypes.object,
   data: PropTypes.object,
   dispatchFilter: PropTypes.func,
   fetchComplete: PropTypes.bool,
@@ -123,10 +125,10 @@ Summary.propTypes = {
 const mapDispatchToProps = {
   dispatchFilter,
   toggleModal
-}
+};
 
 const mapStateToProps = state => {
-  return {currentFilters: state.dashboard.filter}
-}
+  return {currentFilters: state.dashboard.filter};
+};
 
 export default memo(withRouter(connect(mapStateToProps, mapDispatchToProps)(Summary)));

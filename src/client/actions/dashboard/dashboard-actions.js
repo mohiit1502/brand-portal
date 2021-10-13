@@ -9,8 +9,8 @@ export const dispatchWidgetAction = widgetAction => {
 export const dispatchFilter = filter => dispatch => {
   dispatch({type: DISPATCH_FILTER, value: {filter}});
   return Promise.resolve();
-}
+};
 
 export const dispatchCustomDate = customDate => {
   return {type: DISPATCH_CUSTOM_DATE, value: {customDate}};
-}
+};

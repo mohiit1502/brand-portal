@@ -34,7 +34,7 @@ class CustomModal extends React.Component {
     this.toggleModal(toggleAction);
   }
 
-
+  /* eslint-disable complexity */
   fetchTemplate(key) {
     switch (key) {
       case "Alert": return Alert;
@@ -57,9 +57,9 @@ class CustomModal extends React.Component {
   toggleModal(toggleAction) {
     const modalElements = $(".modal");
     const backdropModals = {
-      "NewUserAddedTemplate": false,
-      "StatusModalTemplate": false,
-      "DateSelectorTemplate": true,
+      NewUserAddedTemplate: false,
+      StatusModalTemplate: false,
+      DateSelectorTemplate: true
     };
     const backdrop = $(".modal-backdrop");
     if (backdrop) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 export class CustomInterval {
   interval;
   duration;

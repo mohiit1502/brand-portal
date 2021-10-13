@@ -1,3 +1,3 @@
-import ContactUsPrompt from './ContactUsPrompt.jsx';
+import ContactUsPrompt from "./ContactUsPrompt.jsx";
 
 export default ContactUsPrompt;

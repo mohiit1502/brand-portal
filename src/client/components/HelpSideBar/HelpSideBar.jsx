@@ -1,3 +1,5 @@
+/* eslint-disable filenames/match-regex */
+
 import React from "react";
 import PropTypes from "prop-types";
 import mixpanel from "../../utility/mixpanelutils";
@@ -6,7 +8,7 @@ import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 import "./HelpSideBar.component.scss";
 import {withRouter} from "react-router";
 
-const HelpSideBar = ({activeTab, categoryHeader, categories,...props}) => {
+const HelpSideBar = ({activeTab, categoryHeader, categories, ...props}) => {
   const helpSectionEvents = (eventName, payLoad) => {
     let helpId = payLoad.id;
     helpId = helpId.split("-")[0];
@@ -18,7 +20,7 @@ const HelpSideBar = ({activeTab, categoryHeader, categories,...props}) => {
     mixpanel.trackEvent(eventName, updatedPayload);
   };
   const onClickHandler = categoryKey => {
-    let path = "/help/"+categoryKey;
+    const path = `/help/${categoryKey}`;
     props.history.push(path);
     helpSectionEvents(MIXPANEL_CONSTANTS.HELP_CENTER_EVENTS.VIEW_HELP_MENU, {id: categoryKey});
   };
@@ -45,6 +47,7 @@ HelpSideBar.propTypes = {
   activeTab: PropTypes.string,
   categories: PropTypes.object,
   categoryHeader: PropTypes.string,
+  history: PropTypes.object,
   setActiveTab: PropTypes.func
 };
 

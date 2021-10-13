@@ -10,9 +10,9 @@ $ npm install --save brand-portal
 ## Usage
 
 ```js
-var roPro = require('brand-portal');
+var roPro = require("brand-portal");
 
-roPro('Rainbow');
+roPro("Rainbow");
 ```
 ## License
 
@@ -25,5 +25,8 @@ roPro('Rainbow');
 [travis-url]: https://travis-ci.org//RoPro
 [daviddm-image]: https://david-dm.org//RoPro.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org//RoPro
+
+
+1
 
 

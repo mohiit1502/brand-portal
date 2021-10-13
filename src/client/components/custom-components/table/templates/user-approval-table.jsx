@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import sortIcon from "../../../../images/sort.svg";
 import "../../../../styles/custom-components/table/custom-table.scss";
-import Http from "../../../../utility/Http";
 import CustomInput from "../../custom-input/custom-input";
 
 const UserApprovalTable = function(props) {
@@ -35,7 +34,7 @@ const UserApprovalTable = function(props) {
               return (
                 <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
                   {
-                    headerGroup.headers.map((header, i) => {
+                    headerGroup.headers.map(header => {
                       return (
                         <div className="table-head-cell col" key={`trth${header.id}`} {...header.getHeaderProps(header.getSortByToggleProps())}>
                           { header.render("Header") } {<img className="sort-icon" src={sortIcon} /> }
@@ -71,21 +70,21 @@ const UserApprovalTable = function(props) {
                         <div className="col-4"/>
                         <div className="col-4">
                           <CustomInput key={"role"}
-                                       inputId={"role"}
-                                       formId={`${row.original.id}`} label={row.original.role.label}
-                                       required={row.original.role.required} value={row.original.role.value}
-                                       type={row.original.role.type} pattern={row.original.role.pattern}
-                                       onChange={setSelectInputValue} disabled={row.original.role.disabled}
-                                       dropdownOptions={row.original.role.options}/>
+                            inputId={"role"}
+                            formId={`${row.original.id}`} label={row.original.role.label}
+                            required={row.original.role.required} value={row.original.role.value}
+                            type={row.original.role.type} pattern={row.original.role.pattern}
+                            onChange={setSelectInputValue} disabled={row.original.role.disabled}
+                            dropdownOptions={row.original.role.options}/>
                         </div>
                         <div className="col-4">
                           <CustomInput key={"brands"}
-                                       inputId={"brands"}
-                                       formId={`${row.original.id}`} label={row.original.brands.label}
-                                       required={row.original.brands.required} value={row.original.brands.value}
-                                       type={row.original.brands.type} pattern={row.original.brands.pattern}
-                                       onChange={setMultiSelectInputValue} disabled={row.original.brands.disabled}
-                                       dropdownOptions={row.original.brands.options}/>
+                            inputId={"brands"}
+                            formId={`${row.original.id}`} label={row.original.brands.label}
+                            required={row.original.brands.required} value={row.original.brands.value}
+                            type={row.original.brands.type} pattern={row.original.brands.pattern}
+                            onChange={setMultiSelectInputValue} disabled={row.original.brands.disabled}
+                            dropdownOptions={row.original.brands.options}/>
                         </div>
                       </div>
                     </div>

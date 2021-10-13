@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {dispatchWidgetAction} from "./../../actions/dashboard/dashboard-actions";
+import {dispatchWidgetAction} from "../../actions/dashboard/dashboard-actions";
 import "./Widget.component.scss";
 
 const Widget = props => {
@@ -30,6 +30,7 @@ const Widget = props => {
 
   const [hovered, setHovered] = useState(false);
 
+  /* eslint-disable no-nested-ternary */
   const authRoles = userProfile.role && authConfig[item] && authConfig[item][action] ? authConfig[item][action].length ? authConfig[item][action] : Object.keys(authConfig[item][action]) : [];
   window[actionEnabler] = authRoles && authRoles.length > 0 && userProfile.role.name && authRoles.map(role => role.toLowerCase()).includes(userProfile.role.name && userProfile.role.name.toLowerCase());
   const isDisabled = actionEnabler && !window[actionEnabler];
@@ -89,8 +90,9 @@ Widget.propTypes = {
   authConfig: PropTypes.object,
   widgetActionDispatcher: PropTypes.func,
   userProfile: PropTypes.object,
+  widget: PropTypes.object,
   widgetCommon: PropTypes.object,
-  widget: PropTypes.object
+  widgetStack: PropTypes.object
 };
 
 const mapDispatchToProps = {

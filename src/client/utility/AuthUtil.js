@@ -2,6 +2,7 @@ import authConfig from "./../config/authorizations";
 import Helper from "./helper";
 
 export default class AuthUtil {
+  /* eslint-disable complexity */
   static isActionAccessible (action, userProfile, actedOnRole) {
     if (action && action.indexOf(".") > -1) {
       const actionConfig = Helper.search(action, authConfig);
@@ -9,10 +10,8 @@ export default class AuthUtil {
         const role = userProfile.role.name;
         if (actionConfig.length !== undefined) {
           return actionConfig.includes(role);
-        } else {
-          if (Object.keys(actionConfig).includes(role) && actedOnRole && actionConfig[role].includes(actedOnRole)) {
+        } else if (Object.keys(actionConfig).includes(role) && actedOnRole && actionConfig[role].includes(actedOnRole)) {
             return true;
-          }
         }
       }
     }

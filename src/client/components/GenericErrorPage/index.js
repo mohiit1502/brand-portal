@@ -1,3 +1,3 @@
-import GenericErrorPage from './GenericErrorPage.jsx';
+import GenericErrorPage from "./GenericErrorPage.jsx";
 
 export default GenericErrorPage;

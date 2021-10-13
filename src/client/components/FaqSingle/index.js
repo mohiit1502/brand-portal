@@ -1,3 +1,3 @@
-import FaqSingle from './FaqSingle.jsx';
+import FaqSingle from "./FaqSingle.jsx";
 
 export default FaqSingle;

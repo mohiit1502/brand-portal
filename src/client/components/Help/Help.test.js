@@ -1,8 +1,9 @@
-import React from 'react';
-import Help from './Help';
+/* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
+import React from "react";
+import Help from "./Help";
 
-describe('Help', () => {
-   it('renders without error', () => {
+describe("Help", () => {
+   it("renders without error", () => {
 
    });
 });

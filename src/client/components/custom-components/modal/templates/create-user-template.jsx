@@ -1,11 +1,11 @@
-/* eslint-disable react/jsx-handler-names */
+/* eslint-disable react/jsx-handler-names, no-unused-expressions, max-statements, complexity */
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import Cookies from "electrode-cookies";
 import {saveUserInitiated} from "../../../../actions/user/user-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {showNotification} from "../../../../actions/notification/notification-actions";
-import CustomInput from "../../../custom-components/custom-input/custom-input";
 import Http from "../../../../utility/Http";
 import ClientUtils from "../../../../utility/ClientUtils";
 import InputFormatter from "./../../../../utility/phoneOps";
@@ -22,8 +22,10 @@ class CreateUserTemplate extends React.Component {
   constructor(props) {
     super(props);
     const functions = ["bubbleValue", "onChange", "setSelectInputValue", "setMultiSelectInputValue", "handleSubmit", "prepopulateInputFields", "handleSubmit", "resetTemplateStatus"];
-    const debounceFunctions = {"emailDebounce": "onEmailChange"};
-    functions.forEach(name => this[name] = this[name].bind(this));
+    const debounceFunctions = {emailDebounce: "onEmailChange"};
+    functions.forEach(name => {
+      this[name] = this[name].bind(this);
+    });
     Object.keys(debounceFunctions).forEach(name => {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -32,10 +34,10 @@ class CreateUserTemplate extends React.Component {
     this.invalid = {emailId: false, phone: false};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const newUserContent = this.props.newUserContent ? this.props.newUserContent : {}
-    const inputDataConfig =
+    const newUserContent = this.props.newUserContent ? this.props.newUserContent : {};
 
     this.state = {
+      clientType: Cookies.get("client_type"),
       section: {...newUserContent.sectionConfig},
       form: {
         ...newUserContent.formConfig,
@@ -232,17 +234,12 @@ class CreateUserTemplate extends React.Component {
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.INVITE_NEW_USER_TEMPLATE_EVENTS.SUBMIT_CREATED_USER_CLICKED, mixpanelClickEventPayload);
-    let brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
-    // const allIndex = brands.findIndex(brand => brand.name.toLowerCase() === "all");
-    // eslint-disable-next-line no-unused-expressions
-    // !this.state.allSelected && allIndex !== -1 && (brands = brands.filter(brand => brand.name.toLowerCase() !== "all"));
-    let brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
+    const brandsSelected = this.state.form.inputData.brands.dropdownOptions.filter(v => v.selected);
+    const brands = brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => ({id: v.id}));
     const loginId = this.state.form.inputData.emailId.value;
-    // brands = brands.map(v => ({id: v.id}));
     const isThirdParty = this.state.form.inputData.userType.value.toLowerCase() !== "internal";
     const firstName = this.state.form.inputData.firstName.value;
     const lastName = this.state.form.inputData.lastName.value;
-    // console.log(this.state.form.inputData.role.dropdownOptions);
     const selectedRole = this.state.form.inputData.role.dropdownOptions[ClientUtils.where(this.state.form.inputData.role.dropdownOptions, {value: this.state.form.inputData.role.value})];
     const role = {
       id: selectedRole.id,
@@ -259,10 +256,8 @@ class CreateUserTemplate extends React.Component {
         role,
         phoneCountry: "+1",
         phoneNumber: this.state.form.inputData.phone.value ? this.state.form.inputData.phone.value : "0000000000", //[note:to handle VIP phone number validation]
-        //phoneNumber: this.state.form.inputData.phone.value,
         type: isThirdParty ? CONSTANTS.USER.USER_TYPE.THIRD_PARTY : CONSTANTS.USER.USER_TYPE.INTERNAL
-      },
-      krakenUniqueWorkflow: this.state.uniquenessCheckStatus
+      }
     };
 
     isThirdParty && (payload.user.companyName = this.state.form.inputData.companyName.value);
@@ -272,13 +267,13 @@ class CreateUserTemplate extends React.Component {
       API: url,
       INVITEE_COMPANY_NAME: this.props.userProfile && this.props.userProfile.organization && this.props.userProfile.organization.name,
       INVITEE_EMAIL: loginId,
-      INVITEE_BRANDS: brandsSelected && brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => {return v.value}),
+      INVITEE_BRANDS: brandsSelected && brandsSelected.filter(brand => brand.name.toLowerCase() !== "all").map(v => {return v.value;}),
       INVITEE_ROLE: role && role.name,
       IS_UPDATE_USER: this.state.form && this.state.form.isUpdateTemplate,
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_USER_LIST" : "INVITE_NEW_USER"
     };
     if (this.state.form.isUpdateTemplate) {
-      return Http.put(`${url}/${payload.user.email}`, payload, null, null, this.props.showNotification, "User has been updated successfully", "Unable to update the user!")
+      return Http.put(`${url}/${payload.user.email}`, payload, {clientType: this.state.clientType}, null, this.props.showNotification, "User has been updated successfully", "Unable to update the user!")
         .then(() => {
           this.resetTemplateStatus();
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -288,7 +283,6 @@ class CreateUserTemplate extends React.Component {
         })
         .catch(err => {
           this.loader("form", false);
-          console.log(err);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -306,7 +300,6 @@ class CreateUserTemplate extends React.Component {
           mixpanelPayload.API_SUCCESS = true;
         })
         .catch(err => {
-          console.log(err);
           this.loader("form", false);
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = err.message ? err.message : err;

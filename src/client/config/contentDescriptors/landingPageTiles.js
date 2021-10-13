@@ -124,9 +124,16 @@ const LOGINCONFIG = {
             "chunk2": " for reporting alleged instances of intellectual property infringement."
           }
         }
+      },
+      {
+        "question": "Can I use my Seller Center account credentials to login to the Brand Portal?",
+        "type": "simple",
+        "answer": {
+          "para1": "A registered seller can use their Seller Center account credentials to log into the Brand Portal. On the landing page, use the “Login with Seller Center” option at the Log-In screen and you will be prompted to link your accounts. After you successfully link your accounts, you will only be able to use your Seller Center login credentials to access the Brand Portal."
+        }
       }
     ]
   }
-}
+};
 
 export default LOGINCONFIG;

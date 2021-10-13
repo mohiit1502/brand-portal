@@ -38,6 +38,9 @@ export default class ServerHttp {
     return await ServerHttp.crud(urlString, options, "delete");
   }
 
+  /* eslint-disable max-statements */
+  /* eslint-disable no-console */
+  /* eslint-disable no-magic-numbers */
   static async crud (urlString, options, method) {
     let requestStartTime;
     let requestEndTime;
@@ -45,6 +48,7 @@ export default class ServerHttp {
       URL: urlString
     };
     try {
+      /* eslint-disable no-unused-expressions */
       !urlString && console.log("No URL!!");
       console.log("1. ===== Crud Request Start. Requesting URL: ", urlString);
       requestStartTime = Date.now();
@@ -56,8 +60,8 @@ export default class ServerHttp {
         return headers.get("content-type") === "application/json" ? {status, body: await response.json()} : {status, body: await response.text()};
       }
       console.log("3. Response not OK, logging response: ", response);
-      let err = headers.get("content-type") === "application/json" ? await response.json() : await response.text();
-      const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `
+      const err = headers.get("content-type") === "application/json" ? await response.json() : await response.text();
+      const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, err);
       throw new ServerHttpError(status, err.error, err.message);
     } catch (e) {

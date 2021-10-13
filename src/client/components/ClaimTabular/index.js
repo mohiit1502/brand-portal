@@ -1,3 +1,3 @@
-import ClaimTabular from './ClaimTabular.jsx';
+import ClaimTabular from "./ClaimTabular.jsx";
 
 export default ClaimTabular;

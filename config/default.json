@@ -6,7 +6,7 @@
   "services": {
     "consumerId": "91e1b78e-261b-4676-8317-4cf5bfa24a42",
     "privateKey": {
-      "file": "config/private-key-qa.pem",
+      "file": "/secrets/private-key-qa.pem",
       "version": 2,
       "algorithm": "RSA",
       "encoding": "PKCS#8"

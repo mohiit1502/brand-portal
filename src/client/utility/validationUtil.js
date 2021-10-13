@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expression, max-params, no-magic-numbers, no-unused-expressions */
 import Http from "./Http";
 import Helper from "./helper";
 import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions";
@@ -13,19 +14,19 @@ export default class Validator {
     const {validators} = this.props;
     let errorMsg;
     validators && Object.keys(validators).every(validation => {
-      errorMsg = Validator[validation](evt.target, validators[validation], parentRef)
-      this.setState({error: errorMsg})
+      errorMsg = Validator[validation](evt.target, validators[validation], parentRef);
+      this.setState({error: errorMsg});
       return !errorMsg;
     });
     return errorMsg;
   }
 
   static validateRequired (target, validationObj) {
-    const formFieldValue = target.value
+    const formFieldValue = target.value;
     if (validationObj && formFieldValue === "") {
-      return validationObj.error
+      return validationObj.error;
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -36,9 +37,9 @@ export default class Validator {
       (validationObj && (validationObj.minLength && length < validationObj.minLength)) ||
       (validationObj.maxLength && length > validationObj.maxLength)
     ) {
-      return validationObj.error
+      return validationObj.error;
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -49,36 +50,37 @@ export default class Validator {
         validationObj.dataRuleRegex &&
         (validationObj.dataRuleRegex[regexSelector]
           ? validationObj.dataRuleRegex[regexSelector]
-          : validationObj.dataRuleRegex)
-      const formFieldRegex = new RegExp(formFieldRegexString)
-      const compliesRegex = formFieldRegex.test(formFieldValue)
+          : validationObj.dataRuleRegex);
+      const formFieldRegex = new RegExp(formFieldRegexString);
+      const compliesRegex = formFieldRegex.test(formFieldValue);
       if (!compliesRegex) {
-        return validationObj.error
+        return validationObj.error;
       } else {
-        return ""
+        return "";
       }
     } else {
-      return ""
+      return "";
     }
   }
 
+  /* eslint-disable mo-magic-numbers */
   static validateDate (target, validationObj) {
-    const formFieldValue = target.value
+    const formFieldValue = target.value;
     if (validationObj) {
-      const month = +formFieldValue.substring(0, formFieldValue.indexOf("/"))
-      const year = +formFieldValue.substring(formFieldValue.indexOf("/") + 1)
-      const currentYear = new Date().getFullYear()
-      const currentMonth = new Date().getMonth()
+      const month = +formFieldValue.substring(0, formFieldValue.indexOf("/"));
+      const year = +formFieldValue.substring(formFieldValue.indexOf("/") + 1);
+      const currentYear = new Date().getFullYear();
+      const currentMonth = new Date().getMonth();
       if (year > 2032 || month > 12 || month < 1) {
-        return validationObj.errorMessages.dataMsgRegex
+        return validationObj.errorMessages.dataMsgRegex;
       }
       if (year < currentYear || (year === currentYear && month < currentMonth + 1)) {
-        return validationObj.errorMessages.dataMsgMonthYear
+        return validationObj.errorMessages.dataMsgMonthYear;
       } else {
-        return ""
+        return "";
       }
     } else {
-      return ""
+      return "";
     }
   }
 
@@ -94,6 +96,7 @@ export default class Validator {
   static validateState () {
     const form = {...this.state.form};
     let hasError = false;
+    /* eslint-disable complexity */
     Object.keys(form.inputData).forEach(key => {
       const obj = {...form.inputData[key]};
       form.inputData[key] = obj;
@@ -102,17 +105,16 @@ export default class Validator {
         return;
       }
       if (obj && obj.required && !obj.value) {
-        if (key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal") {
-          return;
-        } else if (obj.type && obj.type === "_checkBox" && obj.selected) {
-          return;
-        } else if (obj.type  && obj.type === "_urlItems") {
-          if( obj.required && this.validateUrlItems && this.validateUrlItems()) {
+        if (!((key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal")
+          || (obj.type && obj.type === "_checkBox" && obj.selected))) {
+          if (obj.type && obj.type === "_urlItems") {
+            if (obj.required && this.validateUrlItems && this.validateUrlItems()) {
+              hasError = true;
+            }
+          } else {
+            obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
             hasError = true;
           }
-        } else {
-          obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
-          hasError = true;
         }
       } else {
         obj.error = obj.error || "";
@@ -122,46 +124,44 @@ export default class Validator {
     return hasError;
   }
 
-  static validateForm (props, formMeta, toIgnoreKeys, isPreLoadValidation) {
-    let error = false
-    const formErrorsClone = Object.assign({}, props.formErrors)
-    const formValues = props.formValues
+  static validateForm (props, formMeta, toIgnoreKeys) {
+    let error = false;
+    const formErrorsClone = Object.assign({}, props.formErrors);
+    const formValues = props.formValues;
     formErrorsClone &&
-    Object.keys(formErrorsClone).map((key) => {
+    Object.keys(formErrorsClone).map(key => {
       if (
         toIgnoreKeys &&
         formMeta[key] !== undefined &&
-        toIgnoreKeys.indexOf(formMeta[key]["id"]) === -1
+        toIgnoreKeys.indexOf(formMeta[key].id) === -1
       ) {
         if (formErrorsClone[key] !== "") {
-          error = true
+          error = true;
         }
       }
-    })
-    formValues && Object.keys(formValues).map((key) => {
-      const validation = formMeta[key] && formMeta[key].validation
-      const fieldValue = formValues[key]
+    });
+    formValues && Object.keys(formValues).map(key => {
+      const validation = formMeta[key] && formMeta[key].validation;
+      const fieldValue = formValues[key];
       if (validation && validation.required && validation.required.isRequired) {
         if (
           toIgnoreKeys &&
           formMeta[key] !== undefined &&
-          toIgnoreKeys.indexOf(formMeta[key]["id"]) === -1
+          toIgnoreKeys.indexOf(formMeta[key].id) === -1
         ) {
           if (fieldValue === "") {
-            formErrorsClone[key] = validation.required.error_message
-            error = true
-          } else {
-            if (formErrorsClone[key] === validation.required.error_message) {
-              formErrorsClone[key] = ""
+            formErrorsClone[key] = validation.required.error_message;
+            error = true;
+          } else if (formErrorsClone[key] === validation.required.error_message) {
+              formErrorsClone[key] = "";
             }
-          }
         }
       }
-    })
+    });
     props.updateFormErrors({
       formErrors: {...formErrorsClone}
-    })
-    return error
+    });
+    return error;
   }
 
   // =============================== Backend Validations ====================================
@@ -175,6 +175,7 @@ export default class Validator {
     inputData.brandName.loader = true;
     inputData.brandName.disabled = true;
     this.setState(state);
+    params.clientType = this.props.clientType;
     const mixpanelPayload = {
       API: "/api/brands/checkUnique",
       BRAND_NAME: params.brandName,
@@ -222,15 +223,15 @@ export default class Validator {
       TRADEMARK_NUMBER: this.state.form.inputData.trademarkNumber.value,
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
-    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, null, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
-      .then (res => {
+    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, {clientType: this.props.clientType}, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
+      .then(res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, inputData.trademarkNumber);
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.USPTO_VERIFICATION_STATUS = res.body.usptoVerification;
         mixpanelPayload.USPTO_URL = res.body.usptoUrl;
         mixpanelPayload.IS_VALID_TRADEMARK = (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED");
       })
-      .catch (err => {
+      .catch(err => {
         inputData.trademarkNumber.isValid = true;
         inputData.trademarkNumber.error = false;
         inputData.trademarkNumber.fieldOk = false;
@@ -259,7 +260,7 @@ export default class Validator {
     form.inputData = inputData;
     inputData.companyName.disabled = true;
     inputData.companyName.loader = true;
-    inputData.companyOnboardingActions.buttons = {...inputData.companyOnboardingActions.buttons}
+    inputData.companyOnboardingActions.buttons = {...inputData.companyOnboardingActions.buttons};
     inputData.companyOnboardingActions.buttons.clear.disabled = true;
     this.setState(state);
     let error;
@@ -268,7 +269,7 @@ export default class Validator {
       COMPANY_NAME: this.state.form.inputData.companyName.value,
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
-    Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value})
+    Http.get("/api/company/availability", {name: this.state.form.inputData.companyName.value, clientType: this.state.clientType})
       .then(response => {
         error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
         inputData.companyName.isUnique = !error;
@@ -276,9 +277,10 @@ export default class Validator {
         inputData.companyOnboardingActions.buttons.clear.disabled = false;
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
-      }).catch (err => {
+      }).catch(err => {
         error = err.error;
         if (error) {
+          /* eslint-disable no-nested-ternary */
           error = typeof error === "object" ? error.message ? error.message : "Uniqueness Check Failed, please try again!" : error;
         }
         inputData.companyName.isUnique = false;
@@ -319,7 +321,7 @@ export default class Validator {
     if (emailId.value && emailId.error !== emailId.invalidError) {
       this.loader("fieldLoader", true);
       Http.get("/api/users/checkUnique", {email: emailId.value}).then(res => {
-        const unique = res.body.krakenUniqueStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
+        const unique = res.body.uniquenessStatus !== CONSTANTS.USER.UNIQUENESS_CHECK_STATUS.DENY;
         const error = !unique ? "This email already exists in the Walmart Brand Portal." : "";
         emailId.disabled = false;
         emailId.loader = false;
@@ -327,7 +329,7 @@ export default class Validator {
         emailId.error = emailId.error !== emailId.invalidError && error;
         emailId.isUnique = unique;
         emailId.fieldOk = !error;
-        uniquenessCheckStatus = res.body.krakenUniqueStatus;
+        uniquenessCheckStatus = res.body.uniquenessStatus;
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_EMAIL_UNIQUE = unique;
       }).catch(err => {

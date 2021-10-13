@@ -23,7 +23,7 @@ class HomeHeader extends React.Component {
           <img src={headerLogo} />
         </Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsible-header"
-                aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="collapsible-header" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"/>
         </button>
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
@@ -49,6 +49,8 @@ class HomeHeader extends React.Component {
 }
 
 HomeHeader.propTypes = {
+  config: PropTypes.object,
+  hideHelp: PropTypes.bool,
   isOnboarded: PropTypes.bool,
   logoutUrl: PropTypes.string,
   toggleModal: PropTypes.func,
@@ -58,6 +60,6 @@ HomeHeader.propTypes = {
 
 const mapDispatchToProps = {
   toggleModal
-}
+};
 
 export  default connect(null, mapDispatchToProps)(HomeHeader);

@@ -14,7 +14,7 @@ const WidgetSectionContainer = props => {
         <div className={section.SECTIONTITLECLASSES}>{section.SECTIONTITLE}</div>
         <WidgetContainer widgets={section.WIDGETS} {...opts} />
       </div>);
-  })
+  });
   return (
     <div className="c-WidgetSectionContainer px-25 py-3 h-90">
       {sectionsRender}
@@ -27,7 +27,6 @@ WidgetSectionContainer.propTypes = {
   data: PropTypes.object,
   fetchComplete: PropTypes.bool,
   sections: PropTypes.object,
-  // tableMeta: PropTypes.object,
   userProfile: PropTypes.object,
   widgetCommon: PropTypes.object,
   widgetStack: PropTypes.object

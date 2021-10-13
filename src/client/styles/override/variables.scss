@@ -6,13 +6,14 @@
 ** Color variables below;
 */
 $market-place-blue:#006799;
+$falcon-blue: #007dc6;
 $heading-blue:#0B1E40;
 $ozark-noir-blue: #0B1E40;
 $background-blue:#E6F2F7;
 $navy-blue : #061E42;
 $modal-header-background-color: #006799;
 $modal-footer-background-color: #e2f3f7;
-
+$headings-color: null !default;
 
 $dropdown-hover-background : #e7f3f8;
 $dropdown-active-background : #7ac4e4;
@@ -44,4 +45,4 @@ $theme-colors: (
 */
 
 
-@import "node_modules/bootstrap/scss/bootstrap";
+//@import "node_modules/bootstrap/scss/bootstrap";

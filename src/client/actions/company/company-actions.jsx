@@ -13,8 +13,8 @@ export const dispatchBrandState = brandState => {
 
 export const dispatchSteps = steps => {
     return {type: DISPATCH_STEPS, value: {steps}};
-}
+};
 
 export const dispatchNewRequest = isNew => {
     return {type: DISPATCH_NEW_REQUEST, value: {isNew}};
-}
+};

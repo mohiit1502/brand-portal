@@ -1,3 +1,7 @@
+/* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
+
+import React from "react";
+import Accordion from "./Accordion";
 import React from 'react';
 import Accordion from './Accordion';
 import {findByTestAttribute, testStore} from "../../utility/TestingUtils";

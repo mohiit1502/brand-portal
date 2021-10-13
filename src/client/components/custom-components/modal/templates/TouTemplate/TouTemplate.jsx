@@ -1,51 +1,63 @@
+/* eslint-disable no-unused-expressions, filenames/match-regex, complexity, no-shadow */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
+import Cookies from "electrode-cookies";
 import moment from "moment";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import {showNotification} from "../../../../../actions/notification/notification-actions";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
 import Http from "../../../../../utility/Http";
-import CONSTANTS from "../../../../../constants/constants";
-import * as staticContent from "./../../../../../images";
 import mixpanel from "../../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../../constants/mixpanelConstants";
+import CONSTANTS from "../../../../../constants/constants";
+import * as staticContent from "./../../../../../images";
 import "./TouTemplate.component.scss";
 
 const TouTemplate = props => {
   const [loader, setLoader] = useState(false);
+  const {modalsMeta, toggleModal} = props;
   const pages = {
     TOU_ACCEPTANCE: "touAcceptance",
     TOU_REJECTION: "touRejection",
     INVITATION_ACCEPTANCE: "invitationAcceptance"
-  }
+  };
 
-  const [page, setPage] = useState(pages.INVITATION_ACCEPTANCE)
+  const [page, setPage] = useState(pages.INVITATION_ACCEPTANCE);
 
-  const updateUserStatus = (outgoingStatus) => {
+  const updateUserStatus = outgoingStatus => {
     setLoader(true);
     const profile = props.meta.userProfile;
     const payload = {...profile};
     const mixpanelPayload = {
       API: "/api/users/updateTouStatus/",
       WORK_FLOW: "TOU_VERIFICATION",
-      TOU_ACCEPTED: outgoingStatus === "Active" ? true : false,
+      TOU_ACCEPTED: outgoingStatus === "Active",
       CREATED_BY: profile.createdBy,
       ORG_NAME: profile.organization.name,
       USER_STATUS: profile.status
     };
+    const clientType = Cookies.get("client_type");
     Http.put(`/api/users/updateTouStatus/${outgoingStatus}`, payload, null, null, props.showNotification, null, "Unable to complete Operation, please try again!")
-      .then((res) => {
-        setLoader(false);
-        const profile = {...props.meta.userProfile};
-        props.toggleModal(TOGGLE_ACTIONS.HIDE);
-        profile.workflow.code = outgoingStatus === CONSTANTS.USER.STATUS.ACTIVE ? CONSTANTS.CODES.PORTAL_DASHBOARD.CODE : CONSTANTS.CODES.PORTAL_REGISTRATION.CODE;
-        props.updateUserProfile(profile);
-        mixpanelPayload.API_SUCCESS = true;
+      .then(() => {
+        Http.get("/api/userInfo", {clientType})
+          .then(res => {
+            const profile = res && res.body;
+            profile && props.updateUserProfile(profile);
+            if (profile && profile.workflow.code === modalsMeta.ACCOUNT_LINKING.CODE) {
+              toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.ACCOUNT_LINKING});
+            } else {
+              toggleModal(TOGGLE_ACTIONS.HIDE);
+            }
+          })
+          .finally(() => {
+            mixpanelPayload.API_SUCCESS = true;
+            setLoader(false);
+          });
+
       })
       .catch(e => {
-        console.log(e);
         setLoader(false);
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = e.message ? e.message : e;
@@ -59,6 +71,7 @@ const TouTemplate = props => {
   const profile = props.meta.userProfile;
   const invitedBy = `${profile.createdFirstName} ${profile.createdLastName}  (${profile.createdBy})`;
   const inviteDateParts = profile.createTs && profile.createTs.split("T");
+  /* eslint-disable no-magic-numbers */
   const invitedOn = inviteDateParts && inviteDateParts.length === 2 &&
     `${moment(inviteDateParts[0]).format("MMM DD, YYYY")} ${inviteDateParts[1].substring(0, inviteDateParts[1].lastIndexOf("."))}`;
   const bpAccount = profile && profile.organization && profile.organization.name;
@@ -70,8 +83,8 @@ const TouTemplate = props => {
           <div className="modal-header font-weight-bold align-items-center">
             {page === pages.INVITATION_ACCEPTANCE ? "Welcome to Walmart Brand Portal" : "TERMS OF USE"}
           </div>
-          <div className="modal-body position-relative" style={{overflowY: page === pages.TOU_ACCEPTANCE ? "scroll" : "unset"}}>
-            <div className={`invitation-acceptance d-inline-block position-absolute w-100 font-size-20${page === pages.INVITATION_ACCEPTANCE ? " visible": ""}`}>
+          <div className="modal-body position-relative" style={{overflowY: page === pages.TOU_ACCEPTANCE ? "scroll" : "unset", overflowX: "hidden"}}>
+            <div className={`invitation-acceptance d-inline-block position-absolute w-100 font-size-20${page === pages.INVITATION_ACCEPTANCE ? " visible" : ""}`}>
               <div className="d-inline-block">
                 <p className="ml-3 mr-5 pl-3 pr-5" style={{lineHeight: "2.5rem"}}>You've been invited to join the following Brand Portal account. Please indicate below whether you'd like to accept or decline this invitation.</p>
                 <div className="row ml-3 mt-5 pt-4">
@@ -90,23 +103,25 @@ const TouTemplate = props => {
                 </div>
               </div>
             </div>
-            <div className={`tou-acceptance position-absolute mx-auto w-100 px-5${page === pages.TOU_ACCEPTANCE ? " visible": ""}`}>
+            <div className={`tou-acceptance position-absolute mx-auto w-100 px-5${page === pages.TOU_ACCEPTANCE ? " visible" : ""}`}>
               <p>To continue, please read and agree to the Terms of Use.</p>
               <hr />
               <object data={staticContent.TOU} type="application/pdf" width="100%" height="470">
                 alt : <a href="TOU.pdf">Terms of Use.pdf</a>
               </object>
             </div>
-            <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible": ""}`}>
-              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? " (" + profile.companyName + ")": ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
+            <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible" : ""}`}>
+              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? ` (${  profile.companyName  })` : ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
               <p className="ml-3 pl-3">Please click the "Decline" button to confirm.</p>
             </div>
           </div>
           <div className="modal-footer position-relative">
-            <div className={`btn-panel invitation-buttons-panel position-absolute${page === pages.INVITATION_ACCEPTANCE ? " visible": ""}`}>
+            <div className={`btn-panel invitation-buttons-panel position-absolute${page === pages.INVITATION_ACCEPTANCE ? " visible" : ""}`}>
               {page === pages.INVITATION_ACCEPTANCE &&
-              <><button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>
-              <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button></>}
+              <div>
+                <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.TOU_REJECTION)}>Decline</button>
+                <button type="button" className="btn btn-sm btn-primary submit-btn px-3 ml-3" onClick={() => setPage(pages.TOU_ACCEPTANCE)}>Accept</button>
+              </div>}
             </div>
             <div className={`btn-panel tou-buttons-panel position-absolute${page === pages.TOU_ACCEPTANCE || page === pages.TOU_REJECTION ? " visible" : ""}`}>
               <button type="button" className="btn btn-sm cancel-btn text-primary btn-secondary" onClick={() => setPage(pages.INVITATION_ACCEPTANCE)}>Cancel</button>
@@ -123,15 +138,21 @@ const TouTemplate = props => {
 
 TouTemplate.propTypes = {
   meta: PropTypes.object,
+  modalsMeta: PropTypes.object,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   updateUserProfile: PropTypes.func
 };
 
+const mapStateToProps = state => {
+  return {
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
+  };
+};
 const mapDispatchToProps = {
   showNotification,
   toggleModal,
   updateUserProfile
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(TouTemplate));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TouTemplate));

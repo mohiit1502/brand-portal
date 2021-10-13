@@ -62,6 +62,7 @@ const UrlItemList = props => {
     }
   };
 
+  /* eslint-disable react/jsx-handler-names */
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
     item = {...item};
     return (<div key={i} className="c-UrlItem row item-url-list">

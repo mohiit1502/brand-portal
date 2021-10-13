@@ -64,9 +64,8 @@
         padding: 0.1rem 0.3rem;
       }
 
-      a{
-        padding: 0.1rem 0.3rem;
-        padding-right: 0px;
+      a {
+        padding: 0.1rem 0.3rem 0.1rem 0;
         font-size: medium;
         font-weight: bold;
         color: #398fc5;
@@ -121,7 +120,7 @@
         position: absolute;
         top: 0.4rem;
         left: -4rem;
-        content: url('./../../images/color.svg');
+        content: url("./../../images/color.svg");
       }
     }
 
