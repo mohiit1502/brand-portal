@@ -16,13 +16,13 @@ flows:
   pr:
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
+    - call: sonar-fetch-origin-fix-ref
+#    - call: sonar
+  snapshot-build:
+    - echo "$GITHUB_PR_URL"
+    - call: electrode_pr
     - call: sonar-fetch-remote-fix-ref
     - call: sonar
-  snapshot-build:
-      - echo "$GITHUB_PR_URL"
-      - call: electrode_pr
-      - call: sonar-fetch-remote-fix-ref
-      - call: sonar
 
   sonar-fetch-origin:
     shell (silent): |
