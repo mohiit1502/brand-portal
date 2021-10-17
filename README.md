@@ -1,5 +1,5 @@
-# brand-portal
-> IP Dispute Portal for Brands    [![Build Status](https://ci.electrode.walmart.com/buildStatus/icon?job=0-github-org-RET-Marketplace%2Fropro-brandportal)](https://ci.electrode.walmart.com/job/0-github-org-RET-Marketplace/job/ropro-brandportal/)
+# brand-portal   [![Build Status](https://ci.electrode.walmart.com/buildStatus/icon?job=0-github-org-RET-Marketplace%2Fropro-brandportal)](https://ci.electrode.walmart.com/job/0-github-org-RET-Marketplace/job/ropro-brandportal/)
+> IP Dispute Portal for Brands    
 ## Installation
 
 ```sh
