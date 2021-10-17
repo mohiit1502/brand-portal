@@ -8,16 +8,18 @@ checkoutDir: repo
 
 flows:
   default:
-    - call: electrode_build
-    - call: run-sonar
+    - dir(repo):
+      - call: electrode_build
+      - call: run-sonar
   release-build:
     - call: electrode_build
     - call: run-sonar
   pr:
-    - echo "$GITHUB_PR_URL"
-    - call: electrode_pr
-    - call: sonar-fetch-origin-fix-ref
-    - call: run-sonar-pr
+    - dir(repo):
+      - echo "$GITHUB_PR_URL"
+      - call: electrode_pr
+      - call: sonar-fetch-origin-fix-ref
+      - call: run-sonar-pr
   snapshot-build:
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
