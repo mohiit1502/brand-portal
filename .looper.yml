@@ -12,7 +12,7 @@ flows:
     - call: run-sonar
   release-build:
     - call: electrode_build
-    - call: sonar
+    - call: run-sonar
   pr:
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
@@ -22,7 +22,7 @@ flows:
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
 #    - call: sonar-fetch-remote-fix-ref
-    - call: sonar
+#    - call: sonar
 
   sonar-fetch-origin:
     shell (silent): |
