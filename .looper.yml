@@ -9,7 +9,7 @@ checkoutDir: repo
 flows:
   default:
     - call: electrode_build
-    - call: sonar
+    - call: run-sonar
   release-build:
     - call: electrode_build
     - call: sonar
@@ -17,7 +17,7 @@ flows:
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
     - call: sonar-fetch-origin-fix-ref
-#    - call: sonar
+    - call: run-sonar-pr
   snapshot-build:
     - echo "$GITHUB_PR_URL"
     - call: electrode_pr
@@ -36,9 +36,12 @@ flows:
       git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
       git branch -D ${GITHUB_PR_TARGET_BRANCH}
 
-  sonar:
+  run-sonar-pr:
     - sonar("Sonar"):
         - (name Sonar For PR) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH} -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER} -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+  run-sonar:
+    - sonar("Sonar"):
+        - (name Sonar For Push/Merge) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties -Dsonar.projectVersion=${VERSION} -Dsonar.branch.name=${GITHUB_BRANCH_NAME}
 
 #  sonar:
 #    - sonar("Sonar"):

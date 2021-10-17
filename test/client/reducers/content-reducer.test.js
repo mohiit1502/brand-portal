@@ -1,6 +1,9 @@
 import contentReducer from "./../../../src/client/reducers/content/content-reducer"
 
 describe("Content Reducer tests",() => {
+  it("Dummy Test", () => {
+    expect(true).toBe(true);
+  });
 //
 //   const initialState = {
 //     test : "This is a test initial state"
