@@ -36,7 +36,7 @@ flows:
       git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
       git branch -D ${GITHUB_PR_TARGET_BRANCH}
 
-  run-sonar-pr:
+  sonar:
     - sonar("Sonar"):
         - (name Sonar For PR) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=repo/sonar-project.properties -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH} -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER} -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
 
