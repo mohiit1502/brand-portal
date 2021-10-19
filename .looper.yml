@@ -3,8 +3,6 @@ inherit: "job://electrode_looper-flows:.looper.yml"
 envs:
   global:
     variables:
-      KARMA_BROWSER: chrome
-      CHROME_BIN: /bin/chromium-browser
 
 tools:
   nodejs: 8.16.1
