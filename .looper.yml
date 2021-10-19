@@ -29,9 +29,9 @@ flows:
 #    - call: sonar
 
   sonar-fetch-origin:
-    shell (silent): |
+    shell: |
       #!/bin/bash
-      git fetch --no-tags origin ${GITHUB_BRANCH_NAME}:refs/remotes/origin/${GITHUB_BRANCH_NAME}
+      git fetch --no-tags origin master:refs/remotes/origin/master
 
   sonar-fetch-origin-fix-ref:
     shell (silent): |
