@@ -10,6 +10,7 @@ flows:
   default:
     - dir(repo):
       - call: electrode_build
+      - call: sonar-fetch-origin
       - call: run-sonar
   release-build:
     - call: electrode_build
