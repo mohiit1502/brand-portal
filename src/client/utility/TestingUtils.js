@@ -9,32 +9,10 @@ export const findByTestAttribute = (component,attr) => {
   return wrapper;
 }
 
-export const testStore = () => {
-  // const configureStore = initialState => {
-  //   const composeEnhancers =
-  //     typeof window === "object" &&
-  //     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-  //       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-  //         serialize: { // prettier-ignore
-  //           immutable: Immutable
-  //         }
-  //       }) : compose;
-  //   const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
-  //
-  //   if (module.hot) {
-  //     module.hot.accept("./reducers", () => {
-  //       const nextRootReducer = require("./reducers").default;
-  //       store.replaceReducer(nextRootReducer);
-  //     });
-  //   }
-  //
-  //   return store;
-  // };
-  //
-  // const store = configureStore(window.__WML_REDUX_INITIAL_STATE__);
+export const testStore = (state) => {
 
   const mockStore = configureMockStore();
-  const store = mockStore({});
+  const store = mockStore(state);
   return store;
 
 }

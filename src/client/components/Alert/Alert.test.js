@@ -13,7 +13,7 @@ let props;
 let store;
 
 const setUp = () => {
-  store = testStore();
+  store = testStore({});
   const component = shallow(
         <Alert store={store} {...props}/>).dive()
   return component;
