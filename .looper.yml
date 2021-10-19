@@ -20,7 +20,7 @@ flows:
     - dir(repo):
       - echo "$GITHUB_PR_URL"
       - call: electrode_pr
-      - call: sonar-fetch-origin-fix-ref
+      - call: sonar-fetch-remote-fix-ref
       - call: run-sonar-pr
   snapshot-build:
     - echo "$GITHUB_PR_URL"
@@ -33,12 +33,16 @@ flows:
       #!/bin/bash
       git fetch --no-tags origin master:refs/remotes/origin/master
 
-  sonar-fetch-origin-fix-ref:
-    shell (silent): |
+  sonar-fetch-remote-fix-ref:
+    shell: |
       #!/bin/bash
-      git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
-      git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
-      git branch -D ${GITHUB_PR_TARGET_BRANCH}
+      git fetch --no-tags --all
+      if [[ ! -z "${GITHUB_PR_TARGET_BRANCH}" ]]
+      then
+        git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
+        git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
+        git branch -D ${GITHUB_PR_TARGET_BRANCH}
+      fi
 
   run-sonar-pr:
     - sonar("Sonar"):
