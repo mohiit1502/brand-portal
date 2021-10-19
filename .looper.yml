@@ -1,9 +1,5 @@
 inherit: "job://electrode_looper-flows:.looper.yml"
 
-envs:
-  global:
-    variables:
-
 tools:
   nodejs: 8.16.1
   sonarscanner: 4.2.0.1873
