@@ -10,6 +10,7 @@ flows:
   default:
     - dir(repo):
       - call: electrode_build
+      - echo "$GITHUB_BRANCH_NAME"
       - call: sonar-fetch-origin
       - call: run-sonar
   release-build:
