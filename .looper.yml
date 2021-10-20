@@ -31,7 +31,7 @@ flows:
   sonar-fetch-origin:
     shell: |
       #!/bin/bash
-      git fetch --no-tags origin master:refs/remotes/origin/master
+      git fetch --no-tags origin ${GITHUB_BRANCH_NAME}:refs/remotes/origin/${GITHUB_BRANCH_NAME}
 
   sonar-fetch-remote-fix-ref:
     shell: |
@@ -46,7 +46,14 @@ flows:
 
   run-sonar-pr:
     - sonar("Sonar"):
-        - (name Sonar For PR) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH} -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER} -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+      - (name Sonar For PR) sonar-scanner -Dsonar.projectKey=brand-portal
+        -Dproject.settings=sonar-project.properties
+        -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
+        -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
+        -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
+        -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
+        -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+
   run-sonar:
     - sonar("Sonar"):
         - (name Sonar For Push/Merge) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties -Dsonar.projectVersion=${VERSION} -Dsonar.branch.name=${GITHUB_BRANCH_NAME} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal -Dsonar.branch.target=master
