@@ -5,7 +5,7 @@
   .custom-table {
     overflow: hidden;
     .table-body {
-      overflow-y: scroll;
+      overflow-y: auto;
 
       .table-row {
         min-height: 2.5rem;

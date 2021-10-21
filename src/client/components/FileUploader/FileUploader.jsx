@@ -9,6 +9,13 @@ import ProgressBar from "../custom-components/progress-bar/progress-bar";
 const FileUploader = props => {
   const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
   const tooltipContent = {
+    webformDocContent: <div>
+      <ol className="m-0 p-0">
+        <ul className="m-0 pl-3 text-left font-size-12">
+          <li>Please attach supporting documents in .doc,.pdf,.csv format. The file should be less than 7MB</li>
+        </ul>
+      </ol>
+    </div>,
     businessDocContent: <div>
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
