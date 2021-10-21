@@ -10,6 +10,19 @@ export default class Validator {
 
   static errorPrefix = "Error: ";
 
+  static validateCounterfeitNumber(target, validationObj){
+    const value = target.value ? target.value.trim() : "";
+    const length = value.length;
+    if (
+      (validationObj && (validationObj.length && length !== validationObj.length)) &&
+      (length !== 0)
+    ) {
+      return validationObj.error;
+    } else {
+      return "";
+    }
+  }
+
   static validate(evt, parentRef) {
     const {validators} = this.props;
     let errorMsg;

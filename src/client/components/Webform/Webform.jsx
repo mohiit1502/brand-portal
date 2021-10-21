@@ -1,4 +1,4 @@
-/* eslint-disable max-statements, filenames/match-regex, no-unused-expressions, camelcase, no-empty */
+/* eslint-disable max-statements, filenames/match-regex, no-unused-expressions, camelcase, no-empty, react/jsx-key */
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
@@ -14,11 +14,12 @@ import Http from "../../utility/Http";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
 import FORMFIELDCONFIG from "../../config/formsConfig/form-field-meta";
+import DocumentActions from "../../utility/docOps";
 
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems"];
+    const functions = ["checkClaimTypeField","checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -29,6 +30,8 @@ class Webform extends React.Component {
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
     this.onInvalid = Validator.onInvalid.bind(this);
+    this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
+    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.invalid = {emailId: false, phone: false};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.validateState = Validator.validateState.bind(this);
@@ -47,7 +50,7 @@ class Webform extends React.Component {
         if (response.body) {
           try {
             response = JSON.parse(response.body);
-            //response = FORMFIELDCONFIG;
+            response = FORMFIELDCONFIG;
             this.updateStateAndFormatters(response);
           } catch (e) {
             this.props.dispatchMetadata(FORMFIELDCONFIG);
@@ -76,6 +79,20 @@ class Webform extends React.Component {
         const options = this.getClaimTypes();
         state.form.inputData.claimType.claimTypesWithMeta = options;
         state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
+        const toolTipContent = state.form.inputData.userType.tooltipBody.map(content => {
+          return (
+            <span>
+              <br/><b>{content.heading}:</b> {content.body}<br/>
+            </span>
+          );
+        });
+        state.form.inputData.userType.tooltipContent = (
+          <div className="py-2">
+            <b className="position-absolute text-white tooltip-close-button">x</b>
+            <p className="mt-2 pl-2 text-left font-size-12">
+              {toolTipContent}
+            </p>
+          </div>);
         return state;
       });
       this.props.dispatchMetadata(root);
@@ -103,18 +120,18 @@ class Webform extends React.Component {
       {
         claimType: "counterfeit",
         label: "Counterfeit",
-        claimTypeIdentifierLabel: "Trademark Number",
+        claimTypeIdentifierLabel: "Order Number",
         companyNameIdentifierLabel: "Rights Owner Company Name",
         ownerNameIdentifierLabel: "Rights Owner Name",
-        underTakingOwnerLabel: "intellectual property owner"
+        underTakingOwnerLabel: "intellectual property owner",
       },
       {
         claimType: "copyright",
         label: "Copyright",
-        claimTypeIdentifierLabel: "Copyright Number",
+        claimTypeIdentifierLabel: "",
         companyNameIdentifierLabel: "Copyright Company Name",
         ownerNameIdentifierLabel: "Copyright Owner Name",
-        underTakingOwnerLabel: "copyright owner"
+        underTakingOwnerLabel: "copyright owner",
       }
     ];
   }
@@ -206,18 +223,65 @@ class Webform extends React.Component {
     }
   }
 
+  customUserTypeChangeHandler(value) {
+    const form = this.state.form;
+    form.userTypeSelected = true;
+    form.inputData.userType.value = value;
+    this.setState({form},this.checkClaimTypeField);
+  }
+
+  checkClaimTypeField(){
+    const form = this.state.form;
+    if(!form.inputData.claimType.value){
+      form.claimTypeSelected = false;
+      form.showClaimIdentifierNumber = false;
+    }else if(form.inputData.claimType.value === "copyright"){
+      form.showClaimIdentifierNumber = false;
+      form.claimTypeSelected = true;
+    }else if(form.inputData.claimType.value === "counterfeit"){
+      form.showClaimIdentifierNumber = true;
+      form.claimTypeSelected = true;
+    }else{
+      if(form.inputData.userType.value === "Customer"){
+        form.showClaimIdentifierNumber = false;
+        form.claimTypeSelected = true;
+      }else{
+        form.showClaimIdentifierNumber = true;
+        form.claimTypeSelected = true;
+      }
+    }
+    this.setState({form});
+  }
+
   customChangeHandler(value) {
     const form = this.state.form;
     const claimTypesWithMeta = form.inputData.claimType.claimTypesWithMeta;
     const matchedClaimTypeWithMeta = claimTypesWithMeta.find(claimTypeWithMeta => claimTypeWithMeta.label === value);
     if (matchedClaimTypeWithMeta) {
       form.inputData.companyName.label = matchedClaimTypeWithMeta.companyNameIdentifierLabel;
+      form.inputData.companyName.value = "";
       form.inputData.ownerName.label = matchedClaimTypeWithMeta.ownerNameIdentifierLabel;
+      form.inputData.ownerName.value = "";
+      form.inputData.claimIdentifierNumber.label = matchedClaimTypeWithMeta.claimTypeIdentifierLabel;
+      form.inputData.claimIdentifierNumber.value = "";
+      form.inputData.claimIdentifierNumber.error = "";
       form.claimTypeSelected = true;
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       if (matchedClaimTypeWithMeta.claimType !== "copyright") {
         form.inputData.user_undertaking_3.required = false;
+        if(matchedClaimTypeWithMeta.claimType === "counterfeit"){
+          form.showClaimIdentifierNumber = true;
+          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = form.counterfeitValidatorLength;
+          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = form.counterfeitValidatorError;
+
+        }else{
+          let bool = form.inputData.userType.value !== "Customer";
+          form.showClaimIdentifierNumber = bool;
+          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = "";
+          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = "";
+        }
       } else {
+        form.showClaimIdentifierNumber = false;
         form.inputData.user_undertaking_3.required = true;
       }
       this.setState({form});
@@ -314,6 +378,9 @@ class Webform extends React.Component {
 
       const inputData = this.state.form.inputData;
       const claimType = inputData.claimType.value;
+      const userType = inputData.userType.value;
+      const claimIdentifierNumber = inputData.claimIdentifierNumber.value;
+      const attachmentDocId = inputData.webFormDoc.id;
       const reporterInfo = {
         firstName: inputData.firstName.value,
         lastName: inputData.lastName.value,
@@ -347,9 +414,12 @@ class Webform extends React.Component {
       };
       const payload = {
         claimType,
+        claimIdentifierNumber,
+        userType,
         reporterInfo,
         brandInfo,
         comments,
+        attachmentDocId,
         digitalSignatureBy,
         items: getItems(inputData.urlItems.itemList)
       };
