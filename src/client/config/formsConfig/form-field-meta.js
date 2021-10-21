@@ -9,10 +9,12 @@ const FORMFIELDCONFIG = {
         "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
+        "actionsToDisable": ["clear"],
         "id": "companyreg",
         "loader": false,
         "isSubmitDisabled": true,
         "isClearDisabled": false,
+        "formActions": "companyOnboardingActions",
         "requestAdministratorAccess": false
       },
       "fields": {
@@ -108,19 +110,21 @@ const FORMFIELDCONFIG = {
         "businessRegistrationDoc": {
           "buttonText": "Upload",
           "cancelHandlerArg": "businessRegistrationDoc",
-          "onCancel": "cancelSelection",
-          "tooltipContentKey": "businessDocContent",
+          "changeHandlerArg": "businessRegistrationDoc",
           "disabled": true,
+          "endpoint": "/api/company/uploadBusinessDocument",
           "error": "",
           "filename": "",
-          "changeHandlerArg": "businessRegistrationDoc",
           "icon": "Question",
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
           "label": "Business registration documents (optional)",
           "layout": "5.1.0",
+          "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
+          "otherType": "additionalDoc",
+          "tooltipContentKey": "businessDocContent",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
@@ -128,19 +132,21 @@ const FORMFIELDCONFIG = {
         "additionalDoc": {
           "buttonText": "Upload",
           "cancelHandlerArg": "additionalDoc",
-          "onCancel": "cancelSelection",
-          "tooltipContentKey": "additionalDocContent",
+          "changeHandlerArg": "additionalDoc",
           "disabled": true,
+          "endpoint": "/api/company/uploadAdditionalDocument",
           "error": "",
           "filename": "",
-          "changeHandlerArg": "additionalDoc",
           "icon": "Question",
           "id": "",
           "inputId": "additionalDoc",
           "key": "additionalDoc",
           "label": "Additional documents (optional)",
           "layout": "6.1.0",
+          "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
+          "otherType": "businessRegistrationDoc",
+          "tooltipContentKey": "additionalDocContent",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
@@ -1114,14 +1120,16 @@ const FORMFIELDCONFIG = {
         "formClasses": "row content-row p-4 mt-4"
       },
       "formConfig": {
-        "id": "webForm",
+        "actionsToDisable": ["submit"],
+        "id": "webform",
         "loader": false,
         "isSubmitDisabled": true,
         "userTypeSelected": false,
         "claimTypeSelected": false,
         "showClaimIdentifierNumber": false,
-        "counterfeitValidatorLength":13,
+        "counterfeitValidatorLength": 13,
         "counterfeitValidatorError": "Please enter valid order number",
+        "formActions": "webformActions",
         "formError": ""
       },
       "fields": {
@@ -1578,26 +1586,27 @@ const FORMFIELDCONFIG = {
             }
           ]
         },
-        "webFormDoc": {
+        "webformDoc": {
           "buttonText": "Upload",
-          "cancelHandlerArg": "webFormDoc",
-          "onCancel": "cancelSelection",
-          "tooltipContentKey": "webFormDocContent",
+          "cancelHandlerArg": "webformDoc",
+          "changeHandlerArg": "webformDoc",
           "disabled": false,
           "error": "",
+          "endpoint": "/api/claims/uploadWebFormDocument",
           "filename": "",
-          "changeHandlerArg": "webFormDoc",
           "icon": "Question",
           "id": "",
-          "inputId": "webFormDoc",
-          "key": "webFormDoc",
-          "label": "Business registration documents (optional)",
+          "inputId": "webformDoc",
+          "key": "webformDoc",
+          "label": "Attach Documents (Optional)",
           "layout": "13.1.0",
+          "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "tooltipContentKey": "webformDocContent",
           "type": "_fileUploader",
           "uploading": false,
-          "uploadPercentage": 0,
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}"
+          "uploadPercentage": 0
         },
         "comments": {
           "disabled": false,
@@ -1772,7 +1781,7 @@ const FORMFIELDCONFIG = {
           "type": "_captchaValidator",
           "value": false
         },
-        "webFormActions": {
+        "webformActions": {
           "containerClasses": "pb-5 mb-5",
           "colClasses": "web-form-button-panel text-right",
           "layout": "21.2.4",

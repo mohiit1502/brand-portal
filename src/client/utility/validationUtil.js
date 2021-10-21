@@ -10,7 +10,7 @@ export default class Validator {
 
   static errorPrefix = "Error: ";
 
-  static validateCounterfeitNumber(target, validationObj){
+  static validateCounterfeitNumber(target, validationObj) {
     const value = target.value ? target.value.trim() : "";
     const length = value.length;
     if (

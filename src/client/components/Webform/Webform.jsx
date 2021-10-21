@@ -19,7 +19,7 @@ import DocumentActions from "../../utility/docOps";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkClaimTypeField","checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
+    const functions = ["checkClaimTypeField", "checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -29,6 +29,8 @@ class Webform extends React.Component {
       const functionToDebounce = Validator[debounceFunctions[name]] ? Validator[debounceFunctions[name]].bind(this) : this[debounceFunctions[name]];
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
+    this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
+    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.onInvalid = Validator.onInvalid.bind(this);
     this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
     this.cancelSelection = DocumentActions.cancelSelection.bind(this);
@@ -123,7 +125,7 @@ class Webform extends React.Component {
         claimTypeIdentifierLabel: "Order Number",
         companyNameIdentifierLabel: "Rights Owner Company Name",
         ownerNameIdentifierLabel: "Rights Owner Name",
-        underTakingOwnerLabel: "intellectual property owner",
+        underTakingOwnerLabel: "intellectual property owner"
       },
       {
         claimType: "copyright",
@@ -131,7 +133,7 @@ class Webform extends React.Component {
         claimTypeIdentifierLabel: "",
         companyNameIdentifierLabel: "Copyright Company Name",
         ownerNameIdentifierLabel: "Copyright Owner Name",
-        underTakingOwnerLabel: "copyright owner",
+        underTakingOwnerLabel: "copyright owner"
       }
     ];
   }
@@ -227,28 +229,23 @@ class Webform extends React.Component {
     const form = this.state.form;
     form.userTypeSelected = true;
     form.inputData.userType.value = value;
-    this.setState({form},this.checkClaimTypeField);
+    this.setState({form}, this.checkClaimTypeField);
   }
 
-  checkClaimTypeField(){
+  checkClaimTypeField() {
     const form = this.state.form;
-    if(!form.inputData.claimType.value){
+    if (!form.inputData.claimType.value) {
       form.claimTypeSelected = false;
       form.showClaimIdentifierNumber = false;
-    }else if(form.inputData.claimType.value === "copyright"){
+    } else if (form.inputData.claimType.value === "copyright") {
       form.showClaimIdentifierNumber = false;
       form.claimTypeSelected = true;
-    }else if(form.inputData.claimType.value === "counterfeit"){
+    } else if (form.inputData.claimType.value === "counterfeit") {
       form.showClaimIdentifierNumber = true;
       form.claimTypeSelected = true;
-    }else{
-      if(form.inputData.userType.value === "Customer"){
-        form.showClaimIdentifierNumber = false;
-        form.claimTypeSelected = true;
-      }else{
-        form.showClaimIdentifierNumber = true;
-        form.claimTypeSelected = true;
-      }
+    } else {
+      form.showClaimIdentifierNumber = form.inputData.userType.value !== "Customer";
+      form.claimTypeSelected = true;
     }
     this.setState({form});
   }
@@ -269,14 +266,13 @@ class Webform extends React.Component {
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       if (matchedClaimTypeWithMeta.claimType !== "copyright") {
         form.inputData.user_undertaking_3.required = false;
-        if(matchedClaimTypeWithMeta.claimType === "counterfeit"){
+        if (matchedClaimTypeWithMeta.claimType === "counterfeit") {
           form.showClaimIdentifierNumber = true;
           form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = form.counterfeitValidatorLength;
           form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = form.counterfeitValidatorError;
 
-        }else{
-          let bool = form.inputData.userType.value !== "Customer";
-          form.showClaimIdentifierNumber = bool;
+        } else {
+          form.showClaimIdentifierNumber = form.inputData.userType.value !== "Customer";
           form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = "";
           form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = "";
         }
@@ -306,22 +302,22 @@ class Webform extends React.Component {
   // eslint-disable-next-line complexity
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndetaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected && form.inputData.user_undertaking_5.selected;
-    const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
-    const isHuman = (!form.inputData.captchaValidator) || (form.inputData.captchaValidator.value);
-    const bool = isValidItemList && userUndetaking && isHuman && form.inputData.claimType.value &&
-      form.inputData.firstName.value && form.inputData.lastName.value &&
-      form.inputData.ownerName.value && form.inputData.companyName.value &&
-      form.inputData.brandName.value &&
-      form.inputData.address_1.value && form.inputData.address_2.value &&
-      form.inputData.city.value && form.inputData.country.value &&
-      form.inputData.state.value && form.inputData.zip.value && !form.inputData.zip.error &&
-      form.inputData.phone.value && !form.inputData.phone.error && form.inputData.emailId.value && !form.inputData.emailId.error &&
-      form.inputData.comments.value && !form.inputData.comments.error &&
-      form.inputData.digitalSignature.value;
+    // const userUndertaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected && form.inputData.user_undertaking_5.selected;
+    // const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
+    // const isHuman = (!form.inputData.captchaValidator) || (form.inputData.captchaValidator.value);
+//     const bool = isValidItemList && userUndertaking && isHuman && form.inputData.claimType.value &&
+//       form.inputData.firstName.value && form.inputData.lastName.value &&
+//       form.inputData.ownerName.value && form.inputData.companyName.value &&
+//       form.inputData.brandName.value &&
+//       form.inputData.address_1.value && form.inputData.address_2.value &&
+//       form.inputData.city.value && form.inputData.country.value &&
+//       form.inputData.state.value && form.inputData.zip.value && !form.inputData.zip.error &&
+//       form.inputData.phone.value && !form.inputData.phone.error && form.inputData.emailId.value && !form.inputData.emailId.error &&
+//       form.inputData.comments.value && !form.inputData.comments.error &&
+//       form.inputData.digitalSignature.value;
 
-    form.isSubmitDisabled = !bool;
-    form.inputData.webFormActions.buttons.submit.disabled = !bool;
+    form.isSubmitDisabled = form.inputData.webformDoc.uploading;
+    form.inputData.webformActions.buttons.submit.disabled = form.inputData.webformDoc.uploading;
     this.setState({form}, callback && callback());
   }
 
@@ -380,7 +376,7 @@ class Webform extends React.Component {
       const claimType = inputData.claimType.value;
       const userType = inputData.userType.value;
       const claimIdentifierNumber = inputData.claimIdentifierNumber.value;
-      const attachmentDocId = inputData.webFormDoc.id;
+      const attachmentDocId = inputData.webformDoc.id;
       const reporterInfo = {
         firstName: inputData.firstName.value,
         lastName: inputData.lastName.value,
