@@ -60,7 +60,7 @@ export default class DocumentActions {
     } catch (e) {
       form.inputData[key].uploading = false;
       otherType && actionsToDisable && actionsToDisable.forEach(action => {form.inputData[formActions].buttons[action].disabled = form.inputData[otherType].uploading;});
-      form.inputData[formActions].buttons[submitButton || "submit"].disabled = false;
+      formActions && (form.inputData[formActions].buttons[submitButton || "submit"].disabled = false);
       this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Couldn't upload the document, please try again.");
       this.setState({form}, this.checkToEnableSubmit);
       mixpanelPayload.API_SUCCESS = false;
