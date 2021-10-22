@@ -52,7 +52,7 @@ class Webform extends React.Component {
         if (response.body) {
           try {
             response = JSON.parse(response.body);
-            response = FORMFIELDCONFIG;
+            // response = FORMFIELDCONFIG;
             this.updateStateAndFormatters(response);
           } catch (e) {
             this.props.dispatchMetadata(FORMFIELDCONFIG);
