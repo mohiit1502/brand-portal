@@ -1103,7 +1103,7 @@
         "formClasses": "row content-row p-4 mt-4"
       },
       "formConfig": {
-        "id": "webForm",
+        "id": "webform",
         "loader": false,
         "isSubmitDisabled": true,
         "claimTypeSelected": false,
@@ -1660,7 +1660,7 @@
           "type": "_captchaValidator",
           "value": false
         },
-        "webFormActions": {
+        "webformActions": {
           "containerClasses": "pb-5 mb-5",
           "colClasses": "web-form-button-panel text-right",
           "layout": "21.2.4",
