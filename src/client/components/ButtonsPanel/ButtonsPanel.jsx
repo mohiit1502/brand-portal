@@ -32,8 +32,8 @@ const ButtonsPanel = props => {
   });
 
   return props.bareButton ? buttons : (
-    <div className={`c-ButtonsPanel form-row${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
-      <div className={`col${props.colClasses ? ` ${  props.colClasses}` : ""}`}>{buttons}</div>
+    <div data-test={"button-panel"} className={`c-ButtonsPanel form-row${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
+      <div data-test={"button-div"} className={`col${props.colClasses ? ` ${  props.colClasses}` : ""}`}>{buttons}</div>
     </div>
   );
 };
