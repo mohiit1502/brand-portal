@@ -19,7 +19,7 @@ import DocumentActions from "../../utility/docOps";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkClaimTypeField", "checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "getClaimTypes", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
+    const functions = ["checkClaimTypeField", "checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -78,7 +78,7 @@ class Webform extends React.Component {
           ...webformFieldsConfiguration.formConfig,
           inputData: {...fields}
         };
-        const options = this.getClaimTypes();
+        const options = state.form.claimTypes;
         state.form.inputData.claimType.claimTypesWithMeta = options;
         state.form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
         const toolTipContent = state.form.inputData.userType.tooltipBody.map(content => {
@@ -99,43 +99,6 @@ class Webform extends React.Component {
       });
       this.props.dispatchMetadata(root);
     } catch (e) {}
-  }
-
-  getClaimTypes() {
-    return [
-      {
-        claimType: "trademark",
-        label: "Trademark",
-        claimTypeIdentifierLabel: "Trademark Number",
-        companyNameIdentifierLabel: "Trademark Company Name",
-        ownerNameIdentifierLabel: "Trademark Owner Name",
-        underTakingOwnerLabel: "trademark owner"
-      },
-      {
-        claimType: "patent",
-        label: "Patent",
-        claimTypeIdentifierLabel: "Patent Number",
-        companyNameIdentifierLabel: "Patent Company Name",
-        ownerNameIdentifierLabel: "Patent Owner Name",
-        underTakingOwnerLabel: "patent owner"
-      },
-      {
-        claimType: "counterfeit",
-        label: "Counterfeit",
-        claimTypeIdentifierLabel: "Order Number",
-        companyNameIdentifierLabel: "Rights Owner Company Name",
-        ownerNameIdentifierLabel: "Rights Owner Name",
-        underTakingOwnerLabel: "intellectual property owner"
-      },
-      {
-        claimType: "copyright",
-        label: "Copyright",
-        claimTypeIdentifierLabel: "",
-        companyNameIdentifierLabel: "Copyright Company Name",
-        ownerNameIdentifierLabel: "Copyright Owner Name",
-        underTakingOwnerLabel: "copyright owner"
-      }
-    ];
   }
 
   getItemListFromChild(itemList) {
@@ -259,6 +222,7 @@ class Webform extends React.Component {
       form.inputData.companyName.value = "";
       form.inputData.ownerName.label = matchedClaimTypeWithMeta.ownerNameIdentifierLabel;
       form.inputData.ownerName.value = "";
+      form.inputData.claimTypeSectionHeader.header = matchedClaimTypeWithMeta.claimTypeSectionHeader;
       form.inputData.claimIdentifierNumber.label = matchedClaimTypeWithMeta.claimTypeIdentifierLabel;
       form.inputData.claimIdentifierNumber.value = "";
       form.inputData.claimIdentifierNumber.error = "";
