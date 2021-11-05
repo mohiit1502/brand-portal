@@ -45,7 +45,7 @@ class CompanyProfileRegistration extends React.Component {
       }
     };
 
-    this.enableSellerOnboarding.call(this);
+    this.enableSellerOnboarding();
   }
 
   componentDidMount() {
@@ -65,6 +65,7 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
+  /* eslint-disable react/no-direct-mutation-state */
   enableSellerOnboarding () {
     // TODO: Change to add 100 sellers [This is temporary and should be removed once the sellers are added]
     if (this.state.form && this.props.profile && this.state.clientType === "seller" && !this.state.countryInitialized
