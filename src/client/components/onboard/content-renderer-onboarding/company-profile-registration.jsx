@@ -44,27 +44,8 @@ class CompanyProfileRegistration extends React.Component {
         formPopulated: false
       }
     };
-    // TODO: Change to add 100 sellers [This is temporary and should be removed once the sellers are added]
-    if (this.state.form && this.props.profile && this.state.clientType === "seller" && !this.state.countryInitialized
-      && this.state.form.internationalSellerExceptions && this.state.form.internationalSellerExceptions.indexOf(this.props.profile.email) > -1) {
-      const countryField = this.state.form.inputData.country;
-      const zipField = this.state.form.inputData.zip;
-      countryField.dropdownOptions = [
-        {id: "usa", value: "USA", label: "USA"},
-        {id: "china", value: "China", label: "China"},
-        {id: "hongkong", value: "Hong Kong", label: "Hong Kong"},
-      ];
-      countryField.onChange = "setSelectInputValue";
-      countryField.type = "select";
-      countryField.value = "";
-      delete zipField.patternPath;
-      delete zipField.invalidErrorPath;
-      delete zipField.invalidError;
-      zipField.patternErrorMessage = "This field is required";
-      zipField.maxLength = 30;
-      this.state.considerCountryForValidation = true;
-      this.state.countryInitialized = true;
-    }
+
+    this.enableSellerOnboarding.call(this);
   }
 
   componentDidMount() {
@@ -81,6 +62,30 @@ class CompanyProfileRegistration extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.profile && this.props.profile !== prevProps.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
       this.prepopulateInputFields(this.props.profile);
+    }
+  }
+
+  enableSellerOnboarding () {
+    // TODO: Change to add 100 sellers [This is temporary and should be removed once the sellers are added]
+    if (this.state.form && this.props.profile && this.state.clientType === "seller" && !this.state.countryInitialized
+      && this.state.form.internationalSellerExceptions && this.state.form.internationalSellerExceptions.indexOf(this.props.profile.email) > -1) {
+      const countryField = this.state.form.inputData.country;
+      const zipField = this.state.form.inputData.zip;
+      countryField.dropdownOptions = [
+        {id: "usa", value: "USA", label: "USA"},
+        {id: "china", value: "China", label: "China"},
+        {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
+      ];
+      countryField.onChange = "setSelectInputValue";
+      countryField.type = "select";
+      countryField.value = "";
+      delete zipField.patternPath;
+      delete zipField.invalidErrorPath;
+      delete zipField.invalidError;
+      zipField.patternErrorMessage = "This field is required";
+      zipField.maxLength = 30;
+      this.state.considerCountryForValidation = true;
+      this.state.countryInitialized = true;
     }
   }
 
