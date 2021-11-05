@@ -94,7 +94,7 @@ class CustomInput extends React.PureComponent {
   }
 
   havePropsChanged(prevProps, newProps) {
-    const changeableProps = ["label", "key", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "loader", "fieldAlert", "fieldOk", "radioOptions", "dropdownOptions", "error", "subtitle"];
+    const changeableProps = ["label", "key", "onChange", "formId", "inputId", "type", "required", "value", "pattern", "disabled", "loader", "fieldAlert", "fieldOk", "radioOptions", "dropdownOptions", "error", "subtitle"];
     const changedProps = {};
     for (const i in changeableProps) {
       if (prevProps[changeableProps[i]] !== newProps[changeableProps[i]]) {
@@ -135,8 +135,8 @@ class CustomInput extends React.PureComponent {
         pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
         data-toggle="dropdown" autoComplete="off" />
       <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
-        {/*<div className="label-upper-bg position-absolute w-100 h-50 d-block"/>*/}
-        {/*<div className="label-lower-bg position-absolute w-100 h-50 d-block"/>*/}
+        <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
+        <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
         <span className="label-text"> { this.state.label } </span>
       </label>
       <div className="dropdown-menu">
@@ -222,7 +222,7 @@ class CustomInput extends React.PureComponent {
           <span className="label-text"> {this.state.label} </span>
         </label>
         {
-          this.state.dropdownOptions && this.state.dropdownOptions.length > 0 && <img src={images.ArrowDown} className="dropdown-arrow"/>
+          this.state.dropdownOptions && this.state.dropdownOptions.length > 0 && <img src={images.ArrowDown} alt="ArrowDown" className="dropdown-arrow"/>
         }
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
