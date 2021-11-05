@@ -1,9 +1,0 @@
-{
-  "Content-Type": "application/json",
-  "Accept": "application/json",
-  "Consumer_id": "test-consumer-id",
-  "ROPRO_AUTH_TOKEN": "test-auth-token",
-  "ROPRO_USER_ID":	"test-user-id",
-  "ROPRO_CLIENT_ID":	"test-client-id",
-  "ROPRO_CORRELATION_ID": "test-correlation-id"
-}

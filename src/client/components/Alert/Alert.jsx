@@ -25,19 +25,19 @@ const Alert = props => {
           <div className="modal-body text-center p-4">
             <div className="row">
               <div className="col">
-                 <img data-test="alert-logo" src={AlertIcon} height={87}/>
+                 <img src={AlertIcon} height={87}/>
               </div>
             </div>
             <div className="row mt-3">
               <div className="col">
-                <p data-test="alert-header" className="status-header font-weight-bold">
+                <p className="status-header font-weight-bold">
                   You have unsaved changes!
                 </p>
               </div>
             </div>
             <div className="row mt-2">
               <div className="col">
-                <span data-test="alert-description" className="status-description">
+                <span className="status-description">
                   If you proceed you may lose the changes that you may have made on this form.<br/>
                   Click "Discard" to confirm and discard your changes, click "Cancel" to stay and continue.
                 </span>
@@ -45,8 +45,8 @@ const Alert = props => {
             </div>
             <div className="row mt-3">
               <div className="col">
-                <input data-test="cancel-button" type="button" className="btn btn-sm btn-outline-primary mr-3" value="Cancel"  onClick={cancelDiscardChanges} />
-                <input data-test="discard-button" type="button" className="btn btn-primary" value="Discard" onClick={discardChanges} />
+                <input type="button" className="btn btn-sm btn-outline-primary mr-3" value="Cancel"  onClick={cancelDiscardChanges} />
+                <input type="button" className="btn btn-primary" value="Discard" onClick={discardChanges} />
               </div>
             </div>
 
