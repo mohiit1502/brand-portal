@@ -15,8 +15,7 @@ const FORMFIELDCONFIG = {
         "isSubmitDisabled": true,
         "isClearDisabled": false,
         "formActions": "companyOnboardingActions",
-        "requestAdministratorAccess": false,
-        "internationalSellerExceptions":[]
+        "requestAdministratorAccess": false
       },
       "fields": {
         "companyName": {
