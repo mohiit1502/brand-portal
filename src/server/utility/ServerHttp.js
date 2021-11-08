@@ -50,7 +50,7 @@ export default class ServerHttp {
     try {
       /* eslint-disable no-unused-expressions */
       !urlString && console.log("No URL!!");
-      console.log("1. ===== Crud Request Start. Requesting URL: ", urlString);
+      console.log("[%s] 1. ===== Crud Request Start. Requesting URL: ", options.headers.ROPRO_CORRELATION_ID, urlString);
       requestStartTime = Date.now();
       const response = await fetch(urlString, options);
       requestEndTime = Date.now();
@@ -71,7 +71,7 @@ export default class ServerHttp {
       throw new ServerHttpError(e.status || 500, e);
     } finally {
       mixpanelPayload.RESPONSE_TIME = requestEndTime - requestStartTime;
-      console.log("Total Response Time:", requestEndTime - requestStartTime);
+      console.log(`Total Response Time for ${  urlString  } is: ${  requestEndTime - requestStartTime}`);
       console.log("7. === Crud Request End!");
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.SERVER_HTTP.SERVER_RESPONSE_TIME, mixpanelPayload);
     }
