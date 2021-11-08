@@ -13,7 +13,8 @@ const FORMFIELDCONFIG = {
         "loader": false,
         "isSubmitDisabled": true,
         "isClearDisabled": false,
-        "requestAdministratorAccess": false
+        "requestAdministratorAccess": false,
+        "internationalSellerExceptions": []
       },
       "fields": {
         "companyName": {

@@ -18,7 +18,7 @@ import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "onChange", "resetCompanyRegistration", "gotoBrandRegistration", "cancelRequestCompanyAccess", "undertakingToggle"];
+    const functions = ["bubbleValue", "cancelRequestCompanyAccess", "gotoBrandRegistration", "onChange", "resetCompanyRegistration", "setSelectInputValue", "undertakingToggle"];
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     const debounceFunctions = {companyDebounce: "checkCompanyNameAvailability"};
     functions.forEach(name => {
@@ -44,6 +44,8 @@ class CompanyProfileRegistration extends React.Component {
         formPopulated: false
       }
     };
+
+    this.enableSellerOnboarding();
   }
 
   componentDidMount() {
@@ -60,6 +62,31 @@ class CompanyProfileRegistration extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.profile && this.props.profile !== prevProps.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
       this.prepopulateInputFields(this.props.profile);
+    }
+  }
+
+  /* eslint-disable react/no-direct-mutation-state */
+  enableSellerOnboarding () {
+    // TODO: Change to add 100 sellers [This is temporary and should be removed once the sellers are added]
+    if (this.state.form && this.props.profile && this.state.clientType === "seller" && !this.state.countryInitialized
+      && this.state.form.internationalSellerExceptions && this.state.form.internationalSellerExceptions.indexOf(this.props.profile.email) > -1) {
+      const countryField = this.state.form.inputData.country;
+      const zipField = this.state.form.inputData.zip;
+      countryField.dropdownOptions = [
+        {id: "usa", value: "USA", label: "USA"},
+        {id: "china", value: "China", label: "China"},
+        {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
+      ];
+      countryField.onChange = "setSelectInputValue";
+      countryField.type = "select";
+      countryField.value = "";
+      delete zipField.patternPath;
+      delete zipField.invalidErrorPath;
+      delete zipField.invalidError;
+      zipField.patternErrorMessage = "This field is required";
+      zipField.maxLength = 30;
+      this.state.considerCountryForValidation = true;
+      this.state.countryInitialized = true;
     }
   }
 
@@ -96,6 +123,7 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.city.value &&
       form.inputData.state.value &&
       form.inputData.zip.value &&
+      (this.state.considerCountryForValidation ? form.inputData.country.value : true) &&
       !form.inputData.companyName.error &&
       !form.inputData.zip.error;
     form.isSubmitDisabled = !bool;
@@ -145,6 +173,19 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
+
+  setSelectInputValue (value, key) {
+    if (value) {
+      this.setState(state => {
+        state = {...state};
+        state.form.inputData[key].value = value;
+        return {
+          ...state
+        };
+      }, this.checkToEnableSubmit);
+    }
+  }
+
   toggleFormEnable(enable, isUnique) {
     const form = {...this.state.form};
     form.inputData.companyName.isUnique = isUnique;
@@ -153,6 +194,7 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.city.disabled = !enable;
     form.inputData.state.disabled = !enable;
     form.inputData.zip.disabled = !enable;
+    form.inputData.country.disabled = this.state.considerCountryForValidation ? !enable : true;
     form.requestAdministratorAccess = !form.inputData.companyName.isUnique;
     this.setState({form});
   }
@@ -171,6 +213,7 @@ class CompanyProfileRegistration extends React.Component {
     const form = state.form = {...state.form};
     const inputKeys = ["companyName", "address", "city", "state", "zip"];
     const docKeys = ["businessRegistrationDoc", "additionalDoc"];
+    this.state.considerCountryForValidation && inputKeys.push("country");
     inputKeys.forEach(key => {
       form.inputData[key].disabled = true;
       form.inputData[key].error = "";
@@ -239,7 +282,6 @@ class CompanyProfileRegistration extends React.Component {
           {/* eslint-disable react/jsx-handler-names */}
           <form className="company-reg-form mb-4 pl-4" onSubmit={this.gotoBrandRegistration}>
             { this.getFieldRenders()}
-            {/*  // TODO CODE: USERAPPROVAL - Uncomment below line once user approval flow is in progress*/}
           </form>
         </div>
       </div>
