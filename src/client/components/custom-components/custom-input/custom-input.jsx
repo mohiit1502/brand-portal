@@ -146,7 +146,7 @@ class CustomInput extends React.PureComponent {
           })
         }
       </div>
-      </React.Fragment>);
+    </React.Fragment>);
     return (
       <div className={`form-group custom-input-form-group custom-select-form-group dropdown ${this.state.disabled ? " disabled" : ""} ${subtitleText ? "mb-0" : "mb-3"} ${errorClass}${this.state.realign ? " row d-block" : " field-select-arrow"}`}>
         {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right" content={this.state.tooltipContent} icon={QuestionMarkIcon}/>}
@@ -200,10 +200,10 @@ class CustomInput extends React.PureComponent {
       if (!error) {
         const value = e.target.value;
         this.setState(state => {
-        state = {...state};
-        state.value = value;
-        return state;
-      }, () => this.state.onChange(value, this.state.inputId, null, false));
+          state = {...state};
+          state.value = value;
+          return state;
+        }, () => this.state.onChange(value, this.state.inputId, null, false));
       } else {
         this.state.bubbleValue && this.state.bubbleValue(e, this.state.inputId, error);
       }
@@ -222,33 +222,33 @@ class CustomInput extends React.PureComponent {
           <span className="label-text"> {this.state.label} </span>
         </label>
         {
-          this.state.dropdownOptions && this.state.dropdownOptions.length > 0 && <img src={images.ArrowDown} className="dropdown-arrow"/>
+          this.state.dropdownOptions && this.state.dropdownOptions.length > 0 && <img src={images.ArrowDown} alt="ArrowDown" className="dropdown-arrow"/>
         }
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
 
         {
-         this.state.dropdownOptions && this.state.dropdownOptions.length > 0 &&
-        <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
-          {
-            this.state.dropdownOptions.map((option, i) => {
-              return (
-                <a key={option.id || i} className="dropdown-item">
-                  <div className="form-check pl-0 d-flex">
-                    <input className="cursor-pointer my-auto" type="checkbox" autoComplete="off" value={option.value}
-                      id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
-                      onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
-                    <label className="form-check-label ml-2 cursor-pointer flex-fill" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
-                      {option.value}
-                    </label>
-                  </div>
-                </a>
-              );
-            })
-          }
+          this.state.dropdownOptions && this.state.dropdownOptions.length > 0 &&
+          <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
+            {
+              this.state.dropdownOptions.map((option, i) => {
+                return (
+                  <a key={option.id || i} className="dropdown-item">
+                    <div className="form-check pl-0 d-flex">
+                      <input className="cursor-pointer my-auto" type="checkbox" autoComplete="off" value={option.value}
+                             id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
+                             onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
+                      <label className="form-check-label ml-2 cursor-pointer flex-fill" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
+                        {option.value}
+                      </label>
+                    </div>
+                  </a>
+                );
+              })
+            }
 
-        </div>
+          </div>
         }
       </div>
     );
@@ -263,10 +263,10 @@ class CustomInput extends React.PureComponent {
             return (
               <div key={i}  className={`btn btn-sm radio-btn-box  p-0 ${this.state.value === option.value ? "active" : "inactive"}`}>
                 <input type="radio" id={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`} name={`${this.state.formId}-${this.state.inputId}-custom-input`}
-                  className="custom-control-input" value={option.value} checked={this.state.value === option.value}
-                  onChange={ e => {
-                    this.onChangeLocal(e, this.state.inputId);
-                  }}/>
+                       className="custom-control-input" value={option.value} checked={this.state.value === option.value}
+                       onChange={ e => {
+                         this.onChangeLocal(e, this.state.inputId);
+                       }}/>
                 <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
                   {option.label || option.value}
                 </label>
@@ -365,7 +365,7 @@ class CustomInput extends React.PureComponent {
       case "_formFieldsHeader" :
         return <HeaderFormComponent {...this.props} />;
       case "_urlItems" :
-      return <UrlItemList {...this.props} />;
+        return <UrlItemList {...this.props} />;
       case "_captchaValidator" :
         return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />;
     }

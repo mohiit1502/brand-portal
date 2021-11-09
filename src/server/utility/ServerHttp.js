@@ -71,7 +71,7 @@ export default class ServerHttp {
       throw new ServerHttpError(e.status || 500, e);
     } finally {
       mixpanelPayload.RESPONSE_TIME = requestEndTime - requestStartTime;
-      console.log("Total Response Time for " + urlString + " is: " + (requestEndTime - requestStartTime));
+      console.log(`Total Response Time for ${urlString} is: ${requestEndTime - requestStartTime}`);
       console.log("7. === Crud Request End!");
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.SERVER_HTTP.SERVER_RESPONSE_TIME, mixpanelPayload);
     }
