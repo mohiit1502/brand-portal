@@ -200,14 +200,14 @@ class Webform extends React.Component {
     if (!form.inputData.claimType.value) {
       form.claimTypeSelected = false;
       form.showClaimIdentifierNumber = false;
-    } else if (form.inputData.claimType.value === "copyright") {
+    } else if (form.inputData.claimType.value.toLowerCase() === "copyright") {
       form.showClaimIdentifierNumber = false;
       form.claimTypeSelected = true;
-    } else if (form.inputData.claimType.value === "counterfeit") {
+    } else if (form.inputData.claimType.value.toLowerCase() === "counterfeit") {
       form.showClaimIdentifierNumber = true;
       form.claimTypeSelected = true;
     } else {
-      form.showClaimIdentifierNumber = form.inputData.userType.value !== "Customer";
+      form.showClaimIdentifierNumber = form.inputData.userType.value.toLowerCase() !== "customer";
       form.claimTypeSelected = true;
     }
     this.setState({form});
