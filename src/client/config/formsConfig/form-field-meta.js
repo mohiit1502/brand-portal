@@ -1676,7 +1676,6 @@ const FORMFIELDCONFIG = {
             }
           }
         },
-
         "user_undertaking_1": {
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
