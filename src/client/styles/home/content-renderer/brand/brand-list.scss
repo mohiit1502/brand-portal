@@ -116,7 +116,7 @@ $filer-text-color : #424242;
 
             .filter-content-row {
               max-height: 25rem;
-              overflow-y: scroll;
+              overflow-y: auto;
               .filter-col-header {
                 padding-bottom: 10px;
                 border-bottom: 2px solid white;
@@ -163,7 +163,7 @@ $filer-text-color : #424242;
         white-space: nowrap;
         overflow: -moz-scrollbars-none;
         -ms-overflow-style: none;
-        overflow-x: scroll;
+        overflow-x: auto;
       }
       .filter-pin-row::-webkit-scrollbar{
         height: 0 !important;

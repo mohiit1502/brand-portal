@@ -1,4 +1,4 @@
-/* eslint-disable no-magic-numbers, no-undef */
+/* eslint-disable no-magic-numbers, no-undef, no-unused-expressions */
 import {CustomInterval} from "./timer-utils";
 import Http from "./Http";
 import mixpanel from "../utility/mixpanelutils";
@@ -8,63 +8,59 @@ import {NOTIFICATION_TYPE} from "../actions/notification/notification-actions";
 export default class DocumentActions {
 
   static displayProgressAndUpload (evt, key) {
-    const otherType = key === "businessRegistrationDoc" ? "additionalDoc" : "businessRegistrationDoc";
+    const form = {...this.state.form};
+    const otherType = form.inputData[key].otherType;
+    const contextSpecificArgs = {actionsToDisable: form.actionsToDisable, endpoint: form.inputData[key].endpoint, formActions: form.formActions, key, otherType};
     try {
       const file = evt.target.files[0];
       const filename = file.name;
       const interval = new CustomInterval(4, (value, active) => {
-        const form = {...this.state.form};
-        form.inputData[key].uploadPercentage = value;
-        form.inputData[key].filename = filename;
-        if (!active) {
-          form.inputData[key].uploadPercentage = 100;
-        }
-        this.setState({form});
+        const formInner = {...this.state.form};
+        formInner.inputData[key].uploadPercentage = value;
+        formInner.inputData[key].filename = filename;
+        !active && (formInner.inputData[key].uploadPercentage = 100);
+        this.setState({formInner});
       });
       interval.start();
-      const form = {...this.state.form};
       form.inputData[key].uploading = true;
-      form.inputData.companyOnboardingActions.buttons.clear.disabled = true;
-      this.setState({form}, (() => DocumentActions.uploadDocument.call(this, file, interval, key)));
+      form.actionsToDisable && form.actionsToDisable.forEach(action => {form.inputData[form.formActions].buttons[action].disabled = true;});
+      this.setState({form}, (() => DocumentActions.uploadDocument.call(this, file, interval, contextSpecificArgs)));
     } catch (err) {
-      const form = {...this.state.form};
       form.inputData[key].uploading = false;
-      form.inputData.companyOnboardingActions.buttons.clear.disabled = form.inputData[otherType].uploading;
+      otherType && form.actionsToDisable && form.actionsToDisable.forEach(action => {form.inputData[form.formActions].buttons[action].disabled = form.inputData[otherType].uploading;});
       this.setState({form});
     }
   }
 
   /* eslint-disable max-statements */
-  static async uploadDocument (file, interval, type) {
+  static async uploadDocument (file, interval, contextSpecificArgs) {
+    const {actionsToDisable, endpoint, formActions, key, otherType, submitButton} = contextSpecificArgs;
     const mixpanelPayload = {
-      DOCUMENT_TYPE: type,
+      DOCUMENT_TYPE: key,
       FILE_TYPE: file.type,
       FILE_SIZE: file.size,
       WORK_FLOW: "COMPANY_ONBOARDING"
     };
-    const otherType = type === "businessRegistrationDoc" ? "additionalDoc" : "businessRegistrationDoc";
+    const form = {...this.state.form};
     try {
-      const urlMap = {businessRegistrationDoc: "/api/company/uploadBusinessDocument", additionalDoc: "/api/company/uploadAdditionalDocument"};
-      mixpanelPayload.API = urlMap[type];
+      mixpanelPayload.API = endpoint;
       this.checkToEnableSubmit();
       const formData = new FormData();
       formData.append("file", file);
-      // const uploadResponse = (await Http.postAsFormData(urlMap[type], formData)).body;
-      const uploadResponse = (await Http.postAsFormData(urlMap[type], formData, {clientType: this.state.clientType}, null, this.props.showNotification)).body;
+      const uploadResponse = (await Http.postAsFormData(endpoint, formData, {clientType: this.state.clientType}, null, this.props.showNotification)).body;
       interval.stop();
       window.setTimeout(() => {
         const updatedForm = {...this.state.form};
-        updatedForm.inputData[type].uploading = false;
-        updatedForm.inputData.companyOnboardingActions.buttons.clear.disabled = updatedForm.inputData[otherType].uploading;
-        updatedForm.inputData[type].id = uploadResponse.id;
+        updatedForm.inputData[key].uploading = false;
+        otherType && actionsToDisable && actionsToDisable.forEach(action => {updatedForm.inputData[formActions].buttons[action].disabled = updatedForm.inputData[otherType].uploading;});
+        updatedForm.inputData[key].id = uploadResponse.id;
         this.setState({updatedForm}, this.checkToEnableSubmit);
       }, 700);
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
-      const form = {...this.state.form};
-      form.inputData[type].uploading = false;
-      form.inputData.companyOnboardingActions.buttons.clear.disabled = form.inputData[otherType].uploading;
-      form.inputData.companyOnboardingActions.buttons.submit.disabled = false;
+      form.inputData[key].uploading = false;
+      otherType && actionsToDisable && actionsToDisable.forEach(action => {form.inputData[formActions].buttons[action].disabled = form.inputData[otherType].uploading;});
+      formActions && (form.inputData[formActions].buttons[submitButton || "submit"].disabled = false);
       this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Couldn't upload the document, please try again.");
       this.setState({form}, this.checkToEnableSubmit);
       mixpanelPayload.API_SUCCESS = false;
@@ -76,10 +72,12 @@ export default class DocumentActions {
   static cancelSelection(docKey) {
     const state = {...this.state};
     const form = {...state.form};
+    const formActions = form.formActions;
+    const actionsToDisable = form.actionsToDisable;
     state.form = form;
     form.inputData[docKey].id = "";
     form.inputData[docKey].uploading = false;
-    form.inputData.companyOnboardingActions.buttons.clear.disabled = false;
+    actionsToDisable && actionsToDisable.forEach(action => {form.inputData[formActions].buttons[action].disabled = false;});
     form.inputData[docKey].uploadPercentage = 0;
     form.inputData[docKey].filename = "";
     form.inputData[docKey].error = "";

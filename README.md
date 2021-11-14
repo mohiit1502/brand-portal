@@ -16,7 +16,7 @@ roPro("Rainbow");
 ```
 ## License
 
- © [Shubhansh Sahai]()
+ © [Walmart Brand Portal]()
 
 
 [npm-image]: https://badge.fury.io/js/RoPro.svg

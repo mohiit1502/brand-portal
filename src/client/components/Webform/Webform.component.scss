@@ -19,4 +19,18 @@
     .form-error {
         color: #dc3545;
     }
+
+  .primary-file-upload {
+    .upload-btn {
+      width: 100px;
+    }
+    .uploaded-file-label{
+      height: 31px;
+      line-height: 16px;
+      .cancel-file-selection-btn {
+        font-size: 32px;
+        line-height: 16px;
+      }
+    }
+  }
 }

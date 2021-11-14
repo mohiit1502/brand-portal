@@ -7,6 +7,7 @@ import {CONSTANTS} from "../../constants/server-constants";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
+import FormData from "form-data";
 const secrets = require(CONSTANTS.PATH);
 
 class ClaimManagerApi {
@@ -16,6 +17,8 @@ class ClaimManagerApi {
     this.createClaim = this.createClaim.bind(this);
     this.getClaimTypes = this.getClaimTypes.bind(this);
     this.getSellers = this.getSellers.bind(this);
+    this.uploadWebFormDocument = this.uploadWebFormDocument.bind(this);
+    this.FILE_UPLOAD_SIZE_LIMIT = 1024 * 1024 * 10;
   }
 
   register(server) {
@@ -49,6 +52,18 @@ class ClaimManagerApi {
         method: "POST",
         path: "/api/claims/webform",
         handler: this.createWebformClaim
+      },
+      {
+        method: "POST",
+        path: "/api/claims/uploadWebFormDocument",
+        handler: this.uploadWebFormDocument,
+        config: {
+          payload: {
+            maxBytes: this.FILE_UPLOAD_SIZE_LIMIT,
+            output: "stream",
+            allow: "multipart/form-data"
+          }
+        }
       }
     ]);
   }
@@ -330,6 +345,63 @@ class ClaimManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_WEBFORM_CLAIM, mixpanelPayload);
+    }
+  }
+
+  getHeaders(request) {
+    return {
+      "transfer-encoding": "chunked",
+      "Accept-Encoding": "gzip, deflate, br",
+      Accept: "*/*",
+      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
+      ROPRO_USER_ID:	request.state.session_token_login_id,
+      ROPRO_CLIENT_ID:	"abcd",
+      ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
+      ROPRO_CORRELATION_ID: ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
+    };
+  }
+
+  async uploadWebFormDocument (request, h) {
+    const mixpanelPayload = {
+      METHOD: "POST",
+      API: "/api/claims/uploadWebFormDocument"
+    };
+    console.log("[ClaimManagerApi::uploadWebFormDocument] API request for Upload Business document has started");
+    console.log("[ClaimManagerApi::uploadWebFormDocument] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      const headers = this.getHeaders(request);
+      const options = {
+        headers
+      };
+      const file = request.payload.file;
+      const filename = file.hapi.filename;
+      const fd = new FormData();
+
+      fd.append("file", file, {filename});
+      console.log("[ClaimManagerApi::uploadWebFormDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      // const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BUSINESS_DOC_PATH");
+      const WEBFORM_DOC_PATH = "/ropro/ipservices/attachment";
+      const url = `${BASE_URL}${WEBFORM_DOC_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.FILE_NAME = filename;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+      const response = await ServerHttp.postAsFormData(url, options, fd);
+      console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
+      console.log("[ClaimManagerApi::uploadWebFormDocument] API request for Upload Webform document has completed");
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      console.log("5. In CMA - Error caught ======== ", err);
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[ClaimManagerApi::uploadWebFormDocument] Error occured in API request for Upload Webform document:", err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.UPLOAD_BUSINESS_DOCUMENT, mixpanelPayload);
     }
   }
 }
