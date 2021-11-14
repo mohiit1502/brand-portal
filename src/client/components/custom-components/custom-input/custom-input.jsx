@@ -212,10 +212,10 @@ class CustomInput extends React.PureComponent {
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
-               value = { this.state.value && typeof this.state.value === "object" &&  this.state.value.length ? this.state.value.join(",") : this.state.value  }
-               pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
-               onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
-               data-toggle="dropdown" autoComplete="off" />
+           value = { this.state.value && typeof this.state.value === "object" &&  this.state.value.length ? this.state.value.join(",") : this.state.value  }
+           pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
+           onChange = {this.state.dropdownOptions && this.state.dropdownOptions.length > 0 ? () => {} : updateOptions}
+           data-toggle="dropdown" autoComplete="off" />
         <label className={`custom-input-label ${this.state.value === "" ? "custom-input-label-placeholder" : ""}`} htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input`}>
           <div className="label-upper-bg position-absolute w-100 h-50 d-block"/>
           <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
@@ -237,8 +237,8 @@ class CustomInput extends React.PureComponent {
                   <a key={option.id || i} className="dropdown-item">
                     <div className="form-check pl-0 d-flex">
                       <input className="cursor-pointer my-auto" type="checkbox" autoComplete="off" value={option.value}
-                             id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
-                             onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
+                         id={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`} checked={option.selected}
+                         onChange={e => { option.selected = !option.selected; this.setMultiSelectInputValue(e, this.state.inputId, option.id, option.selected);}}  />
                       <label className="form-check-label ml-2 cursor-pointer flex-fill" htmlFor={`${this.state.formId}-${this.state.inputId}-${option.id}-multi-select-input`}>
                         {option.value}
                       </label>
@@ -263,10 +263,10 @@ class CustomInput extends React.PureComponent {
             return (
               <div key={i}  className={`btn btn-sm radio-btn-box  p-0 ${this.state.value === option.value ? "active" : "inactive"}`}>
                 <input type="radio" id={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`} name={`${this.state.formId}-${this.state.inputId}-custom-input`}
-                       className="custom-control-input" value={option.value} checked={this.state.value === option.value}
-                       onChange={ e => {
-                         this.onChangeLocal(e, this.state.inputId);
-                       }}/>
+                  className="custom-control-input" value={option.value} checked={this.state.value === option.value}
+                  onChange={ e => {
+                   this.onChangeLocal(e, this.state.inputId);
+                  }}/>
                 <label className="radio-label m-0 p-0" htmlFor={`${this.state.formId}-${this.state.inputId}-custom-input-${option.id}`}>
                   {option.label || option.value}
                 </label>
@@ -305,9 +305,9 @@ class CustomInput extends React.PureComponent {
         ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : this.state.fieldAlert ? " field-alert" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
-               id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && (e => this.state.onKeyPress(e, this.state.inputId))}
-               pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlurValidation ? evt => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
-               onChange={e => this.onChangeLocal(e, this.state.inputId)} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
+         id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && (e => this.state.onKeyPress(e, this.state.inputId))}
+         pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled} onBlur={!this.state.disableDefaultBlurValidation ? evt => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
+         onChange={e => this.onChangeLocal(e, this.state.inputId)} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string" ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />
           : <span className="icon-hide-password" onClick={() => this.setState({type: "password"})} />)}

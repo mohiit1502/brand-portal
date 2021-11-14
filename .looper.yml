@@ -1,19 +1,59 @@
-envs:
-  global:
-    variables:
-      ELECTRODE_BUILD_URL: https://18041b6190de461274b48dd40fc75c7c5f8eac53@gecgithub01.walmart.com/api/v3/repos/electrode-ops/build/contents/bootstrap.sh?ref=master
-      KARMA_BROWSER: chrome
-      CHROME_BIN: /bin/chromium-browser
-checkoutDir: repo
+inherit: "job://electrode_looper-flows:.looper.yml"
 
 tools:
-  nodejs:
-    - 8.16.1
+  nodejs: 8.16.1
+  sonarscanner: 4.2.0.1873
+
+checkoutDir: repo
 
 flows:
   default:
+    - dir(repo):
+      - call: electrode_build
+      - echo "$GITHUB_BRANCH_NAME"
+      - call: sonar-fetch-origin
+      - call: run-sonar
+  release-build:
     - call: electrode_build
+    - call: run-sonar
+  pr:
+    - dir(repo):
+      - echo "$GITHUB_PR_URL"
+      - call: electrode_pr
+      - call: sonar-fetch-remote-fix-ref
+      - call: run-sonar-pr
+  snapshot-build:
+    - echo "$GITHUB_PR_URL"
+    - call: electrode_pr
+#    - call: sonar-fetch-remote-fix-ref
+#    - call: sonar
 
-  electrode_build:
-    - shell (name electrode_build): |
-        curl -H "Accept: application/vnd.github.VERSION.raw" "${ELECTRODE_BUILD_URL}" | bash
+  sonar-fetch-origin:
+    shell: |
+      #!/bin/bash
+      git fetch --no-tags origin ${GITHUB_BRANCH_NAME}:refs/remotes/origin/${GITHUB_BRANCH_NAME}
+
+  sonar-fetch-remote-fix-ref:
+    shell: |
+      #!/bin/bash
+      git fetch --no-tags --all
+      if [[ ! -z "${GITHUB_PR_TARGET_BRANCH}" ]]
+      then
+        git fetch --no-tags origin ${GITHUB_PR_TARGET_BRANCH}:refs/remotes/origin/${GITHUB_PR_TARGET_BRANCH}
+        git checkout -b remotes/origin/pr/${GITHUB_PR_NUMBER}
+        git branch -D ${GITHUB_PR_TARGET_BRANCH}
+      fi
+
+  run-sonar-pr:
+    - sonar("Sonar"):
+      - (name Sonar For PR) sonar-scanner -Dsonar.projectKey=brand-portal
+        -Dproject.settings=sonar-project.properties
+        -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
+        -Dsonar.pullrequest.key=${GITHUB_PR_NUMBER}
+        -Dsonar.pullrequest.branch=${GITHUB_PR_SOURCE_BRANCH}
+        -Dsonar.pullrequest.base=${GITHUB_PR_TARGET_BRANCH}
+        -Dsonar.scm.revision=${GITHUB_PR_HEAD_SHA}
+
+  run-sonar:
+    - sonar("Sonar"):
+        - (name Sonar For Push/Merge) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties -Dsonar.projectVersion=${VERSION} -Dsonar.branch.name=${GITHUB_BRANCH_NAME} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal -Dsonar.branch.target=master

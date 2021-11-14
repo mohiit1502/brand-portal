@@ -16,7 +16,9 @@ const FORMFIELDCONFIG = {
         "isClearDisabled": false,
         "formActions": "companyOnboardingActions",
         "requestAdministratorAccess": false,
-        "internationalSellerExceptions": []
+        "internationalSellerExceptions": [
+          "ss1@mailinator.com"
+        ]
       },
       "fields": {
         "companyName": {
@@ -1133,43 +1135,43 @@ const FORMFIELDCONFIG = {
         "formActions": "webformActions",
         "formError": "",
         "claimTypes": [
-            {
-              "claimType": "trademark",
-              "claimTypeSectionHeader": "Trademark Information",
-              "label": "Trademark",
-              "claimTypeIdentifierLabel": "Trademark Number",
-              "companyNameIdentifierLabel": "Trademark Company Name",
-              "ownerNameIdentifierLabel": "Trademark Owner Name",
-              "underTakingOwnerLabel": "trademark owner"
-            },
-            {
-              "claimType": "patent",
-              "claimTypeSectionHeader": "Patent Information",
-              "label": "Patent",
-              "claimTypeIdentifierLabel": "Patent Number",
-              "companyNameIdentifierLabel": "Patent Company Name",
-              "ownerNameIdentifierLabel": "Patent Owner Name",
-              "underTakingOwnerLabel": "patent owner"
-            },
-            {
-              "claimType": "counterfeit",
-              "claimTypeSectionHeader": "Counterfeit Information",
-              "label": "Counterfeit",
-              "claimTypeIdentifierLabel": "Order Number",
-              "companyNameIdentifierLabel": "Rights Owner Company Name",
-              "ownerNameIdentifierLabel": "Rights Owner Name",
-              "underTakingOwnerLabel": "intellectual property owner"
-            },
-            {
-              "claimType": "copyright",
-              "claimTypeSectionHeader": "Copyright Information",
-              "label": "Copyright",
-              "claimTypeIdentifierLabel": "",
-              "companyNameIdentifierLabel": "Copyright Company Name",
-              "ownerNameIdentifierLabel": "Copyright Owner Name",
-              "underTakingOwnerLabel": "copyright owner"
-            }
-          ]
+          {
+            "claimType": "trademark",
+            "claimTypeSectionHeader": "Trademark Information",
+            "label": "Trademark",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "companyNameIdentifierLabel": "Trademark Company Name",
+            "ownerNameIdentifierLabel": "Trademark Owner Name",
+            "underTakingOwnerLabel": "trademark owner"
+          },
+          {
+            "claimType": "patent",
+            "claimTypeSectionHeader": "Patent Information",
+            "label": "Patent",
+            "claimTypeIdentifierLabel": "Patent Number",
+            "companyNameIdentifierLabel": "Patent Company Name",
+            "ownerNameIdentifierLabel": "Patent Owner Name",
+            "underTakingOwnerLabel": "patent owner"
+          },
+          {
+            "claimType": "counterfeit",
+            "claimTypeSectionHeader": "Counterfeit Information",
+            "label": "Counterfeit",
+            "claimTypeIdentifierLabel": "Order Number",
+            "companyNameIdentifierLabel": "Rights Owner Company Name",
+            "ownerNameIdentifierLabel": "Rights Owner Name",
+            "underTakingOwnerLabel": "intellectual property owner"
+          },
+          {
+            "claimType": "copyright",
+            "claimTypeSectionHeader": "Copyright Information",
+            "label": "Copyright",
+            "claimTypeIdentifierLabel": "",
+            "companyNameIdentifierLabel": "Copyright Company Name",
+            "ownerNameIdentifierLabel": "Copyright Owner Name",
+            "underTakingOwnerLabel": "copyright owner"
+          }
+        ]
       },
       "fields": {
         "fieldsHeader_1": {
