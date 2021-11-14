@@ -9,9 +9,7 @@ const FORMFIELDCONFIG = {
         "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
-        "actionsToDisable": [
-          "clear"
-        ],
+        "actionsToDisable": ["clear"],
         "id": "companyreg",
         "loader": false,
         "isSubmitDisabled": true,
@@ -1125,9 +1123,7 @@ const FORMFIELDCONFIG = {
         "formClasses": "row content-row p-4 mt-4"
       },
       "formConfig": {
-        "actionsToDisable": [
-          "submit"
-        ],
+        "actionsToDisable": ["submit"],
         "id": "webform",
         "loader": false,
         "isSubmitDisabled": true,
