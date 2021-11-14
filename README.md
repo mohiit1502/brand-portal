@@ -27,6 +27,3 @@ roPro("Rainbow");
 [daviddm-url]: https://david-dm.org//RoPro
 
 
-1
-
-
