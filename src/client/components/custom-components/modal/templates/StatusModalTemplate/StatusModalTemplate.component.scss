@@ -6,6 +6,7 @@
 .c-StatusModalTemplate{
   .modal-dialog{
     width: 530px;
+    max-width: 40rem;
 
     .loader:before {
       top: 0;

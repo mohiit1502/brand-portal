@@ -1,4 +1,4 @@
-/* eslint-disable filenames/match-regex, no-magic-numbers, no-shadow, no-unused-expressions, max-statements, complexity */
+/* eslint-disable filenames/match-regex, no-magic-numbers, no-shadow, no-unused-expressions, max-statements, complexity, react/jsx-indent-props */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -157,7 +157,7 @@ const StatusModalTemplate = props => {
 
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
-      <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div className={`modal-dialog modal-dialog-centered modal-lg${meta.MODAL_DIALOG_CLASSES ? " "+meta.MODAL_DIALOG_CLASSES : ""}`} role="document">
         <div className={`modal-content${loader ? " loader" : ""}`}>
           {meta.HEADER && <div className="modal-header font-weight-bold align-items-center">
             {meta.HEADER}
@@ -168,7 +168,7 @@ const StatusModalTemplate = props => {
           <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}`}>
             {(images[meta.IMAGE] || meta.image) && <div className="row">
               <div className="col">
-                <img src={images[meta.IMAGE] || meta.image} alt="IMAGE_STATUS" height={meta.HEIGHT || 120}/>
+                <img src={images[meta.IMAGE] || meta.image} alt="IMAGE_STATUS" height={meta.HEIGHT || 140}/>
               </div>
             </div>}
             {meta.TITLE && <div className="row mt-3">

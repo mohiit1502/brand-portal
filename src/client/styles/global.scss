@@ -251,12 +251,20 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   font-size: 15px !important;
 }
 
+.font-size-16 {
+  font-size: 16px !important;
+}
+
 .font-size-18 {
   font-size: 18px !important;
 }
 
 .font-size-20 {
   font-size: 20px;
+}
+
+.font-size-25 {
+  font-size: 25px;
 }
 
 .font-size-28 {
@@ -327,6 +335,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   text-decoration: underline;
   cursor: pointer;
   border: none;
+}
+
+.width-unset {
+  width:unset !important;
 }
 
 .min-height-unset {
