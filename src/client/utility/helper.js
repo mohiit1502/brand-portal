@@ -44,10 +44,15 @@ export default class Helper {
       let recurredObject = obj;
       let i = 0;
       while (i < pathArr.length) {
-        if (typeof recurredObject === "object" && recurredObject.length !== undefined) {
-          recurredObject = recurredObject.find(itemInner => itemInner[pathArr[i]] === selector);
+        let key, index;
+        const SBIndex = pathArr[i].indexOf("[");
+        const SBCloseIndex = pathArr[i].indexOf("]");
+        key = SBIndex > -1 ? pathArr[i].substring(0, SBIndex) : pathArr[i];
+        index = SBIndex > -1 && pathArr[i].substring(SBIndex + 1, SBCloseIndex);
+        if (typeof recurredObject === "object" && (recurredObject.length !== undefined || typeof index === "string")) {
+          recurredObject = index ? recurredObject[key][+index] : recurredObject.find(itemInner => itemInner[key] === selector);
         } else {
-          recurredObject = recurredObject[pathArr[i]];
+          recurredObject = recurredObject[key];
         }
         i++;
       }
