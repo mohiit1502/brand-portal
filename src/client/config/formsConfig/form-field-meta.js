@@ -9,9 +9,7 @@ const FORMFIELDCONFIG = {
         "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
-        "actionsToDisable": [
-          "clear"
-        ],
+        "actionsToDisable": ["clear"],
         "id": "companyreg",
         "loader": false,
         "isSubmitDisabled": true,
@@ -314,6 +312,7 @@ const FORMFIELDCONFIG = {
           "key": "userType",
           "label": "",
           "layout": "1.1.0",
+          "onChange": "setSelectInputValue",
           "required": true,
           "value": "Internal",
           "type": "radio",
@@ -1125,9 +1124,7 @@ const FORMFIELDCONFIG = {
         "formClasses": "row content-row p-4 mt-4"
       },
       "formConfig": {
-        "actionsToDisable": [
-          "submit"
-        ],
+        "actionsToDisable": ["submit"],
         "id": "webform",
         "loader": false,
         "isSubmitDisabled": true,
@@ -1377,9 +1374,32 @@ const FORMFIELDCONFIG = {
           "type": "text",
           "value": "",
           "validators": {
-            "validateCounterfeitNumber": {
-              "length": "",
-              "error": ""
+            "validateCounterfeitNumber":{
+              "length": 13,
+              "error": "Please enter valid order number"
+            },
+            "trademark": {
+              "validateLength":{
+                "maxLength": 30,
+                "error": "Please enter valid Trademark Number"
+              },
+              "validateRegex": {
+                "dataRuleRegex": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$",
+                "error": "Please enter a valid Trademark Number"
+              }
+            },
+            "copyright": {
+
+            },
+            "patent": {
+              "validateLength":{
+                "maxLength": 30,
+                "error": "Please enter valid Patent Number"
+              },
+              "validateRegex": {
+                "dataRuleRegex": "^[a-zA-Z0-9-.!\"#$%&'()*+,/]+$",
+                "error": "Please enter a valid Patent Number"
+              }
             }
           }
         },

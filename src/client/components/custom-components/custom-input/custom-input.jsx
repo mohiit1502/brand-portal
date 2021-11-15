@@ -130,7 +130,7 @@ class CustomInput extends React.PureComponent {
 
     const {subtitleText, subtitleClass, errorClass} = this.getSubtitleAndError();
     const content = (<React.Fragment>
-      <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`}
+      <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
         id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={() => {}}
         pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
         data-toggle="dropdown" autoComplete="off" />
