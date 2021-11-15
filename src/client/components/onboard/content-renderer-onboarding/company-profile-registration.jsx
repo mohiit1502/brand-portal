@@ -292,7 +292,6 @@ class CompanyProfileRegistration extends React.Component {
           <form className="company-reg-form mb-4 pl-4" onSubmit={this.gotoBrandRegistration}>
             { this.getFieldRenders()}
           </form>
-          <GenericAlert></GenericAlert>
         </div>
       </div>
     );
