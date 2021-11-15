@@ -1346,8 +1346,8 @@ const FORMFIELDCONFIG = {
           "label": "Claim Type Identifier Number",
           "layout": "16.2.6",
           "preventHTMLRequiredValidation": true,
-          "required": false,
-          "renderCondition": "{\"keyPath\": \"form.showClaimIdentifierNumber\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": {"default": false, "condition": [{"dependencyField": "claimType", "dependencyValue": ["patent", "trademark"], "value": true}]},
+          "renderCondition": "[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
           "subtitle": "",
           "type": "text",
           "value": "",
@@ -1567,7 +1567,7 @@ const FORMFIELDCONFIG = {
           "containerClasses": "font-weight-bold",
           "header": "Claim Information",
           "layout": "17.1.0",
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.claimType\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "type": "_formFieldsHeader"
         },
         "urlItems": {
