@@ -34,7 +34,8 @@ class CompanyProfileRegistration extends React.Component {
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {zip: false};
     const companyConfiguration = this.props.companyContent ? this.props.companyContent : {};
-
+    // this.getShowValue = this.getShowValue.bind;
+    
     this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
       redirectToBrands: false,
       section: {...companyConfiguration.sectionConfig},
@@ -44,9 +45,14 @@ class CompanyProfileRegistration extends React.Component {
         inputData: {...companyConfiguration.fields},
         formPopulated: false
       }
+
     };
 
     this.enableSellerOnboarding();
+  }
+
+  getShowValue(flag){
+    return flag;
   }
 
   componentDidMount() {
@@ -59,12 +65,15 @@ class CompanyProfileRegistration extends React.Component {
       this.prepopulateInputFields(this.props.profile);
     }
 
+   
     if (this.state.clientType === "supplier") {
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
     }else {
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.SELLER_WELCOME_PROMPT});
     }
   }
+    
+    
 
   componentDidUpdate(prevProps) {
     if (this.props.profile && this.props.profile !== prevProps.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
@@ -292,7 +301,6 @@ class CompanyProfileRegistration extends React.Component {
           <form className="company-reg-form mb-4 pl-4" onSubmit={this.gotoBrandRegistration}>
             { this.getFieldRenders()}
           </form>
-          <GenericAlert></GenericAlert>
         </div>
       </div>
     );
