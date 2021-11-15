@@ -224,8 +224,12 @@ export default class ContentRenderer {
     field && Object.keys(field).forEach(key => {
       const conditionObj = field[key];
       if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object" && "condition" in conditionObj) {
-        const dependencyObj = conditionObj.condition.find(obj => inputData[obj.dependencyField] && inputData[obj.dependencyField].value
-          && inputData[obj.dependencyField].value.toLowerCase() === obj.dependencyValue.toLowerCase());
+        const dependencyObj = conditionObj.condition.find(obj => {
+          const matchValue = typeof obj.dependencyValue === "string" ? obj.dependencyValue.toLowerCase() : obj.dependencyValue;
+          const currentValue = inputData[obj.dependencyField] && inputData[obj.dependencyField].value && inputData[obj.dependencyField].value
+            && typeof inputData[obj.dependencyField].value === "string" ? inputData[obj.dependencyField].value.toLowerCase() : inputData[obj.dependencyField].value;
+          return typeof matchValue === "object" ? matchValue.indexOf(currentValue) > -1 : currentValue === matchValue;
+        });
         field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
       }
     });
@@ -236,7 +240,7 @@ export default class ContentRenderer {
     try {
       const form = {...this.state.form};
       const section = {...this.state.section};
-      this.conditionalFields = ["value", "label", "placeholder", "header"];
+      this.conditionalFields = ["header", "label", "placeholder", "required", "value"];
       if (form.conditionalRenders) {
         const conditionalRenders = [];
         Object.keys(form.conditionalRenders).map(fragmentKey => {
@@ -259,22 +263,36 @@ export default class ContentRenderer {
     return null;
   }
 
+  static evaluateRenderDependencySubPart (condition) {
+    const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
+    let currentValue = Helper.search(condition.keyPath, keyLocator);
+    currentValue = currentValue && typeof currentValue === "string" ? currentValue.toLowerCase() : currentValue;
+    const matchValue = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition.value;
+    return typeof matchValue === "object" ? matchValue.indexOf(currentValue) > -1 : condition.hasValue ? !!currentValue : currentValue === matchValue;
+  }
+
+  static evaluateRenderDependencyPart (renderCondition) {
+    let shouldRender;
+    renderCondition = JSON.parse(renderCondition);
+    if (renderCondition.length) {
+      shouldRender = renderCondition.reduce((acc, condition) => {
+        const evaluation = ContentRenderer.evaluateRenderDependencySubPart.call(this, condition);
+        return acc && evaluation;
+      }, true);
+    } else {
+      shouldRender = ContentRenderer.evaluateRenderDependencySubPart.call(this, renderCondition);
+    }
+    return shouldRender;
+  }
+
   static evaluateRenderDependency (renderCondition) {
     let shouldRender = true;
     if (renderCondition) {
-      renderCondition = JSON.parse(renderCondition);
-      if (renderCondition.length) {
-        shouldRender = renderCondition.reduce((acc, condition) => {
-          const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
-          const key = Helper.search(condition.keyPath, keyLocator);
-          const value = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition.value;
-          return acc && key === value;
-        }, true);
+      if (renderCondition.indexOf("||") > -1) {
+        const renderConditionArray = renderCondition.split("||");
+        shouldRender = renderConditionArray.some(renderCondition => ContentRenderer.evaluateRenderDependencyPart.call(this, renderCondition))
       } else {
-        const keyLocator = ContentRenderer.getValueLocator.call(this, renderCondition.keyLocator);
-        const key = Helper.search(renderCondition.keyPath, keyLocator);
-        const value = renderCondition.valueLocator ? Helper.search(renderCondition.valuePath, ContentRenderer.getValueLocator.call(this, renderCondition.valueLocator)) : renderCondition.value;
-        shouldRender = key === value;
+        shouldRender = ContentRenderer.evaluateRenderDependencyPart.call(this, renderCondition);
       }
     }
     return shouldRender;

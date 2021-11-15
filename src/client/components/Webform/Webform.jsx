@@ -19,7 +19,7 @@ import DocumentActions from "../../utility/docOps";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkClaimTypeField", "checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -190,24 +190,6 @@ class Webform extends React.Component {
     const form = this.state.form;
     form.userTypeSelected = true;
     form.inputData.userType.value = value;
-    this.setState({form}, this.checkClaimTypeField);
-  }
-
-  checkClaimTypeField() {
-    const form = this.state.form;
-    if (!form.inputData.claimType.value) {
-      form.claimTypeSelected = false;
-      form.showClaimIdentifierNumber = false;
-    } else if (form.inputData.claimType.value.toLowerCase() === "copyright") {
-      form.showClaimIdentifierNumber = false;
-      form.claimTypeSelected = true;
-    } else if (form.inputData.claimType.value.toLowerCase() === "counterfeit") {
-      form.showClaimIdentifierNumber = true;
-      form.claimTypeSelected = true;
-    } else {
-      form.showClaimIdentifierNumber = form.inputData.userType.value.toLowerCase() !== "customer";
-      form.claimTypeSelected = true;
-    }
     this.setState({form});
   }
 
