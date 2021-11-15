@@ -223,14 +223,23 @@ export default class ContentRenderer {
     field = {...field};
     field && Object.keys(field).forEach(key => {
       const conditionObj = field[key];
-      if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object" && "condition" in conditionObj) {
-        const dependencyObj = conditionObj.condition.find(obj => {
-          const matchValue = typeof obj.dependencyValue === "string" ? obj.dependencyValue.toLowerCase() : obj.dependencyValue;
-          const currentValue = inputData[obj.dependencyField] && inputData[obj.dependencyField].value && inputData[obj.dependencyField].value
-            && typeof inputData[obj.dependencyField].value === "string" ? inputData[obj.dependencyField].value.toLowerCase() : inputData[obj.dependencyField].value;
-          return typeof matchValue === "object" ? matchValue.indexOf(currentValue) > -1 : currentValue === matchValue;
-        });
-        field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
+      if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
+        if ("condition" in conditionObj) {
+          const dependencyObj = conditionObj.condition.find(obj => ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue"));
+          field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
+        } else if (key === "validators") {
+          field.validators = JSON.parse(JSON.stringify(field.validators));
+          Object.keys(field.validators).forEach(validator => {
+            const validationObj = field.validators[validator];
+            if ("evaluator" in validationObj) {
+              const conditionObj = validationObj.evaluator;
+              const dependencyObj = conditionObj.condition.find(obj => ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue"));
+              if (dependencyObj && dependencyObj.setFields && typeof dependencyObj.setFields === "object" && dependencyObj.setFields.length) {
+                dependencyObj.setFields.forEach(fieldConfig => validationObj[fieldConfig.field] = fieldConfig.value)
+              }
+            }
+          })
+        }
       }
     });
     return field;
@@ -240,7 +249,7 @@ export default class ContentRenderer {
     try {
       const form = {...this.state.form};
       const section = {...this.state.section};
-      this.conditionalFields = ["header", "label", "placeholder", "required", "value"];
+      this.conditionalFields = ["header", "label", "placeholder", "required", "validators", "value"];
       if (form.conditionalRenders) {
         const conditionalRenders = [];
         Object.keys(form.conditionalRenders).map(fragmentKey => {
@@ -263,11 +272,11 @@ export default class ContentRenderer {
     return null;
   }
 
-  static evaluateRenderDependencySubPart (condition) {
+  static evaluateRenderDependencySubPart (condition, matchValueFieldName) {
     const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
     let currentValue = Helper.search(condition.keyPath, keyLocator);
     currentValue = currentValue && typeof currentValue === "string" ? currentValue.toLowerCase() : currentValue;
-    const matchValue = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition.value;
+    const matchValue = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition[matchValueFieldName];
     return typeof matchValue === "object" ? matchValue.indexOf(currentValue) > -1 : condition.hasValue ? !!currentValue : currentValue === matchValue;
   }
 
@@ -276,11 +285,11 @@ export default class ContentRenderer {
     renderCondition = JSON.parse(renderCondition);
     if (renderCondition.length) {
       shouldRender = renderCondition.reduce((acc, condition) => {
-        const evaluation = ContentRenderer.evaluateRenderDependencySubPart.call(this, condition);
+        const evaluation = ContentRenderer.evaluateRenderDependencySubPart.call(this, condition, "value");
         return acc && evaluation;
       }, true);
     } else {
-      shouldRender = ContentRenderer.evaluateRenderDependencySubPart.call(this, renderCondition);
+      shouldRender = ContentRenderer.evaluateRenderDependencySubPart.call(this, renderCondition, "value");
     }
     return shouldRender;
   }
