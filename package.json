@@ -1,6 +1,6 @@
 {
   "name": "ropro-brandportal",
-  "version": "7.0.3",
+  "version": "7.0.5",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
@@ -36,7 +36,7 @@
     "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
     "test": "jest --coverage",
     "coverage": "jest --coverage",
-    "prod": "echo 'Starting standalone server in PROD mode'; NODE_ENV=production node ./lib/server/",
+    "prod": "echo \"Starting standalone server in PROD mode\"; NODE_ENV=production node ./lib/server/",
     "heroku-postbuild": "clap build",
     "cdn-publish": "clap cdn/publish",
     "wml-release": "clap wml-build/release"
@@ -45,7 +45,7 @@
     "@loadable/component": "^5.7.0",
     "@loadable/server": "^5.9.0",
     "@material-ui/core": "^3.0.2",
-    "@material-ui/icons": "^2.0.3",
+    "@material-ui/icons": "^3.0.2",
     "@material-ui/system": "^3.0.0-alpha.2",
     "@walmart/electrode-ccm-client": "^3.1.0",
     "@walmart/electrode-quimby-client": "^2.0.2",
@@ -82,6 +82,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
     "react-table": "^7.0.4",
+    "react-test-renderer": "^16.13.1",
     "react-transition-group": "^4.4.1",
     "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
@@ -99,6 +100,7 @@
     "electrode-archetype-react-app-dev": "^6.3.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
+    "eslint-plugin-jest": "^21.27.2",
     "eslint-plugin-react-hooks": "^3.0.0",
     "fetch-to-curl": "^0.5.2",
     "jest": "24.0.0",

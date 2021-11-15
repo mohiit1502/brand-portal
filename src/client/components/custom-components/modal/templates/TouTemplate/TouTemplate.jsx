@@ -111,7 +111,7 @@ const TouTemplate = props => {
               </object>
             </div>
             <div className={`tou-rejection d-inline-block position-absolute w-100 font-size-20${page === pages.TOU_REJECTION ? " visible" : ""}`}>
-              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? ` (${  profile.companyName  })` : ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
+              <p className="ml-3 pl-3">You are declining <b>{`${bpAccount}${profile.type === CONSTANTS.USER.USER_TYPE.THIRD_PARTY ? profile.companyName ? ` (${profile.companyName})` : "" : ""}`}'s</b> invitation to join their Walmart Brand Portal account.</p>
               <p className="ml-3 pl-3">Please click the "Decline" button to confirm.</p>
             </div>
           </div>

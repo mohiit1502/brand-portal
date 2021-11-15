@@ -52,7 +52,7 @@ class Webform extends React.Component {
         if (response.body) {
           try {
             response = JSON.parse(response.body);
-            // response = FORMFIELDCONFIG;
+            response = FORMFIELDCONFIG;
             this.updateStateAndFormatters(response);
           } catch (e) {
             this.props.dispatchMetadata(FORMFIELDCONFIG);
@@ -121,11 +121,9 @@ class Webform extends React.Component {
     this.setState(state => {
       state = {...state};
       if (index > -1) {
-        state.form.inputData.urlItems.itemList[index][key].value = targetVal;
         state.form.inputData.urlItems.itemList[index][key].error = error;
         state.form.inputData.urlItems.disableAddItem = true;
       } else {
-        state.form.inputData[key].value = targetVal;
         state.form.inputData[key].error = error;
       }
       return {
@@ -168,7 +166,7 @@ class Webform extends React.Component {
         state = {...state};
         if (index > -1) {
           if (key.split("-")[0] === "url") {
-            state.form.inputData.urlItems.itemList[index][key].error = "";
+            state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;
             state.form.inputData.urlItems.itemList[index].sellerName.disabled = false;
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.disableAddItem = true;
@@ -255,6 +253,7 @@ class Webform extends React.Component {
       }
       this.setState(state => {
         state = {...state};
+        state.form.inputData[key].error = "";
         state.form.inputData[key].value = value;
         return {
           ...state
@@ -266,20 +265,6 @@ class Webform extends React.Component {
   // eslint-disable-next-line complexity
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    // const userUndertaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected && form.inputData.user_undertaking_5.selected;
-    // const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
-    // const isHuman = (!form.inputData.captchaValidator) || (form.inputData.captchaValidator.value);
-//     const bool = isValidItemList && userUndertaking && isHuman && form.inputData.claimType.value &&
-//       form.inputData.firstName.value && form.inputData.lastName.value &&
-//       form.inputData.ownerName.value && form.inputData.companyName.value &&
-//       form.inputData.brandName.value &&
-//       form.inputData.address_1.value && form.inputData.address_2.value &&
-//       form.inputData.city.value && form.inputData.country.value &&
-//       form.inputData.state.value && form.inputData.zip.value && !form.inputData.zip.error &&
-//       form.inputData.phone.value && !form.inputData.phone.error && form.inputData.emailId.value && !form.inputData.emailId.error &&
-//       form.inputData.comments.value && !form.inputData.comments.error &&
-//       form.inputData.digitalSignature.value;
-
     form.isSubmitDisabled = form.inputData.webformDoc.uploading;
     form.inputData.webformActions.buttons.submit.disabled = form.inputData.webformDoc.uploading;
     this.setState({form}, callback && callback());

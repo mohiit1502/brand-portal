@@ -177,6 +177,17 @@ export default class Validator {
     return error;
   }
 
+  static onInvalid (evt, key, innerKey) {
+    evt.preventDefault();
+    const form = this.state.form;
+    const matchedObj = Helper.search(key, form.inputData);
+    if (matchedObj) {
+      matchedObj.error = matchedObj.invalidError ? matchedObj.invalidError : Helper.search(matchedObj.invalidErrorPath);
+      this.invalid[innerKey || key] = true;
+      this.setState({form});
+    }
+  }
+
   // =============================== Backend Validations ====================================
   static checkBrandUniqueness(params) {
     if (!this.state.form.inputData.brandName.value) return;
@@ -356,18 +367,6 @@ export default class Validator {
         this.setState({form, uniquenessCheckStatus}, this.checkToEnableSubmit);
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.EMAIL_VALIDITY_CHECK, mixpanelPayload);
       });
-    }
-  }
-
-  static onInvalid (evt, key) {
-    evt.preventDefault();
-    const form = this.state.form;
-    const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
-    if (matchedField) {
-      const matchedObj = form.inputData[matchedField];
-      matchedObj.error = matchedObj.invalidError ? matchedObj.invalidError : Helper.search(matchedObj.invalidErrorPath);
-      this.invalid[key] = true;
-      this.setState({form});
     }
   }
 

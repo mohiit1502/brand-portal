@@ -5,7 +5,6 @@
 import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
-import { CONSTANTS } from "../../constants/server-constants";
 import mixpanel from "../../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
 
@@ -62,19 +61,6 @@ class CompanyManagerApi {
         handler: this.registerOrganization
       }
     ]);
-  }
-
-  getHeaders(request) {
-    return {
-      "transfer-encoding": "chunked",
-      "Accept-Encoding": "gzip, deflate, br",
-      Accept: "*/*",
-      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-      ROPRO_USER_ID:	request.state.session_token_login_id,
-      ROPRO_CLIENT_ID:	"abcd",
-      ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
-      ROPRO_CORRELATION_ID: ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
-    };
   }
 
   /* eslint-disable complexity */
@@ -174,7 +160,7 @@ class CompanyManagerApi {
     console.log("[CompanyManagerApi::uploadAdditionalDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
 
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getDocumentHeaders(request);
 
       const options = {
         headers
@@ -216,7 +202,7 @@ class CompanyManagerApi {
     console.log("[CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has started");
     console.log("[CompanyManagerApi::uploadBusinessDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getDocumentHeaders(request);
       const options = {
         headers
       };

@@ -179,35 +179,36 @@ export default class ContentRenderer {
 
     return laidoutFields && laidoutFields.map((fieldRow, key1) => {
       if (this && this.state.form.excludeRowContainer) {
-        return ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow);
+        return ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow, inputData);
       } else {
         const rowClass = fieldRow[0] && fieldRow[0].field.containerClasses;
-        return fieldRow[0] && fieldRow[0].field.excludeRowContainer ? ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow)
+        return fieldRow[0] && fieldRow[0].field.excludeRowContainer ? ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow, inputData)
           : (
               <div className={`form-row${rowClass ? ` ${  rowClass}` : ""}`} key={key1}>
-                {ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow)}
+                {ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow, inputData)}
               </div>
             );
       }
     });
   }
 
-  static getFieldRendersLaid(id, key1, fieldRow) {
+  static getFieldRendersLaid(id, key1, fieldRow, inputData) {
     return fieldRow && fieldRow.map((fieldMeta, key2) => {
       fieldMeta = {...fieldMeta};
       const colClass = `${fieldMeta.field.colClasses ? fieldMeta.field.colClasses : ""}${fieldMeta.span === "0" || !fieldMeta.span ? " col" : ` col-${  fieldMeta.span}`}`;
       const shouldRender = ContentRenderer.evaluateRenderDependency.call(this, fieldMeta.field.renderCondition);
       if (shouldRender) {
-        return fieldMeta.field.excludeColContainer ? ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id)
+        return fieldMeta.field.excludeColContainer ? ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id, inputData)
           : <div className={`${colClass}`} key={`${key1  }-${  key2}`}>
-              {ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id)}
+              {ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id, inputData)}
             </div>;
       }
       return null;
     });
   }
 
-  static getCustomComponent (field, id) {
+  static getCustomComponent (field, id, inputData) {
+    field = ContentRenderer.hookConditionInterceptor.call(this, field, inputData);
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
@@ -218,10 +219,24 @@ export default class ContentRenderer {
       bubbleValue={this.bubbleValue} parentRef={this} {...rest} />);
   }
 
+  static hookConditionInterceptor (field, inputData) {
+    field = {...field};
+    field && Object.keys(field).forEach(key => {
+      const conditionObj = field[key];
+      if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object" && "condition" in conditionObj) {
+        const dependencyObj = conditionObj.condition.find(obj => inputData[obj.dependencyField] && inputData[obj.dependencyField].value
+          && inputData[obj.dependencyField].value.toLowerCase() === obj.dependencyValue.toLowerCase());
+        field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
+      }
+    });
+    return field;
+  }
+
   static getFieldRenders() {
     try {
       const form = {...this.state.form};
       const section = {...this.state.section};
+      this.conditionalFields = ["value", "label", "placeholder", "header"];
       if (form.conditionalRenders) {
         const conditionalRenders = [];
         Object.keys(form.conditionalRenders).map(fragmentKey => {
