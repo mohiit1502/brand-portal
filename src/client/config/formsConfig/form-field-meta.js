@@ -47,7 +47,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "renderDependency": "requestAdministratorAccess",
           "required": true,
-          "subtitle": "",
+          "subtitle": "The Company address should match the information in trademark registration.",
           "type": "text",
           "value": ""
         },
@@ -122,38 +122,15 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Business registration documents (optional)",
+          "label": "Optional: attach additional documents if necessary (i.e. buisness registration)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
-          "otherType": "additionalDoc",
           "tooltipContentKey": "businessDocContent",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
-        },
-        "additionalDoc": {
-          "buttonText": "Upload",
-          "cancelHandlerArg": "additionalDoc",
-          "changeHandlerArg": "additionalDoc",
-          "disabled": true,
-          "endpoint": "/api/company/uploadAdditionalDocument",
-          "error": "",
-          "filename": "",
-          "icon": "Question",
-          "id": "",
-          "inputId": "additionalDoc",
-          "key": "additionalDoc",
-          "label": "Additional documents (optional)",
-          "layout": "6.1.0",
-          "onCancel": "cancelSelection",
-          "onChange": "displayProgressAndUpload",
-          "otherType": "businessRegistrationDoc",
-          "tooltipContentKey": "additionalDocContent",
-          "type": "_fileUploader",
-          "uploading": false,
-          "uploadPercentage": 0
-        },
+        },    
         "companyOnboardingActions": {
           "containerClasses": "mt-3",
           "colClasses": "company-onboarding-button-panel text-right",
@@ -274,8 +251,9 @@ const FORMFIELDCONFIG = {
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
-              "text": "Submit",
-              "type": "submit"
+              "onClick": "goToApplicationReview",
+              "text": "Next",
+              "type": "button"
             }
           }
         }

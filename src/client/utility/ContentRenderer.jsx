@@ -36,12 +36,12 @@ export default class ContentRenderer {
   processNodeDetails(nodeDetails) {
     return nodeDetails.steps && nodeDetails.steps.map((step, key) => {
       if (typeof step === "string") {
-        return <li key={key}>{step}</li>;
+        return <li className={nodeDetails.liClasses ? nodeDetails.liClasses : ""} key={key}>{step}</li>;
       } else if ("partial" in step) {
         return <li>{Object.keys(step).map(node => this.getContent(step, node, "", true))}</li>;
       } else {
         return (
-          <li key={key}>
+          <li className={nodeDetails.liClasses ? nodeDetails.liClasses : ""} key={key}>
             {step.main}
             {step.subList && this.getListContent(step.subList)}
             {step.image && this.insertImages(step.image)}

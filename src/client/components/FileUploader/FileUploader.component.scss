@@ -1,3 +1,11 @@
 .c-FileUploader {
-  
+    
+    .field-container.col-6 {
+        padding-left: 0!important;
+    }
+    .cancel-file-selection-btn {
+        top: 5px;
+        right: 1rem;
+    }
 }
+
