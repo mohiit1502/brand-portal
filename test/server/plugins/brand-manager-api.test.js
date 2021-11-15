@@ -2,7 +2,6 @@
 import ServerHttp from "../../../src/server/utility/ServerHttp";
 import ServerUtils from "../../../src/server/utility/server-utils";
 import mixpanel from "../../../src/server/utility/mixpanelutility";
-import jest from "jest";
 import Hapi from "hapi";
 import successResponse from "./../mocks/success-response.json";
 import headerResponse from "./../mocks/headers-response.json";
