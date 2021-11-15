@@ -1346,37 +1346,46 @@ const FORMFIELDCONFIG = {
           "label": "Claim Type Identifier Number",
           "layout": "16.2.6",
           "preventHTMLRequiredValidation": true,
-          "required": {"default": false, "condition": [{"dependencyField": "claimType", "dependencyValue": ["patent", "trademark"], "value": true}]},
+          "required": {"default": false, "condition": [{"keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": ["patent", "trademark"], "value": true}]},
           "renderCondition": "[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
           "subtitle": "",
           "type": "text",
           "value": "",
           "validators": {
-            "validateCounterfeitNumber":{
-              "length": 13,
-              "error": "Please enter valid order number"
+            "validateLength":{
+              "evaluator": {"default": 30, "condition": [
+                {
+                  "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
+                  "setFields": [{"field": "maxLength","value": 13}, {"field": "error", "value": "Please enter valid order number"}]
+                },
+                {
+                  "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "trademark",
+                  "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Trademark Number"}]
+                },
+                {
+                  "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "patent",
+                  "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Patent Number"}]
+                }
+              ]}
             },
-            "trademark": {
-              "validateLength":{
-                "maxLength": 30,
-                "error": "Please enter valid Trademark Number"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$",
-                "error": "Please enter a valid Trademark Number"
-              }
-            },
-            "copyright": {
-
-            },
-            "patent": {
-              "validateLength":{
-                "maxLength": 30,
-                "error": "Please enter valid Patent Number"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[a-zA-Z0-9-.!\"#$%&'()*+,/]+$",
-                "error": "Please enter a valid Patent Number"
+            "validateRegex": {
+              "evaluator": {
+                "default": "", "condition": [
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "trademark",
+                    "setFields": [{
+                      "field": "dataRuleRegex",
+                      "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$"
+                    }, {"field": "error", "value": "Please enter a valid Trademark Number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "patent",
+                    "setFields": [{
+                      "field": "dataRuleRegex",
+                      "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$"
+                    }, {"field": "error", "value": "Please enter a valid Patent Number"}]
+                  }
+                ]
               }
             }
           }
@@ -1667,7 +1676,7 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "rowCount": 2,
           "placeholder": {"default": "Please provide additional information about the claim",
-            "condition": [{"dependencyField": "claimType", "dependencyValue": "counterfeit", "value": "If possible, please provide evidence that the reported listing is selling a counterfeit product, such as the order number and/or description of the counterfeit item received."}]},
+            "condition": [{"keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit", "value": "If possible, please provide evidence that the reported listing is selling a counterfeit product, such as the order number and/or description of the counterfeit item received."}]},
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "subtitle": "",

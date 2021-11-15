@@ -210,18 +210,7 @@ class Webform extends React.Component {
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       if (matchedClaimTypeWithMeta.claimType !== "copyright") {
         form.inputData.user_undertaking_3.required = false;
-        if (matchedClaimTypeWithMeta.claimType === "counterfeit") {
-          form.showClaimIdentifierNumber = true;
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = form.counterfeitValidatorLength;
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = form.counterfeitValidatorError;
-
-        } else {
-          form.showClaimIdentifierNumber = form.inputData.userType.value !== "Customer";
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = "";
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = "";
-        }
       } else {
-        form.showClaimIdentifierNumber = false;
         form.inputData.user_undertaking_3.required = true;
       }
       this.setState({form});
