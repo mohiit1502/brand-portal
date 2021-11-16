@@ -53,7 +53,7 @@ import SortUp from "./sort_ascend.svg";
 import SuccessCheck from "./SuccessCheck.svg";
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
-import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
+import TOU from "./Walmart Brand Portal Terms of Use 10.25.2021.pdf";
 import User from "./user.svg";
 import UsersIcon from "./users.png";
 import UserList from "./User List.jpg";
