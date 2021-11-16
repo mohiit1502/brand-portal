@@ -1773,7 +1773,7 @@ const FORMFIELDCONFIG = {
           "onChange": "undertakingtoggle",
           "preventHTMLRequiredValidation": true,
           "required": true,
-          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"Copyright\"}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"copyright\"}",
           "selected": false,
           "type": "_checkBox",
           "validators": {
