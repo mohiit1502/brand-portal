@@ -59,7 +59,7 @@ export default class DocumentActions {
       this.checkToEnableSubmit();
       const formData = new FormData();
       formData.append("file", file);
-      const uploadResponse = (await Http.postAsFormData(endpoint, formData, {clientType: this.state.clientType}, null, this.props.showNotification)).body;
+      const uploadResponse = (await Http.postAsFormData(endpoint, formData, {clientType: this.state.clientType}, null, this.props.showNotification, "Document uploaded successfully!")).body;
       interval.stop();
       window.setTimeout(() => {
         const updatedForm = {...this.state.form};
