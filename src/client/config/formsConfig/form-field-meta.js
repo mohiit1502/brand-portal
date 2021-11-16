@@ -1378,7 +1378,7 @@ const FORMFIELDCONFIG = {
           "label": "Claim Type Identifier Number",
           "layout": "16.2.6",
           "preventHTMLRequiredValidation": true,
-          "required": {"default": false, "condition": [{"keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": ["patent", "trademark"], "value": true}]},
+          "required": {"default": false, "condition": [{"subCondition": [{"keyPath": "form.inputData.userType.value", "keyLocator": "state", "dependencyValue": ["third party","rights owner"]}, {"keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": ["patent", "trademark"]}], "value": true}]},
           "renderCondition": "[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
           "subtitle": "",
           "type": "text",

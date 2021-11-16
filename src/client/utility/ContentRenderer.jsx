@@ -257,7 +257,11 @@ export default class ContentRenderer {
       const conditionObj = field[key];
       if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
         if ("condition" in conditionObj) {
-          const dependencyObj = conditionObj.condition.find(obj => ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue"));
+          const dependencyObj = conditionObj.condition.find(obj => {
+            return obj.subCondition
+              ? obj.subCondition.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(this, objPart, "dependencyValue"), true)
+              : ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue")
+          });
           field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
         } else if (key === "validators") {
           field.validators = JSON.parse(JSON.stringify(field.validators));
@@ -265,7 +269,11 @@ export default class ContentRenderer {
             const validationObj = field.validators[validator];
             if ("evaluator" in validationObj) {
               const conditionObj = validationObj.evaluator;
-              const dependencyObj = conditionObj.condition.find(obj => ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue"));
+              const dependencyObj = conditionObj.condition.find(obj => {
+                return typeof obj === "object" && obj.length
+                  ? obj.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(this, objPart, "dependencyValue"), true)
+                  : ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue")
+              });
               if (dependencyObj && dependencyObj.setFields && typeof dependencyObj.setFields === "object" && dependencyObj.setFields.length) {
                 dependencyObj.setFields.forEach(fieldConfig => validationObj[fieldConfig.field] = fieldConfig.value)
               }
