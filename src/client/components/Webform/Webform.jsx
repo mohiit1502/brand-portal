@@ -32,8 +32,6 @@ class Webform extends React.Component {
     this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
     this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.onInvalid = Validator.onInvalid.bind(this);
-    this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
-    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.invalid = {emailId: false, phone: false};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.validateState = Validator.validateState.bind(this);

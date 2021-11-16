@@ -1418,6 +1418,13 @@ const FORMFIELDCONFIG = {
                       "field": "dataRuleRegex",
                       "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$"
                     }, {"field": "error", "value": "Please enter a valid Patent Number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
+                    "setFields": [{
+                      "field": "dataRuleRegex",
+                      "value": "^[0-9]{1,13}$"
+                    }, {"field": "error", "value": "Please enter a valid Patent Number"}]
                   }
                 ]
               }
