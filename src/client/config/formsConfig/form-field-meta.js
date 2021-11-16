@@ -1343,7 +1343,12 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
           "value": "",
-          "initValuePath": "companyName"
+          "initValuePath": "companyName",
+          "validators": {
+            "validateRequired": {
+              "error": "Company Name is required"
+            }
+          }
         },
         "brandName": {
           "disabled": false,
@@ -1358,7 +1363,12 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Brand Name is required"
+            }
+          }
         },
         "claimIdentifierNumber": {
           "disabled": false,
@@ -1375,20 +1385,22 @@ const FORMFIELDCONFIG = {
           "value": "",
           "validators": {
             "validateLength":{
-              "evaluator": {"default": 30, "condition": [
-                {
-                  "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
-                  "setFields": [{"field": "maxLength","value": 13}, {"field": "error", "value": "Please enter valid order number"}]
-                },
-                {
-                  "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "trademark",
-                  "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Trademark Number"}]
-                },
-                {
-                  "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "patent",
-                  "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Patent Number"}]
-                }
-              ]}
+              "evaluator": {
+                "default": 30, "condition": [
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
+                    "setFields": [{"field": "maxLength","value": 13}, {"field": "error", "value": "Please enter valid order number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "trademark",
+                    "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Trademark Number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "patent",
+                    "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Patent Number"}]
+                  }
+                ]
+              }
             },
             "validateRegex": {
               "evaluator": {

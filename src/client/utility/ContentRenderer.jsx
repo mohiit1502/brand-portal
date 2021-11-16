@@ -144,6 +144,38 @@ export default class ContentRenderer {
     );
   }
 
+  //////// ====================== Changes for form field renders (only) ========================= /////
+  static getFieldRenders() {
+    try {
+      const form = {...this.state.form};
+      form.inputData = {...form.inputData};
+      const section = {...this.state.section};
+      this.conditionalFields = ["header", "label", "placeholder", "required", "validators", "value"];
+      Object.keys(form.inputData).forEach(key => form.inputData[key] = ContentRenderer.hookConditionInterceptor.call(this, form.inputData[key]))
+      if (form.conditionalRenders) {
+        const conditionalRenders = [];
+        Object.keys(form.conditionalRenders).map(fragmentKey => {
+          const fragmentFields = form.conditionalRenders[fragmentKey].complyingFields;
+          const fragmentCondition = form.conditionalRenders[fragmentKey].condition;
+          const path = `${fragmentCondition.locator}.${fragmentCondition.flag}`;
+          const flagValue = Helper.search(path, this.state);
+          if (flagValue === fragmentCondition.value) {
+            const inputData = {...form.inputData};
+            Object.keys(form.inputData).forEach(key => !fragmentFields.includes(key) && delete inputData[key]);
+            conditionalRenders.push(ContentRenderer.layoutFields.call(this, inputData, form.id || section.id));
+          }
+        });
+        return conditionalRenders;
+      } else {
+        return ContentRenderer.layoutFields.call(this, form.inputData, form.id || section.id);
+      }
+      /* eslint-disable no-empty */
+    } catch (e) {
+      console.log(e)
+    }
+    return null;
+  }
+
   static layoutFields (inputData, idIncoming) {
     let laidoutFields = [];
     inputData && Object.keys(inputData).forEach(id => {
@@ -208,7 +240,6 @@ export default class ContentRenderer {
   }
 
   static getCustomComponent (field, id, inputData) {
-    field = ContentRenderer.hookConditionInterceptor.call(this, field, inputData);
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
@@ -219,9 +250,10 @@ export default class ContentRenderer {
       bubbleValue={this.bubbleValue} parentRef={this} {...rest} />);
   }
 
-  static hookConditionInterceptor (field, inputData) {
+  static hookConditionInterceptor (field, conditionalFields) {
     field = {...field};
-    field && Object.keys(field).forEach(key => {
+    const iterationSet = conditionalFields ? conditionalFields : Object.keys(field);
+    iterationSet.forEach(key => {
       const conditionObj = field[key];
       if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
         if ("condition" in conditionObj) {
@@ -243,33 +275,6 @@ export default class ContentRenderer {
       }
     });
     return field;
-  }
-
-  static getFieldRenders() {
-    try {
-      const form = {...this.state.form};
-      const section = {...this.state.section};
-      this.conditionalFields = ["header", "label", "placeholder", "required", "validators", "value"];
-      if (form.conditionalRenders) {
-        const conditionalRenders = [];
-        Object.keys(form.conditionalRenders).map(fragmentKey => {
-          const fragmentFields = form.conditionalRenders[fragmentKey].complyingFields;
-          const fragmentCondition = form.conditionalRenders[fragmentKey].condition;
-          const path = `${fragmentCondition.locator}.${fragmentCondition.flag}`;
-          const flagValue = Helper.search(path, this.state);
-          if (flagValue === fragmentCondition.value) {
-            const inputData = {...form.inputData};
-            Object.keys(form.inputData).forEach(key => !fragmentFields.includes(key) && delete inputData[key]);
-            conditionalRenders.push(ContentRenderer.layoutFields.call(this, inputData, form.id || section.id));
-          }
-        });
-        return conditionalRenders;
-      } else {
-        return ContentRenderer.layoutFields.call(this, form.inputData, form.id || section.id);
-      }
-    /* eslint-disable no-empty */
-    } catch (e) {}
-    return null;
   }
 
   static evaluateRenderDependencySubPart (condition, matchValueFieldName) {
