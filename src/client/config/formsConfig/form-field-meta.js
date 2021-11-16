@@ -1675,6 +1675,8 @@ const FORMFIELDCONFIG = {
           ]
         },
         "webformDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileSize": 7,
           "buttonText": "Upload",
           "cancelHandlerArg": "webformDoc",
           "changeHandlerArg": "webformDoc",

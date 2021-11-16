@@ -14,6 +14,18 @@ export default class DocumentActions {
     try {
       const file = evt.target.files[0];
       const filename = file.name;
+      const fileSize = file.size;
+      let allowedFileSize = form.inputData[key].allowedFileSize;
+      if (allowedFileSize) {
+        allowedFileSize = allowedFileSize * 1024 * 1024;
+        if (fileSize > allowedFileSize) {
+          this.setState(state => {
+            state.form.inputData[key].error = `Exceeded allowed upload size of ${form.inputData[key].allowedFileSize}MB!`;
+            return state;
+          })
+          return;
+        }
+      }
       const interval = new CustomInterval(4, (value, active) => {
         const formInner = {...this.state.form};
         formInner.inputData[key].uploadPercentage = value;
