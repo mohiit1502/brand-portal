@@ -47,7 +47,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "renderDependency": "requestAdministratorAccess",
           "required": true,
-          "subtitle": "The Company address should match the information in trademark registration.",
+          "subtitle": "",
           "type": "text",
           "value": ""
         },
@@ -122,11 +122,34 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Optional: attach additional documents if necessary (i.e. buisness registration)",
+          "label": "Business registration documents (optional)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
           "tooltipContentKey": "businessDocContent",
+          "otherType": "additionalDoc",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
+        "additionalDoc": {
+          "buttonText": "Upload",
+          "cancelHandlerArg": "additionalDoc",
+          "changeHandlerArg": "additionalDoc",
+          "disabled": true,
+          "endpoint": "/api/company/uploadAdditionalDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "id": "",
+          "inputId": "additionalDoc",
+          "key": "additionalDoc",
+          "label": "Additional documents (optional)",
+          "layout": "6.1.0",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "otherType": "businessRegistrationDoc",
+          "tooltipContentKey": "additionalDocContent",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
@@ -251,9 +274,8 @@ const FORMFIELDCONFIG = {
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
-              "onClick": "goToApplicationReview",
-              "text": "Next",
-              "type": "button"
+              "text": "Submit",
+              "type": "submit"
             }
           }
         }

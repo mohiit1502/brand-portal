@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import {Route, Switch} from "react-router";
 import CONSTANTS from "../../../constants/constants";
 import "../../../styles/onboard/content-renderer-onboarding/content-renderer-onboarding.scss";
-import ApplicationReview from "./application-review";
 import BrandRegistration from "./brand-registration";
 import CompanyProfileRegistration from "./company-profile-registration";
 
@@ -22,9 +21,6 @@ class ContentRendererOnboard extends React.Component {
             </Route>
             <Route path={CONSTANTS.ROUTES.PROTECTED.ONBOARD.BRAND_REGISTER}>
               <BrandRegistration {...this.props}/>
-            </Route>
-            <Route path={CONSTANTS.ROUTES.PROTECTED.ONBOARD.APPLICATION_REVIEW}>
-              <ApplicationReview {...this.props}/>
             </Route>
           </Switch>
         </div>

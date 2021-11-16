@@ -53,12 +53,9 @@ const FileUploader = props => {
         }
         {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}
         {!props.uploading && props.id &&
-          <div className="col-6 field-container position-relative">
-            <div className={`uploaded-file-label form-control mb-2`}>
-              <span className="d-block overflow-auto">{props.filename}</span>
-            </div>
-            <span aria-hidden="true" className="cancel-file-selection-btn position-absolute cursor-pointer"
-                onClick={cancelHandler}>&times;</span>
+          <div className={`uploaded-file-label form-control mb-2`}>{props.filename}
+            <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer"
+                  onClick={cancelHandler}>&times;</span>
           </div>
         }
       </div>

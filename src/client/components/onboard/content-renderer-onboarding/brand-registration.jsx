@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {Redirect, withRouter} from "react-router";
+import {Redirect} from "react-router";
 import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "../../../actions/company/company-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
@@ -19,7 +19,7 @@ class BrandRegistration extends React.Component {
 
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "onChange", "gotoCompanyRegistration", "submitOnboardingForm", "undertakingtoggle", "goToApplicationReview"];
+    const functions = ["bubbleValue", "onChange", "gotoCompanyRegistration", "submitOnboardingForm", "undertakingtoggle"];
     const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
     functions.forEach(name => {
       this[name] = this[name].bind(this);
@@ -44,31 +44,6 @@ class BrandRegistration extends React.Component {
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION, mixpanelPayload);
   }
-
-  goToApplicationReview(evt){
-      evt.preventDefault();
-      this.loader("form", true);
-      const inputData = this.state.form.inputData;
-      const brand = {
-        trademarkNumber: inputData.trademarkNumber.value,
-        usptoUrl: inputData.trademarkNumber.usptoUrl,
-        usptoVerification: inputData.trademarkNumber.usptoVerification,
-        name: inputData.brandName.value,
-        comments: ""
-      };
-      if (inputData.comments.value) {
-        brand.comments = inputData.comments.value;
-      }
-      const data = {
-        org: this.props.org,
-        brand
-      };
-      this.props.updateOrgData(brand, "brand");
-      this.props.history.push("/onboard/review");
-  }
-  
-  
-
 
   checkToEnableSubmit () {
     const form = {...this.state.form};
@@ -221,7 +196,7 @@ class BrandRegistration extends React.Component {
             </div>
           </div>
           {/* eslint-disable react/jsx-handler-names */}
-          <form className="brand-reg-form pl-4">
+          <form className="brand-reg-form pl-4" onSubmit={this.submitOnboardingForm}>
             {this.getFieldRenders()}
           </form>
         </div>
@@ -266,4 +241,4 @@ const mapDispatchToProps = {
   updateUserProfile
 };
 
-export  default  connect(mapStateToProps, mapDispatchToProps)(withRouter(BrandRegistration));
+export  default  connect(mapStateToProps, mapDispatchToProps)(BrandRegistration);

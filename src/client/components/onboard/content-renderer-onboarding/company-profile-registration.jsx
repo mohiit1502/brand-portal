@@ -5,7 +5,6 @@ import {Redirect} from "react-router";
 import Cookies from "electrode-cookies";
 import $ from "jquery";
 import {dispatchCompanyState} from "../../../actions/company/company-actions";
-import {toggleModal, TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../constants/constants";
 import Helper from "../../../utility/helper";
@@ -57,12 +56,6 @@ class CompanyProfileRegistration extends React.Component {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
     if (this.props.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
       this.prepopulateInputFields(this.props.profile);
-    }
-
-    if (this.state.clientType === "supplier") {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
-    }else {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.SELLER_WELCOME_PROMPT});
     }
   }
 
@@ -136,9 +129,9 @@ class CompanyProfileRegistration extends React.Component {
     form.isSubmitDisabled = !bool;
     form.inputData.companyOnboardingActions.buttons = {...form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = !bool;
-    // form.inputData.additionalDoc.disabled = !bool;
+    form.inputData.additionalDoc.disabled = !bool;
     form.inputData.businessRegistrationDoc.disabled = !bool;
-    if (form.inputData.businessRegistrationDoc.uploading) {
+    if (form.inputData.businessRegistrationDoc.uploading || form.inputData.additionalDoc.uploading) {
       form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
     }
     this.setState({form});
@@ -167,7 +160,7 @@ class CompanyProfileRegistration extends React.Component {
           state.form.isSubmitDisabled = true;
           state.form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
           state.form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-          // state.form.inputData.additionalDoc.disabled = true;
+          state.form.inputData.additionalDoc.disabled = true;
           state.form.inputData.businessRegistrationDoc.disabled = true;
           this.toggleFormEnable(false, false);
           this.companyDebounce(evt);
@@ -219,7 +212,7 @@ class CompanyProfileRegistration extends React.Component {
     const state = {...this.state};
     const form = state.form = {...state.form};
     const inputKeys = ["companyName", "address", "city", "state", "zip"];
-    const docKeys = ["businessRegistrationDoc"];
+    const docKeys = ["businessRegistrationDoc", "additionalDoc"];
     this.state.considerCountryForValidation && inputKeys.push("country");
     inputKeys.forEach(key => {
       form.inputData[key].disabled = true;
@@ -237,7 +230,7 @@ class CompanyProfileRegistration extends React.Component {
     form.isSubmitDisabled = true;
     form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-    // form.inputData.additionalDoc.disabled = true;
+    form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
     this.setState(state);
     const mixpanelPayload = {
@@ -248,7 +241,6 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    console.log(this.state.form.inputData);
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -256,12 +248,11 @@ class CompanyProfileRegistration extends React.Component {
       state: this.state.form.inputData.state.value,
       zip: this.state.form.inputData.zip.value,
       countryCode: this.state.form.inputData.country.value,
-      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
-      businessRegistrationDocName: this.state.form.inputData.businessRegistrationDoc.name
+      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id
     };
-    // if (this.state.form.inputData.additionalDoc.id) {
-    //   org.additionalDocId = this.state.form.inputData.additionalDoc.id;
-    // }
+    if (this.state.form.inputData.additionalDoc.id) {
+      org.additionalDocId = this.state.form.inputData.additionalDoc.id;
+    }
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }
@@ -305,8 +296,6 @@ CompanyProfileRegistration.propTypes = {
   modal: PropTypes.object,
   profile: PropTypes.object,
   showNotification: PropTypes.func,
-  toggleModal: PropTypes.func,
-  modalsMeta: PropTypes.object,
   updateOrgData: PropTypes.func
 };
 
@@ -314,16 +303,13 @@ const mapStateToProps = state => {
   return {
     companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
     companyState: state.company && state.company.companyState,
-    profile: state.user && state.user.profile,
-    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
-
+    profile: state.user && state.user.profile
   };
 };
 
 const mapDispatchToProps = {
   dispatchCompanyState,
-  showNotification,
-  toggleModal
+  showNotification
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyProfileRegistration);

@@ -4,59 +4,27 @@
 
 }
 
-.c-notification {
-  &.variant1{
-    position: fixed;
-    top: 70px;
-    right: 15px;
-    max-width: 650px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
-    &.show {
-      z-index: 1051;
-    }
-  
-    &.custom-toast-success {
-      background: #E8F5E5;
-    }
-  
-    &.custom-toast-error {
-      background: #FAD2D3;
-    }
-  
-    .toast-body {
-      font-family: MyriadPro-Regular, sans-serif;
-      font-size: 14px;
-    }
-  }
-  
-  &.variant2{
-    &.alert-style{
-      padding: 20px;
-      background-color: $alert-background-color;
-      color: black;
-      height: 50px;
-      border-radius: 5px;
-      font-size: 24px;
-      
-      .timer-bar {
-          height: 3px;
-          width: 100%;
-          transition: width 10s;
-          background-color: blue;
-      }
+.custom-toast {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  max-width: 650px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
+
+  &.show {
+    z-index: 1051;
   }
 
-  .closebtn-style{
-      margin-left: 15px;
-      font-weight: bold;
-      float: right;
-      line-height: 20px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-size: 35px;
-      color: $close-button-color;
-    }
+  &.custom-toast-success {
+    background: #E8F5E5;
   }
 
-  
+  &.custom-toast-error {
+    background: #FAD2D3;
+  }
+
+  .toast-body {
+    font-family: MyriadPro-Regular, sans-serif;
+    font-size: 14px;
+  }
 }

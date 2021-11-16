@@ -121,9 +121,11 @@ class Webform extends React.Component {
     this.setState(state => {
       state = {...state};
       if (index > -1) {
+        state.form.inputData.urlItems.itemList[index][key].value = targetVal;
         state.form.inputData.urlItems.itemList[index][key].error = error;
         state.form.inputData.urlItems.disableAddItem = true;
       } else {
+        state.form.inputData[key].value = targetVal;
         state.form.inputData[key].error = error;
       }
       return {
@@ -144,6 +146,9 @@ class Webform extends React.Component {
       if (!item.sellerName.value) {
         hasError = true;
         item.sellerName.error = (item.sellerName.validators && item.sellerName.validators.validateRequired && item.sellerName.validators.validateRequired.error) || item.invalidError || "Please Enter Valid Input";
+      }
+      if (item.url.error || item.sellerName.error) {
+        hasError = true;
       }
     });
     this.setState({form});
