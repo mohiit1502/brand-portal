@@ -20,7 +20,7 @@ export default class DocumentActions {
         allowedFileSize = allowedFileSize * 1024 * 1024;
         if (fileSize > allowedFileSize) {
           this.setState(state => {
-            state.form.inputData[key].error = `Exceeded allowed upload size of ${form.inputData[key].allowedFileSize}MB!`;
+            state.form.inputData[key].error = state.form.inputData[key].fileValidationError;
             return state;
           })
           return;
