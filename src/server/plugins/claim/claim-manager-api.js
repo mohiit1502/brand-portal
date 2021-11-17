@@ -68,15 +68,6 @@ class ClaimManagerApi {
     ]);
   }
 
-  // getHeaders(request) {
-  //   return {
-  //     ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-  //     ROPRO_USER_ID:	request.state.session_token_login_id,
-  //     ROPRO_CLIENT_ID:	"abcd",
-  //     ROPRO_CORRELATION_ID: "sdfsdf"
-  //   };
-  // }
-
   getIQSHeaders() {
     return {
       "WM_SVC.VERSION": "0.0.1",
@@ -348,19 +339,6 @@ class ClaimManagerApi {
     }
   }
 
-  getHeaders(request) {
-    return {
-      "transfer-encoding": "chunked",
-      "Accept-Encoding": "gzip, deflate, br",
-      Accept: "*/*",
-      ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-      ROPRO_USER_ID:	request.state.session_token_login_id,
-      ROPRO_CLIENT_ID:	"abcd",
-      ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
-      ROPRO_CORRELATION_ID: ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
-    };
-  }
-
   async uploadWebFormDocument (request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
@@ -369,7 +347,7 @@ class ClaimManagerApi {
     console.log("[ClaimManagerApi::uploadWebFormDocument] API request for Upload Business document has started");
     console.log("[ClaimManagerApi::uploadWebFormDocument] User ID: ", request.state && request.state.session_token_login_id);
     try {
-      const headers = this.getHeaders(request);
+      const headers = ServerUtils.getDocumentHeaders(request);
       const options = {
         headers
       };

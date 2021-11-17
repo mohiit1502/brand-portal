@@ -65,7 +65,7 @@ class Notification extends React.Component {
       </div>
     </div>
   </div>
-  
+
   }
 
   getVariant2(statusClass, notificationImage, closeIcon){
@@ -79,7 +79,7 @@ class Notification extends React.Component {
 
   getNotification(statusClass, notificationImage, closeIcon) {
     const variant = this.props.notification.variant;
-    switch(variant) { 
+    switch(variant) {
       case "variant1":
         return this.getVariant1(statusClass, notificationImage, closeIcon);
       case "variant2":
@@ -94,7 +94,6 @@ class Notification extends React.Component {
     const notificationImage = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.SUCCESSIMAGE] : images[CONSTANTS.NOTIFICATIONPOPUP.FAILUREIMAGE];
     const closeIcon = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONSUCCESS] : images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONFAILURE];
     return this.getNotification(statusClass, notificationImage, closeIcon);
-    
   }
 
 }

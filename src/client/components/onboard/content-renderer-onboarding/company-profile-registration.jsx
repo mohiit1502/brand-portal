@@ -34,8 +34,6 @@ class CompanyProfileRegistration extends React.Component {
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {zip: false};
     const companyConfiguration = this.props.companyContent ? this.props.companyContent : {};
-    // this.getShowValue = this.getShowValue.bind;
-    
     this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
       redirectToBrands: false,
       section: {...companyConfiguration.sectionConfig},
@@ -45,14 +43,9 @@ class CompanyProfileRegistration extends React.Component {
         inputData: {...companyConfiguration.fields},
         formPopulated: false
       }
-
     };
 
     this.enableSellerOnboarding();
-  }
-
-  getShowValue(flag){
-    return flag;
   }
 
   componentDidMount() {
@@ -65,15 +58,12 @@ class CompanyProfileRegistration extends React.Component {
       this.prepopulateInputFields(this.props.profile);
     }
 
-   
     if (this.state.clientType === "supplier") {
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
     }else {
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.SELLER_WELCOME_PROMPT});
     }
   }
-    
-    
 
   componentDidUpdate(prevProps) {
     if (this.props.profile && this.props.profile !== prevProps.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
@@ -257,7 +247,6 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    console.log(this.state.form.inputData);
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -268,9 +257,6 @@ class CompanyProfileRegistration extends React.Component {
       businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
       businessRegistrationDocName: this.state.form.inputData.businessRegistrationDoc.name
     };
-    // if (this.state.form.inputData.additionalDoc.id) {
-    //   org.additionalDocId = this.state.form.inputData.additionalDoc.id;
-    // }
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }
@@ -325,7 +311,6 @@ const mapStateToProps = state => {
     companyState: state.company && state.company.companyState,
     profile: state.user && state.user.profile,
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
-
   };
 };
 

@@ -69,10 +69,11 @@ const UrlItemList = props => {
       <div className="col-8">
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
           required={item.url.required}
-          value={item.url.value} type={item.url.type}
+          value={item.url.value} type={item.url.type} bubbleValue = {props.bubbleValue}
           pattern={item.url.pattern}  patternErrorMessage={item.url.patternErrorMessage}
           onChange={props.parentRef[props.onChangeUrl]} validators={item.url.validators}
-          disabled={item.url.disabled} error={item.url.error} onInvalid={() => {}} preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
+          disabled={item.url.disabled} error={item.url.error} onInvalid={e => props.onInvalid(e, `urlItems.itemList[${i}].url`, `url-${i}`) || (() => {})}
+          preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
           loader={props.fieldLoader && itemUrlId === i}/>
       </div>
       <div className="col-4">

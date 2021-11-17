@@ -144,6 +144,38 @@ export default class ContentRenderer {
     );
   }
 
+  //////// ====================== Changes for form field renders (only) ========================= /////
+  static getFieldRenders() {
+    try {
+      const form = {...this.state.form};
+      form.inputData = {...form.inputData};
+      const section = {...this.state.section};
+      this.conditionalFields = ["header", "label", "placeholder", "required", "validators", "value"];
+      Object.keys(form.inputData).forEach(key => form.inputData[key] = ContentRenderer.hookConditionInterceptor.call(this, form.inputData[key]))
+      if (form.conditionalRenders) {
+        const conditionalRenders = [];
+        Object.keys(form.conditionalRenders).map(fragmentKey => {
+          const fragmentFields = form.conditionalRenders[fragmentKey].complyingFields;
+          const fragmentCondition = form.conditionalRenders[fragmentKey].condition;
+          const path = `${fragmentCondition.locator}.${fragmentCondition.flag}`;
+          const flagValue = Helper.search(path, this.state);
+          if (flagValue === fragmentCondition.value) {
+            const inputData = {...form.inputData};
+            Object.keys(form.inputData).forEach(key => !fragmentFields.includes(key) && delete inputData[key]);
+            conditionalRenders.push(ContentRenderer.layoutFields.call(this, inputData, form.id || section.id));
+          }
+        });
+        return conditionalRenders;
+      } else {
+        return ContentRenderer.layoutFields.call(this, form.inputData, form.id || section.id);
+      }
+      /* eslint-disable no-empty */
+    } catch (e) {
+      console.log(e)
+    }
+    return null;
+  }
+
   static layoutFields (inputData, idIncoming) {
     let laidoutFields = [];
     inputData && Object.keys(inputData).forEach(id => {
@@ -218,48 +250,71 @@ export default class ContentRenderer {
       bubbleValue={this.bubbleValue} parentRef={this} {...rest} />);
   }
 
-  static getFieldRenders() {
-    try {
-      const form = {...this.state.form};
-      const section = {...this.state.section};
-      if (form.conditionalRenders) {
-        const conditionalRenders = [];
-        Object.keys(form.conditionalRenders).map(fragmentKey => {
-          const fragmentFields = form.conditionalRenders[fragmentKey].complyingFields;
-          const fragmentCondition = form.conditionalRenders[fragmentKey].condition;
-          const path = `${fragmentCondition.locator}.${fragmentCondition.flag}`;
-          const flagValue = Helper.search(path, this.state);
-          if (flagValue === fragmentCondition.value) {
-            const inputData = {...form.inputData};
-            Object.keys(form.inputData).forEach(key => !fragmentFields.includes(key) && delete inputData[key]);
-            conditionalRenders.push(ContentRenderer.layoutFields.call(this, inputData, form.id || section.id));
-          }
-        });
-        return conditionalRenders;
-      } else {
-        return ContentRenderer.layoutFields.call(this, form.inputData, form.id || section.id);
+  static hookConditionInterceptor (field, conditionalFields) {
+    field = {...field};
+    const iterationSet = conditionalFields ? conditionalFields : Object.keys(field);
+    iterationSet.forEach(key => {
+      const conditionObj = field[key];
+      if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
+        if ("condition" in conditionObj) {
+          const dependencyObj = conditionObj.condition.find(obj => {
+            return obj.subCondition
+              ? obj.subCondition.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(this, objPart, "dependencyValue"), true)
+              : ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue")
+          });
+          field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
+        } else if (key === "validators") {
+          field.validators = JSON.parse(JSON.stringify(field.validators));
+          Object.keys(field.validators).forEach(validator => {
+            const validationObj = field.validators[validator];
+            if ("evaluator" in validationObj) {
+              const conditionObj = validationObj.evaluator;
+              const dependencyObj = conditionObj.condition.find(obj => {
+                return typeof obj === "object" && obj.length
+                  ? obj.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(this, objPart, "dependencyValue"), true)
+                  : ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue")
+              });
+              if (dependencyObj && dependencyObj.setFields && typeof dependencyObj.setFields === "object" && dependencyObj.setFields.length) {
+                dependencyObj.setFields.forEach(fieldConfig => validationObj[fieldConfig.field] = fieldConfig.value)
+              }
+            }
+          })
+        }
       }
-    /* eslint-disable no-empty */
-    } catch (e) {}
-    return null;
+    });
+    return field;
+  }
+
+  static evaluateRenderDependencySubPart (condition, matchValueFieldName) {
+    const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
+    let currentValue = Helper.search(condition.keyPath, keyLocator);
+    currentValue = currentValue && typeof currentValue === "string" ? currentValue.toLowerCase() : currentValue;
+    const matchValue = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition[matchValueFieldName];
+    return typeof matchValue === "object" ? matchValue.indexOf(currentValue) > -1 : condition.hasValue ? !!currentValue : currentValue === matchValue;
+  }
+
+  static evaluateRenderDependencyPart (renderCondition) {
+    let shouldRender;
+    renderCondition = JSON.parse(renderCondition);
+    if (renderCondition.length) {
+      shouldRender = renderCondition.reduce((acc, condition) => {
+        const evaluation = ContentRenderer.evaluateRenderDependencySubPart.call(this, condition, "value");
+        return acc && evaluation;
+      }, true);
+    } else {
+      shouldRender = ContentRenderer.evaluateRenderDependencySubPart.call(this, renderCondition, "value");
+    }
+    return shouldRender;
   }
 
   static evaluateRenderDependency (renderCondition) {
     let shouldRender = true;
     if (renderCondition) {
-      renderCondition = JSON.parse(renderCondition);
-      if (renderCondition.length) {
-        shouldRender = renderCondition.reduce((acc, condition) => {
-          const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
-          const key = Helper.search(condition.keyPath, keyLocator);
-          const value = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition.value;
-          return acc && key === value;
-        }, true);
+      if (renderCondition.indexOf("||") > -1) {
+        const renderConditionArray = renderCondition.split("||");
+        shouldRender = renderConditionArray.some(renderCondition => ContentRenderer.evaluateRenderDependencyPart.call(this, renderCondition))
       } else {
-        const keyLocator = ContentRenderer.getValueLocator.call(this, renderCondition.keyLocator);
-        const key = Helper.search(renderCondition.keyPath, keyLocator);
-        const value = renderCondition.valueLocator ? Helper.search(renderCondition.valuePath, ContentRenderer.getValueLocator.call(this, renderCondition.valueLocator)) : renderCondition.value;
-        shouldRender = key === value;
+        shouldRender = ContentRenderer.evaluateRenderDependencyPart.call(this, renderCondition);
       }
     }
     return shouldRender;

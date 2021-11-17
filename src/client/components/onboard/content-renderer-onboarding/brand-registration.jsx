@@ -66,9 +66,6 @@ class BrandRegistration extends React.Component {
       this.props.updateOrgData(brand, "brand");
       this.props.history.push("/onboard/review");
   }
-  
-  
-
 
   checkToEnableSubmit () {
     const form = {...this.state.form};

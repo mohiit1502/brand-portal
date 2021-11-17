@@ -1,9 +1,5 @@
 @import "../../override/variables";
 
-.toast {
-
-}
-
 .c-notification {
   &.variant1{
     position: fixed;
@@ -14,21 +10,17 @@
     &.show {
       z-index: 1051;
     }
-  
     &.custom-toast-success {
       background: #E8F5E5;
     }
-  
     &.custom-toast-error {
       background: #FAD2D3;
     }
-  
     .toast-body {
       font-family: MyriadPro-Regular, sans-serif;
       font-size: 14px;
     }
   }
-  
   &.variant2{
     &.alert-style{
       padding: 20px;
@@ -37,7 +29,6 @@
       height: 50px;
       border-radius: 5px;
       font-size: 24px;
-      
       .timer-bar {
           height: 3px;
           width: 100%;
@@ -57,6 +48,4 @@
       color: $close-button-color;
     }
   }
-
-  
 }

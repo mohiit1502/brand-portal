@@ -130,7 +130,7 @@ const FORMFIELDCONFIG = {
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
-        },    
+        },
         "companyOnboardingActions": {
           "containerClasses": "mt-3",
           "colClasses": "company-onboarding-button-panel text-right",
@@ -290,6 +290,7 @@ const FORMFIELDCONFIG = {
           "key": "userType",
           "label": "",
           "layout": "1.1.0",
+          "onChange": "setSelectInputValue",
           "required": true,
           "value": "Internal",
           "type": "radio",
@@ -648,7 +649,7 @@ const FORMFIELDCONFIG = {
                 "required": true,
                 "value": "",
                 "type": "url",
-                "pattern": "https?://.+",
+                "pattern": "https?://www.walmart.com/.+",
                 "disabled": false,
                 "isValid": false,
                 "subtitle": "",
@@ -1320,7 +1321,12 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "text",
           "value": "",
-          "initValuePath": "companyName"
+          "initValuePath": "companyName",
+          "validators": {
+            "validateRequired": {
+              "error": "Company Name is required"
+            }
+          }
         },
         "brandName": {
           "disabled": false,
@@ -1335,7 +1341,12 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Brand Name is required"
+            }
+          }
         },
         "claimIdentifierNumber": {
           "disabled": false,
@@ -1345,15 +1356,56 @@ const FORMFIELDCONFIG = {
           "label": "Claim Type Identifier Number",
           "layout": "16.2.6",
           "preventHTMLRequiredValidation": true,
-          "required": false,
-          "renderCondition": "{\"keyPath\": \"form.showClaimIdentifierNumber\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": {"default": false, "condition": [{"subCondition": [{"keyPath": "form.inputData.userType.value", "keyLocator": "state", "dependencyValue": ["third party","rights owner"]}, {"keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": ["patent", "trademark"]}], "value": true}]},
+          "renderCondition": "[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
           "subtitle": "",
           "type": "text",
           "value": "",
           "validators": {
-            "validateCounterfeitNumber": {
-              "length": "",
-              "error": ""
+            "validateLength":{
+              "evaluator": {
+                "default": 30, "condition": [
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
+                    "setFields": [{"field": "maxLength","value": 13}, {"field": "error", "value": "Please enter valid order number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "trademark",
+                    "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Trademark Number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "patent",
+                    "setFields": [{"field": "maxLength","value": 30}, {"field": "error", "value": "Please enter valid Patent Number"}]
+                  }
+                ]
+              }
+            },
+            "validateRegex": {
+              "evaluator": {
+                "default": "", "condition": [
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "trademark",
+                    "setFields": [{
+                      "field": "dataRuleRegex",
+                      "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$"
+                    }, {"field": "error", "value": "Please enter a valid Trademark Number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "patent",
+                    "setFields": [{
+                      "field": "dataRuleRegex",
+                      "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,\/]+$"
+                    }, {"field": "error", "value": "Please enter a valid Patent Number"}]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
+                    "setFields": [{
+                      "field": "dataRuleRegex",
+                      "value": "^[0-9]{1,13}$"
+                    }, {"field": "error", "value": "Please enter a valid Patent Number"}]
+                  }
+                ]
+              }
             }
           }
         },
@@ -1543,7 +1595,7 @@ const FORMFIELDCONFIG = {
           "containerClasses": "font-weight-bold",
           "header": "Claim Information",
           "layout": "17.1.0",
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.claimType\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "type": "_formFieldsHeader"
         },
         "urlItems": {
@@ -1566,11 +1618,12 @@ const FORMFIELDCONFIG = {
             {
               "id": "item-0",
               "url": {
+                "invalidError": "Please adhere to URL format",
                 "label": "Item URL",
                 "required": true,
                 "value": "",
                 "type": "url",
-                "pattern": "https?://.+",
+                "pattern": "https?://www.walmart.com/.*",
                 "patternErrorMessage": "Please adhere to URL format",
                 "preventHTMLRequiredValidation": true,
                 "disabled": false,
@@ -1607,6 +1660,8 @@ const FORMFIELDCONFIG = {
           ]
         },
         "webformDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileSize": 7,
           "buttonText": "Upload",
           "cancelHandlerArg": "webformDoc",
           "changeHandlerArg": "webformDoc",
@@ -1635,12 +1690,14 @@ const FORMFIELDCONFIG = {
           "key": "comments",
           "layout": "20.1.0",
           "label": "Comments",
+          "maxLength": 3000,
           "pattern": null,
           "required": true,
           "onChange": "onChange",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "rowCount": 2,
-          "placeholder": "Please provide additional information about the claim",
+          "placeholder": {"default": "Please provide additional information about the claim",
+            "condition": [{"keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit", "value": "If possible, please provide evidence that the reported listing is selling a counterfeit product, such as the order number and/or description of the counterfeit item received."}]},
           "prebounceChangeHandler": "trimSpaces",
           "preventHTMLRequiredValidation": true,
           "subtitle": "",
@@ -1652,6 +1709,7 @@ const FORMFIELDCONFIG = {
             },
             "validateLength": {
               "minLength": 20,
+              "maxLength": 3000,
               "error": "Comment should be 20 characters long!"
             }
           }
@@ -1714,7 +1772,7 @@ const FORMFIELDCONFIG = {
           "onChange": "undertakingtoggle",
           "preventHTMLRequiredValidation": true,
           "required": true,
-          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"Copyright\"}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"copyright\"}",
           "selected": false,
           "type": "_checkBox",
           "validators": {
@@ -1779,27 +1837,6 @@ const FORMFIELDCONFIG = {
           "layout": "28.1.8",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "type": "_formFieldsHeader"
-        },
-        "captchaValidator": {
-          "captchaFieldName": "Please enter captcha ",
-          "captchaConfig": {
-            "enableCaptcha": true,
-            "sitekey": "6LdfLwsbAAAAABESWTlTiqJxIfiGoYlfnWfjS5Ea",
-            "serverkey": "6LdfLwsbAAAAAIIMTb41C5BU7Ndu54u27UueWhV6"
-          },
-          "isHuman": false,
-          "containerClasses": "mb-4",
-          "error": "",
-          "errorMessage": "Captcha Validation is required",
-          "inputId": "captchaValidator",
-          "key": "captchaValidator",
-          "onSubmit": "handleCaptcha",
-          "required": true,
-          "layout": "27.2.0",
-          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-          "submitButtonLabel": "Submit Captcha",
-          "type": "_captchaValidator",
-          "value": false
         },
         "webformActions": {
           "containerClasses": "pb-5 mb-5",

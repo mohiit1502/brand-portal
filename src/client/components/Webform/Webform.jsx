@@ -19,7 +19,7 @@ import DocumentActions from "../../utility/docOps";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkClaimTypeField", "checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -32,8 +32,6 @@ class Webform extends React.Component {
     this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
     this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.onInvalid = Validator.onInvalid.bind(this);
-    this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
-    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.invalid = {emailId: false, phone: false};
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.validateState = Validator.validateState.bind(this);
@@ -147,6 +145,9 @@ class Webform extends React.Component {
         hasError = true;
         item.sellerName.error = (item.sellerName.validators && item.sellerName.validators.validateRequired && item.sellerName.validators.validateRequired.error) || item.invalidError || "Please Enter Valid Input";
       }
+      if (item.url.error || item.sellerName.error) {
+        hasError = true;
+      }
     });
     this.setState({form});
     return hasError;
@@ -168,7 +169,7 @@ class Webform extends React.Component {
         state = {...state};
         if (index > -1) {
           if (key.split("-")[0] === "url") {
-            state.form.inputData.urlItems.itemList[index][key].error = "";
+            state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;
             state.form.inputData.urlItems.itemList[index].sellerName.disabled = false;
             state.form.inputData.urlItems.itemList[index][key].value = targetVal;
             state.form.inputData.urlItems.disableAddItem = true;
@@ -192,24 +193,6 @@ class Webform extends React.Component {
     const form = this.state.form;
     form.userTypeSelected = true;
     form.inputData.userType.value = value;
-    this.setState({form}, this.checkClaimTypeField);
-  }
-
-  checkClaimTypeField() {
-    const form = this.state.form;
-    if (!form.inputData.claimType.value) {
-      form.claimTypeSelected = false;
-      form.showClaimIdentifierNumber = false;
-    } else if (form.inputData.claimType.value.toLowerCase() === "copyright") {
-      form.showClaimIdentifierNumber = false;
-      form.claimTypeSelected = true;
-    } else if (form.inputData.claimType.value.toLowerCase() === "counterfeit") {
-      form.showClaimIdentifierNumber = true;
-      form.claimTypeSelected = true;
-    } else {
-      form.showClaimIdentifierNumber = form.inputData.userType.value.toLowerCase() !== "customer";
-      form.claimTypeSelected = true;
-    }
     this.setState({form});
   }
 
@@ -230,18 +213,7 @@ class Webform extends React.Component {
       form.inputData.user_undertaking_1.label = form.inputData.user_undertaking_1.originalLabel.replace("__owner_label__", matchedClaimTypeWithMeta.underTakingOwnerLabel);
       if (matchedClaimTypeWithMeta.claimType !== "copyright") {
         form.inputData.user_undertaking_3.required = false;
-        if (matchedClaimTypeWithMeta.claimType === "counterfeit") {
-          form.showClaimIdentifierNumber = true;
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = form.counterfeitValidatorLength;
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = form.counterfeitValidatorError;
-
-        } else {
-          form.showClaimIdentifierNumber = form.inputData.userType.value !== "Customer";
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.length = "";
-          form.inputData.claimIdentifierNumber.validators.validateCounterfeitNumber.error = "";
-        }
       } else {
-        form.showClaimIdentifierNumber = false;
         form.inputData.user_undertaking_3.required = true;
       }
       this.setState({form});
@@ -255,6 +227,7 @@ class Webform extends React.Component {
       }
       this.setState(state => {
         state = {...state};
+        state.form.inputData[key].error = "";
         state.form.inputData[key].value = value;
         return {
           ...state
@@ -266,20 +239,6 @@ class Webform extends React.Component {
   // eslint-disable-next-line complexity
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    // const userUndertaking = form.inputData.user_undertaking_1.selected && form.inputData.user_undertaking_2.selected && (form.inputData.claimType.value !== "Copyright" || form.inputData.user_undertaking_3.selected) && form.inputData.user_undertaking_4.selected && form.inputData.user_undertaking_5.selected;
-    // const isValidItemList = form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true);
-    // const isHuman = (!form.inputData.captchaValidator) || (form.inputData.captchaValidator.value);
-//     const bool = isValidItemList && userUndertaking && isHuman && form.inputData.claimType.value &&
-//       form.inputData.firstName.value && form.inputData.lastName.value &&
-//       form.inputData.ownerName.value && form.inputData.companyName.value &&
-//       form.inputData.brandName.value &&
-//       form.inputData.address_1.value && form.inputData.address_2.value &&
-//       form.inputData.city.value && form.inputData.country.value &&
-//       form.inputData.state.value && form.inputData.zip.value && !form.inputData.zip.error &&
-//       form.inputData.phone.value && !form.inputData.phone.error && form.inputData.emailId.value && !form.inputData.emailId.error &&
-//       form.inputData.comments.value && !form.inputData.comments.error &&
-//       form.inputData.digitalSignature.value;
-
     form.isSubmitDisabled = form.inputData.webformDoc.uploading;
     form.inputData.webformActions.buttons.submit.disabled = form.inputData.webformDoc.uploading;
     this.setState({form}, callback && callback());
@@ -328,95 +287,100 @@ class Webform extends React.Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    if (!this.validateState()) {
-      this.disableSubmitButton();
-      this.setState({
-        formError: "",
-        loader: true
-      });
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM_CLICKED, {WORK_FLOW: "WEB_FORM"});
-
-      const inputData = this.state.form.inputData;
-      const claimType = inputData.claimType.value;
-      const userType = inputData.userType.value;
-      const claimIdentifierNumber = inputData.claimIdentifierNumber.value;
-      const attachmentDocId = inputData.webformDoc.id;
-      const reporterInfo = {
-        firstName: inputData.firstName.value,
-        lastName: inputData.lastName.value,
-        phoneNumber: inputData.phone.value,
-        email: inputData.emailId.value,
-        legalAddress: {
-          address1: inputData.address_1.value,
-          address2: inputData.address_2.value,
-          city: inputData.city.value,
-          country: inputData.country.value,
-          state: inputData.state.value,
-          zip: inputData.zip.value
-        }
-      };
-      const brandInfo = {
-        brandName: inputData.brandName.value,
-        ownerName: inputData.ownerName.value,
-        companyName: inputData.companyName.value
-      };
-      const comments = inputData.comments.value;
-      const digitalSignatureBy = inputData.digitalSignature.value;
-
-      const getItems = items => {
-        const itemList = [];
-        items.forEach(item => {
-          const itemUrl = item.url.value.trim();
-          const sellerNames = item.sellerName.value.trim();
-          itemList.push({itemUrl, sellerName: sellerNames});
+    this.setState(state => {
+      state.form.inputData.webformDoc.error = "";
+      return state;
+    }, () => {
+      if (!this.validateState()) {
+        this.disableSubmitButton();
+        this.setState({
+          formError: "",
+          loader: true
         });
-        return itemList;
-      };
-      const payload = {
-        claimType,
-        claimIdentifierNumber,
-        userType,
-        reporterInfo,
-        brandInfo,
-        comments,
-        attachmentDocId,
-        digitalSignatureBy,
-        items: getItems(inputData.urlItems.itemList)
-      };
-      const mixpanelPayload = {
-        API: "/api/claims/webform",
-        BRAND_INFO: brandInfo,
-        WORK_FLOW: "WEB_FORM",
-        $email: reporterInfo.email,
-        $user_id: reporterInfo.email,
-        $name: `${reporterInfo.firstName} ${reporterInfo.lastName}`,
-        ITEMS: getItems(inputData.urlItems.itemList),
-        CLAIM_TYPE: claimType,
-        BRAND_NAME: brandInfo.brandName,
-        COMPANY_NAME: brandInfo.companyName,
-        OWNER_NAME: brandInfo.companyName
-      };
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM_CLICKED, {WORK_FLOW: "WEB_FORM"});
 
-      this.loader("loader", true);
-      Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
-        .then(() => {
-          this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA);
-          mixpanelPayload.API_SUCCESS = true;
-          this.loader("loader", false);
-          this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.WEBFORM.SUBMITTED_CLAIM_DEATILS, payload);
-        })
-        .catch(err => {
-          this.loader("loader", false);
-          mixpanelPayload.API_SUCCESS = false;
-          mixpanelPayload.ERROR = err.message ? err.message : err;
-        }).finally(() => {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM, mixpanelPayload);
-      });
-    } else {
-      this.setState({
-        formError: this.state.form.formError
-      });
-    }
+        const inputData = this.state.form.inputData;
+        const claimType = inputData.claimType.value;
+        const userType = inputData.userType.value;
+        const claimIdentifierNumber = inputData.claimIdentifierNumber.value;
+        const attachmentDocId = inputData.webformDoc.id;
+        const reporterInfo = {
+          firstName: inputData.firstName.value,
+          lastName: inputData.lastName.value,
+          phoneNumber: inputData.phone.value,
+          email: inputData.emailId.value,
+          legalAddress: {
+            address1: inputData.address_1.value,
+            address2: inputData.address_2.value,
+            city: inputData.city.value,
+            country: inputData.country.value,
+            state: inputData.state.value,
+            zip: inputData.zip.value
+          }
+        };
+        const brandInfo = {
+          brandName: inputData.brandName.value,
+          ownerName: inputData.ownerName.value,
+          companyName: inputData.companyName.value
+        };
+        const comments = inputData.comments.value;
+        const digitalSignatureBy = inputData.digitalSignature.value;
+
+        const getItems = items => {
+          const itemList = [];
+          items.forEach(item => {
+            const itemUrl = item.url.value.trim();
+            const sellerNames = item.sellerName.value.trim();
+            itemList.push({itemUrl, sellerName: sellerNames});
+          });
+          return itemList;
+        };
+        const payload = {
+          claimType,
+          claimIdentifierNumber,
+          userType,
+          reporterInfo,
+          brandInfo,
+          comments,
+          attachmentDocId,
+          digitalSignatureBy,
+          items: getItems(inputData.urlItems.itemList)
+        };
+        const mixpanelPayload = {
+          API: "/api/claims/webform",
+          BRAND_INFO: brandInfo,
+          WORK_FLOW: "WEB_FORM",
+          $email: reporterInfo.email,
+          $user_id: reporterInfo.email,
+          $name: `${reporterInfo.firstName} ${reporterInfo.lastName}`,
+          ITEMS: getItems(inputData.urlItems.itemList),
+          CLAIM_TYPE: claimType,
+          BRAND_NAME: brandInfo.brandName,
+          COMPANY_NAME: brandInfo.companyName,
+          OWNER_NAME: brandInfo.companyName
+        };
+
+        this.loader("loader", true);
+        Http.post("/api/claims/webform", payload, null, null, this.props.showNotification, "Claim submitted successfully", "Something went wrong, please try again..!")
+          .then(() => {
+            this.props.dispatchWebformState(CONSTANTS.WEBFORM.CTA);
+            mixpanelPayload.API_SUCCESS = true;
+            this.loader("loader", false);
+            this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.WEBFORM.SUBMITTED_CLAIM_DEATILS, payload);
+          })
+          .catch(err => {
+            this.loader("loader", false);
+            mixpanelPayload.API_SUCCESS = false;
+            mixpanelPayload.ERROR = err.message ? err.message : err;
+          }).finally(() => {
+          mixpanel.trackEvent(MIXPANEL_CONSTANTS.WEBFORM.SUBMIT_WEBFORM, mixpanelPayload);
+        });
+      } else {
+        this.setState({
+          formError: this.state.form.formError
+        });
+      }
+    });
   }
 
   disableSubmitButton() {
