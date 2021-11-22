@@ -16,6 +16,7 @@ const FORMFIELDCONFIG = {
         "isClearDisabled": false,
         "formActions": "companyOnboardingActions",
         "requestAdministratorAccess": false,
+        "removeIntlSellerFields": ["patternPath", "invalidErrorPath", "invalidError", "pattern"],
         "internationalSellerExceptions": [
           "ss1@mailinator.com"
         ]
@@ -89,7 +90,7 @@ const FORMFIELDCONFIG = {
           "label": "ZIP",
           "layout": "4.1.6",
           "maxLength": 10,
-          "patternPath": "CONSTANTS.REGEX.ZIP",
+          "pattern": "^\\d{5}(?:[-\s]\\d{4})?$",
           "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "required": true,
           "subtitle": "",
@@ -290,7 +291,6 @@ const FORMFIELDCONFIG = {
           "key": "userType",
           "label": "",
           "layout": "1.1.0",
-          "onChange": "setSelectInputValue",
           "required": true,
           "value": "Internal",
           "type": "radio",
@@ -352,7 +352,7 @@ const FORMFIELDCONFIG = {
           "label": "Company Name",
           "layout": "4.1.6",
           "pattern": null,
-          "renderCondition": "{\"keyPath\": \"state.form.inputData.userType.value\", \"keyLocator\": \"parentRef\", \"valuePath\": \"USER.USER_TYPE.THIRD_PARTY\", \"valueLocator\": \"CONSTANTS\"}",
+          "renderCondition": "{\"keyPath\": \"state.form.inputData.userType.value\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
           "required": true,
           "type": "text",
           "value": ""
@@ -583,7 +583,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "Select the type of infringement you are reporting",
           "layout": "3.1.0",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "type": "_formFieldsHeader"
         },
         "claimType": {
@@ -596,7 +596,7 @@ const FORMFIELDCONFIG = {
           "key": "claimType",
           "layout": "4.1.4",
           "onChange": "setSelectInputValue",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "pattern": null,
           "subtitle": "",
@@ -609,7 +609,7 @@ const FORMFIELDCONFIG = {
           "key": "claimTypeIdentifier",
           "layout": "4.2.4",
           "inputId": "claimTypeIdentifier",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "value": "",
           "type": "text",
@@ -624,7 +624,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "Please fill out the following details to submit your claim",
           "layout": "5.1.0",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "type": "_formFieldsHeader"
         },
         "urlItems": {
@@ -634,13 +634,13 @@ const FORMFIELDCONFIG = {
           "inputId": "items",
           "isSellerNameDisabled": true,
           "key": "items",
-          "layout": "17.1.0",
+          "layout": "6.1.0",
           "type": "_urlItems",
           "onChangeSellerName": "setSelectInputValue",
           "onChangeItem": "getItemListFromChild",
           "onChangeUrl": "onChange",
           "prebounceChangeHandler": "disableSubmitButton",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "itemList": [
             {
               "id": "item-0",
@@ -692,7 +692,7 @@ const FORMFIELDCONFIG = {
           "value": "",
           "placeholder": "Please provide additional information about the claim",
           "onChange": "onChange",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "validators": {
             "validateRequired": {
               "error": "Please be sure to provide details regarding your claim."
@@ -717,7 +717,7 @@ const FORMFIELDCONFIG = {
           "label": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "selected": false,
           "type": "_checkBox"
@@ -735,7 +735,7 @@ const FORMFIELDCONFIG = {
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "selected": false,
           "type": "_checkBox"
@@ -753,7 +753,7 @@ const FORMFIELDCONFIG = {
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "selected": false,
           "type": "_checkBox"
@@ -771,7 +771,7 @@ const FORMFIELDCONFIG = {
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "selected": false,
           "type": "_checkBox"
@@ -780,7 +780,7 @@ const FORMFIELDCONFIG = {
           "containerClasses": "font-weight-bold mt-2",
           "header": "Typing your full name in this box will act as your digital signature",
           "layout": "12.1.0",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "type": "_formFieldsHeader"
         },
         "signature": {
@@ -793,7 +793,7 @@ const FORMFIELDCONFIG = {
           "value": "",
           "key": "signature",
           "layout": "13.1.8",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "type": "text",
           "pattern": null,
           "subtitle": "",
@@ -817,7 +817,7 @@ const FORMFIELDCONFIG = {
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
               "disabled": true,
-              "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"value\": true}",
+              "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
               "text": "Submit",
               "type": "submit"
             }
@@ -993,6 +993,7 @@ const FORMFIELDCONFIG = {
           "initValuePath": "lastName"
         },
         "companyName": {
+          "colClasses": "mr-1",
           "disabled": true,
           "error": "",
           "id": "companyName",
@@ -1004,7 +1005,7 @@ const FORMFIELDCONFIG = {
           "patternPath": "CONSTANTS.REGEX.COMPANY",
           "patternErrorMessage": "Please provide a valid company name.",
           "preventHTMLRequiredValidation": true,
-          "renderCondition": "{\"keyPath\": \"props.userProfile.type\", \"keyLocator\": \"parentRef\", \"valuePath\": \"USER.USER_TYPE.THIRD_PARTY\", \"valueLocator\": \"CONSTANTS\"}",
+          "renderCondition": "{\"keyPath\": \"props.userProfile.type\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
           "required": true,
           "type": "text",
           "value": "",
@@ -1401,8 +1402,8 @@ const FORMFIELDCONFIG = {
                     "keyPath": "form.inputData.claimType.value", "keyLocator": "state", "dependencyValue": "counterfeit",
                     "setFields": [{
                       "field": "dataRuleRegex",
-                      "value": "^[0-9]{1,13}$"
-                    }, {"field": "error", "value": "Please enter a valid Patent Number"}]
+                      "value": "^[0-9]{13}$"
+                    }, {"field": "error", "value": "Please enter a valid Order Number"}]
                   }
                 ]
               }
@@ -1669,6 +1670,7 @@ const FORMFIELDCONFIG = {
           "error": "",
           "endpoint": "/api/claims/uploadWebFormDocument",
           "filename": "",
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
           "icon": "Question",
           "id": "",
           "inputId": "webformDoc",

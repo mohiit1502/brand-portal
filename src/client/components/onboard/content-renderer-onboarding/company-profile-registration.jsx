@@ -86,9 +86,7 @@ class CompanyProfileRegistration extends React.Component {
       countryField.onChange = "setSelectInputValue";
       countryField.type = "select";
       countryField.value = "";
-      delete zipField.patternPath;
-      delete zipField.invalidErrorPath;
-      delete zipField.invalidError;
+      this.state.form.removeIntlSellerFields && this.state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
       zipField.patternErrorMessage = "This field is required";
       zipField.maxLength = 30;
       this.state.considerCountryForValidation = true;
