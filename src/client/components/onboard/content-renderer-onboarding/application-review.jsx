@@ -1,37 +1,32 @@
 import React from "react";
-import {connect} from "react-redux";
-import {dispatchSteps} from "../../../actions/company/company-actions";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { dispatchSteps } from "../../../actions/company/company-actions";
+import { withRouter } from "react-router";
 import ApplicationDetails from "../../../components/ApplicationDetails";
-
-
-
-class ApplicationReview extends React.Component{
-
-    constructor(props){
+class ApplicationReview extends React.Component {
+    constructor(props) {
         super(props);
-        console.log(props);
         this.title = "Review Information";
         this.subtitle = "Please ensure the information below is accurate.";
-        this.state = {...props};
+        this.state = { ...props };
     }
 
-  gotoBrandRegistration (evt) {
-    evt.preventDefault();
-    const steps = this.props.steps ? [...this.props.steps] : [];
-    if (steps && steps[1]) {
-      steps[2].active = false;
-      steps[2].complete = false;
-      steps[1].active = true;
+    gotoBrandRegistration(evt) {
+        evt.preventDefault();
+        const steps = this.props.steps ? [...this.props.steps] : [];
+        if (steps && steps[1]) {
+            steps[2].active = false;
+            steps[2].complete = false;
+            steps[1].active = true;
+        }
+        this.props.dispatchSteps(steps);
+        this.props.history.push("/onboard/brand");
     }
-    this.props.dispatchSteps(steps);
-    this.props.history.push("/onboard/brand");
-  }
 
-    render(){
+    render() {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
-              <div className="col pl-5 pr-0">
+            <div className="col pl-5 pr-0">
                 <div className="row mt-4 pl-5 mx-3 brand-registration-title font-weight-bold font-size-28">
                     {this.title}
                 </div>
@@ -39,7 +34,7 @@ class ApplicationReview extends React.Component{
                     {this.subtitle}
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}
-                <ApplicationDetails {...this.props}/>
+                <ApplicationDetails {...this.props} />
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
@@ -47,21 +42,21 @@ class ApplicationReview extends React.Component{
                     </div>
                 </div>
 
-              </div>
-          );
+            </div>
+        );
 
     }
 
 }
 
 const mapStateToProps = state => {
-  return {
-    steps: state.company && state.company.steps
-  }
-}
+    return {
+        steps: state.company && state.company.steps
+    };
+};
 
 const mapDispatchToProps = {
-  dispatchSteps
+    dispatchSteps
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ApplicationReview));
