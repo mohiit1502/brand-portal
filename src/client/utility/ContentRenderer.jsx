@@ -65,7 +65,13 @@ export default class ContentRenderer {
     const partialRenders = Object.keys(partial).map(partialNodeKey => {
       const node1 = partial[partialNodeKey];
       if (partialNodeKey.startsWith("chunk")) {
-        return <span className={classes ? classes : ""}>{node1}</span>;
+        if(typeof node1 == "string") {
+          return <span className={classes ? classes : ""}>{node1}</span>;
+        } else {
+          const chunkClass = node1.classes;
+          const chunkText = this.implementDynamicReplacements(node1.dynamicReplacementConfig, node1.text);
+          return <span className={`${classes ? classes : ""}${chunkClass ? " "+chunkClass : ""}`}>{chunkText}</span>;
+        }
       } else if (partialNodeKey.startsWith("anchor")) {
         return <a href={node1.href} className={classes ? classes : ""} >{node1.text}</a>;
       } else {
@@ -76,14 +82,19 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
-  getContent(content, node, classes, isPartial, dynamicReplacements) {
+  implementDynamicReplacements(dynamicReplacements, text) {
+    dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
+      text = text.replaceAll(key, dynamicReplacements[key]);
+    });
+    return text;
+  }
+  getContent(content, node, classes, isPartial) {
     if (node.startsWith("partial")) {
       return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
       let text = typeof (content[node]) === "string" ? content[node] : content[node].text;
-      dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
-        text = text.replaceAll(key, dynamicReplacements[key]);
-      });
+      const dynamicReplacements = content[node] && content[node].dynamicReplacementConfig;
+      text = this.implementDynamicReplacements(dynamicReplacements, text);
       if (typeof (content[node]) === "string") {
         return (<p className={classes ? classes : ""}>{text}</p>);
       } else {

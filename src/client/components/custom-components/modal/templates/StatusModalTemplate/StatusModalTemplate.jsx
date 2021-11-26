@@ -3,11 +3,11 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
-import Cookies from "electrode-cookies";
 
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
+import * as components from "../../../../";
 
 import Http from "../../../../../utility/Http";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
@@ -29,6 +29,8 @@ const StatusModalTemplate = props => {
   const mixpanelPayload = {
     WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[meta && meta.CODE ? meta.CODE : 0] || "CODE_NOT_FOUND"
   };
+  const ContentComponent = meta.CONTENT_COMPONENT && components[meta.CONTENT_COMPONENT];
+  const [companyDetails, setCompanyDetails] = useState();
 
   const resendInvite = () => {
     const email = profile ? profile.email : "";
@@ -61,6 +63,19 @@ const StatusModalTemplate = props => {
     }
   };
 
+  const getPartialObject = node => {
+    if(node) {
+      if(node.length) {
+        const matchedNode = node.find(obj => companyDetails && obj.key && obj.key.indexOf(companyDetails.orgStatus) > -1)
+        getDynamicReplacementConfig(matchedNode);
+        return matchedNode;
+      }else {
+        getDynamicReplacementConfig(node);
+      }
+    }
+    return null;
+  }
+
   const getDynamicReplacementConfig = node => {
     const dynamicReplacementConfig = node.dynamicReplacementConfig;
     dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
@@ -78,7 +93,7 @@ const StatusModalTemplate = props => {
         }
       }
     });
-    return dynamicReplacementConfig;
+    // return dynamicReplacementConfig;
   };
 
   const linkConfirmation = () => {
@@ -117,6 +132,16 @@ const StatusModalTemplate = props => {
       });
   };
 
+
+  const getAction = action => {
+    switch(action) {
+      case "updateCompanyDetails":
+        return setCompanyDetails;
+      default:
+        return null;
+    }
+  }
+
   const runPrimaryAction = (action, actionParam) => {
     switch (action) {
       case "linkConfirmation":
@@ -132,6 +157,10 @@ const StatusModalTemplate = props => {
       case "navigation":
         window.open(actionParam, "_blank");
         // window.location.href = actionParam;
+        break;
+      case "logout":
+        mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
+        window.location.href = logoutUrlSuperlated;
         break;
       default:
         hideModal();
@@ -172,11 +201,21 @@ const StatusModalTemplate = props => {
               </div>
             </div>}
             {meta.TITLE && <div className="row mt-3">
-              <div className="col">
+              <div className={meta.TITLE.classes || "col"}>
                 <span className="status-header font-weight-bold">
-                  {meta.TITLE}
+                {
+                  typeof (meta.TITLE) === "string" ? meta.TITLE :
+                    Object.keys(meta.TITLE.content).map(node => {
+                    return contentRenderer.getContent(meta.TITLE.content, node);
+                  })
+                }
                 </span>
               </div>
+              {meta.HEADER_ACTION.classes && <div className={meta.HEADER_ACTION.classes || "col"}>
+                <span className="status-header font-weight-bold">
+               { Object.keys(meta.HEADER_ACTION.content).map(node => contentRenderer.getContent(meta.HEADER_ACTION.content, node))}
+                </span>
+              </div>}
             </div>}
             { meta.SUBTITLE &&
               <div className="row mt-1">
@@ -198,14 +237,22 @@ const StatusModalTemplate = props => {
                 {
                   typeof (meta.MESSAGE) === "string" ? meta.MESSAGE :
                     Object.keys(meta.MESSAGE.content).map(node => {
-                      const dynamicReplacementConfig = getDynamicReplacementConfig(meta.MESSAGE.content[node]);
-                      return contentRenderer.getContent(meta.MESSAGE.content, node, "", false, dynamicReplacementConfig);
+                      const nodeContent = meta.MESSAGE.content[node];
+                      node.startsWith("partial")
+                        ? Object.keys(nodeContent).forEach(node => {
+                          if(typeof nodeContent[node] === "object") {
+                            const parsedObject = getPartialObject(nodeContent[node]);
+                            nodeContent[node] = parsedObject || nodeContent[node];
+                          }
+                          })
+                        : getDynamicReplacementConfig(nodeContent);
+                      return contentRenderer.getContent(meta.MESSAGE.content, node);
                     })
                 }
                 </div>
               </div>
             </div>
-            <div className={`row${meta.TYPE === "NOTIFICATION" ? "" : " mt-4"} footer${meta.FOOTER_CLASSES ? ` ${  meta.FOOTER_CLASSES}` : ""}`}>
+            {(meta.PRIMARY_ACTION || meta.ADDITIONAL_ACTION) && <div className={`row footer${meta.FOOTER_CLASSES ? ` ${  meta.FOOTER_CLASSES}` : ""}`}>
               <div className={`col${meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION" ? " text-right" : ""}
                         ${meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.containerClasses ? ` ${  meta.PRIMARY_ACTION.containerClasses}` : ""}`}>
                 {meta.TYPE === "NON_STATUS" || meta.TYPE === "CTA" || meta.TYPE === "NOTIFICATION"
@@ -214,16 +261,21 @@ const StatusModalTemplate = props => {
                                 meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.actionParam ? meta.PRIMARY_ACTION.actionParam : "")}>
                     {meta.BUTTON_TEXT || (typeof meta.PRIMARY_ACTION === "object" ? meta.PRIMARY_ACTION.text : meta.PRIMARY_ACTION)}
                   </button>
-                  : <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload)}>
+                  : !meta.NO_PRIMARY_ACTION && <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload)}>
                     {meta.PRIMARY_ACTION || "Logout"}
-                  </a>
+                  </a> 
                 }
-                {meta.ADDITIONAL_ACTION && <button className={`additional-action btn btn-link${meta.TYPE !== "NOTIFICATION" ? " mx-auto d-block mt-2" : " font-size-15"}${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
+                {meta.ADDITIONAL_ACTION && <div className={meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}>
+                {meta.ADDITIONAL_ACTION.actionHelpText && <span className={meta.ADDITIONAL_ACTION.actionHelpText.classes ? meta.ADDITIONAL_ACTION.actionHelpText.classes : ""}>{meta.ADDITIONAL_ACTION.actionHelpText.text}</span>} 
+                <button className={`additional-action btn btn-link${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
                   onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>
                   {typeof meta.ADDITIONAL_ACTION === "object" ? meta.ADDITIONAL_ACTION.text : meta.ADDITIONAL_ACTION}
-                </button>}
+                </button>
+                </div>}
               </div>
-            </div>
+            </div>}
+            {ContentComponent && <ContentComponent user={user && user.profile} handler={getAction(meta.CONTENT_COMPONENT_PROP)} 
+            org={companyDetails && companyDetails.org} brand={companyDetails && companyDetails.brand}/>}
           </div>
         </div>
       </div>

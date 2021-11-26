@@ -1,4 +1,6 @@
 import React from "react";
+import ApplicationDetails from "../../../components/ApplicationDetails";
+
 
 
 class ApplicationReview extends React.Component{
@@ -8,9 +10,6 @@ class ApplicationReview extends React.Component{
         console.log(props);
         this.title = "Review Information";
         this.subtitle = "Please ensure the information below is accurate.";
-        this.leftTitle = "Company Information";
-        this.rightTitle = "Brand Details";
-        this.attachmentsHeader = "Attachements";
         this.state = {...props};
     }
 
@@ -25,29 +24,7 @@ class ApplicationReview extends React.Component{
                     {this.subtitle}
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}
-                <div className="row mx-2 mt-4">
-                    <div className="col mx-5 brand-registration-title">
-                        <h5 className=" font-weight-bold ">{this.leftTitle}</h5>
-                        <div>{this.state.org.name}</div>
-                        <div>{this.state.org.address}</div>
-                        <div>{this.state.org.city}, {this.state.org.state}</div>
-                        <div>{this.state.org.zip}, {this.state.org.countryCode}</div>
-                        <div className="row mt-3 pl-3 brand-registration-subtitle font-weight-bold font-size-14">
-                            {this.attachmentsHeader}
-                        </div>
-                    </div>
-                    <div className="col mx-2 brand-registration-title">
-                        <h5 className=" font-weight-bold ">{this.rightTitle}</h5>
-                        <div>{this.state.brand.trademarkNumber}</div>
-                        <div>{this.state.brand.name}</div>
-                        <div>Registration document is on the</div>
-                        <div>attachment, please review</div>
-                        <div className="row mt-3 pl-3 brand-registration-subtitle font-weight-bold font-size-14">
-                            {this.attachmentsHeader}
-                        </div>
-                    </div>
-                </div>
-                
+                <ApplicationDetails {...this.props}/>
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right">
                         <button type="button" className="btn btn-sm cancel-btn text-primary">Back</button>
@@ -56,7 +33,6 @@ class ApplicationReview extends React.Component{
                 </div>
                 
               </div>
-            // </div>
           );
 
     }

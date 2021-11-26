@@ -28,6 +28,7 @@ import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
 import FilterBlue from "./filterIcon.svg";
 import GreenCircleCheck from "./green-circle-check.svg";
+import GreenCircleWhiteTick from "./greenCircleWhiteTick.svg";
 import Group from "./group-23.svg";
 import GroupPeople from "./group-1474.png";
 import Help from "./Help.png";
@@ -95,6 +96,7 @@ export {
   Filter,
   FilterBlue,
   GreenCircleCheck,
+  GreenCircleWhiteTick,
   Group,
   GroupPeople,
   Help,

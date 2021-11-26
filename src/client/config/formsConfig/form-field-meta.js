@@ -123,7 +123,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Optional: attach additional documents if necessary (i.e. buisness registration)",
+          "label": "Optional: attach additional documents if necessary (i.e. business registration)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",

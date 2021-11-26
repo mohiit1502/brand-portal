@@ -44,11 +44,12 @@ class Notification extends React.Component {
     this.setState({type: notification.notificationType, message: notification.message});
     toastElement.toast({delay: CONSTANTS.NOTIFICATIONPOPUP.DATADELAY});
     toastElement.toast(action);
-    this.props.hideNotification();
+    this.props.hideNotification(notification.variant);
   }
 
   getVariant1(statusClass, notificationImage, closeIcon){
-    return <div className={`toast c-notification variant1 ${statusClass}`} role="alert" aria-live="assertive" aria-atomic="true" data-delay={CONSTANTS.NOTIFICATIONPOPUP.DATADELAY}>
+    return <div className={`toast c-notification variant1 ${statusClass}`} role="alert"
+     aria-live="assertive" aria-atomic="true" data-delay={CONSTANTS.NOTIFICATIONPOPUP.DATADELAY}>
     <div className="toast-body">
       <div className="row align-items-center justify-content-center">
         <div className="col-2 text-center">
@@ -69,12 +70,19 @@ class Notification extends React.Component {
   }
 
   getVariant2(statusClass, notificationImage, closeIcon){
-    return <div className="c-GenericAlert alert-style position-relative">
-    <span className="mr-3">&#10003;</span>
-    <span>{this.props.notification.message}</span>
-    <span className="float-right closebtn-style">&times;</span>
-    <span className="timer-bar position-absolute"></span>
-  </div>
+    return (
+    <div className="toast c-notification variant2">
+      <div className="row">
+        <span className="col-1 text-center">&#10003;</span>
+        <span className="col-9 text-left">{this.state.message}</span>
+        <div className="col-2 text-right">
+          <span className="closebtn-style pt-2 d-block" data-dismiss="toast" aria-label="Close">&times;</span>
+        </div>
+        {/* <img src={closeIcon} type="button" data-dismiss="toast" aria-label="Close" /> */}
+        <span className="timer-bar position-absolute"></span>
+      </div>
+    </div>
+    );
   }
 
   getNotification(statusClass, notificationImage, closeIcon) {

@@ -13,7 +13,8 @@ const showNotification = (notificationType, message, variant) => {
   return { type: "SHOW_NOTIFICATION", value: { notificationType, message, variant} };
 };
 
-const hideNotification = () => {
-  return { type: "HIDE_NOTIFICATION"};
+const hideNotification = variant => {
+  variant = !variant ? "variant1" : variant;
+  return { type: "HIDE_NOTIFICATION", value: { variant} };
 };
 export {showNotification, hideNotification, NOTIFICATION_TYPE};

@@ -38,6 +38,7 @@ class CompanyProfileRegistration extends React.Component {
       redirectToBrands: false,
       section: {...companyConfiguration.sectionConfig},
       clientType: Cookies.get("client_type"),
+      modalViewed: false, 
       form: {
         ...companyConfiguration.formConfig,
         inputData: {...companyConfiguration.fields},
@@ -58,11 +59,16 @@ class CompanyProfileRegistration extends React.Component {
       this.prepopulateInputFields(this.props.profile);
     }
 
-    if (this.state.clientType === "supplier") {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
-    }else {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.SELLER_WELCOME_PROMPT});
+    if(!this.state.modalViewed){
+      if (this.state.clientType === "supplier") {
+        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
+      }else {
+        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.SELLER_WELCOME_PROMPT});
+      }
     }
+    this.setState({
+      modalViewed: true
+    });
   }
 
   componentDidUpdate(prevProps) {
