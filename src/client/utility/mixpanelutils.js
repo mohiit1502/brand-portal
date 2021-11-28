@@ -48,12 +48,13 @@ export default class MixpanelUtils {
         return "";
     }
 
-    static intializeMixpanel(projectToken, enableTracking) {
+    static initializeMixpanel(projectToken, enableTracking) {
         if (enableTracking) {
             try {
                 // eslint-disable-next-line camelcase
                 mixpanel.init(projectToken, {api_host: "https://api.mixpanel.com"});
                 MixpanelUtils.enableTracking = enableTracking;
+                MixpanelUtils.initialized = true;
                 !enableTracking && mixpanel.disable();
             } catch (e) {
                 console.log(e);

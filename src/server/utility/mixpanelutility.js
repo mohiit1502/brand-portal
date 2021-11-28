@@ -9,9 +9,9 @@ export default class MixpanelUtils {
     static setToken(token, enableTracking) {
         MixpanelUtils.token = token;
         MixpanelUtils.enableTracking = enableTracking;
-        MixpanelUtils.intializeMixpanel();
+        MixpanelUtils.initializeMixpanel();
     }
-    static intializeMixpanel() {
+    static initializeMixpanel() {
         try {
             mixpanel = Mixpanel.init(MixpanelUtils.token);
         } catch (e) {
@@ -26,7 +26,7 @@ export default class MixpanelUtils {
         if (MixpanelUtils.enableTracking) {
             try {
                 if (!MixpanelUtils.getToken()) {
-                    MixpanelUtils.intializeMixpanel();
+                    MixpanelUtils.initializeMixpanel();
                 }
                 payload = payload ? payload : {};
                 if (payload) {

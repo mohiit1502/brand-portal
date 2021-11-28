@@ -43,8 +43,8 @@ class WebformWorkflowDecider extends React.Component {
         if (!mixpanel.getToken()) {
           Http.get("/api/mixpanelConfig")
           .then(res => {
-            mixpanel.intializeMixpanel(res.body.projectToken, res.body.enableTracking);
-          }).catch(() => mixpanel.intializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
+            mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking);
+          }).catch(() => mixpanel.initializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
         }
 
       } catch (err) {
