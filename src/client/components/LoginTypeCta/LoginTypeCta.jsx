@@ -53,9 +53,14 @@ const LoginTypeCta = props => {
     setLoader(true);
     if (!mixpanel.initialized) {
       Http.get("/api/mixpanelConfig")
-        .then(res => mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking))
-        .catch(() => mixpanel.initializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN, true))
-        .then(() => setLoader(false));
+        .then(res => {
+          mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking);
+          setLoader(false);
+        })
+        .catch(() => {
+          mixpanel.initializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN, true);
+          setLoader(false);
+        });
     }
   }, [])
 
