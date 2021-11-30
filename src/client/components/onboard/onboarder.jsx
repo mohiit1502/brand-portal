@@ -41,7 +41,7 @@ class Onboarder extends React.Component {
       <div className="view-container onboard-container">
         <HomeHeader {...this.props}/>
         <div className="onboard-form-container container">
-          <Stepper steps={this.props.steps} />
+          <Stepper />
           <ContentRendererOnboard {...this.props} {...this.state} updateOrgData={this.callback}/>
         </div>
       </div>

@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
 import {dispatchLoginAction, dispatchRegisterAction} from "../../actions";
-import {BPDarkLogo} from "./../../images";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
+import {BPDarkLogo} from "./../../images";
 import Http from "../../utility/Http";
 import CONSTANTS from "../../constants/constants";
 import "./LoginTypeCta.component.scss";
@@ -96,16 +96,17 @@ const LoginTypeCta = props => {
           <div>
             <div className="footnote-container mt-4">
               <span className="footnote d-block text-center">
-                <span>We recommend setting your monitor resolution to at least 1024 x 768</span>
+                We recommend setting your monitor resolution to at least 1024 x 768
               </span>
               <span className="footnote d-block text-center">
-                <span>U.S. Users: Please use Chrome v49 or newer</span>
-              </span>
-              <span className="footnote d-block text-center"><span>International Users: Please use Internet Explorer</span>
+                U.S. Users: Please use Chrome v49 or newer
               </span>
               <span className="footnote d-block text-center">
-                <a href="https://corporate.walmart.com/privacy-security" className="policy-link" target="_blank">Privacy Policy</a>
+                International Users: Please use Internet Explorer
               </span>
+              <a href="https://corporate.walmart.com/privacy-security" className="footnote d-block text-center policy-link" target="_blank">
+                Privacy Policy
+              </a>
             </div>
           </div>
         </div>

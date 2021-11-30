@@ -47,7 +47,12 @@ class BrandRegistration extends React.Component {
 
   goToApplicationReview(evt){
       evt.preventDefault();
-      this.loader("form", true);
+      const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
+      if (steps) {
+        steps[1].active = false;
+        steps[2].complete = true;
+        steps[2].active = true;
+      }
       const inputData = this.state.form.inputData;
       const brand = {
         trademarkNumber: inputData.trademarkNumber.value,
@@ -64,6 +69,7 @@ class BrandRegistration extends React.Component {
         brand
       };
       this.props.updateOrgData(brand, "brand");
+      this.props.dispatchSteps(steps);
       this.props.history.push("/onboard/review");
   }
 
@@ -132,13 +138,17 @@ class BrandRegistration extends React.Component {
   }
 
   gotoCompanyRegistration () {
-    const steps = this.props.steps ? [...this.props.steps] : [];
+    const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
     /* eslint-disable no-unused-expressions */
-    steps && steps[1] && (steps[1].complete = false);
+    if (steps) {
+      steps[1].complete = false;
+      steps[1].active = false;
+      steps[0].active = true;
+    }
     this.props.updateOrgData(this.state, "brand");
     this.props.dispatchBrandState(this.state);
     this.props.dispatchSteps(steps);
-    this.setState({redirectToCompanyReg: true});
+    this.props.history.push("/onboard/company")
   }
 
   /* eslint-disable no-empty */

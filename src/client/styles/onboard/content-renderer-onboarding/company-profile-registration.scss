@@ -21,11 +21,12 @@ $subtitle-color: #6E7677;
       width: 100px;
     }
     .uploaded-file-label{
-      height: 31px;
-      line-height: 16px;
+      //height: 31px;
+      //line-height: 16px;
+      border-color: #333;
       .cancel-file-selection-btn {
-        font-size: 32px;
-        line-height: 16px;
+        //font-size: 32px;
+        //line-height: 16px;
       }
     }
   }

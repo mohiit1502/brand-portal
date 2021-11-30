@@ -13,6 +13,12 @@ const initialState =  {
       name: "Brand Details",
       complete: false,
       active: false
+    },
+    {
+      order: 3,
+      name: "Review Application",
+      complete: false,
+      active: false
     }
   ]
 };

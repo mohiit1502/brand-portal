@@ -4,6 +4,7 @@ import "./FileUploader.component.scss";
 import Tooltip from "../custom-components/tooltip/tooltip";
 import * as images from "../../images";
 import ProgressBar from "../custom-components/progress-bar/progress-bar";
+import {CSSTransition} from "react-transition-group";
 
 /* eslint-disable complexity, no-nested-ternary */
 const FileUploader = props => {
@@ -54,7 +55,12 @@ const FileUploader = props => {
             {props.error && <small className="d-block error">{props.error}</small>}
           </>
         }
-        {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}
+        {
+          props.uploading && !props.id &&
+            <CSSTransition timeout={300}>
+              <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>
+            </CSSTransition>
+        }
         {!props.uploading && props.id &&
           <div className="col-6 field-container position-relative">
             <div className={`uploaded-file-label form-control mb-2`}>

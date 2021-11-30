@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import Cookies from "electrode-cookies";
 import $ from "jquery";
-import {dispatchCompanyState} from "../../../actions/company/company-actions";
+import {dispatchCompanyState, dispatchSteps} from "../../../actions/company/company-actions";
 import {toggleModal, TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../constants/constants";
@@ -264,9 +264,18 @@ class CompanyProfileRegistration extends React.Component {
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }
+    const steps = this.props.steps ? [...this.props.steps] : [];
+    /* eslint-disable no-unused-expressions */
+    if (steps) {
+      steps[0].complete = true;
+      steps[1].complete = true;
+      steps[0].active = false;
+      steps[1].active = true;
+    }
     this.props.updateOrgData(org, "company");
-    this.setState({redirectToBrands: true});
     this.props.dispatchCompanyState(this.state);
+    this.props.dispatchSteps(steps);
+    this.props.history.push("/onboard/brand");
   }
 
   render() {
@@ -314,12 +323,14 @@ const mapStateToProps = state => {
     companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
     companyState: state.company && state.company.companyState,
     profile: state.user && state.user.profile,
+    steps: state.company && state.company.steps,
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
   };
 };
 
 const mapDispatchToProps = {
   dispatchCompanyState,
+  dispatchSteps,
   showNotification,
   toggleModal
 };
