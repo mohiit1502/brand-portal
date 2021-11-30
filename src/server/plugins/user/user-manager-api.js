@@ -675,7 +675,8 @@ class UserManagerApi {
     console.log("[UserManagerApi::loginSuccessRedirect] User ID: ", request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/login-redirect"
+      API: "/login-redirect",
+      CLIENT_TYPE: request.query.clientType
     };
     try {
       const query = request.query;
