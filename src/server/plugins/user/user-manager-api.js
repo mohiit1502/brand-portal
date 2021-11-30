@@ -767,12 +767,13 @@ class UserManagerApi {
   async redirectToFalcon (request, h) {
     console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started");
     console.log("[UserManagerApi::redirectToFalcon] User ID: ", request.state && request.state.session_token_login_id);
+    const clientType = request.query.clientType;
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/falcon/{action}"
+      API: "/api/falcon/{action}",
+      CLIENT_TYPE: clientType
     };
     try {
-      const clientType = request.query.clientType;
       // if (!clientType) {
       //   return h.redirect(`/${request.params.action}`)
       // }
