@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { dispatchSteps } from "../../../actions/company/company-actions";
 import { withRouter } from "react-router";
+import CONSTANTS from "../../../constants/constants";
 import ApplicationDetails from "../../../components/ApplicationDetails";
 class ApplicationReview extends React.Component {
     constructor(props) {
@@ -9,6 +10,12 @@ class ApplicationReview extends React.Component {
         this.title = "Review Information";
         this.subtitle = "Please ensure the information below is accurate.";
         this.state = { ...props };
+    }
+
+    componentDidMount() {
+        if (!this.props.org) {
+            this.props.history.push(CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER);
+        }
     }
 
     gotoBrandRegistration(evt) {

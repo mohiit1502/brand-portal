@@ -15,21 +15,23 @@ const ApplicationDetails = props => {
   useEffect(() => {
     let companyDetails;
     // if(user && user.organization) {
-    if(true) {
+    if (true) {
           // Http.get(`/api/org/applicationDetails/${user.organization.id}`)
       Http.get(`/api/org/applicationDetails/747a6785-46f4-4d2f-8665-23e44cc427c8`)
       .then(res => {
-        console.log(res.body);
         companyDetails = res.body;
         companyDetails.org = companyDetails.company || {};
         companyDetails.org.businessRegistrationDocNames = companyDetails.businessRegistrationDocNames;
         companyDetails.brand.additionalDocName = companyDetails.additionalDocName;
+        delete companyDetails.company;
+        delete companyDetails.businessRegistrationDocNames;
+        delete companyDetails.additionalDocName;
+
         handler(companyDetails);
       })
       .catch(e => {
-        console.log(e);
         setError(true);
-      })
+      });
     } 
   }, []);
 
@@ -61,7 +63,8 @@ const ApplicationDetails = props => {
 };
 
 ApplicationDetails.propTypes = {
-
+  org: PropTypes.object,
+  brand: PropTypes.object
 };
 
 export default ApplicationDetails;

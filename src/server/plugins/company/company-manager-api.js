@@ -6,7 +6,7 @@ import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
-import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
+import { MIXPANEL_CONSTANTS } from "../../constants/mixpanel-constants";
 
 class CompanyManagerApi {
   constructor() {
@@ -20,7 +20,7 @@ class CompanyManagerApi {
     this.FILE_UPLOAD_SIZE_LIMIT = 1024 * 1024 * 10; // 10MB
   }
 
-  register (server) {
+  register(server) {
     return server.route([
       {
         method: "GET",
@@ -70,7 +70,7 @@ class CompanyManagerApi {
   }
 
   /* eslint-disable complexity */
-  async registerOrganization (request, h) {
+  async registerOrganization(request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/org/register"
@@ -95,8 +95,8 @@ class CompanyManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.TRADEMARK_NUMBER = payload && payload.brand &&  payload.brand.trademarkNumber;
-      mixpanelPayload.BRAND_NAME = payload && payload.brand &&  payload.brand.name;
+      mixpanelPayload.TRADEMARK_NUMBER = payload && payload.brand && payload.brand.trademarkNumber;
+      mixpanelPayload.BRAND_NAME = payload && payload.brand && payload.brand.name;
       mixpanelPayload.COMPANY_NAME = payload && payload.org && payload.org.name;
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
@@ -115,7 +115,7 @@ class CompanyManagerApi {
     }
   }
 
-  async checkTrademarkValidity (request, h) {
+  async checkTrademarkValidity(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
       API: `/api/brand/trademark/validity/${request.params && request.params.trademarkNumber}`
@@ -157,7 +157,7 @@ class CompanyManagerApi {
     }
   }
 
-  async uploadAdditionalDocument (request, h) {
+  async uploadAdditionalDocument(request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/company/uploadAdditionalDocument"
@@ -175,7 +175,7 @@ class CompanyManagerApi {
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const fd = new FormData();
-      fd.append("file", file, {filename});
+      fd.append("file", file, { filename });
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const ADDITIONAL_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.ADDITIONAL_DOC_PATH");
       const url = `${BASE_URL}${ADDITIONAL_DOC_PATH}`;
@@ -200,7 +200,7 @@ class CompanyManagerApi {
     }
   }
 
-  async uploadBusinessDocument (request, h) {
+  async uploadBusinessDocument(request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/company/uploadBusinessDocument"
@@ -216,7 +216,7 @@ class CompanyManagerApi {
       const filename = file.hapi.filename;
       const fd = new FormData();
 
-      fd.append("file", file, {filename});
+      fd.append("file", file, { filename });
       console.log("[CompanyManagerApi::uploadBusinessDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BUSINESS_DOC_PATH");
@@ -244,7 +244,7 @@ class CompanyManagerApi {
     }
   }
 
-  async checkCompanyNameAvailability (request, h) {
+  async checkCompanyNameAvailability(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/company/availability"
@@ -273,7 +273,7 @@ class CompanyManagerApi {
       mixpanelPayload.COMPANY_NAME = name;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.get(url, options, {name});
+      const response = await ServerHttp.get(url, options, { name });
       console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -321,37 +321,51 @@ class CompanyManagerApi {
     } catch (err) {
       const dummyResponse = {
         "orgStatus": "ON_HOLD",
-        "orgId":"",
-        "brandId":"",
+        "orgId": "",
+        "brandId": "",
         "company": {
-            "name" : "",
-            "address" : "",
-            "city" : "",
-            "state" : "",
-            "zip" : "",
-            countryCode :""
+          "name": "dsf",
+          "address": "sdads",
+          "city": "dsffd",
+          "state": "sasdd",
+          "zip": "3214",
+          countryCode: "424"
         },
         "brand": {
-            "name": "",
-            "trademarkNumber" : "",
-            "usptoVerification" :"",
-            "usptoUrl":""   
+          "name": "",
+          "trademarkNumber": "",
+          "usptoVerification": "",
+          "usptoUrl": ""
         },
         businessRegistrationDocNames: [
-                {
-                "documentId": "",
-                "documentName": "",
-                "createTS": "",
-                "uploadedToServiceNow": true
-                }],
+          {
+            "documentId": "",
+            "documentName": "test1",
+            "createTS": "",
+            "uploadedToServiceNow": true
+          },
+          {
+            "documentId": "",
+            "documentName": "test2",
+            "createTS": "",
+            "uploadedToServiceNow": true
+          },
+          {
+            "documentId": "",
+            "documentName": "test3",
+            "createTS": "",
+            "uploadedToServiceNow": true
+          }
+
+        ],
         additionalDocName: [{
-                "documentId": "",
-                "documentName": "",
-                "createTS": "",
-                "uploadedToServiceNow": true
-     
-                }]
-    };
+          "documentId": "",
+          "documentName": "",
+          "createTS": "",
+          "uploadedToServiceNow": true
+
+        }]
+      };
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;

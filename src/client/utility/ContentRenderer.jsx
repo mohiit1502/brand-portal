@@ -111,9 +111,10 @@ export default class ContentRenderer {
         }
       </div>);
     } else if (node.startsWith("button")) {
+      const handler = content[node].onClick ? typeof content[node].onClick === "function" ? content[node].onClick : this[content[node].onClick] : () => {};
       return (
         <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
-          onClick={content[node].onClick ? this[content[node].onClick] : () => {}}
+          onClick={handler}
           href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
           {content[node].buttonText}
         </button>

@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import Cookies from "electrode-cookies";
 import $ from "jquery";
-import {dispatchCompanyState, dispatchSteps} from "../../../actions/company/company-actions";
+import {dispatchCompanyState, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
 import {toggleModal, TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../constants/constants";
@@ -55,11 +55,11 @@ class CompanyProfileRegistration extends React.Component {
     };
     $("[data-toggle='tooltip']").tooltip();
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
-    if (this.props.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
-      this.prepopulateInputFields(this.props.profile);
+    if (!this.state.form.formPopulated) {
+      this.prepopulateInputFields();
     }
 
-    if (!this.state.modalViewed) {
+    if (!this.state.modalViewed && (this.props.profile && this.props.profile.context !== "edit")) {
       if (this.state.clientType === "supplier") {
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
       } else {
@@ -101,7 +101,7 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
-  prepopulateInputFields (data) {
+  prepopulateSellerInputFields(data) {
     const form = {...this.state.form};
     const seller = data.sellerInfo;
     if (seller && seller.taxClassification === "W9") {
@@ -117,6 +117,39 @@ class CompanyProfileRegistration extends React.Component {
 
       form.isUpdateTemplate = true;
       this.setState({form}, () => this.companyDebounce());
+    }
+  }
+
+  prepopulateInputContextEdit() {
+    if (this.props.onboardingDetails) {
+      const data = this.props.onboardingDetails.org;
+      const form = {...this.state.form};
+      if (data) {
+        form.inputData.companyName.value = data.name;
+        form.inputData.address.value = data.address;
+        form.inputData.city.value = data.city || "";
+        form.inputData.state.value = data.state || "";
+        form.inputData.zip.value = data.zip || "";
+        form.inputData.country.value = data.countryCode || "US";
+        form.formPopulated = true;
+
+        form.isUpdateTemplate = true;
+        this.setState({form}, () => {
+          this.toggleFormEnable(true, true, false);
+          this.checkToEnableSubmit();
+        } );
+      }
+    }
+  }
+
+  prepopulateInputFields () {
+    const data = this.props.profile;
+    if (this.props.profile.context !== "edit") {
+      if (this.state.clientType && this.state.clientType === "seller") {
+        this.prepopulateSellerInputFields(data);
+      }
+    } else {
+      this.prepopulateInputContextEdit();
     }
   }
 
@@ -275,6 +308,10 @@ class CompanyProfileRegistration extends React.Component {
     }
     this.props.updateOrgData(org, "company");
     this.props.dispatchCompanyState(this.state);
+    this.props.dispatchOnboardingDetails({
+      ...this.props.onboardingDetails,
+      org
+    });
     this.props.dispatchSteps(steps);
     this.props.history.push("/onboard/brand");
   }
@@ -325,12 +362,14 @@ const mapStateToProps = state => {
     companyState: state.company && state.company.companyState,
     profile: state.user && state.user.profile,
     steps: state.company && state.company.steps,
-    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
+    onboardingDetails: state.company && state.company.onboardingDetails
   };
 };
 
 const mapDispatchToProps = {
   dispatchCompanyState,
+  dispatchOnboardingDetails,
   dispatchSteps,
   showNotification,
   toggleModal
