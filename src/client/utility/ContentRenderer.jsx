@@ -5,6 +5,7 @@ import CustomInput from "../components/custom-components/custom-input/custom-inp
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
 import { Tile } from "../components";
+import contentRenderer from "../components/home/content-renderer/content-renderer";
 
 export default class ContentRenderer {
 
@@ -183,7 +184,7 @@ export default class ContentRenderer {
       }
       /* eslint-disable no-empty */
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
     return null;
   }
@@ -253,6 +254,7 @@ export default class ContentRenderer {
 
   static getCustomComponent (field, id) {
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
+    // if (field.)
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
       onChange={this[onChange] ? changeHandlerArg ? evt => this[onChange](evt, changeHandlerArg) : this[onChange] : this.onChange}
@@ -290,15 +292,15 @@ export default class ContentRenderer {
                 dependencyObj.setFields.forEach(fieldConfig => validationObj[fieldConfig.field] = fieldConfig.value)
               }
             }
-          })
+          });
         }
       }
     });
     return field;
   }
 
-  static evaluateRenderDependencySubPart (condition, matchValueFieldName) {
-    const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
+  static evaluateRenderDependencySubPart (condition, matchValueFieldName, searchObj) {
+    const keyLocator = searchObj || ContentRenderer.getValueLocator.call(this, condition.keyLocator);
     let currentValue = Helper.search(condition.keyPath, keyLocator);
     currentValue = currentValue && typeof currentValue === "string" ? currentValue.toLowerCase() : currentValue;
     const matchValue = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition[matchValueFieldName];

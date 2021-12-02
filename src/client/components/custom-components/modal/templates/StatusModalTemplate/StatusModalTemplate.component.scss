@@ -40,6 +40,12 @@
       }
       .modal-body{
         border-bottom: 9px solid #7ac4e4;
+        &.error-layout{
+          min-height: 15rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
         &.modal-background{
           background: white url(http://localhost:2992/js/324961efcf2d232a9f6ec72d672ca25f.svg) left no-repeat;
           background-size: contain;

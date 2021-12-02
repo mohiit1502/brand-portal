@@ -10,11 +10,11 @@ const FileUploader = props => {
   const formToDocMapper = {
     companyreg: {
       sectionName: "org",
-      attachmentKey: "businessRegistrationDocNames"
+      attachmentKey: "businessRegistrationDocList"
     },
     brandreg: {
       sectionName: "brand",
-      attachmentKey: "additionalDocName"
+      attachmentKey: "additionalDocList"
     }
   };
   const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
@@ -61,7 +61,7 @@ const FileUploader = props => {
         {
           !props.uploading && !props.id &&
           <label
-            className={`btn btn-sm btn-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
+            className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
             {props.buttonText}
             <input type="file" className="d-none" onChange={props.onChange}
               disabled={props.disabled}/>

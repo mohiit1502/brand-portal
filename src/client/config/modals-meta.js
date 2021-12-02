@@ -191,7 +191,8 @@ const MODALSMETA = {
             "icon": "EditOutlinedIcon",
             "classes": "col btn btn-primary",
             "buttonText": "Edit Application",
-            "onClick": "dispatchUserProfile"
+            "onClick": "dispatchUserProfile",
+            "renderCondition": "{\"keyPath\": \"orgStatus\", \"value\": \"on_hold\"}"
           }
         }
       },

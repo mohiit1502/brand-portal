@@ -320,52 +320,49 @@ class CompanyManagerApi {
       return h.response(response.body).code(response.status);
     } catch (err) {
       const dummyResponse = {
-        "orgStatus": "ON_HOLD",
-        "orgId": "",
-        "brandId": "",
-        "company": {
-          "name": "dsf",
-          "address": "sdads",
-          "city": "dsffd",
-          "state": "sasdd",
-          "zip": "3214",
-          countryCode: "424"
+        orgStatus: "ON_HOLD",
+        orgId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
+        brandId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
+        company: {
+            name: "Subhadeep-demo003",
+            address: "Bangalore",
+            city: "Bangalore",
+            state: "CA",
+            zip: "17122",
+            countryCode: "US",
+            businessRegistrationDoc: null,
+            additionalDoc: null
         },
-        "brand": {
-          "name": "",
-          "trademarkNumber": "",
-          "usptoVerification": "",
-          "usptoUrl": ""
+        brand: {
+            name: "Test-brand#4",
+            trademarkNumber: "5912022",
+            comments: "eeee",
+            usptoUrl: null,
+            usptoVerification: "VALID"
         },
-        businessRegistrationDocNames: [
-          {
-            "documentId": "",
-            "documentName": "test1",
-            "createTS": "",
-            "uploadedToServiceNow": true
-          },
-          {
-            "documentId": "",
-            "documentName": "test2",
-            "createTS": "",
-            "uploadedToServiceNow": true
-          },
-          {
-            "documentId": "",
-            "documentName": "test3",
-            "createTS": "",
-            "uploadedToServiceNow": true
-          }
-
+        businessRegistrationDocList: [
+            {
+                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+                documentName: "Document2.pdf",
+                createTS: "2021-11-30T11:57:15.774Z",
+                uploadedToServiceNow: false
+            }
         ],
-        additionalDocName: [{
-          "documentId": "",
-          "documentName": "",
-          "createTS": "",
-          "uploadedToServiceNow": true
-
-        }]
-      };
+        additionalDocList: [
+            {
+                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+                documentName: "DocumentOld.pdf",
+                createTS: "2021-10-30T11:54:58.730Z",
+                uploadedToServiceNow: false
+            },
+            {
+                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+                documentName: "DocumentNew.pdf",
+                createTS: "2021-11-30T11:57:15.774Z",
+                uploadedToServiceNow: false
+            }
+        ]
+    };
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;

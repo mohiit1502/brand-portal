@@ -206,6 +206,26 @@ const FORMFIELDCONFIG = {
           "type": "text",
           "value": ""
         },
+        "additionalDoc": {
+          "buttonText": "Upload",
+          "cancelHandlerArg": "additionalDoc",
+          "changeHandlerArg": "additionalDoc",
+          "disabled": false,
+          "endpoint": "/api/company/uploadAdditionalDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "id": "",
+          "inputId": "additionalDoc",
+          "key": "additionalDoc",
+          "label": "Optional: attach additional documents if necessary (i.e. trademark registration)",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "additionalDocument",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
         "comments": {
           "disabled": false,
           "error": "",

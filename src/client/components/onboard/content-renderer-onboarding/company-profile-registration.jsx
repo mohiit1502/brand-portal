@@ -115,7 +115,6 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
-      form.isUpdateTemplate = true;
       this.setState({form}, () => this.companyDebounce());
     }
   }
@@ -133,11 +132,10 @@ class CompanyProfileRegistration extends React.Component {
         form.inputData.country.value = data.countryCode || "US";
         form.formPopulated = true;
 
-        form.isUpdateTemplate = true;
         this.setState({form}, () => {
           this.toggleFormEnable(true, true, false);
           this.checkToEnableSubmit();
-        } );
+        });
       }
     }
   }
@@ -285,6 +283,7 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
+    const docNames = this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList;
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -292,9 +291,18 @@ class CompanyProfileRegistration extends React.Component {
       state: this.state.form.inputData.state.value,
       zip: this.state.form.inputData.zip.value,
       countryCode: this.state.form.inputData.country.value,
-      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
-      businessRegistrationDocName: this.state.form.inputData.businessRegistrationDoc.name
     };
+
+    if(docNames && docNames.findIndex(obj => obj.businessRegistrationDocId) === -1) {
+      org.businessRegistrationDocList = [
+        ...(this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList 
+          ? this.props.onboardingDetails.businessRegistrationDocList : []),
+        {
+          businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
+          businessRegistrationDocName: this.state.form.inputData.businessRegistrationDoc.filename
+        }
+      ];
+    }
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }

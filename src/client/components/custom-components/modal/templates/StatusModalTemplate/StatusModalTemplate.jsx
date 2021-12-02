@@ -24,6 +24,7 @@ const StatusModalTemplate = props => {
      dispatchOnboardingDetails, onboardingDetails} = props;
   const {logoutUrl, profile} = user;
   const [loader, setLoader] = useState(false);
+  const [apiError, setApiError] = useState(false);
   const history = useHistory();
   const contentRenderer = new ContentRenderer();
   const baseUrl = window.location.origin;
@@ -202,8 +203,10 @@ const StatusModalTemplate = props => {
               <span className="close-btn" aria-hidden="true">&times;</span>
             </button>
           </div>}
-          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}`}>
-            {(images[meta.IMAGE] || meta.image) && <div className="row">
+          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}
+          ${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}
+          ${apiError ? "error-layout" : ""}`}>
+          {!apiError ? <>{(images[meta.IMAGE] || meta.image) && <div className="row">
               <div className="col">
                 <img src={images[meta.IMAGE] || meta.image} alt="IMAGE_STATUS" height={meta.HEIGHT || 140}/>
               </div>
@@ -215,13 +218,17 @@ const StatusModalTemplate = props => {
                   typeof (meta.TITLE) === "string" ? meta.TITLE :
                     Object.keys(meta.TITLE.content).map(node => {
                       let content = meta.TITLE.content;
+                      let shouldRender = true;
                       if (meta.TITLE.content[node].onClick) {
                         content = {...meta.TITLE.content};
                         const nodeContent = {...content[node]};
+                        shouldRender = nodeContent.renderCondition && onboardingDetails ?
+                        ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", onboardingDetails)
+                         : false;
                         content[node] = nodeContent;
                         content[node].onClick = getAction(nodeContent.onClick);
                       }
-                      return contentRenderer.getContent(content, node);
+                      return shouldRender ? contentRenderer.getContent(content, node) : null;
                     })
                 }
                 </span>
@@ -285,7 +292,12 @@ const StatusModalTemplate = props => {
               </div>
             </div>}
             {ContentComponent && <ContentComponent user={user && user.profile} handler={getAction(meta.CONTENT_COMPONENT_PROP)}
-            org={onboardingDetails && onboardingDetails.org} brand={onboardingDetails && onboardingDetails.brand}/>}
+            apiError={apiError} setApiError={setApiError} org={onboardingDetails && onboardingDetails.org}
+            brand={onboardingDetails && onboardingDetails.brand}/>}
+            </> :
+            <div>
+              <h4>Unable to complete request. Please <a href="/">refresh!</a> </h4>
+            </div>}
           </div>
         </div>
       </div>
