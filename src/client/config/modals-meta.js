@@ -57,10 +57,11 @@ const MODALSMETA = {
         }
       },
       "TITLE": {
+        "classes": "justify-content-center",
         "content": {
           "para": {
             "text": "Application Submitted",
-            "classes": "h3 mx-5 px-3 mb-2 font-weight-bold"
+            "classes": "h3 mx-5 px-5 mb-2 font-weight-bold"
           }
         }
       },
@@ -180,7 +181,6 @@ const MODALSMETA = {
       },
       "TITLE": {
         "ROW_CLASSES": "ml-5",
-        "classes": "",
         "content": {
           "para": {
             "text": "__businessName__",

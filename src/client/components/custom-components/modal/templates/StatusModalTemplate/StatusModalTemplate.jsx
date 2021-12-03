@@ -211,7 +211,7 @@ const StatusModalTemplate = props => {
                 <img src={images[meta.IMAGE] || meta.image} alt="IMAGE_STATUS" height={meta.HEIGHT || 140}/>
               </div>
             </div>}
-            {meta.TITLE && <div className="row mt-3">
+            {meta.TITLE && <div className={`row mt-3${meta.TITLE.classes ? " "+ meta.TITLE.classes : ""}`}>
               <div className={meta.TITLE.classes || "col"}>
                 <span className={`status-header row font-weight-bold${meta.TITLE.ROW_CLASSES ? " " + meta.TITLE.ROW_CLASSES : ""}`}>
                 {

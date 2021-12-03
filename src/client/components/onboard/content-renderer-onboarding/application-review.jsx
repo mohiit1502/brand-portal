@@ -89,11 +89,11 @@ class ApplicationReview extends React.Component {
     render() {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
-            <div className="col pl-5 pr-0">
-                <div className="row mt-4 pl-5 mx-3 brand-registration-title font-weight-bold font-size-28">
+            <div className="col test pl-5 pr-0 ml-5">
+                <div className="row mt-4 pl-5 ml-3 brand-registration-title font-weight-bold font-size-28">
                     {this.title}
                 </div>
-                <div className="row mt-3 pl-5 mx-3 brand-registration-subtitle">
+                <div className="row mt-3 pl-5 ml-3 brand-registration-subtitle">
                     {this.subtitle}
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}
@@ -101,7 +101,7 @@ class ApplicationReview extends React.Component {
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.submitOnboardingForm}>Confirm and submit</button>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3 mr-5" onClick={this.submitOnboardingForm}>Confirm and submit</button>
                     </div>
                 </div>
 

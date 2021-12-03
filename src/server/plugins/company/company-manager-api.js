@@ -367,8 +367,8 @@ class CompanyManagerApi {
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
       console.log("[CompanyManagerApi::getApplicationDetails] Error occured in API request for getting application details: ", err);
-      return h.response(dummyResponse).code(200);
-      // return h.response(err).code(err.status);
+      // return h.response(dummyResponse).code(200);
+      return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.GET_APPLICATION_DETAILS, mixpanelPayload);
     }

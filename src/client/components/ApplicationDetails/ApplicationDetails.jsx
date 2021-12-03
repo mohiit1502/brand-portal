@@ -8,7 +8,7 @@ const ApplicationDetails = props => {
   const {user, handler, org, brand, setApiError, apiError} = props;
   const leftTitle = "Company Information";
   const rightTitle = "Brand Details";
-  const attachmentsHeader = "Attachements";
+  const attachmentsHeader = "Attachments";
   
   useEffect(() => {
     let companyDetails;
@@ -33,7 +33,7 @@ const ApplicationDetails = props => {
 
   /*eslint-disable no-nested-ternary*/
   return (
-    <div className={`c-ApplicationDetails row mx-5 text-left mt-4 px-3${org || apiError ? "" : " loader"}`}>
+    <div className={`c-ApplicationDetails row text-left mt-4 px-3${org || apiError ? "" : " loader"}`}>
       {!apiError ? org ? <><div className="col mx-5 brand-registration-title">
         <h5 className=" font-weight-bold ">{leftTitle}</h5>
         <div>{org.name}</div>

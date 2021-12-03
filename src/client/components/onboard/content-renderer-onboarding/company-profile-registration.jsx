@@ -293,7 +293,7 @@ class CompanyProfileRegistration extends React.Component {
       countryCode: this.state.form.inputData.country.value,
     };
 
-    if(docNames && docNames.findIndex(obj => obj.businessRegistrationDocId) === -1) {
+    if (docNames && docNames.findIndex(obj => obj.businessRegistrationDocId) === -1) {
       org.businessRegistrationDocList = [
         ...(this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList 
           ? this.props.onboardingDetails.businessRegistrationDocList : []),
