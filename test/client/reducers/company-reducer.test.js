@@ -19,6 +19,12 @@ describe("Company Reducer Tests",() => {
         name: "Brand Details",
         complete: false,
         active: false
+      },
+      {
+        order: 3,
+        name: "Review Application",
+        complete: false,
+        active: false
       }
     ]
   };
@@ -80,8 +86,8 @@ describe("Company Reducer Tests",() => {
   });
 
   it("DISPATCH_STEPS Action Test without state",() => {
-    const actionValue = {testValue:"Test company state dispatch value"};
-    const action = {type:"DISPATCH_STEPS",value:actionValue};
+    const actionValue = {testValue: "Test company state dispatch value"};
+    const action = {type:"DISPATCH_STEPS",value: actionValue};
     const expectedState = {
       ...testInitialState,
       ...actionValue
