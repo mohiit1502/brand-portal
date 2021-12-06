@@ -16,7 +16,6 @@ class CompanyManagerApi {
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
     this.uploadBusinessDocument = this.uploadBusinessDocument.bind(this);
     this.uploadAdditionalDocument = this.uploadAdditionalDocument.bind(this);
-    this.getApplicationDetails = this.getApplicationDetails.bind(this);
     this.FILE_UPLOAD_SIZE_LIMIT = 1024 * 1024 * 10; // 10MB
   }
 

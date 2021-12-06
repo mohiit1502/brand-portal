@@ -358,8 +358,7 @@ class ClaimManagerApi {
       fd.append("file", file, {filename});
       console.log("[ClaimManagerApi::uploadWebFormDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      // const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BUSINESS_DOC_PATH");
-      const WEBFORM_DOC_PATH = "/ropro/ipservices/attachment";
+      const WEBFORM_DOC_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_DOC_PATH");
       const url = `${BASE_URL}${WEBFORM_DOC_PATH}`;
 
       mixpanelPayload.URL = url;
