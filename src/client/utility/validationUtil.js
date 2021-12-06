@@ -290,7 +290,7 @@ export default class Validator {
     inputData.companyName.disabled = true;
     inputData.companyName.loader = true;
     inputData.companyOnboardingActions.buttons = {...inputData.companyOnboardingActions.buttons};
-    inputData.companyOnboardingActions.buttons.clear.disabled = true;
+    //inputData.companyOnboardingActions.buttons.clear.disabled = true;
     this.setState(state);
     let error;
     const mixpanelPayload = {
@@ -303,7 +303,7 @@ export default class Validator {
         error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
         inputData.companyName.isUnique = !error;
         inputData.companyName.fieldOk = !error;
-        inputData.companyOnboardingActions.buttons.clear.disabled = false;
+        //inputData.companyOnboardingActions.buttons.clear.disabled = false;
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
       }).catch(err => {
@@ -315,7 +315,7 @@ export default class Validator {
         inputData.companyName.isUnique = false;
         inputData.companyName.fieldOk = false;
         inputData.companyName.requestAdministratorAccess = true;
-        inputData.companyOnboardingActions.buttons.clear.disabled = false;
+        //inputData.companyOnboardingActions.buttons.clear.disabled = false;
         this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Uniqueness Check Failed, please try again!");
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = err.message ? err.message : err;

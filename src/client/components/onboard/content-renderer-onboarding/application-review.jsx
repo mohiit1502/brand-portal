@@ -16,6 +16,10 @@ class ApplicationReview extends React.Component {
         super(props);
         this.title = "Review Information";
         this.subtitle = "Please ensure the information below is accurate.";
+        const functions = ["gotoBrandRegistration"];
+        functions.forEach(name => {
+            this[name] = this[name].bind(this);
+          });
         this.state = { ...props };
         this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
         this.loader = Helper.loader.bind(this);
