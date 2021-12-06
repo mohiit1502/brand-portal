@@ -26,10 +26,10 @@ export default class DocumentActions {
           return;
         }
       }
+      form.inputData[key].filename = filename;
       const interval = new CustomInterval(4, (value, active) => {
         const formInner = {...this.state.form};
         formInner.inputData[key].uploadPercentage = value;
-        formInner.inputData[key].filename = filename;
         !active && (formInner.inputData[key].uploadPercentage = 100);
         this.setState({formInner});
       });

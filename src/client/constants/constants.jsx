@@ -48,7 +48,8 @@ const CONSTANTS = {
 
       ONBOARD: {
         COMPANY_REGISTER: "/onboard/company",
-        BRAND_REGISTER: "/onboard/brand"
+        BRAND_REGISTER: "/onboard/brand",
+        APPLICATION_REVIEW: "/onboard/review"
       },
 
       USER_MGMT: {
@@ -226,7 +227,7 @@ const CONSTANTS = {
     PASSWORD: "^(?=.*[A-Z]{1,})(?=.*[a-z]{1,})(?=.*[0-9]{1,})(?=.*[~!@#$%^&*()\\-_=+{};:,<.>]{1,}).{8,}$",
     PHONE: "^(\\([0-9]{3}\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$",
     REDIRECTALLOWEDPATHS: "^\/((claims|brands|users)|(claims|brands|users)\/[a-zA-Z0-9\-]*)$",
-    ZIP: "\\d{5}(?:[-\s]\\d{4})?$"
+    ZIP: "^\\d{5}(?:[-\s]\\d{4})?$"
   },
 
   ERRORMESSAGES: {

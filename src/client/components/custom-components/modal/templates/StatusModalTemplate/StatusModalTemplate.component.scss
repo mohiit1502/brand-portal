@@ -4,8 +4,27 @@
   background-color: rgba(230, 242, 247, 0.5);
 }
 .c-StatusModalTemplate{
+  .status-review{
+    background-color: #0d2d55;
+    padding: 4px;
+    border-radius: 0.15rem;
+    font-size: 0.8rem;
+    color: white;
+  }
+  .status-onhold{
+    background-color: #f6c34a;
+    padding: 5px;
+    border-radius: 0.15rem;
+    font-size: 0.7rem;
+    color: black;
+  }
+
   .modal-dialog{
-    width: 530px;
+    max-width: 45rem;
+    
+    &.modal-xl{
+      max-width: 60rem;
+    }
 
     .loader:before {
       top: 0;
@@ -21,6 +40,17 @@
       }
       .modal-body{
         border-bottom: 9px solid #7ac4e4;
+        &.error-layout{
+          min-height: 15rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        &.modal-background{
+          background: white url(http://localhost:2992/js/324961efcf2d232a9f6ec72d672ca25f.svg) left no-repeat;
+          background-size: contain;
+          border-bottom: unset;
+        }  
         .btn-primary {
           background: #006799;
           font-weight: bold;

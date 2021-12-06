@@ -6,7 +6,7 @@ import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
-import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
+import { MIXPANEL_CONSTANTS } from "../../constants/mixpanel-constants";
 
 class CompanyManagerApi {
   constructor() {
@@ -16,10 +16,11 @@ class CompanyManagerApi {
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
     this.uploadBusinessDocument = this.uploadBusinessDocument.bind(this);
     this.uploadAdditionalDocument = this.uploadAdditionalDocument.bind(this);
+    this.getApplicationDetails = this.getApplicationDetails.bind(this);
     this.FILE_UPLOAD_SIZE_LIMIT = 1024 * 1024 * 10; // 10MB
   }
 
-  register (server) {
+  register(server) {
     return server.route([
       {
         method: "GET",
@@ -59,12 +60,17 @@ class CompanyManagerApi {
         method: "POST",
         path: "/api/org/register",
         handler: this.registerOrganization
+      },
+      {
+        method: "GET",
+        path: "/api/org/applicationDetails/{orgId}",
+        handler: this.getApplicationDetails
       }
     ]);
   }
 
   /* eslint-disable complexity */
-  async registerOrganization (request, h) {
+  async registerOrganization(request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/org/register"
@@ -89,8 +95,8 @@ class CompanyManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.TRADEMARK_NUMBER = payload && payload.brand &&  payload.brand.trademarkNumber;
-      mixpanelPayload.BRAND_NAME = payload && payload.brand &&  payload.brand.name;
+      mixpanelPayload.TRADEMARK_NUMBER = payload && payload.brand && payload.brand.trademarkNumber;
+      mixpanelPayload.BRAND_NAME = payload && payload.brand && payload.brand.name;
       mixpanelPayload.COMPANY_NAME = payload && payload.org && payload.org.name;
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
@@ -109,7 +115,7 @@ class CompanyManagerApi {
     }
   }
 
-  async checkTrademarkValidity (request, h) {
+  async checkTrademarkValidity(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
       API: `/api/brand/trademark/validity/${request.params && request.params.trademarkNumber}`
@@ -151,7 +157,7 @@ class CompanyManagerApi {
     }
   }
 
-  async uploadAdditionalDocument (request, h) {
+  async uploadAdditionalDocument(request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/company/uploadAdditionalDocument"
@@ -169,7 +175,7 @@ class CompanyManagerApi {
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const fd = new FormData();
-      fd.append("file", file, {filename});
+      fd.append("file", file, { filename });
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const ADDITIONAL_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.ADDITIONAL_DOC_PATH");
       const url = `${BASE_URL}${ADDITIONAL_DOC_PATH}`;
@@ -194,7 +200,7 @@ class CompanyManagerApi {
     }
   }
 
-  async uploadBusinessDocument (request, h) {
+  async uploadBusinessDocument(request, h) {
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/company/uploadBusinessDocument"
@@ -210,7 +216,7 @@ class CompanyManagerApi {
       const filename = file.hapi.filename;
       const fd = new FormData();
 
-      fd.append("file", file, {filename});
+      fd.append("file", file, { filename });
       console.log("[CompanyManagerApi::uploadBusinessDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BUSINESS_DOC_PATH");
@@ -238,7 +244,7 @@ class CompanyManagerApi {
     }
   }
 
-  async checkCompanyNameAvailability (request, h) {
+  async checkCompanyNameAvailability(request, h) {
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/company/availability"
@@ -267,7 +273,7 @@ class CompanyManagerApi {
       mixpanelPayload.COMPANY_NAME = name;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.get(url, options, {name});
+      const response = await ServerHttp.get(url, options, { name });
       console.log("[CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Avaialability has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -278,6 +284,93 @@ class CompanyManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.CHECK_COMPANY_NAME_AVAILABILILTY, mixpanelPayload);
+    }
+  }
+
+  async getApplicationDetails(request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/org/applicationDetails"
+    };
+    console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has started");
+    console.log("[CompanyManagerApi::getApplicationDetails] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
+      const options = {
+        method: "GET",
+        headers
+      };
+      console.log("[CompanyManagerApi::getApplicationDetails] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      let REGISTER_ORG_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.APPLICATION_DETAILS_PATH");
+      REGISTER_ORG_PATH && (REGISTER_ORG_PATH = REGISTER_ORG_PATH.replace("__orgId__", request.params.orgId));
+      const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ORG_ID = request.params.orgId;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
+      const response = await ServerHttp.get(url, options);
+      console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has completed");
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      const dummyResponse = {
+        orgStatus: "ON_HOLD",
+        orgId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
+        brandId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
+        company: {
+            name: "Subhadeep-demo003",
+            address: "Bangalore",
+            city: "Bangalore",
+            state: "CA",
+            zip: "17122",
+            countryCode: "US",
+            businessRegistrationDoc: null,
+            additionalDoc: null
+        },
+        brand: {
+            name: "Test-brand#4",
+            trademarkNumber: "5912022",
+            comments: "eeee",
+            usptoUrl: null,
+            usptoVerification: "VALID"
+        },
+        businessRegistrationDocList: [
+            {
+                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+                documentName: "Document2.pdf",
+                createTS: "2021-11-30T11:57:15.774Z",
+                uploadedToServiceNow: false
+            }
+        ],
+        additionalDocList: [
+            {
+                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+                documentName: "DocumentOld.pdf",
+                createTS: "2021-10-30T11:54:58.730Z",
+                uploadedToServiceNow: false
+            },
+            {
+                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+                documentName: "DocumentNew.pdf",
+                createTS: "2021-11-30T11:57:15.774Z",
+                uploadedToServiceNow: false
+            }
+        ]
+    };
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::getApplicationDetails] Error occured in API request for getting application details: ", err);
+      // return h.response(dummyResponse).code(200);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.GET_APPLICATION_DETAILS, mixpanelPayload);
     }
   }
 

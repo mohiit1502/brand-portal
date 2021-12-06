@@ -1,4 +1,3 @@
-/* eslint-disable  no-console */
 import ServerHttp from "../../../src/server/utility/ServerHttp";
 import ServerUtils from "../../../src/server/utility/server-utils";
 import mixpanel from "../../../src/server/utility/mixpanelutility";
@@ -19,7 +18,7 @@ let server;
 let getHeadersMethod;
 let ccmGetMethod;
 let serverHttpMethod;
-let mixPanelTrackEventMethod;
+let mixPanelTrackEventMethod
 
 jest.mock("/secrets/secrets.json", ()=>({
   secrets: 'Test Secrets'
@@ -96,7 +95,7 @@ describe("Test Brand Manager API",() => {
           expect(res.statusCode).toBe(200);
           expect(JSON.parse(res.payload)).toEqual(successResponse.body);
           done();
-        }).catch(() => {
+        }).catch(err => {
           expect(true).toBe(false);
           done();
         });

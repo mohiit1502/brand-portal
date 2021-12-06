@@ -3,11 +3,12 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
-import Cookies from "electrode-cookies";
 
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
+import {dispatchOnboardingDetails} from "../../../../../actions/company/company-actions";
+import * as components from "../../../../";
 
 import Http from "../../../../../utility/Http";
 import ContentRenderer from "../../../../../utility/ContentRenderer";
@@ -19,9 +20,11 @@ import * as images from "./../../../../../images";
 import "./StatusModalTemplate.component.scss";
 
 const StatusModalTemplate = props => {
-  const {modalsMeta, meta, showNotification, toggleModal, updateUserProfile, user} = props;
+  const {modalsMeta, meta, showNotification, toggleModal, updateUserProfile, user,
+     dispatchOnboardingDetails, onboardingDetails} = props;
   const {logoutUrl, profile} = user;
   const [loader, setLoader] = useState(false);
+  const [apiError, setApiError] = useState(false);
   const history = useHistory();
   const contentRenderer = new ContentRenderer();
   const baseUrl = window.location.origin;
@@ -29,6 +32,7 @@ const StatusModalTemplate = props => {
   const mixpanelPayload = {
     WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[meta && meta.CODE ? meta.CODE : 0] || "CODE_NOT_FOUND"
   };
+  const ContentComponent = meta.CONTENT_COMPONENT && components[meta.CONTENT_COMPONENT];
 
   const resendInvite = () => {
     const email = profile ? profile.email : "";
@@ -78,7 +82,20 @@ const StatusModalTemplate = props => {
         }
       }
     });
-    return dynamicReplacementConfig;
+    // return dynamicReplacementConfig;
+  };
+
+  const getPartialObject = node => {
+    if (node) {
+      if (node.length) {
+        const matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
+        matchedNode && getDynamicReplacementConfig(matchedNode);
+        return matchedNode;
+      } else {
+        getDynamicReplacementConfig(node);
+      }
+    }
+    return null;
   };
 
   const linkConfirmation = () => {
@@ -117,6 +134,24 @@ const StatusModalTemplate = props => {
       });
   };
 
+
+  const getAction = action => {
+    switch (action) {
+      case "updateCompanyDetails":
+        return dispatchOnboardingDetails;
+      case "dispatchUserProfile":
+        return () => {
+          const profileCloned = {...profile};
+          profileCloned.workflow.code = 1;
+          profileCloned.context = "edit";
+          toggleModal(TOGGLE_ACTIONS.HIDE, {});
+          updateUserProfile(profileCloned);
+        };
+      default:
+        return null;
+    }
+  };
+
   const runPrimaryAction = (action, actionParam) => {
     switch (action) {
       case "linkConfirmation":
@@ -132,6 +167,10 @@ const StatusModalTemplate = props => {
       case "navigation":
         window.open(actionParam, "_blank");
         // window.location.href = actionParam;
+        break;
+      case "logout":
+        mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
+        window.location.href = logoutUrlSuperlated;
         break;
       default:
         hideModal();
@@ -154,7 +193,6 @@ const StatusModalTemplate = props => {
         hideModal();
     }
   };
-
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className={`modal-dialog modal-dialog-centered modal-lg${meta.MODAL_DIALOG_CLASSES ? " "+meta.MODAL_DIALOG_CLASSES : ""}`} role="document">
@@ -165,16 +203,34 @@ const StatusModalTemplate = props => {
               <span className="close-btn" aria-hidden="true">&times;</span>
             </button>
           </div>}
-          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}`}>
-            {(images[meta.IMAGE] || meta.image) && <div className="row">
+          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}
+          ${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}
+          ${apiError ? "error-layout" : ""}`}>
+          {!apiError ? <>{(images[meta.IMAGE] || meta.image) && <div className="row">
               <div className="col">
                 <img src={images[meta.IMAGE] || meta.image} alt="IMAGE_STATUS" height={meta.HEIGHT || 140}/>
               </div>
             </div>}
-            {meta.TITLE && <div className="row mt-3">
-              <div className="col">
-                <span className="status-header font-weight-bold">
-                  {meta.TITLE}
+            {meta.TITLE && <div className={`row mt-3${meta.TITLE.classes ? " "+ meta.TITLE.classes : ""}`}>
+              <div className={meta.TITLE.classes || "col"}>
+                <span className={`status-header row font-weight-bold${meta.TITLE.ROW_CLASSES ? " " + meta.TITLE.ROW_CLASSES : ""}`}>
+                {
+                  typeof (meta.TITLE) === "string" ? meta.TITLE :
+                    Object.keys(meta.TITLE.content).map(node => {
+                      let content = meta.TITLE.content;
+                      let shouldRender = true;
+                      if (meta.TITLE.content[node].onClick) {
+                        content = {...meta.TITLE.content};
+                        const nodeContent = {...content[node]};
+                        shouldRender = nodeContent.renderCondition && onboardingDetails ?
+                        ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", onboardingDetails)
+                         : false;
+                        content[node] = nodeContent;
+                        content[node].onClick = getAction(nodeContent.onClick);
+                      }
+                      return shouldRender ? contentRenderer.getContent(content, node) : null;
+                    })
+                }
                 </span>
               </div>
             </div>}
@@ -194,18 +250,26 @@ const StatusModalTemplate = props => {
             }
             <div className={`row mt-1 body-content${meta.BODY_CONTENT_CLASSES ? ` ${  meta.BODY_CONTENT_CLASSES}` : ""}`}>
               <div className="col">
-                <div className={`status-description ${meta.MESSAGE && meta.MESSAGE.classes ? meta.MESSAGE.classes : ""}`}>
+                { meta.MESSAGE && <div className={`status-description ${meta.MESSAGE && meta.MESSAGE.classes ? meta.MESSAGE.classes : ""}`}>
                 {
                   typeof (meta.MESSAGE) === "string" ? meta.MESSAGE :
                     Object.keys(meta.MESSAGE.content).map(node => {
-                      const dynamicReplacementConfig = getDynamicReplacementConfig(meta.MESSAGE.content[node]);
-                      return contentRenderer.getContent(meta.MESSAGE.content, node, "", false, dynamicReplacementConfig);
+                      const nodeContent = meta.MESSAGE.content[node];
+                      node.startsWith("partial")
+                        ? Object.keys(nodeContent).forEach(node => {
+                          if (typeof nodeContent[node] === "object") {
+                            const parsedObject = getPartialObject(nodeContent[node]);
+                            nodeContent[node] = parsedObject || nodeContent[node];
+                          }
+                          })
+                        : getDynamicReplacementConfig(nodeContent);
+                      return contentRenderer.getContent(meta.MESSAGE.content, node, "", "", onboardingDetails);
                     })
                 }
-                </div>
+                </div>}
               </div>
             </div>
-            <div className={`row${meta.TYPE === "NOTIFICATION" ? "" : " mt-4"} footer${meta.FOOTER_CLASSES ? ` ${  meta.FOOTER_CLASSES}` : ""}`}>
+            {(meta.PRIMARY_ACTION || meta.ADDITIONAL_ACTION) && <div className={`row footer${meta.FOOTER_CLASSES ? ` ${  meta.FOOTER_CLASSES}` : ""}`}>
               <div className={`col${meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION" ? " text-right" : ""}
                         ${meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.containerClasses ? ` ${  meta.PRIMARY_ACTION.containerClasses}` : ""}`}>
                 {meta.TYPE === "NON_STATUS" || meta.TYPE === "CTA" || meta.TYPE === "NOTIFICATION"
@@ -214,16 +278,26 @@ const StatusModalTemplate = props => {
                                 meta.PRIMARY_ACTION && meta.PRIMARY_ACTION.actionParam ? meta.PRIMARY_ACTION.actionParam : "")}>
                     {meta.BUTTON_TEXT || (typeof meta.PRIMARY_ACTION === "object" ? meta.PRIMARY_ACTION.text : meta.PRIMARY_ACTION)}
                   </button>
-                  : <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload)}>
+                  : !meta.NO_PRIMARY_ACTION && <a className="btn btn-sm btn-primary px-5" href={logoutUrlSuperlated} onClick={() => mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload)}>
                     {meta.PRIMARY_ACTION || "Logout"}
                   </a>
                 }
-                {meta.ADDITIONAL_ACTION && <button className={`additional-action btn btn-link${meta.TYPE !== "NOTIFICATION" ? " mx-auto d-block mt-2" : " font-size-15"}${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
+                {meta.ADDITIONAL_ACTION && <div className={meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}>
+                {meta.ADDITIONAL_ACTION.actionHelpText && <span className={meta.ADDITIONAL_ACTION.actionHelpText.classes ? meta.ADDITIONAL_ACTION.actionHelpText.classes : ""}>{meta.ADDITIONAL_ACTION.actionHelpText.text}</span>}
+                <button className={`additional-action btn btn-link${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
                   onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>
                   {typeof meta.ADDITIONAL_ACTION === "object" ? meta.ADDITIONAL_ACTION.text : meta.ADDITIONAL_ACTION}
-                </button>}
+                </button>
+                </div>}
               </div>
-            </div>
+            </div>}
+            {ContentComponent && <ContentComponent user={user && user.profile} handler={getAction(meta.CONTENT_COMPONENT_PROP)}
+            apiError={apiError} setApiError={setApiError} org={onboardingDetails && onboardingDetails.org}
+            brand={onboardingDetails && onboardingDetails.brand}/>}
+            </> :
+            <div>
+              <h4>Unable to complete request. Please <a href="/">refresh!</a> </h4>
+            </div>}
           </div>
         </div>
       </div>
@@ -236,18 +310,22 @@ StatusModalTemplate.propTypes = {
   modalsMeta: PropTypes.object,
   toggleModal: PropTypes.func,
   showNotification: PropTypes.func,
+  dispatchOnboardingDetails: PropTypes.func,
   updateUserProfile: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
+  onboardingDetails: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
+    onboardingDetails: state.company.onboardingDetails,
     user: state.user,
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
   };
 };
 
 const mapDispatchToProps = {
+  dispatchOnboardingDetails,
   showNotification,
   toggleModal,
   updateUserProfile

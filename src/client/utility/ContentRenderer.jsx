@@ -5,6 +5,7 @@ import CustomInput from "../components/custom-components/custom-input/custom-inp
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
 import { Tile } from "../components";
+import contentRenderer from "../components/home/content-renderer/content-renderer";
 
 export default class ContentRenderer {
 
@@ -65,7 +66,13 @@ export default class ContentRenderer {
     const partialRenders = Object.keys(partial).map(partialNodeKey => {
       const node1 = partial[partialNodeKey];
       if (partialNodeKey.startsWith("chunk")) {
-        return <span className={classes ? classes : ""}>{node1}</span>;
+        if(typeof node1 == "string") {
+          return <span className={classes ? classes : ""}>{node1}</span>;
+        } else {
+          const chunkClass = node1.classes;
+          const chunkText = this.implementDynamicReplacements(node1.dynamicReplacementConfig, node1.text);
+          return <span className={`${classes ? classes : ""}${chunkClass ? " "+chunkClass : ""}`}>{chunkText}</span>;
+        }
       } else if (partialNodeKey.startsWith("anchor")) {
         return <a href={node1.href} className={classes ? classes : ""} >{node1.text}</a>;
       } else {
@@ -76,14 +83,19 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
-  getContent(content, node, classes, isPartial, dynamicReplacements) {
+  implementDynamicReplacements(dynamicReplacements, text) {
+    dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
+      text = text.replaceAll(key, dynamicReplacements[key]);
+    });
+    return text;
+  }
+  getContent(content, node, classes, isPartial) {
     if (node.startsWith("partial")) {
       return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
       let text = typeof (content[node]) === "string" ? content[node] : content[node].text;
-      dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
-        text = text.replaceAll(key, dynamicReplacements[key]);
-      });
+      const dynamicReplacements = content[node] && content[node].dynamicReplacementConfig;
+      text = this.implementDynamicReplacements(dynamicReplacements, text);
       if (typeof (content[node]) === "string") {
         return (<p className={classes ? classes : ""}>{text}</p>);
       } else {
@@ -100,9 +112,10 @@ export default class ContentRenderer {
         }
       </div>);
     } else if (node.startsWith("button")) {
+      const handler = content[node].onClick ? typeof content[node].onClick === "function" ? content[node].onClick : this[content[node].onClick] : () => {};
       return (
         <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
-          onClick={content[node].onClick ? this[content[node].onClick] : () => {}}
+          onClick={handler}
           href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
           {content[node].buttonText}
         </button>
@@ -171,7 +184,7 @@ export default class ContentRenderer {
       }
       /* eslint-disable no-empty */
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
     return null;
   }
@@ -211,36 +224,37 @@ export default class ContentRenderer {
 
     return laidoutFields && laidoutFields.map((fieldRow, key1) => {
       if (this && this.state.form.excludeRowContainer) {
-        return ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow, inputData);
+        return ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow);
       } else {
         const rowClass = fieldRow[0] && fieldRow[0].field.containerClasses;
-        return fieldRow[0] && fieldRow[0].field.excludeRowContainer ? ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow, inputData)
+        return fieldRow[0] && fieldRow[0].field.excludeRowContainer ? ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow)
           : (
               <div className={`form-row${rowClass ? ` ${  rowClass}` : ""}`} key={key1}>
-                {ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow, inputData)}
+                {ContentRenderer.getFieldRendersLaid.call(this, idIncoming, key1, fieldRow)}
               </div>
             );
       }
     });
   }
 
-  static getFieldRendersLaid(id, key1, fieldRow, inputData) {
+  static getFieldRendersLaid(id, key1, fieldRow) {
     return fieldRow && fieldRow.map((fieldMeta, key2) => {
       fieldMeta = {...fieldMeta};
       const colClass = `${fieldMeta.field.colClasses ? fieldMeta.field.colClasses : ""}${fieldMeta.span === "0" || !fieldMeta.span ? " col" : ` col-${  fieldMeta.span}`}`;
       const shouldRender = ContentRenderer.evaluateRenderDependency.call(this, fieldMeta.field.renderCondition);
       if (shouldRender) {
-        return fieldMeta.field.excludeColContainer ? ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id, inputData)
+        return fieldMeta.field.excludeColContainer ? ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id)
           : <div className={`${colClass}`} key={`${key1  }-${  key2}`}>
-              {ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id, inputData)}
+              {ContentRenderer.getCustomComponent.call(this, fieldMeta.field, id)}
             </div>;
       }
       return null;
     });
   }
 
-  static getCustomComponent (field, id, inputData) {
+  static getCustomComponent (field, id) {
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
+    // if (field.)
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
       onChange={this[onChange] ? changeHandlerArg ? evt => this[onChange](evt, changeHandlerArg) : this[onChange] : this.onChange}
@@ -278,15 +292,15 @@ export default class ContentRenderer {
                 dependencyObj.setFields.forEach(fieldConfig => validationObj[fieldConfig.field] = fieldConfig.value)
               }
             }
-          })
+          });
         }
       }
     });
     return field;
   }
 
-  static evaluateRenderDependencySubPart (condition, matchValueFieldName) {
-    const keyLocator = ContentRenderer.getValueLocator.call(this, condition.keyLocator);
+  static evaluateRenderDependencySubPart (condition, matchValueFieldName, searchObj) {
+    const keyLocator = searchObj || ContentRenderer.getValueLocator.call(this, condition.keyLocator);
     let currentValue = Helper.search(condition.keyPath, keyLocator);
     currentValue = currentValue && typeof currentValue === "string" ? currentValue.toLowerCase() : currentValue;
     const matchValue = condition.valueLocator ? Helper.search(condition.valuePath, ContentRenderer.getValueLocator.call(this, condition.valueLocator)) : condition[matchValueFieldName];

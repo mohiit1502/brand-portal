@@ -1,30 +1,62 @@
 @import "../../override/variables";
 
-.toast {
-
-}
-
-.custom-toast {
+.c-notification {
   position: fixed;
-  top: 70px;
-  right: 15px;
-  max-width: 650px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
-
-  &.show {
-    z-index: 1051;
+  &.variant1{
+    top: 70px;
+    right: 15px;
+    max-width: 650px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
+    &.show {
+      z-index: 1051;
+    }
+    &.custom-toast-success {
+      background: #E8F5E5;
+    }
+    &.custom-toast-error {
+      background: #FAD2D3;
+    }
+    .toast-body {
+      font-family: MyriadPro-Regular, sans-serif;
+      font-size: 14px;
+    }
   }
-
-  &.custom-toast-success {
-    background: #E8F5E5;
-  }
-
-  &.custom-toast-error {
-    background: #FAD2D3;
-  }
-
-  .toast-body {
-    font-family: MyriadPro-Regular, sans-serif;
-    font-size: 14px;
+  &.variant2{
+    padding: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.23);
+    background-color: $alert-background-color;
+    color: black;
+    height: 3rem;
+    transition: all 0.6s;
+    border-radius: 5px;
+    top: 8rem;
+    opacity: 0;
+    font-size: 1rem;
+    width: 35rem;
+    max-width: 35rem;
+    left: calc(50% - 17.5rem);
+  
+    .timer-bar {
+        height: 3px;
+        width: 0;
+        transition: width 10s linear;
+        background-color: blue;
+        left: 0;
+        top: 93%;
+    }
+    &.show {
+      opacity: 1;
+      z-index: 1051;
+      .timer-bar {
+        width: 100%;
+      }
+    }
+    .closebtn-style {
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1rem;
+      font-size: 2.25rem;
+      color: $close-button-color;
+    }
   }
 }
