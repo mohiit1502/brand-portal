@@ -19,9 +19,9 @@ class Stepper extends React.Component {
               return (
                 <div className="step-box" key={step.order}>
                   <div className="step-title">Step {step.order}: {step.name}</div>
-                  <div className={`stepper-circle ${step.complete ? `bg-complete${step.active ? " step-active" : ""}` : "bg-stepper-gray"}`} />
+                  <div className={`stepper-circle ${step.complete ? step.active ? "bg-primary step-primary" : "bg-complete" : "bg-stepper-gray"}`} />
                   {
-                    i > 0 && <div className={`connect-bar${step.complete ? " bg-complete" : " bg-stepper-gray"}`} />
+                    i > 0 && <div className={`connect-bar${step.complete ? ` bg-primary${step.active ? " adjust-margin" : ""}` : " bg-stepper-gray"}`} />
                   }
                 </div>
               );
@@ -37,10 +37,4 @@ Stepper.propTypes = {
   steps: PropTypes.array
 };
 
-const mapStateToProps = state => {
-  return {
-    steps: state && state.company && state.company.steps
-  }
-}
-
-export default connect(mapStateToProps)(Stepper);
+export default connect()(Stepper);

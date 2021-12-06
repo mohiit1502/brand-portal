@@ -4,8 +4,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import Cookies from "electrode-cookies";
 import $ from "jquery";
-import {dispatchCompanyState, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
-import {toggleModal, TOGGLE_ACTIONS} from "../../../actions/modal-actions";
+import {dispatchCompanyState} from "../../../actions/company/company-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../constants/constants";
 import Helper from "../../../utility/helper";
@@ -34,11 +33,11 @@ class CompanyProfileRegistration extends React.Component {
     this.onInvalid = Validator.onInvalid.bind(this);
     this.invalid = {zip: false};
     const companyConfiguration = this.props.companyContent ? this.props.companyContent : {};
+
     this.state = this.props.companyState && Object.keys(this.props.companyState).length > 0 ? this.props.companyState : {
       redirectToBrands: false,
       section: {...companyConfiguration.sectionConfig},
       clientType: Cookies.get("client_type"),
-      modalViewed: false,
       form: {
         ...companyConfiguration.formConfig,
         inputData: {...companyConfiguration.fields},
@@ -55,20 +54,8 @@ class CompanyProfileRegistration extends React.Component {
     };
     $("[data-toggle='tooltip']").tooltip();
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
-    if (!this.state.form.formPopulated) {
-      this.prepopulateInputFields();
-    }
-
-    if (!this.state.modalViewed && (this.props.profile && this.props.profile.context !== "edit")) {
-      if (this.state.clientType === "supplier") {
-        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.EMAIL_VERIFIED});
-      } else {
-        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...this.props.modalsMeta.SELLER_WELCOME_PROMPT});
-      }
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({
-        modalViewed: true
-      });
+    if (this.props.profile && !this.state.form.formPopulated && this.state.clientType && this.state.clientType === "seller") {
+      this.prepopulateInputFields(this.props.profile);
     }
   }
 
@@ -101,7 +88,7 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
-  prepopulateSellerInputFields(data) {
+  prepopulateInputFields (data) {
     const form = {...this.state.form};
     const seller = data.sellerInfo;
     if (seller && seller.taxClassification === "W9") {
@@ -115,39 +102,8 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
+      form.isUpdateTemplate = true;
       this.setState({form}, () => this.companyDebounce());
-    }
-  }
-
-  prepopulateInputContextEdit() {
-    if (this.props.onboardingDetails) {
-      const data = this.props.onboardingDetails.org;
-      const form = {...this.state.form};
-      if (data) {
-        form.inputData.companyName.value = data.name;
-        form.inputData.address.value = data.address;
-        form.inputData.city.value = data.city || "";
-        form.inputData.state.value = data.state || "";
-        form.inputData.zip.value = data.zip || "";
-        form.inputData.country.value = data.countryCode || "US";
-        form.formPopulated = true;
-
-        this.setState({form}, () => {
-          this.toggleFormEnable(true, true, false);
-          this.checkToEnableSubmit();
-        });
-      }
-    }
-  }
-
-  prepopulateInputFields () {
-    const data = this.props.profile;
-    if (this.props.profile.context !== "edit") {
-      if (this.state.clientType && this.state.clientType === "seller") {
-        this.prepopulateSellerInputFields(data);
-      }
-    } else {
-      this.prepopulateInputContextEdit();
     }
   }
 
@@ -171,9 +127,9 @@ class CompanyProfileRegistration extends React.Component {
     form.isSubmitDisabled = !bool;
     form.inputData.companyOnboardingActions.buttons = {...form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = !bool;
-    // form.inputData.additionalDoc.disabled = !bool;
+    form.inputData.additionalDoc.disabled = !bool;
     form.inputData.businessRegistrationDoc.disabled = !bool;
-    if (form.inputData.businessRegistrationDoc.uploading) {
+    if (form.inputData.businessRegistrationDoc.uploading || form.inputData.additionalDoc.uploading) {
       form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
     }
     this.setState({form});
@@ -202,7 +158,7 @@ class CompanyProfileRegistration extends React.Component {
           state.form.isSubmitDisabled = true;
           state.form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
           state.form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-          // state.form.inputData.additionalDoc.disabled = true;
+          state.form.inputData.additionalDoc.disabled = true;
           state.form.inputData.businessRegistrationDoc.disabled = true;
           this.toggleFormEnable(false, false);
           this.companyDebounce(evt);
@@ -254,7 +210,7 @@ class CompanyProfileRegistration extends React.Component {
     const state = {...this.state};
     const form = state.form = {...state.form};
     const inputKeys = ["companyName", "address", "city", "state", "zip"];
-    const docKeys = ["businessRegistrationDoc"];
+    const docKeys = ["businessRegistrationDoc", "additionalDoc"];
     this.state.considerCountryForValidation && inputKeys.push("country");
     inputKeys.forEach(key => {
       form.inputData[key].disabled = true;
@@ -272,7 +228,7 @@ class CompanyProfileRegistration extends React.Component {
     form.isSubmitDisabled = true;
     form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-    // form.inputData.additionalDoc.disabled = true;
+    form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
     this.setState(state);
     const mixpanelPayload = {
@@ -283,7 +239,6 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    const docNames = this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList;
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -291,37 +246,18 @@ class CompanyProfileRegistration extends React.Component {
       state: this.state.form.inputData.state.value,
       zip: this.state.form.inputData.zip.value,
       countryCode: this.state.form.inputData.country.value,
+      businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id
     };
 
-    if (docNames && docNames.findIndex(obj => obj.businessRegistrationDocId) === -1) {
-      org.businessRegistrationDocList = [
-        ...(this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList 
-          ? this.props.onboardingDetails.businessRegistrationDocList : []),
-        {
-          businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
-          businessRegistrationDocName: this.state.form.inputData.businessRegistrationDoc.filename
-        }
-      ];
+    if (this.state.form.inputData.additionalDoc.id) {
+      org.additionalDocId = this.state.form.inputData.additionalDoc.id;
     }
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }
-    const steps = this.props.steps ? [...this.props.steps] : [];
-    /* eslint-disable no-unused-expressions */
-    if (steps) {
-      steps[0].complete = true;
-      steps[1].complete = true;
-      steps[0].active = false;
-      steps[1].active = true;
-    }
     this.props.updateOrgData(org, "company");
+    this.setState({redirectToBrands: true});
     this.props.dispatchCompanyState(this.state);
-    this.props.dispatchOnboardingDetails({
-      ...this.props.onboardingDetails,
-      org
-    });
-    this.props.dispatchSteps(steps);
-    this.props.history.push("/onboard/brand");
   }
 
   render() {
@@ -359,8 +295,6 @@ CompanyProfileRegistration.propTypes = {
   modal: PropTypes.object,
   profile: PropTypes.object,
   showNotification: PropTypes.func,
-  toggleModal: PropTypes.func,
-  modalsMeta: PropTypes.object,
   updateOrgData: PropTypes.func
 };
 
@@ -368,19 +302,13 @@ const mapStateToProps = state => {
   return {
     companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
     companyState: state.company && state.company.companyState,
-    profile: state.user && state.user.profile,
-    steps: state.company && state.company.steps,
-    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
-    onboardingDetails: state.company && state.company.onboardingDetails
+    profile: state.user && state.user.profile
   };
 };
 
 const mapDispatchToProps = {
   dispatchCompanyState,
-  dispatchOnboardingDetails,
-  dispatchSteps,
-  showNotification,
-  toggleModal
+  showNotification
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyProfileRegistration);

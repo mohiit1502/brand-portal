@@ -2,14 +2,9 @@ export const DISPATCH_COMPANY_STATE = "DISPATCH_COMPANY_STATE";
 export const DISPATCH_BRAND_STATE = "DISPATCH_BRAND_STATE";
 export const DISPATCH_NEW_REQUEST = "DISPATCH_NEW_REQUEST";
 export const DISPATCH_STEPS = "DISPATCH_STEPS";
-export const DISPATCH_ONBOARDING_DETAILS = "DISPATCH_ONBOARDING_DETAILS";
 
 export const dispatchCompanyState = companyState => {
     return {type: DISPATCH_COMPANY_STATE, value: {companyState}};
-};
-
-export const dispatchOnboardingDetails = onboardingDetails => {
-    return {type: DISPATCH_ONBOARDING_DETAILS, value: {onboardingDetails}};
 };
 
 export const dispatchBrandState = brandState => {

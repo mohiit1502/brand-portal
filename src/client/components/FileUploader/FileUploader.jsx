@@ -7,16 +7,6 @@ import ProgressBar from "../custom-components/progress-bar/progress-bar";
 
 /* eslint-disable complexity, no-nested-ternary */
 const FileUploader = props => {
-  const formToDocMapper = {
-    companyreg: {
-      sectionName: "org",
-      attachmentKey: "businessRegistrationDocList"
-    },
-    brandreg: {
-      sectionName: "brand",
-      attachmentKey: "additionalDocList"
-    }
-  };
   const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
   const tooltipContent = {
     webformDocContent: <div>
@@ -43,9 +33,6 @@ const FileUploader = props => {
       </ol>
     </div>
   };
-  const formIdentifier = props.formId;
-  const sectionObject = props.company && props.company.onboardingDetails && props.company.onboardingDetails[formToDocMapper[formIdentifier].sectionName];
-  const uploadedAttachments =  sectionObject && sectionObject[formToDocMapper[formIdentifier].attachmentKey];
   return (
     <div className={`c-FileUploader form-row primary-file-upload mb-3${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
       <div className="col">
@@ -54,14 +41,10 @@ const FileUploader = props => {
             content={tooltipContent[props.tooltipContentKey]}
             icon={images[props.icon]}/>
         </div>
-        {uploadedAttachments && <div>
-          <b>Uploaded attachments: </b>
-          <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>
-        </div>}
         {
           !props.uploading && !props.id &&
           <label
-            className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
+            className={`btn btn-sm btn-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
             {props.buttonText}
             <input type="file" className="d-none" onChange={props.onChange}
               disabled={props.disabled}/>
@@ -69,12 +52,9 @@ const FileUploader = props => {
         }
         {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}
         {!props.uploading && props.id &&
-          <div className="col-6 field-container position-relative">
-            <div className={`uploaded-file-label form-control mb-2`}>
-              <span className="d-block overflow-auto">{props.filename}</span>
-            </div>
-            <span aria-hidden="true" className="cancel-file-selection-btn position-absolute cursor-pointer"
-                onClick={cancelHandler}>&times;</span>
+          <div className={`uploaded-file-label form-control mb-2`}>{props.filename}
+            <span aria-hidden="true" className="cancel-file-selection-btn float-right cursor-pointer"
+                  onClick={cancelHandler}>&times;</span>
           </div>
         }
       </div>

@@ -5,7 +5,6 @@ import CustomInput from "../components/custom-components/custom-input/custom-inp
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
 import { Tile } from "../components";
-import contentRenderer from "../components/home/content-renderer/content-renderer";
 
 export default class ContentRenderer {
 
@@ -254,7 +253,6 @@ export default class ContentRenderer {
 
   static getCustomComponent (field, id) {
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
-    // if (field.)
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
       onChange={this[onChange] ? changeHandlerArg ? evt => this[onChange](evt, changeHandlerArg) : this[onChange] : this.onChange}
