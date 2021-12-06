@@ -57,10 +57,11 @@ const MODALSMETA = {
         }
       },
       "TITLE": {
+        "classes": "justify-content-center",
         "content": {
           "para": {
             "text": "Application Submitted",
-            "classes": "h3 mx-5 px-3 mb-2 font-weight-bold"
+            "classes": "h3 mx-5 px-5 mb-2 font-weight-bold"
           }
         }
       },
@@ -72,80 +73,14 @@ const MODALSMETA = {
       },
       "TYPE": "CTA"
     },
-    "APPLICATION_INFORMATION_UNDER_REVIEW": {
-      "CODE": 12,
-      "BODY_CONTENT_CLASSES": "ml-5 text-left",
-      "BODY_CLASSES": "px-5 modal-background",
-      "MODAL_DIALOG_CLASSES": "width-unset modal-xl ",
-      
-      "MESSAGE": {
-        "classes": "",
-        "content": {
-          "para1": {
-            "text": "Application case: 324323",
-            "classes": "font-size-14 px-1"
-          },
-          "partial1": {
-            "chunk1": "Status: ",
-            "chunk2": [{
-              "text": "Under Review",
-              "classes": "status-review",
-              "key": ["NEW"]
-            },
-            {
-              "text": "On Hold - Action Required",
-              "classes": "status-onhold",
-              "key": ["ON_HOLD"]
-            },
-            {
-              "text": "Declined",
-              "classes": "status-declined",
-              "key": ["REJECTED", "REJECTED_ON_AUDIT"]
-            }
-          ]
-          },
-          "para2": {
-            "text": "",
-            "classes": "mt-3"
-          },
-          "partial2": {
-            "chunk1": "Your company information and brand details are currently being reviewed. Once your application is approved, you will receive a confirmation email at  ",
-            "chunk2": {
-              "text": "__emailPlaceholder__",
-              "classes": "font-weight-bold mt-5",
-              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
-            },
-          },
-          "para3": {
-            "text": "",
-            "classes": "border-bottom mt-4"
-          }
-        }
-      },
-      "TITLE": {
-        "content": {
-          "para": {
-            "text": "Adkin Athletics",
-            "classes": "text-left h3 px-3 ml-5 mb-2 font-weight-bold"
-          }
-        }
-      },
-      "CONTENT_COMPONENT": "ApplicationDetails",
-      "TYPE": "CTA"
-    },
-    "APPLICATION_INFORMATION_ONHOLD": {
+    "APPLICATION_INFORMATION": {
       "CODE": 2,
       "BODY_CONTENT_CLASSES": "ml-5 text-left",
       "BODY_CLASSES": "px-5 modal-background",
       "MODAL_DIALOG_CLASSES": "width-unset modal-xl ",
-      
       "MESSAGE": {
         "classes": "",
         "content": {
-          "para1": {
-            "text": "Application case: 324323",
-            "classes": "font-size-14 px-1"
-          },
           "partial1": {
             "chunk1": "Status: ",
             "chunk2": [{
@@ -170,38 +105,96 @@ const MODALSMETA = {
             "classes": "mt-3"
           },
           "partial2": {
-            "chunk1": "We are unable to verify the information provided in your application. Please refer to the email sent to ",
-            "chunk2": {
+            "chunk1": [
+              {
+                "text": "We are unable to verify the information provided in your application. Please refer to the email sent to ",
+                "classes": "mt-5",
+                "key": ["ON_HOLD"]
+              },
+              {
+                "text": "Your company information and brand details are currently ",
+                "classes": "",
+                "key": ["NEW"]
+              },
+              {
+                "text": "Your declined and brand details are currently ",
+                "classes": "",
+                "key": ["REJECTED", "REJECTED_ON_AUDIT"]
+              }
+            ],
+            "chunk2": [
+              {
+                "text": "__emailPlaceholder__",
+                "classes": "font-weight-bold mt-5",
+                "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+                "key": ["ON_HOLD"]
+              },
+              {
+                "text": "Your company information and brand details are currently ",
+                "classes": "",
+                "key": ["NEW"]
+              },
+              {
+                "text": "Your declined and brand details are currently ",
+                "classes": "",
+                "key": ["REJECTED", "REJECTED_ON_AUDIT"]
+              }
+
+          ],
+          "chunk3": [
+            {
               "text": "__emailPlaceholder__",
               "classes": "font-weight-bold mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+              "key": ["ON_HOLD"]
             },
-            "chunk3": {
-              "text": " for instructions to edit your application."
+            {
+              "text": "__emailPlaceholder__",
+              "classes": "font-weight-bold mt-5",
+              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+              "key": ["NEW"]
             }
+            
+          ],
+          "chunk4": [
+            {
+              "text": "__emailPlaceholder__",
+              "classes": "font-weight-bold mt-5",
+              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+              "key": ["ON_HOLD"]
+            }
+          ]
           },
           "para3": {
+            "renderCondition": {
+              "key": ["ON_HOLD"],
+              "path": "orgStatus"
+            },
             "text": "Review and confirm that the information in your application is accurate.",
             "classes": "mt-2"
           },
           "para4": {
             "text": "",
             "classes": "border-bottom mt-4"
-          }, 
+          }
         }
       },
       "TITLE": {
-        "classes": "col-6",
+        "ROW_CLASSES": "ml-5",
         "content": {
           "para": {
             "text": "__businessName__",
             "dynamicReplacementConfig": {"__businessName__": "profile"},
-            "classes": "text-left h3 px-3 ml-5 mb-2 font-weight-bold"
+            "classes": "text-left h3 font-weight-bold col-9"
+          },
+          "button1": {
+            "icon": "EditOutlinedIcon",
+            "classes": "col btn btn-primary",
+            "buttonText": "Edit Application",
+            "onClick": "dispatchUserProfile",
+            "renderCondition": "{\"keyPath\": \"orgStatus\", \"value\": \"on_hold\"}"
           }
         }
-      },
-      "HEADER_ACTION": { 
-        "classes": "col-6"
       },
       "CONTENT_COMPONENT": "ApplicationDetails",
       "CONTENT_COMPONENT_PROP": "updateCompanyDetails",

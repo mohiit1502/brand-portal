@@ -6,7 +6,7 @@ $progress-bar-color: #53b8e3;
 
 .progress {
   position: relative;
-  //height: 31px !important;
+  min-height: 3rem;
   background: $progress-bg-color;
   .progress-bar-text {
     position: absolute;

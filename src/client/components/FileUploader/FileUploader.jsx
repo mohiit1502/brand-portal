@@ -4,10 +4,19 @@ import "./FileUploader.component.scss";
 import Tooltip from "../custom-components/tooltip/tooltip";
 import * as images from "../../images";
 import ProgressBar from "../custom-components/progress-bar/progress-bar";
-import {CSSTransition} from "react-transition-group";
 
 /* eslint-disable complexity, no-nested-ternary */
 const FileUploader = props => {
+  const formToDocMapper = {
+    companyreg: {
+      sectionName: "org",
+      attachmentKey: "businessRegistrationDocList"
+    },
+    brandreg: {
+      sectionName: "brand",
+      attachmentKey: "additionalDocList"
+    }
+  };
   const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
   const tooltipContent = {
     webformDocContent: <div>
@@ -34,7 +43,9 @@ const FileUploader = props => {
       </ol>
     </div>
   };
-
+  const formIdentifier = props.formId;
+  const sectionObject = props.company && props.company.onboardingDetails && props.company.onboardingDetails[formToDocMapper[formIdentifier].sectionName];
+  const uploadedAttachments =  sectionObject && sectionObject[formToDocMapper[formIdentifier].attachmentKey];
   return (
     <div className={`c-FileUploader form-row primary-file-upload mb-3${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
       <div className="col">
@@ -43,24 +54,20 @@ const FileUploader = props => {
             content={tooltipContent[props.tooltipContentKey]}
             icon={images[props.icon]}/>
         </div>
+        {uploadedAttachments && <div>
+          <b>Uploaded attachments: </b>
+          <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>
+        </div>}
         {
           !props.uploading && !props.id &&
-          <>
-            <label
-              className={`btn btn-sm btn-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
-              {props.buttonText}
-              <input type="file" className="d-none" onChange={props.onChange} onClick={e => e.target.value = null} accept={props.accept}
-                disabled={props.disabled}/>
-            </label>
-            {props.error && <small className="d-block error">{props.error}</small>}
-          </>
+          <label
+            className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
+            {props.buttonText}
+            <input type="file" className="d-none" onChange={props.onChange}
+              disabled={props.disabled}/>
+          </label>
         }
-        {
-          props.uploading && !props.id &&
-            <CSSTransition timeout={300}>
-              <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>
-            </CSSTransition>
-        }
+        {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}
         {!props.uploading && props.id &&
           <div className="col-6 field-container position-relative">
             <div className={`uploaded-file-label form-control mb-2`}>

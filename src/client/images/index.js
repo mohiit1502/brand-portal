@@ -20,6 +20,7 @@ import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.jpg";
 import CreateBrandForm from "./CreateBrandForm.jpg";
 import DashboardIcon from "./dashboard.png";
+import {EditOutlinedIcon} from "@material-ui/icons";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
@@ -88,6 +89,7 @@ export {
   CheckGreen,
   CheckGreenLine,
   DashboardIcon,
+  EditOutlinedIcon,
   EmailIcon,
   Event,
   Exclamation,
@@ -96,9 +98,9 @@ export {
   Filter,
   FilterBlue,
   GreenCircleCheck,
-  GreenCircleWhiteTick,
   Group,
   GroupPeople,
+  GreenCircleWhiteTick,
   Help,
   HidePassword,
   Info,

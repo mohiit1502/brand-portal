@@ -80,7 +80,7 @@ class PreLoadApiUtil {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
-                            // response = MODALMETA;
+                            response = MODALMETA;
                             dipatcher(response);
                         } catch (e) {
                             dipatcher(MODALMETA);
@@ -98,7 +98,7 @@ class PreLoadApiUtil {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
-                            // response = FORMFIELDMETA;
+                            response = FORMFIELDMETA;
                             dipatcher(response);
                         } catch (e) {
                             dipatcher(FORMFIELDMETA);

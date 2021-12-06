@@ -2,24 +2,23 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect, withRouter} from "react-router";
-import {dispatchBrandState, dispatchNewRequest, dispatchSteps} from "../../../actions/company/company-actions";
-import {TOGGLE_ACTIONS, toggleModal} from "../../../actions/modal-actions";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
-import Http from "../../../utility/Http";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
 import Validator from "../../../utility/validationUtil";
-import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
+import DocumentActions from "../../../utility/docOps";
 import ContentRenderer from "../../../utility/ContentRenderer";
 import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
+import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
 
 class BrandRegistration extends React.Component {
 
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "onChange", "gotoCompanyRegistration", "submitOnboardingForm", "undertakingtoggle", "goToApplicationReview"];
+    const functions = ["bubbleValue", "onChange", "gotoCompanyRegistration", "undertakingtoggle", "goToApplicationReview"];
     const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
     functions.forEach(name => {
       this[name] = this[name].bind(this);
@@ -29,6 +28,8 @@ class BrandRegistration extends React.Component {
       this[name] = Helper.debounce(functionToDebounce, CONSTANTS.APIDEBOUNCETIMEOUT);
     });
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
+    this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
+    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
     this.loader = Helper.loader.bind(this);
     const brandConfiguration = this.props.brandContent ? this.props.brandContent : {};
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
@@ -36,7 +37,8 @@ class BrandRegistration extends React.Component {
       section: {...brandConfiguration.sectionConfig},
       form: {
         ...brandConfiguration.formConfig,
-        inputData: {...brandConfiguration.fields}
+        inputData: {...brandConfiguration.fields},
+        formPopulated: false
       }
     };
     const mixpanelPayload = {
@@ -45,8 +47,29 @@ class BrandRegistration extends React.Component {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.BRAND_REGISTRATION, mixpanelPayload);
   }
 
-  goToApplicationReview(evt){
+  componentDidMount() {
+    if (!this.state.form.formPopulated && this.props.userProfile && this.props.userProfile.context === "edit") {
+      this.prepopulateFields();
+    }
+  }
+
+  prepopulateFields() {
+    if (this.props.onboardingDetails) {
+      const data = this.props.onboardingDetails.brand;
+      const form = {...this.state.form};
+      if (data) {
+        form.inputData.trademarkNumber.value = data.trademarkNumber;
+        form.inputData.brandName.value = data.name;
+        form.formPopulated = true;
+
+        this.setState({form}, this.checkToEnableSubmit);
+      }
+    }
+  }
+
+  goToApplicationReview(evt) {
       evt.preventDefault();
+      const docNames = this.props.onboardingDetails && this.props.onboardingDetails.additionalDocList;
       const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
       if (steps) {
         steps[1].active = false;
@@ -61,14 +84,22 @@ class BrandRegistration extends React.Component {
         name: inputData.brandName.value,
         comments: ""
       };
+      if (docNames && docNames.findIndex(obj => obj.additionalDocId) === -1) {
+        brand.additionalDocList = [
+          ...(this.props.onboardingDetails && this.props.onboardingDetails.additionalDocList
+            ? this.props.onboardingDetails.additionalDocList : []),
+              {additionalDocId: this.state.form.inputData.additionalDoc.id, additionalDocName: this.state.form.inputData.additionalDoc.filename}
+        ];
+      }
       if (inputData.comments.value) {
         brand.comments = inputData.comments.value;
       }
-      const data = {
-        org: this.props.org,
-        brand
-      };
+      this.triggerUpdaters(brand, steps);
+  }
+
+  triggerUpdaters (brand, steps) {
       this.props.updateOrgData(brand, "brand");
+      this.props.dispatchOnboardingDetails({...this.props.onboardingDetails, brand });
       this.props.dispatchSteps(steps);
       this.props.history.push("/onboard/review");
   }
@@ -148,63 +179,7 @@ class BrandRegistration extends React.Component {
     this.props.updateOrgData(this.state, "brand");
     this.props.dispatchBrandState(this.state);
     this.props.dispatchSteps(steps);
-    this.props.history.push("/onboard/company")
-  }
-
-  /* eslint-disable no-empty */
-  async updateProfileInfo () {
-    try {
-      const profile = (await Http.get("/api/userInfo")).body;
-      this.props.updateUserProfile(profile);
-    } catch (e) {
-    }
-  }
-
-  /* eslint-disable max-statements */
-  async submitOnboardingForm(evt) {
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, {WORK_FLOW: "COMPANY_ONBOARDING"});
-    evt.preventDefault();
-    const mixpanelPayload = {
-      API: "/api/org/register",
-      WORK_FLOW: "COMPANY_ONBOARDING"
-    };
-    try {
-      this.loader("form", true);
-      const inputData = this.state.form.inputData;
-      const brand = {
-        trademarkNumber: inputData.trademarkNumber.value,
-        usptoUrl: inputData.trademarkNumber.usptoUrl,
-        usptoVerification: inputData.trademarkNumber.usptoVerification,
-        name: inputData.brandName.value,
-        comments: ""
-      };
-      if (inputData.comments.value) {
-        brand.comments = inputData.comments.value;
-      }
-      const data = {
-        org: this.props.org,
-        brand
-      };
-      data.sellerInfo = this.props.org.sellerInfo;
-      this.props.org.sellerInfo && delete this.props.org.sellerInfo;
-      mixpanelPayload.BRAND_NAME = brand && brand.name;
-      mixpanelPayload.COMPANY_NAME = this.props.org && this.props.org.name;
-      mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
-      mixpanelPayload.IS_DOCUMENT_UPLOADED = this.props.org && Boolean(this.props.org.businessRegistrationDocId || this.props.org.additionalDocId);
-      await Http.post("/api/org/register", data, {clientType: this.props.clientType});
-      this.loader("form", false);
-      const meta = { templateName: "CompanyBrandRegisteredTemplate" };
-      this.updateProfileInfo();
-      this.props.dispatchNewRequest(true);
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-      mixpanelPayload.API_SUCCESS = true;
-    } catch (err) {
-      this.loader("form", false);
-      mixpanelPayload.API_SUCCESS = false;
-      mixpanelPayload.ERROR = err.message ? err.message : err;
-    } finally {
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
-    }
+    this.props.history.push("/onboard/company");
   }
 
   render() {
@@ -246,7 +221,6 @@ BrandRegistration.propTypes = {
   dispatchSteps: PropTypes.func,
   showNotification: PropTypes.func,
   steps: PropTypes.array,
-  toggleModal: PropTypes.func,
   updateOrgData: PropTypes.func,
   updateUserProfile: PropTypes.func,
   org: PropTypes.PropTypes.oneOfType([
@@ -260,7 +234,8 @@ const mapStateToProps = state => {
     brandContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.BRANDREG,
     brandState: state.company && state.company.brandState,
     steps: state.company && state.company.steps,
-    userProfile: state.user.profile
+    userProfile: state.user.profile,
+    onboardingDetails: state.company && state.company.onboardingDetails
   };
 };
 
@@ -268,8 +243,8 @@ const mapDispatchToProps = {
   dispatchBrandState,
   dispatchNewRequest,
   dispatchSteps,
+  dispatchOnboardingDetails,
   showNotification,
-  toggleModal,
   updateUserProfile
 };
 

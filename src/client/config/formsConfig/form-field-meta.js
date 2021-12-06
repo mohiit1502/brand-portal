@@ -138,17 +138,10 @@ const FORMFIELDCONFIG = {
           "layout": "7.1.0",
           "type": "_buttonsPanel",
           "buttons": {
-            "clear": {
-              "classes": "btn btn-sm cancel-btn text-primary",
-              "disabled": false,
-              "onClick": "resetCompanyRegistration",
-              "text": "Clear",
-              "type": "button"
-            },
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
-              "text": "Next",
+              "text": "Continue",
               "type": "submit"
             }
           }
@@ -206,6 +199,26 @@ const FORMFIELDCONFIG = {
           "type": "text",
           "value": ""
         },
+        "additionalDoc": {
+          "buttonText": "Upload",
+          "cancelHandlerArg": "additionalDoc",
+          "changeHandlerArg": "additionalDoc",
+          "disabled": false,
+          "endpoint": "/api/company/uploadAdditionalDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "id": "",
+          "inputId": "additionalDoc",
+          "key": "additionalDoc",
+          "label": "Optional: attach additional documents if necessary (i.e. trademark registration)",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "additionalDocument",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
         "comments": {
           "disabled": false,
           "error": "",
@@ -253,7 +266,7 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
               "onClick": "goToApplicationReview",
-              "text": "Next",
+              "text": "Continue",
               "type": "button"
             }
           }
