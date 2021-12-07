@@ -5,10 +5,24 @@ import { NOTIFICATION_TYPE } from "../actions/notification/notification-actions"
 import CONSTANTS from "../constants/constants";
 import mixpanel from "./mixpanelutils";
 import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
+import ContentRenderer from "./ContentRenderer";
 
 export default class Validator {
 
   static errorPrefix = "Error: ";
+
+  static validateCounterfeitNumber(target, validationObj) {
+    const value = target.value ? target.value.trim() : "";
+    const length = value.length;
+    if (
+      (validationObj && (validationObj.length && length !== validationObj.length)) &&
+      (length !== 0)
+    ) {
+      return validationObj.error;
+    } else {
+      return "";
+    }
+  }
 
   static validate(evt, parentRef) {
     const {validators} = this.props;
@@ -94,12 +108,14 @@ export default class Validator {
   }
 
   static validateState () {
-    const form = {...this.state.form};
+    const matchForm = {...this.state.form};
+    const writeForm = {...this.state.form};
+    matchForm.inputData = {...matchForm.inputData};
+    Object.keys(matchForm.inputData).forEach(key => matchForm.inputData[key] = ContentRenderer.hookConditionInterceptor.call(this, matchForm.inputData[key], ["required"]))
     let hasError = false;
     /* eslint-disable complexity */
-    Object.keys(form.inputData).forEach(key => {
-      const obj = {...form.inputData[key]};
-      form.inputData[key] = obj;
+    Object.keys(matchForm.inputData).forEach(key => {
+      const obj = {...matchForm.inputData[key]};
       if (obj.error) {
         hasError = true;
         return;
@@ -112,15 +128,17 @@ export default class Validator {
               hasError = true;
             }
           } else {
+            const obj = writeForm.inputData[key];
             obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
             hasError = true;
           }
         }
       } else {
+        const obj = writeForm.inputData[key];
         obj.error = obj.error || "";
       }
     });
-    this.setState({form});
+    this.setState({writeForm});
     return hasError;
   }
 
@@ -162,6 +180,17 @@ export default class Validator {
       formErrors: {...formErrorsClone}
     });
     return error;
+  }
+
+  static onInvalid (evt, key, innerKey) {
+    evt.preventDefault();
+    const form = this.state.form;
+    const matchedObj = Helper.search(key, form.inputData);
+    if (matchedObj) {
+      matchedObj.error = matchedObj.invalidError ? matchedObj.invalidError : Helper.search(matchedObj.invalidErrorPath);
+      this.invalid[innerKey || key] = true;
+      this.setState({form});
+    }
   }
 
   // =============================== Backend Validations ====================================
@@ -343,18 +372,6 @@ export default class Validator {
         this.setState({form, uniquenessCheckStatus}, this.checkToEnableSubmit);
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.EMAIL_VALIDITY_CHECK, mixpanelPayload);
       });
-    }
-  }
-
-  static onInvalid (evt, key) {
-    evt.preventDefault();
-    const form = this.state.form;
-    const matchedField = Object.keys(form.inputData).find(idKey => idKey === key);
-    if (matchedField) {
-      const matchedObj = form.inputData[matchedField];
-      matchedObj.error = matchedObj.invalidError ? matchedObj.invalidError : Helper.search(matchedObj.invalidErrorPath);
-      this.invalid[key] = true;
-      this.setState({form});
     }
   }
 

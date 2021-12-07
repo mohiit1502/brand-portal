@@ -20,6 +20,7 @@ import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.jpg";
 import CreateBrandForm from "./CreateBrandForm.jpg";
 import DashboardIcon from "./dashboard.png";
+import {EditOutlinedIcon} from "@material-ui/icons";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
@@ -28,6 +29,7 @@ import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
 import FilterBlue from "./filterIcon.svg";
 import GreenCircleCheck from "./green-circle-check.svg";
+import GreenCircleWhiteTick from "./greenCircleWhiteTick.svg";
 import Group from "./group-23.svg";
 import GroupPeople from "./group-1474.png";
 import Help from "./Help.png";
@@ -53,7 +55,7 @@ import SortUp from "./sort_ascend.svg";
 import SuccessCheck from "./SuccessCheck.svg";
 import TimesFailure from "./times-failure.svg";
 import TimesSuccess from "./times-success.svg";
-import TOU from "./Brand Portal - Terms of Use FINAL (Sept 15 2020).pdf";
+import TOU from "./Walmart Brand Portal Terms of Use 10.25.2021.pdf";
 import User from "./user.svg";
 import UsersIcon from "./users.png";
 import UserList from "./User List.jpg";
@@ -87,6 +89,7 @@ export {
   CheckGreen,
   CheckGreenLine,
   DashboardIcon,
+  EditOutlinedIcon,
   EmailIcon,
   Event,
   Exclamation,
@@ -97,6 +100,7 @@ export {
   GreenCircleCheck,
   Group,
   GroupPeople,
+  GreenCircleWhiteTick,
   Help,
   HidePassword,
   Info,

@@ -23,8 +23,8 @@ const Accordion = ({children, data, expanded, setExpanded}) => {
 
   return (
     <div className="c-Accordion">
-      {!data.simple && <div className="c-Accordion__button-container">
-        <button className={`c-Accordion__button${expanded ? " expanded" : ""}`} onClick={() => {onClickHandler();}}>
+      {!data.simple && <div data-test={"accordion-buttonPanel"} className="c-Accordion__button-container">
+        <button data-test={"accordion-button"} className={`c-Accordion__button${expanded ? " expanded" : ""}`} onClick={() => {onClickHandler();}}>
             {data.question}
         </button>
       </div>}

@@ -236,11 +236,11 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 }
 
 .font-size-12 {
-  font-size: 12px;
+  font-size: 12px !important;
 }
 
 .font-size-13 {
-  font-size: 13px;
+  font-size: 13px !important;
 }
 
 .font-size-14 {
@@ -251,6 +251,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   font-size: 15px !important;
 }
 
+.font-size-16 {
+  font-size: 16px !important;
+}
+
 .font-size-18 {
   font-size: 18px !important;
 }
@@ -259,8 +263,24 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   font-size: 20px;
 }
 
+.font-size-25 {
+  font-size: 25px;
+}
+
 .font-size-28 {
   font-size: 1.75rem;
+}
+
+.width-small {
+  width: 25rem;
+}
+
+.width-medium {
+  width: 35rem;
+}
+
+.width-large {
+  width: 45rem;
 }
 
 .list-horizontal {
@@ -327,6 +347,14 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   text-decoration: underline;
   cursor: pointer;
   border: none;
+}
+
+.border-bottom{
+  border-bottom: 5px solid grey;
+}
+
+.width-unset {
+  width:unset !important;
 }
 
 .min-height-unset {
@@ -504,6 +532,14 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .tiles-background-dark {
   background-color: #e6eff4 !important;
+}
+
+.background-lightblue {
+  background-color: #f3f9fc !important;
+}
+
+.background-white {
+  background-color: #ffffff !important;
 }
 
 .cta-error {

@@ -1,4 +1,4 @@
-/* eslint-disable filenames/match-regex, no-magic-numbers, no-shadow, no-unused-expressions, max-statements, complexity */
+/* eslint-disable filenames/match-regex, no-magic-numbers, no-shadow, no-unused-expressions, max-statements, complexity, react/jsx-indent-props */
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -154,7 +154,6 @@ const StatusModalTemplate = props => {
         hideModal();
     }
   };
-
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className="modal-dialog modal-dialog-centered modal-lg" role="document">

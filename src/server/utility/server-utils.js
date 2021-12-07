@@ -27,6 +27,15 @@ class ServerUtils {
     };
   }
 
+  getDocumentHeaders (request) {
+    const headers = this.getHeaders(request);
+    headers["transfer-encoding"] = "chunked";
+    headers["Accept-Encoding"] = "gzip, deflate, br";
+    headers.Accept = "*/*";
+    delete headers["Content-Type"];
+    return headers;
+  }
+
   randomStringGenerator(len) {
     const random = [];
     const CharSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

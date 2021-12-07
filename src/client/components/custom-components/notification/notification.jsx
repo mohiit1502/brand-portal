@@ -44,11 +44,11 @@ class Notification extends React.Component {
     this.props.hideNotification();
   }
 
-
   render() {
     const statusClass = this.state.type === NOTIFICATION_TYPE.SUCCESS ? this.statusClassOptions.SUCCESS : this.statusClassOptions.ERROR;
     const notificationImage = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.SUCCESSIMAGE] : images[CONSTANTS.NOTIFICATIONPOPUP.FAILUREIMAGE];
     const closeIcon = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONSUCCESS] : images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONFAILURE];
+
     return (
       <div className={`toast custom-toast ${statusClass}`} role="alert" aria-live="assertive" aria-atomic="true" data-delay={CONSTANTS.NOTIFICATIONPOPUP.DATADELAY}>
         <div className="toast-body">

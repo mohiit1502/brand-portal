@@ -15,6 +15,4 @@ const showNotification = (notificationType, message) => {
 const hideNotification = () => {
   return { type: "HIDE_NOTIFICATION"};
 };
-
-
 export {showNotification, hideNotification, NOTIFICATION_TYPE};

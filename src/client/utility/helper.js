@@ -31,6 +31,20 @@ export default class Helper {
     });
   }
 
+  /**
+   * Following utility searches for a value in an object recursively
+   *
+   * It loops over object to dig deeper for flat objects and supports two ways to search in
+   * arrays that may occur inside object, either provide file path by specifying keys with a selector for array
+   * to find, this will only support searching one array in object.
+   * Second way is to use path format obj.a.b[index].c.d[index].e and no selector. This way provides searching
+   * any depth of arrays and objects
+   *
+   * @param path path of field to search in format obj.a.b.c or obj.a.b[index].c for arrays
+   * @param obj Object where the value needs to be searched
+   * @param selector provide a selector for the array to look for next object to search
+   * @returns {{KEY_CODE_HOME: number, REGEX: {ZIP: string, NAMES: string, PASSWORD: string, PHONE: string, REDIRECTALLOWEDPATHS: string, EMAIL: string, CLAIMDETAILSPATH: string, COMPANY: string}, NAVIGATION_PANEL: [{image: string, name: string, active: boolean, id: string, href: string, value: string}, {image: string, name: string, active: boolean, id: string, href: string, value: string}, {image: string, name: string, active: boolean, id: string, href: string, value: string}, {image: string, name: string, active: boolean, id: string, href: string, value: string}], WEBFORM: {CTA: string, CLAIM_SUBMISSION: string, LANDING_PAGE: string}, APPROVAL: {SECTION_TITLE_PLURAL: string, STATUS: {}, SECTION_TITLE_SINGULAR: string}, URL: {LOGOUT: string, REGISTER_REDIRECT: string, DOMAIN: {DEVELOPMENT: string, STAGING: string, PRODUCTION: string}, IMAGE: string, LOGIN_REDIRECT: string, DOMAIN_SERVER: {DEVELOPMENT: string, STAGING: string, PRODUCTION: string}}, STATUS_CODE_NOT_FOUND: number, CLAIM: {SECTION_TITLE_PLURAL: string, STATUS: {}, SECTION_TITLE_SINGULAR: string}, CODES: {ERRORCODES: {FOURNOTFOUR: string, UNAUTHORIZED: number, SERVERERROR: string, SERVERDOWN: number, FORBIDDEN: string, SERVERDOWNWRAPPER: number}}, STATUS_CODE_400: number, APIDEBOUNCETIMEOUT: number, POPOVERSELECTOR: string, LOGIN: {REGISTER_TEXT: string, LANDING_PAGE_TEXT: string, PRIVACYURL: string, CONTACTEMAIL: string, COPYRIGHTTEXT: string, PRIVACYTEXT: string, CONTACTTEXT: string, IMAGE_WALMART_INTRO: string}, NOTIFICATIONPOPUP: {FAILUREIMAGE: string, SUCCESSIMAGE: string, CLOSEBUTTONFAILURE: string, CLOSEBUTTONSUCCESS: string, DATADELAY: number}, ERRORMESSAGES: {ZIPERROR: string, EMAILERROR: string, PHONEERROR: string}, ONGOING_CLAIM_TYPES: {COUNTERFEIT: string, TRADEMARK: string, PATENT: string, COPYRIGHT: string}, KEY_CODE_SHIFT: number, ROUTES: {PROTECTED: {HELP: {HELP: string, CONTACT: string, FAQ: string, USER: string, CLAIM: string, BRAND: string}, USER_MGMT: {USER_APPROVAL: string, USER_LIST: string}, PROFILE: {USER: string}, DEFAULT_REDIRECT_PATH_REPORTER: string, CLAIMS: {CLAIMS_LIST: string, CLAIM_DETAILS: string}, DASHBOARD: string, DEFAULT_REDIRECT_PATH_SUPERADMIN: string, ROOT_PATH: string, ONBOARD: {BRAND_REGISTER: string, APPLICATION_REVIEW: string, COMPANY_REGISTER: string}, DEFAULT_REDIRECT_PATH_ADMIN: string, BRANDS: {BRANDS_LIST: string}}, OPEN: {LOGIN_TYPE_CTA: string, SERVICES: string, REGISTER_TYPE_CTA: string}}, SORTSTATE: {ASCENDING: number, DATETYPE: string, DESCENDING: number, NUMERICTYPE: string, RESET: number, ARRAYTYPE: string}, KEY_CODE_DELETE: number, ALLOWED_KEY_CODES, USER: {SECTION_TITLE_PLURAL: string, STATUS: {NEW: string, PENDING_SUPPLIER: string, ACTIVE: string, TOU_NOT_ACCEPTED: string, SUSPENDED: string, PENDING_SELLER: string, PENDING: string, REJECTED: string}, ROLES: {REPORTER: string, SUPERADMIN: string, ADMIN: string}, USER_TYPE: {INTERNAL: string, THIRD_PARTY: string}, SECTION_TITLE_SINGULAR: string, UNIQUENESS_CHECK_STATUS: {DENY: string, ALLOW: string}, VALUES: {STATUS: {"Pending Supplier Activation": string, Suspended: string, "Pending Seller Activation": string}}, OPTIONS: {DISPLAY: {RESENDINVITE: string, DELETE: string, SUSPEND: string, EDIT: string, REACTIVATE: string}, PAYLOAD: {SUSPEND: string, ACTIVE: string}}}, BRAND: {SECTION_TITLE_PLURAL: string, STATUS: {SUSPENDED: string, PENDING: string, VERIFIED: string, REJECTED: string}, SECTION_TITLE_SINGULAR: string, OPTIONS: {DISPLAY: {DELETE: string, SUSPEND: string, EDIT: string, REACTIVATE: string}, PAYLOAD: {SUSPEND: string, ACTIVE: string, VERIFIED: string}}}, STATUS_CODE_SUCCESS: number, KEY_CODE_BACKSPACE: number, KEY_CODE_END: number, MIXPANEL: {PROJECT_TOKEN: string}, KEY_CODE_TAB: number, SECTION: {CLAIMS: string, APPROVALLIST: string, USERLIST: string, USERS: string, BRANDS: string}, ONCHANGEVALIDATIONTIMEOUT: number}|string|*}
+   */
   static search(path, obj, selector) {
     try {
       if (!path) return obj;
@@ -44,10 +58,15 @@ export default class Helper {
       let recurredObject = obj;
       let i = 0;
       while (i < pathArr.length) {
-        if (typeof recurredObject === "object" && recurredObject.length !== undefined) {
-          recurredObject = recurredObject.find(itemInner => itemInner[pathArr[i]] === selector);
+        let key, index;
+        const SBIndex = pathArr[i].indexOf("[");
+        const SBCloseIndex = pathArr[i].indexOf("]");
+        key = SBIndex > -1 ? pathArr[i].substring(0, SBIndex) : pathArr[i];
+        index = SBIndex > -1 && pathArr[i].substring(SBIndex + 1, SBCloseIndex);
+        if (typeof recurredObject === "object" && (recurredObject.length !== undefined || typeof index === "string")) {
+          recurredObject = index ? recurredObject[key][+index] : recurredObject.find(itemInner => itemInner[key] === selector);
         } else {
-          recurredObject = recurredObject[pathArr[i]];
+          recurredObject = recurredObject[key];
         }
         i++;
       }

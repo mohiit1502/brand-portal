@@ -127,7 +127,7 @@ class NewClaimTemplate extends React.Component {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
       let index = -1;
-      if (key.split("-")[0] === "url" && key.split("-")[1]) {
+      if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName") && key.split("-")[1]) {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
@@ -158,7 +158,7 @@ class NewClaimTemplate extends React.Component {
   bubbleValue(evt, key, error) {
     const value = evt.target.value;
     let index = -1;
-    if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
+    if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName") && key.split("-")[1]) {
       index = Number(key.split("-")[1]);
       key = key.split("-")[0];
     }

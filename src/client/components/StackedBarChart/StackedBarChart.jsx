@@ -28,7 +28,7 @@ const StackedBarChart = props => {
   /* eslint-disable max-statements */
   useEffect(() => {
     const svg = select(svgRef.current);
-    let {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
+    let {width, height} = dimensions || (wrapperRef.current ? wrapperRef.current.getBoundingClientRect() : {});
     const margin = {top: 0, right: 10, bottom: 30, left: 40};
     width = width - margin.left - margin.right;
     height = height - margin.top - margin.bottom;
