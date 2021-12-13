@@ -771,7 +771,7 @@ const FORMFIELDCONFIG = {
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"copyright\"}",
           "required": true,
           "selected": false,
           "type": "_checkBox"
