@@ -75,8 +75,8 @@ const MODALSMETA = {
     },
     "APPLICATION_INFORMATION": {
       "CODE": 2,
-      "BODY_CONTENT_CLASSES": "ml-5 text-left",
-      "BODY_CLASSES": "px-5 modal-background",
+      "BODY_CONTENT_CLASSES": "ml-5 text-left pl-5",
+      "BODY_CLASSES": "px-5 modal-background modal-height",
       "MODAL_DIALOG_CLASSES": "width-unset modal-xl ",
       "MESSAGE": {
         "classes": "",
@@ -180,7 +180,8 @@ const MODALSMETA = {
         }
       },
       "TITLE": {
-        "ROW_CLASSES": "ml-5",
+        "classes": "",
+        "ROW_CLASSES": "ml-5 pl-5",
         "content": {
           "para": {
             "text": "__businessName__",

@@ -71,10 +71,13 @@ class CompanyManagerApi {
 
   /* eslint-disable complexity */
   async registerOrganization(request, h) {
+    const isEditMode = request.query.context;
     const mixpanelPayload = {
       METHOD: "POST",
-      API: "/api/org/register"
+      API: "/api/org/register",
+      SUBMISSION_MODE: isEditMode
     };
+    
     console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has started");
     console.log("[CompanyManagerApi::registerOrganization] User ID: ", request.state && request.state.session_token_login_id);
     try {
@@ -367,8 +370,8 @@ class CompanyManagerApi {
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
       console.log("[CompanyManagerApi::getApplicationDetails] Error occured in API request for getting application details: ", err);
-      // return h.response(dummyResponse).code(200);
-      return h.response(err).code(err.status);
+      return h.response(dummyResponse).code(200);
+      // return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.GET_APPLICATION_DETAILS, mixpanelPayload);
     }

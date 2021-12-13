@@ -46,6 +46,7 @@ const FileUploader = props => {
   const formIdentifier = props.formId;
   const sectionObject = props.company && props.company.onboardingDetails && props.company.onboardingDetails[formToDocMapper[formIdentifier].sectionName];
   const uploadedAttachments =  sectionObject && sectionObject[formToDocMapper[formIdentifier].attachmentKey];
+//   console.log(props.onChange);
   return (
     <div className={`c-FileUploader form-row primary-file-upload mb-3${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
       <div className="col">
@@ -54,7 +55,7 @@ const FileUploader = props => {
             content={tooltipContent[props.tooltipContentKey]}
             icon={images[props.icon]}/>
         </div>
-        {uploadedAttachments && <div>
+        {uploadedAttachments && props.user?.profile?.context=="edit" &&<div>
           <b>Uploaded attachments: </b>
           <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>
         </div>}
@@ -64,7 +65,7 @@ const FileUploader = props => {
             className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
             {props.buttonText}
             <input type="file" className="d-none" onChange={props.onChange}
-              disabled={props.disabled}/>
+              disabled={props.disabled} accept={props.accept}/>
           </label>
         }
         {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}

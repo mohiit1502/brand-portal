@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect, withRouter} from "react-router";
-import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails, dispatchOriginalValues} from "../../../actions/company/company-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import Helper from "../../../utility/helper";
@@ -61,6 +61,9 @@ class BrandRegistration extends React.Component {
         form.inputData.trademarkNumber.value = data.trademarkNumber;
         form.inputData.brandName.value = data.name;
         form.formPopulated = true;
+        form.inputData.comments.value = data.comments;
+        form.inputData.trademarkNumber.isValid = true;
+        form.inputData.brandName.isUnique = true;
 
         this.setState({form}, this.checkToEnableSubmit);
       }
@@ -69,7 +72,7 @@ class BrandRegistration extends React.Component {
 
   goToApplicationReview(evt) {
       evt.preventDefault();
-      const docNames = this.props.onboardingDetails && this.props.onboardingDetails.additionalDocList;
+      const docNames = (this.props.onboardingDetails && this.props.onboardingDetails.additionalDocList) || [];
       const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
       if (steps) {
         steps[1].active = false;
@@ -84,11 +87,16 @@ class BrandRegistration extends React.Component {
         name: inputData.brandName.value,
         comments: ""
       };
-      if (docNames && docNames.findIndex(obj => obj.additionalDocId) === -1) {
+
+      const newDocuments = this.state.form.inputData.additionalDoc.id ? [{
+            documentId: this.state.form.inputData.additionalDoc.id,
+            documentName: this.state.form.inputData.additionalDoc.filename
+          }] : [];
+      if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.additionalDoc.id) === -1) {
         brand.additionalDocList = [
-          ...(this.props.onboardingDetails && this.props.onboardingDetails.additionalDocList
-            ? this.props.onboardingDetails.additionalDocList : []),
-              {additionalDocId: this.state.form.inputData.additionalDoc.id, additionalDocName: this.state.form.inputData.additionalDoc.filename}
+          ...(this.props.onboardingDetails?.brand?.additionalDocList 
+            ? this.props.onboardingDetails.brand.additionalDocList : []),
+          ...newDocuments
         ];
       }
       if (inputData.comments.value) {
@@ -191,9 +199,9 @@ class BrandRegistration extends React.Component {
 
     return (
       <div className={`row justify-content-center ${this.state.form.loader && "loader"}`}>
-        <div className="col-lg-10 col-md-8 col-12 pl-5 pr-0">
+        <div className="col-lg-10 col-md-8 col pl-5 pr-0 mx-5">
           <div className="row title-row mb-4 pl-4">
-            <div className="col pl-4">
+            <div className="col pl-4 ">
               <div className="brand-registration-title font-weight-bold">
                 {section.sectionTitle}
               </div>
@@ -244,6 +252,7 @@ const mapDispatchToProps = {
   dispatchNewRequest,
   dispatchSteps,
   dispatchOnboardingDetails,
+  dispatchOriginalValues,
   showNotification,
   updateUserProfile
 };

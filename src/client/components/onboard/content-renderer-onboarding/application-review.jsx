@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import React from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
@@ -22,7 +23,10 @@ class ApplicationReview extends React.Component {
           });
         this.state = { ...props };
         this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
+        this.checkAndSubmitOnboardingForm = this.checkAndSubmitOnboardingForm.bind(this);
+        this.checkForEdit = this.checkForEdit.bind(this);
         this.loader = Helper.loader.bind(this);
+
     }
 
     componentDidMount() {
@@ -30,48 +34,105 @@ class ApplicationReview extends React.Component {
             this.props.history.push(CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER);
         }
     }
+
+    submitOnboardingForm(data, mixpanelPayload) {
+        
+        const brand = data && data.brand;
+        const org = data && data.org;
+        mixpanelPayload.BRAND_NAME = brand && brand.name;
+        mixpanelPayload.COMPANY_NAME = org && org.name;
+        mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
+        mixpanelPayload.IS_DOCUMENT_UPLOADED = org && Boolean(org.businessRegistrationDocId || org.additionalDocId);
+
+        Http.post("/api/org/register", data, { clientType: this.props.clientType }, {context: this.props.userProfile && this.props.userProfile.context})
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            mixpanelPayload.API_SUCCESS = false;
+            mixpanelPayload.ERROR = err.message ? err.message : err;
+        })
+        .finally(() => {
+            this.loader("form", false);
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
+        });
+            // this.updateProfileInfo();
+            //   this.props.dispatchNewRequest(true);
+        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
+        mixpanelPayload.API_SUCCESS = true;
+
+    }
+
+    // eslint-disable-next-line complexity
+    checkForEdit() {
+        const orgFieldsArray = ["city", "countryCode", "address", "zip", "name", "state"];
+        const brandFieldsArray = ["trademarkNumber", "comments", "name"];
+        const payload = {
+            "org": {},
+            "brand": {}
+        };
+        const onboardingDetails = this.props.onboardingDetails;
+        const originalValues = this.props.originalValues;
+
+        orgFieldsArray.forEach(orgField => {
+            if (onboardingDetails.org[orgField] !== originalValues.org[orgField]) {
+                payload.org[orgField] = onboardingDetails.org[orgField];
+            }
+        });
+
+        originalValues && originalValues.orgId && (payload.orgId = originalValues.orgId);
+        originalValues && originalValues.brandId && (payload.brandId = originalValues.brandId);
+
+        brandFieldsArray.forEach(brandField => {
+            if (onboardingDetails.brand[brandField] !== originalValues.brand[brandField]) {
+                payload.brand[brandField] = onboardingDetails.brand[brandField];
+            }
+        });
+
+        const additionalDocListNew = onboardingDetails.brand.additionalDocList, additionalDocListOrginal = originalValues.brand.additionalDocList,
+        businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList, businessRegistrationDocListOriginal = originalValues.org.businessRegistrationDocList;
+
+        if (businessRegistrationDocListNew.length !== businessRegistrationDocListOriginal.length) {
+            payload.org["businessRegistrationDocList"] = businessRegistrationDocListNew;
+        }
+        
+        if (additionalDocListNew.length !== additionalDocListOrginal.length) {
+            payload.brand["additionalDocList"] = additionalDocListNew;
+        }
+
+        const isDirty = Object.keys(payload).reduce((agg, key) => agg || Object.keys(payload[key]).length > 0, false);
+        return {isDirty, payload};
+    }
+
     /* eslint-disable max-statements */
-    submitOnboardingForm(evt) {
-        mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, { WORK_FLOW: "COMPANY_ONBOARDING" });
-        evt.preventDefault();
+    // eslint-disable-next-line complexity
+    checkAndSubmitOnboardingForm(evt) {
         const mixpanelPayload = {
             API: "/api/org/register",
             WORK_FLOW: "COMPANY_ONBOARDING"
         };
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, { WORK_FLOW: "COMPANY_ONBOARDING" });
+        evt.preventDefault();
+        
         try {
             this.loader("form", true);
-            //   const data = {
-            //     org: this.props.org,
-            //     brand
-            //   };
-            //   data.sellerInfo = this.props.org.sellerInfo;
-            //   this.props.org.sellerInfo && delete this.props.org.sellerInfo;
-            const data = this.props.onboardingDetails;
-            const brand = data && data.brand;
-            const org = data && data.org;
-            mixpanelPayload.BRAND_NAME = brand && brand.name;
-            mixpanelPayload.COMPANY_NAME = org && org.name;
-            mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
-            mixpanelPayload.IS_DOCUMENT_UPLOADED = org && Boolean(org.businessRegistrationDocId || org.additionalDocId);
-            console.log(data);
-            Http.post("/api/org/register", data, { clientType: this.props.clientType })
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-                mixpanelPayload.API_SUCCESS = false;
-                mixpanelPayload.ERROR = err.message ? err.message : err;
-            })
-            .finally(() => {
-                this.loader("form", false);
-                mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
-            });
-            // this.updateProfileInfo();
-            //   this.props.dispatchNewRequest(true);
+            const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
+            let payload = this.props.onboardingDetails;
+            const dirtyCheckResponse = isEditMode && this.checkForEdit();
+            if (dirtyCheckResponse && dirtyCheckResponse.isDirty) {
+                payload = dirtyCheckResponse.payload;
+            }
+            if (payload.org && !payload.company) {
+                payload.company = payload.org;
+                delete payload.org;
+            }
+            ((isEditMode && dirtyCheckResponse.isDirty) || !isEditMode) && this.submitOnboardingForm(payload, mixpanelPayload);
+
+            isEditMode && !dirtyCheckResponse.isDirty && 
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
-            mixpanelPayload.API_SUCCESS = true;
+            
         } catch (err) {
+            console.log(err);
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
         }
@@ -103,9 +164,9 @@ class ApplicationReview extends React.Component {
                 {/* eslint-disable react/jsx-handler-names */}
                 <ApplicationDetails {...this.props} />
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
-                    <div className="col company-onboarding-button-panel text-right">
+                    <div className="col company-onboarding-button-panel text-right mr-5">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3 mr-5" onClick={this.submitOnboardingForm}>Confirm and submit</button>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3 mr-5" onClick={this.checkAndSubmitOnboardingForm}>Confirm and submit</button>
                     </div>
                 </div>
 
@@ -126,7 +187,9 @@ ApplicationReview.propTypes = {
 const mapStateToProps = state => {
     return {
         steps: state.company && state.company.steps,
-        onboardingDetails: state.company && state.company.onboardingDetails
+        onboardingDetails: state.company && state.company.onboardingDetails,
+        originalValues: state.company && state.company.originalValues,
+        userProfile: state.user && state.user.profile
 
     };
 };

@@ -38,6 +38,7 @@ export default class DocumentActions {
       form.actionsToDisable && form.actionsToDisable.forEach(action => {form.inputData[form.formActions].buttons[action].disabled = true;});
       this.setState({form}, (() => DocumentActions.uploadDocument.call(this, file, interval, contextSpecificArgs)));
     } catch (err) {
+      console.log(err);
       form.inputData[key].uploading = false;
       otherType && form.actionsToDisable && form.actionsToDisable.forEach(action => {form.inputData[form.formActions].buttons[action].disabled = form.inputData[otherType].uploading;});
       this.setState({form});

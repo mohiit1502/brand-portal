@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router";
 import Cookies from "electrode-cookies";
 import $ from "jquery";
-import {dispatchCompanyState, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
+import {dispatchCompanyState, dispatchSteps, dispatchOnboardingDetails, dispatchOriginalValues} from "../../../actions/company/company-actions";
 import {toggleModal, TOGGLE_ACTIONS} from "../../../actions/modal-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../constants/constants";
@@ -122,6 +122,7 @@ class CompanyProfileRegistration extends React.Component {
   prepopulateInputContextEdit() {
     if (this.props.onboardingDetails) {
       const data = this.props.onboardingDetails.org;
+      const originalValues = JSON.parse(JSON.stringify(this.props.onboardingDetails));
       const form = {...this.state.form};
       if (data) {
         form.inputData.companyName.value = data.name;
@@ -131,7 +132,10 @@ class CompanyProfileRegistration extends React.Component {
         form.inputData.zip.value = data.zip || "";
         form.inputData.country.value = data.countryCode || "US";
         form.formPopulated = true;
-
+        form.inputData.companyName.isUnique = true;
+        this.props.dispatchOriginalValues({
+          ...originalValues
+        });
         this.setState({form}, () => {
           this.toggleFormEnable(true, true, false);
           this.checkToEnableSubmit();
@@ -283,7 +287,7 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    const docNames = this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList;
+    const docNames = (this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList) || [];
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -292,15 +296,16 @@ class CompanyProfileRegistration extends React.Component {
       zip: this.state.form.inputData.zip.value,
       countryCode: this.state.form.inputData.country.value,
     };
-
-    if (docNames && docNames.findIndex(obj => obj.businessRegistrationDocId) === -1) {
+    
+    const newDocuments = this.state.form.inputData.businessRegistrationDoc.id ? [{
+          documentId: this.state.form.inputData.businessRegistrationDoc.id,
+          documentName: this.state.form.inputData.businessRegistrationDoc.filename
+        }] : [];
+    if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.businessRegistrationDoc.id) === -1) {
       org.businessRegistrationDocList = [
-        ...(this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList 
-          ? this.props.onboardingDetails.businessRegistrationDocList : []),
-        {
-          businessRegistrationDocId: this.state.form.inputData.businessRegistrationDoc.id,
-          businessRegistrationDocName: this.state.form.inputData.businessRegistrationDoc.filename
-        }
+        ...(this.props.onboardingDetails?.org?.businessRegistrationDocList 
+          ? this.props.onboardingDetails.org.businessRegistrationDocList : []),
+        ...newDocuments
       ];
     }
     if (this.state.clientType === "seller") {
@@ -378,6 +383,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   dispatchCompanyState,
   dispatchOnboardingDetails,
+  dispatchOriginalValues,
   dispatchSteps,
   showNotification,
   toggleModal
