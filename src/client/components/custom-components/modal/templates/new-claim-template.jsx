@@ -25,6 +25,7 @@ class NewClaimTemplate extends React.Component {
         this[name] = this[name].bind(this);
       });
       this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
+      this.evaluateRenderDependency = ContentRenderer.evaluateRenderDependency.bind(this);
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
       const newClaimConfiguration = this.props.newClaimConfiguration ? this.props.newClaimConfiguration : {};
@@ -209,10 +210,14 @@ class NewClaimTemplate extends React.Component {
     }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
   }
 
-
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndetaking = Object.keys(form.inputData).filter(key => form.inputData[key].category === "userUnderTaking" ? true : false).reduce((boolResult, undertaking) => !!(boolResult && form.inputData[undertaking].selected), true);
+    const userUndetaking = Object.keys(form.inputData)
+      .filter(key => form.inputData[key].category === "userUnderTaking" ? true : false)
+      .reduce((boolResult, undertaking) => {
+        const shouldRender = this.evaluateRenderDependency(form.inputData[undertaking].renderCondition);
+        return !!(boolResult && (!shouldRender || (shouldRender && form.inputData[undertaking].selected)));
+      }, true);
     const bool = userUndetaking && form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
