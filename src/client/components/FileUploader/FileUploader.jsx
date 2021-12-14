@@ -12,7 +12,7 @@ const FileUploader = props => {
     webformDocContent: <div>
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
-          <li>Please attach supporting documents in .doc,.pdf,.csv format. The file should be less than 7MB</li>
+          <li>Please attach supporting documents in .doc, .pdf, .csv, .excel or image formats. The file should be less than 7MB</li>
         </ul>
       </ol>
     </div>,
