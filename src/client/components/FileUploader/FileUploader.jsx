@@ -54,7 +54,7 @@ const FileUploader = props => {
             content={tooltipContent[props.tooltipContentKey]}
             icon={images[props.icon]}/>
         </div>
-        {uploadedAttachments && <div>
+        {uploadedAttachments && props.user?.profile?.context=="edit" &&<div>
           <b>Uploaded attachments: </b>
           <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>
         </div>}
@@ -64,7 +64,7 @@ const FileUploader = props => {
             className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
             {props.buttonText}
             <input type="file" className="d-none" onChange={props.onChange}
-              disabled={props.disabled}/>
+              disabled={props.disabled} accept={props.accept}/>
           </label>
         }
         {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}

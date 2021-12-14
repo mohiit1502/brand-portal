@@ -71,10 +71,13 @@ class CompanyManagerApi {
 
   /* eslint-disable complexity */
   async registerOrganization(request, h) {
+    const isEditMode = request.query.context;
     const mixpanelPayload = {
       METHOD: "POST",
-      API: "/api/org/register"
+      API: "/api/org/register",
+      SUBMISSION_MODE: isEditMode
     };
+
     console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has started");
     console.log("[CompanyManagerApi::registerOrganization] User ID: ", request.state && request.state.session_token_login_id);
     try {

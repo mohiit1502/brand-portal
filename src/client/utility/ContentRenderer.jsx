@@ -254,7 +254,7 @@ export default class ContentRenderer {
 
   static getCustomComponent (field, id) {
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
-    // if (field.)
+
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
       onChange={this[onChange] ? changeHandlerArg ? evt => this[onChange](evt, changeHandlerArg) : this[onChange] : this.onChange}

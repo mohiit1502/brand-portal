@@ -1,4 +1,4 @@
-import {DISPATCH_BRAND_STATE, DISPATCH_COMPANY_STATE, DISPATCH_NEW_REQUEST, DISPATCH_ONBOARDING_DETAILS, DISPATCH_STEPS} from "./../../actions/company/company-actions";
+import {DISPATCH_BRAND_STATE, DISPATCH_COMPANY_STATE, DISPATCH_NEW_REQUEST, DISPATCH_ONBOARDING_DETAILS, DISPATCH_STEPS, DISPATCH_ORIGINAL_VALUES} from "./../../actions/company/company-actions";
 
 const initialState =  {
   steps: [
@@ -29,6 +29,7 @@ const companyReducer = (store = initialState, action) => {
     case DISPATCH_BRAND_STATE:
     case DISPATCH_NEW_REQUEST:
     case DISPATCH_ONBOARDING_DETAILS:
+    case DISPATCH_ORIGINAL_VALUES:
     case DISPATCH_STEPS:
       return {...store, ...action.value};
     default:

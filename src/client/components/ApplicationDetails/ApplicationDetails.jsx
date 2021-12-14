@@ -30,11 +30,12 @@ const ApplicationDetails = props => {
         .catch(() => setApiError && setApiError(true));
     }
   }, []);
+  console.log(org);
 
   /*eslint-disable no-nested-ternary*/
   return (
-    <div className={`c-ApplicationDetails row text-left mt-4 px-3${org || apiError ? "" : " loader"}`}>
-      {!apiError ? org ? <><div className="col mx-5 brand-registration-title">
+    <div className={`c-ApplicationDetails row text-left mt-4 ml-5 pl-5 pr-3${org || apiError ? "" : " loader"}`}>
+      {!apiError ? org ? <><div className="col brand-registration-title">
         <h5 className=" font-weight-bold ">{leftTitle}</h5>
         <div>{org.name}</div>
         <div>{org.address}</div>
@@ -51,7 +52,7 @@ const ApplicationDetails = props => {
           }
         </div>
       </div>
-      <div className="col mx-2 brand-registration-title">
+      <div className="col brand-registration-title">
         <h5 className="font-weight-bold ">{rightTitle}</h5>
         <div>{brand.trademarkNumber}</div>
         <div>{brand.name}</div>
