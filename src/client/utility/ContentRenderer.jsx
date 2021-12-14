@@ -69,7 +69,7 @@ export default class ContentRenderer {
           return <span className={classes ? classes : ""}>{node1}</span>;
         } else {
           const chunkClass = node1.classes;
-          const chunkText = this.implementDynamicReplacements(node1.dynamicReplacementConfig, node1.text);
+          const chunkText = ContentRenderer.implementDynamicReplacements(node1.dynamicReplacementConfig, node1.text);
           return <span className={`${classes ? classes : ""}${chunkClass ? " "+chunkClass : ""}`}>{chunkText}</span>;
         }
       } else if (partialNodeKey.startsWith("anchor")) {
@@ -82,7 +82,7 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
-  implementDynamicReplacements(dynamicReplacements, text) {
+  static implementDynamicReplacements(dynamicReplacements, text) {
     dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
       text = text.replaceAll(key, dynamicReplacements[key]);
     });
@@ -94,7 +94,7 @@ export default class ContentRenderer {
     } else if (node.startsWith("para")) {
       let text = typeof (content[node]) === "string" ? content[node] : content[node].text;
       const dynamicReplacements = content[node] && content[node].dynamicReplacementConfig;
-      text = this.implementDynamicReplacements(dynamicReplacements, text);
+      text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
       if (typeof (content[node]) === "string") {
         return (<p className={classes ? classes : ""}>{text}</p>);
       } else {
