@@ -86,7 +86,7 @@ class CompanyManagerApi {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
       }
       const options = {
-        method: "POST",
+        method: isEditMode=="edit" ? "PUT" : "POST",
         headers
       };
       console.log("[CompanyManagerApi::registerOrganization] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
@@ -104,7 +104,7 @@ class CompanyManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = isEditMode=="edit" ? await ServerHttp.put(url, options, payload) : await ServerHttp.post(url, options, payload);
       console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -320,8 +320,6 @@ class CompanyManagerApi {
 
       const response = await ServerHttp.get(url, options);
       console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has completed");
-      return h.response(response.body).code(response.status);
-    } catch (err) {
       const dummyResponse = {
         orgStatus: "ON_HOLD",
         orgId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
@@ -365,7 +363,13 @@ class CompanyManagerApi {
                 uploadedToServiceNow: false
             }
         ]
-    };
+
+      };
+      return h.response(dummyResponse).code(response.status);
+
+      // return h.response(response.body).code(response.status);
+    } catch (err) {
+      
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;

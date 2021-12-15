@@ -44,7 +44,7 @@ class ApplicationReview extends React.Component {
         mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
         mixpanelPayload.IS_DOCUMENT_UPLOADED = org && Boolean(org.businessRegistrationDocId || org.additionalDocId);
 
-        Http.post("/api/org/register", data, { clientType: this.props.clientType }, {context: this.props.userProfile && this.props.userProfile.context})
+        Http.post("/api/org/register", data, { clientType: this.props.clientType, context: this.props.userProfile && this.props.userProfile.context})
         .then(res => {
             console.log(res);
         })
@@ -56,8 +56,6 @@ class ApplicationReview extends React.Component {
             this.loader("form", false);
             mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
         });
-            // this.updateProfileInfo();
-            //   this.props.dispatchNewRequest(true);
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
         mixpanelPayload.API_SUCCESS = true;
 
@@ -155,10 +153,10 @@ class ApplicationReview extends React.Component {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
             <div className="col test pl-5 pr-0 ml-5">
-                <div className="row mt-4 pl-5 ml-3 brand-registration-title font-weight-bold font-size-28">
+                <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
                     {this.title}
                 </div>
-                <div className="row mt-3 pl-5 ml-3 brand-registration-subtitle">
+                <div className="row mt-3 pl-5 ml-5 brand-registration-subtitle">
                     {this.subtitle}
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}
@@ -169,7 +167,6 @@ class ApplicationReview extends React.Component {
                         <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3 mr-5" onClick={this.checkAndSubmitOnboardingForm}>Confirm and submit</button>
                     </div>
                 </div>
-
             </div>
         );
 

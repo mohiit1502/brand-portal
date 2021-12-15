@@ -30,7 +30,6 @@ const ApplicationDetails = props => {
         .catch(() => setApiError && setApiError(true));
     }
   }, []);
-  console.log(org);
 
   /*eslint-disable no-nested-ternary*/
   return (
@@ -56,8 +55,8 @@ const ApplicationDetails = props => {
         <h5 className="font-weight-bold ">{rightTitle}</h5>
         <div>{brand.trademarkNumber}</div>
         <div>{brand.name}</div>
-        <div>Registration document is on the</div>
-        <div>attachment, please review</div>
+        <div className="commentsStyle">{brand.comments}</div>
+        {/* <div>attachment, please review</div> */}
         <div className="row w-100 mt-3 pl-3 brand-registration-subtitle font-size-14">
           <span className="w-100 font-weight-bold">{attachmentsHeader}</span>
           {
@@ -68,7 +67,7 @@ const ApplicationDetails = props => {
             : "No documents attached."
           }
         </div>
-      </div></> : <p>Getting application details...</p> : <p>Unable to retrieve application details. Please <a href="/">refresh.</a></p>
+      </div></> : <p className="ml-3">Getting application details...</p> : <p>Unable to retrieve application details. Please <a href="/">refresh.</a></p>
       } 
     </div>
   );

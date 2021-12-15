@@ -155,7 +155,8 @@ const FORMFIELDCONFIG = {
       },
       "formConfig": {
         "id": "brandreg",
-        "loader": false
+        "loader": false,
+        "formActions": "brandOnboardingActions"
       },
       "fields": {
         "trademarkNumber": {
@@ -214,7 +215,7 @@ const FORMFIELDCONFIG = {
           "label": "Optional: attach additional documents if necessary (i.e. trademark registration)",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
-          "tooltipContentKey": "additionalDocument",
+          "tooltipContentKey": "additionalDocContent",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
@@ -239,13 +240,13 @@ const FORMFIELDCONFIG = {
           "id": "undertaking",
           "inputId": "undertaking",
           "key": "undertaking",
-          "label": "I have read and agree to the Walmart Brand Portal ",
+          "label": "I have read and agree to the ",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
           "required": true,
           "selected": false,
           "tou": true,
-          "touLink": "Terms of Use.",
+          "touLink": "Terms of Conditions.",
           "type": "_checkBox"
         },
         "brandOnboardingActions": {
