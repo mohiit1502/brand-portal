@@ -20,7 +20,7 @@ import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.jpg";
 import CreateBrandForm from "./CreateBrandForm.jpg";
 import DashboardIcon from "./dashboard.png";
-import {EditOutlinedIcon} from "@material-ui/icons";
+import EditOutlinedIcon from "./edit.svg";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";

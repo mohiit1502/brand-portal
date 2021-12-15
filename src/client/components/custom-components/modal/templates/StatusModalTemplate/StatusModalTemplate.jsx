@@ -23,6 +23,7 @@ const StatusModalTemplate = props => {
   const {modalsMeta, meta, showNotification, toggleModal, updateUserProfile, user,
      dispatchOnboardingDetails, onboardingDetails} = props;
   const {logoutUrl, profile} = user;
+  const org = user.profile.organization;
   const [loader, setLoader] = useState(false);
   const [apiError, setApiError] = useState(false);
   const history = useHistory();
@@ -73,8 +74,15 @@ const StatusModalTemplate = props => {
         const replacementPath = replacement.split(".");
         let i = 0;
         let traverser = replacementPath[i++];
+        console.log(traverser);
         if (traverser === "profile") {
           traverser = profile;
+          while (traverser && i < replacementPath.length) {
+            traverser = traverser[replacementPath[i++]];
+          }
+          dynamicReplacementConfig[key] = traverser;
+        } else if (traverser === "org") {
+          traverser = org;
           while (traverser && i < replacementPath.length) {
             traverser = traverser[replacementPath[i++]];
           }
@@ -104,6 +112,7 @@ const StatusModalTemplate = props => {
 
   const hideModal = () => {
     toggleModal(TOGGLE_ACTIONS.HIDE);
+    window.location.href=window.location.href;
   };
 
   const linkAccounts = () => {
@@ -171,6 +180,10 @@ const StatusModalTemplate = props => {
       case "logout":
         mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
         window.location.href = logoutUrlSuperlated;
+        break;
+      case "refreshAndHideModal":
+        toggleModal(TOGGLE_ACTIONS.HIDE);
+        window.location.href=window.location.href;
         break;
       default:
         hideModal();

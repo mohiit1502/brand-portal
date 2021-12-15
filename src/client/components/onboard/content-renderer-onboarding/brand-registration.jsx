@@ -122,6 +122,9 @@ class BrandRegistration extends React.Component {
       !form.inputData.brandName.error &&
       form.inputData.undertaking.selected;
     form.inputData.brandOnboardingActions.buttons.submit.disabled = !bool;
+    if (form.inputData.additionalDoc.uploading) {
+      form.inputData.brandOnboardingActions.buttons.submit.disabled = true;
+    }
     this.setState({form});
   }
 

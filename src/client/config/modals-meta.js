@@ -69,7 +69,7 @@ const MODALSMETA = {
       "IMAGE": "GreenCircleWhiteTick",
       "PRIMARY_ACTION": {
         "text": "OK",
-        "action": "hideModal"
+        "action": "refreshAndHideModal"
       },
       "TYPE": "CTA"
     },
@@ -112,12 +112,12 @@ const MODALSMETA = {
                 "key": ["ON_HOLD"]
               },
               {
-                "text": "Your company information and brand details are currently ",
+                "text": "Your company information and brand details are currently being reviewed. ",
                 "classes": "",
                 "key": ["NEW"]
               },
               {
-                "text": "Your declined and brand details are currently ",
+                "text": "Your application has been declined. We have sent an email to ",
                 "classes": "",
                 "key": ["REJECTED", "REJECTED_ON_AUDIT"]
               }
@@ -130,21 +130,22 @@ const MODALSMETA = {
                 "key": ["ON_HOLD"]
               },
               {
-                "text": "Your company information and brand details are currently ",
+                "text": "Once your application is approved, you will receive a confirmation email at ",
                 "classes": "",
                 "key": ["NEW"]
               },
               {
-                "text": "Your declined and brand details are currently ",
-                "classes": "",
+                "text": "__emailPlaceholder__ ",
+                "classes": "font-weight-bold mt-5",
+                "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
                 "key": ["REJECTED", "REJECTED_ON_AUDIT"]
               }
 
           ],
           "chunk3": [
             {
-              "text": "__emailPlaceholder__",
-              "classes": "font-weight-bold mt-5",
+              "text": " for instructions to edit your application.",
+              "classes": "mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["ON_HOLD"]
             },
@@ -158,10 +159,18 @@ const MODALSMETA = {
           ],
           "chunk4": [
             {
-              "text": "__emailPlaceholder__",
+              "text": "regarding your application. If you believe this is an error, contact ",
               "classes": "font-weight-bold mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
-              "key": ["ON_HOLD"]
+              "key": ["REJECTED", "REJECTED_ON_AUDIT"]
+            }
+          ],
+          "chunk5": [
+            {
+              "text": "brandportal@walmart.com",
+              "classes": "font-weight-bold mt-5 brand-portal-link-class",
+              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+              "key": ["REJECTED", "REJECTED_ON_AUDIT"]
             }
           ]
           },
@@ -185,7 +194,7 @@ const MODALSMETA = {
         "content": {
           "para": {
             "text": "__businessName__",
-            "dynamicReplacementConfig": {"__businessName__": "profile"},
+            "dynamicReplacementConfig": {"__businessName__": "org.name"},
             "classes": "text-left h3 font-weight-bold col-9"
           },
           "button1": {
