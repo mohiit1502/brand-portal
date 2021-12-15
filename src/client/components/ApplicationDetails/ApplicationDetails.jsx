@@ -9,13 +9,11 @@ const ApplicationDetails = props => {
   const leftTitle = "Company Information";
   const rightTitle = "Brand Details";
   const attachmentsHeader = "Attachments";
-  
+
   useEffect(() => {
     let companyDetails;
-    // if (user && user.organization && user.context !== "new") {
-      if (true) {
-//         Http.get(`/api/org/applicationDetails/${user.organization.id}`)
-      Http.get(`/api/org/applicationDetails/14afba06-a560-40a1-93aa-f0ae6d44ebe6`)
+    if (user && user.organization) {
+      Http.get(`/api/org/applicationDetails/${user.organization.id}`)
         .then(res => {
           companyDetails = res.body;
           companyDetails.org = companyDetails.company || {};
@@ -43,7 +41,7 @@ const ApplicationDetails = props => {
         <div className="row mt-3 w-100 pl-3 brand-registration-subtitle font-size-14">
           <span className="w-100 font-weight-bold">{attachmentsHeader}</span>
           {
-            org.businessRegistrationDocList &&  org.businessRegistrationDocList.length > 0 
+            org.businessRegistrationDocList && org.businessRegistrationDocList.length > 0
             ? org.businessRegistrationDocList
               .sort((doc1, doc2) => !doc1.createTS || new Date(doc1.createTS) > new Date(doc2.createTS))
               .map(doc => <span className="w-100 mt-2" key={doc}>{doc.documentName}</span>)
@@ -56,7 +54,6 @@ const ApplicationDetails = props => {
         <div>{brand.trademarkNumber}</div>
         <div>{brand.name}</div>
         <div className="commentsStyle">{brand.comments}</div>
-        {/* <div>attachment, please review</div> */}
         <div className="row w-100 mt-3 pl-3 brand-registration-subtitle font-size-14">
           <span className="w-100 font-weight-bold">{attachmentsHeader}</span>
           {
@@ -68,7 +65,7 @@ const ApplicationDetails = props => {
           }
         </div>
       </div></> : <p className="ml-3">Getting application details...</p> : <p>Unable to retrieve application details. Please <a href="/">refresh.</a></p>
-      } 
+      }
     </div>
   );
 };

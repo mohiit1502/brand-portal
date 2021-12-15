@@ -22,10 +22,13 @@ class ApplicationReview extends React.Component {
             this[name] = this[name].bind(this);
           });
         this.state = { ...props };
+        this.restructureBeforeSubmit = this.restructureBeforeSubmit.bind(this);
         this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
         this.checkAndSubmitOnboardingForm = this.checkAndSubmitOnboardingForm.bind(this);
         this.checkForEdit = this.checkForEdit.bind(this);
-        this.loader = Helper.loader.bind(this);
+        this.state = {
+          loader: false
+        };
 
     }
 
@@ -35,8 +38,22 @@ class ApplicationReview extends React.Component {
         }
     }
 
+    restructureBeforeSubmit (data) {
+      const businessRegistrationDoc = data?.org?.businessRegistrationDocList?.find(doc => !doc.createTS);
+      const additionalDoc = data?.brand?.additionalDocList?.find(doc => !doc.createTS);
+      data.org = {...data.org, businessRegistrationDoc, additionalDoc};
+      delete data?.org?.businessRegistrationDocList;
+      delete data?.brand?.additionalDocList;
+      if (data.org.sellerInfo) {
+        data.sellerInfo = data.org.sellerInfo;
+        delete data.org.sellerInfo;
+      }
+      Object.keys(data).forEach(key => Object.keys(data[key]).length === 0 && delete data[key])
+      delete data.company;
+    }
+
     submitOnboardingForm(data, mixpanelPayload) {
-        
+
         const brand = data && data.brand;
         const org = data && data.org;
         mixpanelPayload.BRAND_NAME = brand && brand.name;
@@ -46,19 +63,17 @@ class ApplicationReview extends React.Component {
 
         Http.post("/api/org/register", data, { clientType: this.props.clientType, context: this.props.userProfile && this.props.userProfile.context})
         .then(res => {
-            console.log(res);
+            mixpanelPayload.API_SUCCESS = true;
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
         })
         .catch(err => {
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
         })
         .finally(() => {
-            this.loader("form", false);
+            this.setState({loader: false});
             mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
         });
-        this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
-        mixpanelPayload.API_SUCCESS = true;
-
     }
 
     // eslint-disable-next-line complexity
@@ -90,11 +105,15 @@ class ApplicationReview extends React.Component {
         const additionalDocListNew = onboardingDetails.brand.additionalDocList, additionalDocListOrginal = originalValues.brand.additionalDocList,
         businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList, businessRegistrationDocListOriginal = originalValues.org.businessRegistrationDocList;
 
-        if (businessRegistrationDocListNew.length !== businessRegistrationDocListOriginal.length) {
+        if ((businessRegistrationDocListOriginal && !businessRegistrationDocListNew)
+            || (!businessRegistrationDocListOriginal && businessRegistrationDocListNew)
+            || (businessRegistrationDocListNew && businessRegistrationDocListOriginal && businessRegistrationDocListNew.length !== businessRegistrationDocListOriginal.length)) {
             payload.org["businessRegistrationDocList"] = businessRegistrationDocListNew;
         }
-        
-        if (additionalDocListNew.length !== additionalDocListOrginal.length) {
+
+        if ((additionalDocListOrginal && !additionalDocListNew)
+            || (!additionalDocListOrginal && additionalDocListNew)
+            || (additionalDocListNew && additionalDocListOrginal && additionalDocListNew.length !== additionalDocListOrginal.length)) {
             payload.brand["additionalDocList"] = additionalDocListNew;
         }
 
@@ -111,28 +130,29 @@ class ApplicationReview extends React.Component {
         };
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION_CLICKED, { WORK_FLOW: "COMPANY_ONBOARDING" });
         evt.preventDefault();
-        
-        try {
-            this.loader("form", true);
-            const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
-            let payload = this.props.onboardingDetails;
-            const dirtyCheckResponse = isEditMode && this.checkForEdit();
-            if (dirtyCheckResponse && dirtyCheckResponse.isDirty) {
-                payload = dirtyCheckResponse.payload;
-            }
-            if (payload.org && !payload.company) {
-                payload.company = payload.org;
-                delete payload.org;
-            }
-            ((isEditMode && dirtyCheckResponse.isDirty) || !isEditMode) && this.submitOnboardingForm(payload, mixpanelPayload);
 
-            isEditMode && !dirtyCheckResponse.isDirty && 
-            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
-            
+        try {
+          this.setState({loader: true});
+          const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
+          let payload = this.props.onboardingDetails;
+          const dirtyCheckResponse = isEditMode && this.checkForEdit();
+          if (dirtyCheckResponse && dirtyCheckResponse.isDirty) {
+              payload = dirtyCheckResponse.payload;
+          }
+          if (!payload.org && payload.company) {
+              payload.org = payload.company;
+              delete payload.company;
+          }
+          this.restructureBeforeSubmit(payload);
+          if ((isEditMode && dirtyCheckResponse.isDirty) || !isEditMode) {
+            this.submitOnboardingForm(payload, mixpanelPayload);
+          }
         } catch (err) {
             console.log(err);
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
+        } finally {
+            this.setState({loader: false});
         }
     }
 
@@ -152,11 +172,11 @@ class ApplicationReview extends React.Component {
     render() {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
-            <div className="col test pl-5 pr-0 ml-5">
-                <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
+            <div className={`col test pl-5 pr-0 ml-5${this.state.loader ? " loader" : ""}`}>
+                <div className="row mt-4 pl-5 ml-3 brand-registration-title font-weight-bold font-size-28">
                     {this.title}
                 </div>
-                <div className="row mt-3 pl-5 ml-5 brand-registration-subtitle">
+                <div className="row mt-3 pl-5 ml-3 brand-registration-subtitle">
                     {this.subtitle}
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}
@@ -167,6 +187,7 @@ class ApplicationReview extends React.Component {
                         <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3 mr-5" onClick={this.checkAndSubmitOnboardingForm}>Confirm and submit</button>
                     </div>
                 </div>
+
             </div>
         );
 

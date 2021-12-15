@@ -287,7 +287,7 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    const docNames = (this.props.onboardingDetails && this.props.onboardingDetails.businessRegistrationDocList) || [];
+    const docNames = this.props.onboardingDetails?.org?.businessRegistrationDocList || [];
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -296,14 +296,14 @@ class CompanyProfileRegistration extends React.Component {
       zip: this.state.form.inputData.zip.value,
       countryCode: this.state.form.inputData.country.value,
     };
-    
+
     const newDocuments = this.state.form.inputData.businessRegistrationDoc.id ? [{
           documentId: this.state.form.inputData.businessRegistrationDoc.id,
           documentName: this.state.form.inputData.businessRegistrationDoc.filename
         }] : [];
     if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.businessRegistrationDoc.id) === -1) {
       org.businessRegistrationDocList = [
-        ...(this.props.onboardingDetails?.org?.businessRegistrationDocList 
+        ...(this.props.onboardingDetails?.org?.businessRegistrationDocList
           ? this.props.onboardingDetails.org.businessRegistrationDocList : []),
         ...newDocuments
       ];

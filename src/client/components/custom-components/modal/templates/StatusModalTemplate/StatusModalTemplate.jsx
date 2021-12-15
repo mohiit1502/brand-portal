@@ -74,7 +74,6 @@ const StatusModalTemplate = props => {
         const replacementPath = replacement.split(".");
         let i = 0;
         let traverser = replacementPath[i++];
-        console.log(traverser);
         if (traverser === "profile") {
           traverser = profile;
           while (traverser && i < replacementPath.length) {
@@ -96,7 +95,10 @@ const StatusModalTemplate = props => {
   const getPartialObject = node => {
     if (node) {
       if (node.length) {
-        const matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
+        let matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
+        // if (!onboardingDetails || onboardingDetails.reasonCode !== "hold_ro_application_edit") {
+        //   matchedNode = node.find(obj => obj.key.indexOf("NEW") > -1);
+        // }
         matchedNode && getDynamicReplacementConfig(matchedNode);
         return matchedNode;
       } else {
@@ -112,7 +114,6 @@ const StatusModalTemplate = props => {
 
   const hideModal = () => {
     toggleModal(TOGGLE_ACTIONS.HIDE);
-    window.location.href=window.location.href;
   };
 
   const linkAccounts = () => {

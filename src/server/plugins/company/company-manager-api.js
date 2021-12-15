@@ -6,7 +6,7 @@ import ServerHttp from "../../utility/ServerHttp";
 import FormData from "form-data";
 import ServerUtils from "../../utility/server-utils";
 import mixpanel from "../../utility/mixpanelutility";
-import { MIXPANEL_CONSTANTS } from "../../constants/mixpanel-constants";
+import {MIXPANEL_CONSTANTS} from "../../constants/mixpanel-constants";
 
 class CompanyManagerApi {
   constructor() {
@@ -297,6 +297,51 @@ class CompanyManagerApi {
     };
     console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has started");
     console.log("[CompanyManagerApi::getApplicationDetails] User ID: ", request.state && request.state.session_token_login_id);
+    const dummyResponse = {
+      orgStatus: "ON_HOLD",
+      orgId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
+      brandId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
+      reasonCode: "hold_ro_application_edit",
+      company: {
+        name: "Subhadeep-demo003",
+        address: "Bangalore",
+        city: "Bangalore",
+        state: "CA",
+        zip: "17122",
+        countryCode: "US",
+        businessRegistrationDoc: null,
+        additionalDoc: null
+      },
+      brand: {
+        name: "Test-brand#4",
+        trademarkNumber: "5912022",
+        comments: "eeee",
+        usptoUrl: null,
+        usptoVerification: "VALID"
+      },
+      businessRegistrationDocList: [
+        {
+          documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+          documentName: "Document2.pdf",
+          createTS: "2021-11-30T11:57:15.774Z",
+          uploadedToServiceNow: false
+        }
+      ],
+      additionalDocList: [
+        {
+          documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+          documentName: "DocumentOld.pdf",
+          createTS: "2021-10-30T11:54:58.730Z",
+          uploadedToServiceNow: false
+        },
+        {
+          documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
+          documentName: "DocumentNew.pdf",
+          createTS: "2021-11-30T11:57:15.774Z",
+          uploadedToServiceNow: false
+        }
+      ]
+    };
     try {
       const headers = ServerUtils.getHeaders(request);
       if (!headers.ROPRO_CLIENT_TYPE) {
@@ -320,56 +365,9 @@ class CompanyManagerApi {
 
       const response = await ServerHttp.get(url, options);
       console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has completed");
-      const dummyResponse = {
-        orgStatus: "ON_HOLD",
-        orgId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
-        brandId: "14afba06-a560-40a1-93aa-f0ae6d44ebe6",
-        company: {
-            name: "Subhadeep-demo003",
-            address: "Bangalore",
-            city: "Bangalore",
-            state: "CA",
-            zip: "17122",
-            countryCode: "US",
-            businessRegistrationDoc: null,
-            additionalDoc: null
-        },
-        brand: {
-            name: "Test-brand#4",
-            trademarkNumber: "5912022",
-            comments: "eeee",
-            usptoUrl: null,
-            usptoVerification: "VALID"
-        },
-        businessRegistrationDocList: [
-            {
-                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
-                documentName: "Document2.pdf",
-                createTS: "2021-11-30T11:57:15.774Z",
-                uploadedToServiceNow: false
-            }
-        ],
-        additionalDocList: [
-            {
-                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
-                documentName: "DocumentOld.pdf",
-                createTS: "2021-10-30T11:54:58.730Z",
-                uploadedToServiceNow: false
-            },
-            {
-                documentId: "7438c5c7-dde9-4ac7-a286-41a65cedc510",
-                documentName: "DocumentNew.pdf",
-                createTS: "2021-11-30T11:57:15.774Z",
-                uploadedToServiceNow: false
-            }
-        ]
-
-      };
-      return h.response(dummyResponse).code(response.status);
-
-      // return h.response(response.body).code(response.status);
+      return h.response(response.body).code(response.status);
+      // return h.response(dummyResponse).code(200);
     } catch (err) {
-      
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;

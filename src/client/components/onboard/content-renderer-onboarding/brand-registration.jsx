@@ -72,7 +72,7 @@ class BrandRegistration extends React.Component {
 
   goToApplicationReview(evt) {
       evt.preventDefault();
-      const docNames = (this.props.onboardingDetails && this.props.onboardingDetails.additionalDocList) || [];
+      const docNames = this.props.onboardingDetails?.brand?.additionalDocList || [];
       const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
       if (steps) {
         steps[1].active = false;
@@ -94,7 +94,7 @@ class BrandRegistration extends React.Component {
           }] : [];
       if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.additionalDoc.id) === -1) {
         brand.additionalDocList = [
-          ...(this.props.onboardingDetails?.brand?.additionalDocList 
+          ...(this.props.onboardingDetails?.brand?.additionalDocList
             ? this.props.onboardingDetails.brand.additionalDocList : []),
           ...newDocuments
         ];
@@ -204,7 +204,7 @@ class BrandRegistration extends React.Component {
       <div className={`row justify-content-center ${this.state.form.loader && "loader"}`}>
         <div className="col-lg-10 col-md-8 col pl-5 pr-0 mx-5">
           <div className="row title-row mb-4 pl-4">
-            <div className="col pl-4 ">
+            <div className="col pl-4">
               <div className="brand-registration-title font-weight-bold">
                 {section.sectionTitle}
               </div>

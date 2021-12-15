@@ -155,7 +155,7 @@ const MODALSMETA = {
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["NEW"]
             }
-            
+
           ],
           "chunk4": [
             {
@@ -363,7 +363,7 @@ const MODALSMETA = {
         }
       },
       "NO_PRIMARY_ACTION": true
-      
+
     },
     "TOU_VERIFICATION": {
       "CODE": 128,
