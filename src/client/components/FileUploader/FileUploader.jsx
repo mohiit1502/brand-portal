@@ -42,6 +42,7 @@ const FileUploader = props => {
             icon={images[props.icon]}/>
         </div>
         {
+          !props.uploading && !props.id &&
           <>
             <label
               className={`btn btn-sm btn-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
