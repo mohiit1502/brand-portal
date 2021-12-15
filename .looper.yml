@@ -56,4 +56,4 @@ flows:
 
   run-sonar:
     - sonar("Sonar"):
-        - (name Sonar For Push/Merge) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties -Dsonar.projectVersion=${VERSION} -Dsonar.branch.name=${GITHUB_BRANCH_NAME} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal -Dsonar.branch.target=master
+        - (name Sonar For Push/Merge) sonar-scanner -X -Dsonar.projectKey=brand-portal -Dproject.settings=sonar-project.properties -Dsonar.projectVersion=${VERSION} -Dsonar.branch.name=${GITHUB_BRANCH_NAME} -Dsonar.pullrequest.github.repository=RET-Marketplace/brand-portal
