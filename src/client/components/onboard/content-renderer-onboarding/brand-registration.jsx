@@ -13,6 +13,7 @@ import ContentRenderer from "../../../utility/ContentRenderer";
 import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
+import Cookies from "electrode-cookies";
 
 class BrandRegistration extends React.Component {
 
@@ -35,6 +36,7 @@ class BrandRegistration extends React.Component {
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       redirectToCompanyReg: !this.props.org,
       section: {...brandConfiguration.sectionConfig},
+      clientType: Cookies.get("client_type"),
       form: {
         ...brandConfiguration.formConfig,
         inputData: {...brandConfiguration.fields},
