@@ -89,7 +89,7 @@ const FORMFIELDCONFIG = {
           "label": "ZIP",
           "layout": "4.1.6",
           "maxLength": 10,
-          "pattern": "^\\d{5}(?:[-\s]\\d{4})?$",
+          "pattern": "^\\d{5}(?:[-]\\d{4})?$",
           "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "required": true,
           "subtitle": "",
@@ -111,7 +111,7 @@ const FORMFIELDCONFIG = {
           "value": "USA"
         },
         "businessRegistrationDoc": {
-          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",    
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
           "buttonText": "Upload",
           "cancelHandlerArg": "businessRegistrationDoc",
           "changeHandlerArg": "businessRegistrationDoc",
