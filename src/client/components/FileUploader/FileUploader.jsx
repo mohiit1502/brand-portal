@@ -7,6 +7,16 @@ import ProgressBar from "../custom-components/progress-bar/progress-bar";
 
 /* eslint-disable complexity, no-nested-ternary */
 const FileUploader = props => {
+  const formToDocMapper = {
+    companyreg: {
+      sectionName: "org",
+      attachmentKey: "businessRegistrationDocList"
+    },
+    brandreg: {
+      sectionName: "brand",
+      attachmentKey: "additionalDocList"
+    }
+  };
   const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
   const tooltipContent = {
     webformDocContent: <div>
