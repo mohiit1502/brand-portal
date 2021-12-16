@@ -172,12 +172,12 @@ class ApplicationReview extends React.Component {
     render() {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
-            <div className={`col test pl-5 pr-0 ml-5${this.state.loader ? " loader" : ""}`}>
-                <div className="row mt-4 pl-5 ml-3 brand-registration-title font-weight-bold font-size-28">
-                    {this.title}
+            <div className={`col pl-5 pr-0 ml-5${this.state.loader ? " loader" : ""}`}>
+                <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
+                    <span className="col">{this.title}</span>
                 </div>
-                <div className="row mt-3 pl-5 ml-3 brand-registration-subtitle">
-                    {this.subtitle}
+                <div className="row mt-3 pl-5 ml-5 brand-registration-subtitle">
+                    <span className="col">{this.subtitle}</span>
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}
                 <ApplicationDetails {...this.props} />

@@ -231,15 +231,14 @@ const StatusModalTemplate = props => {
                 {
                   typeof (meta.TITLE) === "string" ? meta.TITLE :
                     Object.keys(meta.TITLE.content).map(node => {
-                      let content = meta.TITLE.content;
-                      let shouldRender = true;
+                      const content = {...meta.TITLE.content};
+                      const nodeContent = {...content[node]};
+                      const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
+                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
+                        onboardingDetails));
+                      content[node] = nodeContent;
+                      getDynamicReplacementConfig(nodeContent);
                       if (meta.TITLE.content[node].onClick) {
-                        content = {...meta.TITLE.content};
-                        const nodeContent = {...content[node]};
-                        shouldRender = nodeContent.renderCondition && onboardingDetails ?
-                        ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", onboardingDetails)
-                         : false;
-                        content[node] = nodeContent;
                         content[node].onClick = getAction(nodeContent.onClick);
                       }
                       return shouldRender ? contentRenderer.getContent(content, node) : null;
