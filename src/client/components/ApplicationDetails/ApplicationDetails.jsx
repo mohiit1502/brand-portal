@@ -19,6 +19,9 @@ const ApplicationDetails = props => {
           companyDetails.org = companyDetails.company || {};
           companyDetails.org.businessRegistrationDocList = companyDetails.businessRegistrationDocList;
           companyDetails.brand.additionalDocList = companyDetails.additionalDocList;
+          if (companyDetails.orgStatus === "ON_HOLD" && companyDetails.reasonCode !== "hold_ro_application_edit") {
+            companyDetails.orgStatus = "NEW";
+          }
           delete companyDetails.company;
           delete companyDetails.businessRegistrationDocList;
           delete companyDetails.additionalDocList;

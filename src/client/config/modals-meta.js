@@ -6,7 +6,7 @@ const MODALSMETA = {
       "CODE": 1
     },
     "SELLER_WELCOME_PROMPT": {
-      "BODY_CONTENT_CLASSES": "text-left",
+      "BODY_CONTENT_CLASSES": "text-left px-5",
       "BODY_CLASSES": "px-5",
       "MODAL_DIALOG_CLASSES": "width-unset",
       "MESSAGE": {
@@ -18,7 +18,7 @@ const MODALSMETA = {
             "classes": "font-weight-bold mt-2 mb-4 mx-4 font-size-28 text-center"
           },
           "para1": {
-            "text": "To simplify the process, we will be using the information in your Seller\nCenter account to set up your Brand Portal account.\nPlease complete the following steps.",
+            "text": "To simplify the process, we will be using the information in your Seller Center account to set up your Brand Portal account. Please complete the following steps.",
             "classes": "mx-4 font-size-16"
           },
           "list": {
@@ -35,7 +35,8 @@ const MODALSMETA = {
       "IMAGE": "ProblemSolving",
       "PRIMARY_ACTION": {
         "text": "Start",
-        "action": "hideModal"
+        "action": "hideModal",
+        "classes": "my-4"
       },
       "TYPE": "CTA"
     },
@@ -46,7 +47,7 @@ const MODALSMETA = {
       "SUBTITLE": {
         "content": {
           "para1": {
-            "text": "You can review the status of your application by logging into\n your Brand Portal account.",
+            "text": "You can review the status of your application by logging into your Brand Portal account.",
             "classes": "font-size-16 mx-5"
           }
         }
@@ -175,10 +176,7 @@ const MODALSMETA = {
           ]
           },
           "para3": {
-            "renderCondition": {
-              "key": ["ON_HOLD"],
-              "path": "orgStatus"
-            },
+            "renderCondition": "{\"keyPath\": \"orgStatus\", \"value\": \"on_hold\"}",
             "text": "Review and confirm that the information in your application is accurate.",
             "classes": "mt-2"
           },
@@ -211,18 +209,18 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "EMAIL_VERIFIED": {
-      "BODY_CONTENT_CLASSES": "text-left",
+      "BODY_CONTENT_CLASSES": "text-left px-5",
       "BODY_CLASSES": "px-5",
       "MODAL_DIALOG_CLASSES": "width-unset",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
           "para3": {
-            "text": "Your email address has \nbeen verified",
+            "text": "Your email address has been verified",
             "classes": "font-weight-bold mt-2 mb-4 mx-4 font-size-28 text-center"
           },
           "para1": {
-            "text": "Next, we need to verify that you are the owner of the intellectual\n property rights that you wish to enforce.",
+            "text": "Next, we need to verify that you are the owner of the intellectual property rights that you wish to enforce.",
             "classes": "mx-4 font-size-16"
           },
           "list": {
@@ -231,7 +229,7 @@ const MODALSMETA = {
             "liClasses": "font-size-16 mt-4",
             "steps": [
               "The information provided will be verified by our team.",
-              "You will receive a confirmation email once your application has\nbeen submitted. We will keep you updated on the status of\nyour application via email."
+              "You will receive a confirmation email once your application has been submitted. We will keep you updated on the status of your application via email."
             ]
           }
         }
@@ -239,7 +237,8 @@ const MODALSMETA = {
       "IMAGE": "ProblemSolving",
       "PRIMARY_ACTION": {
         "text": "Start",
-        "action": "hideModal"
+        "action": "hideModal",
+        "classes": "my-4"
       },
       "TYPE": "CTA"
     },
@@ -283,7 +282,7 @@ const MODALSMETA = {
     "PORTAL_VERIFICATION": {
       "CODE": 2,
       "IMAGE": "Arrow",
-      "MESSAGE": "Once complete, we will send a confirmation to your registered email.\n Please login using the shared link.",
+      "MESSAGE": "Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
       "TITLE": "Your company and brand details are being verified"
     },
     "PORTAL_DASHBOARD": {
@@ -327,7 +326,7 @@ const MODALSMETA = {
       "SUBTITLE": {
         "content": {
           "para1": {
-            "text": "To move forward with your application, we need to verify the\nemail address associated with your account.",
+            "text": "To move forward with your application, we need to verify the email address associated with your account.",
             "classes": "font-size-15 mx-5"
           }
         }
@@ -349,7 +348,7 @@ const MODALSMETA = {
       "TITLE": {
         "content": {
           "para": {
-            "text": "Please verify your email address\nto continue with the registration process",
+            "text": "Please verify your email address to continue with the registration process",
             "classes": "h5 mx-5 px-3 mb-4 font-weight-bold"
           }
         }

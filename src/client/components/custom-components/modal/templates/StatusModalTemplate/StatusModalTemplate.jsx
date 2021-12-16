@@ -236,12 +236,18 @@ const StatusModalTemplate = props => {
                       const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
                         && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
                         onboardingDetails));
-                      content[node] = nodeContent;
-                      getDynamicReplacementConfig(nodeContent);
-                      if (meta.TITLE.content[node].onClick) {
-                        content[node].onClick = getAction(nodeContent.onClick);
+                      
+                      if (shouldRender) {
+                        content[node] = nodeContent;
+                        getDynamicReplacementConfig(nodeContent);
+                        if (meta.TITLE.content[node].onClick) {
+                          content[node].onClick = getAction(nodeContent.onClick);
+                        }
+                        return contentRenderer.getContent(content, node);
+                      } else {
+                        return null;
                       }
-                      return shouldRender ? contentRenderer.getContent(content, node) : null;
+                      
                     })
                 }
                 </span>
@@ -268,6 +274,10 @@ const StatusModalTemplate = props => {
                   typeof (meta.MESSAGE) === "string" ? meta.MESSAGE :
                     Object.keys(meta.MESSAGE.content).map(node => {
                       const nodeContent = meta.MESSAGE.content[node];
+                      const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
+                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
+                        onboardingDetails));
+                      if (shouldRender) {
                       node.startsWith("partial")
                         ? Object.keys(nodeContent).forEach(node => {
                           if (typeof nodeContent[node] === "object") {
@@ -276,7 +286,11 @@ const StatusModalTemplate = props => {
                           }
                           })
                         : getDynamicReplacementConfig(nodeContent);
-                      return contentRenderer.getContent(meta.MESSAGE.content, node, "", "", onboardingDetails);
+                      return contentRenderer.getContent(meta.MESSAGE.content, node);
+                      } else {
+                        return null;
+                      }
+
                     })
                 }
                 </div>}
