@@ -75,7 +75,7 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "APPLICATION_INFORMATION": {
-      "CODE": 2,
+      "CODE": [2, 8],
       "BODY_CONTENT_CLASSES": "ml-5 text-left pl-5",
       "BODY_CLASSES": "px-5 modal-background modal-height",
       "MODAL_DIALOG_CLASSES": "width-unset modal-xl ",
@@ -279,33 +279,8 @@ const MODALSMETA = {
       },
       "TYPE": "CTA"
     },
-    "PORTAL_VERIFICATION": {
-      "CODE": 2,
-      "IMAGE": "Arrow",
-      "MESSAGE": "Once complete, we will send a confirmation to your registered email. Please login using the shared link.",
-      "TITLE": "Your company and brand details are being verified"
-    },
     "PORTAL_DASHBOARD": {
       "CODE": 4
-    },
-    "PORTAL_ACCESS_REVOKED": {
-      "MESSAGE": {
-        "classes": "mt-4 mx-4 access-revoke",
-        "content": {
-          "partial1": {
-            "chunk1": "Please contact us at ",
-            "anchor1": {
-              "text": "brandportal@walmart.com",
-              "href": "mailto:brandportal@walmart.com"
-            },
-            "chunk2": " if you would still like to create an account"
-          }
-        }
-      },
-      "CODE": 8,
-      "IMAGE": "Alert",
-      "SUBTITLE": "We have not been able to verify the information provided for your application.",
-      "TITLE": "Application On Hold"
     },
     "USER_ACCESS_REVOKED": {
       "CODE": 16,
