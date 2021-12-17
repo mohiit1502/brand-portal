@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { dispatchSteps } from "../../../actions/company/company-actions";
 import { toggleModal, TOGGLE_ACTIONS } from "../../../actions/modal-actions";
+import {NOTIFICATION_TYPE, showNotification} from "../../../actions/notification/notification-actions";
+
 import ApplicationDetails from "../../../components/ApplicationDetails";
 import mixpanel from "../../../utility/mixpanelutils";
 import Http from "../../../utility/Http";
@@ -67,6 +69,9 @@ class ApplicationReview extends React.Component {
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
         })
         .catch(err => {
+            if (err.error && err.error.code === "MAXIMUM_RETRY_EXHAUSTED") {
+                this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Application limit exhausted!");
+            }
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
         })
@@ -101,19 +106,27 @@ class ApplicationReview extends React.Component {
                 payload.brand[brandField] = onboardingDetails.brand[brandField];
             }
         });
+        // const additionalDocListNew = onboardingDetails.brand.additionalDocList || [];
+        // const businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList || [];
 
-        const additionalDocListNew = onboardingDetails.brand.additionalDocList, additionalDocListOrginal = originalValues.brand.additionalDocList,
-        businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList, businessRegistrationDocListOriginal = originalValues.org.businessRegistrationDocList;
+        // if (businessRegistrationDocListNew && businessRegistrationDocListNew.findIndex(doc => !doc.createTS)) {
+        //     payload.org.businessRegistrationDocList = businessRegistrationDocListNew;
+        // }
 
-        if ((businessRegistrationDocListOriginal && !businessRegistrationDocListNew)
-            || (!businessRegistrationDocListOriginal && businessRegistrationDocListNew)
-            || (businessRegistrationDocListNew && businessRegistrationDocListOriginal && businessRegistrationDocListNew.length !== businessRegistrationDocListOriginal.length)) {
+        // if (additionalDocListNew && additionalDocListNew.findIndex(doc => !doc.createTS)) {
+        //     payload.brand.additionalDocList = additionalDocListNew;
+        // }
+
+        const additionalDocListNew = onboardingDetails.brand.additionalDocList || [];
+        const additionalDocListOrginal = originalValues.brand.additionalDocList || [];
+        const businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList || [];
+        const businessRegistrationDocListOriginal = originalValues.org.businessRegistrationDocList || [];
+
+        if (businessRegistrationDocListNew && businessRegistrationDocListOriginal && businessRegistrationDocListNew.length !== businessRegistrationDocListOriginal.length) {
             payload.org["businessRegistrationDocList"] = businessRegistrationDocListNew;
         }
 
-        if ((additionalDocListOrginal && !additionalDocListNew)
-            || (!additionalDocListOrginal && additionalDocListNew)
-            || (additionalDocListNew && additionalDocListOrginal && additionalDocListNew.length !== additionalDocListOrginal.length)) {
+        if (additionalDocListNew && additionalDocListOrginal && additionalDocListNew.length !== additionalDocListOrginal.length) {
             payload.brand["additionalDocList"] = additionalDocListNew;
         }
 
@@ -145,6 +158,8 @@ class ApplicationReview extends React.Component {
           this.restructureBeforeSubmit(payload);
           if ((isEditMode && dirtyCheckResponse.isDirty) || !isEditMode) {
             this.submitOnboardingForm(payload, mixpanelPayload);
+          } else {
+            this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Nothing was changed!");
           }
         } catch (err) {
             console.log(err);
@@ -169,7 +184,7 @@ class ApplicationReview extends React.Component {
     render() {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
-            <div className="col pl-5 pr-0 ml-5">
+            <div className="col pl-5 pr-0">
                 <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
                     <span className="col">{this.title}</span>
                 </div>
@@ -181,7 +196,7 @@ class ApplicationReview extends React.Component {
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right mr-5">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3 mr-5" onClick={this.checkAndSubmitOnboardingForm}>Confirm and submit</button>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm}>Confirm and submit</button>
                     </div>
                 </div>
 
@@ -196,7 +211,8 @@ ApplicationReview.propTypes = {
     onboardingDetails: PropTypes.object,
     steps: PropTypes.array,
     modalsMeta: PropTypes.object,
-    toggleModal: PropTypes.func
+    toggleModal: PropTypes.func,
+    showNotification: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -205,13 +221,13 @@ const mapStateToProps = state => {
         onboardingDetails: state.company && state.company.onboardingDetails,
         originalValues: state.company && state.company.originalValues,
         userProfile: state.user && state.user.profile
-
-    };
+    }
 };
 
 const mapDispatchToProps = {
     dispatchSteps,
-    toggleModal
+    toggleModal,
+    showNotification
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ApplicationReview));

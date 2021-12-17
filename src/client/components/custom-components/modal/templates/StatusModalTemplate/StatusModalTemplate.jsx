@@ -228,7 +228,7 @@ const StatusModalTemplate = props => {
               <span className="close-btn" aria-hidden="true">&times;</span>
             </button>
           </div>}
-          <div className={`modal-body overflow-auto${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}
+          <div className={`modal-body overflow-y-auto${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}
           ${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}
           ${apiError ? "error-layout" : ""}`}>
           {!apiError ? <>{(images[meta.IMAGE] || meta.image) && <div className="row">

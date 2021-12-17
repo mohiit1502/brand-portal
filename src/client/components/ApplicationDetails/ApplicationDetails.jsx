@@ -53,8 +53,8 @@ const ApplicationDetails = props => {
             </div>
           </div>
           <div className="row">
-            <div className="col w-100 mt-3 brand-registration-subtitle font-size-14">
-              <span className="w-100 mt-3 font-weight-bold">{attachmentsHeader}</span>
+            <div className="col-6 overflow-x-auto mt-3 brand-registration-subtitle">
+              <span className="w-100 mt-3 font-weight-bold font-size-14">{attachmentsHeader}</span>
               {
                 org.businessRegistrationDocList && org.businessRegistrationDocList.length > 0
                   ? org.businessRegistrationDocList
@@ -63,8 +63,8 @@ const ApplicationDetails = props => {
                   : <span className="d-block mt-2">No documents attached.</span>
               }
             </div>
-            <div className="col w-100 mt-3 brand-registration-subtitle font-size-14">
-              <span className="w-100 mt-3 font-weight-bold">{attachmentsHeader}</span>
+            <div className="col-6 overflow-x-auto mt-3 brand-registration-subtitle">
+              <span className="w-100 mt-3 font-weight-bold font-size-14">{attachmentsHeader}</span>
               {
                 brand.additionalDocList && brand.additionalDocList.length > 0
                   ? brand.additionalDocList

@@ -15,7 +15,10 @@ class UserMenu extends React.Component {
   constructor (props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
-    this.logoutModalDeterminer = ["/onboard/company", "/onboard/review", "/profile", "/onboard/brand"];
+    this.logoutModalDeterminer = {
+      routes: ["/onboard/company", "/onboard/review", "/profile", "/onboard/brand"],
+      codes: [1, 4]
+    };
   }
 
   handleLogout() {
@@ -24,10 +27,15 @@ class UserMenu extends React.Component {
     const mixpanelPayload = {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[workflowCode ? workflowCode : 0] || "CODE_NOT_FOUND"
     };
-    let path = this.props.history.location.pathname;
-    if(this.logoutModalDeterminer.indexOf(path) > -1) {
+    const path = this.props.history.location.pathname;
+    const showLogoutPrompt = Object.keys(this.logoutModalDeterminer).reduce((acc, key) => {
+      const matchObj = this.logoutModalDeterminer[key];
+      return acc && matchObj.indexOf(key === "routes" ? path : workflowCode) > -1;
+    }, true);
+
+    if (showLogoutPrompt) {
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.LOGOUT});
-    }else {
+    } else {
       mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
       const baseUrl = window.location.origin;
       const logoutUrl = this.props.logoutUrl && this.props.logoutUrl.replace("__domain__", baseUrl);
@@ -36,6 +44,8 @@ class UserMenu extends React.Component {
   }
   
   render() {
+    const workflowCode = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
+    const CODE_DASHBOARD = 4;
     return (
       <li className="nav-item dropdown nav-item-profile ml-4">
         <Link to="#" className="nav-link user-name dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -46,7 +56,7 @@ class UserMenu extends React.Component {
         </Link>
         <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
           {
-            this.props.isOnboarded && <Link className="dropdown-item" to={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</Link>
+            workflowCode === CODE_DASHBOARD && <Link className="dropdown-item" to={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</Link>
           }
           <Link className="dropdown-item" onClick={this.handleLogout}>Logout</Link>
         </div>
@@ -58,7 +68,8 @@ class UserMenu extends React.Component {
 UserMenu.propTypes = {
   isOnboarded: PropTypes.bool,
   logoutUrl: PropTypes.string,
-  userProfile: PropTypes.object
+  userProfile: PropTypes.object,
+  history: PropTypes.array
 };
 
 

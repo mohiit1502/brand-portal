@@ -45,7 +45,8 @@ const FileUploader = props => {
   };
   const formIdentifier = props.formId;
   const sectionObject = props.company && props.company.onboardingDetails && props.company.onboardingDetails[formToDocMapper[formIdentifier].sectionName];
-  const uploadedAttachments =  sectionObject && sectionObject[formToDocMapper[formIdentifier].attachmentKey];
+  let uploadedAttachments =  sectionObject && sectionObject[formToDocMapper[formIdentifier].attachmentKey];
+  uploadedAttachments = uploadedAttachments && uploadedAttachments.filter(doc => doc.createTS);
   return (
     <div className={`c-FileUploader form-row primary-file-upload mb-3${props.containerClasses ? ` ${  props.containerClasses}` : ""}`}>
       <div className="col">
@@ -54,7 +55,8 @@ const FileUploader = props => {
             content={tooltipContent[props.tooltipContentKey]}
             icon={images[props.icon]}/>
         </div>
-        {uploadedAttachments && props.user?.profile?.context=="edit" &&<div className="mb-3">
+        {uploadedAttachments && uploadedAttachments.length > 0 && props.user?.profile?.context=="edit"
+         && <div className="mb-3">
           <b>Uploaded attachments: </b>
           <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>
         </div>}

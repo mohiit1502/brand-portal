@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-expressions */
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect, withRouter} from "react-router";
-import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails, dispatchOriginalValues} from "../../../actions/company/company-actions";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import Helper from "../../../utility/helper";
@@ -71,9 +72,10 @@ class BrandRegistration extends React.Component {
     }
   }
 
+  // eslint-disable-next-line max-statements
   goToApplicationReview(evt) {
       evt.preventDefault();
-      const docNames = this.props.onboardingDetails?.brand?.additionalDocList || [];
+      let docNames = this.props.onboardingDetails?.brand?.additionalDocList || [];
       const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
       if (steps) {
         steps[1].active = false;
@@ -90,21 +92,14 @@ class BrandRegistration extends React.Component {
       };
 
       const currentDocId = this.state.form.inputData.additionalDoc.id;
-      const newDocuments = currentDocId && docNames.findIndex(obj => obj.documentId === currentDocId) === -1 ? [{
-            documentId: this.state.form.inputData.additionalDoc.id,
-            documentName: this.state.form.inputData.additionalDoc.filename
-          }] : [];
-
-      
-      if (docNames.length > 0 || currentDocId) {
-        brand.additionalDocList = [
-          ...docNames,
-          ...newDocuments
-        ];
+      docNames = docNames.filter(doc => doc.createTS);
+      currentDocId && docNames.push({
+        documentId: this.state.form.inputData.additionalDoc.id,
+        documentName: this.state.form.inputData.additionalDoc.filename
+      });
+      if (docNames.length > 0) {
+        brand.additionalDocList = [...docNames];
       }
-        
-      
-
       if (inputData.comments.value) {
         brand.comments = inputData.comments.value;
       }
@@ -261,7 +256,6 @@ const mapDispatchToProps = {
   dispatchNewRequest,
   dispatchSteps,
   dispatchOnboardingDetails,
-  dispatchOriginalValues,
   showNotification,
   updateUserProfile
 };

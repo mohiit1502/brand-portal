@@ -553,6 +553,14 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   margin-bottom: 1rem;
 }
 
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg);
@@ -618,3 +626,4 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 .form-row > [class*="col-"]:first-child:not(.col-12) {
   padding-left: 5px;
 }
+

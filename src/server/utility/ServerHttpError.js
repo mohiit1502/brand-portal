@@ -5,12 +5,14 @@ export default class ServerHttpError {
   error;
   message;
   code;
+  correlationId;
 
-  constructor (status, error, message, code) {
+  constructor (status, error, message, code, correlationId) {
     this.status = status;
     this.error = error;
     this.message = message;
     this.code = code;
+    this.correlationId = correlationId;
   }
 
 }

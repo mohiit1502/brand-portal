@@ -287,7 +287,7 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    const docNames = this.props.onboardingDetails?.org?.businessRegistrationDocList || [];
+    let docNames = this.props.onboardingDetails?.org?.businessRegistrationDocList || [];
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
@@ -298,19 +298,14 @@ class CompanyProfileRegistration extends React.Component {
     };
 
     const currentDocId = this.state.form.inputData.businessRegistrationDoc.id;
-    const newDocuments = currentDocId && docNames.findIndex(obj => obj.documentId === currentDocId) === -1 ? [{
+    docNames = docNames.filter(doc => doc.createTS);
+      currentDocId && docNames.push({
         documentId: this.state.form.inputData.businessRegistrationDoc.id,
         documentName: this.state.form.inputData.businessRegistrationDoc.filename
-        }] : [];
-
-
-    if (docNames.length > 0 || currentDocId) {
-      org.businessRegistrationDocList = [
-        ...docNames,
-        ...newDocuments
-      ];
-    }
-
+      });
+      if (docNames.length > 0) {
+        org.businessRegistrationDocList = [...docNames];
+      }
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }
