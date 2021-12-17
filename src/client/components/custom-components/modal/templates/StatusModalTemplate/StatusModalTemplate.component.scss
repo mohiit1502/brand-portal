@@ -26,7 +26,7 @@
 
   .modal-dialog{
     max-width: 45rem;
-    
+
     &.modal-xl{
       max-width: 60rem;
     }
@@ -52,13 +52,13 @@
           justify-content: center;
         }
         &.modal-background{
-          background: white url(http://localhost:2992/js/324961efcf2d232a9f6ec72d672ca25f.svg) left no-repeat;
+          background: white url("../../../../../images/onboard-screen.svg") left no-repeat;
           background-size: contain;
           border-bottom: unset;
-        } 
+        }
         &.modal-height{
           max-height: 38rem;
-        } 
+        }
         .btn-primary {
           background: #006799;
           font-weight: bold;
