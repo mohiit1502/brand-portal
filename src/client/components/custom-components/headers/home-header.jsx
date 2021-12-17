@@ -29,16 +29,17 @@ class HomeHeader extends React.Component {
         </button>
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
-            {window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
+            {!workflowCode || workflowCode === 4 &&
             <li className="nav-item nav-item-help mx-4">
-              {!workflowCode || workflowCode === 4 ? isWebform
+              {isWebform
                 ? !this.props.hideHelp && <span className="nav-link nav-help" style={{cursor: "pointer"}} onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.SHOW,
                   {templateName: "StatusModalTemplate", MESSAGE: config.help.modalHelpText, HEADER: config.help.modalHeaderText, TYPE: "NON_STATUS", BUTTON_TEXT: config.help.actionBtnText})}>
                     <img src={helpLogo} height="32px" className="pr-2"/> Help
                   </span>
                 : <Link to="/help" className="nav-link nav-help" href="#">
                     <img src={helpLogo} height="32px" className="pr-2"/> Help
-                  </Link> : null}
+                  </Link>
+              }
             </li>
             }
             {!isWebform && <UserMenu isOnboarded={this.props.isOnboarded}/>}

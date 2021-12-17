@@ -42,9 +42,7 @@ class Home extends React.Component {
           });
           let template = templateKey && modalsMeta[templateKey];
           const userProfile = this.props.userProfile;
-          const isStatusTemplateCode = statusTemplateCodes.findIndex(code => {
-            return typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code;
-          });
+          const isStatusTemplateCode = statusTemplateCodes.findIndex(code => typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code) > -1;
           if (isStatusTemplateCode) {
             const image = images[template.IMAGE];
             template = {templateName: "StatusModalTemplate", image, ...template};
@@ -64,9 +62,8 @@ class Home extends React.Component {
       .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "APPLICATION_INFORMATION", "USER_ACCESS_REVOKED",
         "REQUEST_ACCESS", "USER_VERIFICATION", "TOU_VERIFICATION", "ACCOUNT_LINKING", "ACCOUNT_LINKING_CONFIRM", "ACCOUNT_LINKED"].includes(key))
       .map(key => this.props.modalsMeta[key].CODE);
-    const disablePortalAccess = (!workflowDecider || !workflowDecider.code || (workflowDecider && workflowDecider.code && codes.findIndex(code => {
-      return typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code;
-    })))
+    const disablePortalAccess = (!workflowDecider || !workflowDecider.code
+      || (workflowDecider && workflowDecider.code && codes.findIndex(code => typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code) > -1))
       || (this.props.modal && this.props.modal.value === "show" && this.props.modal.templateName === "StatusModalTemplate");
 //     disablePortalAccess && this.props.history.push(CONSTANTS.ROUTES.PROTECTED.PREBOARD);
     return (
