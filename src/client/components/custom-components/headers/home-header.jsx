@@ -16,6 +16,7 @@ class HomeHeader extends React.Component {
   render() {
     const isWebform = this.props.isWebform;
     const config = this.props.config;
+    const workflowCode = this.props.userProfile?.workflow?.code;
     return (
       <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
         <Link className="navbar-brand walmart-brand" to="/dashboard">
@@ -30,14 +31,14 @@ class HomeHeader extends React.Component {
           <ul className="navbar-nav ml-auto">
             {window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
             <li className="nav-item nav-item-help mx-4">
-              {isWebform
+              {!workflowCode || workflowCode === 4 ? isWebform
                 ? !this.props.hideHelp && <span className="nav-link nav-help" style={{cursor: "pointer"}} onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.SHOW,
                   {templateName: "StatusModalTemplate", MESSAGE: config.help.modalHelpText, HEADER: config.help.modalHeaderText, TYPE: "NON_STATUS", BUTTON_TEXT: config.help.actionBtnText})}>
                     <img src={helpLogo} height="32px" className="pr-2"/> Help
                   </span>
                 : <Link to="/help" className="nav-link nav-help" href="#">
-                <img src={helpLogo} height="32px" className="pr-2"/> Help
-              </Link>}
+                    <img src={helpLogo} height="32px" className="pr-2"/> Help
+                  </Link> : null}
             </li>
             }
             {!isWebform && <UserMenu isOnboarded={this.props.isOnboarded}/>}
