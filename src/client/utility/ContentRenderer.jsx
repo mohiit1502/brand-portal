@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-nested-ternary, max-params, no-unused-expressions, no-magic-numbers, max-statements, complexity */
 import React from "react";
 import * as imagesAll from "./../images";
@@ -119,7 +120,7 @@ export default class ContentRenderer {
         <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
           onClick={handler}
           href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
-          <span style={{backgroundImage: `url(${imagesAll[content[node].icon]}`, backgroundSize: "100%", backgroundRepeat: "no-repeat", backgroundPosition: "left center"}}></span>
+          <img src={imagesAll[content[node].icon]} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>
           {content[node].buttonText}
         </button>
       </>  

@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-expressions */
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect, withRouter} from "react-router";
-import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails, dispatchOriginalValues} from "../../../actions/company/company-actions";
+import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
 import Helper from "../../../utility/helper";
@@ -31,7 +32,6 @@ class BrandRegistration extends React.Component {
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
     this.cancelSelection = DocumentActions.cancelSelection.bind(this);
-    this.loader = Helper.loader.bind(this);
     const brandConfiguration = this.props.brandContent ? this.props.brandContent : {};
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       redirectToCompanyReg: !this.props.org,
@@ -72,9 +72,10 @@ class BrandRegistration extends React.Component {
     }
   }
 
+  // eslint-disable-next-line max-statements
   goToApplicationReview(evt) {
       evt.preventDefault();
-      const docNames = this.props.onboardingDetails?.brand?.additionalDocList || [];
+      let docNames = this.props.onboardingDetails?.brand?.additionalDocList || [];
       const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
       if (steps) {
         steps[1].active = false;
@@ -90,16 +91,14 @@ class BrandRegistration extends React.Component {
         comments: ""
       };
 
-      const newDocuments = this.state.form.inputData.additionalDoc.id ? [{
-            documentId: this.state.form.inputData.additionalDoc.id,
-            documentName: this.state.form.inputData.additionalDoc.filename
-          }] : [];
-      if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.additionalDoc.id) === -1) {
-        brand.additionalDocList = [
-          ...(this.props.onboardingDetails?.brand?.additionalDocList
-            ? this.props.onboardingDetails.brand.additionalDocList : []),
-          ...newDocuments
-        ];
+      const currentDocId = this.state.form.inputData.additionalDoc.id;
+      docNames = docNames.filter(doc => doc.createTS);
+      currentDocId && docNames.push({
+        documentId: this.state.form.inputData.additionalDoc.id,
+        documentName: this.state.form.inputData.additionalDoc.filename
+      });
+      if (docNames.length > 0) {
+        brand.additionalDocList = [...docNames];
       }
       if (inputData.comments.value) {
         brand.comments = inputData.comments.value;
@@ -203,7 +202,7 @@ class BrandRegistration extends React.Component {
     const section = this.state.section;
 
     return (
-      <div className={`row justify-content-center ${this.state.form.loader && "loader"}`}>
+      <div className="row justify-content-center">
         <div className="col-lg-10 col-md-8 col pl-5 pr-0 mx-5">
           <div className="row title-row mb-4 pl-4">
             <div className="col pl-4">
@@ -257,7 +256,6 @@ const mapDispatchToProps = {
   dispatchNewRequest,
   dispatchSteps,
   dispatchOnboardingDetails,
-  dispatchOriginalValues,
   showNotification,
   updateUserProfile
 };

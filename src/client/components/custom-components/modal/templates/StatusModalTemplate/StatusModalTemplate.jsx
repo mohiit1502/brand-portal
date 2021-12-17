@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {useHistory} from "react-router";
-
+import Cookies from "electrode-cookies";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
@@ -62,6 +62,7 @@ const StatusModalTemplate = props => {
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.RESEND_SELF_INVITE, mixpanelPayload);
         });
     } else {
+      setLoader(false);
       showNotification(NOTIFICATION_TYPE.ERROR, `Email not available, please refresh the page!`);
     }
   };
@@ -163,48 +164,58 @@ const StatusModalTemplate = props => {
   };
 
   const runPrimaryAction = (action, actionParam) => {
-    switch (action) {
-      case "linkConfirmation":
-        linkConfirmation();
-        break;
-      case "linkAccounts":
-        linkAccounts();
-        break;
-      case "toNext":
-        toggleModal(TOGGLE_ACTIONS.HIDE, {});
-        history.push(CONSTANTS.ROUTES.PROTECTED.DASHBOARD);
-        break;
-      case "navigation":
-        window.open(actionParam, "_blank");
-        // window.location.href = actionParam;
-        break;
-      case "logout":
-        mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
-        window.location.href = logoutUrlSuperlated;
-        break;
-      case "refreshAndHideModal":
-        toggleModal(TOGGLE_ACTIONS.HIDE);
-        window.location.href=window.location.href;
-        break;
-      default:
-        hideModal();
+    try {
+      switch (action) {
+        case "linkConfirmation":
+          linkConfirmation();
+          break;
+        case "linkAccounts":
+          linkAccounts();
+          break;
+        case "toNext":
+          toggleModal(TOGGLE_ACTIONS.HIDE, {});
+          history.push(CONSTANTS.ROUTES.PROTECTED.DASHBOARD);
+          break;
+        case "navigation":
+          window.open(actionParam, "_blank");
+          // window.location.href = actionParam;
+          break;
+        case "logout":
+          mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
+          window.location.href = logoutUrlSuperlated;
+          break;
+        case "refreshAndHideModal":
+          toggleModal(TOGGLE_ACTIONS.HIDE);
+          window.location.href=window.location.href;
+          break;
+        default:
+          hideModal();
+      }
+    } catch (e) {
+      loader && setLoader(false);
+      console.log(e);
     }
   };
 
   const runSecondaryAction = action => {
-    switch (action) {
-      case "logout":
-        mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
-        window.location.href = logoutUrlSuperlated;
-        break;
-      case "resendInvite":
-        resendInvite();
-        break;
-      case "closeModal":
-        hideModal();
-        break;
-      default:
-        hideModal();
+    try {
+      switch (action) {
+        case "logout":
+          mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
+          window.location.href = logoutUrlSuperlated;
+          break;
+        case "resendInvite":
+          resendInvite();
+          break;
+        case "closeModal":
+          hideModal();
+          break;
+        default:
+          hideModal();
+      }
+    } catch (e) {
+      loader && setLoader(false);
+      console.log(e);
     }
   };
   return (
@@ -217,7 +228,7 @@ const StatusModalTemplate = props => {
               <span className="close-btn" aria-hidden="true">&times;</span>
             </button>
           </div>}
-          <div className={`modal-body${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}
+          <div className={`modal-body overflow-y-auto${!(meta.TYPE === "NON_STATUS" || meta.TYPE === "NOTIFICATION") ? " text-center" : ""}
           ${meta.TYPE !== "NOTIFICATION" ? " p-4" : " p-0"}${meta.BODY_CLASSES ? ` ${  meta.BODY_CLASSES}` : ""}
           ${apiError ? "error-layout" : ""}`}>
           {!apiError ? <>{(images[meta.IMAGE] || meta.image) && <div className="row">
@@ -231,18 +242,23 @@ const StatusModalTemplate = props => {
                 {
                   typeof (meta.TITLE) === "string" ? meta.TITLE :
                     Object.keys(meta.TITLE.content).map(node => {
-                      let content = meta.TITLE.content;
-                      let shouldRender = true;
-                      if (meta.TITLE.content[node].onClick) {
-                        content = {...meta.TITLE.content};
-                        const nodeContent = {...content[node]};
-                        shouldRender = nodeContent.renderCondition && onboardingDetails ?
-                        ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", onboardingDetails)
-                         : false;
+                      const content = {...meta.TITLE.content};
+                      const nodeContent = {...content[node]};
+                      const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
+                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
+                        onboardingDetails));
+                      
+                      if (shouldRender) {
                         content[node] = nodeContent;
-                        content[node].onClick = getAction(nodeContent.onClick);
+                        getDynamicReplacementConfig(nodeContent);
+                        if (meta.TITLE.content[node].onClick) {
+                          content[node].onClick = getAction(nodeContent.onClick);
+                        }
+                        return contentRenderer.getContent(content, node);
+                      } else {
+                        return null;
                       }
-                      return shouldRender ? contentRenderer.getContent(content, node) : null;
+                      
                     })
                 }
                 </span>
@@ -269,6 +285,10 @@ const StatusModalTemplate = props => {
                   typeof (meta.MESSAGE) === "string" ? meta.MESSAGE :
                     Object.keys(meta.MESSAGE.content).map(node => {
                       const nodeContent = meta.MESSAGE.content[node];
+                      const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
+                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
+                        onboardingDetails));
+                      if (shouldRender) {
                       node.startsWith("partial")
                         ? Object.keys(nodeContent).forEach(node => {
                           if (typeof nodeContent[node] === "object") {
@@ -277,7 +297,11 @@ const StatusModalTemplate = props => {
                           }
                           })
                         : getDynamicReplacementConfig(nodeContent);
-                      return contentRenderer.getContent(meta.MESSAGE.content, node, "", "", onboardingDetails);
+                      return contentRenderer.getContent(meta.MESSAGE.content, node);
+                      } else {
+                        return null;
+                      }
+
                     })
                 }
                 </div>}

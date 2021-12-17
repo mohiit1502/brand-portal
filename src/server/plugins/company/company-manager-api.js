@@ -104,7 +104,7 @@ class CompanyManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = isEditMode=="edit" ? await ServerHttp.put(url, options, payload) : await ServerHttp.post(url, options, payload);
+      const response = isEditMode === "edit" ? await ServerHttp.put(url, options, payload) : await ServerHttp.post(url, options, payload);
       console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {

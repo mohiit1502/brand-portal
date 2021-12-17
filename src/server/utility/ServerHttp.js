@@ -63,7 +63,7 @@ export default class ServerHttp {
       const err = headers.get("content-type") === "application/json" ? await response.json() : await response.text();
       const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, err);
-      throw new ServerHttpError(status, err.error, err.message);
+      throw new ServerHttpError(status, err.error, err.message, err.code, err.roproRequestId);
     } catch (e) {
       requestEndTime  = requestEndTime ? requestEndTime : Date.now();
       const errorString = `6. Caught in ServerHttp.${method}: `;
