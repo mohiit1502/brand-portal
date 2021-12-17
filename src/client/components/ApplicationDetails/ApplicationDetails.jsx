@@ -60,7 +60,7 @@ const ApplicationDetails = props => {
                   ? org.businessRegistrationDocList
                     .sort((doc1, doc2) => !doc1.createTS || new Date(doc1.createTS) > new Date(doc2.createTS))
                     .map(doc => <span className="w-100 d-block mt-2" key={doc}>{doc.documentName}</span>)
-                  : "No documents attached."
+                  : <span className="d-block mt-2">No documents attached.</span>
               }
             </div>
             <div className="col w-100 mt-3 brand-registration-subtitle font-size-14">
@@ -70,7 +70,7 @@ const ApplicationDetails = props => {
                   ? brand.additionalDocList
                     .sort((doc1, doc2) => !doc1.createTS || new Date(doc1.createTS) > new Date(doc2.createTS))
                     .map(doc => <span className="d-block w-100 mt-2" key={doc}>{doc.documentName}</span>)
-                  : "No documents attached."
+                  : <span className="d-block mt-2">No documents attached.</span>
               }
             </div>
           </div>

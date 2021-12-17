@@ -297,17 +297,20 @@ class CompanyProfileRegistration extends React.Component {
       countryCode: this.state.form.inputData.country.value,
     };
 
-    const newDocuments = this.state.form.inputData.businessRegistrationDoc.id ? [{
-          documentId: this.state.form.inputData.businessRegistrationDoc.id,
-          documentName: this.state.form.inputData.businessRegistrationDoc.filename
+    const currentDocId = this.state.form.inputData.businessRegistrationDoc.id;
+    const newDocuments = currentDocId && docNames.findIndex(obj => obj.documentId === currentDocId) === -1 ? [{
+        documentId: this.state.form.inputData.businessRegistrationDoc.id,
+        documentName: this.state.form.inputData.businessRegistrationDoc.filename
         }] : [];
-    if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.businessRegistrationDoc.id) === -1) {
+
+
+    if (docNames.length > 0 || currentDocId) {
       org.businessRegistrationDocList = [
-        ...(this.props.onboardingDetails?.org?.businessRegistrationDocList
-          ? this.props.onboardingDetails.org.businessRegistrationDocList : []),
+        ...docNames,
         ...newDocuments
       ];
     }
+
     if (this.state.clientType === "seller") {
       org.sellerInfo = this.props.profile.sellerInfo;
     }

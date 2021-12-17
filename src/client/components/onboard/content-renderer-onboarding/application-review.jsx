@@ -48,7 +48,7 @@ class ApplicationReview extends React.Component {
         data.sellerInfo = data.org.sellerInfo;
         delete data.org.sellerInfo;
       }
-      Object.keys(data).forEach(key => Object.keys(data[key]).length === 0 && delete data[key])
+      Object.keys(data).forEach(key => Object.keys(data[key]).length === 0 && delete data[key]);
       delete data.company;
     }
 
@@ -60,7 +60,7 @@ class ApplicationReview extends React.Component {
         mixpanelPayload.COMPANY_NAME = org && org.name;
         mixpanelPayload.TRADEMARK_NUMBER = brand && brand.trademarkNumber;
         mixpanelPayload.IS_DOCUMENT_UPLOADED = org && Boolean(org.businessRegistrationDocId || org.additionalDocId);
-
+        this.props.setLoader && this.props.setLoader(true);
         Http.post("/api/org/register", data, { clientType: this.props.clientType, context: this.props.userProfile && this.props.userProfile.context})
         .then(res => {
             mixpanelPayload.API_SUCCESS = true;
@@ -71,7 +71,7 @@ class ApplicationReview extends React.Component {
             mixpanelPayload.ERROR = err.message ? err.message : err;
         })
         .finally(() => {
-            this.setState({loader: false});
+            this.props.setLoader && this.props.setLoader(false);
             mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.ONBOARDING_DETAIL_SUBMISSION, mixpanelPayload);
         });
     }
@@ -132,7 +132,6 @@ class ApplicationReview extends React.Component {
         evt.preventDefault();
 
         try {
-          this.setState({loader: true});
           const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
           let payload = this.props.onboardingDetails;
           const dirtyCheckResponse = isEditMode && this.checkForEdit();
@@ -151,8 +150,6 @@ class ApplicationReview extends React.Component {
             console.log(err);
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
-        } finally {
-            this.setState({loader: false});
         }
     }
 
@@ -172,7 +169,7 @@ class ApplicationReview extends React.Component {
     render() {
         return (
             // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
-            <div className={`col pl-5 pr-0 ml-5${this.state.loader ? " loader" : ""}`}>
+            <div className="col pl-5 pr-0 ml-5">
                 <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
                     <span className="col">{this.title}</span>
                 </div>

@@ -31,7 +31,6 @@ class BrandRegistration extends React.Component {
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
     this.cancelSelection = DocumentActions.cancelSelection.bind(this);
-    this.loader = Helper.loader.bind(this);
     const brandConfiguration = this.props.brandContent ? this.props.brandContent : {};
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       redirectToCompanyReg: !this.props.org,
@@ -90,17 +89,22 @@ class BrandRegistration extends React.Component {
         comments: ""
       };
 
-      const newDocuments = this.state.form.inputData.additionalDoc.id ? [{
+      const currentDocId = this.state.form.inputData.additionalDoc.id;
+      const newDocuments = currentDocId && docNames.findIndex(obj => obj.documentId === currentDocId) === -1 ? [{
             documentId: this.state.form.inputData.additionalDoc.id,
             documentName: this.state.form.inputData.additionalDoc.filename
           }] : [];
-      if (docNames.findIndex(obj => obj.documentId === this.state.form.inputData.additionalDoc.id) === -1) {
+
+      
+      if (docNames.length > 0 || currentDocId) {
         brand.additionalDocList = [
-          ...(this.props.onboardingDetails?.brand?.additionalDocList
-            ? this.props.onboardingDetails.brand.additionalDocList : []),
+          ...docNames,
           ...newDocuments
         ];
       }
+        
+      
+
       if (inputData.comments.value) {
         brand.comments = inputData.comments.value;
       }
@@ -203,7 +207,7 @@ class BrandRegistration extends React.Component {
     const section = this.state.section;
 
     return (
-      <div className={`row justify-content-center ${this.state.form.loader && "loader"}`}>
+      <div className="row justify-content-center">
         <div className="col-lg-10 col-md-8 col pl-5 pr-0 mx-5">
           <div className="row title-row mb-4 pl-4">
             <div className="col pl-4">
