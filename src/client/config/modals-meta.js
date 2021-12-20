@@ -76,9 +76,9 @@ const MODALSMETA = {
     },
     "APPLICATION_INFORMATION": {
       "CODE": [2, 8],
-      "BODY_CONTENT_CLASSES": "ml-3 text-left pl-5",
-      "BODY_CLASSES": "p-5 modal-background modal-height",
-      "MODAL_DIALOG_CLASSES": "modal-xl",
+      "BODY_CONTENT_CLASSES": "ml-5 text-left pl-5",
+      "BODY_CLASSES": "px-5 modal-background modal-height",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-xl ",
       "MESSAGE": {
         "classes": "",
         "content": {
