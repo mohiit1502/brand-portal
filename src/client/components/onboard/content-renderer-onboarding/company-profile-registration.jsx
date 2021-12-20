@@ -200,16 +200,19 @@ class CompanyProfileRegistration extends React.Component {
       evt.target.pattern && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
+        const isEditMode = this.props.userProfile?.context === "edit";
         if (key === "companyName") {
-          evt.persist();
-          state.form.inputData.companyName.fieldOk = false;
-          state.form.isSubmitDisabled = true;
-          state.form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
-          state.form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-          // state.form.inputData.additionalDoc.disabled = true;
-          state.form.inputData.businessRegistrationDoc.disabled = true;
-          this.toggleFormEnable(false, false);
-          this.companyDebounce(evt);
+          if ((isEditMode && this.props.originalValues?.org?.name !== targetVal) || !isEditMode) {
+            evt.persist();
+            state.form.inputData.companyName.fieldOk = false;
+            state.form.isSubmitDisabled = true;
+            state.form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
+            state.form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
+            // state.form.inputData.additionalDoc.disabled = true;
+            state.form.inputData.businessRegistrationDoc.disabled = true;
+            this.toggleFormEnable(false, false);
+            this.companyDebounce(evt);
+          }
         }
         state.form.inputData[key].value = targetVal;
         state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
@@ -360,6 +363,7 @@ CompanyProfileRegistration.propTypes = {
   companyState: PropTypes.object,
   dispatchCompanyState: PropTypes.func,
   modal: PropTypes.object,
+  originalValues: PropTypes.object,
   profile: PropTypes.object,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
@@ -374,7 +378,8 @@ const mapStateToProps = state => {
     profile: state.user && state.user.profile,
     steps: state.company && state.company.steps,
     modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
-    onboardingDetails: state.company && state.company.onboardingDetails
+    onboardingDetails: state.company && state.company.onboardingDetails,
+    originalValues: state.company && state.company.originalValues
   };
 };
 

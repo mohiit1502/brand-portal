@@ -151,18 +151,27 @@ class BrandRegistration extends React.Component {
       const targetVal = evt.target.value;
       this.setState(state => {
         state = {...state};
+        const isEditMode = this.props.userProfile?.context === "edit";
         if (key === "trademarkNumber") {
-          this.trademarkDebounce();
-          state.form.inputData.trademarkNumber.fieldAlert = false;
-          state.form.inputData.trademarkNumber.fieldOk = false;
-          state.form.inputData.trademarkNumber.error = "";
-          state.form.inputData.trademarkNumber.isValid = false;
+          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.trademarkNumber !== targetVal)) {
+            this.trademarkDebounce();
+            state.form.inputData.trademarkNumber.fieldAlert = false;
+            state.form.inputData.trademarkNumber.fieldOk = false;
+            state.form.inputData.trademarkNumber.error = "";
+            state.form.inputData.trademarkNumber.isValid = false;
+          } else {
+            state.form.inputData.trademarkNumber.isValid = true;
+          }
         }
         if (key === "brandName") {
-          this.brandDebounce({brandName: targetVal});
-          state.form.inputData.brandName.fieldOk = false;
-          state.form.inputData.brandName.error = "";
-          state.form.inputData.brandName.isUnique = false;
+          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name !== targetVal)) {
+            this.brandDebounce({brandName: targetVal});
+            state.form.inputData.brandName.fieldOk = false;
+            state.form.inputData.brandName.error = "";
+            state.form.inputData.brandName.isUnique = false;
+          } else {
+            state.form.inputData.brandName.isValid = true;
+          }
         }
         state.form.inputData[key].value = targetVal;
         return {
@@ -235,7 +244,7 @@ BrandRegistration.propTypes = {
   steps: PropTypes.array,
   updateOrgData: PropTypes.func,
   updateUserProfile: PropTypes.func,
-  org: PropTypes.PropTypes.oneOfType([
+  org: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object
   ])
@@ -247,7 +256,8 @@ const mapStateToProps = state => {
     brandState: state.company && state.company.brandState,
     steps: state.company && state.company.steps,
     userProfile: state.user.profile,
-    onboardingDetails: state.company && state.company.onboardingDetails
+    onboardingDetails: state.company && state.company.onboardingDetails,
+    originalValues: state.company && state.company.originalValues
   };
 };
 

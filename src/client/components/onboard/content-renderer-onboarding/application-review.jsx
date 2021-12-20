@@ -29,7 +29,8 @@ class ApplicationReview extends React.Component {
         this.checkAndSubmitOnboardingForm = this.checkAndSubmitOnboardingForm.bind(this);
         this.checkForEdit = this.checkForEdit.bind(this);
         this.state = {
-          loader: false
+          loader: false,
+          dirtyCheckResponse: {}
         };
 
     }
@@ -38,9 +39,15 @@ class ApplicationReview extends React.Component {
         if (!this.props.org) {
             this.props.history.push(CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER);
         }
+        const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
+        isEditMode && this.setState({dirtyCheckResponse: this.checkForEdit()});
     }
 
     restructureBeforeSubmit (data) {
+      if (!data.org && data.company) {
+        data.org = data.company;
+        delete data.company;
+      }
       const businessRegistrationDoc = data?.org?.businessRegistrationDocList?.find(doc => !doc.createTS);
       const additionalDoc = data?.brand?.additionalDocList?.find(doc => !doc.createTS);
       data.org = {...data.org, businessRegistrationDoc, additionalDoc};
@@ -51,7 +58,6 @@ class ApplicationReview extends React.Component {
         delete data.org.sellerInfo;
       }
       Object.keys(data).forEach(key => Object.keys(data[key]).length === 0 && delete data[key]);
-      delete data.company;
     }
 
     submitOnboardingForm(data, mixpanelPayload) {
@@ -83,54 +89,44 @@ class ApplicationReview extends React.Component {
 
     // eslint-disable-next-line complexity
     checkForEdit() {
-        const orgFieldsArray = ["city", "countryCode", "address", "zip", "name", "state"];
-        const brandFieldsArray = ["trademarkNumber", "comments", "name"];
+        const modifiableFields = {
+          org: ["city", "countryCode", "address", "zip", "name", "state"],
+          brand: ["trademarkNumber", "comments", "name"]
+        };
         const payload = {
-            "org": {},
-            "brand": {}
+            org: {},
+            brand: {}
         };
         const onboardingDetails = this.props.onboardingDetails;
         const originalValues = this.props.originalValues;
 
-        orgFieldsArray.forEach(orgField => {
-            if (onboardingDetails.org[orgField] !== originalValues.org[orgField]) {
-                payload.org[orgField] = onboardingDetails.org[orgField];
+        // populate payload with non-document changed fields
+        Object.keys(modifiableFields).forEach(key => {
+          const fieldArray = modifiableFields[key];
+          fieldArray.forEach(field => {
+            if (onboardingDetails[key][field] !== originalValues[key][field]) {
+              payload[key][field] = onboardingDetails[key][field];
             }
+          })
         });
 
+        // populate payload with mapping brand and org IDs
         originalValues && originalValues.orgId && (payload.orgId = originalValues.orgId);
         originalValues && originalValues.brandId && (payload.brandId = originalValues.brandId);
 
-        brandFieldsArray.forEach(brandField => {
-            if (onboardingDetails.brand[brandField] !== originalValues.brand[brandField]) {
-                payload.brand[brandField] = onboardingDetails.brand[brandField];
-            }
-        });
-        // const additionalDocListNew = onboardingDetails.brand.additionalDocList || [];
-        // const businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList || [];
-
-        // if (businessRegistrationDocListNew && businessRegistrationDocListNew.findIndex(doc => !doc.createTS)) {
-        //     payload.org.businessRegistrationDocList = businessRegistrationDocListNew;
-        // }
-
-        // if (additionalDocListNew && additionalDocListNew.findIndex(doc => !doc.createTS)) {
-        //     payload.brand.additionalDocList = additionalDocListNew;
-        // }
-
+        // populate payload with changed documents
         const additionalDocListNew = onboardingDetails.brand.additionalDocList || [];
-        const additionalDocListOrginal = originalValues.brand.additionalDocList || [];
         const businessRegistrationDocListNew = onboardingDetails.org.businessRegistrationDocList || [];
-        const businessRegistrationDocListOriginal = originalValues.org.businessRegistrationDocList || [];
 
-        if (businessRegistrationDocListNew && businessRegistrationDocListOriginal && businessRegistrationDocListNew.length !== businessRegistrationDocListOriginal.length) {
-            payload.org["businessRegistrationDocList"] = businessRegistrationDocListNew;
+        if (businessRegistrationDocListNew && businessRegistrationDocListNew.findIndex(doc => !doc.createTS) > -1) {
+            payload.org.businessRegistrationDocList = businessRegistrationDocListNew;
         }
 
-        if (additionalDocListNew && additionalDocListOrginal && additionalDocListNew.length !== additionalDocListOrginal.length) {
-            payload.brand["additionalDocList"] = additionalDocListNew;
+        if (additionalDocListNew && additionalDocListNew.findIndex(doc => !doc.createTS) > -1) {
+            payload.brand.additionalDocList = additionalDocListNew;
         }
 
-        const isDirty = Object.keys(payload).reduce((agg, key) => agg || Object.keys(payload[key]).length > 0, false);
+        const isDirty = Object.keys(payload).reduce((agg, key) => agg || (typeof payload[key] === "object" && Object.keys(payload[key]).length > 0), false);
         return {isDirty, payload};
     }
 
@@ -147,13 +143,9 @@ class ApplicationReview extends React.Component {
         try {
           const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
           let payload = this.props.onboardingDetails;
-          const dirtyCheckResponse = isEditMode && this.checkForEdit();
+          const dirtyCheckResponse = this.state.dirtyCheckResponse;
           if (dirtyCheckResponse && dirtyCheckResponse.isDirty) {
               payload = dirtyCheckResponse.payload;
-          }
-          if (!payload.org && payload.company) {
-              payload.org = payload.company;
-              delete payload.company;
           }
           this.restructureBeforeSubmit(payload);
           if ((isEditMode && dirtyCheckResponse.isDirty) || !isEditMode) {
@@ -196,7 +188,9 @@ class ApplicationReview extends React.Component {
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right mr-5">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm}>Confirm and submit</button>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm} disabled={!this.state.dirtyCheckResponse?.isDirty}>
+                          Confirm and submit
+                        </button>
                     </div>
                 </div>
 
