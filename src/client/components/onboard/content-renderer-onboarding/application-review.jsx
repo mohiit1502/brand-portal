@@ -30,7 +30,8 @@ class ApplicationReview extends React.Component {
         this.checkForEdit = this.checkForEdit.bind(this);
         this.state = {
           loader: false,
-          dirtyCheckResponse: {}
+          dirtyCheckResponse: {},
+          isEditMode: false
         };
 
     }
@@ -40,6 +41,7 @@ class ApplicationReview extends React.Component {
             this.props.history.push(CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER);
         }
         const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
+        this.setState({isEditMode})
         isEditMode && this.setState({dirtyCheckResponse: this.checkForEdit()});
     }
 
@@ -141,7 +143,7 @@ class ApplicationReview extends React.Component {
         evt.preventDefault();
 
         try {
-          const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
+          const isEditMode = this.state.isEditMode;
           let payload = this.props.onboardingDetails;
           const dirtyCheckResponse = this.state.dirtyCheckResponse;
           if (dirtyCheckResponse && dirtyCheckResponse.isDirty) {
@@ -188,7 +190,8 @@ class ApplicationReview extends React.Component {
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right mr-5">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
-                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm} disabled={!this.state.dirtyCheckResponse?.isDirty}>
+                        <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm}
+                                disabled={this.state.isEditMode && !this.state.dirtyCheckResponse?.isDirty}>
                           Confirm and submit
                         </button>
                     </div>
