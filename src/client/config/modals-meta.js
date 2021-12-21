@@ -151,7 +151,7 @@ const MODALSMETA = {
               "key": ["ON_HOLD"]
             },
             {
-              "text": "__emailPlaceholder__",
+              "text": "__emailPlaceholder__.",
               "classes": "font-weight-bold mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["NEW"]
@@ -161,16 +161,15 @@ const MODALSMETA = {
           "chunk4": [
             {
               "text": "regarding your application. If you believe this is an error, contact ",
-              "classes": "font-weight-bold mt-5",
+              "classes": "mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["REJECTED", "REJECTED_ON_AUDIT"]
             }
           ],
-          "chunk5": [
-            {
-              "text": "brandportal@walmart.com",
+          "anchor": [{
+              "href": "mailto:brandportal@walmart.com",
+              "text": "brandportal@walmart.com.",
               "classes": "font-weight-bold mt-5 brand-portal-link-class",
-              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["REJECTED", "REJECTED_ON_AUDIT"]
             }
           ]
@@ -192,11 +191,11 @@ const MODALSMETA = {
           "para": {
             "text": "__businessName__",
             "dynamicReplacementConfig": {"__businessName__": "org.name"},
-            "classes": "text-left h3 font-weight-bold col-9"
+            "classes": "text-left h3 pl-0 font-weight-bold col-9"
           },
           "button1": {
             "icon": "EditOutlinedIcon",
-            "classes": "col btn btn-primary",
+            "classes": "col btn btn-primary px-0",
             "buttonText": "Edit Application",
             "onClick": "dispatchUserProfile",
             "renderCondition": "{\"keyPath\": \"orgStatus\", \"value\": \"on_hold\"}"
@@ -263,7 +262,7 @@ const MODALSMETA = {
         "content": {
           "para": {
             "text": "Are you sure you want to logout?",
-            "classes": "h3 mx-5 px-5 mb-2 font-weight-bold"
+            "classes": "h3 mx-auto mb-2 font-weight-bold"
           }
         }
       },

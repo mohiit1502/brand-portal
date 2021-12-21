@@ -67,7 +67,7 @@ export default class ContentRenderer {
     const partialRenders = Object.keys(partial).map(partialNodeKey => {
       const node1 = partial[partialNodeKey];
       if (partialNodeKey.startsWith("chunk")) {
-        if(typeof node1 == "string") {
+        if (typeof node1 === "string") {
           return <span className={classes ? classes : ""}>{node1}</span>;
         } else {
           const chunkClass = node1.classes;
@@ -75,7 +75,7 @@ export default class ContentRenderer {
           return <span className={`${classes ? classes : ""}${chunkClass ? " "+chunkClass : ""}`}>{chunkText}</span>;
         }
       } else if (partialNodeKey.startsWith("anchor")) {
-        return <a href={node1.href} className={classes ? classes : ""} >{node1.text}</a>;
+        return <a href={node1.href} className={classes ? classes : node1.classes ? node1.classes : ""} >{node1.text}</a>;
       } else {
         return null;
       }
