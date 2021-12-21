@@ -246,7 +246,7 @@ const FORMFIELDCONFIG = {
           "required": true,
           "selected": false,
           "tou": true,
-          "touLink": "Terms of Conditions.",
+          "touLink": "Terms and Conditions.",
           "type": "_checkBox"
         },
         "brandOnboardingActions": {
