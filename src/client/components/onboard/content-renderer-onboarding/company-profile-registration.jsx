@@ -116,7 +116,6 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
-      if()
       this.setState({form}, () => this.companyDebounce());
     }
   }
