@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
@@ -115,6 +116,7 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
+      if()
       this.setState({form}, () => this.companyDebounce());
     }
   }
@@ -202,6 +204,8 @@ class CompanyProfileRegistration extends React.Component {
         state = {...state};
         const isEditMode = this.props.userProfile?.context === "edit";
         if (key === "companyName") {
+          console.log(this.props.originalValues.org.name);
+          console.log(targetVal);
           if ((isEditMode && this.props.originalValues?.org?.name !== targetVal) || !isEditMode) {
             evt.persist();
             state.form.inputData.companyName.fieldOk = false;
