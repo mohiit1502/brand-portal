@@ -6,22 +6,29 @@
 .c-StatusModalTemplate{
   .status-review{
     background-color: #0d2d55;
-    padding: 4px;
+    padding: $pill-padding;
     border-radius: 0.15rem;
     font-size: 0.8rem;
     color: white;
   }
   .status-onhold{
     background-color: #f6c34a;
-    padding: 5px;
+    padding: $pill-padding;
     border-radius: 0.15rem;
     font-size: 0.7rem;
     color: black;
   }
+  .status-declined{
+    background-color: #dd1d24;
+    padding: $pill-padding;
+    border-radius: 0.15rem;
+    font-size: 0.7rem;
+    color: white;
+  }
 
   .brand-portal-link-class{
     color: $falcon-blue;
-    text-decoration: underline;
+    font-weight: bold;
   }
 
   .modal-dialog{

@@ -244,7 +244,6 @@ const StatusModalTemplate = props => {
                       const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
                         && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value",
                         onboardingDetails));
-
                       if (shouldRender) {
                         content[node] = nodeContent;
                         getDynamicReplacementConfig(nodeContent);
@@ -255,7 +254,6 @@ const StatusModalTemplate = props => {
                       } else {
                         return null;
                       }
-
                     })
                 }
                 </span>
