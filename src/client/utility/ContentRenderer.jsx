@@ -6,7 +6,6 @@ import CustomInput from "../components/custom-components/custom-input/custom-inp
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
 import { Tile } from "../components";
-import contentRenderer from "../components/home/content-renderer/content-renderer";
 
 export default class ContentRenderer {
 
@@ -71,7 +70,7 @@ export default class ContentRenderer {
           return <span className={classes ? classes : ""}>{node1}</span>;
         } else {
           const chunkClass = node1.classes;
-          const chunkText = this.implementDynamicReplacements(node1.dynamicReplacementConfig, node1.text);
+          const chunkText = ContentRenderer.implementDynamicReplacements(node1.dynamicReplacementConfig, node1.text);
           return <span className={`${classes ? classes : ""}${chunkClass ? " "+chunkClass : ""}`}>{chunkText}</span>;
         }
       } else if (partialNodeKey.startsWith("anchor")) {
@@ -84,7 +83,7 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
-  implementDynamicReplacements(dynamicReplacements, text) {
+  static implementDynamicReplacements(dynamicReplacements, text) {
     dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
       text = text.replaceAll(key, dynamicReplacements[key]);
     });
@@ -96,7 +95,7 @@ export default class ContentRenderer {
     } else if (node.startsWith("para")) {
       let text = typeof (content[node]) === "string" ? content[node] : content[node].text;
       const dynamicReplacements = content[node] && content[node].dynamicReplacementConfig;
-      text = this.implementDynamicReplacements(dynamicReplacements, text);
+      text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
       if (typeof (content[node]) === "string") {
         return (<p className={classes ? classes : ""}>{text}</p>);
       } else {
@@ -114,17 +113,13 @@ export default class ContentRenderer {
       </div>);
     } else if (node.startsWith("button")) {
       const handler = content[node].onClick ? typeof content[node].onClick === "function" ? content[node].onClick : this[content[node].onClick] : () => {};
-    
-      return <>
-        
-        <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
-          onClick={handler}
-          href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
-          <img src={imagesAll[content[node].icon]} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>
-          {content[node].buttonText}
-        </button>
-      </>  
-      
+
+      return <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
+                     onClick={handler}
+                     href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
+              <img src={imagesAll[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>
+              {content[node].buttonText}
+            </button>;
     } else if (node.startsWith("customDivider")) {
       return <hr className={content[node].classes ? content[node].classes : ""}/>;
     } else if (node.startsWith("tilesContainer")) {

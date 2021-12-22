@@ -96,10 +96,7 @@ const StatusModalTemplate = props => {
   const getPartialObject = node => {
     if (node) {
       if (node.length) {
-        let matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
-        // if (!onboardingDetails || onboardingDetails.reasonCode !== "hold_ro_application_edit") {
-        //   matchedNode = node.find(obj => obj.key.indexOf("NEW") > -1);
-        // }
+        const matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
         matchedNode && getDynamicReplacementConfig(matchedNode);
         return matchedNode;
       } else {
@@ -245,9 +242,9 @@ const StatusModalTemplate = props => {
                       const content = {...meta.TITLE.content};
                       const nodeContent = {...content[node]};
                       const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
-                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
+                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value",
                         onboardingDetails));
-                      
+
                       if (shouldRender) {
                         content[node] = nodeContent;
                         getDynamicReplacementConfig(nodeContent);
@@ -258,7 +255,7 @@ const StatusModalTemplate = props => {
                       } else {
                         return null;
                       }
-                      
+
                     })
                 }
                 </span>
@@ -286,7 +283,7 @@ const StatusModalTemplate = props => {
                     Object.keys(meta.MESSAGE.content).map(node => {
                       const nodeContent = meta.MESSAGE.content[node];
                       const shouldRender = !nodeContent.renderCondition || (nodeContent.renderCondition && onboardingDetails
-                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value", 
+                        && ContentRenderer.evaluateRenderDependencySubPart(JSON.parse(nodeContent.renderCondition), "value",
                         onboardingDetails));
                       if (shouldRender) {
                       node.startsWith("partial")

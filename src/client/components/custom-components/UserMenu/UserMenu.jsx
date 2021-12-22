@@ -42,7 +42,7 @@ class UserMenu extends React.Component {
       window.location.href = logoutUrl;
     }
   }
-  
+
   render() {
     const workflowCode = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
     const CODE_DASHBOARD = 4;
@@ -50,8 +50,8 @@ class UserMenu extends React.Component {
       <li className="nav-item dropdown nav-item-profile ml-4">
         <Link to="#" className="nav-link user-name dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
           aria-expanded="false">
-          <img src={profilePic} alt="Profile Pic" height="32px" className="pr-2"/>{`${this.props.userProfile 
-          && this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile 
+          <img src={profilePic} alt="Profile Pic" height="32px" className="pr-2"/>{`${this.props.userProfile
+          && this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile
           && this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
         </Link>
         <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
@@ -83,7 +83,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  toggleModal  
+  toggleModal
 };
 
 export  default  connect(mapStateToProps, mapDispatchToProps)(withRouter(UserMenu));

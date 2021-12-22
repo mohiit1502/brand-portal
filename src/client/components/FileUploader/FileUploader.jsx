@@ -22,7 +22,7 @@ const FileUploader = props => {
     webformDocContent: <div>
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
-          <li>Please attach supporting documents in .doc,.pdf,.csv format. The file should be less than 7MB</li>
+          <li>Please attach supporting documents in .doc, .pdf, .csv, .excel or image formats. The file should be less than 7MB</li>
         </ul>
       </ol>
     </div>,
@@ -30,7 +30,7 @@ const FileUploader = props => {
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
           <li>Upload an official copy of Business Registration Certificate</li>
-          <li>Supported Documents: PDF, DOC, DOCX | Max : 7MB</li>
+          <li>Supported Documents: PDF, DOC, DOCX, EXCEL, IMAGE | Max : 7MB</li>
         </ul>
       </ol>
     </div>,
@@ -38,7 +38,7 @@ const FileUploader = props => {
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
           <li>Upload IP Registration Documents or Letter of Authorization</li>
-          <li>Supported Documents: PDF, DOC, DOCX | Max : 7MB</li>
+          <li>Supported Documents: PDF, DOC, DOCX, EXCEL, IMAGE | Max : 7MB</li>
         </ul>
       </ol>
     </div>
@@ -62,12 +62,15 @@ const FileUploader = props => {
         </div>}
         {
           !props.uploading && !props.id &&
-          <label
-            className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
-            {props.buttonText}
-            <input type="file" className="d-none" onChange={props.onChange}
-              disabled={props.disabled} accept={props.accept}/>
-          </label>
+          <>
+            <label
+              className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
+              {props.buttonText}
+              <input type="file" className="d-none" onChange={props.onChange} onClick={e => e.target.value = null}
+                     disabled={props.disabled} accept={props.accept}/>
+            </label>
+            {props.error && <small className="d-block error">{props.error}</small>}
+          </>
         }
         {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}
         {!props.uploading && props.id &&

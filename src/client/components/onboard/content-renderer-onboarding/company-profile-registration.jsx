@@ -279,7 +279,6 @@ class CompanyProfileRegistration extends React.Component {
     form.isSubmitDisabled = true;
     form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-    // form.inputData.additionalDoc.disabled = true;
     form.inputData.businessRegistrationDoc.disabled = true;
     this.setState(state);
     const mixpanelPayload = {

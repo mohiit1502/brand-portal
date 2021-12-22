@@ -116,13 +116,14 @@ export default class Validator {
     /* eslint-disable complexity */
     Object.keys(matchForm.inputData).forEach(key => {
       const obj = {...matchForm.inputData[key]};
-      if (obj.error) {
+      if (obj.error && (!obj.renderCondition || (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this, obj.renderCondition)))) {
         hasError = true;
         return;
       }
       if (obj && obj.required && !obj.value) {
         if (!((key === "companyName" && this.props.userProfile && this.props.userProfile.type === "Internal")
-          || (obj.type && obj.type === "_checkBox" && obj.selected))) {
+          || (obj.type === "_checkBox" && (!obj.renderCondition || (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this, obj.renderCondition)))
+            && obj.selected))) {
           if (obj.type && obj.type === "_urlItems") {
             if (obj.required && this.validateUrlItems && this.validateUrlItems()) {
               hasError = true;

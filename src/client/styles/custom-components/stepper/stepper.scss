@@ -15,10 +15,6 @@ $stepper-row-height: 106px;
         background: $market-place-blue !important;
       }
 
-      //.bg-stepper-gray {
-      //  background: #aee7f5 !important;
-      //}
-
       .step-title {
         font-size: 14px;
         font-weight: bold;
@@ -34,13 +30,9 @@ $stepper-row-height: 106px;
         margin-top: 0.1rem;
         background-color: #aee7f5;
 
-        //&.bg-stepper-gray{
-        //  background: #aee7f5 !important;
-        //}
         &.step-active {
           border: 2px solid $market-place-blue;
           background: white !important;
-          //margin-top: 0.1rem;
 
           &:before {
             content: "";

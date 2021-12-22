@@ -201,6 +201,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "additionalDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
           "buttonText": "Upload",
           "cancelHandlerArg": "additionalDoc",
           "changeHandlerArg": "additionalDoc",
@@ -246,7 +247,7 @@ const FORMFIELDCONFIG = {
           "required": true,
           "selected": false,
           "tou": true,
-          "touLink": "Terms of Conditions.",
+          "touLink": "Terms and Conditions.",
           "type": "_checkBox"
         },
         "brandOnboardingActions": {
@@ -767,7 +768,7 @@ const FORMFIELDCONFIG = {
           "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"copyright\"}",
           "required": true,
           "selected": false,
           "type": "_checkBox"

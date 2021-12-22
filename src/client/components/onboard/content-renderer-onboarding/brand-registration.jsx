@@ -3,6 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect, withRouter} from "react-router";
+import Cookies from "electrode-cookies";
+
 import {dispatchBrandState, dispatchNewRequest, dispatchSteps, dispatchOnboardingDetails} from "../../../actions/company/company-actions";
 import {updateUserProfile} from "../../../actions/user/user-actions";
 import {showNotification} from "../../../actions/notification/notification-actions";
@@ -14,7 +16,6 @@ import ContentRenderer from "../../../utility/ContentRenderer";
 import mixpanel from "../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 import "./../../../styles/onboard/content-renderer-onboarding/brand-registration.scss";
-import Cookies from "electrode-cookies";
 
 class BrandRegistration extends React.Component {
 
