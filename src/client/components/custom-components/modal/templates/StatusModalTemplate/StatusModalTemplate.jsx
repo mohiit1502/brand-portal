@@ -45,17 +45,18 @@ const StatusModalTemplate = props => {
       Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("client_type")})
         .then(res => {
           if (res.body === true) {
-            showNotification(NOTIFICATION_TYPE.SUCCESS, `Verification email sent to: ${email} `);
+            showNotification(NOTIFICATION_TYPE.SUCCESS, "Email Resent", "variant2", "Verified2");
           } else if (res.body === false && res.status === CONSTANTS.STATUS_CODE_SUCCESS) {
-            showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${email} has already been activated.`);
+            showNotification(NOTIFICATION_TYPE.SUCCESS, "Email has already been activated.", "variant2", "Verified2");
           } else {
-            showNotification(NOTIFICATION_TYPE.ERROR, `Verification email could not be sent to: ${email} `);
+            showNotification(NOTIFICATION_TYPE.ERROR, "Verification Email could not be sent.", "variant2");
           }
           mixpanelPayload.API_SUCCESS = true;
         })
         .catch(e => {
           mixpanelPayload.API_SUCCESS = false;
           mixpanelPayload.ERROR = e.message ? e.message : e;
+          showNotification(NOTIFICATION_TYPE.ERROR, "Verification Email could not be sent.", "variant2");
         })
         .finally(() => {
           setLoader(false);
@@ -63,7 +64,7 @@ const StatusModalTemplate = props => {
         });
     } else {
       setLoader(false);
-      showNotification(NOTIFICATION_TYPE.ERROR, `Email not available, please refresh the page!`);
+      showNotification(NOTIFICATION_TYPE.ERROR, `Email not available, please refresh the page!`, "variant2");
     }
   };
 

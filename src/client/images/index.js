@@ -60,6 +60,7 @@ import User from "./user.svg";
 import UsersIcon from "./users.png";
 import UserList from "./User List.jpg";
 import Verified from "./verified.svg";
+import Verified2 from "./verified_v2.svg";
 import Verify from "./group-1475.png";
 import Warning from "./warning.svg";
 import WMWhite from "./Walmart Brand Portal-for blue bg - 236x80.svg";
@@ -129,6 +130,7 @@ export {
   UsersIcon,
   UserList,
   Verified,
+  Verified2,
   Verify,
   Warning,
   WMWhite,

@@ -120,6 +120,8 @@ const FORMFIELDCONFIG = {
           "error": "",
           "filename": "",
           "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",

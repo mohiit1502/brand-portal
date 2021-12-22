@@ -1,9 +1,10 @@
+/* eslint-disable no-nested-ternary */
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import $ from "jquery";
-import {saveBrandCompleted} from "../../../actions/brand/brand-actions";
-import {hideNotification, NOTIFICATION_TYPE} from "../../../actions/notification/notification-actions";
+import { saveBrandCompleted } from "../../../actions/brand/brand-actions";
+import { hideNotification, NOTIFICATION_TYPE } from "../../../actions/notification/notification-actions";
 import CONSTANTS from "../../../constants/constants";
 import * as images from "./../../../images";
 import "../../../styles/custom-components/notification/notification.scss";
@@ -24,12 +25,9 @@ class Notification extends React.Component {
 
     this.state = {
       type: NOTIFICATION_TYPE.SUCCESS,
-      message: ""
+      message: "",
+      notificationImage: ""
     };
-  }
-
-  componentDidMount() {
-
   }
 
   componentDidUpdate() {
@@ -41,53 +39,56 @@ class Notification extends React.Component {
   updateNotification(notification) {
     const action = notification.show ? "show" : "hide";
     const toastElement = $(".toast");
-    this.setState({type: notification.notificationType, message: notification.message});
-    toastElement.toast({delay: CONSTANTS.NOTIFICATIONPOPUP.DATADELAY});
+    const notificationImage = notification.notificationImage;
+    const type = notification.notificationType;
+    const message = notification.message;
+    this.setState({ type, message, notificationImage });
+    toastElement.toast({ delay: CONSTANTS.NOTIFICATIONPOPUP.DATADELAY });
     toastElement.toast(action);
     this.props.hideNotification(notification.variant);
   }
 
-  getVariant1(statusClass, notificationImage, closeIcon){
-    return <div className={`toast c-notification variant1 ${statusClass}`} role="alert"
-     aria-live="assertive" aria-atomic="true" data-delay={CONSTANTS.NOTIFICATIONPOPUP.DATADELAY}>
-    <div className="toast-body">
-      <div className="row align-items-center justify-content-center">
-        <div className="col-2 text-center">
-          <img src={notificationImage}/>
-        </div>
-        <div className="col-8 text-left">
-          <div className="ml-3">
-            {this.state.message}
+  getVariant1(statusClass, notificationImage, closeIcon) {
+    return (<div className={`toast c-notification variant1 ${statusClass}`} role="alert"
+      aria-live="assertive" aria-atomic="true" data-delay={CONSTANTS.NOTIFICATIONPOPUP.DATADELAY}>
+      <div className="toast-body">
+        <div className="row align-items-center justify-content-center">
+          <div className="col-2 text-center">
+            <img src={notificationImage} />
+          </div>
+          <div className="col-8 text-left">
+            <div className="ml-3">
+              {this.state.message}
+            </div>
+          </div>
+          <div className="col-2 text-center">
+            <img src={closeIcon} type="button" data-dismiss="toast" aria-label="Close" />
           </div>
         </div>
-        <div className="col-2 text-center">
-          <img src={closeIcon} type="button" data-dismiss="toast" aria-label="Close" />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  }
-
-  getVariant2(statusClass, notificationImage, closeIcon){
-    return (
-    <div className="toast c-notification variant2">
-      <div className="row">
-        <span className="col-1 text-center">&#10003;</span>
-        <span className="col-9 text-left">{this.state.message}</span>
-        <div className="col-2 text-right">
-          <span className="closebtn-style pt-2 d-block" data-dismiss="toast" aria-label="Close">&times;</span>
-        </div>
-        {/* <img src={closeIcon} type="button" data-dismiss="toast" aria-label="Close" /> */}
-        <span className="timer-bar position-absolute"></span>
       </div>
     </div>
     );
   }
 
+  getVariant2(statusClass, notificationImage) {
+    return (
+      <div className="toast c-notification variant2">
+        <div className="row">
+          <img className="col-2 pl-4 notification-icon" src={notificationImage} />
+          <span className="col-6 pl-0 text-left">{this.state.message}</span>
+          <div className="col-4 text-right">
+            <span className="closebtn-style pt-2 d-block" data-dismiss="toast" aria-label="Close">&times;</span>
+          </div>
+          {/* <img src={closeIcon} type="button" data-dismiss="toast" aria-label="Close" /> */}
+          <span className="timer-bar position-absolute"></span>
+        </div>
+      </div>
+    );
+  }
+
   getNotification(statusClass, notificationImage, closeIcon) {
     const variant = this.props.notification.variant;
-    switch(variant) {
+    switch (variant) {
       case "variant1":
         return this.getVariant1(statusClass, notificationImage, closeIcon);
       case "variant2":
@@ -99,7 +100,8 @@ class Notification extends React.Component {
 
   render() {
     const statusClass = this.state.type === NOTIFICATION_TYPE.SUCCESS ? this.statusClassOptions.SUCCESS : this.statusClassOptions.ERROR;
-    const notificationImage = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.SUCCESSIMAGE] : images[CONSTANTS.NOTIFICATIONPOPUP.FAILUREIMAGE];
+    const notificationImage = this.state.notificationImage ? images[this.state.notificationImage] :
+      this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.SUCCESSIMAGE] : images[CONSTANTS.NOTIFICATIONPOPUP.FAILUREIMAGE];
     const closeIcon = this.state.type === NOTIFICATION_TYPE.SUCCESS ? images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONSUCCESS] : images[CONSTANTS.NOTIFICATIONPOPUP.CLOSEBUTTONFAILURE];
     return this.getNotification(statusClass, notificationImage, closeIcon);
   }

@@ -10,7 +10,6 @@ import {NOTIFICATION_TYPE, showNotification} from "../../../actions/notification
 import ApplicationDetails from "../../../components/ApplicationDetails";
 import mixpanel from "../../../utility/mixpanelutils";
 import Http from "../../../utility/Http";
-import Helper from "../../../utility/helper";
 import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 import CONSTANTS from "../../../constants/constants";
 
@@ -109,7 +108,7 @@ class ApplicationReview extends React.Component {
             if (onboardingDetails[key][field] !== originalValues[key][field]) {
               payload[key][field] = onboardingDetails[key][field];
             }
-          })
+          });
         });
 
         // populate payload with mapping brand and org IDs
@@ -156,7 +155,6 @@ class ApplicationReview extends React.Component {
             this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Nothing was changed!");
           }
         } catch (err) {
-            console.log(err);
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
         }

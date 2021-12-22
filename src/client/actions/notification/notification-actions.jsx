@@ -5,12 +5,12 @@ const NOTIFICATION_TYPE = {
 const defaultSuccessMessage = "Action Successful";
 const defaultErrorMessage = "Action Failed";
 
-const showNotification = (notificationType, message, variant) => {
+const showNotification = (notificationType, message, variant, notificationImage) => {
   if (!message) {
     message = notificationType === NOTIFICATION_TYPE.SUCCESS ? defaultSuccessMessage : defaultErrorMessage;
   }
-  variant = !variant ? "variant1" : variant;
-  return { type: "SHOW_NOTIFICATION", value: { notificationType, message, variant} };
+  variant = !variant ? "variant1" : variant; 
+  return { type: "SHOW_NOTIFICATION", value: { notificationType, message, variant, notificationImage} };
 };
 
 const hideNotification = variant => {
