@@ -212,8 +212,9 @@ class CompanyProfileRegistration extends React.Component {
             // state.form.inputData.additionalDoc.disabled = true;
             state.form.inputData.businessRegistrationDoc.disabled = true;
             this.toggleFormEnable(false, false);
-            this.companyDebounce(evt);
           }
+          this.companyDebounce(evt);
+
         }
         state.form.inputData[key].value = targetVal;
         state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;

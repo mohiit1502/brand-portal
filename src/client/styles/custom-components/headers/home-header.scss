@@ -7,7 +7,10 @@ $dropdown-white : #F9F9F9;
   background: #006799;
   height: $nav-max-height;
   max-height: $nav-max-height;
-  z-index: 1051;
+  &.home-header-nav-z-index{
+    z-index: 1051;
+  }
+  
   //margin: 0 -15px;
 
   .walmart-brand{

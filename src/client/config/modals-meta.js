@@ -8,7 +8,7 @@ const MODALSMETA = {
     "SELLER_WELCOME_PROMPT": {
       "BODY_CONTENT_CLASSES": "text-left px-5",
       "BODY_CLASSES": "px-5",
-      "MODAL_DIALOG_CLASSES": "width-unset",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
@@ -209,7 +209,7 @@ const MODALSMETA = {
     "EMAIL_VERIFIED": {
       "BODY_CONTENT_CLASSES": "text-left px-5",
       "BODY_CLASSES": "px-5",
-      "MODAL_DIALOG_CLASSES": "width-unset",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
@@ -368,7 +368,14 @@ const MODALSMETA = {
       },
       "CODE": 256,
       "IMAGE": "ShieldTick",
-      "TITLE": "Link your accounts to continue",
+      "TITLE": {
+        "classes": "justify-content-center",
+        "content": {
+          "para": {
+            "text": "Link your accounts to continue"
+          }
+        }
+      },
       "PRIMARY_ACTION": {
         "text": "Connect accounts",
         "action": "linkAccounts"
@@ -404,6 +411,7 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "ACCOUNT_LINKED": {
+      "BODY_CONTENT_CLASSES": "margin-top-title",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
@@ -418,7 +426,14 @@ const MODALSMETA = {
         }
       },
       "IMAGE": "SuccessCheck",
-      "TITLE": "Success!",
+      "TITLE": {
+        "classes": "justify-content-center",
+        "content": {
+          "para": {
+            "text": "Success!"
+          }
+        }
+      },
       "HEIGHT": 80,
       "PRIMARY_ACTION": {
         "text": "Continue to my account",

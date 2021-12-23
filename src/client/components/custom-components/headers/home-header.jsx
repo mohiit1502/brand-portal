@@ -18,7 +18,7 @@ class HomeHeader extends React.Component {
     const config = this.props.config;
     const workflowCode = this.props.userProfile?.workflow?.code;
     return (
-      <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
+      <nav className={`navbar navbar-expand-md navbar-dark home-header-nav${ workflowCode === 4 ? "" : " home-header-nav-z-index" }`}>
         <Link className="navbar-brand walmart-brand" to="/dashboard">
           {/* <img src={walmartLogo} /> */}
           <img src={headerLogo} />

@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 /* eslint-disable no-unused-expressions */
 import React from "react";
 import PropTypes from "prop-types";
@@ -64,7 +65,7 @@ class BrandRegistration extends React.Component {
         form.inputData.trademarkNumber.value = data.trademarkNumber;
         form.inputData.brandName.value = data.name;
         form.formPopulated = true;
-        form.inputData.comments.value = data.comments;
+        // form.inputData.comments.value = data.comments;
         form.inputData.trademarkNumber.isValid = true;
         form.inputData.brandName.isUnique = true;
 
