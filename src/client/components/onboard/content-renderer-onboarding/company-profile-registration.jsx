@@ -124,6 +124,7 @@ class CompanyProfileRegistration extends React.Component {
     if (this.props.onboardingDetails) {
       const data = this.props.onboardingDetails.org;
       const originalValues = JSON.parse(JSON.stringify(this.props.onboardingDetails));
+      delete originalValues?.brand?.comments;
       const form = {...this.state.form};
       if (data) {
         form.inputData.companyName.value = data.name;

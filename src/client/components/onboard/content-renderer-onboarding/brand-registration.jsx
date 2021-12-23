@@ -90,7 +90,7 @@ class BrandRegistration extends React.Component {
         usptoUrl: inputData.trademarkNumber.usptoUrl,
         usptoVerification: inputData.trademarkNumber.usptoVerification,
         name: inputData.brandName.value,
-        comments: ""
+        // comments: inputData.comments.value
       };
 
       const currentDocId = this.state.form.inputData.additionalDoc.id;

@@ -105,7 +105,9 @@ class ApplicationReview extends React.Component {
         Object.keys(modifiableFields).forEach(key => {
           const fieldArray = modifiableFields[key];
           fieldArray.forEach(field => {
-            if (onboardingDetails[key][field] !== originalValues[key][field]) {
+            if ((onboardingDetails[key][field] && !originalValues[key][field])
+              || ((!onboardingDetails[key][field] && originalValues[key][field]))
+              || (onboardingDetails[key][field] && originalValues[key][field] && onboardingDetails[key][field].trim() !== originalValues[key][field].trim())) {
               payload[key][field] = onboardingDetails[key][field];
             }
           });
