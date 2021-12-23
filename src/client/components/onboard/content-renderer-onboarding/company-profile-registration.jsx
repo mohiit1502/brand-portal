@@ -204,7 +204,7 @@ class CompanyProfileRegistration extends React.Component {
         state = {...state};
         const isEditMode = this.props.userProfile?.context === "edit";
         if (key === "companyName") {
-          if ((isEditMode && this.props.originalValues?.org?.name !== targetVal) || !isEditMode) {
+          if ((isEditMode && this.props.originalValues?.org?.name?.trim() !== targetVal?.trim()) || !isEditMode) {
             evt.persist();
             state.form.inputData.companyName.fieldOk = false;
             state.form.isSubmitDisabled = true;

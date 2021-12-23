@@ -199,12 +199,11 @@ export default class Validator {
   static checkBrandUniqueness(params) {
     if (!this.state.form.inputData.brandName.value) return;
     const isEditMode = this.props.userProfile?.context === "edit";
-
     const state = { ...this.state };
     const form = { ...state.form };
     const inputData = { ...form.inputData };
-    if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name !== this.state.form.inputData.brandName)) {
 
+    if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name?.trim() !== this.state.form.inputData.brandName?.value?.trim())) {
       state.form = form;
       form.inputData = inputData;
       inputData.brandName.loader = true;
@@ -248,7 +247,6 @@ export default class Validator {
   }
 
   static checkTrademarkValidity() {
-
     if (!this.state.form.inputData.trademarkNumber.value) return;
     const state = { ...this.state };
     const form = { ...state.form };
@@ -264,7 +262,8 @@ export default class Validator {
       TRADEMARK_NUMBER: this.state.form.inputData.trademarkNumber.value,
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
-    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`, { clientType: this.props.clientType }, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
+    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`,
+      { clientType: this.props.clientType }, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
       .then(res => {
         Validator.processTMUniquenessAPIResponse.call(this, res, inputData.trademarkNumber);
         mixpanelPayload.API_SUCCESS = true;
@@ -295,13 +294,11 @@ export default class Validator {
   // eslint-disable-next-line max-statements
   static checkCompanyNameAvailability() {
     const isEditMode = this.props.userProfile?.context === "edit";
-
     const state = { ...this.state };
     const form = { ...this.state.form };
     const inputData = { ...this.state.form.inputData };
 
-    if ((isEditMode && this.props.originalValues?.org?.name !== this.state.form.inputData.companyName.value) || !isEditMode) {
-
+    if ((isEditMode && this.props.originalValues?.org?.name?.trim() !== this.state.form.inputData.companyName.value?.trim()) || !isEditMode) {
       if (!this.state.form.inputData.companyName.value) return;
       state.form = form;
       form.inputData = inputData;

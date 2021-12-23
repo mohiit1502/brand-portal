@@ -155,7 +155,7 @@ class BrandRegistration extends React.Component {
         state = {...state};
         const isEditMode = this.props.userProfile?.context === "edit";
         if (key === "trademarkNumber") {
-          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.trademarkNumber !== targetVal)) {
+          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.trademarkNumber?.trim() !== targetVal?.trim())) {
             this.trademarkDebounce();
             state.form.inputData.trademarkNumber.fieldAlert = false;
             state.form.inputData.trademarkNumber.fieldOk = false;
@@ -166,7 +166,7 @@ class BrandRegistration extends React.Component {
           }
         }
         if (key === "brandName") {
-          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name !== targetVal)) {
+          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name?.trim() !== targetVal?.trim())) {
             this.brandDebounce({brandName: targetVal});
             state.form.inputData.brandName.fieldOk = false;
             state.form.inputData.brandName.error = "";
