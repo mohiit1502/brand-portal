@@ -50,8 +50,8 @@ const LoginTypeCta = props => {
   }, [action, location]);
 
   useEffect(() => {
-    setLoader(true);
     if (!mixpanel.initialized) {
+      setLoader(true);
       Http.get("/api/mixpanelConfig")
         .then(res => {
           mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking);

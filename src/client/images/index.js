@@ -20,6 +20,7 @@ import ContactUsBG from "./Group 52@2x.png";
 import CreateBrandButton from "./CreateBrandButton.jpg";
 import CreateBrandForm from "./CreateBrandForm.jpg";
 import DashboardIcon from "./dashboard.png";
+import EditOutlinedIcon from "./edit.svg";
 import EmailIcon from "./emailIcon.svg";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
@@ -59,6 +60,7 @@ import User from "./user.svg";
 import UsersIcon from "./users.png";
 import UserList from "./User List.jpg";
 import Verified from "./verified.svg";
+import Verified2 from "./verified_v2.svg";
 import Verify from "./group-1475.png";
 import Warning from "./warning.svg";
 import WMWhite from "./Walmart Brand Portal-for blue bg - 236x80.svg";
@@ -88,6 +90,7 @@ export {
   CheckGreen,
   CheckGreenLine,
   DashboardIcon,
+  EditOutlinedIcon,
   EmailIcon,
   Event,
   Exclamation,
@@ -127,6 +130,7 @@ export {
   UsersIcon,
   UserList,
   Verified,
+  Verified2,
   Verify,
   Warning,
   WMWhite,

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-nested-ternary, max-params, no-unused-expressions, no-magic-numbers, max-statements, complexity */
 import React from "react";
 import * as imagesAll from "./../images";
@@ -65,7 +66,7 @@ export default class ContentRenderer {
     const partialRenders = Object.keys(partial).map(partialNodeKey => {
       const node1 = partial[partialNodeKey];
       if (partialNodeKey.startsWith("chunk")) {
-        if(typeof node1 == "string") {
+        if (typeof node1 === "string") {
           return <span className={classes ? classes : ""}>{node1}</span>;
         } else {
           const chunkClass = node1.classes;
@@ -73,7 +74,7 @@ export default class ContentRenderer {
           return <span className={`${classes ? classes : ""}${chunkClass ? " "+chunkClass : ""}`}>{chunkText}</span>;
         }
       } else if (partialNodeKey.startsWith("anchor")) {
-        return <a href={node1.href} className={classes ? classes : ""} >{node1.text}</a>;
+        return <a href={node1.href} className={classes ? classes : node1.classes ? node1.classes : ""} >{node1.text}</a>;
       } else {
         return null;
       }
@@ -112,13 +113,13 @@ export default class ContentRenderer {
       </div>);
     } else if (node.startsWith("button")) {
       const handler = content[node].onClick ? typeof content[node].onClick === "function" ? content[node].onClick : this[content[node].onClick] : () => {};
-      return (
-        <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
-          onClick={handler}
-          href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
-          {content[node].buttonText}
-        </button>
-      );
+
+      return <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
+                     onClick={handler}
+                     href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
+              {content[node].icon && <img src={imagesAll[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>}
+              {content[node].buttonText}
+            </button>;
     } else if (node.startsWith("customDivider")) {
       return <hr className={content[node].classes ? content[node].classes : ""}/>;
     } else if (node.startsWith("tilesContainer")) {
@@ -253,6 +254,7 @@ export default class ContentRenderer {
 
   static getCustomComponent (field, id) {
     const {prebounceChangeHandler, changeHandlerArg, customChangeHandler, onChange, onInvalid, onKeyPress, ...rest} = field;
+
     return (<CustomInput formId={id}
       customChangeHandler={this[customChangeHandler] ? this[customChangeHandler].bind(this) : this.customChangeHandler && this.customChangeHandler.bind(this)}
       onChange={this[onChange] ? changeHandlerArg ? evt => this[onChange](evt, changeHandlerArg) : this[onChange] : this.onChange}

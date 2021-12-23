@@ -1,5 +1,34 @@
 @import "../../styles/override/variables.scss";
 .c-FileUploader {
 
+    .field-container.col-6 {
+        padding-left: 0!important;
+    }
+    .cancel-file-selection-btn {
+      font-size: 2rem;
+      top: -5px;
+      right: 1.3rem;
+
+    }
+
+    .btn-outline-primary.upload-btn {
+      color: $market-place-blue;
+      border-color: $market-place-blue;
+      font-weight: bold;
+      &.disabled {
+        color: gray;
+        border-color: gray;
+        &:hover {
+          background: unset;
+        }
+      }
+      &:not(.disabled) {
+        &:hover {
+          color: white;
+        }
+      }
+    }
+
+
 }
 

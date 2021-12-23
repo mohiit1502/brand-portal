@@ -9,7 +9,6 @@ const FORMFIELDCONFIG = {
         "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
-        "actionsToDisable": ["clear"],
         "id": "companyreg",
         "loader": false,
         "isSubmitDisabled": true,
@@ -48,6 +47,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "renderDependency": "requestAdministratorAccess",
           "required": true,
+          "subtitle": "The Company address should match the information in trademark registration.",
           "type": "text",
           "value": ""
         },
@@ -89,7 +89,7 @@ const FORMFIELDCONFIG = {
           "label": "ZIP",
           "layout": "4.1.6",
           "maxLength": 10,
-          "pattern": "^\\d{5}(?:[-\s]\\d{4})?$",
+          "pattern": "^\\d{5}(?:[-]\\d{4})?$",
           "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
           "required": true,
           "subtitle": "",
@@ -111,6 +111,7 @@ const FORMFIELDCONFIG = {
           "value": "USA"
         },
         "businessRegistrationDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
           "buttonText": "Upload",
           "cancelHandlerArg": "businessRegistrationDoc",
           "changeHandlerArg": "businessRegistrationDoc",
@@ -119,34 +120,16 @@ const FORMFIELDCONFIG = {
           "error": "",
           "filename": "",
           "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Business registration documents (optional)",
+          "label": "Optional: attach additional documents if necessary (i.e. business registration)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
           "tooltipContentKey": "businessDocContent",
-          "type": "_fileUploader",
-          "uploading": false,
-          "uploadPercentage": 0
-        },
-        "additionalDoc": {
-          "buttonText": "Upload",
-          "cancelHandlerArg": "additionalDoc",
-          "onCancel": "cancelSelection",
-          "tooltipContentKey": "additionalDocContent",
-          "disabled": true,
-          "error": "",
-          "filename": "",
-          "changeHandlerArg": "additionalDoc",
-          "icon": "Question",
-          "id": "",
-          "inputId": "additionalDoc",
-          "key": "additionalDoc",
-          "label": "Additional documents (optional)",
-          "layout": "6.1.0",
-          "onChange": "displayProgressAndUpload",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
@@ -157,17 +140,10 @@ const FORMFIELDCONFIG = {
           "layout": "7.1.0",
           "type": "_buttonsPanel",
           "buttons": {
-            "clear": {
-              "classes": "btn btn-sm cancel-btn text-primary",
-              "disabled": false,
-              "onClick": "resetCompanyRegistration",
-              "text": "Clear",
-              "type": "button"
-            },
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
-              "text": "Next",
+              "text": "Continue",
               "type": "submit"
             }
           }
@@ -181,7 +157,8 @@ const FORMFIELDCONFIG = {
       },
       "formConfig": {
         "id": "brandreg",
-        "loader": false
+        "loader": false,
+        "formActions": "brandOnboardingActions"
       },
       "fields": {
         "trademarkNumber": {
@@ -225,6 +202,27 @@ const FORMFIELDCONFIG = {
           "type": "text",
           "value": ""
         },
+        "additionalDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "additionalDoc",
+          "changeHandlerArg": "additionalDoc",
+          "disabled": false,
+          "endpoint": "/api/company/uploadAdditionalDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "id": "",
+          "inputId": "additionalDoc",
+          "key": "additionalDoc",
+          "label": "Optional: attach additional documents if necessary (i.e. trademark registration)",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "additionalDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
         "comments": {
           "disabled": false,
           "error": "",
@@ -245,13 +243,13 @@ const FORMFIELDCONFIG = {
           "id": "undertaking",
           "inputId": "undertaking",
           "key": "undertaking",
-          "label": "I have read and agree to the Walmart Brand Portal ",
+          "label": "I have read and agree to the ",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
           "required": true,
           "selected": false,
           "tou": true,
-          "touLink": "Terms of Use.",
+          "touLink": "Terms and Conditions.",
           "type": "_checkBox"
         },
         "brandOnboardingActions": {
@@ -271,8 +269,9 @@ const FORMFIELDCONFIG = {
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
-              "text": "Submit",
-              "type": "submit"
+              "onClick": "goToApplicationReview",
+              "text": "Continue",
+              "type": "button"
             }
           }
         }

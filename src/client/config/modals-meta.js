@@ -6,9 +6,9 @@ const MODALSMETA = {
       "CODE": 1
     },
     "SELLER_WELCOME_PROMPT": {
-      "BODY_CONTENT_CLASSES": "text-left",
+      "BODY_CONTENT_CLASSES": "text-left px-5",
       "BODY_CLASSES": "px-5",
-      "MODAL_DIALOG_CLASSES": "width-unset",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
@@ -18,7 +18,7 @@ const MODALSMETA = {
             "classes": "font-weight-bold mt-2 mb-4 mx-4 font-size-28 text-center"
           },
           "para1": {
-            "text": "To simplify the process, we will be using the information in your Seller\nCenter account to set up your Brand Portal account.\nPlease complete the following steps.",
+            "text": "To simplify the process, we will be using the information in your Seller Center account to set up your Brand Portal account. Please complete the following steps.",
             "classes": "mx-4 font-size-16"
           },
           "list": {
@@ -35,7 +35,8 @@ const MODALSMETA = {
       "IMAGE": "ProblemSolving",
       "PRIMARY_ACTION": {
         "text": "Start",
-        "action": "hideModal"
+        "action": "hideModal",
+        "classes": "my-4"
       },
       "TYPE": "CTA"
     },
@@ -46,7 +47,7 @@ const MODALSMETA = {
       "SUBTITLE": {
         "content": {
           "para1": {
-            "text": "You can review the status of your application by logging into\n your Brand Portal account.",
+            "text": "You can review the status of your application by logging into your Brand Portal account.",
             "classes": "font-size-16 mx-5"
           }
         }
@@ -69,14 +70,14 @@ const MODALSMETA = {
       "IMAGE": "GreenCircleWhiteTick",
       "PRIMARY_ACTION": {
         "text": "OK",
-        "action": "hideModal"
+        "action": "refreshAndHideModal"
       },
       "TYPE": "CTA"
     },
     "APPLICATION_INFORMATION": {
-      "CODE": 2,
-      "BODY_CONTENT_CLASSES": "ml-5 text-left",
-      "BODY_CLASSES": "px-5 modal-background",
+      "CODE": [2, 8],
+      "BODY_CONTENT_CLASSES": "ml-5 text-left pl-5",
+      "BODY_CLASSES": "px-5 modal-background modal-height",
       "MODAL_DIALOG_CLASSES": "width-unset modal-xl ",
       "MESSAGE": {
         "classes": "",
@@ -112,12 +113,12 @@ const MODALSMETA = {
                 "key": ["ON_HOLD"]
               },
               {
-                "text": "Your company information and brand details are currently ",
+                "text": "Your company information and brand details are currently being reviewed. ",
                 "classes": "",
                 "key": ["NEW"]
               },
               {
-                "text": "Your declined and brand details are currently ",
+                "text": "Your application has been declined. We have sent an email to ",
                 "classes": "",
                 "key": ["REJECTED", "REJECTED_ON_AUDIT"]
               }
@@ -130,46 +131,51 @@ const MODALSMETA = {
                 "key": ["ON_HOLD"]
               },
               {
-                "text": "Your company information and brand details are currently ",
+                "text": "Once your application is approved, you will receive a confirmation email at ",
                 "classes": "",
                 "key": ["NEW"]
               },
               {
-                "text": "Your declined and brand details are currently ",
-                "classes": "",
+                "text": "__emailPlaceholder__ ",
+                "classes": "font-weight-bold mt-5",
+                "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
                 "key": ["REJECTED", "REJECTED_ON_AUDIT"]
               }
 
           ],
           "chunk3": [
             {
-              "text": "__emailPlaceholder__",
-              "classes": "font-weight-bold mt-5",
+              "text": " for instructions to edit your application.",
+              "classes": "mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["ON_HOLD"]
             },
             {
-              "text": "__emailPlaceholder__",
+              "text": "__emailPlaceholder__.",
               "classes": "font-weight-bold mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["NEW"]
             }
-            
+
           ],
           "chunk4": [
             {
-              "text": "__emailPlaceholder__",
-              "classes": "font-weight-bold mt-5",
+              "text": "regarding your application. If you believe this is an error, contact ",
+              "classes": "mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
-              "key": ["ON_HOLD"]
+              "key": ["REJECTED", "REJECTED_ON_AUDIT"]
+            }
+          ],
+          "anchor": [{
+              "href": "mailto:brandportal@walmart.com",
+              "text": "brandportal@walmart.com.",
+              "classes": "font-weight-bold mt-5 brand-portal-link-class",
+              "key": ["REJECTED", "REJECTED_ON_AUDIT"]
             }
           ]
           },
           "para3": {
-            "renderCondition": {
-              "key": ["ON_HOLD"],
-              "path": "orgStatus"
-            },
+            "renderCondition": "{\"keyPath\": \"orgStatus\", \"value\": \"on_hold\"}",
             "text": "Review and confirm that the information in your application is accurate.",
             "classes": "mt-2"
           },
@@ -180,16 +186,16 @@ const MODALSMETA = {
         }
       },
       "TITLE": {
-        "ROW_CLASSES": "ml-5",
+        "classes": "col ml-3 pl-5",
         "content": {
           "para": {
             "text": "__businessName__",
-            "dynamicReplacementConfig": {"__businessName__": "profile"},
-            "classes": "text-left h3 font-weight-bold col-9"
+            "dynamicReplacementConfig": {"__businessName__": "org.name"},
+            "classes": "text-left h3 pl-0 font-weight-bold col-9"
           },
           "button1": {
             "icon": "EditOutlinedIcon",
-            "classes": "col btn btn-primary",
+            "classes": "col btn btn-primary px-0",
             "buttonText": "Edit Application",
             "onClick": "dispatchUserProfile",
             "renderCondition": "{\"keyPath\": \"orgStatus\", \"value\": \"on_hold\"}"
@@ -201,18 +207,18 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "EMAIL_VERIFIED": {
-      "BODY_CONTENT_CLASSES": "text-left",
+      "BODY_CONTENT_CLASSES": "text-left px-5",
       "BODY_CLASSES": "px-5",
-      "MODAL_DIALOG_CLASSES": "width-unset",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
           "para3": {
-            "text": "Your email address has \nbeen verified",
+            "text": "Your email address has been verified",
             "classes": "font-weight-bold mt-2 mb-4 mx-4 font-size-28 text-center"
           },
           "para1": {
-            "text": "Next, we need to verify that you are the owner of the intellectual\n property rights that you wish to enforce.",
+            "text": "Next, we need to verify that you are the owner of the intellectual property rights that you wish to enforce.",
             "classes": "mx-4 font-size-16"
           },
           "list": {
@@ -221,7 +227,7 @@ const MODALSMETA = {
             "liClasses": "font-size-16 mt-4",
             "steps": [
               "The information provided will be verified by our team.",
-              "You will receive a confirmation email once your application has\nbeen submitted. We will keep you updated on the status of\nyour application via email."
+              "You will receive a confirmation email once your application has been submitted. We will keep you updated on the status of your application via email."
             ]
           }
         }
@@ -229,7 +235,8 @@ const MODALSMETA = {
       "IMAGE": "ProblemSolving",
       "PRIMARY_ACTION": {
         "text": "Start",
-        "action": "hideModal"
+        "action": "hideModal",
+        "classes": "my-4"
       },
       "TYPE": "CTA"
     },
@@ -255,7 +262,7 @@ const MODALSMETA = {
         "content": {
           "para": {
             "text": "Are you sure you want to logout?",
-            "classes": "h3 mx-5 px-5 mb-2 font-weight-bold"
+            "classes": "h3 mx-auto mb-2 font-weight-bold"
           }
         }
       },
@@ -270,33 +277,8 @@ const MODALSMETA = {
       },
       "TYPE": "CTA"
     },
-    "PORTAL_VERIFICATION": {
-      "CODE": 2,
-      "IMAGE": "Arrow",
-      "MESSAGE": "Once complete, we will send a confirmation to your registered email.\n Please login using the shared link.",
-      "TITLE": "Your company and brand details are being verified"
-    },
     "PORTAL_DASHBOARD": {
       "CODE": 4
-    },
-    "PORTAL_ACCESS_REVOKED": {
-      "MESSAGE": {
-        "classes": "mt-4 mx-4 access-revoke",
-        "content": {
-          "partial1": {
-            "chunk1": "Please contact us at ",
-            "anchor1": {
-              "text": "brandportal@walmart.com",
-              "href": "mailto:brandportal@walmart.com"
-            },
-            "chunk2": " if you would still like to create an account"
-          }
-        }
-      },
-      "CODE": 8,
-      "IMAGE": "Alert",
-      "SUBTITLE": "We have not been able to verify the information provided for your application.",
-      "TITLE": "Application On Hold"
     },
     "USER_ACCESS_REVOKED": {
       "CODE": 16,
@@ -317,7 +299,7 @@ const MODALSMETA = {
       "SUBTITLE": {
         "content": {
           "para1": {
-            "text": "To move forward with your application, we need to verify the\nemail address associated with your account.",
+            "text": "To move forward with your application, we need to verify the email address associated with your account.",
             "classes": "font-size-15 mx-5"
           }
         }
@@ -339,7 +321,7 @@ const MODALSMETA = {
       "TITLE": {
         "content": {
           "para": {
-            "text": "Please verify your email address\nto continue with the registration process",
+            "text": "Please verify your email address to continue with the registration process",
             "classes": "h5 mx-5 px-3 mb-4 font-weight-bold"
           }
         }
@@ -353,7 +335,7 @@ const MODALSMETA = {
         }
       },
       "NO_PRIMARY_ACTION": true
-      
+
     },
     "TOU_VERIFICATION": {
       "CODE": 128,
@@ -386,7 +368,14 @@ const MODALSMETA = {
       },
       "CODE": 256,
       "IMAGE": "ShieldTick",
-      "TITLE": "Link your accounts to continue",
+      "TITLE": {
+        "classes": "justify-content-center",
+        "content": {
+          "para": {
+            "text": "Link your accounts to continue"
+          }
+        }
+      },
       "PRIMARY_ACTION": {
         "text": "Connect accounts",
         "action": "linkAccounts"
@@ -422,6 +411,7 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "ACCOUNT_LINKED": {
+      "BODY_CONTENT_CLASSES": "margin-top-title",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
@@ -436,7 +426,14 @@ const MODALSMETA = {
         }
       },
       "IMAGE": "SuccessCheck",
-      "TITLE": "Success!",
+      "TITLE": {
+        "classes": "justify-content-center",
+        "content": {
+          "para": {
+            "text": "Success!"
+          }
+        }
+      },
       "HEIGHT": 80,
       "PRIMARY_ACTION": {
         "text": "Continue to my account",

@@ -70,6 +70,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   cursor: default;
 }
 
+.margin-top-title{
+  margin-top: -1.75rem !important;
+}
+
 .mt-n23 {
   margin-top: -2.3rem;
 }
@@ -557,6 +561,14 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   margin-bottom: 1rem;
 }
 
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg);
@@ -622,3 +634,4 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 .form-row > [class*="col-"]:first-child:not(.col-12) {
   padding-left: 5px;
 }
+

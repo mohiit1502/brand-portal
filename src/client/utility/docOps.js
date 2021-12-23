@@ -7,10 +7,13 @@ import {NOTIFICATION_TYPE} from "../actions/notification/notification-actions";
 
 export default class DocumentActions {
 
+  // eslint-disable-next-line max-statements
   static displayProgressAndUpload (evt, key) {
     const form = {...this.state.form};
     const otherType = form.inputData[key].otherType;
-    const contextSpecificArgs = {actionsToDisable: form.actionsToDisable, endpoint: form.inputData[key].endpoint, formActions: form.formActions, key, otherType};
+    const submitButton = form.submitButton;
+    const contextSpecificArgs = {actionsToDisable: form.actionsToDisable, endpoint: form.inputData[key].endpoint, formActions: form.formActions, 
+      key, otherType, submitButton};
     try {
       const file = evt.target.files[0];
       const filename = file.name;
