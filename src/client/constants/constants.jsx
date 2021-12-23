@@ -48,8 +48,7 @@ const CONSTANTS = {
 
       ONBOARD: {
         COMPANY_REGISTER: "/onboard/company",
-        BRAND_REGISTER: "/onboard/brand",
-        APPLICATION_REVIEW: "/onboard/review"
+        BRAND_REGISTER: "/onboard/brand"
       },
 
       USER_MGMT: {

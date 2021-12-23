@@ -117,7 +117,7 @@ export default class ContentRenderer {
       return <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
                      onClick={handler}
                      href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
-              <img src={imagesAll[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>
+              {content[node].icon && <img src={imagesAll[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>}
               {content[node].buttonText}
             </button>;
     } else if (node.startsWith("customDivider")) {
