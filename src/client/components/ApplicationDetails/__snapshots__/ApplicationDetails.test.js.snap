@@ -1,0 +1,185 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ApplicationDetails renders without error ApplicationDetails renders without error should render the application details successfully 1`] = `
+<div
+  className="c-ApplicationDetails text-left row mt-4 ml-5 pl-5"
+>
+  <div
+    className="col-12 brand-registration-title"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <h5
+          className=" font-weight-bold "
+        >
+          Company Information
+        </h5>
+        <div>
+          user-demo003
+        </div>
+        <div>
+          Bangalore
+        </div>
+        <div>
+          Bangalore
+          , 
+          CA
+        </div>
+        <div>
+          17122
+          , 
+          US
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <h5
+          className="font-weight-bold "
+        >
+          Brand Details
+        </h5>
+        <div>
+          5912022
+        </div>
+        <div>
+          Test-brand#4
+        </div>
+        <div
+          className="commentsStyle"
+        >
+          eeee
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-6 overflow-x-auto mt-3 brand-registration-subtitle"
+      >
+        <span
+          className="w-100 mt-3 font-weight-bold font-size-14"
+        >
+          Attachments
+        </span>
+        <span
+          className="d-block mt-2"
+        >
+          No documents attached.
+        </span>
+      </div>
+      <div
+        className="col-6 overflow-x-auto mt-3 brand-registration-subtitle"
+      >
+        <span
+          className="w-100 mt-3 font-weight-bold font-size-14"
+        >
+          Attachments
+        </span>
+        <span
+          className="d-block mt-2"
+        >
+          No documents attached.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ApplicationDetails renders without error should render the application details successfully 1`] = `
+<div
+  className="c-ApplicationDetails text-left row mt-4 ml-5 pl-5"
+>
+  <div
+    className="col-12 brand-registration-title"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <h5
+          className=" font-weight-bold "
+        >
+          Company Information
+        </h5>
+        <div>
+          user-demo003
+        </div>
+        <div>
+          Bangalore
+        </div>
+        <div>
+          Bangalore
+          , 
+          CA
+        </div>
+        <div>
+          17122
+          , 
+          US
+        </div>
+      </div>
+      <div
+        className="col"
+      >
+        <h5
+          className="font-weight-bold "
+        >
+          Brand Details
+        </h5>
+        <div>
+          5912022
+        </div>
+        <div>
+          Test-brand#4
+        </div>
+        <div
+          className="commentsStyle"
+        >
+          eeee
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-6 overflow-x-auto mt-3 brand-registration-subtitle"
+      >
+        <span
+          className="w-100 mt-3 font-weight-bold font-size-14"
+        >
+          Attachments
+        </span>
+        <span
+          className="d-block mt-2"
+        >
+          No documents attached.
+        </span>
+      </div>
+      <div
+        className="col-6 overflow-x-auto mt-3 brand-registration-subtitle"
+      >
+        <span
+          className="w-100 mt-3 font-weight-bold font-size-14"
+        >
+          Attachments
+        </span>
+        <span
+          className="d-block mt-2"
+        >
+          No documents attached.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -17,7 +17,7 @@ const GroupedBarChart = props => {
   /* eslint-disable no-invalid-this, max-statements, complexity */
   useEffect(() => {
     const svg = select(svgRef.current);
-    const {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
+    const {width, height} = dimensions || wrapperRef.current ? wrapperRef.current.getBoundingClientRect() : {};
     const margin = {top: 5, right: 20, bottom: 30, left: 20};
     const barPadding = .2;
     const xScale0 = scaleBand().range([margin.left, width - margin.left - margin.right]).padding(barPadding);
