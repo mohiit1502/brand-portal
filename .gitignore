@@ -159,3 +159,5 @@ npm-shrinkwrap.json
 .*.lock
 launch.json
 package-lock.json
+
+.nyc_output
