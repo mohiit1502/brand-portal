@@ -7,7 +7,6 @@
 ```sh
 $ npm install --save brand-portal
 ```
-
 ## Usage
 
 ```js
@@ -18,7 +17,6 @@ roPro("Rainbow");
 ## License
 
  © [Walmart Brand Portal]()
-
 
 [npm-image]: https://badge.fury.io/js/RoPro.svg
 [npm-url]: https://npmjs.org/package/RoPro
