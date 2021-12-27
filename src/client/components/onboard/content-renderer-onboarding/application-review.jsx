@@ -40,7 +40,7 @@ class ApplicationReview extends React.Component {
             this.props.history.push(CONSTANTS.ROUTES.PROTECTED.ONBOARD.COMPANY_REGISTER);
         }
         const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
-        this.setState({isEditMode})
+        this.setState({isEditMode});
         isEditMode && this.setState({dirtyCheckResponse: this.checkForEdit()});
     }
 
@@ -101,8 +101,8 @@ class ApplicationReview extends React.Component {
         const onboardingDetails = this.props.onboardingDetails;
         const originalValues = this.props.originalValues;
 
-        // populate payload with non-document changed fields
-        Object.keys(modifiableFields).forEach(key => {
+        if (originalValues && onboardingDetails) {
+            Object.keys(modifiableFields).forEach(key => {
           const fieldArray = modifiableFields[key];
           fieldArray.forEach(field => {
             if ((onboardingDetails[key][field] && !originalValues[key][field])
@@ -129,6 +129,8 @@ class ApplicationReview extends React.Component {
             payload.brand.additionalDocList = additionalDocListNew;
         }
 
+        }
+        // populate payload with non-document changed fields
         const isDirty = Object.keys(payload).reduce((agg, key) => agg || (typeof payload[key] === "object" && Object.keys(payload[key]).length > 0), false);
         return {isDirty, payload};
     }
@@ -206,6 +208,7 @@ class ApplicationReview extends React.Component {
 ApplicationReview.propTypes = {
     dispatchSteps: PropTypes.func,
     onboardingDetails: PropTypes.object,
+    originalValues: PropTypes.object,
     steps: PropTypes.array,
     modalsMeta: PropTypes.object,
     toggleModal: PropTypes.func,
