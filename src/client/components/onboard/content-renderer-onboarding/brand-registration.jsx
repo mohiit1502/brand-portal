@@ -125,6 +125,7 @@ class BrandRegistration extends React.Component {
       !form.inputData.brandName.error &&
       form.inputData.undertaking.selected;
     form.inputData.brandOnboardingActions.buttons.submit.disabled = !bool;
+    console.log(form);
     if (form.inputData.additionalDoc.uploading) {
       form.inputData.brandOnboardingActions.buttons.submit.disabled = true;
     }
@@ -151,6 +152,7 @@ class BrandRegistration extends React.Component {
   toggleFormEnable(enable, isUnique) {
     const form = {...this.state.form};
     form.inputData.brandName.isUnique = isUnique;
+//     form.inputData.brandName.error = !enable ? form.inputData.companyName.error : "";
     this.setState({form});
   }
 
@@ -173,11 +175,13 @@ class BrandRegistration extends React.Component {
         }
         if (key === "brandName") {
           if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name?.trim() !== targetVal?.trim())) {
+            
             state.form.inputData.brandName.fieldOk = false;
             state.form.inputData.brandName.error = "";
             state.form.inputData.brandName.isUnique = false;
-            this.toggleFormEnable(false, false);
+            // this.toggleFormEnable(false, false);
           }
+
           this.brandDebounce({brandName: targetVal});
         }
         state.form.inputData[key].value = targetVal;
