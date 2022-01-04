@@ -184,7 +184,7 @@ const StatusModalTemplate = props => {
           break;
         case "refreshAndHideModal":
           toggleModal(TOGGLE_ACTIONS.HIDE);
-          window.location.href=window.location.href;
+          window.location.reload();
           break;
         default:
           hideModal();
