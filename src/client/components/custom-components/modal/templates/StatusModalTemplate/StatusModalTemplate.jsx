@@ -23,7 +23,7 @@ const StatusModalTemplate = props => {
   const {modalsMeta, meta, showNotification, toggleModal, updateUserProfile, user,
      dispatchOnboardingDetails, onboardingDetails} = props;
   const {logoutUrl, profile} = user;
-  const org = user.profile.organization;
+  const org = user && user.profile && user.profile.organization;
   const [loader, setLoader] = useState(false);
   const [apiError, setApiError] = useState(false);
   const history = useHistory();
@@ -184,7 +184,7 @@ const StatusModalTemplate = props => {
           break;
         case "refreshAndHideModal":
           toggleModal(TOGGLE_ACTIONS.HIDE);
-          window.location.href=window.location.href;
+          window.location.reload();
           break;
         default:
           hideModal();

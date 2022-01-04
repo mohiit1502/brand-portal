@@ -29,7 +29,7 @@ class HomeHeader extends React.Component {
         </button>
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
-            {!workflowCode || workflowCode === 4 &&
+            {(!workflowCode || workflowCode === 4 || isWebform) &&
             <li className="nav-item nav-item-help mx-4">
               {isWebform
                 ? !this.props.hideHelp && <span className="nav-link nav-help" style={{cursor: "pointer"}} onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.SHOW,

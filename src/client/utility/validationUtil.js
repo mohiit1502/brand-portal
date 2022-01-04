@@ -242,7 +242,10 @@ export default class Validator {
     } else {
       inputData.brandName.disabled = false;
       inputData.brandName.loader = false;
-      this.setState(state, this.checkToEnableSubmit);
+      this.setState(state, () => {
+        this.toggleFormEnable(true, true, false);
+        this.checkToEnableSubmit();
+      });
     }
   }
 
