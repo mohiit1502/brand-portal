@@ -18,15 +18,11 @@ class ApplicationReview extends React.Component {
         super(props);
         this.title = "Review Information";
         this.subtitle = "Please ensure the information below is accurate.";
-        const functions = ["gotoBrandRegistration"];
+        const functions = ["gotoBrandRegistration", "restructureBeforeSubmit", "submitOnboardingForm", "checkAndSubmitOnboardingForm", "checkForEdit"];
         functions.forEach(name => {
             this[name] = this[name].bind(this);
           });
         this.state = { ...props };
-        this.restructureBeforeSubmit = this.restructureBeforeSubmit.bind(this);
-        this.submitOnboardingForm = this.submitOnboardingForm.bind(this);
-        this.checkAndSubmitOnboardingForm = this.checkAndSubmitOnboardingForm.bind(this);
-        this.checkForEdit = this.checkForEdit.bind(this);
         this.state = {
           loader: false,
           dirtyCheckResponse: {},
@@ -72,6 +68,9 @@ class ApplicationReview extends React.Component {
         this.props.setLoader && this.props.setLoader(true);
         Http.post("/api/org/register", data, { clientType: this.props.clientType, context: this.props.userProfile && this.props.userProfile.context})
         .then(res => {
+            this.setState({
+                applicationSubmitted: true
+            });
             mixpanelPayload.API_SUCCESS = true;
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, { templateName: "StatusModalTemplate", ...this.props.modalsMeta.APPLICATION_SUBMITTED });
         })
@@ -179,7 +178,6 @@ class ApplicationReview extends React.Component {
 
     render() {
         return (
-            // <div className={`row justify-content-center ${this.props.form.loader && "loader"}`}>
             <div className="col pl-5 pr-0">
                 <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
                     <span className="col">{this.title}</span>
@@ -191,9 +189,9 @@ class ApplicationReview extends React.Component {
                 <ApplicationDetails {...this.props} />
                 <div className="c-ButtonsPanel form-row py-4 mt-5">
                     <div className="col company-onboarding-button-panel text-right mr-5">
-                        <button type="button" className="btn btn-sm cancel-btn text-primary" onClick={this.gotoBrandRegistration}>Back</button>
+                        <button type="button" className="btn btn-sm cancel-btn text-primary" disabled={this.state.applicationSubmitted} onClick={this.gotoBrandRegistration}>Back</button>
                         <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm}
-                                disabled={this.state.isEditMode && !this.state.dirtyCheckResponse?.isDirty}>
+                                disabled={(this.state.isEditMode && !this.state.dirtyCheckResponse?.isDirty) || this.state.applicationSubmitted}>
                           Confirm and submit
                         </button>
                     </div>

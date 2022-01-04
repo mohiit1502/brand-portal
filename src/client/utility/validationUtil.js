@@ -242,8 +242,9 @@ export default class Validator {
     } else {
       inputData.brandName.disabled = false;
       inputData.brandName.loader = false;
+      state.form.inputData.brandName.isUnique = true;
+      state.form.inputData.trademarkNumber.isValid = true;
       this.setState(state, () => {
-        this.toggleFormEnable(true, true, false);
         this.checkToEnableSubmit();
       });
     }
