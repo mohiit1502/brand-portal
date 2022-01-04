@@ -148,6 +148,12 @@ class BrandRegistration extends React.Component {
     }, this.checkToEnableSubmit);
   }
 
+  toggleFormEnable(enable, isUnique) {
+    const form = {...this.state.form};
+    form.inputData.brandName.isUnique = isUnique;
+    this.setState({form});
+  }
+
   onChange (evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
@@ -167,13 +173,12 @@ class BrandRegistration extends React.Component {
         }
         if (key === "brandName") {
           if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name?.trim() !== targetVal?.trim())) {
-            this.brandDebounce({brandName: targetVal});
             state.form.inputData.brandName.fieldOk = false;
             state.form.inputData.brandName.error = "";
             state.form.inputData.brandName.isUnique = false;
-          } else {
-            state.form.inputData.brandName.isValid = true;
+            this.toggleFormEnable(false, false);
           }
+          this.brandDebounce({brandName: targetVal});
         }
         state.form.inputData[key].value = targetVal;
         return {

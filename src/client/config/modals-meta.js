@@ -273,7 +273,7 @@ const MODALSMETA = {
       },
       "ADDITIONAL_ACTION": {
         "action": "hideModal",
-        "text": "Go Back",
+        "text": "Go Back"
       },
       "TYPE": "CTA"
     },
@@ -312,7 +312,7 @@ const MODALSMETA = {
             "chunk2": {
               "text": "__emailPlaceholder__",
               "classes": "font-weight-bold",
-              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+              "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"}
             },
             "chunk3": ". Follow the link in the email to complete verification."
           }
