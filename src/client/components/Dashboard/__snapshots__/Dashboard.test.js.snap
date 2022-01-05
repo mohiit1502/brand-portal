@@ -907,3 +907,911 @@ exports[`Dashboard test container Dashboard renders without error should render 
   </div>
 </div>
 `;
+
+exports[`Dashboard test container Dashboard renders without error tests for scenario when backend sends error 1`] = `
+<div
+  className="c-Dashboard h-100"
+>
+  <div
+    className="c-DashboardHeader row p-4 h-10 mx-0"
+  >
+    <div
+      className="col"
+    >
+      <h3>
+        My Dashboard
+      </h3>
+    </div>
+  </div>
+  <div
+    className="c-WidgetContainer row my-4 mx-0 px-4"
+  >
+    <div
+      className="c-Widget mb-4 pr-12 col-4"
+      id="widget-claim-summary"
+      style={Object {}}
+    >
+      <div
+        className="c-Summary c-Widget__content border widget-border color-555 shadowed-box"
+      >
+        <h4
+          className="px-4 pt-3 mb-0 header-grey"
+        >
+          Claims Summary
+        </h4>
+        <div
+          className="Summary-body px-4 pt-4 line-height-reset"
+        >
+          <ul
+            className="list-unstyled d-flex justify-content-between"
+          >
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                All
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                In Progress
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                Closed
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+          </ul>
+        </div>
+        <footer
+          className="c-Widget__content__footer d-block py-875 mt-4 text-center footer-text"
+          onClick={[Function]}
+        >
+          Submit New Claim
+        </footer>
+      </div>
+    </div>
+    <div
+      className="c-Widget mb-4 px-12 col-4"
+      id="widget-brand-summary"
+      style={Object {}}
+    >
+      <div
+        className="c-Summary c-Widget__content border widget-border color-555 shadowed-box"
+      >
+        <h4
+          className="px-4 pt-3 mb-0 header-grey"
+        >
+          Brands Summary
+        </h4>
+        <div
+          className="Summary-body px-4 pt-4 line-height-reset"
+        >
+          <ul
+            className="list-unstyled d-flex justify-content-between"
+          >
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                All
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                Pending
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                Verified
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+          </ul>
+        </div>
+        <footer
+          className="c-Widget__content__footer d-block py-875 mt-4 text-center footer-text"
+          onClick={[Function]}
+        >
+          Register New Brand
+        </footer>
+      </div>
+    </div>
+    <div
+      className="c-Widget mb-4 pl-12 col-4"
+      id="widget-user-summary"
+      style={Object {}}
+    >
+      <div
+        className="c-Summary c-Widget__content border widget-border color-555 shadowed-box"
+      >
+        <h4
+          className="px-4 pt-3 mb-0 header-grey"
+        >
+          Users Summary
+        </h4>
+        <div
+          className="Summary-body px-4 pt-4 line-height-reset"
+        >
+          <ul
+            className="list-unstyled d-flex justify-content-between"
+          >
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                All
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                Pending
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+            <li
+              className="list-unstyled d-inline-block"
+            >
+              <div
+                className="font-size-12 pb-625 item-status"
+              >
+                Active
+              </div>
+              <div
+                className="item-loader"
+              />
+            </li>
+          </ul>
+        </div>
+        <footer
+          className="c-Widget__content__footer d-block py-875 mt-4 text-center footer-text"
+          onClick={[Function]}
+        >
+          Invite New User
+        </footer>
+      </div>
+    </div>
+    <div
+      className="c-Widget mb-4 pr-12 col-4"
+      id="widget-claims-by-type"
+      style={Object {}}
+    >
+      <div
+        className="c-ChartsContainer c-Widget__content widget-border color-555 shadowed-box"
+      >
+        <h5
+          className="px-4 pt-3 mb-0 header-grey line-height-reset h-10"
+        >
+          Claims Submitted by Type
+        </h5>
+        <div
+          className="px-4 pt-3 h-90"
+        >
+          <div
+            className="c-FilterController row"
+          >
+            <div
+              className="col-6 pr-375"
+            >
+              <div
+                className="form-group custom-input-form-group custom-select-form-group dropdown mb-0"
+              >
+                <input
+                  autoComplete="off"
+                  className="form-control form-control-filter-controller custom-input-element"
+                  data-toggle="dropdown"
+                  id="date-filter-controller"
+                  onChange={[Function]}
+                  type="select"
+                  value="Last 30 Days"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="claim-type-widget-filter-controller"
+                >
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text"
+                  >
+                     
+                    Date Range
+                     
+                  </span>
+                </label>
+                <img
+                  alt="image-arrow-down"
+                  className="dropdown-arrow"
+                  src="arrow-down-dk.png"
+                />
+                <div
+                  className="dropdown-menu"
+                >
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 7 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 30 Days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 60 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 90 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    All time
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Custom Date
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c-GroupedBarChart c-ChartsContainer__content__body"
+          >
+            <svg
+              style={
+                Object {
+                  "height": "100%",
+                  "width": "100%",
+                }
+              }
+            >
+              <g
+                className="x-axis"
+              />
+              <g
+                className="y-axis"
+              />
+            </svg>
+          </div>
+          <div
+            className="c-ChartsContainer__content__footer pb-4 line-height-reset"
+          >
+            <ul
+              className="list-unstyled d-inline-block mb-0"
+            >
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Counterfeit"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#1F4F94",
+                    }
+                  }
+                />
+                Counterfeit
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Trademark"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#3483B9",
+                    }
+                  }
+                />
+                Trademark
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Copyright"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#71C5DF",
+                    }
+                  }
+                />
+                Copyright
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Patent"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#ADDDE9",
+                    }
+                  }
+                />
+                Patent
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Items"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#E4B33F",
+                    }
+                  }
+                />
+                # of Items
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c-Widget mb-4 px-12 col-4"
+      id="widget-claims-by-brand"
+      style={Object {}}
+    >
+      <div
+        className="c-ChartsContainer c-Widget__content widget-border color-555 shadowed-box"
+      >
+        <h5
+          className="px-4 pt-3 mb-0 header-grey line-height-reset h-10"
+        >
+          Claims Submitted by Brand
+        </h5>
+        <div
+          className="px-4 pt-3 h-90"
+        >
+          <div
+            className="c-FilterController row"
+          >
+            <div
+              className="col-6 pr-375"
+            >
+              <div
+                className="form-group custom-input-form-group custom-select-form-group dropdown mb-0"
+              >
+                <input
+                  autoComplete="off"
+                  className="form-control form-control-filter-controller custom-input-element"
+                  data-toggle="dropdown"
+                  id="date-filter-controller"
+                  onChange={[Function]}
+                  type="select"
+                  value="Last 30 Days"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="claim-type-widget-filter-controller"
+                >
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text"
+                  >
+                     
+                    Date Range
+                     
+                  </span>
+                </label>
+                <img
+                  alt="image-arrow-down"
+                  className="dropdown-arrow"
+                  src="arrow-down-dk.png"
+                />
+                <div
+                  className="dropdown-menu"
+                >
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 7 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 30 Days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 60 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 90 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    All time
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Custom Date
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col-6 pl-375"
+            >
+              <div
+                className="form-group custom-input-form-group custom-select-form-group dropdown mb-0"
+              >
+                <input
+                  autoComplete="off"
+                  className="form-control form-control-filter-controller custom-input-element"
+                  data-toggle="dropdown"
+                  id="claim-type-filter-controller"
+                  onChange={[Function]}
+                  type="select"
+                  value="All"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="claim-type-widget-filter-controller"
+                >
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text"
+                  >
+                     
+                    Claim Type
+                     
+                  </span>
+                </label>
+                <img
+                  alt="image-arrow-down"
+                  className="dropdown-arrow"
+                  src="arrow-down-dk.png"
+                />
+                <div
+                  className="dropdown-menu"
+                >
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Counterfeit
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Trademark
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Copyright
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Patent
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    All
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c-StackedBarChart c-ChartsContainer__content__body"
+          >
+            <svg
+              style={
+                Object {
+                  "height": "100%",
+                  "width": "100%",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-ChartsContainer__content__footer pb-4 line-height-reset"
+          >
+            <ul
+              className="list-unstyled d-inline-block mb-0"
+            >
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Counterfeit"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#1F4F94",
+                    }
+                  }
+                />
+                Counterfeit
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Trademark"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#3483B9",
+                    }
+                  }
+                />
+                Trademark
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Copyright"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#71C5DF",
+                    }
+                  }
+                />
+                Copyright
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Patent"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#ADDDE9",
+                    }
+                  }
+                />
+                Patent
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c-Widget mb-4 pl-12 col-4"
+      id="widget-claims-by-user"
+      style={Object {}}
+    >
+      <div
+        className="c-ChartsContainer c-Widget__content widget-border color-555 shadowed-box"
+      >
+        <h5
+          className="px-4 pt-3 mb-0 header-grey line-height-reset h-10"
+        >
+          Claims Submitted by User
+        </h5>
+        <div
+          className="px-4 pt-3 h-90"
+        >
+          <div
+            className="c-FilterController row"
+          >
+            <div
+              className="col-6 pr-375"
+            >
+              <div
+                className="form-group custom-input-form-group custom-select-form-group dropdown mb-0"
+              >
+                <input
+                  autoComplete="off"
+                  className="form-control form-control-filter-controller custom-input-element"
+                  data-toggle="dropdown"
+                  id="date-filter-controller"
+                  onChange={[Function]}
+                  type="select"
+                  value="Last 30 Days"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="claim-type-widget-filter-controller"
+                >
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text"
+                  >
+                     
+                    Date Range
+                     
+                  </span>
+                </label>
+                <img
+                  alt="image-arrow-down"
+                  className="dropdown-arrow"
+                  src="arrow-down-dk.png"
+                />
+                <div
+                  className="dropdown-menu"
+                >
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 7 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 30 Days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 60 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Last 90 days
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    All time
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Custom Date
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div
+              className="col-6 pl-375"
+            >
+              <div
+                className="form-group custom-input-form-group custom-select-form-group dropdown mb-0"
+              >
+                <input
+                  autoComplete="off"
+                  className="form-control form-control-filter-controller custom-input-element"
+                  data-toggle="dropdown"
+                  id="claim-type-filter-controller"
+                  onChange={[Function]}
+                  type="select"
+                  value="All"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="claim-type-widget-filter-controller"
+                >
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text"
+                  >
+                     
+                    Claim Type
+                     
+                  </span>
+                </label>
+                <img
+                  alt="image-arrow-down"
+                  className="dropdown-arrow"
+                  src="arrow-down-dk.png"
+                />
+                <div
+                  className="dropdown-menu"
+                >
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Counterfeit
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Trademark
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Copyright
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    Patent
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    onClick={[Function]}
+                  >
+                    All
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c-StackedBarChart c-ChartsContainer__content__body"
+          >
+            <svg
+              style={
+                Object {
+                  "height": "100%",
+                  "width": "100%",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-ChartsContainer__content__footer pb-4 line-height-reset"
+          >
+            <ul
+              className="list-unstyled d-inline-block mb-0"
+            >
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Counterfeit"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#1F4F94",
+                    }
+                  }
+                />
+                Counterfeit
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Trademark"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#3483B9",
+                    }
+                  }
+                />
+                Trademark
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Copyright"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#71C5DF",
+                    }
+                  }
+                />
+                Copyright
+              </li>
+              <li
+                className="list-horizontal font-size-10 mr-3"
+                id="Patent"
+              >
+                <span
+                  className="rounded"
+                  style={
+                    Object {
+                      "background": "#ADDDE9",
+                    }
+                  }
+                />
+                Patent
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

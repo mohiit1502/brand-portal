@@ -21,7 +21,7 @@ const ImageViewer = props => {
       keyboard: false,
       show: props.viewerState.show
     };
-    modalElements.modal(options);
+    modalElements.modal && modalElements.modal(options);
     if (!props.viewerState.show) {
       backdrop.remove();
     }
@@ -58,7 +58,10 @@ const ImageViewer = props => {
 };
 
 ImageViewer.propTypes = {
-  viewerState: PropTypes.bool,
+  viewerState: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object
+  ]),
   toggleImageViewDispatcher: PropTypes.func
 };
 

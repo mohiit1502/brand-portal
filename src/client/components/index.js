@@ -18,7 +18,6 @@ import Accordion from "./Accordion";
 import Alert from "./Alert";
 import ButtonsPanel from "./ButtonsPanel";
 import CheckBox from "./CheckBox";
-import ClaimTabular from "./ClaimTabular";
 import ContactUsPrompt from "./ContactUsPrompt";
 import Dashboard from "./Dashboard";
 import DashboardHeader from "./DashboardHeader";
@@ -72,7 +71,6 @@ export {
   ButtonsPanel,
   CheckBox,
   ChartsContainer,
-  ClaimTabular,
   ContactUsPrompt,
   Dashboard,
   DashboardHeader,

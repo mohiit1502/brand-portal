@@ -348,13 +348,4 @@ export default class ContentRenderer {
 
     }
   }
-
-
-  setContentData(content) {
-    this.content = content;
-  }
-
-  getContentData() {
-    return this.content;
-  }
 }

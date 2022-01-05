@@ -29,13 +29,14 @@ class CustomInput extends React.PureComponent {
     if (this.state.type === "multiselect") {
       this.setMultiSelectValueFromDropdownOptions(this.state.dropdownOptions);
     }
-    $("[data-toggle=\"tooltip\"]")
-      .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
-      .tooltip();
-    $("body")
-      .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
-      .on("mouseleave", ".tooltip, [data-toggle=\"tooltip\"]", () => $(".tooltip").addClass("move-beneath"));
-
+    try {
+      $("[data-toggle=\"tooltip\"]")
+        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
+        .tooltip();
+      $("body")
+        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
+        .on("mouseleave", ".tooltip, [data-toggle=\"tooltip\"]", () => $(".tooltip").addClass("move-beneath"));
+    } catch (e) {}
   }
 
   componentDidUpdate(prevProps, prevState) {
