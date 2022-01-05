@@ -22,8 +22,8 @@ class Onboarder extends React.Component {
   callback(data, section) {
     const state = {...this.state};
     const steps = [...this.props.steps];
-    const brandStepIndex = ClientUtils.where(steps, {name: "Brand Details"});
-    const companyStepIndex = ClientUtils.where(steps, {name: "Company Profile"});
+    const brandStepIndex = ClientUtils.where(steps, {name: "Brand Info"});
+    const companyStepIndex = ClientUtils.where(steps, {name: "Company Info"});
     if (data) {
       // eslint-disable-next-line no-unused-expressions
       section === "company" ? state.org = data : state.brand = data;

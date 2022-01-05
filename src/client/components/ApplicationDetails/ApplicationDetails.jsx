@@ -7,7 +7,7 @@ import "./ApplicationDetails.component.scss";
 const ApplicationDetails = props => {
   const { user, handler, org, brand, setApiError, apiError } = props;
   const leftTitle = "Company Information";
-  const rightTitle = "Brand Details";
+  const rightTitle = "Brand Information";
   const attachmentsHeader = "Attachments";
 
   useEffect(() => {
