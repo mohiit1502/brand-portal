@@ -12,16 +12,15 @@ import "./Help.component.scss";
 const Help = props => {
 
   const [activeTabUrl, setActiveTabUrl] = useState(props.location.pathname);
-  const [helpConfig, setHelpConfig] = useState({});
+  const [helpConfig, setHelpConfig] = useState(helpConfiguration);
   const [loader, setLoader] = useState(true);
   useEffect(() => {
     (async () => {
-      setHelpConfig(helpConfiguration);
       setLoader(false);
       try {
-      setHelpConfig(helpConfiguration);
-      const response = (await Http.get("/api/helpConfig")).body;
-      setHelpConfig(JSON.parse(response));
+        setHelpConfig(helpConfiguration);
+        const response = (await Http.get("/api/helpConfig")).body;
+        setHelpConfig(JSON.parse(response));
       /* eslint-disable no-empty */
       } catch (e) {}
     })();

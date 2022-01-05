@@ -34,7 +34,7 @@ const Accordion = ({children, data, expanded, setExpanded}) => {
 };
 
 Accordion.propTypes = {
-  children: PropTypes.symbol,
+  children: PropTypes.object,
   data: PropTypes.object,
   expanded: PropTypes.bool,
   setExpanded: PropTypes.func

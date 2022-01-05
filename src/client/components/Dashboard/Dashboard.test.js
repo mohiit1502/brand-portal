@@ -46,5 +46,13 @@ describe("Dashboard test container", () => {
       const tree = wrapper.toJSON();
       expect(tree).toMatchSnapshot();
     });
+    it("tests for scenario when backend sends error", () => {
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {errors: ["error"]}}));
+      const mRef = {current: document.createElement("div")};
+      useRef.mockReturnValue(mRef);
+      wrapper = setUp();
+      const tree = wrapper.toJSON();
+      expect(tree).toMatchSnapshot();
+    });
   });
 });
