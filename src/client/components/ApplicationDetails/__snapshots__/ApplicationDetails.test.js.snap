@@ -41,7 +41,7 @@ exports[`ApplicationDetails renders without error ApplicationDetails renders wit
         <h5
           className="font-weight-bold "
         >
-          Brand Details
+          Brand Information
         </h5>
         <div>
           5912022
@@ -133,7 +133,7 @@ exports[`ApplicationDetails renders without error should render the application 
         <h5
           className="font-weight-bold "
         >
-          Brand Details
+          Brand Information
         </h5>
         <div>
           5912022
