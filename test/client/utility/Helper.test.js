@@ -1,4 +1,4 @@
-import Helper from "../../../src/client/utility/Helper";
+import Helper from "../../../src/client/utility/helper";
 
 describe("helper util test container", () => {
   it("should convert string to camel case with first letter uppercase",  () => {
