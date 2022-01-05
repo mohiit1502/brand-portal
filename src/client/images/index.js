@@ -22,6 +22,7 @@ import CreateBrandForm from "./CreateBrandForm.jpg";
 import DashboardIcon from "./dashboard.png";
 import EditOutlinedIcon from "./edit.svg";
 import EmailIcon from "./emailIcon.svg";
+import EmailIconWithYellowMessage from "./EmailIconWithYellowMessage.png";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
 import FalconLoginForm from "./Falcon Login Form.jpg";
@@ -92,6 +93,7 @@ export {
   DashboardIcon,
   EditOutlinedIcon,
   EmailIcon,
+  EmailIconWithYellowMessage,
   Event,
   Exclamation,
   FalconLoginForm,
