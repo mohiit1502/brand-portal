@@ -45,11 +45,11 @@ class ApplicationReview extends React.Component {
         data.org = data.company;
         delete data.company;
       }
-      const businessRegistrationDoc = data?.org?.businessRegistrationDocList?.find(doc => !doc.createTS);
-      const additionalDoc = data?.brand?.additionalDocList?.find(doc => !doc.createTS);
+      const businessRegistrationDoc = data.org && data.org.businessRegistrationDocList && data.org.businessRegistrationDocList.find(doc => !doc.createTS);
+      const additionalDoc = data.brand && data.brand.additionalDocList && data.brand.additionalDocList.find(doc => !doc.createTS);
       data.org = {...data.org, businessRegistrationDoc, additionalDoc};
-      delete data?.org?.businessRegistrationDocList;
-      delete data?.brand?.additionalDocList;
+      data.org && delete data.org.businessRegistrationDocList;
+      data.brand && delete data.brand.additionalDocList;
       if (data.org.sellerInfo) {
         data.sellerInfo = data.org.sellerInfo;
         delete data.org.sellerInfo;
@@ -191,7 +191,7 @@ class ApplicationReview extends React.Component {
                     <div className="col company-onboarding-button-panel text-right mr-5">
                         <button type="button" className="btn btn-sm cancel-btn text-primary" disabled={this.state.applicationSubmitted} onClick={this.gotoBrandRegistration}>Back</button>
                         <button type="submit" className="btn btn-sm btn-primary submit-btn px-4 ml-3" onClick={this.checkAndSubmitOnboardingForm}
-                                disabled={(this.state.isEditMode && !this.state.dirtyCheckResponse?.isDirty) || this.state.applicationSubmitted}>
+                                disabled={(this.state.isEditMode && this.state.dirtyCheckResponse && !this.state.dirtyCheckResponse.isDirty) || this.state.applicationSubmitted}>
                           Confirm and submit
                         </button>
                     </div>
