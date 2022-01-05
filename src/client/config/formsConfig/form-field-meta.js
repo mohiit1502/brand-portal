@@ -5,7 +5,7 @@ const FORMFIELDCONFIG = {
       "sectionConfig": {
         "sectionTitle": "Create Company Profile",
         "sectionSellerTitle": "Confirm Company Profile",
-        "sectionSubTitle": "Please provide the information in the form below to create your company profile.",
+        "sectionSubTitle": "Complete the form based on the information in the trademark registration",
         "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
       },
       "formConfig": {
@@ -33,7 +33,7 @@ const FORMFIELDCONFIG = {
           "loader": false,
           "pattern": null,
           "required": true,
-          "subtitle": "Please ensure that the company name you enter matches the official records.",
+          "subtitle": "The company name should match the information in the trademark registration. ",
           "type": "text",
           "value": ""
         },
@@ -47,7 +47,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "renderDependency": "requestAdministratorAccess",
           "required": true,
-          "subtitle": "The Company address should match the information in trademark registration.",
+          "subtitle": "The company address should match the information in the trademark registration.",
           "type": "text",
           "value": ""
         },
@@ -152,8 +152,8 @@ const FORMFIELDCONFIG = {
     },
     "BRANDREG": {
       "sectionConfig": {
-        "sectionTitle": " Thank you for sharing your company information.",
-        "sectionSubTitle": "Now please tell us about your brand. If you own multiple brands, please select one which will be verified upon submission."
+        "sectionTitle": " Brand Information",
+        "sectionSubTitle": "Enter your brand information below. You will have the option to upload additional trademarks once your application is approved."
       },
       "formConfig": {
         "id": "brandreg",
@@ -175,7 +175,7 @@ const FORMFIELDCONFIG = {
           "loader": false,
           "maxLength": 7,
           "pattern": null,
-          "subtitle": "Please input the trademark registration number. Only USPTO registered trademarks are accepted.",
+          "subtitle": "Please enter the trademark registration number. Only registered USPTO trademarks are accepted at this time.",
           "required": true,
           "type": "text",
           "value": "",
@@ -198,7 +198,7 @@ const FORMFIELDCONFIG = {
           "loader": false,
           "pattern": null,
           "required": true,
-          "subtitle": "",
+          "subtitle": "Please ensure that the brand name matches the registered trademark name.",
           "type": "text",
           "value": ""
         },
@@ -215,7 +215,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "additionalDoc",
           "key": "additionalDoc",
-          "label": "Optional: attach additional documents if necessary (i.e. trademark registration)",
+          "label": "Optional: Attach additional documents if necessary (i.e. trademark registration)",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
           "tooltipContentKey": "additionalDocContent",

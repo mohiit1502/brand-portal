@@ -18,7 +18,7 @@ class Stepper extends React.Component {
             this.props.steps && this.props.steps.map((step, i) => {
               return (
                 <div className="step-box" key={step.order}>
-                  <div className="step-title">Step {step.order}: {step.name}</div>
+                  <div className="step-title">{step.name}</div>
                   <div className={`stepper-circle ${step.complete ? `bg-complete${step.active ? " step-active" : ""}` : "bg-stepper-gray"}`} />
                   {
                     i > 0 && <div className={`connect-bar${step.complete ? " bg-complete" : " bg-stepper-gray"}`} />

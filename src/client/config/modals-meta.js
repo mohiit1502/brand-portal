@@ -18,7 +18,11 @@ const MODALSMETA = {
             "classes": "font-weight-bold mt-2 mb-4 mx-4 font-size-28 text-center"
           },
           "para1": {
-            "text": "To simplify the process, we will be using the information in your Seller Center account to set up your Brand Portal account. Please complete the following steps.",
+            "text": "To simplify the process, we will be using the information in your Seller Center account to set up your Brand Portal account.",
+            "classes": "mx-4 font-size-16"
+          },
+          "para2": {
+            "text": "Please complete the following steps.",
             "classes": "mx-4 font-size-16"
           },
           "list": {
@@ -90,7 +94,7 @@ const MODALSMETA = {
               "key": ["NEW"]
             },
             {
-              "text": "On Hold - Action Required",
+              "text": "Action Required",
               "classes": "status-onhold",
               "key": ["ON_HOLD"]
             },
@@ -284,7 +288,15 @@ const MODALSMETA = {
       "CODE": 16,
       "IMAGE": "RedCircleCross",
       "MESSAGE": "Your account access has been revoked for security reasons",
-      "TITLE": "Access Denied"
+      "TITLE": {
+        "ROW_CLASSES": "justify-center",
+      "content": {
+        "para": {
+          "text": "Access Denied",
+          "classes": "font-weight-bold"
+        }
+      }
+    }
     },
     "REQUEST_ACCESS": {
       "CODE": 32,
@@ -295,10 +307,15 @@ const MODALSMETA = {
     "USER_VERIFICATION": {
       "CODE": 64,
       "MODAL_DIALOG_CLASSES": "width-medium",
-      "IMAGE": "EmailIcon",
+      "IMAGE": "EmailIconWithYellowMessage",
+      "HEIGHT": "120",
       "SUBTITLE": {
         "content": {
           "para1": {
+            "text": "Your account has been created.",
+            "classes": "font-size-15 mb-0 font-weight-bold"
+          },
+          "para2": {
             "text": "To move forward with your application, we need to verify the email address associated with your account.",
             "classes": "font-size-15 mx-5"
           }
