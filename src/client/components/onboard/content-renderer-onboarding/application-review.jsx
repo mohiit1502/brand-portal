@@ -77,6 +77,8 @@ class ApplicationReview extends React.Component {
         .catch(err => {
             if (err.error && err.error.code === "MAXIMUM_RETRY_EXHAUSTED") {
                 this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Application limit exhausted!");
+            } else {
+              this.props.showNotification(NOTIFICATION_TYPE.ERROR, "Submission failed, please try again!");
             }
             mixpanelPayload.API_SUCCESS = false;
             mixpanelPayload.ERROR = err.message ? err.message : err;
