@@ -63,14 +63,14 @@ export default class ServerHttp {
       const err = headers.get("content-type") === "application/json" ? await response.json() : await response.text();
       const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, err);
-      throw new ServerHttpError(status, err.error, err.message, err.code, options?.headers?.ROPRO_CORRELATION_ID, urlString,
-        options?.headers?.ROPRO_USER_ID);
+      throw new ServerHttpError(status, err.error, err.message, err.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
+        options && options.headers && options.headers.ROPRO_USER_ID);
     } catch (e) {
       requestEndTime  = requestEndTime ? requestEndTime : Date.now();
       const errorString = `6. Caught in ServerHttp.${method}: `;
       console.error(errorString, e);
-      throw new ServerHttpError(e.status || 500, e, "", e.code, options?.headers?.ROPRO_CORRELATION_ID, urlString,
-        options?.headers?.ROPRO_USER_ID);
+      throw new ServerHttpError(e.status || 500, e, "", e.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
+        options && options.headers && options.headers.ROPRO_USER_ID);
     } finally {
       mixpanelPayload.RESPONSE_TIME = requestEndTime - requestStartTime;
       console.log(`Total Response Time for ${urlString} is: ${requestEndTime - requestStartTime}`);

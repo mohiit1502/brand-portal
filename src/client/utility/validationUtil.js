@@ -198,12 +198,13 @@ export default class Validator {
   // =============================== Backend Validations ====================================
   static checkBrandUniqueness(params) {
     if (!this.state.form.inputData.brandName.value) return;
-    const isEditMode = this.props.userProfile?.context === "edit";
+    const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
     const state = { ...this.state };
     const form = { ...state.form };
     const inputData = { ...form.inputData };
 
-    if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name?.trim() !== this.state.form.inputData.brandName?.value?.trim())) {
+    if (!isEditMode || (isEditMode && this.props.originalValues && this.props.originalValues.brand && this.props.originalValues.brand.name && this.state.form.inputData.brandName
+      && this.state.form.inputData.brandName.value && this.props.originalValues.brand.name.trim() !== this.state.form.inputData.brandName.value.trim())) {
       state.form = form;
       form.inputData = inputData;
       inputData.brandName.loader = true;
@@ -297,12 +298,13 @@ export default class Validator {
 
   // eslint-disable-next-line max-statements
   static checkCompanyNameAvailability() {
-    const isEditMode = this.props.userProfile?.context === "edit";
+    const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
     const state = { ...this.state };
     const form = { ...this.state.form };
     const inputData = { ...this.state.form.inputData };
 
-    if ((isEditMode && this.props.originalValues?.org?.name?.trim() !== this.state.form.inputData.companyName.value?.trim()) || !isEditMode) {
+    if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name && this.state.form.inputData.companyName.value
+      && this.props.originalValues.org.name.trim() !== this.state.form.inputData.companyName.value.trim()) || !isEditMode) {
       if (!this.state.form.inputData.companyName.value) return;
       state.form = form;
       form.inputData = inputData;

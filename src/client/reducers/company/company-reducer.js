@@ -4,19 +4,19 @@ const initialState =  {
   steps: [
     {
       order: 1,
-      name: "Company Profile",
+      name: "Company Info",
       complete: true,
       active: true
     },
     {
       order: 2,
-      name: "Brand Details",
+      name: "Brand Info",
       complete: false,
       active: false
     },
     {
       order: 3,
-      name: "Review Application",
+      name: "Review",
       complete: false,
       active: false
     }

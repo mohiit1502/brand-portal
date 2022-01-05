@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CaptchaValidator test container CaptchaValidator renders without error should render the Captcha successfully when enabled 1`] = `
+<div
+  className="c-CaptchaValidator  captcha-container loader"
+/>
+`;
+
+exports[`CaptchaValidator test container CaptchaValidator renders without error tests API failure scenario 1`] = `
+<div
+  className="c-CaptchaValidator  captcha-container loader"
+/>
+`;
+
+exports[`CaptchaValidator test container CaptchaValidator renders without error verify Captcha when disabled 1`] = `
+<div
+  className="c-CaptchaValidator  captcha-container loader"
+/>
+`;

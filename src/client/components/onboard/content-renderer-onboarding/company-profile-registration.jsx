@@ -124,7 +124,7 @@ class CompanyProfileRegistration extends React.Component {
     if (this.props.onboardingDetails) {
       const data = this.props.onboardingDetails.org;
       const originalValues = JSON.parse(JSON.stringify(this.props.onboardingDetails));
-      delete originalValues?.brand?.comments;
+      originalValues.brand && delete originalValues.brand.comments;
       const form = {...this.state.form};
       if (data) {
         form.inputData.companyName.value = data.name;
@@ -202,9 +202,10 @@ class CompanyProfileRegistration extends React.Component {
       evt.target.pattern && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
-        const isEditMode = this.props.userProfile?.context === "edit";
+        const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
         if (key === "companyName") {
-          if ((isEditMode && this.props.originalValues?.org?.name?.trim() !== targetVal?.trim()) || !isEditMode) {
+          if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name
+            && targetVal && this.props.originalValues.org.name.trim() !== targetVal.trim()) || !isEditMode) {
             evt.persist();
             state.form.inputData.companyName.fieldOk = false;
             state.form.isSubmitDisabled = true;
@@ -292,7 +293,7 @@ class CompanyProfileRegistration extends React.Component {
 
   gotoBrandRegistration (evt) {
     evt.preventDefault();
-    let docNames = this.props.onboardingDetails?.org?.businessRegistrationDocList || [];
+    let docNames = (this.props.onboardingDetails && this.props.onboardingDetails.org && this.props.onboardingDetails.org.businessRegistrationDocList) || [];
     const org = {
       name: this.state.form.inputData.companyName.value,
       address: this.state.form.inputData.address.value,
