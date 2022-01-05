@@ -1,0 +1,3202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Help should render help successfully 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <withRouter(Help)>
+          <Help
+            history={
+              Object {
+                "action": "POP",
+                "block": [Function],
+                "canGo": [Function],
+                "createHref": [Function],
+                "entries": Array [
+                  Object {
+                    "hash": "",
+                    "pathname": "/help",
+                    "search": "",
+                    "state": undefined,
+                  },
+                ],
+                "go": [Function],
+                "goBack": [Function],
+                "goForward": [Function],
+                "index": 0,
+                "length": 1,
+                "listen": [Function],
+                "location": Object {
+                  "hash": "",
+                  "pathname": "/help",
+                  "search": "",
+                  "state": undefined,
+                },
+                "push": [Function],
+                "replace": [Function],
+              }
+            }
+            location={
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              }
+            }
+            match={
+              Object {
+                "isExact": false,
+                "params": Object {},
+                "path": "/",
+                "url": "/",
+              }
+            }
+          >
+            <div
+              className=""
+            >
+              <div
+                className="c-Help container h-100"
+              >
+                <div
+                  className="c-Help__header row"
+                >
+                  <div
+                    className="col-12"
+                  >
+                    <div
+                      className="h3 help-header"
+                    >
+                      Walmart Brand Portal Help Center
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="c-Help__content row h-100"
+                >
+                  <div
+                    className="col-2 h-100"
+                  >
+                    <withRouter(HelpSideBar)
+                      activeTab="faq"
+                      categories={
+                        Object {
+                          "brand": Object {
+                            "categoryText": "Brand Management",
+                          },
+                          "claim": Object {
+                            "categoryText": "Claims Submission",
+                          },
+                          "contact": Object {
+                            "categoryText": "Contact Us",
+                          },
+                          "faq": Object {
+                            "categoryText": "Frequently Asked Questions",
+                          },
+                          "user": Object {
+                            "categoryText": "User Management",
+                          },
+                        }
+                      }
+                      categoryHeader="Help Topics"
+                    >
+                      <HelpSideBar
+                        activeTab="faq"
+                        categories={
+                          Object {
+                            "brand": Object {
+                              "categoryText": "Brand Management",
+                            },
+                            "claim": Object {
+                              "categoryText": "Claims Submission",
+                            },
+                            "contact": Object {
+                              "categoryText": "Contact Us",
+                            },
+                            "faq": Object {
+                              "categoryText": "Frequently Asked Questions",
+                            },
+                            "user": Object {
+                              "categoryText": "User Management",
+                            },
+                          }
+                        }
+                        categoryHeader="Help Topics"
+                        history={
+                          Object {
+                            "action": "POP",
+                            "block": [Function],
+                            "canGo": [Function],
+                            "createHref": [Function],
+                            "entries": Array [
+                              Object {
+                                "hash": "",
+                                "pathname": "/help",
+                                "search": "",
+                                "state": undefined,
+                              },
+                            ],
+                            "go": [Function],
+                            "goBack": [Function],
+                            "goForward": [Function],
+                            "index": 0,
+                            "length": 1,
+                            "listen": [Function],
+                            "location": Object {
+                              "hash": "",
+                              "pathname": "/help",
+                              "search": "",
+                              "state": undefined,
+                            },
+                            "push": [Function],
+                            "replace": [Function],
+                          }
+                        }
+                        location={
+                          Object {
+                            "hash": "",
+                            "pathname": "/help",
+                            "search": "",
+                            "state": undefined,
+                          }
+                        }
+                        match={
+                          Object {
+                            "isExact": false,
+                            "params": Object {},
+                            "path": "/",
+                            "url": "/",
+                          }
+                        }
+                      >
+                        <div
+                          className="c-HelpSideBar h-90"
+                        >
+                          <div
+                            className="c-HelpSideBar__header h4"
+                          >
+                            Help Topics
+                          </div>
+                          <ul
+                            className="c-HelpSideBar__categories"
+                            id="helpSideBar"
+                          >
+                            <li
+                              className="c-HelpSideBar__category active"
+                              onClick={[Function]}
+                            >
+                              Frequently Asked Questions
+                            </li>
+                            <li
+                              className="c-HelpSideBar__category"
+                              onClick={[Function]}
+                            >
+                              User Management
+                            </li>
+                            <li
+                              className="c-HelpSideBar__category"
+                              onClick={[Function]}
+                            >
+                              Brand Management
+                            </li>
+                            <li
+                              className="c-HelpSideBar__category"
+                              onClick={[Function]}
+                            >
+                              Claims Submission
+                            </li>
+                            <li
+                              className="c-HelpSideBar__category"
+                              onClick={[Function]}
+                            >
+                              Contact Us
+                            </li>
+                          </ul>
+                        </div>
+                      </HelpSideBar>
+                    </withRouter(HelpSideBar)>
+                  </div>
+                  <div
+                    className="col-10"
+                  >
+                    <HelpMain
+                      activeTab="faq"
+                      content={
+                        Object {
+                          "brand": Object {
+                            "header": "Brand Management",
+                            "id": "query_brand",
+                            "items": Array [
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      Object {
+                                        "image": Array [
+                                          "Login",
+                                        ],
+                                        "main": "Login to your Walmart Brand Portal account",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "BrandList",
+                                        ],
+                                        "main": "Head to \\"My Brands\\" section",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "CreateBrandButton",
+                                        ],
+                                        "main": "Click \\"New Brand\\"",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "CreateBrandForm",
+                                        ],
+                                        "main": "Enter your brand information:",
+                                        "subList": Object {
+                                          "steps": Array [
+                                            "Brand name",
+                                            "Registered Trademark Number associated with the brand",
+                                            "Additional comments about the brand",
+                                          ],
+                                          "subType": "-",
+                                          "type": "ul",
+                                        },
+                                      },
+                                      Object {
+                                        "main": "Once submitted, Walmart will verify that the trademark is associated with your company.",
+                                      },
+                                    ],
+                                    "subType": "1",
+                                    "type": "ol",
+                                  },
+                                  "para1": "Once your information has been verified and you've gained access to Walmart Brand Portal, you can add more brands to your account. You can do this at any time by taking the following steps:",
+                                },
+                                "question": "How to add new brands to your Walmart Brand Portal account",
+                                "type": "listWithImages",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "Once a brand has been added to your Walmart Brand Portal account, you have the ability to manage the brand status, and assign specific users to the brand.",
+                                  "para2": "Suspend/Activate: If you would like to stop submitting IP claims against a particular brand, you have the option to suspend the brand. This means that the suspended brand will no longer surface in the drop-down menu during IP claims submission. Should you need to activate the brand in the future, you will also have the ability to do so in the \\"My Brands\\" section.",
+                                  "para3": "Assign/Unassign: You can assign specific users to be able to submit IP claims against your brands. In order to assign a brand to a user, go to the \\"User List\\" section, click on the user's name, and assign a brand (or all brands).",
+                                },
+                                "question": "How to manage your brands",
+                                "type": "simple",
+                              },
+                            ],
+                            "simple": false,
+                          },
+                          "claim": Object {
+                            "header": "Claims Submission",
+                            "id": "query_claim",
+                            "items": Array [
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      Object {
+                                        "main": "Login to your Walmart Brand Portal Account",
+                                      },
+                                      Object {
+                                        "main": "Head to \\"My Claims\\" section",
+                                      },
+                                      Object {
+                                        "main": "Click \\"New Claim\\"",
+                                      },
+                                      Object {
+                                        "main": "Fill out the New Claim form:",
+                                        "subList": Object {
+                                          "steps": Array [
+                                            "Select the brand name",
+                                            "Select the infringement type (Trademark, Copyright, Counterfeit, Patent)",
+                                            "Enter the trademark registration number, if applicable",
+                                            "Enter the item URL(s)",
+                                            "Select the Seller Name",
+                                            "Enter comments regarding your claim",
+                                            "Confirm legal statements",
+                                          ],
+                                          "subType": "-",
+                                          "type": "ul",
+                                        },
+                                      },
+                                    ],
+                                    "subType": "1",
+                                    "type": "ol",
+                                  },
+                                  "partial1": Object {
+                                    "anchor1": Object {
+                                      "href": "https://www.walmart.com",
+                                      "text": "Walmart.com",
+                                    },
+                                    "anchor2": Object {
+                                      "href": "https://www.walmart.com",
+                                      "text": "Walmart.com.",
+                                    },
+                                    "chunk1": "If you find any listings on ",
+                                    "chunk2": " that you believe violate your intellectual property, you can submit a claim through Walmart Brand Portal. You can follow these steps to report alleged intellectual property infringements on ",
+                                  },
+                                },
+                                "question": "How to submit claims",
+                                "type": "list",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      "Claim type",
+                                      "Brand information",
+                                      "Name of the reporter",
+                                      "Claim date",
+                                      "Reported items",
+                                      "Reported sellers",
+                                      "Claim comments",
+                                      Object {
+                                        "main": "Claim status",
+                                        "subList": Object {
+                                          "steps": Array [
+                                            "Submitted: Your claim was submitted, and is pending review",
+                                            "In progress: Your claim is currently under review",
+                                            "Closed: Your claim is closed, and additional claim details were shared to the reporter's email address",
+                                          ],
+                                          "subType": "-",
+                                          "type": "ul",
+                                        },
+                                      },
+                                    ],
+                                    "subType": "1",
+                                    "type": "ul",
+                                  },
+                                  "para1": "Once you've submitted claims through Walmart Brand Portal, you will be able to see your claim history, along with the status of each of your claims. Head to \\"My Claims\\" section to see all of the claims you've submitted through your Walmart Brand Portal account. You can filter your list by claim number, claim type, brand, who submitted the claim, claim date, and the status.",
+                                  "para2": "To see additional details about the claims you submitted, click on the claim number. A pop-up will appear that will show you the following information: ",
+                                },
+                                "question": "How to check your claim history",
+                                "type": "simple",
+                              },
+                            ],
+                            "simple": false,
+                          },
+                          "contact": Object {
+                            "header": "Contact Us",
+                          },
+                          "faq": Object {
+                            "header": "Frequently Asked Questions",
+                            "id": "query_faq",
+                            "items": Array [
+                              Object {
+                                "answer": Object {
+                                  "para1": "Yes. Rights owners can add additional users, including third-party users, to their Walmart Brand Portal account by inviting a new user and assigning specific roles and brands to the new user.",
+                                },
+                                "id": "faq-0",
+                                "question": "Can I add third-party representatives to my Walmart Brand Portal account?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "partial1": Object {
+                                    "chunk1": "Please reach out to our support team at ",
+                                    "chunk2": ". Please be sure to include information about your account, along with details regarding your issue.",
+                                    "link1": Object {
+                                      "onClick": "goToContactUs",
+                                      "text": "contact us",
+                                    },
+                                  },
+                                },
+                                "id": "faq-1",
+                                "question": "How do I access my account if the admin of the account is no longer with the company?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "There is no limit to the number of brands you can add under your Walmart Brand Portal account. You can add additional brands at any time by heading to the \\"My Brands\\" section, clicking \\"New Brand\\", and entering your brand information. The submitted information will be verified by our team, then added to your account once ownership is confirmed.",
+                                },
+                                "id": "faq-2",
+                                "question": "How many brands can I add to my Walmart Brand Portal account?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "Walmart Brand Portal currently only accepts trademarks registered with the United States Patent and Trademark Office (USPTO).",
+                                },
+                                "id": "faq-3",
+                                "question": "Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.",
+                                  "para2": "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+                                },
+                                "id": "faq-4",
+                                "question": "What type of claims can I use Walmart Brand Portal to report?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      "Submitted: Your claim was submitted, and is pending review",
+                                      "In progress: Your claim is currently under review",
+                                      "Closed: Your claim is closed, and additional details were shared to the reporter's email address",
+                                    ],
+                                    "subType": "1",
+                                    "type": "ul",
+                                  },
+                                  "para1": "Once you submit an IP claim through Walmart Brand Portal, your claim will appear in the claim dashboard under \\"My Claims\\". To see the status of your claim, check the \\"status\\" column, or click on the claim number to see additional information.",
+                                  "para2": "Your claim will show one of the following in the \\"claim status\\" section:",
+                                },
+                                "id": "faq-5",
+                                "question": "How do I check the status of an IP claim?",
+                                "type": "list",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "partial1": Object {
+                                    "chunk1": "Please reach out to our support team at ",
+                                    "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract.",
+                                    "link1": Object {
+                                      "onClick": "goToContactUs",
+                                      "text": "contact us",
+                                    },
+                                  },
+                                },
+                                "id": "faq-6",
+                                "question": "Can I retract a claim I made on Walmart Brand Portal?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "Yes, Walmart Brand Portal services are currently offered only for the United States Walmart.com marketplace.",
+                                },
+                                "id": "faq-7",
+                                "question": "Is Walmart Brand Portal available only in the United States?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "partial1": Object {
+                                    "chunk1": "Please reach out to our support team at ",
+                                    "chunk2": " and include information about your account, along with details regarding your issue.",
+                                    "link1": Object {
+                                      "onClick": "goToContactUs",
+                                      "text": "contact us",
+                                    },
+                                  },
+                                },
+                                "id": "faq-8",
+                                "question": "How can I get help from the Walmart team if I'm experiencing bugs or have questions about the tool?",
+                                "type": "simple",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      Object {
+                                        "partial": Object {
+                                          "anchor1": Object {
+                                            "href": "https://brandportal.walmart.com/",
+                                            "text": "(https://brandportal.walmart.com/)",
+                                          },
+                                          "chunk1": "Select the \\"Login\\" option on the Brand Portal landing page ",
+                                        },
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "LoginTypeCta",
+                                        ],
+                                        "main": "Select \\"Login with Seller Center\\" option",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "FalconLoginForm",
+                                        ],
+                                        "main": "Enter your Seller Center account log-in credentials",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "AccountLinking",
+                                        ],
+                                        "main": "At prompt, validate your brand’s information and select \\"Connect Accounts\\" to proceed",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "AccountLinkingSuccess",
+                                        ],
+                                        "main": "Select \\"Continue to My Account\\", to access your Brand Portal account",
+                                      },
+                                    ],
+                                    "subType": "1",
+                                    "type": "ol",
+                                  },
+                                  "para1": "If you have a Seller Center account and would like to link your accounts, please follow these steps:",
+                                },
+                                "id": "faq-9",
+                                "question": "How do I link my Seller Center account with my Brand Portal account?",
+                                "type": "listWithImages",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \\"Login with Seller Center\\" option and enter your Seller Center credentials to access the Brand Portal.",
+                                },
+                                "id": "faq-10",
+                                "question": "What happens if I link my Seller Center account with my Brand Portal account?",
+                                "type": "simple",
+                              },
+                            ],
+                            "simple": false,
+                          },
+                          "user": Object {
+                            "header": "User Management",
+                            "id": "query_user",
+                            "items": Array [
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      Object {
+                                        "image": Array [
+                                          "Login",
+                                        ],
+                                        "main": "Login to your Walmart Brand Portal account",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "UserList",
+                                        ],
+                                        "main": "Head to \\"User List\\" section",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "InviteUser",
+                                        ],
+                                        "main": "Click \\"Invite User\\"",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "InviteUserForm",
+                                        ],
+                                        "main": "Enter information about the user:",
+                                        "subList": Object {
+                                          "steps": Array [
+                                            "Select the type of user",
+                                            "First and last name",
+                                            "Email",
+                                            "Select role and assign brands (see \\"How to manage user roles and permissions\\")",
+                                          ],
+                                          "subType": "-",
+                                          "type": "ul",
+                                        },
+                                      },
+                                    ],
+                                    "subType": "1",
+                                    "type": "ol",
+                                  },
+                                  "para1": "In Walmart Brand Portal, you can add and manage multiple users to help represent your brands. Users can include third party vendors. To add additional users to your Walmart Brand Portal account, follow these steps:",
+                                  "para2": "An email will be sent to the invited user, and they will be asked to verify their email address and create a login password. Once these steps are completed, the invited user will be added to the Walmart Brand Portal account.",
+                                },
+                                "question": "How to add additional users",
+                                "type": "listWithImages",
+                              },
+                              Object {
+                                "answer": Object {
+                                  "para1": "You have the flexibility to assign particular roles and permissions to your users. There are three types of roles:",
+                                  "para2": "Super Administrator: The super administrator will have access to all features within Walmart Brand Portal, including adding additional admins and reporters, adding new brands, submitting IP claims, and keeping track of all submitted claims in the claims dashboard.",
+                                  "para3": "Admin: The admin will have access to most features within Walmart Brand Portal, including adding additional reporters, adding new brands, submitting IP claims, and keeping track of all submitted claims in the claims dashboard.",
+                                  "para4": "Reporter: The reporter role will be able to submit IP claims and see the claims dashboard.",
+                                },
+                                "question": "How to manage user roles and permissions",
+                                "type": "simple",
+                              },
+                            ],
+                            "simple": false,
+                          },
+                        }
+                      }
+                    >
+                      <div
+                        className="c-HelpMain"
+                        id="query_faq"
+                      >
+                        <div
+                          className="c-HelpMain__header h4 font-weight-bold"
+                        >
+                          Frequently Asked Questions
+                        </div>
+                        <div
+                          className="c-HelpMain__content"
+                        >
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "para1": "Yes. Rights owners can add additional users, including third-party users, to their Walmart Brand Portal account by inviting a new user and assigning specific roles and brands to the new user.",
+                                },
+                                "id": "faq-0",
+                                "question": "Can I add third-party representatives to my Walmart Brand Portal account?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "para1": "Yes. Rights owners can add additional users, including third-party users, to their Walmart Brand Portal account by inviting a new user and assigning specific roles and brands to the new user.",
+                                  },
+                                  "id": "faq-0",
+                                  "question": "Can I add third-party representatives to my Walmart Brand Portal account?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "para1": "Yes. Rights owners can add additional users, including third-party users, to their Walmart Brand Portal account by inviting a new user and assigning specific roles and brands to the new user.",
+                                    },
+                                    "id": "faq-0",
+                                    "question": "Can I add third-party representatives to my Walmart Brand Portal account?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-0"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "para1": "Yes. Rights owners can add additional users, including third-party users, to their Walmart Brand Portal account by inviting a new user and assigning specific roles and brands to the new user.",
+                                        },
+                                        "id": "faq-0",
+                                        "question": "Can I add third-party representatives to my Walmart Brand Portal account?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          Can I add third-party representatives to my Walmart Brand Portal account?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          Yes. Rights owners can add additional users, including third-party users, to their Walmart Brand Portal account by inviting a new user and assigning specific roles and brands to the new user.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "partial1": Object {
+                                    "chunk1": "Please reach out to our support team at ",
+                                    "chunk2": ". Please be sure to include information about your account, along with details regarding your issue.",
+                                    "link1": Object {
+                                      "onClick": "goToContactUs",
+                                      "text": "contact us",
+                                    },
+                                  },
+                                },
+                                "id": "faq-1",
+                                "question": "How do I access my account if the admin of the account is no longer with the company?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "partial1": Object {
+                                      "chunk1": "Please reach out to our support team at ",
+                                      "chunk2": ". Please be sure to include information about your account, along with details regarding your issue.",
+                                      "link1": Object {
+                                        "onClick": "goToContactUs",
+                                        "text": "contact us",
+                                      },
+                                    },
+                                  },
+                                  "id": "faq-1",
+                                  "question": "How do I access my account if the admin of the account is no longer with the company?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "partial1": Object {
+                                        "chunk1": "Please reach out to our support team at ",
+                                        "chunk2": ". Please be sure to include information about your account, along with details regarding your issue.",
+                                        "link1": Object {
+                                          "onClick": "goToContactUs",
+                                          "text": "contact us",
+                                        },
+                                      },
+                                    },
+                                    "id": "faq-1",
+                                    "question": "How do I access my account if the admin of the account is no longer with the company?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-1"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "partial1": Object {
+                                            "chunk1": "Please reach out to our support team at ",
+                                            "chunk2": ". Please be sure to include information about your account, along with details regarding your issue.",
+                                            "link1": Object {
+                                              "onClick": "goToContactUs",
+                                              "text": "contact us",
+                                            },
+                                          },
+                                        },
+                                        "id": "faq-1",
+                                        "question": "How do I access my account if the admin of the account is no longer with the company?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          How do I access my account if the admin of the account is no longer with the company?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="c-HelpMain__partial"
+                                        >
+                                          <span
+                                            className="c-HelpMain__partial"
+                                          >
+                                            Please reach out to our support team at 
+                                          </span>
+                                          <span
+                                            className="c-HelpMain__partial"
+                                          >
+                                            . Please be sure to include information about your account, along with details regarding your issue.
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "para1": "There is no limit to the number of brands you can add under your Walmart Brand Portal account. You can add additional brands at any time by heading to the \\"My Brands\\" section, clicking \\"New Brand\\", and entering your brand information. The submitted information will be verified by our team, then added to your account once ownership is confirmed.",
+                                },
+                                "id": "faq-2",
+                                "question": "How many brands can I add to my Walmart Brand Portal account?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "para1": "There is no limit to the number of brands you can add under your Walmart Brand Portal account. You can add additional brands at any time by heading to the \\"My Brands\\" section, clicking \\"New Brand\\", and entering your brand information. The submitted information will be verified by our team, then added to your account once ownership is confirmed.",
+                                  },
+                                  "id": "faq-2",
+                                  "question": "How many brands can I add to my Walmart Brand Portal account?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "para1": "There is no limit to the number of brands you can add under your Walmart Brand Portal account. You can add additional brands at any time by heading to the \\"My Brands\\" section, clicking \\"New Brand\\", and entering your brand information. The submitted information will be verified by our team, then added to your account once ownership is confirmed.",
+                                    },
+                                    "id": "faq-2",
+                                    "question": "How many brands can I add to my Walmart Brand Portal account?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-2"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "para1": "There is no limit to the number of brands you can add under your Walmart Brand Portal account. You can add additional brands at any time by heading to the \\"My Brands\\" section, clicking \\"New Brand\\", and entering your brand information. The submitted information will be verified by our team, then added to your account once ownership is confirmed.",
+                                        },
+                                        "id": "faq-2",
+                                        "question": "How many brands can I add to my Walmart Brand Portal account?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          How many brands can I add to my Walmart Brand Portal account?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          There is no limit to the number of brands you can add under your Walmart Brand Portal account. You can add additional brands at any time by heading to the "My Brands" section, clicking "New Brand", and entering your brand information. The submitted information will be verified by our team, then added to your account once ownership is confirmed.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "para1": "Walmart Brand Portal currently only accepts trademarks registered with the United States Patent and Trademark Office (USPTO).",
+                                },
+                                "id": "faq-3",
+                                "question": "Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "para1": "Walmart Brand Portal currently only accepts trademarks registered with the United States Patent and Trademark Office (USPTO).",
+                                  },
+                                  "id": "faq-3",
+                                  "question": "Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "para1": "Walmart Brand Portal currently only accepts trademarks registered with the United States Patent and Trademark Office (USPTO).",
+                                    },
+                                    "id": "faq-3",
+                                    "question": "Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-3"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "para1": "Walmart Brand Portal currently only accepts trademarks registered with the United States Patent and Trademark Office (USPTO).",
+                                        },
+                                        "id": "faq-3",
+                                        "question": "Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          Walmart Brand Portal currently only accepts trademarks registered with the United States Patent and Trademark Office (USPTO).
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "para1": "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.",
+                                  "para2": "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+                                },
+                                "id": "faq-4",
+                                "question": "What type of claims can I use Walmart Brand Portal to report?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "para1": "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.",
+                                    "para2": "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+                                  },
+                                  "id": "faq-4",
+                                  "question": "What type of claims can I use Walmart Brand Portal to report?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "para1": "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.",
+                                      "para2": "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+                                    },
+                                    "id": "faq-4",
+                                    "question": "What type of claims can I use Walmart Brand Portal to report?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-4"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "para1": "You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.",
+                                          "para2": "Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.",
+                                        },
+                                        "id": "faq-4",
+                                        "question": "What type of claims can I use Walmart Brand Portal to report?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          What type of claims can I use Walmart Brand Portal to report?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          You can report any legitimate claims of intellectual property infringement for items listed on Walmart.com, including claims of copyright, trademark, patent, and counterfeit.
+                                        </p>
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          Please note that violations of exclusive distribution agreements are not the subject of IP infringement, and Walmart will not take action to enforce such agreements.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      "Submitted: Your claim was submitted, and is pending review",
+                                      "In progress: Your claim is currently under review",
+                                      "Closed: Your claim is closed, and additional details were shared to the reporter's email address",
+                                    ],
+                                    "subType": "1",
+                                    "type": "ul",
+                                  },
+                                  "para1": "Once you submit an IP claim through Walmart Brand Portal, your claim will appear in the claim dashboard under \\"My Claims\\". To see the status of your claim, check the \\"status\\" column, or click on the claim number to see additional information.",
+                                  "para2": "Your claim will show one of the following in the \\"claim status\\" section:",
+                                },
+                                "id": "faq-5",
+                                "question": "How do I check the status of an IP claim?",
+                                "type": "list",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "list": Object {
+                                      "steps": Array [
+                                        "Submitted: Your claim was submitted, and is pending review",
+                                        "In progress: Your claim is currently under review",
+                                        "Closed: Your claim is closed, and additional details were shared to the reporter's email address",
+                                      ],
+                                      "subType": "1",
+                                      "type": "ul",
+                                    },
+                                    "para1": "Once you submit an IP claim through Walmart Brand Portal, your claim will appear in the claim dashboard under \\"My Claims\\". To see the status of your claim, check the \\"status\\" column, or click on the claim number to see additional information.",
+                                    "para2": "Your claim will show one of the following in the \\"claim status\\" section:",
+                                  },
+                                  "id": "faq-5",
+                                  "question": "How do I check the status of an IP claim?",
+                                  "type": "list",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "list": Object {
+                                        "steps": Array [
+                                          "Submitted: Your claim was submitted, and is pending review",
+                                          "In progress: Your claim is currently under review",
+                                          "Closed: Your claim is closed, and additional details were shared to the reporter's email address",
+                                        ],
+                                        "subType": "1",
+                                        "type": "ul",
+                                      },
+                                      "para1": "Once you submit an IP claim through Walmart Brand Portal, your claim will appear in the claim dashboard under \\"My Claims\\". To see the status of your claim, check the \\"status\\" column, or click on the claim number to see additional information.",
+                                      "para2": "Your claim will show one of the following in the \\"claim status\\" section:",
+                                    },
+                                    "id": "faq-5",
+                                    "question": "How do I check the status of an IP claim?",
+                                    "type": "list",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-5"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "list": Object {
+                                            "steps": Array [
+                                              "Submitted: Your claim was submitted, and is pending review",
+                                              "In progress: Your claim is currently under review",
+                                              "Closed: Your claim is closed, and additional details were shared to the reporter's email address",
+                                            ],
+                                            "subType": "1",
+                                            "type": "ul",
+                                          },
+                                          "para1": "Once you submit an IP claim through Walmart Brand Portal, your claim will appear in the claim dashboard under \\"My Claims\\". To see the status of your claim, check the \\"status\\" column, or click on the claim number to see additional information.",
+                                          "para2": "Your claim will show one of the following in the \\"claim status\\" section:",
+                                        },
+                                        "id": "faq-5",
+                                        "question": "How do I check the status of an IP claim?",
+                                        "type": "list",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          How do I check the status of an IP claim?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          Once you submit an IP claim through Walmart Brand Portal, your claim will appear in the claim dashboard under "My Claims". To see the status of your claim, check the "status" column, or click on the claim number to see additional information.
+                                        </p>
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          Your claim will show one of the following in the "claim status" section:
+                                        </p>
+                                        <ul
+                                          className="dashed"
+                                        >
+                                          <li
+                                            className=""
+                                          >
+                                            Submitted: Your claim was submitted, and is pending review
+                                          </li>
+                                          <li
+                                            className=""
+                                          >
+                                            In progress: Your claim is currently under review
+                                          </li>
+                                          <li
+                                            className=""
+                                          >
+                                            Closed: Your claim is closed, and additional details were shared to the reporter's email address
+                                          </li>
+                                        </ul>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "partial1": Object {
+                                    "chunk1": "Please reach out to our support team at ",
+                                    "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract.",
+                                    "link1": Object {
+                                      "onClick": "goToContactUs",
+                                      "text": "contact us",
+                                    },
+                                  },
+                                },
+                                "id": "faq-6",
+                                "question": "Can I retract a claim I made on Walmart Brand Portal?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "partial1": Object {
+                                      "chunk1": "Please reach out to our support team at ",
+                                      "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract.",
+                                      "link1": Object {
+                                        "onClick": "goToContactUs",
+                                        "text": "contact us",
+                                      },
+                                    },
+                                  },
+                                  "id": "faq-6",
+                                  "question": "Can I retract a claim I made on Walmart Brand Portal?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "partial1": Object {
+                                        "chunk1": "Please reach out to our support team at ",
+                                        "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract.",
+                                        "link1": Object {
+                                          "onClick": "goToContactUs",
+                                          "text": "contact us",
+                                        },
+                                      },
+                                    },
+                                    "id": "faq-6",
+                                    "question": "Can I retract a claim I made on Walmart Brand Portal?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-6"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "partial1": Object {
+                                            "chunk1": "Please reach out to our support team at ",
+                                            "chunk2": " to submit a retraction. Please be sure to include the original claim number that you'd like to retract.",
+                                            "link1": Object {
+                                              "onClick": "goToContactUs",
+                                              "text": "contact us",
+                                            },
+                                          },
+                                        },
+                                        "id": "faq-6",
+                                        "question": "Can I retract a claim I made on Walmart Brand Portal?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          Can I retract a claim I made on Walmart Brand Portal?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="c-HelpMain__partial"
+                                        >
+                                          <span
+                                            className="c-HelpMain__partial"
+                                          >
+                                            Please reach out to our support team at 
+                                          </span>
+                                          <span
+                                            className="c-HelpMain__partial"
+                                          >
+                                             to submit a retraction. Please be sure to include the original claim number that you'd like to retract.
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "para1": "Yes, Walmart Brand Portal services are currently offered only for the United States Walmart.com marketplace.",
+                                },
+                                "id": "faq-7",
+                                "question": "Is Walmart Brand Portal available only in the United States?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "para1": "Yes, Walmart Brand Portal services are currently offered only for the United States Walmart.com marketplace.",
+                                  },
+                                  "id": "faq-7",
+                                  "question": "Is Walmart Brand Portal available only in the United States?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "para1": "Yes, Walmart Brand Portal services are currently offered only for the United States Walmart.com marketplace.",
+                                    },
+                                    "id": "faq-7",
+                                    "question": "Is Walmart Brand Portal available only in the United States?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-7"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "para1": "Yes, Walmart Brand Portal services are currently offered only for the United States Walmart.com marketplace.",
+                                        },
+                                        "id": "faq-7",
+                                        "question": "Is Walmart Brand Portal available only in the United States?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          Is Walmart Brand Portal available only in the United States?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          Yes, Walmart Brand Portal services are currently offered only for the United States Walmart.com marketplace.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "partial1": Object {
+                                    "chunk1": "Please reach out to our support team at ",
+                                    "chunk2": " and include information about your account, along with details regarding your issue.",
+                                    "link1": Object {
+                                      "onClick": "goToContactUs",
+                                      "text": "contact us",
+                                    },
+                                  },
+                                },
+                                "id": "faq-8",
+                                "question": "How can I get help from the Walmart team if I'm experiencing bugs or have questions about the tool?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "partial1": Object {
+                                      "chunk1": "Please reach out to our support team at ",
+                                      "chunk2": " and include information about your account, along with details regarding your issue.",
+                                      "link1": Object {
+                                        "onClick": "goToContactUs",
+                                        "text": "contact us",
+                                      },
+                                    },
+                                  },
+                                  "id": "faq-8",
+                                  "question": "How can I get help from the Walmart team if I'm experiencing bugs or have questions about the tool?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "partial1": Object {
+                                        "chunk1": "Please reach out to our support team at ",
+                                        "chunk2": " and include information about your account, along with details regarding your issue.",
+                                        "link1": Object {
+                                          "onClick": "goToContactUs",
+                                          "text": "contact us",
+                                        },
+                                      },
+                                    },
+                                    "id": "faq-8",
+                                    "question": "How can I get help from the Walmart team if I'm experiencing bugs or have questions about the tool?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-8"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "partial1": Object {
+                                            "chunk1": "Please reach out to our support team at ",
+                                            "chunk2": " and include information about your account, along with details regarding your issue.",
+                                            "link1": Object {
+                                              "onClick": "goToContactUs",
+                                              "text": "contact us",
+                                            },
+                                          },
+                                        },
+                                        "id": "faq-8",
+                                        "question": "How can I get help from the Walmart team if I'm experiencing bugs or have questions about the tool?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          How can I get help from the Walmart team if I'm experiencing bugs or have questions about the tool?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <div
+                                          className="c-HelpMain__partial"
+                                        >
+                                          <span
+                                            className="c-HelpMain__partial"
+                                          >
+                                            Please reach out to our support team at 
+                                          </span>
+                                          <span
+                                            className="c-HelpMain__partial"
+                                          >
+                                             and include information about your account, along with details regarding your issue.
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "list": Object {
+                                    "steps": Array [
+                                      Object {
+                                        "partial": Object {
+                                          "anchor1": Object {
+                                            "href": "https://brandportal.walmart.com/",
+                                            "text": "(https://brandportal.walmart.com/)",
+                                          },
+                                          "chunk1": "Select the \\"Login\\" option on the Brand Portal landing page ",
+                                        },
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "LoginTypeCta",
+                                        ],
+                                        "main": "Select \\"Login with Seller Center\\" option",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "FalconLoginForm",
+                                        ],
+                                        "main": "Enter your Seller Center account log-in credentials",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "AccountLinking",
+                                        ],
+                                        "main": "At prompt, validate your brand’s information and select \\"Connect Accounts\\" to proceed",
+                                      },
+                                      Object {
+                                        "image": Array [
+                                          "AccountLinkingSuccess",
+                                        ],
+                                        "main": "Select \\"Continue to My Account\\", to access your Brand Portal account",
+                                      },
+                                    ],
+                                    "subType": "1",
+                                    "type": "ol",
+                                  },
+                                  "para1": "If you have a Seller Center account and would like to link your accounts, please follow these steps:",
+                                },
+                                "id": "faq-9",
+                                "question": "How do I link my Seller Center account with my Brand Portal account?",
+                                "type": "listWithImages",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "list": Object {
+                                      "steps": Array [
+                                        Object {
+                                          "partial": Object {
+                                            "anchor1": Object {
+                                              "href": "https://brandportal.walmart.com/",
+                                              "text": "(https://brandportal.walmart.com/)",
+                                            },
+                                            "chunk1": "Select the \\"Login\\" option on the Brand Portal landing page ",
+                                          },
+                                        },
+                                        Object {
+                                          "image": Array [
+                                            "LoginTypeCta",
+                                          ],
+                                          "main": "Select \\"Login with Seller Center\\" option",
+                                        },
+                                        Object {
+                                          "image": Array [
+                                            "FalconLoginForm",
+                                          ],
+                                          "main": "Enter your Seller Center account log-in credentials",
+                                        },
+                                        Object {
+                                          "image": Array [
+                                            "AccountLinking",
+                                          ],
+                                          "main": "At prompt, validate your brand’s information and select \\"Connect Accounts\\" to proceed",
+                                        },
+                                        Object {
+                                          "image": Array [
+                                            "AccountLinkingSuccess",
+                                          ],
+                                          "main": "Select \\"Continue to My Account\\", to access your Brand Portal account",
+                                        },
+                                      ],
+                                      "subType": "1",
+                                      "type": "ol",
+                                    },
+                                    "para1": "If you have a Seller Center account and would like to link your accounts, please follow these steps:",
+                                  },
+                                  "id": "faq-9",
+                                  "question": "How do I link my Seller Center account with my Brand Portal account?",
+                                  "type": "listWithImages",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "list": Object {
+                                        "steps": Array [
+                                          Object {
+                                            "partial": Object {
+                                              "anchor1": Object {
+                                                "href": "https://brandportal.walmart.com/",
+                                                "text": "(https://brandportal.walmart.com/)",
+                                              },
+                                              "chunk1": "Select the \\"Login\\" option on the Brand Portal landing page ",
+                                            },
+                                          },
+                                          Object {
+                                            "image": Array [
+                                              "LoginTypeCta",
+                                            ],
+                                            "main": "Select \\"Login with Seller Center\\" option",
+                                          },
+                                          Object {
+                                            "image": Array [
+                                              "FalconLoginForm",
+                                            ],
+                                            "main": "Enter your Seller Center account log-in credentials",
+                                          },
+                                          Object {
+                                            "image": Array [
+                                              "AccountLinking",
+                                            ],
+                                            "main": "At prompt, validate your brand’s information and select \\"Connect Accounts\\" to proceed",
+                                          },
+                                          Object {
+                                            "image": Array [
+                                              "AccountLinkingSuccess",
+                                            ],
+                                            "main": "Select \\"Continue to My Account\\", to access your Brand Portal account",
+                                          },
+                                        ],
+                                        "subType": "1",
+                                        "type": "ol",
+                                      },
+                                      "para1": "If you have a Seller Center account and would like to link your accounts, please follow these steps:",
+                                    },
+                                    "id": "faq-9",
+                                    "question": "How do I link my Seller Center account with my Brand Portal account?",
+                                    "type": "listWithImages",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-9"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "list": Object {
+                                            "steps": Array [
+                                              Object {
+                                                "partial": Object {
+                                                  "anchor1": Object {
+                                                    "href": "https://brandportal.walmart.com/",
+                                                    "text": "(https://brandportal.walmart.com/)",
+                                                  },
+                                                  "chunk1": "Select the \\"Login\\" option on the Brand Portal landing page ",
+                                                },
+                                              },
+                                              Object {
+                                                "image": Array [
+                                                  "LoginTypeCta",
+                                                ],
+                                                "main": "Select \\"Login with Seller Center\\" option",
+                                              },
+                                              Object {
+                                                "image": Array [
+                                                  "FalconLoginForm",
+                                                ],
+                                                "main": "Enter your Seller Center account log-in credentials",
+                                              },
+                                              Object {
+                                                "image": Array [
+                                                  "AccountLinking",
+                                                ],
+                                                "main": "At prompt, validate your brand’s information and select \\"Connect Accounts\\" to proceed",
+                                              },
+                                              Object {
+                                                "image": Array [
+                                                  "AccountLinkingSuccess",
+                                                ],
+                                                "main": "Select \\"Continue to My Account\\", to access your Brand Portal account",
+                                              },
+                                            ],
+                                            "subType": "1",
+                                            "type": "ol",
+                                          },
+                                          "para1": "If you have a Seller Center account and would like to link your accounts, please follow these steps:",
+                                        },
+                                        "id": "faq-9",
+                                        "question": "How do I link my Seller Center account with my Brand Portal account?",
+                                        "type": "listWithImages",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          How do I link my Seller Center account with my Brand Portal account?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          If you have a Seller Center account and would like to link your accounts, please follow these steps:
+                                        </p>
+                                        <ol
+                                          type="1"
+                                        >
+                                          <li>
+                                            <span
+                                              className=""
+                                            >
+                                              <span
+                                                className=""
+                                              >
+                                                Select the "Login" option on the Brand Portal landing page 
+                                              </span>
+                                              <a
+                                                className=""
+                                                href="https://brandportal.walmart.com/"
+                                              >
+                                                (https://brandportal.walmart.com/)
+                                              </a>
+                                            </span>
+                                          </li>
+                                          <li
+                                            className=""
+                                          >
+                                            Select "Login with Seller Center" option
+                                            <div
+                                              className="row"
+                                            >
+                                              <div
+                                                className="col-8"
+                                              >
+                                                <img
+                                                  className="c-FaqSingle__helpImage"
+                                                  onClick={[Function]}
+                                                  src="Login Type CTA.png"
+                                                />
+                                              </div>
+                                            </div>
+                                          </li>
+                                          <li
+                                            className=""
+                                          >
+                                            Enter your Seller Center account log-in credentials
+                                            <div
+                                              className="row"
+                                            >
+                                              <div
+                                                className="col-8"
+                                              >
+                                                <img
+                                                  className="c-FaqSingle__helpImage"
+                                                  onClick={[Function]}
+                                                  src="Falcon Login Form.jpg"
+                                                />
+                                              </div>
+                                            </div>
+                                          </li>
+                                          <li
+                                            className=""
+                                          >
+                                            At prompt, validate your brand’s information and select "Connect Accounts" to proceed
+                                            <div
+                                              className="row"
+                                            >
+                                              <div
+                                                className="col-8"
+                                              >
+                                                <img
+                                                  className="c-FaqSingle__helpImage"
+                                                  onClick={[Function]}
+                                                  src="Account Linking.png"
+                                                />
+                                              </div>
+                                            </div>
+                                          </li>
+                                          <li
+                                            className=""
+                                          >
+                                            Select "Continue to My Account", to access your Brand Portal account
+                                            <div
+                                              className="row"
+                                            >
+                                              <div
+                                                className="col-8"
+                                              >
+                                                <img
+                                                  className="c-FaqSingle__helpImage"
+                                                  onClick={[Function]}
+                                                  src="Account Linking Success.png"
+                                                />
+                                              </div>
+                                            </div>
+                                          </li>
+                                        </ol>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                          <withRouter(Connect(FaqSingle))
+                            data={
+                              Object {
+                                "answer": Object {
+                                  "para1": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \\"Login with Seller Center\\" option and enter your Seller Center credentials to access the Brand Portal.",
+                                },
+                                "id": "faq-10",
+                                "question": "What happens if I link my Seller Center account with my Brand Portal account?",
+                                "type": "simple",
+                              }
+                            }
+                          >
+                            <Connect(FaqSingle)
+                              data={
+                                Object {
+                                  "answer": Object {
+                                    "para1": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \\"Login with Seller Center\\" option and enter your Seller Center credentials to access the Brand Portal.",
+                                  },
+                                  "id": "faq-10",
+                                  "question": "What happens if I link my Seller Center account with my Brand Portal account?",
+                                  "type": "simple",
+                                }
+                              }
+                              history={
+                                Object {
+                                  "action": "POP",
+                                  "block": [Function],
+                                  "canGo": [Function],
+                                  "createHref": [Function],
+                                  "entries": Array [
+                                    Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                  ],
+                                  "go": [Function],
+                                  "goBack": [Function],
+                                  "goForward": [Function],
+                                  "index": 0,
+                                  "length": 1,
+                                  "listen": [Function],
+                                  "location": Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  },
+                                  "push": [Function],
+                                  "replace": [Function],
+                                }
+                              }
+                              location={
+                                Object {
+                                  "hash": "",
+                                  "pathname": "/help",
+                                  "search": "",
+                                  "state": undefined,
+                                }
+                              }
+                              match={
+                                Object {
+                                  "isExact": false,
+                                  "params": Object {},
+                                  "path": "/",
+                                  "url": "/",
+                                }
+                              }
+                            >
+                              <FaqSingle
+                                data={
+                                  Object {
+                                    "answer": Object {
+                                      "para1": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \\"Login with Seller Center\\" option and enter your Seller Center credentials to access the Brand Portal.",
+                                    },
+                                    "id": "faq-10",
+                                    "question": "What happens if I link my Seller Center account with my Brand Portal account?",
+                                    "type": "simple",
+                                  }
+                                }
+                                history={
+                                  Object {
+                                    "action": "POP",
+                                    "block": [Function],
+                                    "canGo": [Function],
+                                    "createHref": [Function],
+                                    "entries": Array [
+                                      Object {
+                                        "hash": "",
+                                        "pathname": "/help",
+                                        "search": "",
+                                        "state": undefined,
+                                      },
+                                    ],
+                                    "go": [Function],
+                                    "goBack": [Function],
+                                    "goForward": [Function],
+                                    "index": 0,
+                                    "length": 1,
+                                    "listen": [Function],
+                                    "location": Object {
+                                      "hash": "",
+                                      "pathname": "/help",
+                                      "search": "",
+                                      "state": undefined,
+                                    },
+                                    "push": [Function],
+                                    "replace": [Function],
+                                  }
+                                }
+                                location={
+                                  Object {
+                                    "hash": "",
+                                    "pathname": "/help",
+                                    "search": "",
+                                    "state": undefined,
+                                  }
+                                }
+                                match={
+                                  Object {
+                                    "isExact": false,
+                                    "params": Object {},
+                                    "path": "/",
+                                    "url": "/",
+                                  }
+                                }
+                                toggleImageViewerDispatcher={[Function]}
+                              >
+                                <div
+                                  className="c-FaqSingle"
+                                  id="faq-10"
+                                >
+                                  <Accordion
+                                    data={
+                                      Object {
+                                        "answer": Object {
+                                          "para1": "If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the \\"Login with Seller Center\\" option and enter your Seller Center credentials to access the Brand Portal.",
+                                        },
+                                        "id": "faq-10",
+                                        "question": "What happens if I link my Seller Center account with my Brand Portal account?",
+                                        "type": "simple",
+                                      }
+                                    }
+                                    expanded={false}
+                                    setExpanded={[Function]}
+                                  >
+                                    <div
+                                      className="c-Accordion"
+                                    >
+                                      <div
+                                        className="c-Accordion__button-container"
+                                        data-test="accordion-buttonPanel"
+                                      >
+                                        <button
+                                          className="c-Accordion__button"
+                                          data-test="accordion-button"
+                                          onClick={[Function]}
+                                        >
+                                          What happens if I link my Seller Center account with my Brand Portal account?
+                                        </button>
+                                      </div>
+                                      <div
+                                        className="c-Accordion__panel"
+                                        style={
+                                          Object {
+                                            "maxHeight": 0,
+                                          }
+                                        }
+                                      >
+                                        <p
+                                          className="c-HelpMain__partial"
+                                        >
+                                          If a seller chooses to link their Seller Center account with their Brand Portal account, they can then only use their Seller Center credentials to log-in to the Brand Portal. For subsequent logins, use the "Login with Seller Center" option and enter your Seller Center credentials to access the Brand Portal.
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </Accordion>
+                                </div>
+                              </FaqSingle>
+                            </Connect(FaqSingle)>
+                          </withRouter(Connect(FaqSingle))>
+                        </div>
+                      </div>
+                    </HelpMain>
+                  </div>
+                </div>
+                <Connect(ImageViewer)>
+                  <ImageViewer
+                    toggleImageViewDispatcher={[Function]}
+                    viewerState={
+                      Object {
+                        "show": true,
+                      }
+                    }
+                  >
+                    <div
+                      className="c-ImageViewer"
+                    >
+                      <CSSTransition
+                        classNames="c-ImageViewer"
+                        in={true}
+                        timeout={400}
+                        unmountOnExit={true}
+                      >
+                        <Transition
+                          appear={false}
+                          enter={true}
+                          exit={true}
+                          in={true}
+                          mountOnEnter={false}
+                          onEnter={[Function]}
+                          onEntered={[Function]}
+                          onEntering={[Function]}
+                          onExit={[Function]}
+                          onExited={[Function]}
+                          onExiting={[Function]}
+                          timeout={400}
+                          unmountOnExit={true}
+                        >
+                          <div
+                            className="modal show"
+                            id="imageViewerModal"
+                            role="dialog"
+                            tabIndex="-1"
+                          >
+                            <div
+                              className="modal-dialog modal-dialog-centered modal-lg"
+                              role="document"
+                            >
+                              <div
+                                className="modal-content"
+                              >
+                                <button
+                                  aria-label="Close"
+                                  className="close"
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <span
+                                    aria-hidden="true"
+                                  >
+                                    ×
+                                  </span>
+                                </button>
+                                <div
+                                  className="modal-body"
+                                >
+                                  <img
+                                    className="c-ImageViewer__image"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Transition>
+                      </CSSTransition>
+                    </div>
+                  </ImageViewer>
+                </Connect(ImageViewer)>
+              </div>
+            </div>
+          </Help>
+        </withRouter(Help)>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

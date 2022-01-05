@@ -4,8 +4,44 @@
   background-color: rgba(230, 242, 247, 0.5);
 }
 .c-StatusModalTemplate{
+  .status-review{
+    background-color: #0d2d55;
+    padding: $pill-padding;
+    border-radius: 0.15rem;
+    font-size: 0.8rem;
+    color: white;
+  }
+  .status-onhold{
+    background-color: #f6c34a;
+    padding: $pill-padding;
+    border-radius: 0.15rem;
+    font-size: 0.7rem;
+    color: black;
+  }
+  .status-declined{
+    background-color: #dd1d24;
+    padding: $pill-padding;
+    border-radius: 0.15rem;
+    font-size: 0.7rem;
+    color: white;
+  }
+
+  .brand-portal-link-class{
+    color: $falcon-blue;
+    font-weight: bold;
+  }
+
+
   .modal-dialog{
-    width: 530px;
+    max-width: 35rem;
+
+    &.modal-md{
+      max-width: 45rem;
+    }
+
+    &.modal-xl{
+      max-width: 60rem;
+    }
 
     .loader:before {
       top: 0;
@@ -21,6 +57,20 @@
       }
       .modal-body{
         border-bottom: 9px solid #7ac4e4;
+        &.error-layout{
+          min-height: 15rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        &.modal-background{
+          background: white url("../../../../../images/onboard-screen.svg") left no-repeat;
+          background-size: contain;
+          border-bottom: unset;
+        }
+        &.modal-height{
+          max-height: 38rem;
+        }
         .btn-primary {
           background: #006799;
           font-weight: bold;
@@ -46,6 +96,7 @@
             //padding-top: 100px;
           }
         }
+
         .subtitle {
           color: #333;
           font-size: 0.8rem;

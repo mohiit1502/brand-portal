@@ -10,8 +10,8 @@ class ProgressBar extends React.Component {
 
   render() {
     return (
-      <div className="progress mb-2">
-        <div className="progress-bar-text">{`Uploading ${this.props.filename}... ${this.props.uploadPercentage} %`}</div>
+      <div className="progress mb-2 col-6 px-0">
+        <div className="progress-bar-text d-flex align-items-center h-100">{`Uploading ${this.props.filename}... ${this.props.uploadPercentage} %`}</div>
         <div className="progress-bar progress-bar-animated" role="progressbar" style={{width: `${this.props.uploadPercentage}%`}} aria-valuenow={this.props.uploadPercentage}
           aria-valuemin="0" aria-valuemax="100" />
       </div>

@@ -16,8 +16,9 @@ class HomeHeader extends React.Component {
   render() {
     const isWebform = this.props.isWebform;
     const config = this.props.config;
+    const workflowCode = this.props.userProfile?.workflow?.code;
     return (
-      <nav className="navbar navbar-expand-md navbar-dark home-header-nav">
+      <nav className={`navbar navbar-expand-md navbar-dark home-header-nav${ workflowCode === 4 ? "" : " home-header-nav-z-index" }`}>
         <Link className="navbar-brand walmart-brand" to="/dashboard">
           {/* <img src={walmartLogo} /> */}
           <img src={headerLogo} />
@@ -28,7 +29,7 @@ class HomeHeader extends React.Component {
         </button>
         <div className="collapse navbar-collapse navbar-collapsible-header" id="collapsible-header">
           <ul className="navbar-nav ml-auto">
-            {window.location.pathname && !window.location.pathname.startsWith("/onboard") &&
+            {(!workflowCode || workflowCode === 4) &&
             <li className="nav-item nav-item-help mx-4">
               {isWebform
                 ? !this.props.hideHelp && <span className="nav-link nav-help" style={{cursor: "pointer"}} onClick={() => this.props.toggleModal(TOGGLE_ACTIONS.SHOW,
@@ -36,8 +37,9 @@ class HomeHeader extends React.Component {
                     <img src={helpLogo} height="32px" className="pr-2"/> Help
                   </span>
                 : <Link to="/help" className="nav-link nav-help" href="#">
-                <img src={helpLogo} height="32px" className="pr-2"/> Help
-              </Link>}
+                    <img src={helpLogo} height="32px" className="pr-2"/> Help
+                  </Link>
+              }
             </li>
             }
             {!isWebform && <UserMenu isOnboarded={this.props.isOnboarded}/>}

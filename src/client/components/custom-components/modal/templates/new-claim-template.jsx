@@ -212,13 +212,13 @@ class NewClaimTemplate extends React.Component {
 
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndetaking = Object.keys(form.inputData)
+    const userUndertaking = Object.keys(form.inputData)
       .filter(key => form.inputData[key].category === "userUnderTaking" ? true : false)
       .reduce((boolResult, undertaking) => {
         const shouldRender = this.evaluateRenderDependency(form.inputData[undertaking].renderCondition);
         return !!(boolResult && (!shouldRender || (shouldRender && form.inputData[undertaking].selected)));
       }, true);
-    const bool = userUndetaking && form.inputData.claimType.value &&
+    const bool = userUndertaking && form.inputData.claimType.value &&
       form.inputData.brandName.value &&
       (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
       form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&

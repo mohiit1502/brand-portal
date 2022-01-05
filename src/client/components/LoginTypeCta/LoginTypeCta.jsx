@@ -50,17 +50,12 @@ const LoginTypeCta = props => {
   }, [action, location]);
 
   useEffect(() => {
-    setLoader(true);
     if (!mixpanel.initialized) {
+      setLoader(true);
       Http.get("/api/mixpanelConfig")
-        .then(res => {
-          mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking);
-          setLoader(false);
-        })
-        .catch(() => {
-          mixpanel.initializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN, true);
-          setLoader(false);
-        });
+        .then(res => mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking))
+        .catch(() => mixpanel.initializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN, true))
+        .finally(() => setLoader(false));
     } else {
       setLoader(false);
     }

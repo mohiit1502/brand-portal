@@ -16,6 +16,7 @@ class CompanyManagerApi {
     this.checkTrademarkValidity = this.checkTrademarkValidity.bind(this);
     this.uploadBusinessDocument = this.uploadBusinessDocument.bind(this);
     this.uploadAdditionalDocument = this.uploadAdditionalDocument.bind(this);
+    this.getApplicationDetails = this.getApplicationDetails.bind(this);
     this.FILE_UPLOAD_SIZE_LIMIT = 1024 * 1024 * 10; // 10MB
   }
 
@@ -59,16 +60,24 @@ class CompanyManagerApi {
         method: "POST",
         path: "/api/org/register",
         handler: this.registerOrganization
+      },
+      {
+        method: "GET",
+        path: "/api/org/applicationDetails/{orgId}",
+        handler: this.getApplicationDetails
       }
     ]);
   }
 
   /* eslint-disable complexity */
   async registerOrganization(request, h) {
+    const isEditMode = request.query.context;
     const mixpanelPayload = {
       METHOD: "POST",
-      API: "/api/org/register"
+      API: "/api/org/register",
+      SUBMISSION_MODE: isEditMode
     };
+
     console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has started");
     console.log("[CompanyManagerApi::registerOrganization] User ID: ", request.state && request.state.session_token_login_id);
     try {
@@ -77,7 +86,7 @@ class CompanyManagerApi {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
       }
       const options = {
-        method: "POST",
+        method: isEditMode=="edit" ? "PUT" : "POST",
         headers
       };
       console.log("[CompanyManagerApi::registerOrganization] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
@@ -95,7 +104,7 @@ class CompanyManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = isEditMode === "edit" ? await ServerHttp.put(url, options, payload) : await ServerHttp.post(url, options, payload);
       console.log("[CompanyManagerApi::registerOrganization] API request for Register organization has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -278,6 +287,48 @@ class CompanyManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.CHECK_COMPANY_NAME_AVAILABILILTY, mixpanelPayload);
+    }
+  }
+
+  async getApplicationDetails(request, h) {
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/org/applicationDetails"
+    };
+    console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has started");
+    console.log("[CompanyManagerApi::getApplicationDetails] User ID: ", request.state && request.state.session_token_login_id);
+    try {
+      const headers = ServerUtils.getHeaders(request);
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
+      const options = {
+        method: "GET",
+        headers
+      };
+      console.log("[CompanyManagerApi::getApplicationDetails] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      let REGISTER_ORG_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.APPLICATION_DETAILS_PATH");
+      REGISTER_ORG_PATH && (REGISTER_ORG_PATH = REGISTER_ORG_PATH.replace("__orgId__", request.params.orgId));
+      const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ORG_ID = request.params.orgId;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
+      const response = await ServerHttp.get(url, options);
+      console.log("[CompanyManagerApi::getApplicationDetails] API request for getting application details has completed");
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.log("[CompanyManagerApi::getApplicationDetails] Error occured in API request for getting application details: ", err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.GET_APPLICATION_DETAILS, mixpanelPayload);
     }
   }
 

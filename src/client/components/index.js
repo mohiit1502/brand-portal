@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import ApplicationDetails from "./ApplicationDetails";
 import LoginTypeCta from "./LoginTypeCta";
 import CaptchaValidator from "./CaptchaValidator";
 import ContactUsForm from "./ContactUsForm";
@@ -17,7 +18,6 @@ import Accordion from "./Accordion";
 import Alert from "./Alert";
 import ButtonsPanel from "./ButtonsPanel";
 import CheckBox from "./CheckBox";
-import ClaimTabular from "./ClaimTabular";
 import ContactUsPrompt from "./ContactUsPrompt";
 import Dashboard from "./Dashboard";
 import DashboardHeader from "./DashboardHeader";
@@ -52,6 +52,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+  ApplicationDetails,
 	LoginTypeCta,
 	CaptchaValidator,
 	ContactUsForm,
@@ -70,7 +71,6 @@ export {
   ButtonsPanel,
   CheckBox,
   ChartsContainer,
-  ClaimTabular,
   ContactUsPrompt,
   Dashboard,
   DashboardHeader,
