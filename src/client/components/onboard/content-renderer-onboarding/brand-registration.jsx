@@ -231,7 +231,7 @@ class BrandRegistration extends React.Component {
               <div className="brand-registration-title font-weight-bold">
                 {section.sectionTitle}
               </div>
-              <div className="brand-registration-subtitle">
+              <div className="brand-registration-subtitle mt-2">
                 {section.sectionSubTitle}
               </div>
             </div>
