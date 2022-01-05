@@ -57,7 +57,7 @@ const FileUploader = props => {
             content={tooltipContent[props.tooltipContentKey]}
             icon={images[props.icon]}/>
         </div>
-        {uploadedAttachments && uploadedAttachments.length > 0 && props.user?.profile?.context=="edit"
+        {uploadedAttachments && uploadedAttachments.length > 0 && props.user && props.user.profile && props.user.profile.context=="edit"
          && <div className="mb-3">
           <b>Uploaded attachments: </b>
           <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>

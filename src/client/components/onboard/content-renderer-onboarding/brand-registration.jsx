@@ -77,7 +77,7 @@ class BrandRegistration extends React.Component {
   // eslint-disable-next-line max-statements
   goToApplicationReview(evt) {
       evt.preventDefault();
-      let docNames = this.props.onboardingDetails?.brand?.additionalDocList || [];
+      let docNames = (this.props.onboardingDetails && this.props.onboardingDetails.brand && this.props.onboardingDetails.brand.additionalDocList) || [];
       const steps = this.props.steps ? JSON.parse(JSON.stringify(this.props.steps)) : [];
       if (steps) {
         steps[1].active = false;
@@ -161,9 +161,10 @@ class BrandRegistration extends React.Component {
       const targetVal = evt.target.value;
       this.setState(state => {
         state = {...state};
-        const isEditMode = this.props.userProfile?.context === "edit";
+        const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
         if (key === "trademarkNumber") {
-          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.trademarkNumber?.trim() !== targetVal?.trim())) {
+          if (!isEditMode || (isEditMode && this.props.originalValues && this.props.originalValues.brand && this.props.originalValues.brand.trademarkNumber
+            && targetVal && this.props.originalValues.brand.trademarkNumber.trim() !== targetVal.trim())) {
             this.trademarkDebounce();
             state.form.inputData.trademarkNumber.fieldAlert = false;
             state.form.inputData.trademarkNumber.fieldOk = false;
@@ -174,8 +175,9 @@ class BrandRegistration extends React.Component {
           }
         }
         if (key === "brandName") {
-          if (!isEditMode || (isEditMode && this.props.originalValues?.brand?.name?.trim() !== targetVal?.trim())) {
-            
+          if (!isEditMode || (isEditMode && this.props.originalValues && this.props.originalValues.brand && this.props.originalValues.brand.name
+            && targetVal && this.props.originalValues.brand.name.trim() !== targetVal.trim())) {
+
             state.form.inputData.brandName.fieldOk = false;
             state.form.inputData.brandName.error = "";
             state.form.inputData.brandName.isUnique = false;
