@@ -1,22 +1,5 @@
 import Helper from "../../../src/client/utility/Helper";
 
-const parentObj = {
-  state: {
-    isSeller: false,
-    form: {
-      isDisabled: true,
-      inputData: {
-        userType: {
-          value: "ThirdParty"
-        },
-        claimType: {
-          value: "counterfeit"
-        }
-      }
-    }
-  }
-}
-
 describe("helper util test container", () => {
   it("should convert string to camel case with first letter uppercase",  () => {
     let response = Helper.toCamelCaseFirstUpper("abc-def");
