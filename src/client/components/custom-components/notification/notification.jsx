@@ -74,7 +74,7 @@ class Notification extends React.Component {
     return (
       <div className="toast c-notification variant2">
         <div className="row">
-          <img className="col-2 pl-4 notification-icon" src={notificationImage} />
+          <img className="pl-4 pr-0 notification-icon" src={notificationImage} />
           <span className="col-6 pl-0 text-left">{this.state.message}</span>
           <div className="col-4 text-right">
             <span className="closebtn-style pt-2 d-block" data-dismiss="toast" aria-label="Close">&times;</span>

@@ -345,7 +345,7 @@ class CompanyProfileRegistration extends React.Component {
               <div className="company-registration-title">
                 {this.state.clientType && this.state.clientType === "seller" ? section.sectionSellerTitle : section.sectionTitle}
               </div>
-              <div className="company-registration-subtitle">
+              <div className="company-registration-subtitle mt-2">
                 {this.state.clientType && this.state.clientType === "seller" ? section.sectionSellerSubTitle : section.sectionSubTitle}
               </div>
             </div>
