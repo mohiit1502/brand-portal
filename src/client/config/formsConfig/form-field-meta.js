@@ -3,7 +3,7 @@ const FORMFIELDCONFIG = {
   "SECTIONSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
-        "sectionTitle": "Create Company Profile",
+        "sectionTitle": "Company Information",
         "sectionSellerTitle": "Confirm Company Profile",
         "sectionSubTitle": "Complete the form based on the information in the trademark registration",
         "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."

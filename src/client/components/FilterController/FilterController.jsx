@@ -56,12 +56,12 @@ const FilterController = props => {
     setFieldState(fieldStateCloned);
   }, [currentFilters[widgetId], customDate]);
 
-  const dispatchDateSelector = () => {
+  function dispatchDateSelector () {
     const meta = { templateName: "DateSelectorTemplate", updateChartMeta: {...updateChartMeta, filters: filterMeta}, orgId: currentFilters.orgId, currentFilters, widgetId };
     props.toggleModal(TOGGLE_ACTIONS.SHOW, { ...meta });
   };
 
-  const onChangeHandler = (option, filter, currentFiltersIncoming) => {
+  function onChangeHandler (option, filter, currentFiltersIncoming) {
     let currentWidgetFilters = currentFiltersIncoming[widgetId];
     if (!currentWidgetFilters) {
       currentWidgetFilters = {};

@@ -88,7 +88,7 @@ const DatePickerWrapper = props => {
           focused={focused}
           isOutsideRange={isOutsideRange}
           onDateChange={dateInner => setDate(dateInner)}
-          onFocusChange={({focusedInner}) => setFocused(focusedInner)}
+          onFocusChange={({focused: focusedInner}) => setFocused(focusedInner)}
         />
         <label className={`custom-input-label custom-input-label-placeholder${focused || date ? " shiftup-custom-input-label" : ""}${!focused && date ? " text-black" : ""}`} htmlFor={props.id}>
           <span className="label-text"> {label} </span>
