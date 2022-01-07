@@ -3,19 +3,11 @@ import rootReducer from "../reducers";
 import thunk from "redux-thunk";
 import Immutable from "immutable";
 import configureMockStore from 'redux-mock-store';
+import ClientHttpError from "./ClientHttpError";
 
-export const findByTestAttribute = (component,attr) => {
-  const wrapper = component.find(`[data-test="${attr}"]`);
-  return wrapper;
-}
+export const findByTestAttribute = (component,attr) => component.find(`[data-test="${attr}"]`);
 
-export const testStore = (state) => {
-
-  const mockStore = configureMockStore();
-  const store = mockStore(state);
-  return store;
-
-}
+export const testStore = state => configureMockStore()(state);
 
 export const clearKeys = (tree, arr) => {
   if (arr.indexOf(tree) > -1) {
@@ -50,4 +42,9 @@ export function setupFetchStub(data) {
       })
     })
   }
+}
+
+export function setupFetchThrowStub() {
+  const error = new ClientHttpError(500, "test-error"); // Directly throwing new ClientHttpError fails in Jest
+  throw error;
 }

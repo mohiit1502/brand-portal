@@ -4,7 +4,7 @@ import {Provider} from "react-redux";
 import {clearKeys, testStore} from "../../utility/TestingUtils";
 import helpData from "../../../../test/client/mocks/helpData";
 import Http from "../../utility/Http";
-import Enzyme, {mount} from "enzyme";
+import {configure, mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import toJson from "enzyme-to-json";
 import formFieldMeta from "../../../../src/client/config/formsConfig/form-field-meta";
@@ -12,7 +12,7 @@ import MockNextContext from "../../../../test/client/utility/MockNextContext";
 import Help from "./Help";
 
 let store;
-Enzyme.configure({adapter: new Adapter()});
+configure({adapter: new Adapter()});
 
 const setUp = (pathname) => {
   store = testStore({

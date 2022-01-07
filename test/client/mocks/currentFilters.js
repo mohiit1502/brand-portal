@@ -1,15 +1,28 @@
 const currentFilters = {
-  orgId: "44e9f2c0-dbd8-475f-94c9-fed8a89d058e",
-  emailId: "wm.ropro+candy@gmail.com",
-  role: "Super Admin",
-  "widget-claims-by-type": {
-    dateRange: "last30days"
+  orgId: 'e52bb8ad-c73d-4f4e-9980-9bb265b8dd9d',
+  emailId: 'testacc7@mailinator.com',
+  role: 'Super Admin',
+  'widget-claims-by-type': {
+    dateRange: 'last60days',
+    orgId: 'e52bb8ad-c73d-4f4e-9980-9bb265b8dd9d',
+    emailId: 'testacc7@mailinator.com',
+    role: 'Super Admin'
   },
-  "widget-claims-by-brand": {
-    dateRange: "last30days"
+  'widget-claims-by-brand': {
+    dateRange: 'customDate',
+    value: '2021-07-01-to-2022-01-08',
+    viewValue: 'Jul 01, 2021 to Jan 07, 2022',
+    orgId: 'e52bb8ad-c73d-4f4e-9980-9bb265b8dd9d',
+    emailId: 'testacc7@mailinator.com',
+    role: 'Super Admin',
+    claimType: 'trademark'
   },
-  "widget-claims-by-user": {
-    dateRange: "last30days"
+  'widget-claims-by-user': {
+    dateRange: 'last60days',
+    orgId: 'e52bb8ad-c73d-4f4e-9980-9bb265b8dd9d',
+    emailId: 'testacc7@mailinator.com',
+    role: 'Super Admin',
+    claimType: 'patent'
   }
 };
 
