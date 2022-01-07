@@ -12,19 +12,6 @@ export default class Validator {
 
   static errorPrefix = "Error: ";
 
-  static validateCounterfeitNumber(target, validationObj) {
-    const value = target.value ? target.value.trim() : "";
-    const length = value.length;
-    if (
-      (validationObj && (validationObj.length && length !== validationObj.length)) &&
-      (length !== 0)
-    ) {
-      return validationObj.error;
-    } else {
-      return "";
-    }
-  }
-
   static validate(evt, parentRef) {
     const { validators } = this.props;
     let errorMsg;
@@ -87,10 +74,10 @@ export default class Validator {
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       if (year > 2032 || month > 12 || month < 1) {
-        return validationObj.errorMessages.dataMsgRegex;
+        return validationObj.error;
       }
       if (year < currentYear || (year === currentYear && month < currentMonth + 1)) {
-        return validationObj.errorMessages.dataMsgMonthYear;
+        return validationObj.error;
       } else {
         return "";
       }
@@ -142,46 +129,6 @@ export default class Validator {
     });
     this.setState({ writeForm });
     return hasError;
-  }
-
-  static validateForm(props, formMeta, toIgnoreKeys) {
-    let error = false;
-    const formErrorsClone = Object.assign({}, props.formErrors);
-    const formValues = props.formValues;
-    formErrorsClone &&
-      Object.keys(formErrorsClone).map(key => {
-        if (
-          toIgnoreKeys &&
-          formMeta[key] !== undefined &&
-          toIgnoreKeys.indexOf(formMeta[key].id) === -1
-        ) {
-          if (formErrorsClone[key] !== "") {
-            error = true;
-          }
-        }
-      });
-    formValues && Object.keys(formValues).map(key => {
-      const validation = formMeta[key] && formMeta[key].validation;
-      const fieldValue = formValues[key];
-      if (validation && validation.required && validation.required.isRequired) {
-        if (
-          toIgnoreKeys &&
-          formMeta[key] !== undefined &&
-          toIgnoreKeys.indexOf(formMeta[key].id) === -1
-        ) {
-          if (fieldValue === "") {
-            formErrorsClone[key] = validation.required.error_message;
-            error = true;
-          } else if (formErrorsClone[key] === validation.required.error_message) {
-            formErrorsClone[key] = "";
-          }
-        }
-      }
-    });
-    props.updateFormErrors({
-      formErrors: { ...formErrorsClone }
-    });
-    return error;
   }
 
   static onInvalid(evt, key, innerKey) {
@@ -303,7 +250,7 @@ export default class Validator {
     const form = { ...this.state.form };
     const inputData = { ...this.state.form.inputData };
 
-    if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name && this.state.form.inputData.companyName.value
+    if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name
       && this.props.originalValues.org.name.trim() !== this.state.form.inputData.companyName.value.trim()) || !isEditMode) {
       if (!this.state.form.inputData.companyName.value) return;
       state.form = form;
