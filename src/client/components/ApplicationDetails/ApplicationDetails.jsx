@@ -34,7 +34,7 @@ const ApplicationDetails = props => {
 
   /*eslint-disable no-nested-ternary*/
   return (
-    <div className={`c-ApplicationDetails text-left row mt-4 ml-5 pl-5${org || apiError ? "" : " loader"}`}>
+    <div className={`c-ApplicationDetails text-left row ml-5 pl-5${org || apiError ? "" : " loader"}`}>
       {!apiError ? org ? <>
         <div className="col-12 brand-registration-title">
           <div className="row">

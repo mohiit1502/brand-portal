@@ -16,7 +16,7 @@ import CONSTANTS from "../../../constants/constants";
 class ApplicationReview extends React.Component {
     constructor(props) {
         super(props);
-        this.title = "Review Information";
+        this.title = "Application Review";
         this.subtitle = "Please ensure the information below is accurate.";
         const functions = ["gotoBrandRegistration", "restructureBeforeSubmit", "submitOnboardingForm", "checkAndSubmitOnboardingForm", "checkForEdit"];
         functions.forEach(name => {
@@ -184,7 +184,7 @@ class ApplicationReview extends React.Component {
                 <div className="row mt-4 pl-5 ml-5 brand-registration-title font-weight-bold font-size-28">
                     <span className="col">{this.title}</span>
                 </div>
-                <div className="row mt-3 pl-5 ml-5 brand-registration-subtitle">
+                <div className="row mt-3 mb-4 pl-5 ml-5 brand-registration-subtitle">
                     <span className="col">{this.subtitle}</span>
                 </div>
                 {/* eslint-disable react/jsx-handler-names */}

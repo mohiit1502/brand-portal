@@ -12,27 +12,22 @@ const MODALSMETA = {
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
-          "para3": {
+          "para1": {
             "text": "Welcome __firstNamePlaceholder__ __lastNamePlaceholder__",
             "dynamicReplacementConfig": {"__firstNamePlaceholder__": "profile.firstName", "__lastNamePlaceholder__": "profile.lastName"},
             "classes": "font-weight-bold mt-2 mb-4 mx-4 font-size-28 text-center"
           },
-          "para1": {
-            "text": "To simplify the process, we will be using the information in your Seller Center account to set up your Brand Portal account.",
-            "classes": "mx-4 font-size-16"
-          },
           "para2": {
-            "text": "Please complete the following steps.",
-            "classes": "mx-4 font-size-16"
+            "text": "We will be using the information in your Seller Center account to set up your Brand Portal account.",
+            "classes": "mx-3 font-size-16 text-center"
           },
-          "list": {
-            "type": "ul",
-            "subType": "1",
-            "liClasses": "font-size-16 mt-4",
-            "steps": [
-              "Confirm the information of your company and provide the information of your registered trademark.",
-              "The information provided will be verified by our team. You will receive a confirmation email once your application has been approved."
-            ]
+          "para3": {
+            "text": "Please confirm the information of your company and provide the details of your registered trademark.",
+            "classes": "mx-3 mt-5 font-size-16 text-center"
+          },
+          "para4": {
+            "text": "The information provided will be verified by our team. You will receive a confirmation email once your application status has been updated.",
+            "classes": "mx-4 mt-5 font-size-16 text-center"
           }
         }
       },
@@ -51,7 +46,7 @@ const MODALSMETA = {
       "SUBTITLE": {
         "content": {
           "para1": {
-            "text": "You can review the status of your application by logging into your Brand Portal account.",
+            "text": "You can check the status of your application anytime by logging into your Brand Portal account.",
             "classes": "font-size-16 mx-5"
           }
         }
@@ -112,7 +107,7 @@ const MODALSMETA = {
           "partial2": {
             "chunk1": [
               {
-                "text": "We are unable to verify the information provided in your application. Please refer to the email sent to ",
+                "text": "We have sent an email to ",
                 "classes": "mt-5",
                 "key": ["ON_HOLD"]
               },
@@ -149,7 +144,7 @@ const MODALSMETA = {
           ],
           "chunk3": [
             {
-              "text": " for instructions to edit your application.",
+              "text": " regarding your application. Please follow the instructions in the email and make any necessary changes to your application.",
               "classes": "mt-5",
               "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
               "key": ["ON_HOLD"]
@@ -183,9 +178,26 @@ const MODALSMETA = {
             "text": "Review and confirm that the information in your application is accurate.",
             "classes": "mt-2"
           },
+          "partial3": {
+            "chunk5": [
+              {
+                "text": "If you believe this is an error, contact ",
+                "classes": "mt-5",
+                "dynamicReplacementConfig": {"__emailPlaceholder__": "profile.email"},
+                "key": ["ON_HOLD"]
+              }
+            ],
+            "anchor": [{
+                "href": "mailto:brandportal@walmart.com",
+                "text": "brandportal@walmart.com.",
+                "classes": "font-weight-bold mt-5 brand-portal-link-class",
+                "key": ["ON_HOLD"]
+              }
+            ]
+          },
           "para4": {
             "text": "",
-            "classes": "border-bottom mt-4"
+            "classes": "border-bottom my-3"
           }
         }
       },
@@ -289,7 +301,7 @@ const MODALSMETA = {
       "IMAGE": "RedCircleCross",
       "MESSAGE": "Your account access has been revoked for security reasons",
       "TITLE": {
-        "ROW_CLASSES": "justify-center",
+        "ROW_CLASSES": "justify-content-center",
       "content": {
         "para": {
           "text": "Access Denied",
@@ -311,10 +323,6 @@ const MODALSMETA = {
       "HEIGHT": "120",
       "SUBTITLE": {
         "content": {
-          "para1": {
-            "text": "Your account has been created.",
-            "classes": "font-size-15 mb-0 font-weight-bold"
-          },
           "para2": {
             "text": "To move forward with your application, we need to verify the email address associated with your account.",
             "classes": "font-size-15 mx-5"
@@ -336,9 +344,10 @@ const MODALSMETA = {
         }
       },
       "TITLE": {
+        "ROW_CLASSES": "justify-content-center",
         "content": {
           "para": {
-            "text": "Please verify your email address to continue with the registration process",
+            "text": "Please verify your email address",
             "classes": "h5 mx-5 px-3 mb-4 font-weight-bold"
           }
         }
@@ -347,7 +356,7 @@ const MODALSMETA = {
         "action": "resendInvite",
         "text": "Resend Verification Email",
         "actionHelpText": {
-          "text": "No message received?",
+          "text": "No email received?",
           "classes": "font-size-14"
         }
       },
