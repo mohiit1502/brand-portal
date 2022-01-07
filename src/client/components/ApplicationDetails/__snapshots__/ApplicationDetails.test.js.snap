@@ -2,7 +2,7 @@
 
 exports[`ApplicationDetails renders without error ApplicationDetails renders without error should render the application details successfully 1`] = `
 <div
-  className="c-ApplicationDetails text-left row mt-4 ml-5 pl-5"
+  className="c-ApplicationDetails text-left row ml-5 pl-5"
 >
   <div
     className="col-12 brand-registration-title"
@@ -94,7 +94,7 @@ exports[`ApplicationDetails renders without error ApplicationDetails renders wit
 
 exports[`ApplicationDetails renders without error should render the application details successfully 1`] = `
 <div
-  className="c-ApplicationDetails text-left row mt-4 ml-5 pl-5"
+  className="c-ApplicationDetails text-left row ml-5 pl-5"
 >
   <div
     className="col-12 brand-registration-title"
