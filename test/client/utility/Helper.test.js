@@ -15,6 +15,7 @@ describe("helper util test container", () => {
   afterEach(() => {
     jest.useRealTimers();
   })
+
   it("should convert string to camel case with first letter uppercase",  () => {
     let response = Helper.toCamelCaseFirstUpper("abc-def");
     expect(response).toBe("AbcDef");
@@ -27,6 +28,7 @@ describe("helper util test container", () => {
   it("should convert string to camel case", () => {
     let response = Helper.toCamelCaseFirstUpper();
     expect(response).toBe("");
+
   });
 
   it("searches for dot separated path in object", () => {
@@ -150,5 +152,4 @@ describe("helper util test container", () => {
     response = Helper.getDateFromTimeStamp();
     expect(response).toBe("");
   })
-
 });

@@ -1,4 +1,5 @@
 import ContentRenderer from "../../../src/client/utility/ContentRenderer";
+
 import dummyThis from "../mocks/dummyThis";
 import dummyContent from "../mocks/dummyContent";
 
@@ -19,6 +20,7 @@ describe("content renderer util test container", () => {
   let parentObj;
   beforeEach(() => {
     parentObj = JSON.parse(JSON.stringify(dummyThis));
+
     evaluator = ContentRenderer.evaluateRenderDependency.bind(parentObj);
   })
   it("should execute render dependency evaluator for single condition",  () => {
@@ -29,12 +31,14 @@ describe("content renderer util test container", () => {
     const response = evaluator("[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]");
     expect(response).toBe(true);
   });
+
   it("should execute render dependency evaluator for multiple blocks of conditions", () => {
     const response = evaluator("[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}");
     parentObj.state.form.inputData.userType.value = "third party"
     expect(response).toBe(true);
     parentObj.state.form.inputData.claimType.value = "patent"
     expect(response).toBe(true);
+
   });
   it("should evaluate render condition", () => {
     parentObj.state.form.inputData.brandName.required = {"default": false, "condition":
