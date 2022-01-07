@@ -1,5 +1,6 @@
 import React, {useRef} from "react";
-import renderer from "react-test-renderer";
+import {mount} from "enzyme";
+import toJson from "enzyme-to-json";
 import ApplicationDetails from "./";
 import Http from "../../utility/Http";
 import applicationDetails from "../../../../test/client/mocks/applicationDetails";
@@ -8,7 +9,7 @@ import org from "../../../../test/client/mocks/org";
 import brand from "../../../../test/client/mocks/brand";
 
 const setUp = (props) => {
-  return renderer.create(props ? <ApplicationDetails {...props} /> : <ApplicationDetails />);
+  return mount(props ? <ApplicationDetails {...props} /> : <ApplicationDetails />);
 };
 
 jest.mock("react", () => {
@@ -32,18 +33,7 @@ describe("ApplicationDetails renders without error", () => {
     const mRef = {current: document.createElement("div")};
     useRef.mockReturnValue(mRef);
     wrapper = setUp({user: userProfile, org, brand});
-    const tree = wrapper.toJSON();
+    const tree = toJson(wrapper);
     expect(tree).toMatchSnapshot();
-  });
-
-  describe("ApplicationDetails renders without error", () => {
-    it("should render the application details successfully", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: applicationDetails}));
-      const mRef = {current: document.createElement("div")};
-      useRef.mockReturnValue(mRef);
-      wrapper = setUp({user: userProfile, org, brand});
-      const tree = wrapper.toJSON();
-      expect(tree).toMatchSnapshot();
-    });
   });
 });
