@@ -85,7 +85,8 @@ export default class ContentRenderer {
 
   static implementDynamicReplacements(dynamicReplacements, text) {
     dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
-      text = text.replaceAll(key, dynamicReplacements[key]);
+      const regex = new RegExp(key, "g");
+      text = text.replace(regex, dynamicReplacements[key]);
     });
     return text;
   }
@@ -267,14 +268,15 @@ export default class ContentRenderer {
   static hookConditionInterceptor (field, conditionalFields) {
     field = {...field};
     const iterationSet = conditionalFields ? conditionalFields : Object.keys(field);
+    const self = this;
     iterationSet.forEach(key => {
       const conditionObj = field[key];
-      if (this.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
+      if (self.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
         if ("condition" in conditionObj) {
           const dependencyObj = conditionObj.condition.find(obj => {
             return obj.subCondition
-              ? obj.subCondition.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(this, objPart, "dependencyValue"), true)
-              : ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue")
+              ? obj.subCondition.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(self, objPart, "dependencyValue"), true)
+              : ContentRenderer.evaluateRenderDependencySubPart.call(self, obj, "dependencyValue")
           });
           field[key] = dependencyObj ? dependencyObj.value : conditionObj.default
         } else if (key === "validators") {
@@ -285,8 +287,8 @@ export default class ContentRenderer {
               const conditionObj = validationObj.evaluator;
               const dependencyObj = conditionObj.condition.find(obj => {
                 return typeof obj === "object" && obj.length
-                  ? obj.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(this, objPart, "dependencyValue"), true)
-                  : ContentRenderer.evaluateRenderDependencySubPart.call(this, obj, "dependencyValue")
+                  ? obj.reduce((agg, objPart) => agg && ContentRenderer.evaluateRenderDependencySubPart.call(self, objPart, "dependencyValue"), true)
+                  : ContentRenderer.evaluateRenderDependencySubPart.call(self, obj, "dependencyValue")
               });
               if (dependencyObj && dependencyObj.setFields && typeof dependencyObj.setFields === "object" && dependencyObj.setFields.length) {
                 dependencyObj.setFields.forEach(fieldConfig => validationObj[fieldConfig.field] = fieldConfig.value)

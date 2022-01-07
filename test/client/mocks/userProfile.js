@@ -5,6 +5,7 @@ const userProfile = {
   phoneNumber: "(234) 567-8901",
   emailVerified: true,
   isUserEnabled: true,
+  context: "edit",
   organization: {
     id: "640a20c2-3bbd-46e5-9a81-4f97c8bc9f08",
     status: "Accepted"

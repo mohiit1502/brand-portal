@@ -5,7 +5,6 @@ import ButtonsPanel from "./ButtonsPanel";
 import {configure, shallow} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import {findByTestAttribute, testStore} from "../../utility/TestingUtils";
-import Accordion from "../Accordion";
 import ContentRenderer from "../../utility/ContentRenderer";
 
 configure({ adapter: new Adapter() });
@@ -20,10 +19,17 @@ const setUp = () => {
       }
     },
     buttons: {
-      testButton: {
+      testButton1: {
         onClick: "onClickTest",
         text: "Test Button",
-        type: "button"
+        type: "button",
+        textObj: "{condition:{a:b}}"
+      },
+      testButton2: {
+        onClick: "onClickTest",
+        text: "Test Button",
+        type: "button",
+        handlerArg: "test"
       }
     }
   };
@@ -43,10 +49,18 @@ describe("ButtonsPanel", () => {
 
   it('button should not be empty', function () {
     ContentRenderer.evaluateRenderDependency = jest.fn();
-    const buttonPanel = findByTestAttribute(wrapper,"button-panel");
+    let buttonPanel = findByTestAttribute(wrapper,"button-panel");
     const buttonDiv = findByTestAttribute(wrapper,"button-div");
     expect(buttonPanel.length).toBe(1);
     expect(buttonDiv.length).toBe(1);
+    wrapper.find("button").at(1).simulate("click");
+    wrapper.update();
+    props.bareButton = true;
+    wrapper = shallow(
+      <ButtonsPanel store={store} {...props}/>);
+    ContentRenderer.evaluateRenderDependency = jest.fn();
+    buttonPanel = findByTestAttribute(wrapper,"button-panel");
+    expect(buttonPanel.length).toBe(0);
   });
 
   it('button should be null', function () {
@@ -54,10 +68,10 @@ describe("ButtonsPanel", () => {
     wrapper = shallow(
       <ButtonsPanel store={store} {...props}/>);
     ContentRenderer.evaluateRenderDependency = jest.fn();
-    const buttonPanel = findByTestAttribute(wrapper,"button-panel");
+    let buttonPanel = findByTestAttribute(wrapper,"button-panel");
     const buttonDiv = findByTestAttribute(wrapper,"button-div");
     expect(buttonPanel.length).toBe(1);
     expect(buttonDiv.length).toBe(1);
-    expect(buttonDiv.props().children[0]).toBe(null);
   });
+
 });

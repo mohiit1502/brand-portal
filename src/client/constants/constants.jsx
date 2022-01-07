@@ -54,7 +54,6 @@ const CONSTANTS = {
 
       USER_MGMT: {
         USER_LIST: "/users",
-        USER_APPROVAL: "/users/user-approval"
       },
 
       BRANDS: {
