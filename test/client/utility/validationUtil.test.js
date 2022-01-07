@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import fetch from "node-fetch";
 import Validator from "../../../src/client/utility/validationUtil";
 import Http from "../../../src/client/utility/Http";
