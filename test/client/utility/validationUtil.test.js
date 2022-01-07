@@ -1,4 +1,5 @@
-import '@babel/polyfill';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import fetch from "node-fetch";
 import Validator from "../../../src/client/utility/validationUtil";
 import Http from "../../../src/client/utility/Http";
