@@ -12,7 +12,7 @@ const setUp = async () => {
   await act( async () => tree = mount(<CaptchaValidator onChange={jest.fn()}/>));
   return tree
 };
-
+            
 describe("CaptchaValidator test container", () => {
   let wrapper;
 
