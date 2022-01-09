@@ -1,0 +1,689 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`login page test container login Page renders without error should render the login page successfully 1`] = `
+<div
+  className="login-container view-container"
+>
+  <nav
+    className="c-LoginHeader navbar navbar-expand-lg navbar-dark login-header-nav"
+  >
+    <a
+      className="navbar-brand walmart-brand"
+      href="#"
+    >
+      <img
+        src="wmbplightLogo.svg"
+      />
+    </a>
+    <button
+      aria-controls="collapsible-header"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      className="navbar-toggler"
+      data-target="#collapsible-header"
+      data-toggle="collapse"
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      className="collapse navbar-collapse navbar-collapsible-header"
+      id="collapsible-header"
+    >
+      <ul
+        className="navbar-nav ml-auto"
+      >
+        <li
+          className="nav-item px-4"
+        >
+          <a
+            className="nav-link register-button"
+            href="/register"
+            onClick={[Function]}
+          >
+            Register
+          </a>
+        </li>
+        <li
+          className="mx-2 nav-item middle-list"
+        />
+        <li
+          className="nav-item pl-4 d-flex align-items-center"
+        >
+          <a
+            className="nav-link login-button"
+            href="/login"
+            onClick={[Function]}
+          >
+            Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div
+    className="c-Hero"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col c-Hero__left-container py-5 align-content-lg-center"
+      >
+        <div
+          className="c-Hero__tag-line-container align-content-lg-center py-5 mx-5 my-3"
+        >
+          <div
+            className="c-Hero__tag-line px-5 mx-5"
+          >
+            Helping you protect your intellectual property on Walmart.com
+          </div>
+          <div
+            className="button-con"
+          >
+            <a
+              className="c-Hero__register-btn btn btn-primary px-5"
+              href="/register"
+              onClick={[Function]}
+            >
+              Register
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col c-Hero__right-container"
+      />
+    </div>
+  </div>
+  <div
+    className="c-TilesContainer row display-flex mx-0"
+  />
+  <div
+    className="c-LoginFaq"
+    id="LoginFAQ"
+  >
+    <div
+      className="c-LoginFaq__header h4"
+    >
+      Frequently Asked Questions
+    </div>
+    <div
+      className="c-LoginFaq__content"
+    >
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-0"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Why Walmart Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-1"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              How can I check the status of my Walmart Brand Portal application?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-2"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              What type of claims can I submit using Walmart Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-3"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Is Walmart Brand Portal available only in the United States?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-4"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-5"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              How do I submit intellectual property claims if I don't have a Walmart Brand Portal account?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-6"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Can I use my Seller Center account credentials to login to the Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="c-Footer"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <nav
+          className="navbar navbar-expand-lg login-footer-nav"
+        >
+          <div
+            className="c-Footer__logoSocialContainer"
+          >
+            <img
+              className="c-Footer__wmWhiteLogo"
+              src="WMWhite-horizontal.svg"
+            />
+          </div>
+          <div
+            className="collapse navbar-collapse navbar-collapsible-footer"
+            id="collapsible-footer"
+          >
+            <ul
+              className="navbar-nav ml-auto"
+            >
+              <li
+                className="nav-item mx-1 d-flex align-items-center"
+              >
+                <a
+                  className="nav-link btn login-btn py-1"
+                  href="/login"
+                  onClick={[Function]}
+                >
+                  Login
+                </a>
+              </li>
+              <li
+                className="nav-item ml-1"
+              >
+                <a
+                  className="nav-link"
+                  href="/register"
+                  onClick={[Function]}
+                >
+                  Register
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="c-Footer__copyrightContainer"
+        >
+          <span
+            className="c-Footer__copyrightText float-left"
+          >
+            © 2021 Walmart. All rights reserved.
+            <a
+              className="c-Footer__privacyNav float-right"
+              href="https://corporate.walmart.com/privacy-security"
+              target="_blank"
+            >
+              Privacy Policy
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`login page test container login Page renders without error should render the login page with api failures successfully 1`] = `
+<div
+  className="login-container view-container"
+>
+  <nav
+    className="c-LoginHeader navbar navbar-expand-lg navbar-dark login-header-nav"
+  >
+    <a
+      className="navbar-brand walmart-brand"
+      href="#"
+    >
+      <img
+        src="wmbplightLogo.svg"
+      />
+    </a>
+    <button
+      aria-controls="collapsible-header"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      className="navbar-toggler"
+      data-target="#collapsible-header"
+      data-toggle="collapse"
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      className="collapse navbar-collapse navbar-collapsible-header"
+      id="collapsible-header"
+    >
+      <ul
+        className="navbar-nav ml-auto"
+      >
+        <li
+          className="nav-item px-4"
+        >
+          <a
+            className="nav-link register-button"
+            href="/register"
+            onClick={[Function]}
+          >
+            Register
+          </a>
+        </li>
+        <li
+          className="mx-2 nav-item middle-list"
+        />
+        <li
+          className="nav-item pl-4 d-flex align-items-center"
+        >
+          <a
+            className="nav-link login-button"
+            href="/login"
+            onClick={[Function]}
+          >
+            Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div
+    className="c-Hero"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col c-Hero__left-container py-5 align-content-lg-center"
+      >
+        <div
+          className="c-Hero__tag-line-container align-content-lg-center py-5 mx-5 my-3"
+        >
+          <div
+            className="c-Hero__tag-line px-5 mx-5"
+          >
+            Helping you protect your intellectual property on Walmart.com
+          </div>
+          <div
+            className="button-con"
+          >
+            <a
+              className="c-Hero__register-btn btn btn-primary px-5"
+              href="/register"
+              onClick={[Function]}
+            >
+              Register
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="col c-Hero__right-container"
+      />
+    </div>
+  </div>
+  <div
+    className="c-TilesContainer row display-flex mx-0"
+  />
+  <div
+    className="c-LoginFaq"
+    id="LoginFAQ"
+  >
+    <div
+      className="c-LoginFaq__header h4"
+    >
+      Frequently Asked Questions
+    </div>
+    <div
+      className="c-LoginFaq__content"
+    >
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-0"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Why Walmart Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-1"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              How can I check the status of my Walmart Brand Portal application?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-2"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              What type of claims can I submit using Walmart Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-3"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Is Walmart Brand Portal available only in the United States?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-4"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Are WIPO or EUIPO trademarks accepted by Walmart Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-5"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              How do I submit intellectual property claims if I don't have a Walmart Brand Portal account?
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="c-FaqSingle"
+        id="loginfaq-6"
+      >
+        <div
+          className="c-Accordion"
+        >
+          <div
+            className="c-Accordion__button-container"
+            data-test="accordion-buttonPanel"
+          >
+            <button
+              className="c-Accordion__button"
+              data-test="accordion-button"
+              onClick={[Function]}
+            >
+              Can I use my Seller Center account credentials to login to the Brand Portal?
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="c-Footer"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <nav
+          className="navbar navbar-expand-lg login-footer-nav"
+        >
+          <div
+            className="c-Footer__logoSocialContainer"
+          >
+            <img
+              className="c-Footer__wmWhiteLogo"
+              src="WMWhite-horizontal.svg"
+            />
+          </div>
+          <div
+            className="collapse navbar-collapse navbar-collapsible-footer"
+            id="collapsible-footer"
+          >
+            <ul
+              className="navbar-nav ml-auto"
+            >
+              <li
+                className="nav-item mx-1 d-flex align-items-center"
+              >
+                <a
+                  className="nav-link btn login-btn py-1"
+                  href="/login"
+                  onClick={[Function]}
+                >
+                  Login
+                </a>
+              </li>
+              <li
+                className="nav-item ml-1"
+              >
+                <a
+                  className="nav-link"
+                  href="/register"
+                  onClick={[Function]}
+                >
+                  Register
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col"
+      >
+        <div
+          className="c-Footer__copyrightContainer"
+        >
+          <span
+            className="c-Footer__copyrightText float-left"
+          >
+            © 2021 Walmart. All rights reserved.
+            <a
+              className="c-Footer__privacyNav float-right"
+              href="https://corporate.walmart.com/privacy-security"
+              target="_blank"
+            >
+              Privacy Policy
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

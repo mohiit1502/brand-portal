@@ -1,11 +1,92 @@
-import React from "react";
+import React, {useRef} from "react";
 import ReactDOM from "react-dom";
 import Home from "../../../src/client/components/home/home";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
-import rootReducer from "client/reducers";
-import { BrowserRouter } from "react-router-dom";
 import 'regenerator-runtime';
+import {testStore} from "../../../src/client/utility/TestingUtils";
+import renderer from "react-test-renderer";
+import {BrowserRouter} from "react-router-dom";
+import {Provider} from "react-redux";
+// import FORMFIELDCONFIG from "../../../src/client/config/formsConfig/form-field-meta";
+import FORMFIELDMOCK from "../mocks/formFeildMock";
+import MODALSMETA from "../../../src/client/config/modals-meta"
+import homePageMocks from "../mocks/homePageMocks";
+import profile from "../mocks/userProfile";
+import portalRegUserProfile from "../mocks/portalRegUserProfile";
+
+
+let store;
+const setUp = (props) => {
+  const mockStore = {
+    modal:{
+      enable:false,
+      template:null
+    },
+    content:{
+      metadata: {...FORMFIELDMOCK, ...MODALSMETA}
+    },
+    user: {profile}
+  };
+  store = testStore(mockStore);
+  return renderer.create(<Provider store={store}><BrowserRouter><Home {...props} /></BrowserRouter></Provider>);
+};
+
+const setUp2 = (props) => {
+  const mockStore = {
+    modal:{
+      enable:false,
+      template:null
+    },
+    content:{
+      metadata: {...FORMFIELDMOCK, ...MODALSMETA}
+    },
+    user: {portalRegUserProfile}
+  };
+  store = testStore(mockStore);
+  return renderer.create(<Provider store={store}><BrowserRouter><Home {...props} /></BrowserRouter></Provider>);
+};
+
+jest.mock("react", () => {
+  const originReact = jest.requireActual("react");
+  const mUseRef = jest.fn();
+  return {
+    ...originReact,
+    useRef: mUseRef
+  };
+});
+
+describe("Home Tests", () => {
+
+  let wrapper;
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it("renders without error", () => {
+    const mRef = {current: document.createElement("div")};
+    useRef.mockReturnValue(mRef);
+    wrapper = setUp({
+      ...homePageMocks,
+      userProfile:profile
+    });
+    const tree = wrapper.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("renders onboarding screen without error", () => {
+    const mRef = {current: document.createElement("div")};
+    useRef.mockReturnValue(mRef);
+    wrapper = setUp2({
+      ...homePageMocks,
+      userProfile:portalRegUserProfile
+    });
+    const tree = wrapper.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+});
+
+
+
 
 describe("Home", () => {
   let component;

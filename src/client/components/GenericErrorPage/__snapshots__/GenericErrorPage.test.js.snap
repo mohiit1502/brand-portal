@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GenericErrorPage Tests renders without error with details 1`] = `
+<div
+  className="test-container  mx-auto c-GenericErrorPage page-error text-center"
+  style={
+    Object {
+      "maxWidth": "600px",
+    }
+  }
+>
+  <img
+    alt="Page Error"
+    className="c-GenericErrorPage__image"
+    src="page-error.svg"
+  />
+  <h4
+    className="c-GenericErrorPage__header font-weight-bold"
+  >
+    generic-test-header
+  </h4>
+  <p
+    className="c-GenericErrorPage__message"
+  >
+    test-message
+  </p>
+</div>
+`;
+
+exports[`GenericErrorPage Tests renders without error without details 1`] = `
+<div
+  className=" mx-auto c-GenericErrorPage page-error text-center"
+  style={
+    Object {
+      "maxWidth": "600px",
+    }
+  }
+>
+  <img
+    alt="Page Error"
+    className="c-GenericErrorPage__image"
+    src="page-error.svg"
+  />
+  <i>
+    <h4
+      className="c-GenericErrorPage__header font-weight-bold"
+    >
+      We’re sorry. An error has occurred.
+    </h4>
+    <ol
+      className="c-GenericErrorPage__message text-left d-inline-block"
+    >
+      <li>
+        If you are a new Brand Portal user, please try the following:
+        <ul>
+          <li>
+            Visit 
+            <a
+              href="/logout"
+            >
+              Walmart Brand Portal
+            </a>
+          </li>
+          <li>
+            Click “Register”
+          </li>
+          <li>
+            Create a new account using a different email address than the one used for your Walmart supplier account
+          </li>
+        </ul>
+      </li>
+      <li>
+        If you already have a Brand Portal account and you are seeing this error message, please reach out to us at 
+        <a
+          href="mailto:IPInvest@walmart.com"
+        >
+          IPInvest@walmart.com
+        </a>
+      </li>
+    </ol>
+  </i>
+</div>
+`;

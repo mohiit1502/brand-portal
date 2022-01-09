@@ -5,6 +5,7 @@ import mixpanel from "../../../src/server/utility/mixpanelutility";
 import classUnderTest from "../../../src/server/plugins/claim/claim-manager-api";
 import ServerHttp from "../../../src/server/utility/ServerHttp";
 import successResponse from "../mocks/success-response.json";
+import sellerResponse from "../mocks/seller-response.json";
 import ServerHttpError from "../../../src/server/utility/ServerHttpError";
 import failureResponseWithErrorMessage from "../mocks/failure-response-with-error-message.json";
 import failureResponseWithoutErrorMessage from "../mocks/failure-response-without-error-message.json";
@@ -26,9 +27,6 @@ const setUp = () => {
 
   getHeadersMethod = jest.spyOn(ServerUtils,"getHeaders")
     .mockResolvedValueOnce(headerResponse);
-  ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
-    .mockResolvedValueOnce("https://test.com")
-    .mockResolvedValueOnce("/test");
   mixPanelTrackEventMethod = jest.spyOn(mixpanel,"trackEvent").mockImplementationOnce(() => {
     console.log("This is mock mixpanel implementation");
   });
@@ -76,6 +74,9 @@ describe("Test Claim Manager API",() => {
 
   describe("Claim Api Successful",() => {
     beforeEach(()=>{
+      ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
+        .mockResolvedValueOnce("https://test.com")
+        .mockResolvedValueOnce("/test");
       setUp();
     });
     afterEach(() => {
@@ -165,6 +166,51 @@ describe("Test Claim Manager API",() => {
           done();
         });
       });
+    });
+  });
+
+});
+
+describe("Get Seller API Tests",() => {
+
+  beforeEach(()=>{
+    setUp();
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  server = new Hapi.Server();
+
+  const request = {
+    method: "GET",
+    url: "/api/sellers"
+  };
+
+  ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
+    .mockResolvedValue("select test,test from test where offer.US_WMT_DOTCOM_ITEM_ID='__itemId__' LIMIT 100")
+    .mockResolvedValue("[50, 80, 100]");
+
+
+  it("Get Sellers Failed request",() => {
+    let serverRetryRequest = jest.spyOn(ServerUtils,"retry")
+      .mockImplementation(() => {
+      throw new ServerHttpError(500, "Test Error");
+    });
+    server.inject(request).then(res => {
+      expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
+      done();
+    });
+  });
+
+  it("Get Sellers Success request",() => {
+    let serverRetryRequest = jest.spyOn(ServerUtils,"retry")
+      .mockImplementation(() => {
+        return sellerResponse;
+    });
+    server.inject(request).then(res => {
+      expect(JSON.parse(res.payload)).toEqual(successResponse);
+      done();
     });
   });
 

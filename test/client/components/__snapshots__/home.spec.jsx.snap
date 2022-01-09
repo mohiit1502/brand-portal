@@ -1,0 +1,251 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home Tests renders onboarding screen without error 1`] = `
+<div
+  className="view-container home-container"
+>
+  <nav
+    className="navbar navbar-expand-md navbar-dark home-header-nav home-header-nav-z-index"
+  >
+    <a
+      className="navbar-brand walmart-brand"
+      href="/dashboard"
+      onClick={[Function]}
+    >
+      <img
+        src="WMWhite-horizontal.svg"
+      />
+    </a>
+    <button
+      aria-controls="collapsible-header"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      className="navbar-toggler"
+      data-target="#collapsible-header"
+      data-toggle="collapse"
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      className="collapse navbar-collapse navbar-collapsible-header"
+      id="collapsible-header"
+    >
+      <ul
+        className="navbar-nav ml-auto"
+      >
+        <li
+          className="nav-item dropdown nav-item-profile ml-4"
+        >
+          <a
+            aria-expanded="false"
+            aria-haspopup="true"
+            className="nav-link user-name dropdown-toggle"
+            data-toggle="dropdown"
+            href="/"
+            onClick={[Function]}
+            role="button"
+          >
+            <img
+              alt="Profile Pic"
+              className="pr-2"
+              height="32px"
+              src="user-profile.png"
+            />
+             
+          </a>
+          <div
+            className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2"
+          >
+            <a
+              className="dropdown-item"
+              href=""
+              onClick={[Function]}
+            >
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+`;
+
+exports[`Home Tests renders without error 1`] = `
+<div
+  className="view-container home-container"
+>
+  <nav
+    className="navbar navbar-expand-md navbar-dark home-header-nav"
+  >
+    <a
+      className="navbar-brand walmart-brand"
+      href="/dashboard"
+      onClick={[Function]}
+    >
+      <img
+        src="WMWhite-horizontal.svg"
+      />
+    </a>
+    <button
+      aria-controls="collapsible-header"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      className="navbar-toggler"
+      data-target="#collapsible-header"
+      data-toggle="collapse"
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      className="collapse navbar-collapse navbar-collapsible-header"
+      id="collapsible-header"
+    >
+      <ul
+        className="navbar-nav ml-auto"
+      >
+        <li
+          className="nav-item nav-item-help mx-4"
+        >
+          <a
+            className="nav-link nav-help"
+            href="/help"
+            onClick={[Function]}
+          >
+            <img
+              className="pr-2"
+              height="32px"
+              src="help-header.png"
+            />
+             Help
+          </a>
+        </li>
+        <li
+          className="nav-item dropdown nav-item-profile ml-4"
+        >
+          <a
+            aria-expanded="false"
+            aria-haspopup="true"
+            className="nav-link user-name dropdown-toggle"
+            data-toggle="dropdown"
+            href="/"
+            onClick={[Function]}
+            role="button"
+          >
+            <img
+              alt="Profile Pic"
+              className="pr-2"
+              height="32px"
+              src="user-profile.png"
+            />
+            Test Mohit Nagar
+          </a>
+          <div
+            className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2"
+          >
+            <a
+              className="dropdown-item"
+              href="/profile"
+              onClick={[Function]}
+            >
+              Profile
+            </a>
+            <a
+              className="dropdown-item"
+              href=""
+              onClick={[Function]}
+            >
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div
+    className="mx-n3"
+  >
+    <div
+      className="left-nav d-inline-block"
+    >
+      <ul
+        className="nav flex-column mt-3"
+      >
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/dashboard"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="dashboard.png"
+              width="46px"
+            />
+            My Dashboard
+          </a>
+        </li>
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/claims"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="claims.svg"
+              width="46px"
+            />
+            My Claims
+          </a>
+        </li>
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/brands"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="brands.png"
+              width="46px"
+            />
+            My Brands
+          </a>
+        </li>
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/users"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="users.png"
+              width="46px"
+            />
+            Users
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      className="content-page d-inline-block"
+    />
+  </div>
+</div>
+`;
