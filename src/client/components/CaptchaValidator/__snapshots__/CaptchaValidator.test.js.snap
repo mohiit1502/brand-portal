@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CaptchaValidator test container CaptchaValidator renders without error should render the Captcha successfully when enabled 1`] = `
+<CaptchaValidator
+  onChange={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "target": Object {
+              "value": false,
+            },
+          },
+          undefined,
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+>
+  <div
+    className="c-CaptchaValidator "
+  >
+    <AsyncScriptLoader(ReCAPTCHA)
+      onChange={[Function]}
+      onExpired={[Function]}
+      sitekey="sitekey"
+    >
+      <AsyncScriptLoader
+        forwardedRef={null}
+        onChange={[Function]}
+        onExpired={[Function]}
+        sitekey="sitekey"
+      >
+        <ReCAPTCHA
+          badge="bottomright"
+          onChange={[Function]}
+          onExpired={[Function]}
+          sitekey="sitekey"
+          size="normal"
+          tabindex={0}
+          theme="light"
+          type="image"
+        >
+          <div />
+        </ReCAPTCHA>
+      </AsyncScriptLoader>
+    </AsyncScriptLoader(ReCAPTCHA)>
+    <small
+      className="form-text custom-input-help-text text-danger text-center"
+    />
+  </div>
+</CaptchaValidator>
+`;
+
+exports[`CaptchaValidator test container CaptchaValidator renders without error tests API failure scenario 1`] = `undefined`;
+
+exports[`CaptchaValidator test container CaptchaValidator renders without error verify Captcha when disabled 1`] = `undefined`;
