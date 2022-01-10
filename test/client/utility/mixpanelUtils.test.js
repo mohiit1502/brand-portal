@@ -15,7 +15,6 @@ describe("mixpanel util test container for original lib", () => {
   it("should track batch event", async () => {
     MixpanelUtils.initializeMixpanel("1968bbc8bf2304c4c850ca1d53e79ea2", true);
     MixpanelUtils.setUserProperty(userProfile);
-    MixpanelUtils.setUserProfile(userProfile);
     global.fetch = jest.fn().mockImplementation(jest.fn())
     await MixpanelUtils.trackEventBatch("test", [{a: "a"}, {b: "b"}]);
     global.fetch.mockClear()

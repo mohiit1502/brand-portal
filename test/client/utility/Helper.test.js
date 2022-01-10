@@ -95,7 +95,7 @@ describe("helper util test container", () => {
     window.Element.prototype.getComputedTextLength = function() {
       return 200
     }
-    jQuery.each( [1, 2, 3, 4], function(i, v) {
+    jQuery.each( [1, 2, 3, 4], function() {
       items.push(jQuery('<div>1123</div>').get(0));
     });
     Helper.wrap(jQuery(items), 30);

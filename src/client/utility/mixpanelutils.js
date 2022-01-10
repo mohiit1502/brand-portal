@@ -89,6 +89,7 @@ export default class MixpanelUtils {
             if (userProfile) {
                 const superPropertyPayLoad = {
                     $email: userProfile.email,
+                    $user_id: userProfile.email,
                     $name: `${userProfile.firstName } ${ userProfile.lastName}`,
                     USER_TYPE: userProfile.type ? userProfile.type : "NOT_FOUND",
                     ROLE: userProfile.role ? userProfile.role.name : "NOT_FOUND",
