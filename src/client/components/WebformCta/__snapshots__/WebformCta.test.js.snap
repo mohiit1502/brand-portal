@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WebformCta renders without error 1`] = `
+<div
+  className="c-WebformCta"
+>
+  <div
+    className="page-body"
+  >
+    <div
+      className=""
+    />
+  </div>
+</div>
+`;
