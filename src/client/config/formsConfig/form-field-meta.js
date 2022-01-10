@@ -4,9 +4,9 @@ const FORMFIELDCONFIG = {
     "COMPANYREG": {
       "sectionConfig": {
         "sectionTitle": "Company Information",
-        "sectionSellerTitle": "Confirm Company Profile",
-        "sectionSubTitle": "Complete the form based on the information in the trademark registration",
-        "sectionSellerSubTitle": "Review your Seller Center information to create your company profile."
+        "sectionSellerTitle": "Company Information",
+        "sectionSubTitle": "Complete the form based on the information in the trademark registration.",
+        "sectionSellerSubTitle": "Complete the form based on the information in the trademark registration."
       },
       "formConfig": {
         "id": "companyreg",
@@ -153,7 +153,7 @@ const FORMFIELDCONFIG = {
     "BRANDREG": {
       "sectionConfig": {
         "sectionTitle": " Brand Information",
-        "sectionSubTitle": "Enter your brand information below. You will have the option to upload additional trademarks once your application is approved."
+        "sectionSubTitle": "Complete the form based on the information in the trademark registration."
       },
       "formConfig": {
         "id": "brandreg",
@@ -249,7 +249,7 @@ const FORMFIELDCONFIG = {
           "required": true,
           "selected": false,
           "tou": true,
-          "touLink": "Terms and Conditions.",
+          "touLink": "Terms of Use.",
           "type": "_checkBox"
         },
         "brandOnboardingActions": {
