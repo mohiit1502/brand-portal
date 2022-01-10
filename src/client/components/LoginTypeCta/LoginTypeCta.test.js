@@ -1,4 +1,6 @@
 /* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import React, {useRef} from "react";
 import LoginTypeCta from "./LoginTypeCta";
 import {testStore} from "../../utility/TestingUtils";
