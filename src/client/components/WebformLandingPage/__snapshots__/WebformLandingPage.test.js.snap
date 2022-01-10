@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WebformLandingPage renders without error 1`] = `
+<WebformLandingPage
+  configuration={
+    Object {
+      "disclaimer": Object {
+        "actionBtnText": "OK",
+        "btnText": "View disclaimer",
+        "classes": "d-inline-block anchor-styled mb-35rem",
+        "modalDisclaimerText": "To make a claim of IP infringement, you will be required to declare, under penalty of perjury, that the information provided is correct and that you are the IP rights owner or an authorized agent. If the information you submit is inaccurate or incomplete, we may be unable to process or respond to your request. If you have questions about IP or whether your rights have been infringed, consider seeking legal advice.",
+        "modalHeaderText": "Disclaimer",
+      },
+      "header": Object {
+        "classes": "h4 font-weight-bold",
+        "text": "Intellectual Property (IP) Claim Form",
+      },
+      "help": Object {
+        "actionBtnText": "OK",
+        "classes": "d-inline-block anchor-styled",
+        "modalHeaderText": "Help",
+        "modalHelpText": Object {
+          "content": Object {
+            "partial1": Object {
+              "anchor1": Object {
+                "href": "mailto:ipinvest@walmart.com",
+                "text": "ipinvest@walmart.com",
+              },
+              "chunk1": "If you have any issues with filing a claim, please reach out to ",
+              "chunk2": " for further assistance.",
+            },
+          },
+        },
+      },
+      "subText": Object {
+        "classes": "d-inline-block mr-3 mb-35rem",
+        "text": "All of the following fields are required",
+      },
+      "titleClass": "ml-8",
+    }
+  }
+  getContent={[MockFunction]}
+>
+  <div
+    className="c-WebformLandingPage"
+  >
+    <div
+      className="page-body"
+    >
+      <div
+        className="page-header h4 font-weight-bold"
+      >
+        Intellectual Property (IP) Claim Form
+      </div>
+      <div />
+    </div>
+  </div>
+</WebformLandingPage>
+`;

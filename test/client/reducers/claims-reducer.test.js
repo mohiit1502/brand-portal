@@ -1,4 +1,5 @@
 import claimReducer from "./../../../src/client/reducers/claim/claim-reducers";
+import {dispatchClaims} from "../../../src/client/actions/claim/claim-actions";
 
 describe("Claim Reducer Test",() => {
 
@@ -8,7 +9,7 @@ describe("Claim Reducer Test",() => {
 
   it("DISPATCH_CLAIMS Test",() => {
     const testClaims = [{id:"test1",claimType:"Test1"},{id:"test2",claimType:"Test2"}]
-    const dispatchClaimsAction = {type:"DISPATCH_CLAIMS",value:testClaims};
+    const dispatchClaimsAction = dispatchClaims(testClaims);
     const expectedState = {
       ...initialState,
       ...testClaims

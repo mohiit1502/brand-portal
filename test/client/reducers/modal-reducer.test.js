@@ -1,4 +1,5 @@
 import {modal} from "../../../src/client/reducers/modal-reducers";
+import {dispatchDiscardChanges,toggleModal} from "../../../src/client/actions/modal-actions";
 
 export const DISCARD_CHANGES = "DISCARD_CHANGES";
 export const TOGGLE_ACTIONS = {
@@ -24,10 +25,10 @@ describe("Modal Reducer Tests",() => {
 
   it("DISCARD_CHANGES Action Test",() => {
     const actionValue = {testValue:"This is action value"};
-    const action = {type:"DISCARD_CHANGES",value:actionValue};
+    const action = dispatchDiscardChanges(actionValue);
     const expectedState = {
       ...initialState,
-      ...actionValue
+      shouldDiscard:actionValue
     };
     const actualState = modal(initialState,action);
     expect(actualState).toStrictEqual(expectedState);
@@ -61,7 +62,7 @@ describe("Modal Reducer Tests",() => {
         enable: true,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL",data:"This is test Data"};
+      const action=toggleModal(TOGGLE_ACTIONS.HIDE,{data:"This is test Data"});
       const expectedState = {
         enable:false,
         shouldDiscard: true,
@@ -78,7 +79,7 @@ describe("Modal Reducer Tests",() => {
         enable: true,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL"};
+      const action=toggleModal(TOGGLE_ACTIONS.HIDE);
       const expectedState = {
         enable:false,
         shouldDiscard: true,
@@ -95,7 +96,7 @@ describe("Modal Reducer Tests",() => {
         enable: false,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL",data:"This is test Data"};
+      const action=toggleModal(TOGGLE_ACTIONS.SHOW, {data: "This is test Data"});
       const expectedState = {
         enable:true,
         shouldDiscard: true,
@@ -112,7 +113,7 @@ describe("Modal Reducer Tests",() => {
         enable: false,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL"};
+      const action= toggleModal(TOGGLE_ACTIONS.SHOW)
       const expectedState = {
         enable:true,
         shouldDiscard: true,
@@ -128,7 +129,7 @@ describe("Modal Reducer Tests",() => {
         ...initialState,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL",data:"This is test Data",value:"show"};
+      const action=toggleModal(TOGGLE_ACTIONS.SHOW,{data:"This is test Data",value:"show"})
       const expectedState = {
         enable:true,
         shouldDiscard: true,
@@ -144,7 +145,7 @@ describe("Modal Reducer Tests",() => {
         ...initialState,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL",value:"show"};
+      const action=toggleModal(TOGGLE_ACTIONS.SHOW);
       const expectedState = {
         enable:true,
         shouldDiscard: true,
@@ -160,7 +161,7 @@ describe("Modal Reducer Tests",() => {
         ...initialState,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL",value:"hide",data:"This is test Data"};
+      const action=toggleModal(TOGGLE_ACTIONS.HIDE,{value:"hide",data:"This is test Data"})
       const expectedState = {
         enable:false,
         shouldDiscard: true,
@@ -176,7 +177,7 @@ describe("Modal Reducer Tests",() => {
         ...initialState,
         shouldDiscard:true
       };
-      const action={type:"TOGGLE_MODAL",value:"hide"};
+      const action=toggleModal(TOGGLE_ACTIONS.HIDE)
       const expectedState = {
         enable:false,
         shouldDiscard: true,
