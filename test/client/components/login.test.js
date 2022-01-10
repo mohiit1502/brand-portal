@@ -1,21 +1,18 @@
-import currentFilters from "../mocks/currentFilters";
-import profile from "../mocks/userProfile";
 import {testStore} from "../../../src/client/utility/TestingUtils";
-import renderer from "react-test-renderer";
 import {BrowserRouter} from "react-router-dom";
-import Dashboard from "../../../src/client/components/Dashboard";
 import Http from "../../../src/client/utility/Http";
-import dashboardData from "../mocks/dashboardData";
 import React, {useRef} from "react";
 import {Provider} from "react-redux";
 import Login from "../../../src/client/components/login/login";
 import LOGINCONFIG from "../../../src/client/config/contentDescriptors/landingPageTiles";
+import {mount} from "enzyme";
+import toJson from "enzyme-to-json";
 
 let store;
 
 const setUp = () => {
   store = testStore({});
-  return renderer.create(<Provider store={store}><BrowserRouter><Login /></BrowserRouter></Provider>);
+  return mount(<Provider store={store}><BrowserRouter><Login /></BrowserRouter></Provider>);
 };
 
 jest.mock("react", () => {
@@ -42,7 +39,7 @@ describe("login page test container", () => {
       const mRef = {current: document.createElement("div")};
       useRef.mockReturnValue(mRef);
       wrapper = setUp();
-      const tree = wrapper.toJSON();
+      const tree = toJson(wrapper);
       expect(tree).toMatchSnapshot();
     });
 
@@ -53,7 +50,7 @@ describe("login page test container", () => {
       const mRef = {current: document.createElement("div")};
       useRef.mockReturnValue(mRef);
       wrapper = setUp();
-      const tree = wrapper.toJSON();
+      const tree = toJson(wrapper);
       expect(tree).toMatchSnapshot();
     });
   });

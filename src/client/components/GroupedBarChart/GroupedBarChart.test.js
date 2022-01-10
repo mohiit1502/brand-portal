@@ -1,8 +1,6 @@
 /* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
 import React, {useRef} from "react";
 import GroupedBarChart from "./GroupedBarChart";
-import renderer from "react-test-renderer";
-import GenericErrorPage from "../GenericErrorPage";
 import GroupedBarChartProps from "../../../../test/client/mocks/groupedBarChartMock";
 import {mount} from "enzyme";
 import toJson from "enzyme-to-json";
