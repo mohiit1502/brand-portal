@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import React from "react";
 import {Provider} from "react-redux";
 import toJson from "enzyme-to-json";
