@@ -1,15 +1,571 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`WebformCta renders without error 1`] = `
-<div
-  className="c-WebformCta"
+<WebformCta
+  configuration={
+    Object {
+      "content": Object {
+        "buttonsPanel1": Object {
+          "buttons": Object {
+            "anchor1": Object {
+              "classes": "btn btn-primary py-3 px-5",
+              "href": "/",
+              "text": "Create an account",
+            },
+            "anchor2": Object {
+              "classes": "btn btn-outline-primary py-3 px-5",
+              "href": "https://marketplace.walmart.com/brand-portal/",
+              "text": "Learn More",
+            },
+          },
+          "classes": "col mb-5 text-center buttonsPanel1 post-cta-content",
+        },
+        "header1": Object {
+          "classes": "text-center h2 mb-2 font-weight-bold",
+          "title": "Now create a Brand Portal account",
+        },
+        "tilesContainer1": Object {
+          "classes": "py-4 post-cta-content",
+          "tiles": Array [
+            Object {
+              "classes": "mb-4 notification-tile",
+              "content": Object {
+                "buttonsPanel2": Object {
+                  "buttons": Object {
+                    "button1": Object {
+                      "buttonText": "Submit another claim",
+                      "classes": "anchor-styled background-unset",
+                      "key": "submit_claim",
+                      "onClick": "commonClickHandler",
+                      "value": 1,
+                    },
+                  },
+                  "classes": "text-left elevate",
+                },
+                "para1": Object {
+                  "classes": "text-left mb-4",
+                  "text": "We will contact you via email once a decision is made.",
+                },
+              },
+              "contentClasses": "border-radius-12px tiles-background-dark with-background pl-7rem py-2rem height-unset",
+              "header": Object {
+                "classes": "text-left mb-2 min-height-unset with-notification-check",
+                "text": "Your IP claim has been successfully submitted",
+              },
+            },
+          ],
+        },
+        "tilesContainer2": Object {
+          "classes": "py-4 post-cta-content text-center mb-3",
+          "tiles": Array [
+            Object {
+              "classes": "webform-cta-tile",
+              "content": Object {
+                "para1": Object {
+                  "classes": "tile-content font-size-18",
+                  "text": "We’ve designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
+                },
+              },
+              "contentClasses": "tiles-background-dark",
+              "header": Object {
+                "classes": "tile-header font-size-18",
+                "text": "Manage everything effortlessly",
+              },
+              "svg": "GroupPeople",
+            },
+            Object {
+              "classes": "webform-cta-tile",
+              "content": Object {
+                "para1": Object {
+                  "classes": "tile-content font-size-18",
+                  "text": "Submit intellectual property claims using a simple form.",
+                },
+              },
+              "contentClasses": "tiles-background-dark",
+              "header": Object {
+                "classes": "tile-header font-size-18",
+                "text": "Protect your brand",
+              },
+              "svg": "ProblemSolving",
+            },
+            Object {
+              "classes": "webform-cta-tile",
+              "content": Object {
+                "para1": Object {
+                  "classes": "tile-content font-size-18",
+                  "text": "Monitor your claims in one single dashboard, then delve into individual claims to check on their progress and results.",
+                },
+              },
+              "contentClasses": "tiles-background-dark",
+              "header": Object {
+                "classes": "tile-header font-size-18",
+                "text": "Track your claims",
+              },
+              "svg": "Verify",
+            },
+          ],
+        },
+      },
+      "header": Object {
+        "classes": "",
+      },
+    }
+  }
+  getContent={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "buttonsPanel1": Object {
+              "buttons": Object {
+                "anchor1": Object {
+                  "classes": "btn btn-primary py-3 px-5",
+                  "href": "/",
+                  "text": "Create an account",
+                },
+                "anchor2": Object {
+                  "classes": "btn btn-outline-primary py-3 px-5",
+                  "href": "https://marketplace.walmart.com/brand-portal/",
+                  "text": "Learn More",
+                },
+              },
+              "classes": "col mb-5 text-center buttonsPanel1 post-cta-content",
+            },
+            "header1": Object {
+              "classes": "text-center h2 mb-2 font-weight-bold",
+              "title": "Now create a Brand Portal account",
+            },
+            "tilesContainer1": Object {
+              "classes": "py-4 post-cta-content",
+              "tiles": Array [
+                Object {
+                  "classes": "mb-4 notification-tile",
+                  "content": Object {
+                    "buttonsPanel2": Object {
+                      "buttons": Object {
+                        "button1": Object {
+                          "buttonText": "Submit another claim",
+                          "classes": "anchor-styled background-unset",
+                          "key": "submit_claim",
+                          "onClick": "commonClickHandler",
+                          "value": 1,
+                        },
+                      },
+                      "classes": "text-left elevate",
+                    },
+                    "para1": Object {
+                      "classes": "text-left mb-4",
+                      "text": "We will contact you via email once a decision is made.",
+                    },
+                  },
+                  "contentClasses": "border-radius-12px tiles-background-dark with-background pl-7rem py-2rem height-unset",
+                  "header": Object {
+                    "classes": "text-left mb-2 min-height-unset with-notification-check",
+                    "text": "Your IP claim has been successfully submitted",
+                  },
+                },
+              ],
+            },
+            "tilesContainer2": Object {
+              "classes": "py-4 post-cta-content text-center mb-3",
+              "tiles": Array [
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "We’ve designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Manage everything effortlessly",
+                  },
+                  "svg": "GroupPeople",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Submit intellectual property claims using a simple form.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Protect your brand",
+                  },
+                  "svg": "ProblemSolving",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Monitor your claims in one single dashboard, then delve into individual claims to check on their progress and results.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Track your claims",
+                  },
+                  "svg": "Verify",
+                },
+              ],
+            },
+          },
+          "tilesContainer1",
+        ],
+        Array [
+          Object {
+            "buttonsPanel1": Object {
+              "buttons": Object {
+                "anchor1": Object {
+                  "classes": "btn btn-primary py-3 px-5",
+                  "href": "/",
+                  "text": "Create an account",
+                },
+                "anchor2": Object {
+                  "classes": "btn btn-outline-primary py-3 px-5",
+                  "href": "https://marketplace.walmart.com/brand-portal/",
+                  "text": "Learn More",
+                },
+              },
+              "classes": "col mb-5 text-center buttonsPanel1 post-cta-content",
+            },
+            "header1": Object {
+              "classes": "text-center h2 mb-2 font-weight-bold",
+              "title": "Now create a Brand Portal account",
+            },
+            "tilesContainer1": Object {
+              "classes": "py-4 post-cta-content",
+              "tiles": Array [
+                Object {
+                  "classes": "mb-4 notification-tile",
+                  "content": Object {
+                    "buttonsPanel2": Object {
+                      "buttons": Object {
+                        "button1": Object {
+                          "buttonText": "Submit another claim",
+                          "classes": "anchor-styled background-unset",
+                          "key": "submit_claim",
+                          "onClick": "commonClickHandler",
+                          "value": 1,
+                        },
+                      },
+                      "classes": "text-left elevate",
+                    },
+                    "para1": Object {
+                      "classes": "text-left mb-4",
+                      "text": "We will contact you via email once a decision is made.",
+                    },
+                  },
+                  "contentClasses": "border-radius-12px tiles-background-dark with-background pl-7rem py-2rem height-unset",
+                  "header": Object {
+                    "classes": "text-left mb-2 min-height-unset with-notification-check",
+                    "text": "Your IP claim has been successfully submitted",
+                  },
+                },
+              ],
+            },
+            "tilesContainer2": Object {
+              "classes": "py-4 post-cta-content text-center mb-3",
+              "tiles": Array [
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "We’ve designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Manage everything effortlessly",
+                  },
+                  "svg": "GroupPeople",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Submit intellectual property claims using a simple form.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Protect your brand",
+                  },
+                  "svg": "ProblemSolving",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Monitor your claims in one single dashboard, then delve into individual claims to check on their progress and results.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Track your claims",
+                  },
+                  "svg": "Verify",
+                },
+              ],
+            },
+          },
+          "header1",
+        ],
+        Array [
+          Object {
+            "buttonsPanel1": Object {
+              "buttons": Object {
+                "anchor1": Object {
+                  "classes": "btn btn-primary py-3 px-5",
+                  "href": "/",
+                  "text": "Create an account",
+                },
+                "anchor2": Object {
+                  "classes": "btn btn-outline-primary py-3 px-5",
+                  "href": "https://marketplace.walmart.com/brand-portal/",
+                  "text": "Learn More",
+                },
+              },
+              "classes": "col mb-5 text-center buttonsPanel1 post-cta-content",
+            },
+            "header1": Object {
+              "classes": "text-center h2 mb-2 font-weight-bold",
+              "title": "Now create a Brand Portal account",
+            },
+            "tilesContainer1": Object {
+              "classes": "py-4 post-cta-content",
+              "tiles": Array [
+                Object {
+                  "classes": "mb-4 notification-tile",
+                  "content": Object {
+                    "buttonsPanel2": Object {
+                      "buttons": Object {
+                        "button1": Object {
+                          "buttonText": "Submit another claim",
+                          "classes": "anchor-styled background-unset",
+                          "key": "submit_claim",
+                          "onClick": "commonClickHandler",
+                          "value": 1,
+                        },
+                      },
+                      "classes": "text-left elevate",
+                    },
+                    "para1": Object {
+                      "classes": "text-left mb-4",
+                      "text": "We will contact you via email once a decision is made.",
+                    },
+                  },
+                  "contentClasses": "border-radius-12px tiles-background-dark with-background pl-7rem py-2rem height-unset",
+                  "header": Object {
+                    "classes": "text-left mb-2 min-height-unset with-notification-check",
+                    "text": "Your IP claim has been successfully submitted",
+                  },
+                },
+              ],
+            },
+            "tilesContainer2": Object {
+              "classes": "py-4 post-cta-content text-center mb-3",
+              "tiles": Array [
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "We’ve designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Manage everything effortlessly",
+                  },
+                  "svg": "GroupPeople",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Submit intellectual property claims using a simple form.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Protect your brand",
+                  },
+                  "svg": "ProblemSolving",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Monitor your claims in one single dashboard, then delve into individual claims to check on their progress and results.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Track your claims",
+                  },
+                  "svg": "Verify",
+                },
+              ],
+            },
+          },
+          "tilesContainer2",
+        ],
+        Array [
+          Object {
+            "buttonsPanel1": Object {
+              "buttons": Object {
+                "anchor1": Object {
+                  "classes": "btn btn-primary py-3 px-5",
+                  "href": "/",
+                  "text": "Create an account",
+                },
+                "anchor2": Object {
+                  "classes": "btn btn-outline-primary py-3 px-5",
+                  "href": "https://marketplace.walmart.com/brand-portal/",
+                  "text": "Learn More",
+                },
+              },
+              "classes": "col mb-5 text-center buttonsPanel1 post-cta-content",
+            },
+            "header1": Object {
+              "classes": "text-center h2 mb-2 font-weight-bold",
+              "title": "Now create a Brand Portal account",
+            },
+            "tilesContainer1": Object {
+              "classes": "py-4 post-cta-content",
+              "tiles": Array [
+                Object {
+                  "classes": "mb-4 notification-tile",
+                  "content": Object {
+                    "buttonsPanel2": Object {
+                      "buttons": Object {
+                        "button1": Object {
+                          "buttonText": "Submit another claim",
+                          "classes": "anchor-styled background-unset",
+                          "key": "submit_claim",
+                          "onClick": "commonClickHandler",
+                          "value": 1,
+                        },
+                      },
+                      "classes": "text-left elevate",
+                    },
+                    "para1": Object {
+                      "classes": "text-left mb-4",
+                      "text": "We will contact you via email once a decision is made.",
+                    },
+                  },
+                  "contentClasses": "border-radius-12px tiles-background-dark with-background pl-7rem py-2rem height-unset",
+                  "header": Object {
+                    "classes": "text-left mb-2 min-height-unset with-notification-check",
+                    "text": "Your IP claim has been successfully submitted",
+                  },
+                },
+              ],
+            },
+            "tilesContainer2": Object {
+              "classes": "py-4 post-cta-content text-center mb-3",
+              "tiles": Array [
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "We’ve designed the Walmart Brand Portal to be an easy-to-use unified hub for managing your registered brands, intellectual property claims, and authorized representatives.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Manage everything effortlessly",
+                  },
+                  "svg": "GroupPeople",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Submit intellectual property claims using a simple form.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Protect your brand",
+                  },
+                  "svg": "ProblemSolving",
+                },
+                Object {
+                  "classes": "webform-cta-tile",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "tile-content font-size-18",
+                      "text": "Monitor your claims in one single dashboard, then delve into individual claims to check on their progress and results.",
+                    },
+                  },
+                  "contentClasses": "tiles-background-dark",
+                  "header": Object {
+                    "classes": "tile-header font-size-18",
+                    "text": "Track your claims",
+                  },
+                  "svg": "Verify",
+                },
+              ],
+            },
+          },
+          "buttonsPanel1",
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
 >
   <div
-    className="page-body"
+    className="c-WebformCta"
   >
     <div
-      className=""
-    />
+      className="page-body"
+    >
+      <div
+        className=""
+      />
+    </div>
   </div>
-</div>
+</WebformCta>
 `;

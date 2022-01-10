@@ -2,16 +2,12 @@
 import React, {useRef} from "react";
 import WebformCta from "./WebformCta";
 import renderer from "react-test-renderer";
-import ApplicationDetails from "../ApplicationDetails";
-import Http from "../../utility/Http";
-import applicationDetails from "../../../../test/client/mocks/applicationDetails";
-import userProfile from "../../../../test/client/mocks/userProfile";
-import org from "../../../../test/client/mocks/org";
-import brand from "../../../../test/client/mocks/brand";
 import webformCtaContent from "../../../../test/client/mocks/webformCtaContent";
+import {mount} from "enzyme";
+import toJson from "enzyme-to-json";
 
 const setUp = (props) => {
-  return renderer.create(props ? <WebformCta {...props} /> : <WebformCta />);
+  return mount(props ? <WebformCta {...props} /> : <WebformCta />);
 };
 
 jest.mock("react", () => {
@@ -34,8 +30,8 @@ describe("WebformCta", () => {
    it("renders without error", () => {
      const mRef = {current: document.createElement("div")};
      useRef.mockReturnValue(mRef);
-     wrapper = setUp({configuration: webformCtaContent});
-     const tree = wrapper.toJSON();
+     wrapper = setUp({configuration: webformCtaContent,getContent : jest.fn()});
+     const tree = toJson(wrapper);
      expect(tree).toMatchSnapshot();
    });
 

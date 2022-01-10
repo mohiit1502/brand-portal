@@ -3,9 +3,11 @@ import React, {useRef} from "react";
 import WebformLandingPage from "./WebformLandingPage";
 import renderer from "react-test-renderer";
 import webformLandingPage from "../../../../test/client/mocks/webformLandingPage";
+import {mount} from "enzyme";
+import toJson from "enzyme-to-json";
 
 const setUp = (props) => {
-  return renderer.create(props ? <WebformLandingPage {...props} /> : <WebformLandingPage />);
+  return mount(props ? <WebformLandingPage {...props} /> : <WebformLandingPage />);
 };
 
 jest.mock("react", () => {
@@ -28,8 +30,8 @@ describe("WebformLandingPage", () => {
    it("renders without error", () => {
      const mRef = {current: document.createElement("div")};
      useRef.mockReturnValue(mRef);
-     wrapper = setUp({configuration: webformLandingPage});
-     const tree = wrapper.toJSON();
+     wrapper = setUp({configuration: webformLandingPage,getContent:jest.fn()});
+     const tree = toJson(wrapper);
      expect(tree).toMatchSnapshot();
 
    });
