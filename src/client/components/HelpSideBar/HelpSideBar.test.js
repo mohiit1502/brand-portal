@@ -1,14 +1,19 @@
-/* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
 import React, {useRef} from "react";
 import HelpSideBar from "./HelpSideBar";
-import {mount} from "enzyme";
 import toJson from "enzyme-to-json";
-import helpSideBarMock from "../../../../test/client/mocks/helpSideBarMock";
-import {BrowserRouter} from "react-router-dom";
+import {mount} from "enzyme";
 import {Provider} from "react-redux";
+import MockNextContext from "../../../../test/client/utility/MockNextContext";
+import {clearKeys, testStore} from "../../utility/TestingUtils";
+import PropTypes from "prop-types";
+
+
+let props;
+let store;
 
 const setUp = (props) => {
-  return mount(<BrowserRouter><HelpSideBar {...props}/></BrowserRouter>);
+  store = testStore({});
+  return mount(props ? <Provider store={store}><MockNextContext pathname="/help"><HelpSideBar {...props} /></MockNextContext></Provider> : <Provider store={store}><MockNextContext><HelpSideBar /></MockNextContext></Provider>);
 };
 
 jest.mock("react", () => {
@@ -20,20 +25,27 @@ jest.mock("react", () => {
   };
 });
 
-describe("Help Side Bar Tests", () => {
 
+
+describe("HelpSideBar", () => {
   let wrapper;
   beforeEach(() => {
     jest.restoreAllMocks();
     jest.resetAllMocks();
   });
-
   it("renders without error", () => {
-    const mRef = {current: document.createElement("div")};
-    useRef.mockReturnValue(mRef);
-    wrapper = setUp(helpSideBarMock);
+    props = {
+      activeTab: "",
+      categories: {},
+      categoryHeader: "",
+      history: {},
+      setActiveTab: () => {}
+    };
+    wrapper = setUp(props);
 
     const tree = toJson(wrapper);
+    clearKeys(tree, []);
     expect(tree).toMatchSnapshot();
+
   });
 });

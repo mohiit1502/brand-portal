@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
-import UrlItemList from "./UrlItemList";
-import renderer from "react-test-renderer";
+import onboarder from "./onboarder";
+import toJson from "enzyme-to-json";
 import {mount} from "enzyme";
 import {Provider} from "react-redux";
 import MockNextContext from "../../../../test/client/utility/MockNextContext";
@@ -12,8 +12,12 @@ let props;
 let store;
 
 const setUp = (props) => {
-  store = testStore({});
-  return renderer.create(props ? <Provider store={store}><MockNextContext pathname="/help"><UrlItemList {...props} /></MockNextContext></Provider> : <Provider store={store}><MockNextContext><UrlItemList /></MockNextContext></Provider>);
+  store = testStore({
+    company: {
+      steps: {}
+    }
+  });
+  return mount(props ? <Provider store={store}><MockNextContext pathname="/help"><onboarder {...props} /></MockNextContext></Provider> : <Provider store={store}><MockNextContext><onboarder /></MockNextContext></Provider>);
 };
 
 jest.mock("react", () => {
@@ -25,9 +29,7 @@ jest.mock("react", () => {
   };
 });
 
-
-
-describe("UrlItemList", () => {
+describe("onboard", () => {
   let wrapper;
   beforeEach(() => {
     jest.restoreAllMocks();
@@ -35,15 +37,14 @@ describe("UrlItemList", () => {
   });
   it("renders without error", () => {
     props = {
-      formData: {},
-      formId: "",
-      items: [],
-      patternErrorMessage: "",
-      parentRef: {}
+      dispatchSteps: () => {},
+      location: {},
+      steps: [],
+      userProfile: {}
     };
     wrapper = setUp(props);
 
-    const tree = wrapper.toJSON();
+    const tree = toJson(wrapper);
     clearKeys(tree, []);
     expect(tree).toMatchSnapshot();
 
