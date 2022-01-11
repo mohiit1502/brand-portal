@@ -1,0 +1,825 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Webform renders without error 1`] = `
+<div
+  className="c-Webform mt-4rem d-flex justify-content-center "
+>
+  <div
+    className="col-lg-8 col-md-6 col-6 pl-3 pr-3"
+  >
+    <div />
+    
+    <div
+      className="web-form mb-4 mr-3"
+    >
+      <div
+        className="form-row font-weight-bold"
+      >
+        <div
+          className=" col"
+        >
+          <div
+            className="c-HeaderFormComponent row form-prompt font-weight-bold"
+          >
+            <div
+              className="col"
+            >
+              <p>
+                Filing Claim As
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row mb-3"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group custom-select-form-group dropdown  mb-3  field-select-arrow"
+          >
+            <img
+              alt="i"
+              className="positioned-top-right"
+              data-html="true"
+              data-placement="right"
+              data-toggle="tooltip"
+              src="question.svg"
+              title="<div class=\\"py-2\\" data-reactroot=\\"\\"><b class=\\"position-absolute text-white tooltip-close-button\\">x</b><p class=\\"mt-2 pl-2 text-left font-size-12\\"><span><br/><b>Rights Owner<!-- -->:</b> <!-- -->Brand owners with registered trademarks.<br/></span><span><br/><b>Third Party representative<!-- -->:</b> <!-- -->Authorized third-party brand protection agencies/ Legal representatives.<br/></span><span><br/><b>Customer<!-- -->:</b> <!-- -->Walmart customer.<br/></span></p></div>"
+            />
+            <input
+              autoComplete="off"
+              className="form-control form-control-userType custom-input-element"
+              data-toggle="dropdown"
+              disabled={false}
+              id="webform-userType-custom-input"
+              onChange={[Function]}
+              required={false}
+              type="select"
+              value=""
+            />
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-userType-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text"
+              >
+                 
+                User Type
+                 
+              </span>
+            </label>
+            <div
+              className="dropdown-menu"
+            >
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Customer
+              </a>
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Rights Owner
+              </a>
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Third party
+              </a>
+            </div>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": "0.7rem",
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row font-weight-bold"
+      >
+        <div
+          className=" col"
+        >
+          <div
+            className="c-HeaderFormComponent row form-prompt font-weight-bold"
+          >
+            <div
+              className="col"
+            >
+              <p>
+                Contact Information
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-firstName custom-input-element"
+              disabled={false}
+              id="webform-firstName-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-firstName-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                First Name
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-lastName custom-input-element"
+              disabled={false}
+              id="webform-lastName-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-lastName-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                Last Name
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-address_1 custom-input-element"
+              disabled={false}
+              id="webform-address_1-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-address_1-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                Address 1
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-0
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-address_2 custom-input-element"
+              disabled={false}
+              id="webform-address_2-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-address_2-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text"
+              >
+                 
+                Address 2
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              Optional
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-city custom-input-element"
+              disabled={false}
+              id="webform-city-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-city-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                City
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "relative",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-country custom-input-element"
+              disabled={false}
+              id="webform-country-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value="USA"
+            />
+            <label
+              className="custom-input-label"
+              htmlFor="webform-country-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                Country
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row"
+      >
+        <div
+          className="col-6 col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-state custom-input-element"
+              disabled={false}
+              id="webform-state-custom-input"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-state-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                State
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+        <div
+          className="col-6 col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-zip custom-input-element"
+              disabled={false}
+              id="webform-zip-custom-input"
+              maxLength={10}
+              onBlur={[Function]}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-zip-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                ZIP
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-phone custom-input-element"
+              disabled={false}
+              id="webform-phone-custom-input"
+              maxLength={15}
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-phone-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                Phone Number
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group form-group-text mb-3
+        "
+            style={
+              Object {
+                "position": "static",
+              }
+            }
+          >
+            <input
+              className="form-control form-control-emailId custom-input-element"
+              disabled={false}
+              id="webform-emailId-custom-input"
+              onChange={[Function]}
+              onInvalid={[Function]}
+              required={false}
+              type="text"
+              value=""
+            />
+            
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-emailId-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text required"
+              >
+                 
+                Email Address
+                 
+              </span>
+            </label>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": undefined,
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row font-weight-bold"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="c-HeaderFormComponent row form-prompt font-weight-bold"
+          >
+            <div
+              className="col"
+            >
+              <p>
+                Type of infringement
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row mb-3"
+      >
+        <div
+          className=" col-6"
+        >
+          <div
+            className="form-group custom-input-form-group custom-select-form-group dropdown  mb-3  field-select-arrow"
+          >
+            <input
+              autoComplete="off"
+              className="form-control form-control-claimType custom-input-element"
+              data-toggle="dropdown"
+              disabled={false}
+              id="webform-claimType-custom-input"
+              onChange={[Function]}
+              required={true}
+              type="select"
+              value=""
+            />
+            <label
+              className="custom-input-label custom-input-label-placeholder"
+              htmlFor="webform-claimType-custom-input"
+            >
+              <div
+                className="label-upper-bg position-absolute w-100 h-50 d-block"
+              />
+              <div
+                className="label-lower-bg position-absolute w-100 h-50 d-block"
+              />
+              <span
+                className="label-text"
+              >
+                 
+                Claim type
+                 
+              </span>
+            </label>
+            <div
+              className="dropdown-menu"
+            >
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Trademark
+              </a>
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Patent
+              </a>
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Counterfeit
+              </a>
+              <a
+                className="dropdown-item"
+                onClick={[Function]}
+              >
+                Copyright
+              </a>
+            </div>
+            <small
+              className="form-text custom-input-help-text text-muted"
+              style={
+                Object {
+                  "paddingLeft": "0.7rem",
+                }
+              }
+            >
+              
+            </small>
+          </div>
+        </div>
+      </div>
+      <div
+        className="form-row font-weight-bold mt-2"
+      />
+      <div
+        className="form-row"
+      />
+      <div
+        className="form-row"
+      />
+      <div
+        className="form-row font-weight-bold"
+      />
+      <div
+        className="form-row"
+      />
+      <div
+        className="form-row"
+      />
+      <div
+        className="form-row"
+      />
+      <div
+        className="form-row font-weight-bold mt-2"
+      />
+      <div
+        className="form-row"
+      />
+      <div
+        className="form-row font-weight-bold"
+      />
+    </div>
+  </div>
+</div>
+`;
