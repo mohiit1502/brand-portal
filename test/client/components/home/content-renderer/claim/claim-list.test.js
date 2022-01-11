@@ -67,6 +67,11 @@ describe("ClaimList test container", () => {
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
     })
+    it("should reset the filters", () => {
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
+      wrapper = setUp("/claims", mockStore)
+      wrapper.find(".clear-btn").at(0).simulate("click");
+    })
     it("tests for scenario when backend sends error", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {errors: ["error"]}}));
       wrapper = setUp("/claims", mockStore);
