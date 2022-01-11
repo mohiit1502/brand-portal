@@ -15,7 +15,6 @@ describe("helper util test container", () => {
   afterEach(() => {
     jest.useRealTimers();
   })
-
   it("should convert string to camel case with first letter uppercase",  () => {
     let response = Helper.toCamelCaseFirstUpper("abc-def");
     expect(response).toBe("AbcDef");
@@ -28,7 +27,6 @@ describe("helper util test container", () => {
   it("should convert string to camel case", () => {
     let response = Helper.toCamelCaseFirstUpper();
     expect(response).toBe("");
-
   });
 
   it("searches for dot separated path in object", () => {
@@ -97,7 +95,7 @@ describe("helper util test container", () => {
     window.Element.prototype.getComputedTextLength = function() {
       return 200
     }
-    jQuery.each( [1, 2, 3, 4], function(i, v) {
+    jQuery.each( [1, 2, 3, 4], function() {
       items.push(jQuery('<div>1123</div>').get(0));
     });
     Helper.wrap(jQuery(items), 30);
@@ -152,4 +150,5 @@ describe("helper util test container", () => {
     response = Helper.getDateFromTimeStamp();
     expect(response).toBe("");
   })
+
 });

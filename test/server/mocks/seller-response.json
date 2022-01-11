@@ -1,0 +1,11 @@
+{
+  "status": 200,
+  "body": {
+    "docs": [
+      {
+        "rollupoffer.partnerDisplayName": "TEST1",
+        "offer.sellerId": "6137E969C9E94C318223C159FDFE7BAE"
+      }
+    ]
+  }
+}

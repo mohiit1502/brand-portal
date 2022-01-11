@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartsContainer renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/dashboard"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/dashboard",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/dashboard",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/dashboard",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Memo(ChartsContainer)
+          API=""
+          DATAKEY=""
+          ID=""
+          SUBTYPE=""
+          currentFilters={Object {}}
+          data={Array []}
+          fetchComplete={true}
+          userProfile={Object {}}
+          widget={
+            Object {
+              "DETAILS": Object {
+                "chart": Object {},
+                "filters": Array [],
+                "header": Object {},
+                "legend": Object {},
+              },
+            }
+          }
+          widgetCommon={
+            Object {
+              "widgetClasses": "",
+            }
+          }
+          widgetStackItem={
+            Object {
+              "body": Object {
+                "layoutClasses": "",
+                "legend": Object {},
+              },
+              "header": Object {
+                "layoutClasses": "",
+              },
+            }
+          }
+        >
+          <div
+            className="c-ChartsContainer c-Widget__content"
+          >
+            <h5
+              className=""
+            />
+            <div
+              className=""
+            >
+              <Connect(FilterController)
+                currentFilters={Object {}}
+                filters={Array []}
+                updateChartMeta={
+                  Object {
+                    "API": "",
+                    "DATAKEY": "",
+                    "dataLocal": Array [],
+                    "setDataLocal": [Function],
+                    "setLoader": [Function],
+                  }
+                }
+                widgetId=""
+              >
+                <FilterController
+                  currentFilters={Object {}}
+                  customDate={Object {}}
+                  dispatchFilter={[Function]}
+                  filters={Array []}
+                  toggleModal={[Function]}
+                  updateChartMeta={
+                    Object {
+                      "API": "",
+                      "DATAKEY": "",
+                      "dataLocal": Array [],
+                      "setDataLocal": [Function],
+                      "setLoader": [Function],
+                    }
+                  }
+                  widgetId=""
+                >
+                  <div
+                    className="c-FilterController row"
+                  />
+                </FilterController>
+              </Connect(FilterController)>
+            </div>
+          </div>
+        </Memo(ChartsContainer)>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

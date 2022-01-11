@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactUsPrompt renders without error 1`] = `
+<ContactUsPrompt>
+  <div
+    className="c-ContactUsPrompt"
+    style={
+      Object {
+        "backgroundImage": "url(Group 52@2x.png",
+        "backgroundPosition": "left center",
+        "backgroundRepeat": "no-repeat",
+        "backgroundSize": "100%",
+      }
+    }
+  >
+    <span>
+      If you have more questions or wish to know more, contact us at 
+    </span>
+    <a
+      href="mailto:IPInvest@walmart.com"
+    >
+      IPInvest@walmart.com
+    </a>
+  </div>
+</ContactUsPrompt>
+`;

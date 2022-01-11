@@ -180,24 +180,6 @@ class Authenticator extends React.Component {
     return false;
   }
 
-  getCurrentUserDefaultPath = role => {
-    let path;
-    switch (role) {
-      case CONSTANTS.USER.ROLES.SUPERADMIN:
-        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_SUPERADMIN;
-        break;
-      case CONSTANTS.USER.ROLES.ADMIN:
-        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_ADMIN;
-        break;
-      case CONSTANTS.USER.ROLES.REPORTER:
-        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_REPORTER;
-        break;
-       default:
-        path = CONSTANTS.ROUTES.PROTECTED.DEFAULT_REDIRECT_PATH_REPORTER;
-    }
-    return path;
-  }
-
   // eslint-disable-next-line complexity
   render () {
     const {modalsMeta} = this.props;

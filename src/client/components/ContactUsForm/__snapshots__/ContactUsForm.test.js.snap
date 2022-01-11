@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactUsForm renders without error 1`] = `
+<form
+  className="contact-us-form "
+  onSubmit={[Function]}
+>
+  <div
+    className="form-row mt-4 contact-us-form-row w-100"
+  >
+    <div
+      className="contact-us-form-area col-5"
+    >
+      <div
+        className="form-group custom-input-form-group custom-select-form-group dropdown  mb-3  field-select-arrow"
+      >
+        <img
+          alt="i"
+          className="positioned-top-right"
+          data-html="true"
+          data-placement="right"
+          data-toggle="tooltip"
+          src="question.svg"
+          title="<div class=\\"py-2\\" data-reactroot=\\"\\"><b class=\\"position-absolute text-white tooltip-close-button\\">x</b><p class=\\"mt-2 pl-2 text-left font-size-12\\"><b>Technical Support:</b> Select if you are facing an issue with a system functionality.<br/><br/><b>Claim Support:</b> Select if you need help with a specific claim.<br/><br/><b>User Management Support:</b> Select if you need help with managing current or new users.<br/><br/><b>Follow-Up:</b> Select if you want to follow up on an open ticket.<br/><br/><b>IP Management Support:</b> Select if you need help with managing your brands.<br/></p></div>"
+        />
+        <input
+          autoComplete="off"
+          className="form-control form-control-area custom-input-element"
+          data-toggle="dropdown"
+          disabled={false}
+          id="contactUs-area-custom-input"
+          onChange={[Function]}
+          required={false}
+          type="select"
+          value=""
+        />
+        <label
+          className="custom-input-label custom-input-label-placeholder"
+          htmlFor="contactUs-area-custom-input"
+        >
+          <div
+            className="label-upper-bg position-absolute w-100 h-50 d-block"
+          />
+          <div
+            className="label-lower-bg position-absolute w-100 h-50 d-block"
+          />
+          <span
+            className="label-text"
+          >
+             
+            Area
+             
+          </span>
+        </label>
+        <div
+          className="dropdown-menu"
+        >
+          <a
+            className="dropdown-item"
+            onClick={[Function]}
+          >
+            Technical Support
+          </a>
+          <a
+            className="dropdown-item"
+            onClick={[Function]}
+          >
+            Claim Support
+          </a>
+          <a
+            className="dropdown-item"
+            onClick={[Function]}
+          >
+            User Management Support
+          </a>
+          <a
+            className="dropdown-item"
+            onClick={[Function]}
+          >
+            Follow-Up
+          </a>
+          <a
+            className="dropdown-item"
+            onClick={[Function]}
+          >
+            IP Management Support
+          </a>
+          <a
+            className="dropdown-item"
+            onClick={[Function]}
+          >
+            Other
+          </a>
+        </div>
+        <small
+          className="form-text custom-input-help-text text-muted"
+          style={
+            Object {
+              "paddingLeft": "0.7rem",
+            }
+          }
+        >
+          
+        </small>
+      </div>
+    </div>
+  </div>
+  <div
+    className="form-row  contact-us-form-row w-100"
+  >
+    <div
+      className="contact-us-form-title col-5"
+    >
+      <div
+        className="form-group custom-input-form-group form-group-text mb-3
+        "
+        style={
+          Object {
+            "position": "static",
+          }
+        }
+      >
+        <input
+          className="form-control form-control-title custom-input-element"
+          disabled={false}
+          id="contactUs-title-custom-input"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onInvalid={[Function]}
+          required={false}
+          type="text"
+          value=""
+        />
+        
+        <label
+          className="custom-input-label custom-input-label-placeholder"
+          htmlFor="contactUs-title-custom-input"
+        >
+          <div
+            className="label-upper-bg position-absolute w-100 h-50 d-block"
+          />
+          <div
+            className="label-lower-bg position-absolute w-100 h-50 d-block"
+          />
+          <span
+            className="label-text required"
+          >
+             
+            Title
+             
+          </span>
+        </label>
+        <small
+          className="form-text custom-input-help-text text-muted"
+          style={
+            Object {
+              "paddingLeft": undefined,
+            }
+          }
+        >
+          
+        </small>
+      </div>
+    </div>
+  </div>
+  <div
+    className="form-row contact-us-form-row w-100"
+  >
+    <div
+      className="contact-us-form-details col-7"
+    >
+      <div
+        className="form-group custom-input-form-group form-group-textarea "
+      >
+        <label
+          className="custom-input-label custom-input-label-textarea  required"
+          htmlFor="contactUs-details-custom-input"
+        >
+          Details
+           
+          
+        </label>
+        <textarea
+          className="form-control form-control-details custom-input-element custom-input-element-textarea"
+          id="contactUs-details-custom-input"
+          onChange={[Function]}
+          placeholder="Please provide additional information about the request"
+          required={false}
+          rows={4}
+          value=""
+        />
+        <small
+          className="form-text custom-input-help-text text-area-error text-muted"
+          style={
+            Object {
+              "paddingLeft": undefined,
+            }
+          }
+        >
+          
+        </small>
+      </div>
+    </div>
+  </div>
+  <div
+    className="form-row contact-us-form-row w-100 m-0"
+  >
+    <div
+      className="contact-us-button-panel text-right col-7"
+    >
+      <div
+        className="c-ButtonsPanel form-row contact-us-form-row w-100 m-0"
+        data-test="button-panel"
+      >
+        <div
+          className="col contact-us-button-panel text-right"
+          data-test="button-div"
+        >
+          <button
+            className="btn btn-primary btn-sm px-4 font-size-14"
+            type="submit"
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+`;

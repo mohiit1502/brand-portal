@@ -1,27 +1,27 @@
 import dashboardReducer from "./../../../src/client/reducers/dashboard/dashboard-reducers";
+import {dispatchWidgetAction,dispatchCustomDate,dispatchFilter} from "../../../src/client/actions/dashboard/dashboard-actions";
 
 export const DISPATCH_WIDGET_ACTION = "DISPATCH_WIDGET_ACTION";
 export const DISPATCH_FILTER = "DISPATCH_FILTER";
 export const DISPATCH_CUSTOM_DATE = "DISPATCH_CUSTOM_DATE";
 
+const initialState = {
+  test:"This is test state"
+};
+
+const testInitialState = {
+  filter: {},
+  widgetAction: false
+};
 
 describe("Dashboard Reducer Test",() => {
 
-  const testInitialState = {
-    filter: {},
-    widgetAction: false
-  };
-
-  const initialState = {
-    test:"This is test state"
-  };
-
   it("DISPATCH_WIDGET_ACTION Action test",() => {
     const actionValue = {testValue:"This is test action value"};
-    const action = {type:"DISPATCH_WIDGET_ACTION",value:actionValue};
+    const action = dispatchWidgetAction(actionValue);
     const expectedValue = {
       ...initialState,
-      ...actionValue
+      widgetAction:actionValue
     }
 
     const actualValue = dashboardReducer(initialState,action);
@@ -41,11 +41,10 @@ describe("Dashboard Reducer Test",() => {
   });
 
   it("DISPATCH_FILTER Action test",() => {
-    const actionValue = {testValue:"This is test action value"};
-    const action = {type:"DISPATCH_FILTER",value:actionValue};
+    const actionValue = () => {console.log("THis is test function")};
+    const action = dispatchFilter(actualValue);
     const expectedValue = {
-      ...initialState,
-      ...actionValue
+      ...initialState
     }
 
     const actualValue = dashboardReducer(initialState,action);
@@ -54,10 +53,10 @@ describe("Dashboard Reducer Test",() => {
 
   it("DISPATCH_CUSTOM_DATE Action test",() => {
     const actionValue = {testValue:"This is test action value"};
-    const action = {type:"DISPATCH_CUSTOM_DATE",value:actionValue};
+    const action = dispatchCustomDate(actionValue);
     const expectedValue = {
       ...initialState,
-      ...actionValue
+      customDate:actionValue
     }
 
     const actualValue = dashboardReducer(initialState,action);

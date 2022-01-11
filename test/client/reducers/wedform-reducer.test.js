@@ -1,4 +1,5 @@
-import webformReducer from "./../../../src/client/reducers/webform/webform-reducer"
+import webformReducer from "./../../../src/client/reducers/webform/webform-reducer";
+import {dispatchWebformState} from "../../../src/client/actions/webform/webform-action";
 
 describe("WebForm Reducer Test",() => {
 
@@ -12,10 +13,10 @@ describe("WebForm Reducer Test",() => {
 
   it("DISPATCH_WEB_FORM_STATE Action Test",() =>{
     const actionValue = {testValue:"This is test value"};
-    const action = {type:"DISPATCH_WEB_FORM_STATE",value:actionValue};
+    const action = dispatchWebformState(actionValue);
     const expectedValue={
       ...initialState,
-      ...actionValue
+      state:actionValue
     };
 
     const actualValue=webformReducer(initialState,action);
@@ -24,10 +25,10 @@ describe("WebForm Reducer Test",() => {
 
   it("DISPATCH_WEB_FORM_STATE Action Test with undefined initial state",() =>{
     const actionValue = {testValue:"This is test value"};
-    const action = {type:"DISPATCH_WEB_FORM_STATE",value:actionValue};
+    const action = dispatchWebformState(actionValue);
     const expectedValue={
       ...testInitialState,
-      ...actionValue
+      state:actionValue
     };
 
     const actualValue=webformReducer(undefined,action);

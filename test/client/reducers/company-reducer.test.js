@@ -1,4 +1,5 @@
 import companyReducer from "./../../../src/client/reducers/company/company-reducer"
+import {dispatchCompanyState,dispatchOnboardingDetails,dispatchBrandState,dispatchNewRequest,dispatchOriginalValues,dispatchSteps} from "../../../src/client/actions/company/company-actions";
 
 describe("Company Reducer Tests",() => {
 
@@ -31,22 +32,32 @@ describe("Company Reducer Tests",() => {
 
   it("DISPATCH_COMPANY_STATE Action Test with state",() => {
     const actionValue = {testValue:"Test company state dispatch value"};
-    const action = {type:"DISPATCH_COMPANY_STATE",value:actionValue};
+    const action = dispatchCompanyState(actionValue);
     const expectedState = {
       ...initialState,
-      ...actionValue
+      companyState: actionValue
     };
+    const actualState = companyReducer(initialState,action);
+    expect(actualState).toStrictEqual(expectedState);
+  });
 
+  it("DISPATCH_ONBOARDING_DETAILS Action Test with state",() => {
+    const actionValue = {testValue:"Test company state dispatch value"};
+    const action = dispatchOnboardingDetails(actionValue);
+    const expectedState = {
+      ...initialState,
+      onboardingDetails: actionValue
+    };
     const actualState = companyReducer(initialState,action);
     expect(actualState).toStrictEqual(expectedState);
   });
 
   it("DISPATCH_BRAND_STATE Action Test with state",() => {
     const actionValue = {testValue:"Test company state dispatch value"};
-    const action = {type:"DISPATCH_BRAND_STATE",value:actionValue};
+    const action = dispatchBrandState(actionValue);
     const expectedState = {
       ...initialState,
-      ...actionValue
+      brandState:actionValue
     };
 
     const actualState = companyReducer(initialState,action);
@@ -55,10 +66,10 @@ describe("Company Reducer Tests",() => {
 
   it("DISPATCH_NEW_REQUEST Action Test with state",() => {
     const actionValue = {testValue:"Test company state dispatch value"};
-    const action = {type:"DISPATCH_NEW_REQUEST",value:actionValue};
+    const action = dispatchNewRequest(actionValue);
     const expectedState = {
       ...initialState,
-      ...actionValue
+      isNew:actionValue
     };
 
     const actualState = companyReducer(initialState,action);
@@ -67,10 +78,22 @@ describe("Company Reducer Tests",() => {
 
   it("DISPATCH_STEPS Action Test with state",() => {
     const actionValue = {testValue:"Test company state dispatch value"};
-    const action = {type:"DISPATCH_STEPS",value:actionValue};
+    const action = dispatchSteps(actionValue)
     const expectedState = {
       ...initialState,
-      ...actionValue
+      steps:actionValue
+    };
+
+    const actualState = companyReducer(initialState,action);
+    expect(actualState).toStrictEqual(expectedState);
+  });
+
+  it("DISPATCH_ORIGINAL_VALUES Action Test with state",() => {
+    const actionValue = {testValue:"Test company state dispatch value"};
+    const action = dispatchOriginalValues(actionValue)
+    const expectedState = {
+      ...initialState,
+      originalValues:actionValue
     };
 
     const actualState = companyReducer(initialState,action);
