@@ -1,4 +1,5 @@
 import {brandEdit} from "../../../src/client/reducers/brand/brand-reducers";
+import {saveBrandCompleted,saveBrandInitiated,dispatchBrands} from "../../../src/client/actions/brand/brand-actions";
 
 describe("Brand Reducer Tests",() => {
   const initialState = {
@@ -7,7 +8,7 @@ describe("Brand Reducer Tests",() => {
 
   it("DISPATCH_BRANDS Test",() => {
     const testBrands = [{id:"test1",name:"Test Brand1"},{id:"test2",name:"Test Brand2"}];
-    const dispatchBrandAction = {type:"DISPATCH_BRANDS",value:testBrands};
+    const dispatchBrandAction = dispatchBrands(testBrands);
     const expectedState = {
       ...initialState,
       ...testBrands
@@ -18,7 +19,7 @@ describe("Brand Reducer Tests",() => {
   });
 
   it("SAVE_BRAND_INITIATED Test",() => {
-    const saveBrandInitiatedAction = {type:"SAVE_BRAND_INITIATED"};
+    const saveBrandInitiatedAction = saveBrandInitiated();
     const expectedState = {
       save: true
     };
@@ -27,7 +28,7 @@ describe("Brand Reducer Tests",() => {
   });
 
   it("SAVE_BRAND_COMPLETED Test",() => {
-    const saveBrandCompletedAction = {type:"SAVE_BRAND_COMPLETED"};
+    const saveBrandCompletedAction = saveBrandCompleted();
     const expectedState = {
       save: false
     };

@@ -12,15 +12,6 @@ const setUp = (props) => {
   return mount(props ? <ApplicationDetails {...props} /> : <ApplicationDetails />);
 };
 
-jest.mock("react", () => {
-  const originReact = jest.requireActual("react");
-  const mUseRef = jest.fn();
-  return {
-    ...originReact,
-    useRef: mUseRef
-  };
-});
-
 describe("ApplicationDetails renders without error", () => {
   let wrapper;
   beforeEach(() => {
@@ -30,8 +21,6 @@ describe("ApplicationDetails renders without error", () => {
 
   it("should render the application details successfully", () => {
     jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: applicationDetails}));
-    const mRef = {current: document.createElement("div")};
-    useRef.mockReturnValue(mRef);
     wrapper = setUp({user: userProfile, org, brand});
     const tree = toJson(wrapper);
     expect(tree).toMatchSnapshot();
