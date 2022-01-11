@@ -7,6 +7,8 @@ import {Provider} from "react-redux";
 import loginTypeCtaMock from "../../../../test/client/mocks/loginTypeCta";
 import {mount} from "enzyme";
 import toJson from "enzyme-to-json";
+import Http from "../../utility/Http";
+import applicationDetails from "../../../../test/client/mocks/applicationDetails";
 
 let store;
 const setUp = (props,bool) => {
@@ -41,6 +43,7 @@ describe("Login Type CTA FAQ Tests", () => {
   });
 
   it("renders without error", () => {
+    jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
     const mRef = {current: document.createElement("div")};
     useRef.mockReturnValue(mRef);
     wrapper = setUp(loginTypeCtaMock["noError"],true);
@@ -49,6 +52,7 @@ describe("Login Type CTA FAQ Tests", () => {
   });
 
   it("renders unauthorised", () => {
+    jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
     const mRef = {current: document.createElement("div")};
     useRef.mockReturnValue(mRef);
     wrapper = setUp(loginTypeCtaMock["unauthorised"],false);
