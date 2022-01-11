@@ -3,7 +3,7 @@ import React, {useRef} from "react";
 import {Provider} from "react-redux";
 import toJson from "enzyme-to-json";
 import {configure, mount} from "enzyme";
-import {clearKeys, testStore} from "../../../../../../src/client/utility/TestingUtils";
+import {clearKeys, realStore} from "../../../../../../src/client/utility/TestingUtils";
 import BrandList from "../../../../../../src/client/components/home/content-renderer/brand/brand-list";
 import profile from "../../../../mocks/userProfile";
 import Http from "../../../../../../src/client/utility/Http";
@@ -32,7 +32,7 @@ const setUp = () => {
       ]
     }
   };
-  store = testStore(mockStore);
+  store = realStore(mockStore);
   // ClaimList.prototype.setState = ({}, callback) => callback && callback();
   return mount(<Provider store={store}><MockNextContext pathname="/brands"><BrandList /></MockNextContext></Provider>);
 };

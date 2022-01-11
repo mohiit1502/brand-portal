@@ -3,7 +3,8 @@ import React, {useRef} from "react";
 import {Provider} from "react-redux";
 import toJson from "enzyme-to-json";
 import {configure, mount} from "enzyme";
-import {clearKeys, testStore} from "../../../../../../src/client/utility/TestingUtils";
+import {clearKeys, realStore} from "../../../../../../src/client/utility/TestingUtils";
+import reducer from "../../../../../../src/client/reducers/claim/claim-reducers";
 import ClaimList from "../../../../../../src/client/components/home/content-renderer/claim/claim-list";
 import profile from "../../../../mocks/userProfile";
 import Http from "../../../../../../src/client/utility/Http";
@@ -21,12 +22,13 @@ const setUp = (pathname) => {
     },
     claims: {
       claimList: [],
-      fetchClaimsCompleted: false
+      fetchClaimsCompleted: true
     },
     modal: {},
     user: {profile}
   };
-  store = testStore(mockStore);
+  store = realStore(mockStore);
+
   return mount(<Provider store={store}><ClaimList history={{location: {pathname}}} /></Provider>);
 };
 
@@ -44,11 +46,11 @@ describe("ClaimList test container", () => {
       let tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
-      wrapper = setUp("/claims/")
-      tree = toJson(wrapper);
-      clearKeys(tree, []);
-      expect(tree).toMatchSnapshot();
-      wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      // wrapper = setUp("/claims/")
+      // tree = toJson(wrapper);
+      // clearKeys(tree, []);
+      // expect(tree).toMatchSnapshot();
+      // wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
     });
     it("displays claim details modal", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));

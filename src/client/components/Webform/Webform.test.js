@@ -44,14 +44,14 @@ describe("Webform", () => {
     };
     wrapper = setUp(props);
 
-    const tree = wrapper.toJSON();
-    clearKeys(tree, []);
+    // const tree = wrapper.toJSON();
+    // clearKeys(tree, []);
     // expect(tree).toMatchSnapshot();
   });
   it("renders the Webform without error", () => {
     jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
     wrapper = setUpMounted();
-    toJson(wrapper);
+    // toJson(wrapper);
     // expect(tree).toMatchSnapshot();
   });
 });

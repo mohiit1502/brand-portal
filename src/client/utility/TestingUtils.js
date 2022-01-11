@@ -9,6 +9,31 @@ export const findByTestAttribute = (component,attr) => component.find(`[data-tes
 
 export const testStore = state => configureMockStore()(state);
 
+export const realStore = state => {
+  const configureStore = initialState => {
+    const composeEnhancers =
+      typeof window === "object" &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+        window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+          serialize: { // prettier-ignore
+            immutable: Immutable
+          }
+        }) : compose;
+    const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
+
+    if (module.hot) {
+      module.hot.accept("./reducers", () => {
+        const nextRootReducer = require("./reducers").default;
+        store.replaceReducer(nextRootReducer);
+      });
+    }
+
+    return store;
+  };
+
+  return configureStore(state || window.__WML_REDUX_INITIAL_STATE__);
+}
+
 export const clearKeys = (tree, arr) => {
   if (arr && arr.indexOf(tree) > -1) {
     return;
