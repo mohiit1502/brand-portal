@@ -46,11 +46,11 @@ describe("ClaimList test container", () => {
       let tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
-      // wrapper = setUp("/claims/")
-      // tree = toJson(wrapper);
-      // clearKeys(tree, []);
-      // expect(tree).toMatchSnapshot();
-      // wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper = setUp("/claims/")
+      tree = toJson(wrapper);
+      clearKeys(tree, []);
+      expect(tree).toMatchSnapshot();
+      wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
     });
     it("displays claim details modal", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
