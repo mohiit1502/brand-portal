@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckBox renders without error 1`] = `
+<CheckBox
+  checkBoxClasses=""
+  colClasses=""
+  containerClasses=""
+  error=""
+  id=""
+  label=""
+  labelClasses=""
+  onChange={[Function]}
+  parentRef={Object {}}
+  preventHTMLRequiredValidation={true}
+  required={true}
+  selected={true}
+  tou={true}
+  touLink=""
+>
+  <div
+    className="c-CheckBox form-row"
+  >
+    <div
+      className="col"
+    >
+      <div
+        className="form-check"
+      >
+        <input
+          checked={true}
+          className="form-check-input"
+          id=""
+          onChange={[Function]}
+          required={false}
+          type="checkbox"
+        />
+        <label
+          className="form-check-label"
+          htmlFor=""
+        >
+          <span>
+            <a
+              href="Walmart Brand Portal Terms of Use 10.25.2021.pdf"
+              target="_blank"
+            />
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+</CheckBox>
+`;

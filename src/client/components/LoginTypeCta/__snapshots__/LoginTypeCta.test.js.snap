@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginTypeCta renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Connect(LoginTypeCta)
+          action=""
+          dispatchLoginAction={[Function]}
+          dispatchRegisterAction={[Function]}
+        >
+          <LoginTypeCta
+            action={Object {}}
+            dispatchLoginAction={[Function]}
+            dispatchRegisterAction={[Function]}
+          >
+            <div
+              className="c-LoginTypeCta"
+            >
+              <div
+                className="page-container css-0 d-flex flex-column"
+              >
+                <div
+                  className="logoBox"
+                >
+                  <img
+                    alt="WBP Dark Logo"
+                    className="logo"
+                    src="BP_Logo_darkBG.svg"
+                  />
+                </div>
+                <div
+                  className="main-container position-absolute"
+                >
+                  <div
+                    className="content-container loader"
+                  >
+                    <div
+                      className="padder p-4"
+                    >
+                      <div
+                        className="tab-content text-center"
+                      >
+                        <span
+                          className="page-header mb-2"
+                        >
+                          <span>
+                            Register
+                          </span>
+                        </span>
+                        <p
+                          className="sub-title mb-0"
+                        >
+                          Streamline 
+                          registration
+                           by using one of your existing
+                        </p>
+                        <p
+                          className="sub-title"
+                        >
+                          Walmart accounts.
+                        </p>
+                        <a
+                          className="app-btn d-block mt-2"
+                          href="/api/falcon/login?clientType=seller"
+                          onClick={[Function]}
+                        >
+                          Use Seller Center Account
+                        </a>
+                        <div
+                          className="OrSeparator w-100 d-flex my-4"
+                        >
+                          <hr />
+                          <span>
+                            OR
+                          </span>
+                          <hr />
+                        </div>
+                        <a
+                          className="app-btn d-block secondary-btn mt-2"
+                          href="/api/falcon/register?clientType=supplier"
+                          onClick={[Function]}
+                        >
+                          Register with Brand Portal
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      className="footnote-container mt-4"
+                    >
+                      <span
+                        className="footnote d-block text-center"
+                      >
+                        We recommend setting your monitor resolution to at least 1024 x 768
+                      </span>
+                      <span
+                        className="footnote d-block text-center"
+                      >
+                        U.S. Users: Please use Chrome v49 or newer
+                      </span>
+                      <span
+                        className="footnote d-block text-center"
+                      >
+                        International Users: Please use Internet Explorer
+                      </span>
+                      <a
+                        className="footnote d-block text-center policy-link"
+                        href="https://corporate.walmart.com/privacy-security"
+                        target="_blank"
+                      >
+                        Privacy Policy
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </LoginTypeCta>
+        </Connect(LoginTypeCta)>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

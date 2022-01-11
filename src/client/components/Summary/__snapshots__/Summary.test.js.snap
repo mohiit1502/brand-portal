@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Summary renders without error 1`] = `
+<div
+  className="c-Summary c-Widget__content"
+>
+  <h4
+    className=""
+  >
+    
+  </h4>
+  <div
+    className="Summary-body "
+  >
+    <ul
+      className="list-unstyled d-flex justify-content-between"
+    >
+      
+    </ul>
+  </div>
+  <footer
+    className="c-Widget__content__footer disabled"
+    onClick={[Function]}
+  >
+    
+  </footer>
+</div>
+`;

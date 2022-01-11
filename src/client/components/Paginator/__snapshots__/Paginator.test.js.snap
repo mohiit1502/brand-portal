@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Paginator renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Paginator
+          createFilters={[Function]}
+          filteredList={Array []}
+          paginatedList={Array []}
+          records={Array []}
+          section=""
+          updateListAndFilters={[Function]}
+        >
+          <div
+            className="c-Paginator row table-manage-row h-10 mb-4 align-items-center"
+          >
+            <div
+              className="col text-left"
+            />
+            <div
+              className="col text-center overflow-auto"
+            >
+              <Connect(PaginationNav)
+                list={Array []}
+                page={
+                  Object {
+                    "list": Array [],
+                    "net": Object {
+                      "pagesCount": 0,
+                      "size": 0,
+                    },
+                    "offset": 0,
+                    "size": 10,
+                    "sizeOptions": Array [
+                      5,
+                      10,
+                      15,
+                      20,
+                      30,
+                    ],
+                  }
+                }
+                updatePage={[Function]}
+              >
+                <PaginationNav
+                  dispatch={[Function]}
+                  list={Array []}
+                  page={
+                    Object {
+                      "list": Array [],
+                      "net": Object {
+                        "pagesCount": 0,
+                        "size": 0,
+                      },
+                      "offset": 0,
+                      "size": 10,
+                      "sizeOptions": Array [
+                        5,
+                        10,
+                        15,
+                        20,
+                        30,
+                      ],
+                    }
+                  }
+                  updatePage={[Function]}
+                />
+              </Connect(PaginationNav)>
+            </div>
+            <div
+              className="col text-right"
+            />
+          </div>
+        </Paginator>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

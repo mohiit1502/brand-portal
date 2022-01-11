@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterType renders without error 1`] = `
+<FilterType
+  clearFilterHandler={[Function]}
+  currentFilters={Object {}}
+  filterMap={Object {}}
+  filterText=""
+  filters={
+    Array [
+      Object {
+        "filterOptions": Array [
+          Object {},
+          Object {},
+        ],
+        "id": "1",
+        "name": "Submitted By",
+      },
+      Object {
+        "filterOptions": Array [
+          Object {},
+          Object {},
+        ],
+        "id": "2",
+        "name": "Associated Brands",
+      },
+      Object {
+        "filterOptions": Array [
+          Object {},
+          Object {},
+        ],
+        "id": "3",
+        "name": "test",
+      },
+    ]
+  }
+/>
+`;
