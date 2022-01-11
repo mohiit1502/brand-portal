@@ -17,7 +17,7 @@ const setUp = (pathname) => {
   const mockStore = {
     dashboard: {
       filter: currentFilters,
-      widgetAction: ""
+      widgetAction: "test-widget-action"
     },
     claims: {
       claimList: [],
@@ -39,7 +39,7 @@ describe("ClaimList test container", () => {
 
   describe("ClaimList renders without error", () => {
     it("should render the ClaimList successfully", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {data: {content: [{}, {}]}}}));
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {data: {content: [{firstName: "test", lastName: "test"}, {}]}}}));
       wrapper = setUp("/claims");
       let tree = toJson(wrapper);
       clearKeys(tree, []);
