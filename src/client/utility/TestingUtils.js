@@ -10,7 +10,7 @@ export const findByTestAttribute = (component,attr) => component.find(`[data-tes
 export const testStore = state => configureMockStore()(state);
 
 export const clearKeys = (tree, arr) => {
-  if (arr.indexOf(tree) > -1) {
+  if (arr && arr.indexOf(tree) > -1) {
     return;
   }
   if (tree && typeof tree === 'object') {
