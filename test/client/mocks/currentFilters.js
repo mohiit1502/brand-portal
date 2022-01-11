@@ -23,7 +23,8 @@ const currentFilters = {
     emailId: 'testacc7@mailinator.com',
     role: 'Super Admin',
     claimType: 'patent'
-  }
+  },
+  'widget-claim-summary': "inprogress"
 };
 
 export default currentFilters;

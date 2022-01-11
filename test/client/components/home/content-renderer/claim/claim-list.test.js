@@ -7,14 +7,13 @@ import {clearKeys, testStore} from "../../../../../../src/client/utility/Testing
 import ClaimList from "../../../../../../src/client/components/home/content-renderer/claim/claim-list";
 import profile from "../../../../mocks/userProfile";
 import Http from "../../../../../../src/client/utility/Http";
-import MockNextContext from "../../../../utility/MockNextContext";
 import currentFilters from "../../../../mocks/currentFilters";
 import Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 let store;
 
-const setUp = () => {
+const setUp = (pathname) => {
   const mockStore = {
     dashboard: {
       filter: currentFilters,
@@ -28,8 +27,7 @@ const setUp = () => {
     user: {profile}
   };
   store = testStore(mockStore);
-  // ClaimList.prototype.setState = ({}, callback) => callback && callback();
-  return mount(<Provider store={store}><MockNextContext pathname="/claims"><ClaimList /></MockNextContext></Provider>);
+  return mount(<Provider store={store}><ClaimList history={{location: {pathname}}} /></Provider>);
 };
 
 describe("ClaimList test container", () => {
@@ -41,13 +39,24 @@ describe("ClaimList test container", () => {
 
   describe("ClaimList renders without error", () => {
     it("should render the ClaimList successfully", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
-      wrapper = setUp();
-      const tree = toJson(wrapper);
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {data: {content: [{}, {}]}}}));
+      wrapper = setUp("/claims");
+      let tree = toJson(wrapper);
+      clearKeys(tree, []);
+      expect(tree).toMatchSnapshot();
+      wrapper = setUp("/claims/")
+      tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
       wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
     });
+    it("displays claim details modal", () => {
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
+      wrapper = setUp("/claims/BPCASE-123")
+      const tree = toJson(wrapper);
+      clearKeys(tree, []);
+      expect(tree).toMatchSnapshot();
+    })
     it("tests for scenario when backend sends error", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {errors: ["error"]}}));
       wrapper = setUp();
