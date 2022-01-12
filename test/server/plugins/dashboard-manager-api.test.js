@@ -3,6 +3,10 @@ import Hapi from "hapi";
 
 describe("Dashboard Tests ",() => {
 
+  jest.mock("/secrets/secrets.json", ()=>({
+    secrets: 'Test Secrets'
+  }), { virtual: true });
+
   it("Should render",() => {
   })
 
