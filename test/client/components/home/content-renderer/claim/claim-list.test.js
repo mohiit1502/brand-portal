@@ -2,9 +2,9 @@
 import React from "react";
 import {Provider} from "react-redux";
 import toJson from "enzyme-to-json";
-import {configure, mount, unmount} from "enzyme";
-import TestRenderer from "react-test-renderer";
-import {clearKeys, realStore} from "../../../../../../src/client/utility/TestingUtils";
+import {configure, mount} from "enzyme";
+import renderer from "react-test-renderer";
+import {clearKeys, realStore, setupFetchThrowStub} from "../../../../../../src/client/utility/TestingUtils";
 import ClaimList from "../../../../../../src/client/components/home/content-renderer/claim/claim-list";
 import profile from "../../../../mocks/userProfile";
 import Http from "../../../../../../src/client/utility/Http";
@@ -28,18 +28,15 @@ const mockStore = {
   user: {profile}
 };
 
-let renderComp;
+let wrapper;
 const setUp = (pathname, mockStore) => {
   store = realStore(mockStore);
-  let wrapper;
-  const {act} = TestRenderer;
-  renderComp = <Provider store={store}><MockNextContext><ClaimList history={{location: {pathname}}} /></MockNextContext></Provider>;
+  const renderComp = <Provider store={store}><MockNextContext><ClaimList history={{location: {pathname}}} /></MockNextContext></Provider>;
   wrapper = mount(renderComp);
   return wrapper;
 };
 
 describe("ClaimList test container", () => {
-  let wrapper;
   beforeEach(() => {
     jest.restoreAllMocks();
     jest.resetAllMocks();
@@ -50,7 +47,7 @@ describe("ClaimList test container", () => {
 
   describe("ClaimList renders without error", () => {
     it("should render the ClaimList successfully", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve(CLAIM_LIST));
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve(CLAIM_LIST.body));
       wrapper = setUp("/claims", mockStore);
       let tree = toJson(wrapper);
       clearKeys(tree, []);
@@ -60,9 +57,14 @@ describe("ClaimList test container", () => {
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
       wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      jest.spyOn(Http, "get").mockImplementation((url, params, callback) => {
+        Promise.resolve({body: CLAIM_LIST.body});
+        callback && callback();
+      });
+      setUp("/claims/", store);
     });
     it("should render without claim summary filter", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: CLAIM_LIST.body}));
       let store = JSON.parse(JSON.stringify(mockStore));
       delete store.dashboard.filter["widget-claim-summary"];
       wrapper = setUp("/claims/", store)
@@ -73,16 +75,24 @@ describe("ClaimList test container", () => {
     it("displays claim details modal", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
       wrapper = setUp("/claims/BPCASE-123", mockStore)
-      const tree = toJson(wrapper);
+      let tree = toJson(wrapper);
+      clearKeys(tree, []);
+      expect(tree).toMatchSnapshot();
+      jest.spyOn(Http, "get").mockImplementation(() => setupFetchThrowStub(404));
+      wrapper = setUp("/claims/BPCASE-123", mockStore)
+      tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
     })
-    it("should trigger claims filter actions", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
+    it("should trigger claims filter actions", async () => {
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: CLAIM_LIST.body}));
       wrapper = setUp("/claims", mockStore)
+      await Promise.resolve();
+      wrapper.update();
       wrapper.find(".clear-btn").at(0).simulate("click");
       wrapper.find(".apply-btn").at(0).simulate("click");
-    })
+      wrapper.find("FilterType").props().clearFilter("brandName", 1);
+    });
     it("should initiate search", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
       wrapper = setUp("/claims", mockStore);
@@ -96,7 +106,8 @@ describe("ClaimList test container", () => {
       const tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
-      wrapper.find(".form-check-input").at(0).simulate("change", {target: {checked: true}});
+      wrapper.find(".form-check-input").at(0).simulate("change");
+      wrapper.find(".form-check-input").at(1).simulate("change");
     })
     it("tests for scenario when backend sends error", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {errors: ["error"]}}));

@@ -382,7 +382,7 @@ class UserList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.userEdit.save) {
+    if (this.props.userEdit.save || this.props.userEdit.get("save")) {
       this.fetchUserData();
       this.props.saveUserCompleted();
     }
@@ -419,21 +419,21 @@ class UserList extends React.Component {
     const state = {...this.state};
 
     const filter = state.filters[ClientUtils.where(state.filters, {id: filterId})];
-    const option = filter.filterOptions[ClientUtils.where(filter.filterOptions, {id: optionId})];
-    option.selected = !option.selected;
-    if (option.value === "all") {
+    const option = filter && filter.filterOptions[ClientUtils.where(filter.filterOptions, {id: optionId})];
+    option && (option.selected = !option.selected);
+    if (option && option.value === "all") {
       filter.filterOptions.forEach(filterOption => {
         filterOption.selected = option.selected;
       });
     } else {
       let boolTrue = true;
-      filter.filterOptions.forEach(filterOption => {
+      filter && filter.filterOptions.forEach(filterOption => {
         if (filterOption.value !== "all") {
           boolTrue = boolTrue && filterOption.selected;
         }
       });
-      const allOption = filter.filterOptions[ClientUtils.where(filter.filterOptions, {value: "all"})];
-      allOption.selected = boolTrue;
+      const allOption = filter && filter.filterOptions[ClientUtils.where(filter.filterOptions, {value: "all"})];
+      allOption && (allOption.selected = boolTrue);
 
     }
     this.setState({

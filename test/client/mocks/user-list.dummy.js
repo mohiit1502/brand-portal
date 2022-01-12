@@ -8,6 +8,7 @@ const USER_LIST = {
         "phoneNumber": "5866666666",
         "emailVerified": true,
         "isUserEnabled": true,
+        "companyName": "test-company",
         "organization": {
           "id": "94ba054-9ef1-4df1-8286-05017a7d8fe2",
           "name": "Apple In USPTO 223",
@@ -37,7 +38,7 @@ const USER_LIST = {
             "statusDetails": "null"
           }
         ],
-        "type": "Internal",
+        "type": "ThirdParty",
         "registrationMode": "SelfRegistered",
         "email": "wm.ropro.stg@mailinator.com",
         "status": "Active",

@@ -24,7 +24,9 @@ const currentFilters = {
     role: 'Super Admin',
     claimType: 'patent'
   },
-  'widget-claim-summary': "inprogress"
+  'widget-claim-summary': "inprogress",
+  'widget-brand-summary': "pending",
+  'widget-user-summary': "pending"
 };
 
 export default currentFilters;
