@@ -275,7 +275,6 @@ class ClaimList extends React.Component {
       statusSet.add(claim.claimStatus);
       claimBySet.add(claim.createdBy);
       claimTypeSet.add(claim.claimType);
-
     });
 
     const brandsFilter = {
@@ -418,7 +417,9 @@ class ClaimList extends React.Component {
                                       <li className="my-3" key={option.id} >
                                         <div className="form-check">
                                           <input className="form-check-input" type="checkbox" value="" id={`${filter.id}-${option.id}`} checked={option.selected}
-                                            onChange={() => {this.onFilterChange(filter.id, option.id);}}/>
+                                            onChange={() => {
+                                              this.onFilterChange(filter.id, option.id);
+                                            }}/>
                                           <label className="form-check-label" htmlFor={`${filter.id}-${option.id}`}>
                                             {option.name}
                                           </label>

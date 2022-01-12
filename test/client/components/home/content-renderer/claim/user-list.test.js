@@ -11,6 +11,7 @@ import Http from "../../../../../../src/client/utility/Http";
 import MockNextContext from "../../../../utility/MockNextContext";
 import currentFilters from "../../../../mocks/currentFilters";
 import Adapter from "enzyme-adapter-react-16";
+import USER_LIST from "../../../../mocks/user-list.dummy";
 
 configure({ adapter: new Adapter() });
 let store;
@@ -45,17 +46,28 @@ describe("UserList test container", () => {
 
   describe("UserList renders without error", () => {
     it("should render the UserList successfully", () => {
-      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve(USER_LIST));
       wrapper = setUp();
       const tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
       wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
     });
-    it("should reset the filters", () => {
+    it("should trigger user filter actions", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
       wrapper = setUp()
       wrapper.find(".clear-btn").at(0).simulate("click");
+      wrapper.find(".apply-btn").at(0).simulate("click");
+    })
+    it("should initiate search", () => {
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {}}));
+      wrapper = setUp()
+      wrapper.find("#search-box").at(0).simulate("change");
+    })
+    it("should add filter", () => {
+      jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve(USER_LIST));
+      wrapper = setUp();
+      setTimeout(() => wrapper.find(".form-check-input").at(0).simulate("change"), 10);
     })
     it("tests for scenario when backend sends error", () => {
       jest.spyOn(Http, "get").mockImplementation(() => Promise.resolve({body: {errors: ["error"]}}));
