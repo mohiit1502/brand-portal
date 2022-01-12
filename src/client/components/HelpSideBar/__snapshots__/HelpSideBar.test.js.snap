@@ -1,115 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Help Side Bar Tests renders without error 1`] = `
-<BrowserRouter>
-  <Router
-    history={
-      Object {
-        "action": "POP",
-        "block": [Function],
-        "createHref": [Function],
-        "go": [Function],
-        "goBack": [Function],
-        "goForward": [Function],
-        "length": 1,
-        "listen": [Function],
-        "location": Object {
-          "hash": "",
-          "pathname": "/",
-          "search": "",
-          "state": undefined,
-        },
-        "push": [Function],
-        "replace": [Function],
-      }
+exports[`HelpSideBar renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
     }
+  }
+>
+  <MockNextContext
+    pathname="/help"
   >
-    <withRouter(HelpSideBar)
-      activeTab="faq"
-      categories={
-        Object {
-          "brand": Object {
-            "categoryText": "Brand Management",
-          },
-          "claim": Object {
-            "categoryText": "Claims Submission",
-          },
-          "contact": Object {
-            "categoryText": "Contact Us",
-          },
-          "faq": Object {
-            "categoryText": "Frequently Asked Questions",
-          },
-          "user": Object {
-            "categoryText": "User Management",
-          },
-        }
-      }
-      categoryHeader="Help Topics"
-      history={
-        Object {
-          "action": "PUSH",
-          "length": 21,
-          "location": Object {
-            "hash": "",
-            "key": "rajbvq",
-            "pathname": "/help",
-            "search": "",
-          },
-        }
-      }
-      location={
-        Object {
-          "hash": "",
-          "key": "rajbvq",
-          "pathname": "/help",
-          "search": "",
-        }
-      }
-      match={
-        Object {
-          "isExact": true,
-          "params": Object {},
-          "path": "/help",
-          "url": "/help",
-        }
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
       }
     >
-      <HelpSideBar
-        activeTab="faq"
-        categories={
-          Object {
-            "brand": Object {
-              "categoryText": "Brand Management",
-            },
-            "claim": Object {
-              "categoryText": "Claims Submission",
-            },
-            "contact": Object {
-              "categoryText": "Contact Us",
-            },
-            "faq": Object {
-              "categoryText": "Frequently Asked Questions",
-            },
-            "user": Object {
-              "categoryText": "User Management",
-            },
-          }
-        }
-        categoryHeader="Help Topics"
+      <Router
         history={
           Object {
             "action": "POP",
             "block": [Function],
+            "canGo": [Function],
             "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
             "go": [Function],
             "goBack": [Function],
             "goForward": [Function],
+            "index": 0,
             "length": 1,
             "listen": [Function],
             "location": Object {
               "hash": "",
-              "pathname": "/",
+              "pathname": "/help",
               "search": "",
               "state": undefined,
             },
@@ -117,74 +54,81 @@ exports[`Help Side Bar Tests renders without error 1`] = `
             "replace": [Function],
           }
         }
-        location={
-          Object {
-            "hash": "",
-            "pathname": "/",
-            "search": "",
-            "state": undefined,
-          }
-        }
-        match={
-          Object {
-            "isExact": true,
-            "params": Object {},
-            "path": "/",
-            "url": "/",
-          }
-        }
       >
-        <div
-          className="c-HelpSideBar h-90"
+        <withRouter(HelpSideBar)
+          activeTab=""
+          categories={Object {}}
+          categoryHeader=""
+          history={Object {}}
+          setActiveTab={[Function]}
         >
-          <div
-            className="c-HelpSideBar__header h4"
+          <HelpSideBar
+            activeTab=""
+            categories={Object {}}
+            categoryHeader=""
+            history={
+              Object {
+                "action": "POP",
+                "block": [Function],
+                "canGo": [Function],
+                "createHref": [Function],
+                "entries": Array [
+                  Object {
+                    "hash": "",
+                    "pathname": "/help",
+                    "search": "",
+                    "state": undefined,
+                  },
+                ],
+                "go": [Function],
+                "goBack": [Function],
+                "goForward": [Function],
+                "index": 0,
+                "length": 1,
+                "listen": [Function],
+                "location": Object {
+                  "hash": "",
+                  "pathname": "/help",
+                  "search": "",
+                  "state": undefined,
+                },
+                "push": [Function],
+                "replace": [Function],
+              }
+            }
+            location={
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              }
+            }
+            match={
+              Object {
+                "isExact": false,
+                "params": Object {},
+                "path": "/",
+                "url": "/",
+              }
+            }
+            setActiveTab={[Function]}
           >
-            Help Topics
-          </div>
-          <ul
-            className="c-HelpSideBar__categories"
-            id="helpSideBar"
-          >
-            <li
-              className="c-HelpSideBar__category active"
-              key="faq"
-              onClick={[Function]}
+            <div
+              className="c-HelpSideBar h-90"
             >
-              Frequently Asked Questions
-            </li>
-            <li
-              className="c-HelpSideBar__category"
-              key="user"
-              onClick={[Function]}
-            >
-              User Management
-            </li>
-            <li
-              className="c-HelpSideBar__category"
-              key="brand"
-              onClick={[Function]}
-            >
-              Brand Management
-            </li>
-            <li
-              className="c-HelpSideBar__category"
-              key="claim"
-              onClick={[Function]}
-            >
-              Claims Submission
-            </li>
-            <li
-              className="c-HelpSideBar__category"
-              key="contact"
-              onClick={[Function]}
-            >
-              Contact Us
-            </li>
-          </ul>
-        </div>
-      </HelpSideBar>
-    </withRouter(HelpSideBar)>
-  </Router>
-</BrowserRouter>
+              <div
+                className="c-HelpSideBar__header h4"
+              />
+              <ul
+                className="c-HelpSideBar__categories"
+                id="helpSideBar"
+              />
+            </div>
+          </HelpSideBar>
+        </withRouter(HelpSideBar)>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
 `;

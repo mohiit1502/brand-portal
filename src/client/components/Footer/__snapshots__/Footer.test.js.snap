@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/dashboard"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/dashboard",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/dashboard",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/dashboard",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Footer
+          isWebform={false}
+        >
+          <div
+            className="c-Footer"
+          >
+            <div
+              className="row"
+            >
+              <div
+                className="col"
+              >
+                <nav
+                  className="navbar navbar-expand-lg login-footer-nav"
+                >
+                  <div
+                    className="c-Footer__logoSocialContainer"
+                  >
+                    <img
+                      className="c-Footer__wmWhiteLogo"
+                      src="WMWhite-horizontal.svg"
+                    />
+                  </div>
+                  <div
+                    className="collapse navbar-collapse navbar-collapsible-footer"
+                    id="collapsible-footer"
+                  >
+                    <ul
+                      className="navbar-nav ml-auto"
+                    >
+                      <li
+                        className="nav-item mx-1 d-flex align-items-center"
+                      >
+                        <Link
+                          className="nav-link btn login-btn py-1"
+                          onClick={[Function]}
+                          to="/login"
+                        >
+                          <LinkAnchor
+                            className="nav-link btn login-btn py-1"
+                            href="/login"
+                            navigate={[Function]}
+                            onClick={[Function]}
+                          >
+                            <a
+                              className="nav-link btn login-btn py-1"
+                              href="/login"
+                              onClick={[Function]}
+                            >
+                              Login
+                            </a>
+                          </LinkAnchor>
+                        </Link>
+                      </li>
+                      <li
+                        className="nav-item ml-1"
+                      >
+                        <Link
+                          className="nav-link"
+                          onClick={[Function]}
+                          to="/register"
+                        >
+                          <LinkAnchor
+                            className="nav-link"
+                            href="/register"
+                            navigate={[Function]}
+                            onClick={[Function]}
+                          >
+                            <a
+                              className="nav-link"
+                              href="/register"
+                              onClick={[Function]}
+                            >
+                              Register
+                            </a>
+                          </LinkAnchor>
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+            </div>
+            <div
+              className="row"
+            >
+              <div
+                className="col"
+              >
+                <div
+                  className="c-Footer__copyrightContainer"
+                >
+                  <span
+                    className="c-Footer__copyrightText float-left"
+                  >
+                    © 2021 Walmart. All rights reserved.
+                    <a
+                      className="c-Footer__privacyNav float-right"
+                      href="https://corporate.walmart.com/privacy-security"
+                      target="_blank"
+                    >
+                      Privacy Policy
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Footer>
+         
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

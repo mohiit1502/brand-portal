@@ -1,0 +1,249 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WebformWorkflowDecider renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Connect(WebformWorkflowDecider)
+          dispatchWebformState={[Function]}
+          webformWorkflow=""
+        >
+          <WebformWorkflowDecider
+            dispatchWebformState={[Function]}
+            webformWorkflow={Object {}}
+          >
+            <div
+              className="c-WebformWorkflowDecider"
+            >
+              <Connect(HomeHeader)
+                config={
+                  Object {
+                    "disclaimer": Object {
+                      "actionBtnText": "OK",
+                      "btnText": "View disclaimer",
+                      "classes": "d-inline-block anchor-styled mb-35rem",
+                      "modalDisclaimerText": "To make a claim of IP infringement, you will be required to declare, under penalty of perjury, that the information provided is correct and that you are the IP rights owner or an authorized agent. If the information you submit is inaccurate or incomplete, we may be unable to process or respond to your request. If you have questions about IP or whether your rights have been infringed, consider seeking legal advice.",
+                      "modalHeaderText": "Disclaimer",
+                    },
+                    "header": Object {
+                      "classes": "h4 font-weight-bold",
+                      "text": "Intellectual Property (IP) Claim Form",
+                    },
+                    "help": Object {
+                      "actionBtnText": "OK",
+                      "classes": "d-inline-block anchor-styled",
+                      "modalHeaderText": "Help",
+                      "modalHelpText": Object {
+                        "content": Object {
+                          "partial1": Object {
+                            "anchor1": Object {
+                              "href": "mailto:ipinvest@walmart.com",
+                              "text": "ipinvest@walmart.com",
+                            },
+                            "chunk1": "If you have any issues with filing a claim, please reach out to ",
+                            "chunk2": " for further assistance.",
+                          },
+                        },
+                      },
+                    },
+                    "subText": Object {
+                      "classes": "d-inline-block mr-3 mb-35rem",
+                      "text": "All of the following fields are required",
+                    },
+                    "titleClass": "ml-8",
+                  }
+                }
+                hideHelp={true}
+                isWebform={true}
+              >
+                <HomeHeader
+                  config={
+                    Object {
+                      "disclaimer": Object {
+                        "actionBtnText": "OK",
+                        "btnText": "View disclaimer",
+                        "classes": "d-inline-block anchor-styled mb-35rem",
+                        "modalDisclaimerText": "To make a claim of IP infringement, you will be required to declare, under penalty of perjury, that the information provided is correct and that you are the IP rights owner or an authorized agent. If the information you submit is inaccurate or incomplete, we may be unable to process or respond to your request. If you have questions about IP or whether your rights have been infringed, consider seeking legal advice.",
+                        "modalHeaderText": "Disclaimer",
+                      },
+                      "header": Object {
+                        "classes": "h4 font-weight-bold",
+                        "text": "Intellectual Property (IP) Claim Form",
+                      },
+                      "help": Object {
+                        "actionBtnText": "OK",
+                        "classes": "d-inline-block anchor-styled",
+                        "modalHeaderText": "Help",
+                        "modalHelpText": Object {
+                          "content": Object {
+                            "partial1": Object {
+                              "anchor1": Object {
+                                "href": "mailto:ipinvest@walmart.com",
+                                "text": "ipinvest@walmart.com",
+                              },
+                              "chunk1": "If you have any issues with filing a claim, please reach out to ",
+                              "chunk2": " for further assistance.",
+                            },
+                          },
+                        },
+                      },
+                      "subText": Object {
+                        "classes": "d-inline-block mr-3 mb-35rem",
+                        "text": "All of the following fields are required",
+                      },
+                      "titleClass": "ml-8",
+                    }
+                  }
+                  hideHelp={true}
+                  isWebform={true}
+                  toggleModal={[Function]}
+                >
+                  <nav
+                    className="navbar navbar-expand-md navbar-dark home-header-nav home-header-nav-z-index"
+                  >
+                    <Link
+                      className="navbar-brand walmart-brand"
+                      to="/dashboard"
+                    >
+                      <LinkAnchor
+                        className="navbar-brand walmart-brand"
+                        href="/dashboard"
+                        navigate={[Function]}
+                      >
+                        <a
+                          className="navbar-brand walmart-brand"
+                          href="/dashboard"
+                          onClick={[Function]}
+                        >
+                          <img
+                            src="WMWhite-horizontal.svg"
+                          />
+                        </a>
+                      </LinkAnchor>
+                    </Link>
+                    <button
+                      aria-controls="collapsible-header"
+                      aria-expanded="false"
+                      aria-label="Toggle navigation"
+                      className="navbar-toggler"
+                      data-target="#collapsible-header"
+                      data-toggle="collapse"
+                      type="button"
+                    >
+                      <span
+                        className="navbar-toggler-icon"
+                      />
+                    </button>
+                    <div
+                      className="collapse navbar-collapse navbar-collapsible-header"
+                      id="collapsible-header"
+                    >
+                      <ul
+                        className="navbar-nav ml-auto"
+                      >
+                        <li
+                          className="nav-item nav-item-help mx-4"
+                        />
+                      </ul>
+                    </div>
+                  </nav>
+                </HomeHeader>
+              </Connect(HomeHeader)>
+              <div
+                className=""
+              />
+              <div
+                className="fixed-bottom"
+              >
+                <Footer
+                  isWebform={true}
+                >
+                  <div
+                    className="c-Footer"
+                  >
+                    <div
+                      className="row"
+                    >
+                      <div
+                        className="col"
+                      >
+                        <div
+                          className="c-Footer__copyrightContainer"
+                        >
+                          <span
+                            className="c-Footer__copyrightText float-left"
+                          >
+                            © 2021 Walmart. All rights reserved.
+                            <a
+                              className="c-Footer__privacyNav float-right"
+                              href="https://corporate.walmart.com/privacy-security"
+                              target="_blank"
+                            >
+                              Privacy Policy
+                            </a>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Footer>
+              </div>
+            </div>
+          </WebformWorkflowDecider>
+        </Connect(WebformWorkflowDecider)>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WidgetSectionContainer renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <WidgetSectionContainer
+          authConfig={Object {}}
+          data={Object {}}
+          fetchComplete={true}
+          sections={Object {}}
+          userProfile={Object {}}
+          widgetCommon={Object {}}
+          widgetStack={Object {}}
+        >
+          <div
+            className="c-WidgetSectionContainer px-25 py-3 h-90"
+          />
+        </WidgetSectionContainer>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

@@ -196,7 +196,7 @@ class ClaimList extends React.Component {
 
     let claimList = [];
 
-    if (response.data.content && response.data.content) {
+    if (response.data && response.data.content) {
       claimList = response.data.content.map((brand, i) => {
         const newClaim = { ...brand, sequence: i + 1 };
         newClaim.original = brand;

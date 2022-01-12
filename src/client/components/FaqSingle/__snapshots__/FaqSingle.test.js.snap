@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FaqSingle renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <withRouter(Connect(FaqSingle))
+          data={Object {}}
+          expandPreState={true}
+          goToContactUs={[Function]}
+          history={Object {}}
+          toggleImageViewerDispatcher={[Function]}
+        >
+          <Connect(FaqSingle)
+            data={Object {}}
+            expandPreState={true}
+            goToContactUs={[Function]}
+            history={
+              Object {
+                "action": "POP",
+                "block": [Function],
+                "canGo": [Function],
+                "createHref": [Function],
+                "entries": Array [
+                  Object {
+                    "hash": "",
+                    "pathname": "/help",
+                    "search": "",
+                    "state": undefined,
+                  },
+                ],
+                "go": [Function],
+                "goBack": [Function],
+                "goForward": [Function],
+                "index": 0,
+                "length": 1,
+                "listen": [Function],
+                "location": Object {
+                  "hash": "",
+                  "pathname": "/help",
+                  "search": "",
+                  "state": undefined,
+                },
+                "push": [Function],
+                "replace": [Function],
+              }
+            }
+            location={
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              }
+            }
+            match={
+              Object {
+                "isExact": false,
+                "params": Object {},
+                "path": "/",
+                "url": "/",
+              }
+            }
+            toggleImageViewerDispatcher={[Function]}
+          >
+            <FaqSingle
+              data={Object {}}
+              expandPreState={true}
+              goToContactUs={[Function]}
+              history={
+                Object {
+                  "action": "POP",
+                  "block": [Function],
+                  "canGo": [Function],
+                  "createHref": [Function],
+                  "entries": Array [
+                    Object {
+                      "hash": "",
+                      "pathname": "/help",
+                      "search": "",
+                      "state": undefined,
+                    },
+                  ],
+                  "go": [Function],
+                  "goBack": [Function],
+                  "goForward": [Function],
+                  "index": 0,
+                  "length": 1,
+                  "listen": [Function],
+                  "location": Object {
+                    "hash": "",
+                    "pathname": "/help",
+                    "search": "",
+                    "state": undefined,
+                  },
+                  "push": [Function],
+                  "replace": [Function],
+                }
+              }
+              location={
+                Object {
+                  "hash": "",
+                  "pathname": "/help",
+                  "search": "",
+                  "state": undefined,
+                }
+              }
+              match={
+                Object {
+                  "isExact": false,
+                  "params": Object {},
+                  "path": "/",
+                  "url": "/",
+                }
+              }
+              toggleImageViewerDispatcher={[Function]}
+            >
+              <div
+                className="c-FaqSingle"
+              >
+                <Accordion
+                  data={Object {}}
+                  expanded={true}
+                  setExpanded={[Function]}
+                >
+                  <div
+                    className="c-Accordion"
+                  >
+                    <div
+                      className="c-Accordion__button-container"
+                      data-test="accordion-buttonPanel"
+                    >
+                      <button
+                        className="c-Accordion__button expanded"
+                        data-test="accordion-button"
+                        onClick={[Function]}
+                      />
+                    </div>
+                    <div
+                      className="c-Accordion__panel expanded"
+                      style={
+                        Object {
+                          "maxHeight": "100%",
+                        }
+                      }
+                    />
+                  </div>
+                </Accordion>
+              </div>
+            </FaqSingle>
+          </Connect(FaqSingle)>
+        </withRouter(Connect(FaqSingle))>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

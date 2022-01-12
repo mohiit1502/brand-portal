@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpMain renders without error 1`] = `
+<MockNextContext
+  pathname="/help"
+>
+  <HelpMain
+    activeTab="1"
+    content={
+      Object {
+        "1": Object {
+          "id": "",
+        },
+      }
+    }
+    goToContactUs={[Function]}
+  />
+   
+</MockNextContext>
+`;

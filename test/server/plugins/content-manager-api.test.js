@@ -26,6 +26,11 @@ const endPoints = [
   },
   {
     method: "GET",
+    url: "/api/modalConfig",
+    functionName: "Get Modal Configuration"
+  },
+  {
+    method: "GET",
     url: "/api/loginConfig",
     functionName: "Get Landing Page Configuration"
   },

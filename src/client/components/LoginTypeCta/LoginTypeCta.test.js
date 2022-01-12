@@ -1,28 +1,23 @@
-/* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import React, {useRef} from "react";
 import LoginTypeCta from "./LoginTypeCta";
-import {testStore} from "../../utility/TestingUtils";
-import {BrowserRouter} from "react-router-dom";
-import {Provider} from "react-redux";
-import loginTypeCtaMock from "../../../../test/client/mocks/loginTypeCta";
-import {mount} from "enzyme";
 import toJson from "enzyme-to-json";
+import {mount} from "enzyme";
+import {Provider} from "react-redux";
+import MockNextContext from "../../../../test/client/utility/MockNextContext";
+import {clearKeys, testStore} from "../../utility/TestingUtils";
 
+let props;
 let store;
-const setUp = (props,bool) => {
-  const mockStore = {
-    userRegistration :{
-      action: "login"
+
+const setUp = (props) => {
+  store = testStore({
+    userRegistration:{
+      action:{}
     }
-  };
-  const mockStore2 = {
-    userRegistration :{
-    }
-  }
-  store = testStore(bool ? mockStore : mockStore2);
-  return mount(<Provider store={store}><BrowserRouter><LoginTypeCta {...props} /></BrowserRouter></Provider>);
+  });
+  return mount(props ? <Provider store={store}><MockNextContext pathname="/help"><LoginTypeCta {...props} /></MockNextContext></Provider> : <Provider store={store}><MockNextContext><LoginTypeCta /></MockNextContext></Provider>);
 };
 
 jest.mock("react", () => {
@@ -34,27 +29,25 @@ jest.mock("react", () => {
   };
 });
 
-describe("Login Type CTA FAQ Tests", () => {
 
+
+describe("LoginTypeCta", () => {
   let wrapper;
   beforeEach(() => {
     jest.restoreAllMocks();
     jest.resetAllMocks();
   });
-
   it("renders without error", () => {
-    const mRef = {current: document.createElement("div")};
-    useRef.mockReturnValue(mRef);
-    wrapper = setUp(loginTypeCtaMock["noError"],true);
-    const tree = toJson(wrapper);
-    expect(tree).toMatchSnapshot();
-  });
+    props = {
+      action: "",
+      dispatchLoginAction: () => {},
+      dispatchRegisterAction: () => {}
+    };
+    wrapper = setUp(props);
 
-  it("renders unauthorised", () => {
-    const mRef = {current: document.createElement("div")};
-    useRef.mockReturnValue(mRef);
-    wrapper = setUp(loginTypeCtaMock["unauthorised"],false);
     const tree = toJson(wrapper);
+    clearKeys(tree, []);
     expect(tree).toMatchSnapshot();
+
   });
 });

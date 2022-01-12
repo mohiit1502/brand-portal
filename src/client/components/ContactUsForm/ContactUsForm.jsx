@@ -25,8 +25,8 @@ class ContactUsForm extends React.Component {
 
     this.state = {
       form: {
-        inputData: this.props.contactUsForm.fields,
-        ...this.props.contactUsForm.formConfig
+        inputData: this.props.contactUsForm?.fields,
+        ...this.props.contactUsForm?.formConfig
       }
     };
 
@@ -154,7 +154,7 @@ ContactUsForm.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    contactUsForm: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.CONTACTUS
+    contactUsForm: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.CONTACTUS,
   };
 };
 

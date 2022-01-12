@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tile renders without error 1`] = `
+<div
+  className="c-Tile col "
+>
+  <div
+    className="c-Tile__content "
+  >
+    <div
+      className="c-Tile__content__header "
+    />
+    <div
+      className="c-Tile__content__body "
+    />
+  </div>
+</div>
+`;

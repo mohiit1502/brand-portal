@@ -4,12 +4,11 @@ exports[`BrandList test container BrandList renders without error should render 
 <Provider
   store={
     Object {
-      "clearActions": [Function],
       "dispatch": [Function],
-      "getActions": [Function],
       "getState": [Function],
       "replaceReducer": [Function],
       "subscribe": [Function],
+      Symbol(observable): [Function],
     }
   }
 >
@@ -86,6 +85,7 @@ exports[`BrandList test container BrandList renders without error should render 
                 "emailId": "testacc7@mailinator.com",
                 "orgId": "e52bb8ad-c73d-4f4e-9980-9bb265b8dd9d",
                 "role": "Super Admin",
+                "widget-claim-summary": "inprogress",
                 "widget-claims-by-brand": Object {
                   "claimType": "trademark",
                   "dateRange": "customDate",
@@ -1083,12 +1083,11 @@ exports[`BrandList test container BrandList renders without error tests for scen
 <Provider
   store={
     Object {
-      "clearActions": [Function],
       "dispatch": [Function],
-      "getActions": [Function],
       "getState": [Function],
       "replaceReducer": [Function],
       "subscribe": [Function],
+      Symbol(observable): [Function],
     }
   }
 >
@@ -1165,6 +1164,7 @@ exports[`BrandList test container BrandList renders without error tests for scen
                 "emailId": "testacc7@mailinator.com",
                 "orgId": "e52bb8ad-c73d-4f4e-9980-9bb265b8dd9d",
                 "role": "Super Admin",
+                "widget-claim-summary": "inprogress",
                 "widget-claims-by-brand": Object {
                   "claimType": "trademark",
                   "dateRange": "customDate",

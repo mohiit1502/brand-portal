@@ -9,6 +9,9 @@ import sellerResponse from "../mocks/seller-response.json";
 import ServerHttpError from "../../../src/server/utility/ServerHttpError";
 import failureResponseWithErrorMessage from "../mocks/failure-response-with-error-message.json";
 import failureResponseWithoutErrorMessage from "../mocks/failure-response-without-error-message.json";
+const fs = require('fs');
+import FormData from "form-data";
+const streamToPromise = require('stream-to-promise');
 
 let server;
 let getHeadersMethod;
@@ -192,26 +195,83 @@ describe("Get Seller API Tests",() => {
     .mockResolvedValue("[50, 80, 100]");
 
 
-  it("Get Sellers Failed request",() => {
+  it("Get Sellers Failed request",(done) => {
     let serverRetryRequest = jest.spyOn(ServerUtils,"retry")
       .mockImplementation(() => {
-      throw new ServerHttpError(500, "Test Error");
-    });
+        throw new ServerHttpError(500, "Test Error", "This is a test error message");
+      });
     server.inject(request).then(res => {
       expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
       done();
     });
   });
 
-  it("Get Sellers Success request",() => {
+  it("Get Sellers Success request",(done) => {
     let serverRetryRequest = jest.spyOn(ServerUtils,"retry")
       .mockImplementation(() => {
         return sellerResponse;
-    });
+      });
+    const expectedOutput = [{
+      "id": "6137E969C9E94C318223C159FDFE7BAE",
+      "value": "TEST1"
+    }]
     server.inject(request).then(res => {
-      expect(JSON.parse(res.payload)).toEqual(successResponse);
+      expect(JSON.parse(res.payload)).toEqual(expectedOutput);
       done();
     });
   });
 
 });
+
+describe("Upload Webform Docs Test",() => {
+  beforeEach(()=>{
+    setUp();
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("Successful", (done) => {
+    let postAsFormDataMock = jest.spyOn(ServerHttp,"postAsFormData").mockImplementation(() => {
+      return successResponse;
+    })
+    let form = new FormData();
+    form.append('file',fs.createReadStream(process.cwd() + '/test/server/mocks/mockFileUpload.txt'),{filename: 'mockFileUpload'})
+    const request = {
+      method: "POST",
+      url: "/api/claims/uploadWebFormDocument",
+      headers: form.getHeaders()
+    }
+    streamToPromise(form).then((payload) => {
+      request.payload = payload;
+      server.inject(request).then(res => {
+        expect(JSON.parse(res.payload)).toEqual(successResponse.body);
+        done();
+      }).catch(err => {
+        console.log(err);
+      })
+    })
+  })
+
+  it("failure", (done) => {
+    let postAsFormDataMock = jest.spyOn(ServerHttp,"postAsFormData").mockImplementation(() => {
+      throw new ServerHttpError(500, "Test Error", "This is a test error message");
+    })
+    let form = new FormData();
+    form.append('file',fs.createReadStream(process.cwd() + '/test/server/mocks/mockFileUpload.txt'),{filename: 'mockFileUpload'})
+    const request = {
+      method: "POST",
+      url: "/api/claims/uploadWebFormDocument",
+      headers: form.getHeaders()
+    }
+    streamToPromise(form).then((payload) => {
+      request.payload = payload;
+      server.inject(request).then(res => {
+        expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
+        done();
+      }).catch(err => {
+        console.log(err);
+      })
+    })
+  })
+})
