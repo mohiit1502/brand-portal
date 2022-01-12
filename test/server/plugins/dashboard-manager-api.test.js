@@ -4,8 +4,6 @@ import Hapi from "hapi";
 describe("Dashboard Tests ",() => {
 
   it("Should render",() => {
-    const server = new Hapi.Server();;
-    server.inject({});
   })
 
 });
