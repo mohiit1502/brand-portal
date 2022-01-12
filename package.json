@@ -88,7 +88,8 @@
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "reselect-immutable-helpers": "^1.2.2",
-    "resize-observer-polyfill": "^1.5.1"
+    "resize-observer-polyfill": "^1.5.1",
+    "stream-to-promise": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
