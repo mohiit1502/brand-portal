@@ -57,6 +57,120 @@ const USER_LIST = {
           "roleCode": 1,
           "roleView": "SUPER_ADMIN"
         }
+      },
+      {
+        "firstName": "Mohit-2",
+        "lastName": "Nagar-2",
+        "phoneCountry": "1",
+        "phoneNumber": "58666666326",
+        "emailVerified": true,
+        "isUserEnabled": true,
+        "companyName": "test-company-2",
+        "organization": {
+          "id": "94ba054-9ef1-4df1-8286-05017a7d8fe2",
+          "name": "Apple In USPTO 223",
+          "status": "Accepted",
+          "statusDetails": "null",
+          "isOrgEnabled": true
+        },
+        "role": {
+          "name": "Super Admin"
+        },
+        "brands": [
+          {
+            "id": "294ba054-9ef1-4df1-8286-05017a7d8fe2",
+            "name": "Test-brand-833",
+            "status": "Verified"
+          },
+          {
+            "id": "ed6ffdc2-eca9-4ead-9290-46106ef03559",
+            "name": "alsjfdlasdk",
+            "status": "Pending Verification",
+            "statusDetails": "null"
+          },
+          {
+            "id": "d5e752ea-8d0c-46a0-8615-1b5a9d95239e",
+            "name": "blsjfdlakajhs",
+            "status": "Pending Verification",
+            "statusDetails": "null"
+          }
+        ],
+        "type": "ThirdParty",
+        "registrationMode": "SelfRegistered",
+        "email": "wm.ropro.stg@mailinator.com",
+        "status": "Active",
+        "statusDetails": "self registered",
+        "createdBy": "wm.ropro.stg@mailinator.com",
+        "createTs": "2022-01-10T17:49:35.080Z",
+        "source": "KRAKEN",
+        "lastUpdatedBy": "wm.ropro.stg@mailinator.com",
+        "lastUpdateTs": "2022-01-10T18:01:04.507Z",
+        "isSellerInfoUSPresent": false,
+        "isOrgEnabled": true,
+        "workflow": {
+          "code": 4,
+          "workflow": "portal_dashboard",
+          "defaultView": "portal-view-users",
+          "roleCode": 1,
+          "roleView": "SUPER_ADMIN"
+        }
+      },
+      {
+        "firstName": "Mohit-0",
+        "lastName": "Nagar-0",
+        "phoneCountry": "1",
+        "phoneNumber": "58666666777",
+        "emailVerified": true,
+        "isUserEnabled": true,
+        "companyName": "test-company-1",
+        "organization": {
+          "id": "94ba054-9ef1-4df1-8286-05017a7d8fe2",
+          "name": "Apple In USPTO 223",
+          "status": "Accepted",
+          "statusDetails": "null",
+          "isOrgEnabled": true
+        },
+        "role": {
+          "name": "Super Admin"
+        },
+        "brands": [
+          {
+            "id": "294ba054-9ef1-4df1-8286-05017a7d8fe2",
+            "name": "Test-brand-833",
+            "status": "Verified"
+          },
+          {
+            "id": "ed6ffdc2-eca9-4ead-9290-46106ef03559",
+            "name": "alsjfdlasdk",
+            "status": "Pending Verification",
+            "statusDetails": "null"
+          },
+          {
+            "id": "d5e752ea-8d0c-46a0-8615-1b5a9d95239e",
+            "name": "blsjfdlakajhs",
+            "status": "Pending Verification",
+            "statusDetails": "null"
+          }
+        ],
+        "type": "ThirdParty",
+        "registrationMode": "SelfRegistered",
+        "email": "wm.ropro.stg@mailinator.com",
+        "status": "Active",
+        "statusDetails": "self registered",
+        "createdBy": "wm.ropro.stg@mailinator.com",
+        "createTs": "2022-01-10T17:49:35.080Z",
+        "source": "KRAKEN",
+        "lastUpdatedBy": "wm.ropro.stg@mailinator.com",
+        "lastUpdateTs": "2022-01-10T18:01:04.507Z",
+        "isSellerInfoUSPresent": false,
+        "isOrgEnabled": true,
+        "workflow": {
+          "code": 4,
+          "workflow": "portal_dashboard",
+          "defaultView": "portal-view-users",
+          "roleCode": 1,
+          "roleView": "SUPER_ADMIN"
+        }
       }
     ],
     "pageable": "INSTANCE",

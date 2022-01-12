@@ -1,5 +1,7 @@
 /* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
-import React, {useRef} from "react";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+import React from "react";
 import {Provider} from "react-redux";
 import toJson from "enzyme-to-json";
 import {configure, mount} from "enzyme";
@@ -135,7 +137,14 @@ describe("UserList test container", () => {
       const tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
+      wrapper.find(".table-row > .table-head-cell").at(0).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(0).simulate("click");
       wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(3).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(3).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(3).simulate("click");
       jest.spyOn(Http, "get").mockImplementation((url, params, callback) => {
         callback && callback();
         return Promise.resolve(USER_LIST);

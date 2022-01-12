@@ -56,7 +56,14 @@ describe("ClaimList test container", () => {
       tree = toJson(wrapper);
       clearKeys(tree, []);
       expect(tree).toMatchSnapshot();
+      wrapper.find(".table-row > .table-head-cell").at(0).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(0).simulate("click");
       wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(1).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(2).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(2).simulate("click");
+      wrapper.find(".table-row > .table-head-cell").at(3).simulate("click");
       jest.spyOn(Http, "get").mockImplementation((url, params, callback) => {
         Promise.resolve({body: CLAIM_LIST.body});
         callback && callback();
