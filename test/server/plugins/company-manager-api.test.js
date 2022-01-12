@@ -173,7 +173,7 @@ describe("Test Company Manager API",() => {
 
 describe("Doc upload Tests ",() => {
 
-  const apis = ["/api/company/uploadBusinessDocument","/api/company/uploadBusinessDocument"]
+  const apis = ["/api/company/uploadBusinessDocument","/api/company/uploadAdditionalDocument"]
   beforeEach(()=>{
     ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
       .mockResolvedValueOnce("https://test.com")
