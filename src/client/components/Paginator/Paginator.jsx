@@ -98,7 +98,6 @@ class Paginator extends Component {
 }
 
 Paginator.propTypes = {
-  createFilters: PropTypes.func,
   filteredList: PropTypes.array,
   paginatedList: PropTypes.array,
   records: PropTypes.array,

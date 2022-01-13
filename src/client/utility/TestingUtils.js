@@ -56,7 +56,7 @@ export const clearKeys = (tree, arr) => {
   }
 }
 
-export function setupFetchStub(data) {
+export function setupFetchStub(data, status) {
   return function fetchStub(_url) {
     return new Promise((resolve) => {
       resolve({
@@ -64,12 +64,13 @@ export function setupFetchStub(data) {
           Promise.resolve({
             data,
           }),
+        status: status || 200
       })
     })
   }
 }
 
-export function setupFetchThrowStub() {
-  const error = new ClientHttpError(500, "test-error"); // Directly throwing new ClientHttpError fails in Jest
+export function setupFetchThrowStub(code) {
+  const error = new ClientHttpError(code || 500, "test-error"); // Directly throwing new ClientHttpError fails in Jest
   throw error;
 }

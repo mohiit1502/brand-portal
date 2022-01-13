@@ -37,7 +37,6 @@ import HelpSideBar from "./HelpSideBar";
 import Hero from "./Hero";
 import ImageViewer from "./ImageViewer";
 import LoginFaq from "./LoginFaq";
-import MemoizedTable from "./MemoizedTable";
 import NoRecordsMatch from "./custom-components/NoRecordsMatch";
 import ResetPasswordTemplate from "./custom-components/modal/templates/ResetPasswordTemplate";
 import StackedBarChart from "./StackedBarChart";
@@ -90,7 +89,6 @@ export {
   Hero,
   ImageViewer,
   LoginFaq,
-  MemoizedTable,
   NoRecordsMatch,
   ResetPasswordTemplate,
   StackedBarChart,

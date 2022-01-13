@@ -18,8 +18,8 @@ export default class SearchUtil {
                 || record.createdByName.toLowerCase().indexOf(searchText) !== -1
                 || record.claimDate.toLowerCase().indexOf(searchText) !== -1
                 || record.claimStatus.toLowerCase().indexOf(searchText) !== -1;
-                case "users": return record.username.toLowerCase().indexOf(searchText) !== -1
-                || record.role.toLowerCase().indexOf(searchText) !== -1
+                case "users": return record.username && record.username.toLowerCase().indexOf(searchText) !== -1
+                || record.role.toLowerCase && record.role.toLowerCase().indexOf(searchText) !== -1
                 || record.status.toLowerCase().indexOf(searchText) !== -1
                 || record.brands.join(",").toLowerCase().indexOf(searchText) !== -1;
                 default: return true;
