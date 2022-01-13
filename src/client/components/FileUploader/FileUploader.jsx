@@ -87,7 +87,6 @@ const FileUploader = props => {
     </div>
   );
 };
-
 FileUploader.propTypes = {
   buttonText: PropTypes.string,
   cancelHandlerArg: PropTypes.string,
