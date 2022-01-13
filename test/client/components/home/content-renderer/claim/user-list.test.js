@@ -10,7 +10,6 @@ import Cookies from "electrode-cookies";
 import {
   clearKeys,
   realStore,
-  setupFetchStub,
   setupFetchThrowStub
 } from "../../../../../../src/client/utility/TestingUtils";
 import UserList from "../../../../../../src/client/components/home/content-renderer/user/user-list";
