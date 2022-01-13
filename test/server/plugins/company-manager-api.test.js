@@ -2,7 +2,7 @@ import Hapi from "hapi";
 import ServerUtils from "../../../src/server/utility/server-utils";
 import headerResponse from "../mocks/headers-response.json";
 import mixpanel from "../../../src/server/utility/mixpanelutility";
-import classUnderTest from "../../../src/server/plugins/claim/claim-manager-api";
+import classUnderTest from "../../../src/server/plugins/company/company-manager-api";
 import ServerHttp from "../../../src/server/utility/ServerHttp";
 import successResponse from "../mocks/success-response.json";
 import sellerResponse from "../mocks/seller-response.json";
@@ -38,44 +38,35 @@ const setUp = () => {
   server.register(classUnderTest);
 };
 
-
 const endPoints =  [
   {
-    functionName: "Get Claims",
+    functionName: "Company name availability",
     method: "GET",
-    url: "/api/claims"
+    url: "/api/company/availability"
   },
   {
-    functionName: "Get Claim",
+    functionName: "Check Trade mark Availability",
     method: "GET",
-    url: "/api/claims/{ticketId}"
+    url: "/api/brand/trademark/validity/{trademarkNumber}"
   },
   {
     method: "POST",
-    url: "/api/claims",
-    functionName: "Create Claim",
+    url: "/api/org/register",
+    functionName: "Register Company",
     payload: {
       test: "This is test payload"
     }
   },
   {
     method: "GET",
-    url: "/api/claims/types",
-    functionName: "Get Claim Types"
-  },
-  {
-    method: "POST",
-    url: "/api/claims/webform",
-    functionName: "Create web-form Claim",
-    payload: {
-      test: "This is test payload"
-    }
+    url: "/api/org/applicationDetails/{orgId}",
+    functionName: "Get Application Details"
   }
 ];
 
-describe("Test Claim Manager API",() => {
+describe("Test Company Manager API",() => {
 
-  describe("Claim Api Successful",() => {
+  describe("Company APIs Successful",() => {
     beforeEach(()=>{
       ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
         .mockResolvedValueOnce("https://test.com")
@@ -110,8 +101,11 @@ describe("Test Claim Manager API",() => {
     });
   });
 
-  describe("Claim APIs failure with error message",() => {
+  describe("Company APIs failure with error message",() => {
     beforeEach(()=>{
+      ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
+        .mockResolvedValueOnce("https://test.com")
+        .mockResolvedValueOnce("/test");
       setUp();
     });
     afterEach(() => {
@@ -141,8 +135,11 @@ describe("Test Claim Manager API",() => {
     });
   });
 
-  describe("Claim APIs failure without error message",() => {
+  describe("Company APIs failure without error message",() => {
     beforeEach(()=>{
+      ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
+        .mockResolvedValueOnce("https://test.com")
+        .mockResolvedValueOnce("/test");
       setUp();
     });
     afterEach(() => {
@@ -174,103 +171,62 @@ describe("Test Claim Manager API",() => {
 
 });
 
-describe("Get Seller API Tests",() => {
+describe("Doc upload Tests ",() => {
 
+  const apis = ["/api/company/uploadBusinessDocument","/api/company/uploadAdditionalDocument"]
   beforeEach(()=>{
+    ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
+      .mockResolvedValueOnce("https://test.com")
+      .mockResolvedValueOnce("/test");
     setUp();
   });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  server = new Hapi.Server();
 
-  const request = {
-    method: "GET",
-    url: "/api/sellers"
-  };
-
-  ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
-    .mockResolvedValue("select test,test from test where offer.US_WMT_DOTCOM_ITEM_ID='__itemId__' LIMIT 100")
-    .mockResolvedValue("[50, 80, 100]");
-
-
-  it("Get Sellers Failed request",(done) => {
-    let serverRetryRequest = jest.spyOn(ServerUtils,"retry")
-      .mockImplementation(() => {
-        throw new ServerHttpError(500, "Test Error", "This is a test error message");
-      });
-    server.inject(request).then(res => {
-      expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
-      done();
-    });
-  });
-
-  it("Get Sellers Success request",(done) => {
-    let serverRetryRequest = jest.spyOn(ServerUtils,"retry")
-      .mockImplementation(() => {
-        return sellerResponse;
-      });
-    const expectedOutput = [{
-      "id": "6137E969C9E94C318223C159FDFE7BAE",
-      "value": "TEST1"
-    }]
-    server.inject(request).then(res => {
-      expect(JSON.parse(res.payload)).toEqual(expectedOutput);
-      done();
-    });
-  });
-
-});
-
-describe("Upload Webform Docs Test",() => {
-  beforeEach(()=>{
-    setUp();
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("Successful", (done) => {
-    let postAsFormDataMock = jest.spyOn(ServerHttp,"postAsFormData").mockImplementation(() => {
-      return successResponse;
-    })
-    let form = new FormData();
-    form.append('file',fs.createReadStream(process.cwd() + '/test/server/mocks/mockFileUpload.txt'),{filename: 'mockFileUpload'})
-    const request = {
-      method: "POST",
-      url: "/api/claims/uploadWebFormDocument",
-      headers: form.getHeaders()
-    }
-    streamToPromise(form).then((payload) => {
-      request.payload = payload;
-      server.inject(request).then(res => {
-        expect(JSON.parse(res.payload)).toEqual(successResponse.body);
-        done();
-      }).catch(err => {
-        console.log(err);
+  apis.forEach(api => {
+    it(api + "Successful", (done) => {
+      let postAsFormDataMock = jest.spyOn(ServerHttp,"postAsFormData").mockImplementation(() => {
+        return successResponse;
+      })
+      let form = new FormData();
+      form.append('file',fs.createReadStream(process.cwd() + '/test/server/mocks/mockFileUpload.txt'),{filename: 'mockFileUpload'})
+      const request = {
+        method: "POST",
+        url: api,
+        headers: form.getHeaders()
+      }
+      streamToPromise(form).then((payload) => {
+        request.payload = payload;
+        server.inject(request).then(res => {
+          expect(JSON.parse(res.payload)).toEqual(successResponse.body);
+          done();
+        }).catch(err => {
+          console.log(err);
+        })
       })
     })
-  })
 
-  it("failure", (done) => {
-    let postAsFormDataMock = jest.spyOn(ServerHttp,"postAsFormData").mockImplementation(() => {
-      throw new ServerHttpError(500, "Test Error", "This is a test error message");
-    })
-    let form = new FormData();
-    form.append('file',fs.createReadStream(process.cwd() + '/test/server/mocks/mockFileUpload.txt'),{filename: 'mockFileUpload'})
-    const request = {
-      method: "POST",
-      url: "/api/claims/uploadWebFormDocument",
-      headers: form.getHeaders()
-    }
-    streamToPromise(form).then((payload) => {
-      request.payload = payload;
-      server.inject(request).then(res => {
-        expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
-        done();
-      }).catch(err => {
-        console.log(err);
+    it(api + "failure", (done) => {
+      let postAsFormDataMock = jest.spyOn(ServerHttp,"postAsFormData").mockImplementation(() => {
+        throw new ServerHttpError(500, "Test Error", "This is a test error message");
+      })
+      let form = new FormData();
+      form.append('file',fs.createReadStream(process.cwd() + '/test/server/mocks/mockFileUpload.txt'),{filename: 'mockFileUpload'})
+      const request = {
+        method: "POST",
+        url: api,
+        headers: form.getHeaders()
+      }
+      streamToPromise(form).then((payload) => {
+        request.payload = payload;
+        server.inject(request).then(res => {
+          expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
+          done();
+        }).catch(err => {
+          console.log(err);
+        })
       })
     })
   })

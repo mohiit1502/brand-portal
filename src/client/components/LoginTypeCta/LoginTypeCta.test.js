@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import React, {useRef} from "react";
 import LoginTypeCta from "./LoginTypeCta";
 import toJson from "enzyme-to-json";
@@ -5,8 +7,6 @@ import {mount} from "enzyme";
 import {Provider} from "react-redux";
 import MockNextContext from "../../../../test/client/utility/MockNextContext";
 import {clearKeys, testStore} from "../../utility/TestingUtils";
-import PropTypes from "prop-types";
-
 
 let props;
 let store;
