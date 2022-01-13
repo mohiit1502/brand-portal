@@ -18,7 +18,6 @@ let mixPanelTrackEventMethod;
 
 jest.mock("/secrets/secrets.json", ()=> ({
   CLIENT_ID: 'a0e15a47-ce50-4416-9514-0641afab1fc2',
-  CLIENT_SECRET: 'LT_TOzrO7TI2mKS_NFdqtqOco-rZ_L_WgrdRjdA8j3T7Q5gTOddC_pK81VVVD9ypvSysiDe7bugSvuMB9nN4Ig',
   CLIENT_TYPE: '',
   ENCODING: 'base64',
   GRANT_TYPE: 'authorization_code',
@@ -261,6 +260,7 @@ describe("Test User Manager API",() => {
         url: "/login-redirect?code=04A21D26AE8C493B9DAD8803238303E7&state=7JSAIHQE&clientType=seller&type=auth&clientId=a0e15a47-ce50-4416-9514-0641afab1fc2",
         method: "GET"
       }
+      jest.spyOn(ServerUtils,"decryptToken").mockResolvedValue({loginId:"test.com","iam-token":"test"});
 
       serverHttpMethod = jest.spyOn(ServerHttp,"post")
         .mockResolvedValue(getAccessTokenResponse);
