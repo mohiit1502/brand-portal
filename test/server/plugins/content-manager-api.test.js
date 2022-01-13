@@ -1,10 +1,7 @@
 import Hapi from "hapi";
 import ServerUtils from "../../../src/server/utility/server-utils";
-import headerResponse from "../mocks/headers-response.json";
 import mixpanel from "../../../src/server/utility/mixpanelutility";
 import classUnderTest from "../../../src/server/plugins/content/content-manager-api";
-import ServerHttp from "../../../src/server/utility/ServerHttp";
-import successResponse from "../mocks/success-response.json";
 import ServerHttpError from "../../../src/server/utility/ServerHttpError";
 import failureResponseWithErrorMessage from "../mocks/failure-response-with-error-message.json";
 import failureResponseWithoutErrorMessage from "../mocks/failure-response-without-error-message.json";
@@ -41,11 +38,6 @@ const endPoints = [
   },
   {
     method: "GET",
-    url: "/api/mixpanelConfig",
-    functionName: "Get Mixpanel Configuration"
-  },
-  {
-    method: "GET",
     url: "/api/webformConfig",
     functionName: "Get Webform Configuration"
   },
@@ -58,12 +50,7 @@ const endPoints = [
 
 const setUp = () => {
   server = new Hapi.Server();
-  mixPanelTrackEventMethod = jest.spyOn(mixpanel,"trackEvent").mockImplementationOnce(() => {
-    console.log("This is mock mixpanel implementation");
-  });
-  mixPanelSetTokenMethod = jest.spyOn(mixpanel,"setToken").mockImplementationOnce(() => {
-    console.log("This is mock mixpanel implementation");
-  });
+  mixpanel.setToken("test",true);
   server.register(classUnderTest);
 };
 
@@ -73,7 +60,7 @@ describe("Test Content Manager API",() => {
       setUp();
     });
     afterEach(() => {
-      jest.clearAllMocks();
+      jest.resetAllMocks();
     });
     endPoints.forEach((endPoint) => {
       it(endPoint.functionName + " Successful",(done) => {
@@ -86,10 +73,6 @@ describe("Test Content Manager API",() => {
           .mockResolvedValueOnce("{\"testContent\":\"This is test content\"}");
         server.inject(request).then(res => {
           expect(ccmGetMethod).toBeCalledTimes(1);
-          if(endPoint.functionName === "Get Form Field Configuration" ||
-            endPoint.functionName === "Get Landing Page Configuration" ||
-            endPoint.functionName === "Get Help Configuration")
-            expect(mixPanelTrackEventMethod).toHaveBeenCalled();
           if(endPoint.functionName.toLowerCase() === "get mixpanel configuration"){
             expect(mixPanelSetTokenMethod).toHaveBeenCalled();
           }
@@ -124,10 +107,6 @@ describe("Test Content Manager API",() => {
           });
         server.inject(request).then(res => {
           expect(ccmGetMethod).toBeCalledTimes(1);
-          if(endPoint.functionName === "Get Form Field Configuration" ||
-            endPoint.functionName === "Get Landing Page Configuration" ||
-            endPoint.functionName === "Get Help Configuration")
-            expect(mixPanelTrackEventMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(500);
           expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
           done();
@@ -156,10 +135,6 @@ describe("Test Content Manager API",() => {
           });
         server.inject(request).then(res => {
           expect(ccmGetMethod).toBeCalledTimes(1);
-          if(endPoint.functionName === "Get Form Field Configuration" ||
-            endPoint.functionName === "Get Landing Page Configuration" ||
-            endPoint.functionName === "Get Help Configuration")
-            expect(mixPanelTrackEventMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(500);
           expect(JSON.parse(res.payload)).toEqual(failureResponseWithoutErrorMessage);
           done();
@@ -167,4 +142,47 @@ describe("Test Content Manager API",() => {
       });
     });
   });
+
+  describe("Get Mixpanel Config",() => {
+
+    server = new Hapi.Server();
+    server.register(classUnderTest);
+
+
+    const request = {
+        method: "GET",
+        url: "/api/mixpanelConfig"
+    }
+    beforeEach(() => {
+      jest.resetAllMocks();
+    });
+    afterEach(() => {
+      jest.resetAllMocks();
+    })
+    it("Successful",(done) => {
+      jest.spyOn(ServerUtils,"ccmGet")
+        .mockResolvedValueOnce("{\"projectToken\":\"test-token\",\"enableTracking\":true}");
+      jest.spyOn(mixpanel,"initializeMixpanel").mockImplementation(() => console.log("This is test initialize function"));
+      server.inject(request).then(res => {
+        expect(res.statusCode).toBe(200);
+        expect((res.payload)).toBe("{\"projectToken\":\"test-token\",\"enableTracking\":true}");
+        done();
+      })
+
+
+    })
+    it("Failure",(done) => {
+      jest.spyOn(ServerUtils,"ccmGet")
+        .mockImplementation(() => {
+          throw new ServerHttpError(500, "Test Error", "This is a test error message");
+        });
+      jest.spyOn(mixpanel,"initializeMixpanel").mockImplementation(() => console.log("This is test initialize function"));
+      server.inject(request).then(res => {
+        expect(res.statusCode).toBe(500);
+        done();
+      })
+
+
+    })
+  })
 });

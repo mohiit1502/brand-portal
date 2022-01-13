@@ -134,14 +134,12 @@ const endPoints = [
 
 const setUp = () => {
   server = new Hapi.Server();
+  mixpanel.setToken("test",true);
   getHeadersMethod = jest.spyOn(ServerUtils,"getHeaders")
     .mockResolvedValueOnce(headerResponse);
   ccmGetMethod = jest.spyOn(ServerUtils,"ccmGet")
     .mockResolvedValueOnce("https://test.com")
     .mockResolvedValueOnce("/test");
-  mixPanelTrackEventMethod = jest.spyOn(mixpanel,"trackEvent").mockImplementationOnce(() => {
-    console.log("This is mock mixpanel implementation");
-  });
   server.register(classUnderTest);
 };
 
@@ -149,9 +147,6 @@ const setUpTwo = () => {
   server = new Hapi.Server();
   getHeadersMethod = jest.spyOn(ServerUtils,"getHeaders")
     .mockResolvedValueOnce(headerResponse);
-  mixPanelTrackEventMethod = jest.spyOn(mixpanel,"trackEvent").mockImplementationOnce(() => {
-    console.log("This is mock mixpanel implementation");
-  });
   server.register(classUnderTest);
 
 }
@@ -175,8 +170,6 @@ describe("Test User Manager API",() => {
           expect(getHeadersMethod).toHaveBeenCalled();
           expect(ccmGetMethod).toBeCalledTimes(2);
           expect(serverHttpMethod).toHaveBeenCalled();
-          if(endPoint.method.toLowerCase() !== "delete")
-            expect(mixPanelTrackEventMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(200);
           expect(JSON.parse(res.payload)).toEqual(successResponse.body);
           done();
@@ -208,8 +201,6 @@ describe("Test User Manager API",() => {
           expect(getHeadersMethod).toHaveBeenCalled();
           expect(ccmGetMethod).toBeCalledTimes(2);
           expect(serverHttpMethod).toHaveBeenCalled();
-          if(endPoint.method.toLowerCase() !== "delete")
-            expect(mixPanelTrackEventMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(500);
           expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
           done();
@@ -238,8 +229,6 @@ describe("Test User Manager API",() => {
           expect(getHeadersMethod).toHaveBeenCalled();
           expect(ccmGetMethod).toBeCalledTimes(2);
           expect(serverHttpMethod).toHaveBeenCalled();
-          if(endPoint.method.toLowerCase() !== "delete")
-            expect(mixPanelTrackEventMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(500);
           expect(JSON.parse(res.payload)).toEqual(failureResponseWithoutErrorMessage);
           done();
