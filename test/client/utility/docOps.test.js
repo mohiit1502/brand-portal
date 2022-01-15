@@ -12,11 +12,11 @@ describe("docOps util test container", () => {
     }
     parentObj.checkToEnableSubmit = jest.fn();
   })
-  it("should upload document",  () => {
+  it("should upload document",  async () => {
     jest.useFakeTimers()
 
     jest.spyOn(Http, "postAsFormData").mockImplementation(() => Promise.resolve({body:{}}));
-    DocOps.displayProgressAndUpload.call(parentObj, {target: {files: [{name: "test.file", size: "3000000", type: "text/html"}]}}, "businessRegistrationDoc")
+    await DocOps.displayProgressAndUpload.call(parentObj, {target: {files: [{name: "test.file", size: "3000000", type: "text/html"}]}}, "businessRegistrationDoc")
     jest.runAllTimers();
     DocOps.displayProgressAndUpload.call(parentObj, {target: {files: [{name: "test.file", size: "8000000", type: "text/html"}]}}, "businessRegistrationDoc")
     DocOps.displayProgressAndUpload.call(parentObj, {}, "businessRegistrationDoc")
@@ -27,6 +27,5 @@ describe("docOps util test container", () => {
   });
   it("should cancel upload document",  () => {
     DocOps.cancelSelection.call(parentObj, "businessRegistrationDoc")
-    // expect(response).toBe(true);
   });
 });

@@ -12,7 +12,6 @@ import "../../../styles/custom-components/left-nav/left-nav.scss";
 class Leftnav extends React.Component {
   constructor (props) {
     super(props);
-    this.navigateTo = this.navigateTo.bind(this);
     this.constructNavigationPanel = this.constructNavigationPanel.bind(this);
 
     this.state = {
@@ -61,10 +60,6 @@ class Leftnav extends React.Component {
     this.setState({
       NAVIGATION_PANEL: updatedPanel
     });
-  }
-
-  navigateTo (evt, item) {
-    return ClientUtils.navigateTo(item.href);
   }
 
   render () {

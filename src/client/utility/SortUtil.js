@@ -101,6 +101,7 @@ export default class SortUtil {
     if (sortLevel === CONSTANTS.SORTSTATE.DESCENDING) return b - a;
     return 0;
   }
+
   static sortAlphabet (a, b, sortLevel) {
     if (!a || !b) {
        return 0;
