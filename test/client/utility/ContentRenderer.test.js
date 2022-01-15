@@ -1,6 +1,8 @@
+import React from "react";
 import ContentRenderer from "../../../src/client/utility/ContentRenderer";
 import dummyThis from "../mocks/dummyThis";
 import dummyContent from "../mocks/dummyContent";
+import {mount} from "enzyme";
 
 expect.extend({
   toBeBoolean(received) {
@@ -20,7 +22,7 @@ describe("content renderer util test container", () => {
   beforeEach(() => {
     parentObj = JSON.parse(JSON.stringify(dummyThis));
     evaluator = ContentRenderer.evaluateRenderDependency.bind(parentObj);
-  })
+  });
   it("should execute render dependency evaluator for single condition",  () => {
     let response = evaluator("{\"keyPath\": \"state.form.inputData.userType.value\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}");
     expect(response).toBe(true);
@@ -95,7 +97,6 @@ describe("content renderer util test container", () => {
     response = ContentRenderer.getValueLocator.call(parentObj, "parentRef");
     expect(response).toBe(parentObj);
   });
-
   it("should render a form", () => {
     const response = ContentRenderer.getFieldRenders.call(parentObj);
     expect(response).toBeDefined();
@@ -108,12 +109,13 @@ describe("content renderer util test container", () => {
     delete parentObj.state;
     ContentRenderer.getFieldRenders.call(parentObj);
   });
-
   it("should return content DOM", () => {
     const renderer = new ContentRenderer();
     let response = Object.keys(dummyContent.content).map(node => {
       return renderer.getContent(dummyContent.content, node);
     });
+    const wrapper = mount(<div>{response}</div>);
+    wrapper.find("img").at(0).simulate("click");
     expect(response.length).toBe(Object.keys(dummyContent.content).length);
-  })
+  });
 });

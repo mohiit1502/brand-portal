@@ -4,6 +4,7 @@ const dummyThis = {
   state: {
     isSeller: false,
     clientType: "seller",
+    columns: [],
     form: {
       isDisabled: true,
       actionsToDisable: ["clear"],
