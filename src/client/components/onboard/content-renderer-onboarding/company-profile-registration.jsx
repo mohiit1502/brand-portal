@@ -54,7 +54,8 @@ class CompanyProfileRegistration extends React.Component {
     const mixpanelPayload = {
       WORK_FLOW: "COMPANY_ONBOARDING"
     };
-    $("[data-toggle='tooltip']").tooltip();
+    const tooltipComp = $("[data-toggle='tooltip']");
+    tooltipComp.tooltip && tooltipComp.tooltip();
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CREATE_COMPANY_PROFILE, mixpanelPayload);
     if (!this.state.form.formPopulated) {
       this.prepopulateInputFields();
