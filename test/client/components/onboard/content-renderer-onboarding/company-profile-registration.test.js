@@ -66,7 +66,7 @@ describe("CompanyProfileRegistration test container", () => {
     wrapper = setUpMount(true);
     await update(wrapper);
     wrapper.find(".form-control-companyName").at(0).simulate('change', {target: {value: companyName}});
-    wrapper.find(".dropdown-item").at(0).simulate('click');
+    // wrapper.find(".dropdown-item").at(0).simulate('click');
     // wrapper.find("div.btn.btn-sm.btn-block.btn-primary").at(0).simulate('click');
     // wrapper.find("button.btn.btn-sm.btn-block.cancel-btn.text-primary").at(0).simulate('click');
     // wrapper.find(".form-control-comments").at(0).simulate('change', {target: {value: "comment-12345432-comment"}});
