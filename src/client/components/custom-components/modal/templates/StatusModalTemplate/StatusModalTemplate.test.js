@@ -13,7 +13,6 @@ import Cookies from "electrode-cookies";
 let props;
 let store;
 jest.mock("electrode-cookies");
-
 const setUp = (props) => {
   store = testStore({
     company: {
