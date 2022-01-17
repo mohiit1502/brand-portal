@@ -212,6 +212,5 @@ describe("StatusModalTemplate", () => {
     clonedProps.meta.TITLE.content.para1.onClick = "dispatchUserProfile";
     wrapper = setUp(clonedProps);
     wrapper.find(".btn-primary").simulate("click");
-
   });
 });
