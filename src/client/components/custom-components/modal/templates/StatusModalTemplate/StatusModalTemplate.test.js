@@ -52,7 +52,6 @@ describe("StatusModalTemplate", () => {
   });
   it("renders without error", () => {
     const handlers = {
-
       toggleModal: ()=>{},
       showNotification: ()=>{},
       dispatchOnboardingDetails: ()=>{},
