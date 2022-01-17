@@ -1,0 +1,374 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusModalTemplate renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <MockNextContext
+    pathname="/help"
+  >
+    <MemoryRouter
+      initialEntries={
+        Array [
+          "/help",
+        ]
+      }
+    >
+      <Router
+        history={
+          Object {
+            "action": "POP",
+            "block": [Function],
+            "canGo": [Function],
+            "createHref": [Function],
+            "entries": Array [
+              Object {
+                "hash": "",
+                "pathname": "/help",
+                "search": "",
+                "state": undefined,
+              },
+            ],
+            "go": [Function],
+            "goBack": [Function],
+            "goForward": [Function],
+            "index": 0,
+            "length": 1,
+            "listen": [Function],
+            "location": Object {
+              "hash": "",
+              "pathname": "/help",
+              "search": "",
+              "state": undefined,
+            },
+            "push": [Function],
+            "replace": [Function],
+          }
+        }
+      >
+        <Connect(StatusModalTemplate)
+          dispatchOnboardingDetails={[Function]}
+          meta={
+            Object {
+              "ADDITIONAL_ACTION": Object {
+                "action": "logout",
+                "classes": "mp-blue",
+                "text": "Log out",
+              },
+              "MESSAGE": Object {
+                "content": Object {
+                  "para1": Object {
+                    "classes": "",
+                    "text": "test",
+                  },
+                  "partial1": Object {
+                    "chunk1": "Status: ",
+                    "chunk2": Array [
+                      Object {
+                        "classes": "status-review",
+                        "text": "Under Review",
+                      },
+                      Object {
+                        "classes": "status-onhold",
+                        "text": "Action Required",
+                      },
+                      Object {
+                        "classes": "status-declined",
+                        "text": "Declined",
+                      },
+                    ],
+                  },
+                  "partial3": Object {
+                    "anchor": Array [
+                      Object {
+                        "classes": "font-weight-bold mt-5 brand-portal-link-class",
+                        "href": "mailto:brandportal@walmart.com",
+                        "text": "brandportal@walmart.com.",
+                      },
+                    ],
+                    "chunk5": Array [
+                      Object {
+                        "classes": "mt-5",
+                        "dynamicReplacementConfig": Object {
+                          "__emailPlaceholder__": "profile.email",
+                        },
+                        "text": "If you believe this is an error, contact ",
+                      },
+                    ],
+                  },
+                },
+              },
+              "PRIMARY_ACTION": Object {
+                "action": "hideModal",
+                "classes": "my-4",
+                "text": "Start",
+              },
+              "TITLE": Object {
+                "content": Object {
+                  "button1": Object {
+                    "buttonText": "Edit Application",
+                    "classes": "col btn btn-primary px-0",
+                    "icon": "EditOutlinedIcon",
+                    "onClick": "dispatchUserProfile",
+                    "renderCondition": "{\\"keyPath\\": \\"orgStatus\\", \\"value\\": \\"on_hold\\"}",
+                  },
+                  "para1": Object {
+                    "classes": "",
+                    "dynamicReplacementConfig": Object {
+                      "__emailPlaceholder__": "test@mailinator.com",
+                    },
+                    "onClick": "updateCompanyDetails",
+                    "text": "test",
+                  },
+                  "para2": Object {
+                    "classes": "",
+                    "dynamicReplacementConfig": Object {
+                      "__emailPlaceholder__": "org",
+                    },
+                    "onClick": "updateCompanyDetails",
+                    "text": "test",
+                  },
+                },
+                "onClick": "",
+              },
+              "TYPE": "NOTIFICATION",
+            }
+          }
+          modalsMeta={Object {}}
+          onboardingDetails={Object {}}
+          showNotification={[Function]}
+          toggleModal={[Function]}
+          updateUserProfile={[Function]}
+          user={
+            Object {
+              "profile": Object {
+                "email": "test@mailinator.com",
+              },
+            }
+          }
+        >
+          <StatusModalTemplate
+            dispatchOnboardingDetails={[Function]}
+            meta={
+              Object {
+                "ADDITIONAL_ACTION": Object {
+                  "action": "logout",
+                  "classes": "mp-blue",
+                  "text": "Log out",
+                },
+                "MESSAGE": Object {
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "",
+                      "text": "test",
+                    },
+                    "partial1": Object {
+                      "chunk1": "Status: ",
+                      "chunk2": Array [
+                        Object {
+                          "classes": "status-review",
+                          "text": "Under Review",
+                        },
+                        Object {
+                          "classes": "status-onhold",
+                          "text": "Action Required",
+                        },
+                        Object {
+                          "classes": "status-declined",
+                          "text": "Declined",
+                        },
+                      ],
+                    },
+                    "partial3": Object {
+                      "anchor": Array [
+                        Object {
+                          "classes": "font-weight-bold mt-5 brand-portal-link-class",
+                          "href": "mailto:brandportal@walmart.com",
+                          "text": "brandportal@walmart.com.",
+                        },
+                      ],
+                      "chunk5": Array [
+                        Object {
+                          "classes": "mt-5",
+                          "dynamicReplacementConfig": Object {
+                            "__emailPlaceholder__": "profile.email",
+                          },
+                          "text": "If you believe this is an error, contact ",
+                        },
+                      ],
+                    },
+                  },
+                },
+                "PRIMARY_ACTION": Object {
+                  "action": "hideModal",
+                  "classes": "my-4",
+                  "text": "Start",
+                },
+                "TITLE": Object {
+                  "content": Object {
+                    "button1": Object {
+                      "buttonText": "Edit Application",
+                      "classes": "col btn btn-primary px-0",
+                      "icon": "EditOutlinedIcon",
+                      "onClick": "dispatchUserProfile",
+                      "renderCondition": "{\\"keyPath\\": \\"orgStatus\\", \\"value\\": \\"on_hold\\"}",
+                    },
+                    "para1": Object {
+                      "classes": "",
+                      "dynamicReplacementConfig": Object {
+                        "__emailPlaceholder__": "test@mailinator.com",
+                      },
+                      "onClick": "updateCompanyDetails",
+                      "text": "test",
+                    },
+                    "para2": Object {
+                      "classes": "",
+                      "dynamicReplacementConfig": Object {
+                        "__emailPlaceholder__": "org",
+                      },
+                      "onClick": "updateCompanyDetails",
+                      "text": "test",
+                    },
+                  },
+                  "onClick": "",
+                },
+                "TYPE": "NOTIFICATION",
+              }
+            }
+            modalsMeta={Object {}}
+            onboardingDetails={Object {}}
+            showNotification={[Function]}
+            toggleModal={[Function]}
+            updateUserProfile={[Function]}
+            user={
+              Object {
+                "profile": Object {
+                  "email": "test@mailinator.com",
+                },
+              }
+            }
+          >
+            <div
+              className="c-StatusModalTemplate modal show"
+              id="singletonModal"
+              role="dialog"
+              tabIndex="-1"
+            >
+              <div
+                className="modal-dialog modal-dialog-centered modal-lg"
+                role="document"
+              >
+                <div
+                  className="modal-content"
+                >
+                  <div
+                    className="modal-body overflow-y-auto
+           p-0
+          "
+                  >
+                    <div
+                      className="row mt-3"
+                    >
+                      <div
+                        className="col"
+                      >
+                        <span
+                          className="status-header row font-weight-bold"
+                        >
+                          <p
+                            className=""
+                          >
+                            test
+                          </p>
+                          <p
+                            className=""
+                          >
+                            test
+                          </p>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      className="row mt-1 body-content"
+                    >
+                      <div
+                        className="col"
+                      >
+                        <div
+                          className="status-description "
+                        >
+                          <div
+                            className=""
+                          >
+                            <span
+                              className=""
+                            />
+                            <a
+                              className=""
+                            />
+                          </div>
+                          <p
+                            className=""
+                          >
+                            test
+                          </p>
+                          <div
+                            className=""
+                          >
+                            <span
+                              className=""
+                            >
+                              Status: 
+                            </span>
+                            <span
+                              className=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="row footer"
+                    >
+                      <div
+                        className="col text-right
+                        "
+                      >
+                        <button
+                          className="btn btn-sm btn-primary my-4"
+                          onClick={[Function]}
+                        >
+                          Start
+                        </button>
+                        <div
+                          className=" font-size-15"
+                        >
+                          <button
+                            className="additional-action btn btn-link mp-blue"
+                            onClick={[Function]}
+                          >
+                            Log out
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </StatusModalTemplate>
+        </Connect(StatusModalTemplate)>
+      </Router>
+    </MemoryRouter>
+  </MockNextContext>
+</Provider>
+`;

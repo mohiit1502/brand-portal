@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Webform renders without error 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(Webform)
+    configuration={Object {}}
+    dispatchMetadata={[Function]}
+    dispatchWebformState={[Function]}
+    showNotification={[Function]}
+    toggleModal={[Function]}
+    webformFieldsConfiguration={Object {}}
+  >
+    <Webform
+      configuration={Object {}}
+      dispatchMetadata={[Function]}
+      dispatchWebformState={[Function]}
+      showNotification={[Function]}
+      toggleModal={[Function]}
+      webformFieldsConfiguration={Object {}}
+    >
+      <div
+        className="c-Webform mt-4rem d-flex justify-content-center "
+      >
+        <div
+          className="col-lg-8 col-md-6 col-6 pl-3 pr-3"
+        >
+          <div />
+          <div
+            className="web-form mb-4 mr-3"
+          />
+        </div>
+      </div>
+    </Webform>
+  </Connect(Webform)>
+</Provider>
+`;
