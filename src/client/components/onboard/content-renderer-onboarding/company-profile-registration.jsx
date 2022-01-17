@@ -20,7 +20,7 @@ import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "cancelRequestCompanyAccess", "gotoBrandRegistration", "onChange", "resetCompanyRegistration", "setSelectInputValue", "undertakingToggle"];
+    const functions = ["bubbleValue", "cancelRequestCompanyAccess", "gotoBrandRegistration", "onChange", "resetCompanyRegistration", "setSelectInputValue"];
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     const debounceFunctions = {companyDebounce: "checkCompanyNameAvailability"};
     functions.forEach(name => {
@@ -156,13 +156,6 @@ class CompanyProfileRegistration extends React.Component {
     } else {
       this.prepopulateInputContextEdit();
     }
-  }
-
-  undertakingToggle () {
-    const state = {...this.state};
-    state.form.inputData.undertakingToggle.selected = !state.form.inputData.undertakingToggle.selected;
-    state.form.inputData.companyRequestApprovalActions.buttons.submit.disabled = !state.form.inputData.undertakingToggle.selected;
-    this.setState(state, this.checkToEnableSubmit);
   }
 
   checkToEnableSubmit () {

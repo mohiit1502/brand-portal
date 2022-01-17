@@ -27,7 +27,8 @@ const setUpRender = () => {
   return renderer.create(<Provider store={store}><CompanyProfileRegistration /></Provider>);
 };
 
-const setUpMount = () => {
+const setUpMount = (isEditContext) => {
+  profile.context = isEditContext ? "edit" : "new";
   const mockStore = {
     content: {
       metadata: {...MODALSMETA, ...FORMFIELDMETA},
@@ -52,7 +53,7 @@ describe("CompanyProfileRegistration test container", () => {
     expect(wrapper.toJSON()).toMatchSnapshot();
   });
 
-  it("should trigger input change events and actions", async () => {
+  it("should trigger input change events and actions for edit context", async () => {
     jest.useFakeTimers();
     const companyName = "test-company";
     const clientType = "seller";
@@ -62,14 +63,34 @@ describe("CompanyProfileRegistration test container", () => {
         [`/api/company/availability?companyName=${companyName}&clientType=${clientType}`]: {unique: true, name: companyName}
       }
     });
-    wrapper = setUpMount();
+    wrapper = setUpMount(true);
     await update(wrapper);
-    // // leftovers
-    // wrapper.find(".dropdown-item").at(4).simulate('click');
+    wrapper.find(".form-control-companyName").at(0).simulate('change', {target: {value: companyName}});
+    wrapper.find(".dropdown-item").at(0).simulate('click');
     // wrapper.find("div.btn.btn-sm.btn-block.btn-primary").at(0).simulate('click');
     // wrapper.find("button.btn.btn-sm.btn-block.cancel-btn.text-primary").at(0).simulate('click');
     // wrapper.find(".form-control-comments").at(0).simulate('change', {target: {value: "comment-12345432-comment"}});
-    // jest.runAllTimers();
-    // jest.useRealTimers();
-  })
+    jest.runAllTimers();
+    jest.useRealTimers();
+  });
+
+  it("should trigger input change events and actions for new context", async () => {
+    jest.useFakeTimers();
+    const companyName = "test-company";
+    const clientType = "seller";
+    mockFetch({
+      data: {
+        shouldMap: true,
+        [`/api/company/availability?companyName=${companyName}&clientType=${clientType}`]: {unique: true, name: companyName}
+      }
+    });
+    wrapper = setUpMount(false);
+    await update(wrapper);
+    wrapper.find(".form-control-companyName").at(0).simulate('change', {target: {value: companyName}});
+    // wrapper.find("div.btn.btn-sm.btn-block.btn-primary").at(0).simulate('click');
+    // wrapper.find("button.btn.btn-sm.btn-block.cancel-btn.text-primary").at(0).simulate('click');
+    // wrapper.find(".form-control-comments").at(0).simulate('change', {target: {value: "comment-12345432-comment"}});
+    jest.runAllTimers();
+    jest.useRealTimers();
+  });
 });
