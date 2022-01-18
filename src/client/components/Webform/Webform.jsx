@@ -7,7 +7,6 @@ import "./Webform.component.scss";
 import Helper from "../../utility/helper";
 import Validator from "../../utility/validationUtil";
 import CONSTANTS from "../../constants/constants";
-import {dispatchMetadata} from "../../actions/content/content-actions";
 import {showNotification} from "../../actions/notification/notification-actions";
 import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
 import Http from "../../utility/Http";
@@ -19,7 +18,7 @@ import DocumentActions from "../../utility/docOps";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "enableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "checkToEnableSubmit", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
+    const functions = ["checkToEnableItemButton", "disableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -53,7 +52,7 @@ class Webform extends React.Component {
             // response = FORMFIELDCONFIG;
             this.updateStateAndFormatters(response);
           } catch (e) {
-            this.props.dispatchMetadata(FORMFIELDCONFIG);
+            this.updateStateAndFormatters(FORMFIELDCONFIG);
           }
         }
       });
@@ -95,7 +94,6 @@ class Webform extends React.Component {
           </div>);
         return state;
       });
-      this.props.dispatchMetadata(root);
     } catch (e) {}
   }
 
@@ -234,14 +232,6 @@ class Webform extends React.Component {
         };
       }, this.checkToEnableItemButton);
     }
-  }
-
-  // eslint-disable-next-line complexity
-  checkToEnableSubmit(callback) {
-    const form = {...this.state.form};
-    form.isSubmitDisabled = form.inputData.webformDoc.uploading;
-    form.inputData.webformActions.buttons.submit.disabled = form.inputData.webformDoc.uploading;
-    this.setState({form}, callback && callback());
   }
 
   checkToEnableItemButton() {
@@ -391,14 +381,6 @@ class Webform extends React.Component {
     });
   }
 
-  enableSubmitButton() {
-    this.setState(state => {
-      state = {...state};
-      state.form.isSubmitDisabled = false;
-      return state;
-    });
-  }
-
   loader(type, enable) {
     this.setState(state => {
       const stateClone = {...state};
@@ -454,7 +436,6 @@ class Webform extends React.Component {
 
 Webform.propTypes = {
   configuration: PropTypes.object,
-  dispatchMetadata: PropTypes.func,
   dispatchWebformState: PropTypes.func,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
@@ -462,7 +443,6 @@ Webform.propTypes = {
 };
 
 const mapDispatchToProps = {
-  dispatchMetadata,
   showNotification,
   toggleModal
 };
