@@ -20,7 +20,7 @@ import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "cancelRequestCompanyAccess", "gotoBrandRegistration", "onChange", "resetCompanyRegistration", "setSelectInputValue"];
+    const functions = ["bubbleValue", "gotoBrandRegistration", "onChange", "setSelectInputValue"];
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     const debounceFunctions = {companyDebounce: "checkCompanyNameAvailability"};
     functions.forEach(name => {
@@ -244,45 +244,6 @@ class CompanyProfileRegistration extends React.Component {
     form.inputData.country.disabled = this.state.considerCountryForValidation ? !enable : true;
     form.requestAdministratorAccess = !form.inputData.companyName.isUnique;
     this.setState({form});
-  }
-
-  cancelRequestCompanyAccess () {
-    this.setState(state => {
-      state = {...state};
-      state.form.requestAdministratorAccess = false;
-      return state;
-    });
-  }
-
-  /* eslint-disable max-statements */
-  resetCompanyRegistration () {
-    const state = {...this.state};
-    const form = state.form = {...state.form};
-    const inputKeys = ["companyName", "address", "city", "state", "zip"];
-    const docKeys = ["businessRegistrationDoc"];
-    this.state.considerCountryForValidation && inputKeys.push("country");
-    inputKeys.forEach(key => {
-      form.inputData[key].disabled = true;
-      form.inputData[key].error = "";
-      form.inputData[key].value = "";
-      form.inputData[key].fieldOk = false;
-    });
-    docKeys.forEach(key => {
-      form.inputData[key].id = "";
-      form.inputData[key].uploadPercentage = 0;
-    });
-    form.inputData.companyName.isUnique = true;
-    form.inputData.companyName.disabled = false;
-    form.requestAdministratorAccess = false;
-    form.isSubmitDisabled = true;
-    form.inputData.companyOnboardingActions.buttons = {...state.form.inputData.companyOnboardingActions.buttons};
-    form.inputData.companyOnboardingActions.buttons.submit.disabled = true;
-    form.inputData.businessRegistrationDoc.disabled = true;
-    this.setState(state);
-    const mixpanelPayload = {
-      WORK_FLOW: "COMPANY_ONBOARDING"
-    };
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_REGISTRATION.CANCLE_ONBOARDING_FORM, mixpanelPayload);
   }
 
   gotoBrandRegistration (evt) {
