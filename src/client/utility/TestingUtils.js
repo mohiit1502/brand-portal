@@ -7,7 +7,7 @@ import rootReducer from "../reducers";
 import ClientHttpError from "./ClientHttpError";
 
 export const findByTestAttribute = (component,attr) => component.find(`[data-test="${attr}"]`);
-
+jest.mock("node-fetch");
 export const testStore = state => configureMockStore()(state);
 
 export const realStore = state => {
@@ -53,10 +53,10 @@ export function setupFetchStub(data, ok, status, headers) {
     return new Promise((resolve) => {
       resolve({
         ok: ok !== undefined ? ok : true,
-        json: () => Promise.resolve(data),
-        text: () => Promise.resolve(data),
+        json: () => Promise.resolve(data && data.shouldMap ? data[_url] : data),
+        text: () => Promise.resolve(data && data.shouldMap ? data[_url] : data),
         status: status || 200,
-        headers: headers || {}
+        headers: headers || Immutable.Map({"content-type": "application/json"})
       })
     })
   }
@@ -69,8 +69,24 @@ export function setupFetchThrowStub(code) {
 
 export function mockFetch (obj) {
   let fetchMock;
-  const fieldDefaults = {data: {}, ok: true, headers: Immutable.Map({"content-type": ["application/json"]}), status: 200}
+  const fieldDefaults = {data: {}, ok: true, headers: Immutable.Map({"content-type": ["application/json"]}), status: 200};
   const getField = field => obj && obj[field] !== undefined ? obj[field] : fieldDefaults[field];
   fetchMock = setupFetchStub(getField("data"), getField("ok"), getField("status"), getField("headers"));
-  fetch.mockImplementation(fetchMock)
+  fetch.mockImplementation(fetchMock);
+}
+
+export function mockFailFetch(code) {
+  fetch.mockImplementation(() => setupFetchThrowStub(code));
+}
+
+export function clearFetchMock() {
+  fetch.mockClear();
+}
+
+export async function update (wrapper) {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  wrapper.update();
 }

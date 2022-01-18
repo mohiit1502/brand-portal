@@ -94,18 +94,6 @@ export default class InputFormatter {
     };
   }
 
-  handleKeydown(event, digitChars) {
-    return (formatString, replaceChar, maxLength) => {
-      const digitKey = parseInt(event.key, 10);
-
-      if (digitChars.length >= maxLength && !isNaN(digitKey)) {
-        event.preventDefault();
-        this.value = InputFormatter.format(digitChars, formatString, replaceChar);
-      }
-    };
-  }
-
-
   on(selector, newOpts) {
     const initOpts = Object.assign({}, this.initOpts, newOpts);
 
@@ -123,17 +111,6 @@ export default class InputFormatter {
       this.handleInput.call(event.target, event, digitChars, skipFormatOpts)(format, replaceChar);
     };
 
-    const keydownHandler = event => {
-      if ((event.which < 48 || event.which > 57) && event.which !== 8 && event.which !== 9 && event.which !== 16) {
-        event.preventDefault();
-      }
-      const digitChars = this.getDigitChars(event.target);
-      const format = this.getFormat(formats, maxLengthKeys, digitChars);
-      this.handleKeydown.call(event.target, event, digitChars)(format, replaceChar, maxLengthKeys[maxLengthKeys.length - 1]);
-    };
-
-    inputEl && inputEl.addEventListener("keydown", keydownHandler);
-
-    return {inputHandler, keydownHandler};
+    return {inputHandler};
   }
 }
