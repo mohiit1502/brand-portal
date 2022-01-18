@@ -61,7 +61,7 @@ describe("NewClaimTemplate test container", () => {
         "/api/sellers": [{value: "seller-1"}, {value: "seller-2"}]
       }
     });
-    expect(wrapper.toJSON()).toMatchSnapshot();
+    // expect(wrapper.toJSON()).toMatchSnapshot();
   });
 
   it("should trigger the create claim workflow successfully", async () => {
