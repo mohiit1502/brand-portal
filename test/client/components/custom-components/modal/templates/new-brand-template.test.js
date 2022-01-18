@@ -1,4 +1,6 @@
 /* eslint-disable filenames/match-regex, no-unused-vars, no-undef */
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import React from "react";
 import {Provider} from "react-redux";
 import renderer, {act} from "react-test-renderer";

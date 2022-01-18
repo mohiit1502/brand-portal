@@ -55,7 +55,6 @@ class CustomInput extends React.PureComponent {
   onChangeLocal(evt, key) {
     evt.persist && evt.persist();
     if (this.state.type !== "_captchaValidator" && typeof evt.target.value === "string") {
-      console.log("logging value failing in sonar: ", evt.target.value);
       evt.target.value = evt.target.value.trimStart();
       evt.target.value = Helper.trimSpaces(evt.target.value);
     }
