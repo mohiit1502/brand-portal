@@ -52,7 +52,6 @@ describe("NewClaimTemplate test container", () => {
   });
 
   it("should render the NewClaimTemplate successfully", () => {
-    wrapper = setUpRender();
     mockFetch({
       data: {
         shouldMap: true,
@@ -61,6 +60,7 @@ describe("NewClaimTemplate test container", () => {
         "/api/sellers": [{value: "seller-1"}, {value: "seller-2"}]
       }
     });
+    wrapper = setUpRender();
     // expect(wrapper.toJSON()).toMatchSnapshot();
   });
 
