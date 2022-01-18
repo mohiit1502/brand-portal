@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import React, {useRef} from "react";
 import {configure, mount} from "enzyme";
 import {Provider} from "react-redux";
