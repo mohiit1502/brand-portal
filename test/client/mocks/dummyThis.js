@@ -4,8 +4,11 @@ const dummyThis = {
   state: {
     isSeller: false,
     clientType: "seller",
+    columns: [],
     form: {
       isDisabled: true,
+      actionsToDisable: ["clear"],
+      formActions: "companyOnboardingActions",
       inputData: {
         username: {
           value: "username",
@@ -95,8 +98,37 @@ const dummyThis = {
           }
         },
         companyOnboardingActions: {
-
-        }
+          buttons: {
+            clear: {},
+            submit: {}
+          }
+        },
+        "additionalDoc": {},
+        "businessRegistrationDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "buttonText": "Upload",
+          "otherType": "additionalDoc",
+          "cancelHandlerArg": "businessRegistrationDoc",
+          "changeHandlerArg": "businessRegistrationDoc",
+          "disabled": true,
+          "endpoint": "/api/company/uploadBusinessDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "id": "",
+          "inputId": "businessRegistrationDoc",
+          "key": "businessRegistrationDoc",
+          "label": "Optional: Attach additional documents if necessary (i.e. business registration)",
+          "layout": "5.1.0",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "businessDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
       }
     }
   },

@@ -8,10 +8,6 @@ export default class ClientUtils {
     return queryString.parse(location.search);
   }
 
-  static navigateTo (path) {
-    return <Redirect to={path} />;
-  }
-
   static  getAllValuesFromRecursiveTree(tree) {
 
     if (typeof tree !== "object" || tree === null) {

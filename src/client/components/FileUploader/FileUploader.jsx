@@ -29,8 +29,7 @@ const FileUploader = props => {
     businessDocContent: <div>
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
-          <li>Upload an official copy of Business Registration Certificate</li>
-          <li>Supported Documents: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
+          <li>Supported File Types: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
           <li>Maximum file size: 7 MB</li>
         </ul>
       </ol>
@@ -39,7 +38,7 @@ const FileUploader = props => {
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
           <li>Upload IP Registration Documents or Letter of Authorization</li>
-          <li>Supported Documents: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
+          <li>Supported File Types: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
           <li>Maximum file size: 7 MB</li>
         </ul>
       </ol>
@@ -88,7 +87,6 @@ const FileUploader = props => {
     </div>
   );
 };
-
 FileUploader.propTypes = {
   buttonText: PropTypes.string,
   cancelHandlerArg: PropTypes.string,

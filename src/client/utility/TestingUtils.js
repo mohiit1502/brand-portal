@@ -1,12 +1,13 @@
+import fetch from "node-fetch";
 import {applyMiddleware, compose, createStore} from "redux";
-import rootReducer from "../reducers";
 import thunk from "redux-thunk";
-import Immutable from "immutable";
 import configureMockStore from 'redux-mock-store';
+import Immutable from "immutable";
+import rootReducer from "../reducers";
 import ClientHttpError from "./ClientHttpError";
 
 export const findByTestAttribute = (component,attr) => component.find(`[data-test="${attr}"]`);
-
+jest.mock("node-fetch");
 export const testStore = state => configureMockStore()(state);
 
 export const realStore = state => {
@@ -19,16 +20,7 @@ export const realStore = state => {
             immutable: Immutable
           }
         }) : compose;
-    const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
-
-    if (module.hot) {
-      module.hot.accept("./reducers", () => {
-        const nextRootReducer = require("./reducers").default;
-        store.replaceReducer(nextRootReducer);
-      });
-    }
-
-    return store;
+    return createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunk)));
   };
 
   return configureStore(state || window.__WML_REDUX_INITIAL_STATE__);
@@ -56,20 +48,45 @@ export const clearKeys = (tree, arr) => {
   }
 }
 
-export function setupFetchStub(data) {
+export function setupFetchStub(data, ok, status, headers) {
   return function fetchStub(_url) {
     return new Promise((resolve) => {
       resolve({
-        json: () =>
-          Promise.resolve({
-            data,
-          }),
+        ok: ok !== undefined ? ok : true,
+        json: () => Promise.resolve(data && data.shouldMap ? data[_url] : data),
+        text: () => Promise.resolve(data && data.shouldMap ? data[_url] : data),
+        status: status || 200,
+        headers: headers || Immutable.Map({"content-type": "application/json"})
       })
     })
   }
 }
 
-export function setupFetchThrowStub() {
-  const error = new ClientHttpError(500, "test-error"); // Directly throwing new ClientHttpError fails in Jest
+export function setupFetchThrowStub(code) {
+  const error = new ClientHttpError(code || 500, "test-error"); // Directly throwing new ClientHttpError fails in Jest
   throw error;
+}
+
+export function mockFetch (obj) {
+  let fetchMock;
+  const fieldDefaults = {data: {}, ok: true, headers: Immutable.Map({"content-type": ["application/json"]}), status: 200};
+  const getField = field => obj && obj[field] !== undefined ? obj[field] : fieldDefaults[field];
+  fetchMock = setupFetchStub(getField("data"), getField("ok"), getField("status"), getField("headers"));
+  fetch.mockImplementation(fetchMock);
+}
+
+export function mockFailFetch(code) {
+  fetch.mockImplementation(() => setupFetchThrowStub(code));
+}
+
+export function clearFetchMock() {
+  fetch.mockClear();
+}
+
+export async function update (wrapper) {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  wrapper.update();
 }

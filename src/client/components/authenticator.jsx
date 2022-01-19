@@ -229,7 +229,6 @@ Authenticator.propTypes = {
   dispatchUsers: PropTypes.func,
   dispatchLogoutUrl: PropTypes.func,
   dispatchMixpanelConfig: PropTypes.func,
-  dispatchMetadata: PropTypes.func,
   isNew: PropTypes.bool,
   location: PropTypes.object,
   logoutUrl: PropTypes.string,

@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewBrandTemplate test container should render the NewBrandTemplate successfully 1`] = `
+<div
+  className="modal show new-brand-modal"
+  id="singletonModal"
+  role="dialog"
+  tabIndex="-1"
+>
+  <div
+    className="modal-dialog modal-dialog-centered"
+    role="document"
+  >
+    <div
+      className="modal-content"
+    >
+      <div
+        className="modal-header align-items-center"
+      >
+        Edit Brand Details
+        <button
+          aria-label="Close"
+          className="close text-white"
+          onClick={[Function]}
+          type="button"
+        >
+          <span
+            aria-hidden="true"
+          >
+            ×
+          </span>
+        </button>
+      </div>
+      <div
+        className="modal-body p-0 text-leftfalse"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col px-4 mx-2 pb-1 pt-4"
+          >
+            <p>
+              Please complete the following fields to register your brand.
+            </p>
+          </div>
+        </div>
+        <form
+          className="h-100 px-4"
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-row"
+          >
+            <div
+              className=" col"
+            >
+              <div
+                className="form-group custom-input-form-group form-group-text disabled mb-3
+        "
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
+              >
+                <input
+                  className="form-control form-control-trademarkNumber custom-input-element"
+                  disabled={true}
+                  id="newbrand-trademarkNumber-custom-input"
+                  maxLength={7}
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onInvalid={[Function]}
+                  onKeyPress={[Function]}
+                  required={true}
+                  type="text"
+                  value="test-trademark-number"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="newbrand-trademarkNumber-custom-input"
+                >
+                  <div
+                    className="label-upper-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text required"
+                  >
+                     
+                    Trademark Number
+                     
+                  </span>
+                </label>
+                <small
+                  className="form-text custom-input-help-text text-muted"
+                  style={
+                    Object {
+                      "paddingLeft": undefined,
+                    }
+                  }
+                >
+                  
+                </small>
+              </div>
+            </div>
+          </div>
+          <div
+            className="form-row"
+          >
+            <div
+              className=" col"
+            >
+              <div
+                className="form-group custom-input-form-group form-group-text disabled mb-3
+        "
+                style={
+                  Object {
+                    "position": "relative",
+                  }
+                }
+              >
+                <input
+                  className="form-control form-control-brandName custom-input-element"
+                  disabled={true}
+                  id="newbrand-brandName-custom-input"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onInvalid={[Function]}
+                  onKeyPress={[Function]}
+                  required={true}
+                  type="text"
+                  value="test-brand-name"
+                />
+                <label
+                  className="custom-input-label"
+                  htmlFor="newbrand-brandName-custom-input"
+                >
+                  <div
+                    className="label-upper-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <div
+                    className="label-lower-bg position-absolute w-100 h-50 d-block"
+                  />
+                  <span
+                    className="label-text required"
+                  >
+                     
+                    Brand Name
+                     
+                  </span>
+                </label>
+                <small
+                  className="form-text custom-input-help-text text-muted"
+                  style={
+                    Object {
+                      "paddingLeft": undefined,
+                    }
+                  }
+                >
+                  
+                </small>
+              </div>
+            </div>
+          </div>
+          <div
+            className="form-row"
+          >
+            <div
+              className=" col"
+            >
+              <div
+                className="form-group custom-input-form-group form-group-textarea "
+              >
+                <label
+                  className="custom-input-label custom-input-label-textarea "
+                  htmlFor="newbrand-comments-custom-input"
+                >
+                  Comments
+                   
+                  (Optional)
+                </label>
+                <textarea
+                  className="form-control form-control-comments custom-input-element custom-input-element-textarea"
+                  disabled={false}
+                  id="newbrand-comments-custom-input"
+                  onChange={[Function]}
+                  placeholder="Please provide additional information about your brand."
+                  required={false}
+                  rows={4}
+                  value="test-comments"
+                />
+                <small
+                  className="form-text custom-input-help-text text-area-error text-muted"
+                  style={
+                    Object {
+                      "paddingLeft": undefined,
+                    }
+                  }
+                >
+                  
+                </small>
+              </div>
+            </div>
+          </div>
+          <div
+            className="c-ButtonsPanel form-row mt-3"
+            data-test="button-panel"
+          >
+            <div
+              className="col new-brand-button-panel text-right"
+              data-test="button-div"
+            >
+              <button
+                className="btn btn-sm cancel-btn text-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-sm btn-primary submit-btn px-3 ml-3"
+                disabled={true}
+                type="submit"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;

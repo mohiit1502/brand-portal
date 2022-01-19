@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewClaimAddedTemplate test container should render the NewClaimAddedTemplate successfully 1`] = `
+<div
+  className="modal show"
+  id="singletonModal"
+  role="dialog"
+  tabIndex="-1"
+>
+  <div
+    className="modal-dialog modal-dialog-centered"
+    role="document"
+  >
+    <div
+      className="modal-content"
+    >
+      <div
+        className="modal-body text-center p-3"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <img
+              height={120}
+              src="claimsSubmitted.png"
+            />
+          </div>
+        </div>
+        <div
+          className="row mt-3"
+        >
+          <div
+            className="col"
+          >
+            <span
+              className="status-header font-weight-bold"
+            >
+              Claim test-case-number submitted
+            </span>
+          </div>
+        </div>
+        <div
+          className="row mt-2"
+        >
+          <div
+            className="col"
+          >
+            <span
+              className="status-description"
+            >
+              We have sent a confirmation to your email address
+            </span>
+          </div>
+        </div>
+        <div
+          className="row mt-3"
+        >
+          <div
+            className="col"
+          >
+            <div
+              className="btn btn-sm btn-primary px-5"
+              onClick={[Function]}
+            >
+              Submit another claim
+            </div>
+          </div>
+        </div>
+        <div
+          className="row mt-2"
+        >
+          <div
+            className="col"
+          >
+            <div
+              className="btn btn-sm btn-block cancel-btn text-primary px-5"
+              onClick={[Function]}
+            >
+              Done
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

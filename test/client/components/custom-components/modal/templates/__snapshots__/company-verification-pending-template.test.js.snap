@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompanyVerificationPendingTemplate test container should render the CompanyVerificationPendingTemplate successfully 1`] = `
+<div
+  className="modal show"
+  id="singletonModal"
+  role="dialog"
+  tabIndex="-1"
+>
+  <div
+    className="modal-dialog modal-dialog-centered modal-lg"
+    role="document"
+  >
+    <div
+      className="modal-content"
+    >
+      <div
+        className="modal-body text-center p-5"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="col"
+          >
+            <img
+              height={87}
+              src="check-grn.svg"
+            />
+          </div>
+        </div>
+        <div
+          className="row mt-4"
+        >
+          <div
+            className="col"
+          >
+            <span
+              className="status-header"
+            >
+              Account verification in process
+            </span>
+          </div>
+        </div>
+        <div
+          className="row mt-3"
+        >
+          <div
+            className="col"
+          >
+            <span
+              className="status-description"
+            >
+              Your company and brand details are currently being verified. 
+              <br />
+              Once complete, we will send a confirmation to your registered email. Please login using the shared link.
+            </span>
+          </div>
+        </div>
+        <div
+          className="row mt-5"
+        >
+          <div
+            className="col"
+          >
+            <a
+              className="btn btn-sm btn-outline-primary px-5"
+              href="test"
+              onClick={[Function]}
+            >
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

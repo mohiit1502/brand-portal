@@ -228,14 +228,6 @@ class NewBrandTemplate extends React.Component {
               </div>
               <form onSubmit={this.handleSubmit} className="h-100 px-4">
                 {this.getFieldRenders()}
-                {/*<div className="row mt-3">*/}
-                {/*  <div className="col text-right">*/}
-                {/*    <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={this.resetTemplateStatus}>Cancel</div>*/}
-                {/*    <button type="submit" className="btn btn-sm btn-primary submit-btn px-3 ml-3" disabled={form.isSubmitDisabled}>*/}
-                {/*      Submit*/}
-                {/*    </button>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
               </form>
             </div>
           </div>
