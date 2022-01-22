@@ -2,7 +2,9 @@ import ServerUtils from "./../../../src/server/utility/server-utils";
 import ServerHttp from "../../../src/server/utility/ServerHttp";
 import ServerHttpError from "../../../src/server/utility/ServerHttpError";
 
-jest.mock("/secrets/secrets.json",() => {});
+jest.mock("/secrets/secrets.json", ()=>({
+  secrets: 'Test Secrets'
+}), { virtual: true });
 describe("Server Utils test",() => {
 
   describe("Retry Function",() => {
