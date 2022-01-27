@@ -687,7 +687,9 @@ class UserManagerApi {
       if (!query.code) {
         return h.redirect("/api/falcon/login");
       }
-      const {id_token} = await this.getAccessToken(request, query.code);
+      let response = await this.getAccessToken(request, query.code);
+      response = typeof response === "string" ? JSON.parse(response) : response;
+      const id_token = response.id_token;
       const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
@@ -829,7 +831,7 @@ class UserManagerApi {
       return response.body;
 
     } catch (err) {
-      console.log("[UserManagerApi::getAccessToken] Error occured in API request for Get Access Token:", err);
+      console.log("[UserManagerApi::getAccessToken] Error occurred in API request for Get Access Token:", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err && err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err && err.status;
