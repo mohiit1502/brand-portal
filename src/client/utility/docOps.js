@@ -59,7 +59,7 @@ export default class DocumentActions {
     const form = {...this.state.form};
     try {
       mixpanelPayload.API = endpoint;
-      this.checkToEnableSubmit();
+      this.checkToEnableSubmit && this.checkToEnableSubmit();
       const formData = new FormData();
       formData.append("file", file);
       const uploadResponse = (await Http.postAsFormData(endpoint, formData, {clientType: this.state.clientType}, null, this.props.showNotification, "Document uploaded successfully!")).body;
@@ -73,6 +73,7 @@ export default class DocumentActions {
       }, 700);
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
+      console.log(e);
       form.inputData[key].uploading = false;
       otherType && actionsToDisable && actionsToDisable.forEach(action => {form.inputData[formActions].buttons[action].disabled = form.inputData[otherType].uploading;});
       formActions && (form.inputData[formActions].buttons[submitButton || "submit"].disabled = false);
