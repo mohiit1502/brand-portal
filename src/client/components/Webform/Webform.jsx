@@ -151,6 +151,13 @@ class Webform extends React.Component {
     return hasError;
   };
 
+  checkToEnableSubmit(callback) {
+    const form = {...this.state.form};
+    form.isSubmitDisabled = form.inputData.webformDoc.uploading;
+    form.inputData.webformActions.buttons.submit.disabled = form.inputData.webformDoc.uploading;
+    this.setState({form}, callback && callback());
+  }
+
   onChange(evt, key) {
     evt.persist && evt.persist();
     if (evt && evt.target) {
