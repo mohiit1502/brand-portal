@@ -59,7 +59,7 @@ export default class DocumentActions {
     const form = {...this.state.form};
     try {
       mixpanelPayload.API = endpoint;
-      this.checkToEnableSubmit();
+      this.checkToEnableSubmit && this.checkToEnableSubmit();
       const formData = new FormData();
       formData.append("file", file);
       const uploadResponse = (await Http.postAsFormData(endpoint, formData, {clientType: this.state.clientType}, null, this.props.showNotification, "Document uploaded successfully!")).body;
