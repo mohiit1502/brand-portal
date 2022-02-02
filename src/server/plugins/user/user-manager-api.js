@@ -688,7 +688,7 @@ class UserManagerApi {
         return h.redirect("/api/falcon/login");
       }
       let response = await this.getAccessToken(request, query.code);
-      // response = typeof response === "string" ? JSON.parse(response) : response;
+      response = typeof response === "string" ? JSON.parse(response) : response;
       const id_token = response.id_token;
       const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
       const loginId = user.loginId;
