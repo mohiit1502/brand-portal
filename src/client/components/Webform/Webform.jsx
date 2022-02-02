@@ -18,7 +18,7 @@ import DocumentActions from "../../utility/docOps";
 class Webform extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["checkToEnableItemButton", "disableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
+    const functions = ["checkToEnableSubmit", "checkToEnableItemButton", "disableSubmitButton", "onChange", "loader", "setSelectInputValue", "undertakingtoggle", "customChangeHandler", "getItemListFromChild", "bubbleValue", "handleSubmit", "validateUrlItems", "customUserTypeChangeHandler"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -246,6 +246,13 @@ class Webform extends React.Component {
     });
     state.form.inputData.urlItems.disableAddItem = shouldDisable;
     this.setState(state);
+  }
+
+  checkToEnableSubmit(callback) {
+    const form = {...this.state.form};
+    form.isSubmitDisabled = form.inputData.webformDoc.uploading;
+    form.inputData.webformActions.buttons.submit.disabled = form.inputData.webformDoc.uploading;
+    this.setState({form}, callback && callback());
   }
 
   undertakingtoggle(evt) {
