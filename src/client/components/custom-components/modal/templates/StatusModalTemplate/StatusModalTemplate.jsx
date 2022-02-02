@@ -143,7 +143,6 @@ const StatusModalTemplate = props => {
       });
   };
 
-
   const getAction = action => {
     switch (action) {
       case "updateCompanyDetails":

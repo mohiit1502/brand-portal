@@ -831,7 +831,7 @@ class UserManagerApi {
       return response.body;
 
     } catch (err) {
-      console.log("[UserManagerApi::getAccessToken] Error occured in API request for Get Access Token:", err);
+      console.log("[UserManagerApi::getAccessToken] Error occurred in API request for Get Access Token:", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err && err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err && err.status;
