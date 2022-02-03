@@ -3,6 +3,7 @@ import queryString from "query-string";
 import ServerHttpError from "./ServerHttpError";
 import mixpanel from "../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../constants/mixpanel-constants";
+import utils from "../utility/server-utils";
 
 export default class ServerHttp {
 
@@ -55,12 +56,13 @@ export default class ServerHttp {
       const response = await fetch(urlString, options);
       requestEndTime = Date.now();
       const {ok, status, headers} = response;
+      const isJson = utils.isContentJson(headers);
       if (ok) {
         console.log("2. Response is OK with status: ", status);
-        return headers.get("content-type") === "application/json" ? {status, body: await response.json()} : {status, body: await response.text()};
+        return isJson ? {status, body: await response.json()} : {status, body: await response.text()};
       }
       console.log("3. Response not OK, logging response: ", response);
-      const err = headers.get("content-type") === "application/json" ? await response.json() : await response.text();
+      const err = isJson ? await response.json() : await response.text();
       const errorString = `5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, err);
       throw new ServerHttpError(status, err.error, err.message, err.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
