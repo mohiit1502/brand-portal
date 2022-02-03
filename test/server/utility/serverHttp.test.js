@@ -3,6 +3,10 @@ import fetch from "node-fetch";
 jest.mock('node-fetch', ()=>jest.fn())
 // jest.mock('node-fetch', ()=>jest.fn())
 
+jest.mock("/secrets/secrets.json", ()=>({
+  secrets: 'Test Secrets'
+}), { virtual: true });
+
 describe("Server Http Tests",() => {
 
   const mapper = [
