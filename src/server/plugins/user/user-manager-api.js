@@ -146,7 +146,7 @@ class UserManagerApi {
       console.log("[UserManagerApi::checkHealth] Health check response: ", response);
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log("[UserManagerApi::checkHealth] Error occured in API request for check health:", err);
+      console.log("[UserManagerApi::checkHealth] Error occurred in API request for check health:", err);
       return h.response(err).code(err.status);
     }
   }
@@ -186,7 +186,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::updateUser] Error occured in API request for Update User:", err);
+      console.log("[UserManagerApi::updateUser] Error occurred in API request for Update User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER, mixpanelPayload);
@@ -227,7 +227,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::reinviteUser] Error occured in API request for Reinvite User:", err);
+      console.log("[UserManagerApi::reinviteUser] Error occurred in API request for Reinvite User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESEND_INVITE, mixpanelPayload);
@@ -267,7 +267,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::resetPassword] Error occured in API request for Reset Password:", err);
+      console.log("[UserManagerApi::resetPassword] Error occurred in API request for Reset Password:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESET_PASSWORD, mixpanelPayload);
@@ -306,7 +306,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getUsers] Error occured in API request for get Users:", err);
+      console.log("[UserManagerApi::getUsers] Error occurred in API request for get Users:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USERS, mixpanelPayload);
@@ -348,7 +348,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::checkUnique] Error occured in API request for Check Unique User:", err);
+      console.log("[UserManagerApi::checkUnique] Error occurred in API request for Check Unique User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.EMAIL_UNIQUENESS, mixpanelPayload);
@@ -436,7 +436,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::createUser] Error occured in API request for Create User:", err);
+      console.log("[UserManagerApi::createUser] Error occurred in API request for Create User:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.CREATE_USER, mixpanelPayload);
@@ -475,7 +475,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::updateUserStatus] Error occured in API request for Update User Status:", err);
+      console.log("[UserManagerApi::updateUserStatus] Error occurred in API request for Update User Status:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER_STATUS, mixpanelPayload);
@@ -516,7 +516,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::updateTouStatus] Error occured in API request for Update TOU status:", err);
+      console.log("[UserManagerApi::updateTouStatus] Error occurred in API request for Update TOU status:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_TOU_STATUS, mixpanelPayload);
@@ -540,7 +540,7 @@ class UserManagerApi {
       return h.response(response.body).code(response.status);
 
     } catch (err) {
-      console.log("[UserManagerApi::deleteUser] Error occured in API request for Delete User:", err);
+      console.log("[UserManagerApi::deleteUser] Error occurred in API request for Delete User:", err);
       return h.response(err).code(err.status);
     }
   }
@@ -576,7 +576,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getNewUserRoles] Error occured in API request for New User Roles:", err);
+      console.log("[UserManagerApi::getNewUserRoles] Error occurred in API request for New User Roles:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_ROLE, mixpanelPayload);
@@ -614,7 +614,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getNewUserBrands] Error occured in API request for get New User Brand:", err);
+      console.log("[UserManagerApi::getNewUserBrands] Error occurred in API request for get New User Brand:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_BRAND, mixpanelPayload);
@@ -656,7 +656,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getUserInfo] Error occured in API request for get User information:", err);
+      console.log("[UserManagerApi::getUserInfo] Error occurred in API request for get User information:", err);
       if (err.status === 520) {
         if (err.error.message && err.error.message.indexOf("404") !== -1) {
          return h.response(err).code(404);
@@ -708,7 +708,7 @@ class UserManagerApi {
       console.error("got error in authorization: ", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
-      console.log("[UserManagerApi::loginSuccessRedirect] Error occured in API request for Redirect of Login Success:", err);
+      console.log("[UserManagerApi::loginSuccessRedirect] Error occurred in API request for Redirect of Login Success:", err);
       throw err;
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGIN_SUCCESS_REDIRECT, mixpanelPayload);
@@ -733,7 +733,7 @@ class UserManagerApi {
       console.error(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
-      console.log("[UserManagerApi::logout] Error occured in API request for Logout:", err);
+      console.log("[UserManagerApi::logout] Error occurred in API request for Logout:", err);
       throw err;
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGOUT_SUCCESS, mixpanelPayload);
@@ -759,7 +759,7 @@ class UserManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getLogoutProvider] Error occured in API request for Get Logout provider:", err);
+      console.log("[UserManagerApi::getLogoutProvider] Error occurred in API request for Get Logout provider:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_LOGOUT_PROVIDER, mixpanelPayload);
@@ -831,7 +831,7 @@ class UserManagerApi {
       return response.body;
 
     } catch (err) {
-      console.log("[UserManagerApi::getAccessToken] Error occured in API request for Get Access Token:", err);
+      console.log("[UserManagerApi::getAccessToken] Error occurred in API request for Get Access Token:", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err && err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err && err.status;

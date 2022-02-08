@@ -4,8 +4,9 @@
 /* eslint-disable no-unused-expressions */
 
 import nj from "node-jose";
-import {CONSTANTS} from "../constants/server-constants";
 import ServerHttp from "./ServerHttp";
+import {CONSTANTS} from "../constants/server-constants";
+
 const secrets = require(CONSTANTS.PATH);
 
 class ServerUtils {
@@ -100,6 +101,13 @@ class ServerUtils {
       }
     }
     return null;
+  }
+
+  isContentJson (headers) {
+    const contentType = headers && headers.get(CONSTANTS.HEADERS.CONTENT_TYPE_LOWER)
+      ? headers.get(CONSTANTS.HEADERS.CONTENT_TYPE_LOWER).split(";")
+      : [];
+    return contentType.indexOf(CONSTANTS.TYPES.APPLICATION_JSON) > -1;
   }
   // static search(path, obj, selector) {
   //   try {

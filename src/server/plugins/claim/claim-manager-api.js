@@ -118,7 +118,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getSellers] Error occured in API request for Get Sellers:", err);
+      console.log("[ClaimManagerApi::getSellers] Error occurred in API request for Get Sellers:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_SELLERS, mixpanelPayload);
@@ -155,7 +155,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getClaimTypes] Error occured in API request for Get Claim type:", err);
+      console.log("[ClaimManagerApi::getClaimTypes] Error occurred in API request for Get Claim type:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_CLAIM_TYPE, mixpanelPayload);
@@ -197,7 +197,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getClaims] Error occured in API request for Get Claims:", err);
+      console.log("[ClaimManagerApi::getClaims] Error occurred in API request for Get Claims:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_CLAIMS, mixpanelPayload);
@@ -239,7 +239,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getClaim] Error occured in API request for Get Claim:", err);
+      console.log("[ClaimManagerApi::getClaim] Error occurred in API request for Get Claim:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_CLAIM, mixpanelPayload);
@@ -283,7 +283,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::createClaim] Error occured in API request for Create Claim:", err);
+      console.log("[ClaimManagerApi::createClaim] Error occurred in API request for Create Claim:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_CLAIM, mixpanelPayload);
@@ -329,7 +329,7 @@ class ClaimManagerApi {
       console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed");
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log("[ClaimManagerApi::createWebformClaim] Error occured in API request for webform Create Claim:", err);
+      console.log("[ClaimManagerApi::createWebformClaim] Error occurred in API request for webform Create Claim:", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
@@ -375,7 +375,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::uploadWebFormDocument] Error occured in API request for Upload Webform document:", err);
+      console.log("[ClaimManagerApi::uploadWebFormDocument] Error occurred in API request for Upload Webform document:", err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.UPLOAD_BUSINESS_DOCUMENT, mixpanelPayload);
