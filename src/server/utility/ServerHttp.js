@@ -51,32 +51,32 @@ export default class ServerHttp {
     try {
       /* eslint-disable no-unused-expressions */
       !urlString && console.log("No URL!!");
-      console.log("[%s] 1. ===== Crud Request Start. Requesting URL: ", options.headers.ROPRO_CORRELATION_ID, urlString);
+      console.log("[Corr ID: %s] 1. ===== Crud Request Start. Requesting URL: ", options.headers.ROPRO_CORRELATION_ID, urlString);
       requestStartTime = Date.now();
       const response = await fetch(urlString, options);
       requestEndTime = Date.now();
       const {ok, status, headers} = response;
       const isJson = utils.isContentJson(headers);
       if (ok) {
-        console.log("[%s] 2. Response is OK with status: ", options.headers.ROPRO_CORRELATION_ID, status);
+        console.log("[Corr ID: %s] 2. Response is OK with status: ", options.headers.ROPRO_CORRELATION_ID, status);
         return isJson ? {status, body: await response.json()} : {status, body: await response.text()};
       }
-      console.log("[%s][%s] 3. Response not OK, logging response: ", options.headers.ROPRO_CORRELATION_ID, urlString, response);
+      console.log("[Corr ID: %s][%s] 3. Response not OK, logging response: ", options.headers.ROPRO_CORRELATION_ID, urlString, response);
       const err = isJson ? await response.json() : await response.text();
-      const errorString = `[%s] 5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
+      const errorString = `[Corr ID: %s] 5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, options.headers.ROPRO_CORRELATION_ID, err);
       throw new ServerHttpError(status, err.error, err.message, err.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
         options && options.headers && options.headers.ROPRO_USER_ID);
     } catch (e) {
       requestEndTime  = requestEndTime ? requestEndTime : Date.now();
-      const errorString = `[%s] 6. Caught in ServerHttp.${method}: `;
+      const errorString = `[Corr ID: %s] 6. Caught in ServerHttp.${method}: `;
       console.error(errorString, options.headers.ROPRO_CORRELATION_ID, e);
       throw new ServerHttpError(e.status || 500, e, "", e.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
         options && options.headers && options.headers.ROPRO_USER_ID);
     } finally {
       mixpanelPayload.RESPONSE_TIME = requestEndTime - requestStartTime;
-      console.log(`[%s] Total Response Time for ${urlString} is: ${requestEndTime - requestStartTime}`, options.headers.ROPRO_CORRELATION_ID);
-      console.log("[%s] 7. === Crud Request End!", options.headers.ROPRO_CORRELATION_ID);
+      console.log(`[Corr ID: %s] Total Response Time for ${urlString} is: ${requestEndTime - requestStartTime}`, options.headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s] 7. === Crud Request End!", options.headers.ROPRO_CORRELATION_ID);
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.SERVER_HTTP.SERVER_RESPONSE_TIME, mixpanelPayload);
     }
   }

@@ -84,17 +84,19 @@ class ClaimManagerApi {
   }
 
   async getSellers(request, h) {
-    console.log("[ClaimManagerApi::getSellers] API request for Get Sellers has started");
-    console.log("[ClaimManagerApi::getSellers] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = this.getIQSHeaders(request);
+    const corrId = headers["WM_QOS.CORRELATION_ID"];
+    console.log("[Corr ID: %s][ClaimManagerApi::getSellers] API request for Get Sellers has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::getSellers] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/sellers"
     };
     try {
-      const headers = this.getIQSHeaders(request);
       const options = {
         headers
       };
+      console.log("[Corr ID: %s][ClaimManagerApi::getSellers] Fetching CCM dependencies", corrId);
       let payload = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.IQS_QUERY");
       payload = payload.replace("__itemId__", request.query.payload);
       const url = secrets.IQS_URL;
@@ -112,32 +114,33 @@ class ClaimManagerApi {
         responseBody = this.parseSellersFromResponse(response.body.docs);
       }
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[ClaimManagerApi::getSellers] API request for Get Sellers has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::getSellers] API request for Get Sellers has completed", corrId);
       return h.response(responseBody).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getSellers] Error occurred in API request for Get Sellers:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::getSellers] Error occurred in API request for Get Sellers:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_SELLERS, mixpanelPayload);
     }
   }
   async getClaimTypes(request, h) {
-    console.log("[ClaimManagerApi::getClaimTypes] API request for Get Claim type has started");
-    console.log("[ClaimManagerApi::getClaimTypes] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] API request for Get Claim type has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/claims/types"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
 
-      console.log("[ClaimManagerApi::getClaimTypes] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIM_TYPES_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIM_TYPES_PATH");
       const url = `${BASE_URL}${CLAIM_TYPES_PATH}`;
@@ -148,14 +151,14 @@ class ClaimManagerApi {
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
-      console.log("[ClaimManagerApi::getClaimTypes] API request for Get Claim type has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] API request for Get Claim type has completed", corrId);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getClaimTypes] Error occurred in API request for Get Claim type:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::getClaimTypes] Error occurred in API request for Get Claim type:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_CLAIM_TYPE, mixpanelPayload);
@@ -164,14 +167,15 @@ class ClaimManagerApi {
 
 
   async getClaims(request, h) {
-    console.log("[ClaimManagerApi::getClaims] API request for Get Claims has started");
-    console.log("[ClaimManagerApi::getClaims] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaims] API request for Get Claims has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaims] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/claims"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       if (!headers.ROPRO_CLIENT_TYPE) {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
       }
@@ -179,7 +183,7 @@ class ClaimManagerApi {
         headers
       };
 
-      console.log("[ClaimManagerApi::getClaims] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][ClaimManagerApi::getClaims] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
@@ -191,13 +195,13 @@ class ClaimManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[ClaimManagerApi::getClaims] API request for Get Claims has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::getClaims] API request for Get Claims has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getClaims] Error occurred in API request for Get Claims:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::getClaims] Error occurred in API request for Get Claims:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_CLAIMS, mixpanelPayload);
@@ -205,19 +209,20 @@ class ClaimManagerApi {
   }
 
   async getClaim(request, h) {
-    console.log("[ClaimManagerApi::getClaim] API request for Get Claim has started");
-    console.log("[ClaimManagerApi::getClaim] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaim] API request for Get Claim has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaim] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: `/api/claims/${request.params && request.params.ticketId}`
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
 
-      console.log("[ClaimManagerApi::getClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][ClaimManagerApi::getClaim] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = `${await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
       const url = `${BASE_URL}${CLAIMS_PATH}`;
@@ -229,7 +234,7 @@ class ClaimManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[ClaimManagerApi::getClaim] API request for Get Claim has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::getClaim] API request for Get Claim has completed", corrId);
       if (response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
         return h.response(response.body).code(response.status);
       } else {
@@ -239,7 +244,7 @@ class ClaimManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::getClaim] Error occurred in API request for Get Claim:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::getClaim] Error occurred in API request for Get Claim:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.GET_CLAIM, mixpanelPayload);
@@ -248,20 +253,21 @@ class ClaimManagerApi {
 
 
   async createClaim(request, h) {
-    console.log("[ClaimManagerApi::createClaim] API request for Create Claim has started");
-    console.log("[ClaimManagerApi::createClaim] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][ClaimManagerApi::createClaim] API request for Create Claim has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::createClaim] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/claims"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const payload = request.payload;
       const options = {
         headers
       };
 
-      console.log("[ClaimManagerApi::createClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][ClaimManagerApi::createClaim] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
@@ -277,13 +283,13 @@ class ClaimManagerApi {
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[ClaimManagerApi::createClaim] API request for Create Claim has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::createClaim] API request for Create Claim has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::createClaim] Error occurred in API request for Create Claim:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::createClaim] Error occurred in API request for Create Claim:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CREATE_CLAIM, mixpanelPayload);
@@ -291,15 +297,16 @@ class ClaimManagerApi {
   }
 
   async createWebformClaim(request, h) {
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/claims/webform"
     };
-    console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has started");
-    console.log("[ClaimManagerApi::createWebformClaim] Client IP adress:", request.info && request.info.remoteAddress);
-    console.log("[ClaimManagerApi::createWebformClaim] Client User Agent:", request.headers["user-agent"]);
+    console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] API request for webform Create Claim has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] Client IP address:", corrId, request.info && request.info.remoteAddress);
+    console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] Client User Agent:", corrId, request.headers["user-agent"]);
     try {
-      const headers = ServerUtils.getHeaders(request);
       const payload = request.payload;
       payload.metaInfo = {
         userAgent: request.headers["user-agent"],
@@ -311,8 +318,8 @@ class ClaimManagerApi {
       const options = {
         headers
       };
-      console.log("[ClaimManagerApi::createWebformClaim] Client Email ID:",  payload.reporterInfo && payload.reporterInfo.email ? payload.reporterInfo.email : "NOT FOUND IN PAYLOAD");
-      console.log("[ClaimManagerApi::createWebformClaim] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] Client Email ID:", corrId, payload.reporterInfo && payload.reporterInfo.email ? payload.reporterInfo.email : "NOT FOUND IN PAYLOAD");
+      console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_CLAIMS_PATH");
       const url = `${BASE_URL}${CLAIMS_PATH}`;
@@ -326,10 +333,10 @@ class ClaimManagerApi {
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.post(url, options, payload);
-      console.log("[ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log("[ClaimManagerApi::createWebformClaim] Error occurred in API request for webform Create Claim:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::createWebformClaim] Error occurred in API request for webform Create Claim:", corrId, err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
@@ -340,14 +347,15 @@ class ClaimManagerApi {
   }
 
   async uploadWebFormDocument (request, h) {
+    const headers = ServerUtils.getDocumentHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/claims/uploadWebFormDocument"
     };
-    console.log("[ClaimManagerApi::uploadWebFormDocument] API request for Upload Business document has started");
-    console.log("[ClaimManagerApi::uploadWebFormDocument] User ID: ", request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] API request for Upload Business document has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] User ID: ", corrId, request.state && request.state.session_token_login_id);
     try {
-      const headers = ServerUtils.getDocumentHeaders(request);
       const options = {
         headers
       };
@@ -356,7 +364,7 @@ class ClaimManagerApi {
       const fd = new FormData();
 
       fd.append("file", file, {filename});
-      console.log("[ClaimManagerApi::uploadWebFormDocument] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const WEBFORM_DOC_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.WEBFORM_DOC_PATH");
       const url = `${BASE_URL}${WEBFORM_DOC_PATH}`;
@@ -367,15 +375,14 @@ class ClaimManagerApi {
       mixpanelPayload.FILE_NAME = filename;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
       const response = await ServerHttp.postAsFormData(url, options, fd);
-      console.log("4. In CMA - post-request - Got Response from FIle Upload ====== ", response);
-      console.log("[ClaimManagerApi::uploadWebFormDocument] API request for Upload Webform document has completed");
+      console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] 4. In CMA - post-request - Got Response from File Upload ====== ", corrId, response);
+      console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] API request for Upload Webform document has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log("5. In CMA - Error caught ======== ", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[ClaimManagerApi::uploadWebFormDocument] Error occurred in API request for Upload Webform document:", err);
+      console.error("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] Error occurred in API request for Upload Webform document:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.UPLOAD_BUSINESS_DOCUMENT, mixpanelPayload);

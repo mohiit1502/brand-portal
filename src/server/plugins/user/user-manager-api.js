@@ -135,36 +135,38 @@ class UserManagerApi {
   }
 
   async checkHealth (request, h) {
-    console.log("[UserManagerApi::checkHealth] API request for Check Health has started");
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
     try {
       const headers = ServerUtils.getHeaders(request);
       const options = {headers};
+      console.log("[Corr ID: %s][UserManagerApi::checkHealth] Initiating Health Check", corrId);
       const HEALTHCHECK_PATH = await ServerUtils.ccmGet(request, "HEALTH_CONFIG.HEALTHCHECK_URL");
       const response = await ServerHttp.get(HEALTHCHECK_PATH, options);
-      console.log("[UserManagerApi::checkHealth] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
-      console.log("[UserManagerApi::checkHealth] API request for check health has completed");
-      console.log("[UserManagerApi::checkHealth] Health check response: ", response);
+      console.log("[Corr ID: %s][UserManagerApi::checkHealth] API request for check health has completed");
+      console.log("[Corr ID: %s][UserManagerApi::checkHealth] Health check response: ", corrId, response);
       return h.response(response.body).code(response.status);
     } catch (err) {
-      console.log("[UserManagerApi::checkHealth] Error occurred in API request for check health:", err);
+      console.error("[Corr ID: %s][UserManagerApi::checkHealth] Error occurred in API request for check health:", corrId, err);
       return h.response(err).code(err.status);
     }
   }
 
   async updateUser (request, h) {
-    console.log("[UserManagerApi::updateUser] API request for Update User has started");
-    console.log("[UserManagerApi::updateUser] User ID: ", request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::updateUser] Initiating API request for Update User", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::updateUser] User ID: ", corrId, request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/${request.params && request.params.emailId}`
     };
     try {
       const payload = request.payload && request.payload.user;
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::checkHealth] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::checkHealth] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
@@ -178,15 +180,16 @@ class UserManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
+      console.log("[Corr ID: %s][UserManagerApi::checkHealth] Calling ServerHttp.put", corrId);
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::updateUser] API request for Update User has completed");
+      console.log("[Corr ID: %s][UserManagerApi::updateUser] API request for Update User has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::updateUser] Error occurred in API request for Update User:", err);
+      console.error("[Corr ID: %s][UserManagerApi::updateUser] Error occurred in API request for Update User:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER, mixpanelPayload);
@@ -194,19 +197,20 @@ class UserManagerApi {
   }
 
   async reinviteUser (request, h) {
-    console.log("[UserManagerApi::reinviteUser] API request for Reinvite User has started");
-    console.log("[UserManagerApi::reinviteUser] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::reinviteUser] API request for Reinvite User has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::reinviteUser] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/reinvite"
     };
     try {
       const payload = request.payload;
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::reinviteUser] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::reinviteUser] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       let INVITE_USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_REINVITE");
       INVITE_USER_PATH && (INVITE_USER_PATH = INVITE_USER_PATH.replace("__email__", request.payload.email));
@@ -218,16 +222,16 @@ class UserManagerApi {
       mixpanelPayload.SELECTED_USER_EMAIL = request.payload && request.payload.email;
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
-
+      console.log("[Corr ID: %s][UserManagerApi::reinviteUser] Initiating API call", corrId);
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::reinviteUser] API request for Reinvite User has completed");
+      console.log("[Corr ID: %s][UserManagerApi::reinviteUser] API request for Reinvite User has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::reinviteUser] Error occurred in API request for Reinvite User:", err);
+      console.error("[Corr ID: %s][UserManagerApi::reinviteUser] Error occurred in API request for Reinvite User: ", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESEND_INVITE, mixpanelPayload);
@@ -235,22 +239,22 @@ class UserManagerApi {
   }
 
   async resetPassword (request, h) {
-    console.log("[UserManagerApi::resetPassword] API request for Reset Password has started");
-    console.log("[UserManagerApi::resetPassword] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::resetPassword] API request for Reset Password has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::resetPassword] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/resetPassword"
     };
     try {
       const payload = request.payload;
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
 
-      console.log("[UserManagerApi::resetPassword] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::resetPassword] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      console.log(payload);
       const RESET_PASSWORD_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.RESET_PASSWORD");
       const url = `${BASE_URL}${RESET_PASSWORD_PATH}`;
 
@@ -258,16 +262,16 @@ class UserManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
-
+      console.log("[Corr ID: %s][UserManagerApi::resetPassword] Initiating API call", corrId);
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::resetPassword] API request for Reset Password has completed");
+      console.log("[Corr ID: %s][UserManagerApi::resetPassword] API request for Reset Password has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::resetPassword] Error occurred in API request for Reset Password:", err);
+      console.error("[Corr ID: %s][UserManagerApi::resetPassword] Error occurred in API request for Reset Password:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.RESET_PASSWORD, mixpanelPayload);
@@ -275,19 +279,20 @@ class UserManagerApi {
   }
 
   async getUsers(request, h) {
-    console.log("[UserManagerApi::getUsers] API request for get Users has started");
-    console.log("[UserManagerApi::getUsers] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::getUsers] API request for get Users has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getUsers] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         method: "GET",
         headers
       };
-      console.log("[UserManagerApi::getUsers] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::getUsers] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
@@ -297,16 +302,15 @@ class UserManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
-
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::getUsers] API request for get Users has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getUsers] API request for get Users has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getUsers] Error occurred in API request for get Users:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getUsers] Error occurred in API request for get Users:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_USERS, mixpanelPayload);
@@ -314,19 +318,20 @@ class UserManagerApi {
   }
 
   async checkUnique(request, h) {
-    console.log("[UserManagerApi::checkUnique] API request for Check Unique User has started");
-    console.log("[UserManagerApi::checkUnique] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::checkUnique] API request for Check Unique User has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::checkUnique] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users/checkUnique"
     };
     try {
       // const payload = request.payload;
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::checkUnique] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::checkUnique] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
       let UNIQUENESS_CHECK_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.UNIQUENESS_CHECK_PATH");
@@ -341,14 +346,14 @@ class UserManagerApi {
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
-      console.log("[UserManagerApi::checkUnique] API request for Check Unique User has completed");
+      console.log("[Corr ID: %s][UserManagerApi::checkUnique] API request for Check Unique User has completed", corrId);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::checkUnique] Error occurred in API request for Check Unique User:", err);
+      console.error("[Corr ID: %s][UserManagerApi::checkUnique] Error occurred in API request for Check Unique User:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.EMAIL_UNIQUENESS, mixpanelPayload);
@@ -356,18 +361,19 @@ class UserManagerApi {
   }
 
   async getEmailConfig(request, h) {
-    console.log("[UserManagerApi::getEmailConfig] API request to get user's email configuration has started");
-    console.log("[UserManagerApi::getEmailConfig] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] API request to get user's email configuration has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users/getEmailConfig"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::getEmailConfig] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       let EMAIL_CONFIG_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.EMAIL_CONFIG_PATH");
       EMAIL_CONFIG_PATH && (EMAIL_CONFIG_PATH = EMAIL_CONFIG_PATH.replace("__email__", request.query.email));
@@ -380,14 +386,14 @@ class UserManagerApi {
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options);
-      console.log("[UserManagerApi::getEmailConfig] API request to get user's email configuration has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] API request to get user's email configuration has completed", corrId);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getEmailConfig] Error occurred in API request to get user's email configuration:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getEmailConfig] Error occurred in API request to get user's email configuration:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_EMAIL_CONFIG, mixpanelPayload);
@@ -396,22 +402,23 @@ class UserManagerApi {
 
   // eslint-disable-next-line complexity
   async createUser(request, h) {
-    console.log("[UserManagerApi::createUser] API request for Create User has started");
-    console.log("[UserManagerApi::createUser] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::createUser] API request for Create User has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::createUser] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users"
     };
     try {
       const payload = request.payload;
-      const headers = ServerUtils.getHeaders(request);
       if (!headers.ROPRO_CLIENT_TYPE) {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
       }
       const options = {
         headers
       };
-      console.log("[UserManagerApi::createUser] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::createUser] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
@@ -430,13 +437,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::createUser] API request for Create User has completed");
+      console.log("[Corr ID: %s][UserManagerApi::createUser] API request for Create User has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::createUser] Error occurred in API request for Create User:", err);
+      console.error("[Corr ID: %s][UserManagerApi::createUser] Error occurred in API request for Create User:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.CREATE_USER, mixpanelPayload);
@@ -444,18 +451,19 @@ class UserManagerApi {
   }
 
   async updateUserStatus (request, h) {
-    console.log("[UserManagerApi::updateUserStatus] API request for Update User Status has started");
-    console.log("[UserManagerApi::updateUserStatus] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] API request for Update User Status has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/{emailId}/status/${request.params.status}`
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::updateUserStatus] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}/status/${request.params.status}`;
@@ -469,13 +477,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.put(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::updateUserStatus] API request for Update User Status has completed");
+      console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] API request for Update User Status has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::updateUserStatus] Error occurred in API request for Update User Status:", err);
+      console.error("[Corr ID: %s][UserManagerApi::updateUserStatus] Error occurred in API request for Update User Status:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_USER_STATUS, mixpanelPayload);
@@ -483,18 +491,19 @@ class UserManagerApi {
   }
 
   async updateTouStatus (request, h) {
-    console.log("[UserManagerApi::updateTouStatus] API request for Update TOU status has started");
-    console.log("[UserManagerApi::updateTouStatus] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] API request for Update TOU status has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/updateTouStatus/${request.params && request.params.status}`
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::updateTouStatus] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] Fetching dependencies from CCM", corrId);
       const payload = request.payload;
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
@@ -510,13 +519,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.put(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::updateTouStatus] API request for Update TOU status has completed");
+      console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] API request for Update TOU status has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::updateTouStatus] Error occurred in API request for Update TOU status:", err);
+      console.error("[Corr ID: %s][UserManagerApi::updateTouStatus] Error occurred in API request for Update TOU status:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.UPDATE_TOU_STATUS, mixpanelPayload);
@@ -524,45 +533,47 @@ class UserManagerApi {
   }
 
   async deleteUser (request, h) {
-    console.log("[UserManagerApi::deleteUser] API request for Delete Userhas started");
-    console.log("[UserManagerApi::deleteUser] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::deleteUser] API request for Delete Userhas started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::deleteUser] User ID: ", corrId, request.state && request.state.session_token_login_id);
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers: { ...headers, "Content-Type": "text/plain" }
       };
-      console.log("[UserManagerApi::updateTouStatus] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::deleteUser] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
       const response = await ServerHttp.delete(url, options);
-      console.log("[UserManagerApi::deleteUser] API request for Delete User has completed");
+      console.log("[Corr ID: %s][UserManagerApi::deleteUser] API request for Delete User has completed", corrId);
       return h.response(response.body).code(response.status);
 
     } catch (err) {
-      console.log("[UserManagerApi::deleteUser] Error occurred in API request for Delete User:", err);
+      console.error("[Corr ID: %s][UserManagerApi::deleteUser] Error occurred in API request for Delete User:", corrId, err);
       return h.response(err).code(err.status);
     }
   }
 
   async getNewUserRoles (request, h) {
-    console.log("[UserManagerApi::getNewUserRoles] API request for New User Roles has started");
-    console.log("[UserManagerApi::getNewUserRoles] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] API request for New User Roles has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/roles"
     };
     try {
+      console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const ROLE_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ROLE_PATH");
       const url = `${BASE_URL}${ROLE_PATH}`;
-      const headers = ServerUtils.getHeaders(request);
 
       const options = {
         headers
       };
 
-      console.log("[UserManagerApi::getNewUserRoles] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
@@ -570,13 +581,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::getNewUserRoles] API request for New User Roles has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] API request for New User Roles has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getNewUserRoles] Error occurred in API request for New User Roles:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getNewUserRoles] Error occurred in API request for New User Roles:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_ROLE, mixpanelPayload);
@@ -584,23 +595,24 @@ class UserManagerApi {
   }
 
   async getNewUserBrands (request, h) {
-    console.log("[UserManagerApi::getNewUserBrands] API request for get New User Brand has started");
-    console.log("[UserManagerApi::getNewUserBrands] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] API request for get New User Brand has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/brands"
     };
     try {
+      console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const ASSIGNABLE_BRANDS_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.ASSIGNABLE_BRANDS_PATH");
       const url = `${BASE_URL}${ASSIGNABLE_BRANDS_PATH}`;
 
-      const headers = ServerUtils.getHeaders(request);
 
       const options = {
         headers
       };
-      console.log("[UserManagerApi::getNewUserBrands] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
@@ -608,13 +620,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::getNewUserBrands] API request for get New User Brand has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] API request for get New User Brand has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getNewUserBrands] Error occurred in API request for get New User Brand:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getNewUserBrands] Error occurred in API request for get New User Brand:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_NEW_USER_BRAND, mixpanelPayload);
@@ -623,21 +635,20 @@ class UserManagerApi {
 
 
   async getUserInfo (request, h) {
-    console.log("[UserManagerApi::getUserInfo] API request for get User information has started");
-    console.log("[UserManagerApi::getUserInfo] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::getUserInfo] API request for get User information has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getUserInfo] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/userInfo"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       headers.ROPRO_CLIENT_TYPE = request.query.clientType;
-      console.log("[UserManagerApi:getUserInfo Headers: ", headers);
-      console.log("[UserManagerApi:getUserInfo Headers: ", request.state);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::getUserInfo] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
+      console.log("[Corr ID: %s][UserManagerApi::getUserInfo] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       // const BASE_URL = "http://localhost:8091";
       const USER_SELF_INFO_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_SELF_INFO_PATH");
@@ -646,17 +657,17 @@ class UserManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
-
+      mixpanelPayload.ROPRO_CORRELATION_ID = corrId;
+      console.log("[Corr ID: %s][UserManagerApi:getUserInfo] Initiating get request", corrId);
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::getUserInfo] API request for get User information has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getUserInfo] API request for get User information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getUserInfo] Error occurred in API request for get User information:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getUserInfo] Error occurred in API request for get User information:", corrId, err);
       if (err.status === 520) {
         if (err.error.message && err.error.message.indexOf("404") !== -1) {
          return h.response(err).code(404);
@@ -671,8 +682,9 @@ class UserManagerApi {
   }
 
   async loginSuccessRedirect (request, h) {
-    console.log("[UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has started");
-    console.log("[UserManagerApi::loginSuccessRedirect] User ID: ", request.state && request.state.session_token_login_id);
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
+    console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/login-redirect",
@@ -681,34 +693,35 @@ class UserManagerApi {
     try {
       const query = request.query;
       const clientType = request.query.clientType;
-      console.log("Setting clientType post login redirect: ", clientType);
-      console.log("Setting clientType post login redirect: ", request.query.auth);
+      console.log("[Corr ID: %s]Setting clientType post login redirect: ", corrId, clientType);
       // eslint-disable-next-line camelcase
       if (!query.code) {
         return h.redirect("/api/falcon/login");
       }
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Requesting access token from IAM", corrId);
       let response = await this.getAccessToken(request, query.code);
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Received access token from IAM, initiate token decrypt", corrId);
       response = typeof response === "string" ? JSON.parse(response) : response;
       const id_token = response.id_token;
       const user = await ServerUtils.decryptToken(id_token, secrets.IdTokenEncryptionKey);
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Decrypted access token", corrId);
       const loginId = user.loginId;
       const authToken = user["iam-token"];
 
-      console.log("Before set: ", h.state);
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Setting session token, login ID and client type cookies: ", corrId, h.state);
       h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
       h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
       h.state("client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
-      console.log("After set: ", h.state);
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Done setting session token, login ID and client type cookies: ", corrId, h.state);
       mixpanelPayload.distinct_id = loginId;
       mixpanelPayload.API_SUCCESS = true;
 
-      console.log("[UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has completed");
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has completed", corrId);
       return h.redirect("/");
     } catch (err) {
-      console.error("got error in authorization: ", err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
-      console.log("[UserManagerApi::loginSuccessRedirect] Error occurred in API request for Redirect of Login Success:", err);
+      console.error("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Error occurred in API request for Redirect of Login Success:", corrId, err);
       throw err;
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGIN_SUCCESS_REDIRECT, mixpanelPayload);
@@ -716,24 +729,27 @@ class UserManagerApi {
   }
 
   async logout(request, h) {
-    console.log("[UserManagerApi::logout] API request for Logout has started");
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
+    console.log("[Corr ID: %s][UserManagerApi::logout] API request for Logout has started", corrId);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/logout"
     };
     try {
+      console.log("[Corr ID: %s][UserManagerApi::logout] Clearing cookies", corrId);
       h.unstate("auth_session_token");
       h.unstate("session_token_login_id");
       h.unstate("client_type");
+      console.log("[Corr ID: %s][UserManagerApi::logout] Cookies have been cleared", corrId);
 
       mixpanelPayload.API_SUCCESS = true;
-      console.log("[UserManagerApi::logout] API request for Logout has completed");
+      console.log("[Corr ID: %s][UserManagerApi::logout] API request for Logout has completed", corrId);
       return h.redirect("/");
     } catch (err) {
       console.error(err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
-      console.log("[UserManagerApi::logout] Error occurred in API request for Logout:", err);
+      console.error("[Corr ID: %s][UserManagerApi::logout] Error occurred in API request for Logout:", corrId, err);
       throw err;
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.LOGOUT_SUCCESS, mixpanelPayload);
@@ -741,25 +757,27 @@ class UserManagerApi {
   }
 
   async getLogoutProvider(request, h) {
-    console.log("[UserManagerApi::getLogoutProvider] API request for Get Logout provider has started");
-    console.log("[UserManagerApi::getLogoutProvider] User ID: ", request.state && request.state.session_token_login_id);
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
+    console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] API request for Get Logout provider has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/logoutProvider"
     };
     try {
+      console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] Fetching dependencies from CCM", corrId);
       let logoutProviderURL = await ServerUtils.ccmGet(request, "IAM.FALCON_LOGOUT_URL");
       logoutProviderURL = logoutProviderURL ? `${logoutProviderURL}&clientId=${secrets.CLIENT_ID}` : logoutProviderURL;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
-      console.log("[UserManagerApi::getLogoutProvider] API request for Get Logout provider has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] API request for Get Logout provider has completed", corrId);
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::getLogoutProvider] Error occurred in API request for Get Logout provider:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getLogoutProvider] Error occurred in API request for Get Logout provider:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.GET_LOGOUT_PROVIDER, mixpanelPayload);
@@ -767,8 +785,9 @@ class UserManagerApi {
   }
 
   async redirectToFalcon (request, h) {
-    console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started");
-    console.log("[UserManagerApi::redirectToFalcon] User ID: ", request.state && request.state.session_token_login_id);
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
+    console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const clientType = request.query.clientType;
     const mixpanelPayload = {
       METHOD: "GET",
@@ -779,13 +798,15 @@ class UserManagerApi {
       // if (!clientType) {
       //   return h.redirect(`/${request.params.action}`)
       // }
+      console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Initiating Generate Falcon's Redirect URL", corrId)
       const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action, clientType);
+      console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Generated Falcon's Redirect URL: ", corrId, redirectUri);
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.REDIRECT_URI = redirectUri;
-      console.log("[UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has completed");
+      console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Redirecting to Falcon now!", corrId);
       return h.redirect(redirectUri);
     } catch (e) {
-      console.log("[UserManagerApi::redirectToFalcon] Error occurred in API request for Redirect to Falcon:", e);
+      console.error("[Corr ID: %s][UserManagerApi::redirectToFalcon] Error occurred in API request for Redirect to Falcon: ", corrId, e);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = e;
       throw e;
@@ -795,10 +816,12 @@ class UserManagerApi {
   }
 
   async getAccessToken(request, authorizationCode) {
-    console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has started");
-    console.log("[UserManagerApi::getAccessToken] User ID: ", request.state && request.state.session_token_login_id);
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH).toUpperCase();
+    console.log("[Corr ID: %s][UserManagerApi::getAccessToken] API request for Get Access Token has started", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::getAccessToken] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {};
     try {
+      console.log("[Corr ID: %s][UserManagerApi::getAccessToken] Fetching dependencies from CCM", corrId)
       const IAM = await ServerUtils.ccmGet(request, "IAM");
       const url = secrets.IAM_TOKEN_URL;
       const clientId = secrets.CLIENT_ID;
@@ -816,22 +839,22 @@ class UserManagerApi {
         Authorization: `Basic ${base64}`,
         "WM_SVC.ENV": secrets["WM_SVC.ENV"],
         "WM_CONSUMER.ID": secrets["WM_CONSUMER.ID"],
-        "WM_QOS.CORRELATION_ID": ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH).toUpperCase(),
+        "WM_QOS.CORRELATION_ID": corrId,
         "WM_SVC.NAME": secrets["WM_SVC.NAME"],
         "WM_SVC.VERSION": secrets["WM_SVC.VERSION"],
         "WM_CONSUMER.NAME": secrets["WM_CONSUMER.NAME"]
       };
       const options = {headers};
+      console.log("[Corr ID: %s][%s][UserManagerApi::getAccessToken] Calling IAM via ServerHttp.post", corrId, url);
       const response = await ServerHttp.post(url, options, payload); //fetchJSON(url, options);
-      console.log("[UserManagerApi::getAccessToken] API request for Get Access Token has completed");
+      console.log("[Corr ID: %s][UserManagerApi::getAccessToken] API request for Get Access Token has completed", corrId);
       mixpanelPayload.URL = url;
       mixpanelPayload.METHOD = "POST";
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.RESPONSE_STATUS = response && response.status;
       return response.body;
-
     } catch (err) {
-      console.log("[UserManagerApi::getAccessToken] Error occurred in API request for Get Access Token:", err);
+      console.error("[Corr ID: %s][UserManagerApi::getAccessToken] Error occurred in API request for Get Access Token: ", corrId, err);
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err && err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err && err.status;
@@ -842,19 +865,20 @@ class UserManagerApi {
   }
 
   async contactUs(request, h) {
-    console.log("[UserManagerApi::contactUs] API Request to send an email for support");
-    console.log("[UserManagerApi::contactUs] User ID: ", request.state && request.state.session_token_login_id);
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][UserManagerApi::contactUs] API Request to send an email for support", corrId);
+    console.log("[Corr ID: %s][UserManagerApi::contactUs] User ID: ", corrId, request.state && request.state.session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/contactUs"
     };
     try {
-      const headers = ServerUtils.getHeaders(request);
       const options = {
         headers
       };
-      console.log("[UserManagerApi::contactUs] ROPRO_CORRELATION_ID:", headers.ROPRO_CORRELATION_ID);
       const payload = request.payload;
+      console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] Fetching dependencies from CCM", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
       const USER_CONTACT_US_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.CONTACT_US_ENDPOINT");
       const url = `${BASE_URL}${USER_CONTACT_US_PATH}`;
@@ -866,13 +890,13 @@ class UserManagerApi {
 
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
-      console.log("[UserManagerApi::contactUs] API request for to send support mail has completed");
+      console.log("[Corr ID: %s][UserManagerApi::contactUs] API request for to send support mail has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.log("[UserManagerApi::contactUs] API request for to send support mail failed");
+      console.error("[Corr ID: %s][UserManagerApi::contactUs] API request for to send support mail failed", corrId);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_API.CONTACT_US, mixpanelPayload);
