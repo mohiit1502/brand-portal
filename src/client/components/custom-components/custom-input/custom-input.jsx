@@ -141,8 +141,12 @@ class CustomInput extends React.PureComponent {
       <div className="dropdown-menu">
         {
           this.state.dropdownOptions && this.state.dropdownOptions.map((option, i) => {
-            return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>{option.label || option.value}</a>;
-          })
+            return (
+              <a key={option.id || i} className="dropdown-item py-1" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>
+                  {option.label || option.value}
+                  <p className={`dropdown-subtitle m-0`}>{option.subtitle}</p>
+              </a>);
+            })
         }
       </div>
     </React.Fragment>);
