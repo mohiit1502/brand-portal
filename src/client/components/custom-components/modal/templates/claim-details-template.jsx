@@ -54,85 +54,87 @@ class ClaimDetailsTemplate extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className={`modal-body pl-4 pr-4 text-left px-5${this.state.loader && " loader"}`} style={{minHeight: "25rem"}}>
+            <div className={`modal-body px-0 pb-0 text-left ${this.state.loader && " loader"}`} style={{minHeight: "25rem"}}>
             {dataLoaded ?
               !this.props.data.error ?
               (
                 <React.Fragment>
-                  <div className="row case-header-row">
-                    <div className="col">
-                      <div className="case-header-text">{this.props.data.caseNumber}
-                        <div className=" case-status badge badge-pill badge-warning font-weight-normal">{this.props.data.claimStatus}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row claim-snapshots-row mt-4">
-                    <div className="col">
-                      <div className="snapshot-header">Claim Type </div>
-                      <div className="snapshot-value"> {this.props.data.claimType} </div>
-                    </div>
-                    <div className="col">
-                      <div className="snapshot-header">{claimTypeLabel} </div>
-                      <div className="snapshot-value"> {this.props.data.registrationNumber} </div>
-                    </div>
-                    <div className="col">
-                      <div className="snapshot-header">Brand Name </div>
-                      <div className="snapshot-value"> {this.props.data.brandName} </div>
-                    </div>
-                    <div className="col">
-                      <div className="snapshot-header">Claim By </div>
-                      <div className="snapshot-value">{(firstName ? firstName.concat(" ") : "") + lastName}</div>
-                    </div>
-                    <div className="col">
-                      <div className="snapshot-header">Claim Date </div>
-                      <div className="snapshot-value"> {this.props.data.claimDate} </div>
-                    </div>
-                  </div>
-                  <div className="row justify-content-center items-row mt-4">
-                    <div className="col">
-                      <div className="row item-header-row py-2">
-                        <div className="col-3">
-                          REPORTED SELLER
-                        </div>
-                        <div className="col-9">
-                          ITEM URL
+                  <div className={`body px-4 pb-3`}>
+                    <div className="row case-header-row">
+                      <div className="col">
+                        <div className="case-header-text">{this.props.data.caseNumber}
+                          <div className=" case-status badge badge-pill badge-warning font-weight-normal">{this.props.data.claimStatus}</div>
                         </div>
                       </div>
-                      <div className="row item-data-container">
-                        <div className="col">
-                          {
-                            reformattedItems.map((item, i) => {
-                              return (
-                                <div key={i} className="row item-data-row align-items-center">
-                                  <div className="col-3 text-capitalize">
-                                    {item.sellerName}
+                    </div>
+                    <div className="row claim-snapshots-row mt-4">
+                      <div className="col">
+                        <div className="snapshot-header">Claim Type </div>
+                        <div className="snapshot-value"> {this.props.data.claimType} </div>
+                      </div>
+                      <div className="col">
+                        <div className="snapshot-header">{claimTypeLabel} </div>
+                        <div className="snapshot-value"> {this.props.data.registrationNumber} </div>
+                      </div>
+                      <div className="col">
+                        <div className="snapshot-header">Brand Name </div>
+                        <div className="snapshot-value"> {this.props.data.brandName} </div>
+                      </div>
+                      <div className="col">
+                        <div className="snapshot-header">Claim By </div>
+                        <div className="snapshot-value">{(firstName ? firstName.concat(" ") : "") + lastName}</div>
+                      </div>
+                      <div className="col">
+                        <div className="snapshot-header">Claim Date </div>
+                        <div className="snapshot-value"> {this.props.data.claimDate} </div>
+                      </div>
+                    </div>
+                    <div className="row justify-content-center items-row mt-4">
+                      <div className="col">
+                        <div className="row item-header-row py-2">
+                          <div className="col-3">
+                            REPORTED SELLER
+                          </div>
+                          <div className="col-9">
+                            ITEM URL
+                          </div>
+                        </div>
+                        <div className="row item-data-container">
+                          <div className="col">
+                            {
+                              reformattedItems.map((item, i) => {
+                                return (
+                                  <div key={i} className="row item-data-row align-items-center">
+                                    <div className="col-3 text-capitalize">
+                                      {item.sellerName}
+                                    </div>
+                                    <div className="col-9 item-url">
+                                      <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
+                                    </div>
                                   </div>
-                                  <div className="col-9 item-url">
-                                    <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
-                                  </div>
-                                </div>
-                              );
-                            })
-                          }
+                                );
+                              })
+                            }
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="row mt-4">
-                    <div className="col">
-                      <span className="font-size-14 font-weight-bold">Comments</span>
-                      <p>{this.props.data.comments}</p>
+                    <div className="row mt-4">
+                      <div className="col">
+                        <span className="font-size-14 font-weight-bold">Comments</span>
+                        <p>{this.props.data.comments}</p>
+                      </div>
+                    </div>
+                    <div className="row mt-3">
+                      <div className="col">
+                        <span className="font-size-14 font-weight-bold">Status Detail</span>
+                        <h6>{this.props.data.statusDetails}</h6>
+                      </div>
                     </div>
                   </div>
-                  <div className="row mt-3">
-                    <div className="col">
-                      <span className="font-size-14 font-weight-bold">Status Detail</span>
-                      <h6>{this.props.data.statusDetails}</h6>
-                    </div>
-                  </div>
-                  <div className="row mt-3">
+                  <div className="c-ButtonsPanel m-0 row modal-footer action-footer">
                     <div className="col text-right">
-                      <div className="btn btn-sm cancel-btn text-primary" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Done</div>
+                      <div className="btn btn-sm btn-primary submit-btn px-3 mx-3" type="button" onClick={ () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE)}>Done</div>
                     </div>
                   </div>
                 </React.Fragment>
