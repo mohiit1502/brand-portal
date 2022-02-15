@@ -16,7 +16,7 @@ class CustomInput extends React.PureComponent {
 
   constructor (props) {
     super(props);
-    const functions = ["changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"];
+    const functions = ["getSubTitleWithLink","changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -277,6 +277,25 @@ class CustomInput extends React.PureComponent {
     );
   }
 
+  getSubTitleWithLink(subtitle){
+    let index = subtitle.indexOf("`");
+    if(index > -1){
+      let linkTitle = subtitle.slice(subtitle.indexOf("`")+1,subtitle.lastIndexOf("`"));
+      let placeHolder = this.state.link[linkTitle].placeHolder;
+      let linkUrl = this.state.link[linkTitle].url;
+      let preSubTitleText = subtitle.slice(0,index);
+      let postLinkText = subtitle.slice(subtitle.lastIndexOf("`")+1);
+      return (
+        <span>
+          {preSubTitleText}
+          <a className={"subtitle-link"} href={linkUrl} target="_blank">{placeHolder}</a>
+          {postLinkText}
+        </span>
+      )
+    }
+    return subtitle;
+  }
+
   getSubtitleAndError () {
     let subtitleText = "";
     let subtitleClass = "text-muted";
@@ -287,7 +306,7 @@ class CustomInput extends React.PureComponent {
       subtitleClass = "text-danger";
       errorClass = "has-error";
     } else if (this.state.subtitle) {
-      subtitleText = this.state.subtitle;
+      subtitleText = this.getSubTitleWithLink(this.state.subtitle);
     } else if (!this.state.required) {
       subtitleText = "Optional";
     }
