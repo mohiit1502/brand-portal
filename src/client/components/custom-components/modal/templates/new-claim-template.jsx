@@ -63,6 +63,9 @@ class NewClaimTemplate extends React.Component {
 
   checkToDisplayForm(form){
     form.showCompleteForm = form.inputData.claimType.value !== "" && form.inputData.brandName.value !== "";
+    if(form.showCompleteForm && form.inputData.claimType.value === "Copyright"){
+      form.showUnderTaking3 = true;
+    }
   }
 
   customChangeHandler (value) {
@@ -125,11 +128,6 @@ class NewClaimTemplate extends React.Component {
       } else {
         state.form.inputData.claimTypeIdentifier.value = "";
         state.form.inputData.claimTypeIdentifier.disabled = false;
-        state.form.inputData.claimTypeIdentifier.required = false;
-      }
-
-      if (claimType === "Copyright") {
-        state.form.showUnderTaking3 = true;
         state.form.inputData.claimTypeIdentifier.required = false;
       }
     }
@@ -398,7 +396,6 @@ class NewClaimTemplate extends React.Component {
   }
 
   handleSubmit(evt) {
-    console.log("=================================Handle Submit===========================");
     evt.preventDefault();
     this.setState(state => {
       return state;
