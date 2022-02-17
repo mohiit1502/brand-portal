@@ -14,6 +14,7 @@ import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
+import Validator from "../../../../utility/validationUtil";
 
 class NewClaimTemplate extends React.Component {
 
@@ -28,6 +29,8 @@ class NewClaimTemplate extends React.Component {
       this.evaluateRenderDependency = ContentRenderer.evaluateRenderDependency.bind(this);
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
+      this.validateState = Validator.validateState.bind(this);
+      this.validateUrl = Validator.validateUrl.bind(this);
       const newClaimConfiguration = this.props.newClaimConfiguration ? this.props.newClaimConfiguration : {};
       this.state = {
         section: {...newClaimConfiguration.sectionConfig},
@@ -58,6 +61,10 @@ class NewClaimTemplate extends React.Component {
     });
   }
 
+  checkToDisplayForm(form){
+    form.showCompleteForm = form.inputData.claimType.value !== "" && form.inputData.brandName.value !== "";
+  }
+
   customChangeHandler (value) {
     const form = this.state.form;
     const claimTypeIdentifier = form.inputData.claimTypeIdentifier;
@@ -65,6 +72,7 @@ class NewClaimTemplate extends React.Component {
     const matchedClaimTypeWithMeta = claimTypesWithMeta.find(claimTypeWithMeta => claimTypeWithMeta.label === value);
     if (matchedClaimTypeWithMeta) {
       claimTypeIdentifier.label = matchedClaimTypeWithMeta.claimTypeIdentifierLabel;
+      this.checkToDisplayForm(form);
       this.setState({form});
     }
   }
@@ -85,12 +93,13 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.urlItems.itemList[index].url.error = "";
         } else {
           state.form.inputData[key].value = value;
+          state.form.inputData[key].error = "";
         }
-
+        this.checkToDisplayForm(state.form)
         return {
           ...state
         };
-      }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+      }, () => this.checkToEnableItemButton());
     }
   }
 
@@ -103,6 +112,7 @@ class NewClaimTemplate extends React.Component {
         brandName = value;
         state.brandNameSelected = true;
       } else if (key === "claimType") {
+        state.form.showUnderTaking3 = false;
         state.form.inputData.claimTypeIdentifier.required = true;
         brandName = state.form.inputData.brandName.value;
         claimType = value;
@@ -115,12 +125,15 @@ class NewClaimTemplate extends React.Component {
       } else {
         state.form.inputData.claimTypeIdentifier.value = "";
         state.form.inputData.claimTypeIdentifier.disabled = false;
+        state.form.inputData.claimTypeIdentifier.required = false;
       }
 
       if (claimType === "Copyright") {
+        state.form.showUnderTaking3 = true;
         state.form.inputData.claimTypeIdentifier.required = false;
       }
     }
+    // this.checkToDisplayForm(state.form);
     return state;
   }
 
@@ -139,6 +152,7 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.urlItems.itemList[index].sellerName.value = "";
           state.form.inputData.urlItems.itemList[index].sellerName.disabled = true;
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
+          state.form.inputData.urlItems.itemList[index][key].error = "";
          // state.disableAddItem = true;
          // state.currentItem = index;
         } else {
@@ -148,7 +162,7 @@ class NewClaimTemplate extends React.Component {
         return {
           ...state
         };
-      }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+      }, () => this.checkToEnableItemButton());
       evt.persist();
       if (index > -1) {
         this.itemUrlDebounce(evt, index);
@@ -175,15 +189,16 @@ class NewClaimTemplate extends React.Component {
       return {
         ...state
       };
-    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+    },() => this.checkToEnableItemButton());
   }
 
   undertakingtoggle (evt) {
     const state = {...this.state};
     state.form.inputData[evt.target.id].selected = !state.form.inputData[evt.target.id].selected;
+    state.form.inputData[evt.target.id].error = "";
     this.setState({
       ...state
-    }, this.checkToEnableSubmit);
+    });
   }
 
   checkToEnableItemButton () {
@@ -207,7 +222,7 @@ class NewClaimTemplate extends React.Component {
       return {
         ...state
       };
-    }, () => this.checkToEnableSubmit(this.checkToEnableItemButton));
+    });
   }
 
   checkToEnableSubmit(callback) {
@@ -234,10 +249,10 @@ class NewClaimTemplate extends React.Component {
     const state = {...this.state};
     const form = state.form;
     const options = [
-      {claimType: "trademark", label: "Trademark", claimTypeIdentifierLabel: "Trademark Number"},
-      {claimType: "patent", label: "Patent", claimTypeIdentifierLabel: "Patent Number"},
-      {claimType: "counterfeit", label: "Counterfeit", claimTypeIdentifierLabel: "Trademark Number"},
-      {claimType: "copyright", label: "Copyright", claimTypeIdentifierLabel: "Copyright Number"}
+      {"claimType": "trademark", "label": "Trademark", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods"},
+      {"claimType": "patent", "label": "Patent", "claimTypeIdentifierLabel": "Patent Number","subtitle":"Violation of the exclusive rights to make, use, import, and sell a patented invention"},
+      {"claimType": "counterfeit", "label": "Counterfeit", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Inauthentic items that are intended to appear authentic"},
+      {"claimType": "copyright", "label": "Copyright", "claimTypeIdentifierLabel": "Copyright Number","subtitle":"Unauthorized use of a creative work that is protected under copyright law"}
     ];
     // return Http.get("/api/claims/types")
     //   .then(res => {
@@ -249,7 +264,7 @@ class NewClaimTemplate extends React.Component {
     //       option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
     //       return option;
     //     });
-        form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
+    //     form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
         form.claimTypesWithMeta = options;
         this.setState(state);
   }
@@ -272,17 +287,28 @@ class NewClaimTemplate extends React.Component {
   resetTemplateStatus (evt) {
     const form = {...this.state.form};
     form.inputData.brandName.value = "";
+    form.inputData.brandName.error = "";
     form.inputData.claimType.value = "";
+    form.inputData.claimType.error = "";
     form.inputData.claimTypeIdentifier.value = "";
+    form.inputData.claimTypeIdentifier.error = "";
     form.inputData.urlItems.itemList = form.inputData.urlItems.itemList.slice(0, 1);
     form.inputData.urlItems.itemList[0].url.value = "";
+    form.inputData.urlItems.itemList[0].url.error = "";
     form.inputData.urlItems.itemList[0].sellerName.value = "";
+    form.inputData.urlItems.itemList[0].sellerName.error = "";
     form.inputData.comments.value = "";
+    form.inputData.comments.error = "";
     form.inputData.user_undertaking_1.selected = false;
+    form.inputData.user_undertaking_1.error = false;
     form.inputData.user_undertaking_2.selected = false;
+    form.inputData.user_undertaking_2.error = false;
     form.inputData.user_undertaking_3.selected = false;
+    form.inputData.user_undertaking_3.error = false;
     form.inputData.user_undertaking_4.selected = false;
+    form.inputData.user_undertaking_4.error = false;
     form.inputData.signature.value = "";
+    form.inputData.signature.error = "";
 
     form.inputData.claimTypeIdentifier.disabled = true;
     form.inputData.urlItems.itemList[0].sellerName.disabled = true;
@@ -301,6 +327,14 @@ class NewClaimTemplate extends React.Component {
   onItemUrlChange (event, i) {
     let url = event && event.target.value;
     if (url) {
+      const form = {...this.state.form};
+      if(!this.validateUrl(form.inputData.urlItems.itemList[i].url)){
+        form.inputData.urlItems.itemList[i].sellerName.disabled = true;
+        form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = [];
+        form.inputData.urlItems.itemList[i].url.error = form.inputData.urlItems.itemList[i].url.inValidUrlPatternError;
+        this.setState({form},() => this.checkToEnableItemButton());
+        return;
+      }
       this.loader("fieldLoader", true);
       if (url.endsWith("/")) {
         url = url.substring(0, url.length - 1);
@@ -328,13 +362,11 @@ class NewClaimTemplate extends React.Component {
             form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = res.body;
             form.inputData.urlItems.itemList[i].sellerName.disabled = false;
             form.inputData.urlItems.itemList[i].url.error = "";
-            form.isSubmitDisabled = true;
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
           } else if (res.body.length === 0) {
             form.inputData.urlItems.itemList[i].sellerName.disabled = true;
             form.inputData.urlItems.itemList[i].url.error = "Please check the URL and try again!";
-            form.isSubmitDisabled = true;
             this.setState({form}, this.checkToEnableItemButton);
           }
         })
@@ -357,75 +389,94 @@ class NewClaimTemplate extends React.Component {
         .finally(() => {
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.GET_SELLERS_NAME, mixpanelPayload);
         });
+    }else{
+      const form = {...this.state.form};
+      form.inputData.urlItems.itemList[i].sellerName.disabled = true;
+      form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = [];
+      this.setState({form},() => this.checkToEnableItemButton());
     }
   }
 
-  handleSubmit (evt) {
-      evt.preventDefault();
-      this.disableSubmitButton();
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED, {WORK_FLOW: "ADD_NEW_CLAIM"});
-      const inputData = this.state.form.inputData;
-      const claimType = inputData.claimType.value;
-      const registrationNumber = inputData.claimTypeIdentifier.value.trim();
-
-      const brandName = inputData.brandName.value;
-      const index = ClientUtils.where(inputData.brandName.dropdownOptions, {value: brandName});
-      const brandId = inputData.brandName.dropdownOptions[index].id;
-      const usptoUrl = inputData.brandName.dropdownOptions[index].usptoUrl;
-      const usptoVerification = inputData.brandName.dropdownOptions[index].usptoVerification;
-      const comments = inputData.comments.value;
-      const digitalSignatureBy = inputData.signature.value.trim();
-
-      const getItems = items => {
-        const itemList = [];
-        items.forEach(item => {
-          const itemUrl = item.url.value.trim();
-          if (item.sellerName.value && typeof item.sellerName.value === "object") {
-            item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl, sellerName}));
-          } else if (item.sellerName.value) {
-            const sellerNames = item.sellerName.value.trim();
-            itemList.push({ itemUrl, sellerName: sellerNames });
-          }
-      });
-        return itemList;
-      };
-
-      const payload = {
-        claimType,
-        brandId,
-        registrationNumber,
-        comments,
-        digitalSignatureBy,
-        items: getItems(inputData.urlItems.itemList),
-        usptoUrl,
-        usptoVerification
-      };
-      const mixpanelPayload = {
-        API: "/api/claims",
-        BRAND_NAME: brandName,
-        CLAIM_TYPE: claimType,
-        WORK_FLOW: "ADD_NEW_CLAIM"
-      };
-      this.loader("loader", true);
-      return Http.post("/api/claims", payload, null, null, this.props.showNotification, null, "Something went wrong, please try again..!")
-        .then(res => {
-          const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
-          this.resetTemplateStatus();
-          this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
-          this.fetchClaims();
-          this.loader("loader", false);
-          mixpanelPayload.API_SUCCESS = true;
-          this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
-        })
-        .catch(err => {
-          this.loader("loader", false);
-          mixpanelPayload.API_SUCCESS = false;
-          mixpanelPayload.ERROR = err.message ? err.message : err;
-        })
-        .finally(() => {
-          this.enableSubmitButton();
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_NEW_CLAIM, mixpanelPayload);
+  handleSubmit(evt) {
+    console.log("=================================Handle Submit===========================");
+    evt.preventDefault();
+    this.setState(state => {
+      return state;
+    }, () => {
+      if (!this.validateState()) {
+        this.disableSubmitButton();
+        this.setState({
+          formError: "",
+          loader: true
         });
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_CLAIM_CLICKED, {WORK_FLOW: "ADD_NEW_CLAIM"});
+
+        const inputData = this.state.form.inputData;
+        const claimType = inputData.claimType.value;
+        const registrationNumber = inputData.claimTypeIdentifier.value.trim();
+
+        const brandName = inputData.brandName.value;
+        const index = ClientUtils.where(inputData.brandName.dropdownOptions, {value: brandName});
+        const brandId = inputData.brandName.dropdownOptions[index].id;
+        const usptoUrl = inputData.brandName.dropdownOptions[index].usptoUrl;
+        const usptoVerification = inputData.brandName.dropdownOptions[index].usptoVerification;
+        const comments = inputData.comments.value;
+        const digitalSignatureBy = inputData.signature.value.trim();
+        const getItems = items => {
+          const itemList = [];
+          items.forEach(item => {
+            const itemUrl = item.url.value.trim();
+            if (item.sellerName.value && typeof item.sellerName.value === "object") {
+              item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl, sellerName}));
+            } else if (item.sellerName.value) {
+              const sellerNames = item.sellerName.value.trim();
+              itemList.push({ itemUrl, sellerName: sellerNames });
+            }
+          });
+          return itemList;
+        };
+        const payload = {
+          claimType,
+          brandId,
+          registrationNumber,
+          comments,
+          digitalSignatureBy,
+          items: getItems(inputData.urlItems.itemList),
+          usptoUrl,
+          usptoVerification
+        };
+        const mixpanelPayload = {
+          API: "/api/claims",
+          BRAND_NAME: brandName,
+          CLAIM_TYPE: claimType,
+          WORK_FLOW: "ADD_NEW_CLAIM"
+        };
+        this.loader("loader", true);
+        return Http.post("/api/claims", payload, null, null, this.props.showNotification, null, "Something went wrong, please try again..!")
+          .then(res => {
+            const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
+            this.resetTemplateStatus();
+            this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+            this.fetchClaims();
+            this.loader("loader", false);
+            mixpanelPayload.API_SUCCESS = true;
+            this.mixpanelBatchEventUtil(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMITTED_CLAIM_DEATILS, payload);
+          })
+          .catch(err => {
+            this.loader("loader", false);
+            mixpanelPayload.API_SUCCESS = false;
+            mixpanelPayload.ERROR = err.message ? err.message : err;
+          })
+          .finally(() => {
+            this.enableSubmitButton();
+            mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_CLAIM_TEMPLATE_EVENTS.SUBMIT_NEW_CLAIM, mixpanelPayload);
+          });
+      } else {
+        this.setState({
+          formError: this.state.form.formError
+        });
+      }
+    });
   }
 
   async fetchClaims () {

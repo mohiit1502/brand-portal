@@ -1,0 +1,27 @@
+.c-Banner {
+
+  width: 100%;
+  background-color: #fff9e9;
+  border: solid 1px #ffe190;
+  border-left: solid 4px #ffc220;
+  border-radius: 4px;
+  background-image: url("./../../images/exclamation-yellow.svg");
+  background-repeat: no-repeat;
+  background-position: 8px 12px;
+
+  .banner-body{
+    width: 100%;
+    white-space: break-spaces;
+    color: #662b0d;
+    justify-content: flex-start;
+    display: inline-flex;
+
+    .see-more-button{
+      float: right;
+      text-decoration: underline;
+      color: #662b0d;
+    }
+  }
+
+
+}

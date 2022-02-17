@@ -10,7 +10,16 @@ import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CaptchaValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
+import {
+  Banner,
+  ButtonsPanel,
+  CaptchaValidator,
+  CheckBox,
+  ErrorComponent,
+  FileUploader,
+  HeaderFormComponent,
+  UrlItemList
+} from "../../index";
 
 class CustomInput extends React.PureComponent {
 
@@ -142,7 +151,7 @@ class CustomInput extends React.PureComponent {
         {
           this.state.dropdownOptions && this.state.dropdownOptions.map((option, i) => {
             return (
-              <a key={option.id || i} className="dropdown-item py-1" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>
+              <a key={option.id || i} className="dropdown-item pt-2" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>
                   {option.label || option.value}
                   <p className={`dropdown-subtitle m-0`}>{option.subtitle}</p>
               </a>);
@@ -394,6 +403,8 @@ class CustomInput extends React.PureComponent {
         return <UrlItemList {...this.props} />;
       case "_captchaValidator" :
         return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />;
+      case "_banner":
+        return <Banner/>
     }
     return null;
   }
