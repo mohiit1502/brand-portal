@@ -87,7 +87,7 @@ describe("NewClaimTemplate test container", () => {
     wrapper.find(".form-control-url-0").at(0).simulate('change', {target: {value: `https://walmart.com/${productId}`}});
     jest.runAllTimers();
     await update(wrapper);
-    wrapper.find({type: "checkbox", className: "cursor-pointer my-auto"}).at(0).simulate('change', {target: {value: "All", checked: true}});
+    // wrapper.find({type: "checkbox", className: "cursor-pointer my-auto"}).at(0).simulate('change', {target: {value: "All", checked: true}});
     jest.runAllTimers();
     await update(wrapper);
     wrapper.find("form.h-100").at(0).simulate('submit');

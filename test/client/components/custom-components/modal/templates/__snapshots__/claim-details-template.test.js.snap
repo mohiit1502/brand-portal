@@ -32,7 +32,7 @@ exports[`ClaimDetailsTemplate test container should render the ClaimDetailsTempl
         </button>
       </div>
       <div
-        className="modal-body pl-4 pr-4 text-left px-5 loader"
+        className="modal-body px-0 pb-0 text-left  loader"
         style={
           Object {
             "minHeight": "25rem",
