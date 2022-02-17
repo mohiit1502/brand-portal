@@ -111,6 +111,9 @@ class ClaimManagerApi {
       const response = await ServerUtils.retry({url, options, payload, type: "post"}, incrementalTimeouts || [50, 80, 100]);
       let responseBody = [];
       if (response && response.status === CONSTANTS.STATUS_CODE_SUCCESS) {
+        if (!response.body.docs || (response.body.docs && response.body.docs.length === 0)) {
+          console.error("[Corr ID: %s][ClaimManagerApi::getSellers] Received empty response from IQS", corrId)
+        }
         responseBody = this.parseSellersFromResponse(response.body.docs);
       }
       mixpanelPayload.RESPONSE_STATUS = response.status;

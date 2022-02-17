@@ -48,35 +48,36 @@ export default class ServerHttp {
     const mixpanelPayload = {
       URL: urlString
     };
+    const corrId = options.headers.ROPRO_CORRELATION_ID || options.headers["WM_QOS.CORRELATION_ID"];
     try {
       /* eslint-disable no-unused-expressions */
       !urlString && console.log("No URL!!");
-      console.log("[Corr ID: %s] 1. ===== Crud Request Start. Requesting URL: ", options.headers.ROPRO_CORRELATION_ID, urlString);
+      console.log("[Corr ID: %s] 1. ===== Crud Request Start. Requesting URL: ", corrId, urlString);
       requestStartTime = Date.now();
       const response = await fetch(urlString, options);
       requestEndTime = Date.now();
       const {ok, status, headers} = response;
       const isJson = utils.isContentJson(headers);
       if (ok) {
-        console.log("[Corr ID: %s] 2. Response is OK with status: ", options.headers.ROPRO_CORRELATION_ID, status);
+        console.log("[Corr ID: %s] 2. Response is OK with status: ", corrId, status);
         return isJson ? {status, body: await response.json()} : {status, body: await response.text()};
       }
-      console.log("[Corr ID: %s][%s] 3. Response not OK, logging response: ", options.headers.ROPRO_CORRELATION_ID, urlString, response);
+      console.log("[Corr ID: %s][%s] 3. Response not OK, logging response: ", corrId, urlString, response);
       const err = isJson ? await response.json() : await response.text();
       const errorString = `[Corr ID: %s] 5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
-      console.log(errorString, options.headers.ROPRO_CORRELATION_ID, err);
-      throw new ServerHttpError(status, err.error, err.message, err.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
+      console.log(errorString, corrId, err);
+      throw new ServerHttpError(status, err.error, err.message, err.code, corrId, urlString,
         options && options.headers && options.headers.ROPRO_USER_ID);
     } catch (e) {
       requestEndTime  = requestEndTime ? requestEndTime : Date.now();
       const errorString = `[Corr ID: %s] 6. Caught in ServerHttp.${method}: `;
-      console.error(errorString, options.headers.ROPRO_CORRELATION_ID, e);
-      throw new ServerHttpError(e.status || 500, e, "", e.code, options && options.headers && options.headers.ROPRO_CORRELATION_ID, urlString,
+      console.error(errorString, corrId, e);
+      throw new ServerHttpError(e.status || 500, e, e.message, e.code, corrId, urlString,
         options && options.headers && options.headers.ROPRO_USER_ID);
     } finally {
       mixpanelPayload.RESPONSE_TIME = requestEndTime - requestStartTime;
-      console.log(`[Corr ID: %s] Total Response Time for ${urlString} is: ${requestEndTime - requestStartTime}`, options.headers.ROPRO_CORRELATION_ID);
-      console.log("[Corr ID: %s] 7. === Crud Request End!", options.headers.ROPRO_CORRELATION_ID);
+      console.log(`[Corr ID: %s] Total Response Time for ${urlString} is: ${requestEndTime - requestStartTime}`, corrId);
+      console.log("[Corr ID: %s] 7. === Crud Request End!", corrId);
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.SERVER_HTTP.SERVER_RESPONSE_TIME, mixpanelPayload);
     }
   }

@@ -693,7 +693,7 @@ class UserManagerApi {
     try {
       const query = request.query;
       const clientType = request.query.clientType;
-      console.log("[Corr ID: %s]Setting clientType post login redirect: ", corrId, clientType);
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Setting clientType post login redirect: ", corrId, clientType);
       // eslint-disable-next-line camelcase
       if (!query.code) {
         return h.redirect("/api/falcon/login");
@@ -795,9 +795,6 @@ class UserManagerApi {
       CLIENT_TYPE: clientType
     };
     try {
-      // if (!clientType) {
-      //   return h.redirect(`/${request.params.action}`)
-      // }
       console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Initiating Generate Falcon's Redirect URL", corrId)
       const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action, clientType);
       console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Generated Falcon's Redirect URL: ", corrId, redirectUri);
