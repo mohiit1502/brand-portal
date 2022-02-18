@@ -45,6 +45,12 @@ export default class Validator {
     }
   }
 
+  static validateUrl(target){
+    const formFieldRegex = new RegExp("https:\/\/www.walmart.com\/.+");
+    return formFieldRegex.test(target.value);
+
+  }
+
   static validateRegex(target, validationObj, parentRef, regexSelector) {
     const formFieldValue = target.value.trim();
     if (validationObj) {
@@ -113,13 +119,27 @@ export default class Validator {
           || (obj.type === "_checkBox" && (!obj.renderCondition || (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this, obj.renderCondition)))
             && obj.selected))) {
           if (obj.type && obj.type === "_urlItems") {
-            if (obj.required && this.validateUrlItems && this.validateUrlItems()) {
-              hasError = true;
+            if(!obj.renderCondition || (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this, obj.renderCondition))){
+                obj.itemList && obj.itemList.forEach(item => {
+                  const urlObj = item.url;
+                  const sellerNameObj = item.sellerName;
+                  // if(validate)
+                  if(urlObj && (urlObj.error || (urlObj.required && !urlObj.value))){
+                    urlObj.error = urlObj.error || urlObj.invalidError || "Please Enter Valid Input";
+                    hasError = true;
+                  }
+                  if(sellerNameObj && (sellerNameObj.error || (sellerNameObj.required && !sellerNameObj.value))){
+                    sellerNameObj.error = sellerNameObj.error || sellerNameObj.invalidError || "Please Enter Valid Input";
+                    hasError = true;
+                  }
+                })
             }
           } else {
             const obj = writeForm.inputData[key];
-            obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
-            hasError = true;
+            if((!obj.renderCondition) ||  (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this,obj.renderCondition))){
+              obj.error = obj.error || (obj.validators && obj.validators.validateRequired && obj.validators.validateRequired.error) || obj.invalidError || "Please Enter Valid Input";
+              hasError = true;
+            }
           }
         }
       } else {

@@ -56,40 +56,58 @@ exports[`ContactUsForm renders without error 1`] = `
           className="dropdown-menu"
         >
           <a
-            className="dropdown-item"
+            className="dropdown-item pt-2"
             onClick={[Function]}
           >
             Technical Support
+            <p
+              className="dropdown-subtitle m-0"
+            />
           </a>
           <a
-            className="dropdown-item"
+            className="dropdown-item pt-2"
             onClick={[Function]}
           >
             Claim Support
+            <p
+              className="dropdown-subtitle m-0"
+            />
           </a>
           <a
-            className="dropdown-item"
+            className="dropdown-item pt-2"
             onClick={[Function]}
           >
             User Management Support
+            <p
+              className="dropdown-subtitle m-0"
+            />
           </a>
           <a
-            className="dropdown-item"
+            className="dropdown-item pt-2"
             onClick={[Function]}
           >
             Follow-Up
+            <p
+              className="dropdown-subtitle m-0"
+            />
           </a>
           <a
-            className="dropdown-item"
+            className="dropdown-item pt-2"
             onClick={[Function]}
           >
             IP Management Support
+            <p
+              className="dropdown-subtitle m-0"
+            />
           </a>
           <a
-            className="dropdown-item"
+            className="dropdown-item pt-2"
             onClick={[Function]}
           >
             Other
+            <p
+              className="dropdown-subtitle m-0"
+            />
           </a>
         </div>
         <small

@@ -4608,7 +4608,11 @@ exports[`ClaimList test container ClaimList renders without error displays claim
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -4660,7 +4664,11 @@ exports[`ClaimList test container ClaimList renders without error displays claim
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -4712,7 +4720,11 @@ exports[`ClaimList test container ClaimList renders without error displays claim
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -10011,7 +10023,11 @@ exports[`ClaimList test container ClaimList renders without error displays claim
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -10063,7 +10079,11 @@ exports[`ClaimList test container ClaimList renders without error displays claim
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -10115,7 +10135,11 @@ exports[`ClaimList test container ClaimList renders without error displays claim
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -15997,7 +16021,11 @@ exports[`ClaimList test container ClaimList renders without error should add fil
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -16051,7 +16079,11 @@ exports[`ClaimList test container ClaimList renders without error should add fil
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -16105,7 +16137,11 @@ exports[`ClaimList test container ClaimList renders without error should add fil
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -21860,7 +21896,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -21912,7 +21952,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -21964,7 +22008,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -27251,7 +27299,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -27303,7 +27355,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -27355,7 +27411,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -32641,7 +32701,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -32693,7 +32757,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -32745,7 +32813,11 @@ exports[`ClaimList test container ClaimList renders without error should render 
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>
@@ -38032,7 +38104,11 @@ exports[`ClaimList test container ClaimList renders without error tests for scen
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -38084,7 +38160,11 @@ exports[`ClaimList test container ClaimList renders without error tests for scen
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                       <div
@@ -38136,7 +38216,11 @@ exports[`ClaimList test container ClaimList renders without error tests for scen
                                         <div
                                           className="table-body-cell col undefined"
                                         >
-                                          In Progress
+                                          <span
+                                            className="claim-status In Progress"
+                                          >
+                                            In Progress
+                                          </span>
                                         </div>
                                       </div>
                                     </div>

@@ -60,6 +60,15 @@ $row-height: 48px;
         vertical-align: middle;
         color : $table-content-color;
 
+        .claim-status {
+          border-radius: 44px;
+          padding: 4px 8px;
+          background: #fff9e9;
+          &.Closed {
+            background: #f1f1f2;
+          }
+        }
+
         .company-name {
           font-size: 11px;
           //display: inline-block;

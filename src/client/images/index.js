@@ -25,6 +25,7 @@ import EmailIcon from "./emailIcon.svg";
 import EmailIconWithYellowMessage from "./EmailIconWithYellowMessage.png";
 import Event from "./event.svg";
 import Exclamation from "./exclamation.svg";
+import ExclamationRed from "./exclamation-yellow.svg";
 import FalconLoginForm from "./Falcon Login Form.jpg";
 import FieldLoader from "./field-loader.svg";
 import Filter from "./filter-sc.svg";
@@ -96,6 +97,7 @@ export {
   EmailIconWithYellowMessage,
   Event,
   Exclamation,
+  ExclamationRed,
   FalconLoginForm,
   FieldLoader,
   Filter,
