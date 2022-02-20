@@ -287,7 +287,7 @@ class ClaimManagerApi {
       const response = await ServerHttp.post(url, options, payload);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[Corr ID: %s][ClaimManagerApi::createClaim] API request for Create Claim has completed", corrId);
-      return h.response(response).code(response.status);
+      return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
