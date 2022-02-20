@@ -20,7 +20,7 @@ import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "gotoBrandRegistration", "onChange", "setSelectInputValue"];
+    const functions = ["enableSellerOnboarding", "evaluateEditPermission", "bubbleValue", "gotoBrandRegistration", "onChange", "setSelectInputValue"];
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     const debounceFunctions = {companyDebounce: "checkCompanyNameAvailability"};
     functions.forEach(name => {
@@ -47,6 +47,7 @@ class CompanyProfileRegistration extends React.Component {
       }
     };
 
+    this.evaluateEditPermission();
     this.enableSellerOnboarding();
   }
 
@@ -85,16 +86,17 @@ class CompanyProfileRegistration extends React.Component {
     // TODO: Change to add 100 sellers [This is temporary and should be removed once the sellers are added]
     if (this.state.form && this.props.profile && this.state.clientType === "seller" && !this.state.countryInitialized
       && this.state.form.internationalSellerExceptions && this.state.form.internationalSellerExceptions.indexOf(this.props.profile.email) > -1) {
-      const countryField = this.state.form.inputData.country;
+      // const countryField = this.state.form.inputData.country;
       const zipField = this.state.form.inputData.zip;
-      countryField.dropdownOptions = [
-        {id: "usa", value: "USA", label: "USA"},
-        {id: "china", value: "China", label: "China"},
-        {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
-      ];
-      countryField.onChange = "setSelectInputValue";
-      countryField.type = "select";
-      countryField.value = "";
+      // ----- Retaining below for later when intl. seller onboarding is resumed ----
+      // countryField.dropdownOptions = [
+      //   {id: "usa", value: "USA", label: "USA"},
+      //   {id: "china", value: "China", label: "China"},
+      //   {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
+      // ];
+      // countryField.onChange = "setSelectInputValue";
+      // countryField.type = "select";
+      // countryField.value = "";
       this.state.form.removeIntlSellerFields && this.state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
       zipField.patternErrorMessage = "This field is required";
       zipField.maxLength = 30;
@@ -103,10 +105,24 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
+  evaluateEditPermission() {
+    const form = this.state.form;
+    const {taxClassification, organizationAddress: {country}} = this.props.profile ? this.props.profile.sellerInfo : {};
+    const DID_US_TAX_COUNTRY_MISMATCH = form.USTaxClassifications && form.USTaxClassifications.indexOf(taxClassification) > -1
+      && form.allowedCountriesForDomesticTaxClassification && form.allowedCountriesForDomesticTaxClassification.indexOf(country) === -1;
+    const DID_INTL_TAX_COUNTRY_MISMATCH = form.internationalTaxClassifications && form.internationalTaxClassifications.indexOf(taxClassification) > -1
+      && form.allowedCountriesForIntlTaxClassification && form.allowedCountriesForIntlTaxClassification.indexOf(country) === -1;
+    if (DID_US_TAX_COUNTRY_MISMATCH || DID_INTL_TAX_COUNTRY_MISMATCH) {
+      form.isTaxCountryMismatched = true;
+      form.inputData.country.error = form.inputData.country.taxCountryMismatchError;
+    }
+  }
+
   prepopulateSellerInputFields(data) {
     const form = {...this.state.form};
     const seller = data.sellerInfo;
-    if (seller && seller.taxClassification === "W9") {
+    // if (seller && seller.taxClassification === "W9") {
+    if (seller) {
       const concatAddressFields = ["address1", "address2", "address3", "address4"];
       const organizationAddress = seller.organizationAddress;
       form.inputData.companyName.value = seller.legalName;
@@ -117,7 +133,7 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
-      this.setState({form}, () => this.companyDebounce());
+      this.setState({form}, !form.isTaxCountryMismatched ? () => this.companyDebounce() : () => {});
     }
   }
 
@@ -167,11 +183,11 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.zip.value &&
       (this.state.considerCountryForValidation ? form.inputData.country.value : true) &&
       !form.inputData.companyName.error &&
-      !form.inputData.zip.error;
+      !form.inputData.zip.error &&
+      !form.isTaxCountryMismatched;
     form.isSubmitDisabled = !bool;
     form.inputData.companyOnboardingActions.buttons = {...form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = !bool;
-    // form.inputData.additionalDoc.disabled = !bool;
     form.inputData.businessRegistrationDoc.disabled = !bool;
     if (form.inputData.businessRegistrationDoc.uploading) {
       form.inputData.companyOnboardingActions.buttons.submit.disabled = true;

@@ -16,13 +16,22 @@ const FORMFIELDCONFIG = {
         "formActions": "companyOnboardingActions",
         "requestAdministratorAccess": false,
         "removeIntlSellerFields": ["patternPath", "invalidErrorPath", "invalidError", "pattern"],
+        "enableCountries": ["US", "USA", "CN", "HK", "United States"],
+        "taxClassification_US": "W9",
+        "taxClassification_INTL_BEN": "W-8 BEN-E",
+        "taxClassification_INTL_ECI": "W-8 ECI",
+        "USTaxClassifications": ["W9"],
+        "internationalTaxClassifications": ["W-8 BEN-E", "W-8 ECI"],
+        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States"],
+        "allowedCountriesForIntlTaxClassification": ["US", "USA", "United States", "CN", "HK"],
         "internationalSellerExceptions": [
           "ss1@mailinator.com"
         ]
       },
       "fields": {
         "companyName": {
-          "disabled": false,
+          "BEValidationError": "Your company has already been registered in Walmart Brand Portal. Please contact brandportal@walmart.com for further information.",
+          "disabled": {"default": false, "condition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"], "value": true}]},
           "error": "",
           "fieldOk": false,
           "inputId": "companyName",
@@ -38,7 +47,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "address": {
-          "disabled": true,
+          "disabled": {"default": false, "condition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"], "value": true}]},
           "error": "",
           "inputId": "address",
           "key": "address",
@@ -52,7 +61,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "city": {
-          "disabled": true,
+          "disabled": {"default": false, "condition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"], "value": true}]},
           "error": "",
           "inputId": "city",
           "key": "city",
@@ -107,6 +116,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "required": true,
           "subtitle": "",
+          "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, or Hong Kong. If you have any questions, please contact brandportal@walmart.com.",
           "type": "text",
           "value": "USA"
         },
