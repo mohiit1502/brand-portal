@@ -131,7 +131,6 @@ class NewClaimTemplate extends React.Component {
         state.form.inputData.claimTypeIdentifier.required = false;
       }
     }
-    // this.checkToDisplayForm(state.form);
     return state;
   }
 
@@ -451,7 +450,7 @@ class NewClaimTemplate extends React.Component {
         this.loader("loader", true);
         return Http.post("/api/claims", payload, null, null, this.props.showNotification, null, "Something went wrong, please try again..!")
           .then(res => {
-            const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body.data} };
+            const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body} };
             this.resetTemplateStatus();
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
             this.fetchClaims();
