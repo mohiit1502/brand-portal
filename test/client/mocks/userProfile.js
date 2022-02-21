@@ -36,6 +36,32 @@ const userProfile = {
     defaultView: "portal-view-users",
     roleCode: 1,
     roleView: "SUPER_ADMIN"
+  },
+  sellerInfo: {
+    "email": "ss1@mailinator.com",
+    "orgId": "30b86e9e-a7f6-4d62-989f-4937a8e79d8c",
+    "partnerId": "2857090a-a4bb-4bc3-a959-6aa3f2dd8d17",
+    "principalId": "e6a3b2bd-a6c9-44fa-ab8b-7fbfb280c464",
+    "realmId": "30b86e9e-a7f6-4d62-989f-4937a8e79d8c",
+    "buId": "0",
+    "martId": "0",
+    "bizRole": "SELLER",
+    "authTenantId": "Walmart_MP_US",
+    "isPreferredMart": "true",
+    "organizationAddress": {
+    "address1": "8B tinglan lane shahu technology park",
+      "city": "Dongcheng",
+      "country": "CN",
+      "state": "BJ",
+      "postalcode": "100009"
+  },
+    "firstName": "Shakuntala",
+    "lastName": "Sureban",
+    "businessName": "StageTestSeller 2@DD",
+    "legalName": "Test Name",
+    "orgStatus": "NO_STATUS",
+    "countryOfIncorporation": "CN",
+    "taxClassification": "W-8 BEN-E"
   }
 };
 

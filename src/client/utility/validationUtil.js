@@ -249,12 +249,12 @@ export default class Validator {
     const state = { ...this.state };
     const form = { ...this.state.form };
     const inputData = { ...this.state.form.inputData };
+    const clientType = this.state.clientType;
 
     if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name
       && this.props.originalValues.org.name.trim() !== this.state.form.inputData.companyName.value.trim()) || !isEditMode) {
       if (!this.state.form.inputData.companyName.value) return;
       state.form = form;
-      const clientType = this.state.clientType;
       form.inputData = inputData;
       inputData.companyName.disabled = true;
       inputData.companyName.loader = true;
