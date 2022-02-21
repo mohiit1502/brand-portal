@@ -1552,16 +1552,7 @@ const FORMFIELDCONFIG = {
                 "invalidError" : "Enter the URL of the listing you would like to report",
                 "inValidUrlPatternError" : "Enter a valid url",
                 "subtitle": "",
-                "error": "",
-                // "validators": {
-                //   // "validateRequired":{
-                //   //   "error":"Enter the URL of the listing you would like to report"
-                //   // },
-                //   // "validateRegex": {
-                //   //   "dataRuleRegex": "https:\/\/www.walmart.com\/.+",
-                //   //   "error": "Enter a valid url"
-                //   // }
-                // }
+                "error": ""
               },
               "sellerName": {
                 "dropdownOptions": [],
