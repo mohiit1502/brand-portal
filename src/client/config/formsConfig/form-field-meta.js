@@ -22,7 +22,7 @@ const FORMFIELDCONFIG = {
         "taxClassification_INTL_ECI": "W-8 ECI",
         "USTaxClassifications": ["W9"],
         "internationalTaxClassifications": ["W-8 BEN-E", "W-8 ECI"],
-        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States"],
+        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States", "CN", "HK"],
         "allowedCountriesForIntlTaxClassification": ["US", "USA", "United States", "CN", "HK"],
         "internationalSellerExceptions": [
           "ss1@mailinator.com"
