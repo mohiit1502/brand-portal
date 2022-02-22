@@ -293,10 +293,10 @@ export default class Validator {
         })
         .finally(() => {
           inputData.companyName.error = error;
-          clientType !== "seller" && (inputData.companyName.disabled = false);
+          (!this.props.profile || (this.props.profile.context === "edit" || clientType !== "seller")) && (inputData.companyName.disabled = false);
           inputData.companyName.loader = false;
           this.setState(state, inputData.companyName.isUnique ? () => {
-            clientType !== "seller" && this.toggleFormEnable(!error, !error, false);
+            (!this.props.profile || (this.props.profile.context === "edit" || clientType !== "seller")) && this.toggleFormEnable(!error, !error, false);
             this.checkToEnableSubmit();
           } : () => { });
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.COMPANY_NAME_AVAILABILITY_CHECK, mixpanelPayload);
@@ -306,7 +306,7 @@ export default class Validator {
       inputData.companyName.disabled = false;
       inputData.companyName.loader = false;
       this.setState(state, () => {
-        clientType !== "seller" && this.toggleFormEnable(true, true, false);
+        (!this.props.profile || (this.props.profile.context === "edit" || clientType !== "seller")) && this.toggleFormEnable(true, true, false);
         this.checkToEnableSubmit();
       });
     }

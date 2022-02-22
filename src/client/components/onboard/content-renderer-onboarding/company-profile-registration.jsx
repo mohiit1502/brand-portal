@@ -106,15 +106,20 @@ class CompanyProfileRegistration extends React.Component {
   }
 
   evaluateEditPermission() {
-    const form = this.state.form;
-    const {taxClassification, organizationAddress: {country}} = this.props.profile && this.props.profile.sellerInfo ? this.props.profile.sellerInfo : {organizationAddress: {}};
-    const DID_US_TAX_COUNTRY_MISMATCH = form.USTaxClassifications && form.USTaxClassifications.indexOf(taxClassification) > -1
-      && form.allowedCountriesForDomesticTaxClassification && form.allowedCountriesForDomesticTaxClassification.indexOf(country) === -1;
-    const DID_INTL_TAX_COUNTRY_MISMATCH = form.internationalTaxClassifications && form.internationalTaxClassifications.indexOf(taxClassification) > -1
-      && form.allowedCountriesForIntlTaxClassification && form.allowedCountriesForIntlTaxClassification.indexOf(country) === -1;
-    if (DID_US_TAX_COUNTRY_MISMATCH || DID_INTL_TAX_COUNTRY_MISMATCH) {
-      form.isTaxCountryMismatched = true;
-      form.inputData.country.error = form.inputData.country.taxCountryMismatchError;
+    if (this.state.clientType === "seller") {
+      const form = this.state.form;
+      const {
+        taxClassification,
+        organizationAddress: {country}
+      } = this.props.profile && this.props.profile.sellerInfo ? this.props.profile.sellerInfo : {organizationAddress: {}};
+      const DID_US_TAX_COUNTRY_MISMATCH = form.USTaxClassifications && form.USTaxClassifications.indexOf(taxClassification) > -1
+        && form.allowedCountriesForDomesticTaxClassification && form.allowedCountriesForDomesticTaxClassification.indexOf(country) === -1;
+      const DID_INTL_TAX_COUNTRY_MISMATCH = form.internationalTaxClassifications && form.internationalTaxClassifications.indexOf(taxClassification) > -1
+        && form.allowedCountriesForIntlTaxClassification && form.allowedCountriesForIntlTaxClassification.indexOf(country) === -1;
+      if (DID_US_TAX_COUNTRY_MISMATCH || DID_INTL_TAX_COUNTRY_MISMATCH) {
+        form.isTaxCountryMismatched = true;
+        form.inputData.country.error = form.inputData.country.taxCountryMismatchError;
+      }
     }
   }
 
@@ -133,7 +138,7 @@ class CompanyProfileRegistration extends React.Component {
       form.inputData.country.value = organizationAddress.country || "US";
       form.formPopulated = true;
 
-      this.setState({form}, !form.isTaxCountryMismatched ? () => this.companyDebounce() : () => {});
+      this.setState({form}, data.context === "edit" || !form.isTaxCountryMismatched ? () => this.companyDebounce() : () => {});
     }
   }
 
@@ -184,7 +189,7 @@ class CompanyProfileRegistration extends React.Component {
       (this.state.considerCountryForValidation ? form.inputData.country.value : true) &&
       !form.inputData.companyName.error &&
       !form.inputData.zip.error &&
-      !form.isTaxCountryMismatched;
+      (this.state.clientType !== "seller" || this.props.profile.context === "edit" || !form.isTaxCountryMismatched);
     form.isSubmitDisabled = !bool;
     form.inputData.companyOnboardingActions.buttons = {...form.inputData.companyOnboardingActions.buttons};
     form.inputData.companyOnboardingActions.buttons.submit.disabled = !bool;

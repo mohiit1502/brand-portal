@@ -22,7 +22,7 @@ const FORMFIELDCONFIG = {
         "taxClassification_INTL_ECI": "W-8 ECI",
         "USTaxClassifications": ["W9"],
         "internationalTaxClassifications": ["W-8 BEN-E", "W-8 ECI"],
-        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States"],
+        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States", "CN", "HK"],
         "allowedCountriesForIntlTaxClassification": ["US", "USA", "United States", "CN", "HK"],
         "internationalSellerExceptions": [
           "ss1@mailinator.com"
@@ -31,7 +31,7 @@ const FORMFIELDCONFIG = {
       "fields": {
         "companyName": {
           "BEValidationError": "Your company has already been registered in Walmart Brand Portal. Please contact brandportal@walmart.com for further information.",
-          "disabled": {"default": false, "condition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"], "value": true}]},
+          "disabled": {"default": false, "condition": [{"subCondition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"]}, {"keyPath": "context", "keyLocator": "props", "dependencyValue": ["new"]}], "value": true}]},
           "error": "",
           "fieldOk": false,
           "inputId": "companyName",
