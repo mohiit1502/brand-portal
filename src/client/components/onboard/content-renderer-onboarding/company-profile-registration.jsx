@@ -107,7 +107,7 @@ class CompanyProfileRegistration extends React.Component {
 
   evaluateEditPermission() {
     const form = this.state.form;
-    const {taxClassification, organizationAddress: {country}} = this.props.profile ? this.props.profile.sellerInfo : {};
+    const {taxClassification, organizationAddress: {country}} = this.props.profile && this.props.profile.sellerInfo ? this.props.profile.sellerInfo : {organizationAddress: {}};
     const DID_US_TAX_COUNTRY_MISMATCH = form.USTaxClassifications && form.USTaxClassifications.indexOf(taxClassification) > -1
       && form.allowedCountriesForDomesticTaxClassification && form.allowedCountriesForDomesticTaxClassification.indexOf(country) === -1;
     const DID_INTL_TAX_COUNTRY_MISMATCH = form.internationalTaxClassifications && form.internationalTaxClassifications.indexOf(taxClassification) > -1
