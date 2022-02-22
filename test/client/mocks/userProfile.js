@@ -49,12 +49,12 @@ const userProfile = {
     "authTenantId": "Walmart_MP_US",
     "isPreferredMart": "true",
     "organizationAddress": {
-    "address1": "8B tinglan lane shahu technology park",
+      "address1": "8B tinglan lane shahu technology park",
       "city": "Dongcheng",
       "country": "CN",
       "state": "BJ",
       "postalcode": "100009"
-  },
+    },
     "firstName": "Shakuntala",
     "lastName": "Sureban",
     "businessName": "StageTestSeller 2@DD",
