@@ -94,7 +94,7 @@ exports[`CompanyProfileRegistration test container should render the CompanyProf
           className=" col"
         >
           <div
-            className="form-group custom-input-form-group form-group-text mb-0
+            className="form-group custom-input-form-group form-group-text disabled mb-0
         "
             style={
               Object {
@@ -104,7 +104,7 @@ exports[`CompanyProfileRegistration test container should render the CompanyProf
           >
             <input
               className="form-control form-control-address custom-input-element"
-              disabled={false}
+              disabled={true}
               id="companyreg-address-custom-input"
               onBlur={[Function]}
               onChange={[Function]}
@@ -152,7 +152,7 @@ exports[`CompanyProfileRegistration test container should render the CompanyProf
           className=" col-6"
         >
           <div
-            className="form-group custom-input-form-group form-group-text mb-3
+            className="form-group custom-input-form-group form-group-text disabled mb-3
         "
             style={
               Object {
@@ -162,7 +162,7 @@ exports[`CompanyProfileRegistration test container should render the CompanyProf
           >
             <input
               className="form-control form-control-city custom-input-element"
-              disabled={false}
+              disabled={true}
               id="companyreg-city-custom-input"
               onBlur={[Function]}
               onChange={[Function]}

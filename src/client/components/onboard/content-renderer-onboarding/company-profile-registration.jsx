@@ -152,11 +152,11 @@ class CompanyProfileRegistration extends React.Component {
       const originalValues = JSON.parse(JSON.stringify(this.props.onboardingDetails));
       originalValues.brand && delete originalValues.brand.comments;
       const form = {...this.state.form};
-      const isIntlCountry = ["US", "USA", "United States"].indexOf(data.countryCode) === -1;
-      if (isIntlCountry) {
-        this.updateValidationsForIntlUsers();
-      }
       if (data) {
+        const isIntlCountry = ["US", "USA", "United States"].indexOf(data.countryCode) === -1;
+        if (isIntlCountry) {
+          this.updateValidationsForIntlUsers();
+        }
         form.inputData.companyName.value = data.name;
         form.inputData.address.value = data.address;
         form.inputData.city.value = data.city || "";
