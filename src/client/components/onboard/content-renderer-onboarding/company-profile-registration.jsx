@@ -20,7 +20,7 @@ import MIXPANEL_CONSTANTS from "../../../constants/mixpanelConstants";
 class CompanyProfileRegistration extends React.Component {
   constructor(props) {
     super(props);
-    const functions = ["enableSellerOnboarding", "evaluateEditPermission", "bubbleValue", "gotoBrandRegistration", "onChange", "setSelectInputValue"];
+    const functions = ["enableSellerOnboarding", "evaluatePermissionAndValidations", "bubbleValue", "gotoBrandRegistration", "onChange", "setSelectInputValue", "updateValidationsForIntlUsers"];
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     const debounceFunctions = {companyDebounce: "checkCompanyNameAvailability"};
     functions.forEach(name => {
@@ -47,7 +47,7 @@ class CompanyProfileRegistration extends React.Component {
       }
     };
 
-    this.evaluateEditPermission();
+    this.evaluatePermissionAndValidations();
     this.enableSellerOnboarding();
   }
 
@@ -86,26 +86,30 @@ class CompanyProfileRegistration extends React.Component {
     // TODO: Change to add 100 sellers [This is temporary and should be removed once the sellers are added]
     if (this.state.form && this.props.profile && this.state.clientType === "seller" && !this.state.countryInitialized
       && this.state.form.internationalSellerExceptions && this.state.form.internationalSellerExceptions.indexOf(this.props.profile.email) > -1) {
-      // const countryField = this.state.form.inputData.country;
-      const zipField = this.state.form.inputData.zip;
-      // ----- Retaining below for later when intl. seller onboarding is resumed ----
-      // countryField.dropdownOptions = [
-      //   {id: "usa", value: "USA", label: "USA"},
-      //   {id: "china", value: "China", label: "China"},
-      //   {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
-      // ];
-      // countryField.onChange = "setSelectInputValue";
-      // countryField.type = "select";
-      // countryField.value = "";
-      this.state.form.removeIntlSellerFields && this.state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
-      zipField.patternErrorMessage = "This field is required";
-      zipField.maxLength = 30;
-      this.state.considerCountryForValidation = true;
-      this.state.countryInitialized = true;
+      this.updateValidationsForIntlUsers();
     }
   }
 
-  evaluateEditPermission() {
+  updateValidationsForIntlUsers () {
+    // const countryField = this.state.form.inputData.country;
+    const zipField = this.state.form.inputData.zip;
+    // ----- Retaining below for later when intl. seller onboarding is resumed ----
+    // countryField.dropdownOptions = [
+    //   {id: "usa", value: "USA", label: "USA"},
+    //   {id: "china", value: "China", label: "China"},
+    //   {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
+    // ];
+    // countryField.onChange = "setSelectInputValue";
+    // countryField.type = "select";
+    // countryField.value = "";
+    this.state.form.removeIntlSellerFields && this.state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
+    zipField.patternErrorMessage = "This field is required";
+    zipField.maxLength = 30;
+    this.state.considerCountryForValidation = true;
+    this.state.countryInitialized = true;
+  }
+
+  evaluatePermissionAndValidations() {
     if (this.state.clientType === "seller") {
       const form = this.state.form;
       const {
@@ -148,6 +152,10 @@ class CompanyProfileRegistration extends React.Component {
       const originalValues = JSON.parse(JSON.stringify(this.props.onboardingDetails));
       originalValues.brand && delete originalValues.brand.comments;
       const form = {...this.state.form};
+      const isIntlCountry = ["US", "USA", "United States"].indexOf(data.countryCode) === -1;
+      if (isIntlCountry) {
+        this.updateValidationsForIntlUsers();
+      }
       if (data) {
         form.inputData.companyName.value = data.name;
         form.inputData.address.value = data.address;
