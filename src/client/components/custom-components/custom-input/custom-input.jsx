@@ -92,7 +92,7 @@ class CustomInput extends React.PureComponent {
   }
 
   havePropsChanged(prevProps, newProps) {
-    const changeableProps = ["label", "key", "onChange", "formId", "inputId", "type", "required", "value", "pattern", "header", "placeholder",
+    const changeableProps = ["label", "key", "onChange", "formId", "inputId", "type", "required", "value", "pattern", "patternErrorMessage", "header", "placeholder",
       "disabled", "loader", "fieldAlert", "fieldOk", "radioOptions", "dropdownOptions", "error", "subtitle"];
     const changedProps = {};
     for (const i in changeableProps) {

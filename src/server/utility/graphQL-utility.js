@@ -20,9 +20,9 @@ class GraphQLUtility {
     };
   }
 
-  async execute(request, query, filters) {
+  async execute(args) {
+    const {request, query, filters, headers} = args;
     try {
-      const headers = ServerUtils.getHeaders(request);
       const payload = this.getPayload(query, filters);
       // console.log(payload);
       const options = {
@@ -33,9 +33,6 @@ class GraphQLUtility {
       const url = `${BASE_URL}${GRAPHQL_ENDPOINT}`;
       const response =  await ServerHttp.post(url, options, payload);
       this.processResponse(response, filters);
-      // console.log(response.body.data && response.body.data.topReportedBrands.claimCounts);
-      // console.log(response.body.errors);
-      // console.log(response.body.data.topReportedBrands.claimCounts[0].claimTypes);
       return response;
     } catch (err) {
       console.log(err);
@@ -64,8 +61,6 @@ class GraphQLUtility {
               updatedItem.push(updatedSubItem);
             });
           }
-          // console.log(item)
-          // console.log(item && item.claimCounts && item.claimCounts[0].claimTypes)
           response.body.data[itemKey] = updatedItem;
         }
       }
@@ -114,10 +109,6 @@ class GraphQLUtility {
     filters.role && (query = query.replace(/__role__/g, filters.role));
     if (queryName !== "_all") {
       const {fromDate, toDate} = Helper.getDateRange(filters.dateRange);
-      // const now = new Date();
-      // const toDate = JSON.stringify(now).substring(1, 11);
-      // now.setDate(now.getDate() - 1);
-      // const fromDate = JSON.stringify(now).substring(1, 11);
       query = query.replace(/__fromDate__/g, fromDate);
       query = query.replace(/__toDate__/g, toDate);
       query = query.replace(/__claimFilter__/g, filters.claimType !== "__claimType__" ? `claimType: ${filters.claimType}` : "");
