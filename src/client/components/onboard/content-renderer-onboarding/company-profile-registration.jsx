@@ -90,9 +90,10 @@ class CompanyProfileRegistration extends React.Component {
     }
   }
 
-  updateValidationsForIntlUsers () {
+  updateValidationsForIntlUsers (state) {
     // const countryField = this.state.form.inputData.country;
-    const zipField = this.state.form.inputData.zip;
+    state = state ? state : this.state;
+    const zipField = state.form.inputData.zip;
     // ----- Retaining below for later when intl. seller onboarding is resumed ----
     // countryField.dropdownOptions = [
     //   {id: "usa", value: "USA", label: "USA"},
@@ -102,11 +103,13 @@ class CompanyProfileRegistration extends React.Component {
     // countryField.onChange = "setSelectInputValue";
     // countryField.type = "select";
     // countryField.value = "";
-    this.state.form.removeIntlSellerFields && this.state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
-    zipField.patternErrorMessage = "This field is required";
+    state.form.removeIntlSellerFields && state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
+    zipField.pattern = "^[\\d-]{5,}$";
+    zipField.invalidError = "Please enter a valid zip code";
+    zipField.patternErrorMessage = "Please enter a valid zip code";
     zipField.maxLength = 30;
-    this.state.considerCountryForValidation = true;
-    this.state.countryInitialized = true;
+    state.considerCountryForValidation = true;
+    state.countryInitialized = true;
   }
 
   evaluatePermissionAndValidations() {
@@ -153,9 +156,12 @@ class CompanyProfileRegistration extends React.Component {
       originalValues.brand && delete originalValues.brand.comments;
       const form = {...this.state.form};
       if (data) {
-        const isIntlCountry = ["US", "USA", "United States"].indexOf(data.countryCode) === -1;
-        if (isIntlCountry) {
-          this.updateValidationsForIntlUsers();
+        // const isIntlCountry = ["US", "USA", "United States"].indexOf(data.countryCode) === -1;
+        const isSeller = this.state.clientType === "seller";
+        if (isSeller) {
+          const stateClone = {...this.state};
+          this.updateValidationsForIntlUsers(stateClone);
+          this.setState(stateClone);
         }
         form.inputData.companyName.value = data.name;
         form.inputData.address.value = data.address;
