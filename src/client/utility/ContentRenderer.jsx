@@ -164,7 +164,7 @@ export default class ContentRenderer {
       const form = {...this.state.form};
       form.inputData = {...form.inputData};
       const section = {...this.state.section};
-      this.conditionalFields = ["header", "label", "placeholder", "required", "validators", "value"];
+      this.conditionalFields = ["header", "label", "placeholder", "required", "validators", "value", "disabled"];
       Object.keys(form.inputData).forEach(key => form.inputData[key] = ContentRenderer.hookConditionInterceptor.call(this, form.inputData[key]))
       if (form.conditionalRenders) {
         const conditionalRenders = [];
