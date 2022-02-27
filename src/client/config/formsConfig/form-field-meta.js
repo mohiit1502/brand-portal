@@ -1433,7 +1433,37 @@ const FORMFIELDCONFIG = {
         "brandNameSelected": false,
         "showCompleteForm":false,
         "showUnderTaking3":false,
-        "formError":""
+        "formError":"",
+        "claimTypesWithMeta": [
+          {
+            "claimType": "trademark",
+            "label": "Trademark",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
+            "underTakingOwnerLabel":"trademark"
+          },
+          {
+            "claimType": "patent",
+            "label": "Patent",
+            "claimTypeIdentifierLabel": "Patent Number",
+            "subtitle":"The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
+            "underTakingOwnerLabel":"patent"
+          },
+          {
+            "claimType": "counterfeit",
+            "label": "Counterfeit",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "subtitle":"Inauthentic items that are intended to appear authentic",
+            "underTakingOwnerLabel":"intellectual property"
+          },
+          {
+            "claimType": "copyright",
+            "label": "Copyright",
+            "claimTypeIdentifierLabel": "Copyright Number",
+            "subtitle":"Unauthorized use of a creative work that is protected under copyright law",
+            "underTakingOwnerLabel":"copyright"
+          }
+        ]
       },
       "fields": {
         "fieldsHeader_1": {
@@ -1475,10 +1505,10 @@ const FORMFIELDCONFIG = {
           "customChangeHandler": "customChangeHandler",
           "disabled": false,
           "dropdownOptions": [
-            {"claimType": "trademark", "label": "Trademark", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods"},
-            {"claimType": "patent", "label": "Patent", "claimTypeIdentifierLabel": "Patent Number","subtitle":"The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention"},
-            {"claimType": "counterfeit", "label": "Counterfeit", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Inauthentic items that are intended to appear authentic"},
-            {"claimType": "copyright", "label": "Copyright", "claimTypeIdentifierLabel": "Copyright Number","subtitle":"Unauthorized use of a creative work that is protected under copyright law"}
+            {"claimType": "trademark", "label": "Trademark", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods","underTakingOwnerLabel":"trademark"},
+            {"claimType": "patent", "label": "Patent", "claimTypeIdentifierLabel": "Patent Number","subtitle":"The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention","underTakingOwnerLabel":"patent"},
+            {"claimType": "counterfeit", "label": "Counterfeit", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Inauthentic items that are intended to appear authentic","underTakingOwnerLabel":"intellectual property"},
+            {"claimType": "copyright", "label": "Copyright", "claimTypeIdentifierLabel": "Copyright Number","subtitle":"Unauthorized use of a creative work that is protected under copyright law","underTakingOwnerLabel":"copyright"}
           ],
           "error": "",
           "inputId": "claimType",
@@ -1598,7 +1628,7 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "validators": {
             "validateRequired": {
-              "error": "Please be sure to provide details regarding your claim."
+              "error": " "
             },
             "validateLength": {
               "minLength": 20,
@@ -1618,7 +1648,8 @@ const FORMFIELDCONFIG = {
           "invalidError":"You must agree to this statement in order to submit this claim ",
           "key": "user_undertaking_1",
           "layout": "9.1.0",
-          "label": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.",
+          "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __claimType__ owner, its agent, or the law.",
+          "label": "",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
           "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",

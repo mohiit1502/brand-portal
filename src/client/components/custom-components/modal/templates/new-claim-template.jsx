@@ -21,7 +21,7 @@ class NewClaimTemplate extends React.Component {
   // eslint-disable-next-line max-statements
   constructor(props) {
       super(props);
-      const functions = ["bubbleValue", "checkToEnableItemButton", "checkToEnableSubmit", "customChangeHandler", "disableSubmitButton", "enableSubmitButton", "fetchClaims", "getClaimTypes", "getBrands", "getItemListFromChild", "handleSubmit", "loader", "onChange", "onItemUrlChange", "resetTemplateStatus", "selectHandlersLocal", "setSelectInputValue", "undertakingtoggle"];
+      const functions = ["bubbleValue", "checkToEnableItemButton", "checkToEnableSubmit", "customChangeHandler", "disableSubmitButton", "enableSubmitButton", "fetchClaims", "getBrands", "getItemListFromChild", "handleSubmit", "loader", "onChange", "onItemUrlChange", "resetTemplateStatus", "selectHandlersLocal", "setSelectInputValue", "undertakingtoggle"];
       functions.forEach(name => {
         this[name] = this[name].bind(this);
       });
@@ -45,7 +45,6 @@ class NewClaimTemplate extends React.Component {
   }
 
   componentDidMount() {
-    this.getClaimTypes();
     this.getBrands();
   }
 
@@ -72,9 +71,11 @@ class NewClaimTemplate extends React.Component {
     const form = this.state.form;
     const claimTypeIdentifier = form.inputData.claimTypeIdentifier;
     const claimTypesWithMeta = form.claimTypesWithMeta;
+    const undertaking1 = form.inputData.user_undertaking_1;
     const matchedClaimTypeWithMeta = claimTypesWithMeta.find(claimTypeWithMeta => claimTypeWithMeta.label === value);
     if (matchedClaimTypeWithMeta) {
       claimTypeIdentifier.label = matchedClaimTypeWithMeta.claimTypeIdentifierLabel;
+      undertaking1.label = undertaking1.originalLabel.replace("__claimType__",matchedClaimTypeWithMeta.underTakingOwnerLabel);
       this.checkToDisplayForm(form);
       this.setState({form});
     }
@@ -239,31 +240,6 @@ class NewClaimTemplate extends React.Component {
     form.isSubmitDisabled = !bool;
     form.inputData.userActions.buttons.submit.disabled = !bool;
     this.setState({form}, callback && callback());
-  }
-
-  getClaimTypes () {
-    // this.loader("loader", true);
-    const state = {...this.state};
-    const form = state.form;
-    const options = [
-      {"claimType": "trademark", "label": "Trademark", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods"},
-      {"claimType": "patent", "label": "Patent", "claimTypeIdentifierLabel": "Patent Number","subtitle":"Violation of the exclusive rights to make, use, import, and sell a patented invention"},
-      {"claimType": "counterfeit", "label": "Counterfeit", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Inauthentic items that are intended to appear authentic"},
-      {"claimType": "copyright", "label": "Copyright", "claimTypeIdentifierLabel": "Copyright Number","subtitle":"Unauthorized use of a creative work that is protected under copyright law"}
-    ];
-    // return Http.get("/api/claims/types")
-    //   .then(res => {
-
-    //     let options = [...res.body.data];
-    //     options = options.map(option => {
-    //       const displayVal = Helper.toCamelCaseIndividual(option.claimType);
-    //       option.label = displayVal;
-    //       option.claimTypeIdentifierLabel = displayVal === "Counterfeit" ? "Trademark Number" : `${displayVal} Number`;
-    //       return option;
-    //     });
-    //     form.inputData.claimType.dropdownOptions = options && options.map(v => ({value: v.label}));
-        form.claimTypesWithMeta = options;
-        this.setState(state);
   }
 
   getBrands () {
