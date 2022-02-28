@@ -15,19 +15,23 @@ const FORMFIELDCONFIG = {
         "isClearDisabled": false,
         "formActions": "companyOnboardingActions",
         "requestAdministratorAccess": false,
-        "removeIntlSellerFields": [
-          "patternPath",
-          "invalidErrorPath",
-          "invalidError",
-          "pattern"
-        ],
+        "removeIntlSellerFields": ["patternPath", "invalidErrorPath", "invalidError", "pattern"],
+        "enableCountries": ["US", "USA", "CN", "HK", "United States"],
+        "taxClassification_US": "W9",
+        "taxClassification_INTL_BEN": "W-8 BEN-E",
+        "taxClassification_INTL_ECI": "W-8 ECI",
+        "USTaxClassifications": ["W9"],
+        "internationalTaxClassifications": ["W-8 BEN-E", "W-8 ECI"],
+        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States", "CN", "HK"],
+        "allowedCountriesForIntlTaxClassification": ["US", "USA", "United States", "CN", "HK"],
         "internationalSellerExceptions": [
           "ss1@mailinator.com"
         ]
       },
       "fields": {
         "companyName": {
-          "disabled": false,
+          "BEValidationError": "Your company has already been registered in Walmart Brand Portal. Please contact brandportal@walmart.com for further information.",
+          "disabled": {"default": false, "condition": [{"subCondition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"]}, {"keyPath": "profile.context", "keyLocator": "props", "dependencyValue": ["new"]}], "value": true}]},
           "error": "",
           "fieldOk": false,
           "inputId": "companyName",
@@ -112,6 +116,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "required": true,
           "subtitle": "",
+          "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, or Hong Kong. If you have any questions, please contact brandportal@walmart.com.",
           "type": "text",
           "value": "USA"
         },
@@ -130,7 +135,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Optional: Attach additional documents (i.e. business registration)",
+          "label": "Optional: Attach additional documents if necessary (i.e. business registration)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
@@ -220,7 +225,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "additionalDoc",
           "key": "additionalDoc",
-          "label": "Optional: Attach additional documents (i.e. trademark registration)",
+          "label": "Optional: Attach additional documents if necessary (i.e. trademark registration)",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
           "tooltipContentKey": "additionalDocContent",

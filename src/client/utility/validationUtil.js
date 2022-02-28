@@ -269,6 +269,7 @@ export default class Validator {
     const state = { ...this.state };
     const form = { ...this.state.form };
     const inputData = { ...this.state.form.inputData };
+    const clientType = this.state.clientType;
 
     if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name
       && this.props.originalValues.org.name.trim() !== this.state.form.inputData.companyName.value.trim()) || !isEditMode) {
@@ -287,12 +288,13 @@ export default class Validator {
         WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
       };
 
-      Http.get("/api/company/availability", { name: this.state.form.inputData.companyName.value, clientType: this.state.clientType })
+      Http.get("/api/company/availability", { name: this.state.form.inputData.companyName.value, clientType })
         .then(response => {
-          error = response.body.unique ? "" : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
+          const errorMsg = inputData.companyName.BEValidationError ? inputData.companyName.BEValidationError.replace("__placeholder__", response.body.name)
+            : `"${response.body.name}" already has a Walmart Brand Portal account. For more information please contact ipinvest@walmart.com.`;
+          error = response.body.unique ? "" : errorMsg;
           inputData.companyName.isUnique = !error;
           inputData.companyName.fieldOk = !error;
-          //inputData.companyOnboardingActions.buttons.clear.disabled = false;
           mixpanelPayload.API_SUCCESS = true;
           mixpanelPayload.IS_COMPANY_NAME_UNIQUE = response.body.unique;
         }).catch(err => {
@@ -311,10 +313,10 @@ export default class Validator {
         })
         .finally(() => {
           inputData.companyName.error = error;
-          inputData.companyName.disabled = false;
+          (!this.props.profile || (this.props.profile.context === "edit" || clientType !== "seller")) && (inputData.companyName.disabled = false);
           inputData.companyName.loader = false;
           this.setState(state, inputData.companyName.isUnique ? () => {
-            this.toggleFormEnable(!error, !error, false);
+            (!this.props.profile || (this.props.profile.context === "edit" || clientType !== "seller")) && this.toggleFormEnable(!error, !error, false);
             this.checkToEnableSubmit();
           } : () => { });
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.COMPANY_NAME_AVAILABILITY_CHECK, mixpanelPayload);
@@ -324,7 +326,7 @@ export default class Validator {
       inputData.companyName.disabled = false;
       inputData.companyName.loader = false;
       this.setState(state, () => {
-        this.toggleFormEnable(true, true, false);
+        (!this.props.profile || (this.props.profile.context === "edit" || clientType !== "seller")) && this.toggleFormEnable(true, true, false);
         this.checkToEnableSubmit();
       });
     }
