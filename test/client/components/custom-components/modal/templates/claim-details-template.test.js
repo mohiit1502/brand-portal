@@ -43,7 +43,7 @@ describe("ClaimDetailsTemplate test container", () => {
   it("should render the ClaimDetailsTemplate successfully", () => {
     wrapper = setUpRender();
     wrapper.root.findByProps({ className: "close text-white" }).props.onClick();
-    wrapper.root.findByProps({ className: "btn btn-sm cancel-btn text-primary" }).props.onClick();
+    wrapper.root.findByProps({ className: "btn btn-sm btn-primary submit-btn px-3 mx-3" }).props.onClick();
     wrapper = renderer.create(<Provider store={store}><ClaimDetailsTemplate /></Provider>);
     expect(wrapper.toJSON()).toMatchSnapshot();
   });

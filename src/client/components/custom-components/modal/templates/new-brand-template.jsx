@@ -156,7 +156,7 @@ class NewBrandTemplate extends React.Component {
       return Http.post(url, payload)
         .then(res => {
           this.resetTemplateStatus();
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.request.name}’ added to your brand portfolio`);
+          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.name}’ added to your brand portfolio`);
           this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
           this.props.saveBrandInitiated();
           this.loader("form", false);
