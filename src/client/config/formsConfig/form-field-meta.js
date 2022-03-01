@@ -1500,11 +1500,13 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "header": "Select the type of infringement you are reporting",
           "layout": "3.1.0",
-          "type": "_formFieldsHeader"
+          "type": "_formFieldsHeader",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
         },
         "banner":{
           "type" : "_banner",
-          "layout" : "4.1.0"
+          "layout" : "4.1.0",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
         },
         "claimType": {
           "customChangeHandler": "customChangeHandler",
@@ -1523,6 +1525,7 @@ const FORMFIELDCONFIG = {
           "layout": "5.1.6",
           "onChange": "setSelectInputValue",
           "required": true,
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "pattern": null,
           "subtitle": "Not sure which claim type to select? `learnMore`",
           "link" : {
@@ -1762,7 +1765,6 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
               "disabled": false,
               "onClick": "handleSubmit",
-              // "renderCondition": "{\"keyPath\": \"form.inputData.brandName.value\", \"keyLocator\": \"state\", \"hasValue\": true}",
               "text": "Submit",
               "type": "submit"
             }
