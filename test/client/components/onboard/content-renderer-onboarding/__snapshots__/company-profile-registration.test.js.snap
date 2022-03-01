@@ -385,7 +385,7 @@ exports[`CompanyProfileRegistration test container should render the CompanyProf
               <div
                 className="file-upload-title mb-2"
               >
-                Optional: Attach additional documents (i.e. business registration)
+                Optional: Attach additional documents if necessary (i.e. business registration)
                  
                 <img
                   alt="i"
