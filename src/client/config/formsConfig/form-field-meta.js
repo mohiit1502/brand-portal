@@ -1531,7 +1531,7 @@ const FORMFIELDCONFIG = {
           "link" : {
             "learnMore" : {
               "url" : "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
-              "placeHolder" : "Learn More."
+              "placeHolder" : "Learn More"
             }
           },
           "type": "select",
