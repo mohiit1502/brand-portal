@@ -1584,11 +1584,11 @@ const FORMFIELDCONFIG = {
                 "required": true,
                 "value": "",
                 "type": "url",
-                "pattern": "https:\/\/www.walmart.com\/.+",
                 "disabled": false,
                 "isValid": false,
-                "invalidError" : "Enter the URL of the listing you would like to report",
-                "inValidUrlPatternError" : "Enter a valid url",
+                "invalidError" : "Enter a valid url",
+                "pattern": "https:\/\/www.walmart.com\/.+",
+                "patternErrorMessage": "Enter a valid url",
                 "subtitle": "",
                 "error": ""
               },
@@ -1609,9 +1609,6 @@ const FORMFIELDCONFIG = {
                     "error": "Minimum length is 3 characters"
                   }
                 }
-              },
-              "orderNumber": {
-
               }
             }
           ]

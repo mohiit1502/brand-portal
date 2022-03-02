@@ -221,6 +221,19 @@ class CustomInput extends React.PureComponent {
       }
     };
 
+    let dropDownMenuId = `${this.state.formId}-${this.state.inputId}-custom-input-dropdown`;
+    $("body").click((evt) => {
+      if(evt.target.id.indexOf("newclaim-sellerName") === -1){
+        console.log(evt.target.id,"========TargetId");
+        let temp = "#"+dropDownMenuId;
+        console.log("ID selector=======",temp);
+        let className = $(`${temp}`).attr(`class`);
+        if((className.indexOf("show") !== -1)){
+          $("#"+dropDownMenuId).removeClass("show");
+        }
+      }
+    });
+
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
@@ -239,7 +252,6 @@ class CustomInput extends React.PureComponent {
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
-
         {
           this.state.dropdownOptions && this.state.dropdownOptions.length > 0 &&
           <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >

@@ -30,7 +30,7 @@ class NewClaimTemplate extends React.Component {
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
       this.validateState = Validator.validateState.bind(this);
-      this.validateUrl = Validator.validateUrl.bind(this);
+      this.onInvalid = Validator.onInvalid.bind(this);
       const newClaimConfiguration = this.props.newClaimConfiguration ? this.props.newClaimConfiguration : {};
       this.state = {
         section: {...newClaimConfiguration.sectionConfig},
@@ -220,7 +220,7 @@ class NewClaimTemplate extends React.Component {
       return {
         ...state
       };
-    });
+    },this.checkToEnableItemButton);
   }
 
   checkToEnableSubmit(callback) {
@@ -301,10 +301,8 @@ class NewClaimTemplate extends React.Component {
     let url = event && event.target.value;
     if (url) {
       const form = {...this.state.form};
-      if(!this.validateUrl(form.inputData.urlItems.itemList[i].url)){
+      if(!(event.target.checkValidity && event.target.checkValidity())){
         form.inputData.urlItems.itemList[i].sellerName.disabled = true;
-        form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = [];
-        form.inputData.urlItems.itemList[i].url.error = form.inputData.urlItems.itemList[i].url.inValidUrlPatternError;
         this.setState({form},() => this.checkToEnableItemButton());
         return;
       }
@@ -365,8 +363,7 @@ class NewClaimTemplate extends React.Component {
     }else{
       const form = {...this.state.form};
       form.inputData.urlItems.itemList[i].sellerName.disabled = true;
-      form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = [];
-      this.setState({form},() => this.checkToEnableItemButton());
+      this.setState({form},this.checkToEnableItemButton);
     }
   }
 
