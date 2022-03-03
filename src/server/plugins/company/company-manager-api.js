@@ -249,8 +249,8 @@ class CompanyManagerApi {
       METHOD: "GET",
       API: "/api/company/availability"
     };
-    console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability] API request for Company Name Avaialability has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability] API request for Company Name Availability has started", corrId);
+    console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] User ID: ", corrId, request.query.name, request.state && request.state.session_token_login_id);
     try {
       const name = request.query.name;
       if (!headers.ROPRO_CLIENT_TYPE) {
@@ -269,7 +269,14 @@ class CompanyManagerApi {
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.get(url, options, { name });
-      console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailabililty] API request for Company Name Availability has completed", corrId);
+      if (response.body && !response.body.unique) {
+        if (request.query.clientType === "seller") {
+          console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] Company name of seller is not unique, seller will be blocked from proceeding", corrId, name);
+        } else {
+          console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] Company name of RO is not unique", corrId, name);
+        }
+      }
+      console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability] API request for Company Name Availability has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;

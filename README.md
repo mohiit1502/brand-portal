@@ -14,6 +14,19 @@ var roPro = require("brand-portal");
 
 roPro("Rainbow");
 ```
+
+## Dev Setup
+```
+Procure secrets.json file, and application pem certificate file
+
+Update following files:
+
+- default.json -> Change services.privateKey.file path from /secrets to a local path where application pem certificate is stored.
+- server-constants.js -> Change PATH: "/secrets/secrets.json" to a local path where application secrets file is stored.
+
+Run 'npm run dev' or navigate to package.json and use IDEs built in runners for 'dev' script  
+```
+
 ## License
 
  © [Walmart Brand Portal]()
