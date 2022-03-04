@@ -704,7 +704,8 @@ class UserManagerApi {
       console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Setting clientType post login redirect: ", corrId, clientType);
       // eslint-disable-next-line camelcase
       if (!query.code) {
-        return h.redirect(`/api/falcon/login?clientType=${clientType}`);
+        console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect][Client Type: %s] No code found on loginSuccessRedirect, possible redirect after password reset", corrId, clientType)
+        return h.redirect(clientType ? `/api/falcon/login?clientType=${clientType}` : "/api/falcon/login");
       }
       console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Requesting access token from IAM", corrId);
       let response = await this.getAccessToken(request, query.code);
