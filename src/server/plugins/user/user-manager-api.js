@@ -658,9 +658,17 @@ class UserManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ROPRO_CORRELATION_ID = corrId;
+      mixpanelPayload.CLIENT_TYPE = headers.ROPRO_CLIENT_TYPE;
       console.log("[Corr ID: %s][UserManagerApi:getUserInfo] Initiating get request", corrId);
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
+      const country = response.body.sellerInfo && response.body.sellerInfo.countryOfIncorporation;
+      mixpanelPayload.COUNTRY = country;
+      if (headers.ROPRO_CLIENT_TYPE === "seller" && country && ["US", "USA", "United States", "CN", "HK"].indexOf(country) === -1) {
+        mixpanelPayload.USER_BLOCKED = true;
+        console.log("[Corr ID: %s][UserManagerApi::getUserInfo][Country: %s][Email: %s] Unsupported seller's country, blocking the user",
+          corrId, country, request.state && request.state.session_token_login_id)
+      }
       console.log("[Corr ID: %s][UserManagerApi::getUserInfo] API request for get User information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -693,10 +701,11 @@ class UserManagerApi {
     try {
       const query = request.query;
       const clientType = request.query.clientType;
-      console.log("[Corr ID: %s]Setting clientType post login redirect: ", corrId, clientType);
+      console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Setting clientType post login redirect: ", corrId, clientType);
       // eslint-disable-next-line camelcase
       if (!query.code) {
-        return h.redirect("/api/falcon/login");
+        console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect][Client Type: %s] No code found on loginSuccessRedirect, possible redirect after password reset", corrId, clientType)
+        return h.redirect(clientType ? `/api/falcon/login?clientType=${clientType}` : "/api/falcon/login");
       }
       console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Requesting access token from IAM", corrId);
       let response = await this.getAccessToken(request, query.code);
@@ -795,9 +804,6 @@ class UserManagerApi {
       CLIENT_TYPE: clientType
     };
     try {
-      // if (!clientType) {
-      //   return h.redirect(`/${request.params.action}`)
-      // }
       console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Initiating Generate Falcon's Redirect URL", corrId)
       const redirectUri = await falcon.generateFalconRedirectURL(request, request.params.action, clientType);
       console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] Generated Falcon's Redirect URL: ", corrId, redirectUri);
