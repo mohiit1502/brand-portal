@@ -658,11 +658,14 @@ class UserManagerApi {
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ROPRO_CORRELATION_ID = corrId;
+      mixpanelPayload.CLIENT_TYPE = headers.ROPRO_CLIENT_TYPE;
       console.log("[Corr ID: %s][UserManagerApi:getUserInfo] Initiating get request", corrId);
       const response = await ServerHttp.get(url, options);
       mixpanelPayload.RESPONSE_STATUS = response.status;
       const country = response.body.sellerInfo && response.body.sellerInfo.countryOfIncorporation;
+      mixpanelPayload.COUNTRY = country;
       if (headers.ROPRO_CLIENT_TYPE === "seller" && country && ["US", "USA", "United States", "CN", "HK"].indexOf(country) === -1) {
+        mixpanelPayload.USER_BLOCKED = true;
         console.log("[Corr ID: %s][UserManagerApi::getUserInfo][Country: %s][Email: %s] Unsupported seller's country, blocking the user",
           corrId, country, request.state && request.state.session_token_login_id)
       }

@@ -271,6 +271,7 @@ class CompanyManagerApi {
       const response = await ServerHttp.get(url, options, { name });
       if (response.body && !response.body.unique) {
         if (request.query.clientType === "seller") {
+          mixpanelPayload.USER_BLOCKED = true;
           console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s][Email: %s] Company name of seller is not unique, seller will be blocked from proceeding",
             corrId, name, request.state && request.state.session_token_login_id);
         } else {
