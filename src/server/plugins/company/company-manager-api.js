@@ -267,6 +267,7 @@ class CompanyManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.COMPANY_NAME = name;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+      mixpanelPayload.CLIENT_TYPE = headers.ROPRO_CLIENT_TYPE;
 
       const response = await ServerHttp.get(url, options, { name });
       if (response.body && !response.body.unique) {
