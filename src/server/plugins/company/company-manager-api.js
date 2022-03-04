@@ -271,7 +271,8 @@ class CompanyManagerApi {
       const response = await ServerHttp.get(url, options, { name });
       if (response.body && !response.body.unique) {
         if (request.query.clientType === "seller") {
-          console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] Company name of seller is not unique, seller will be blocked from proceeding", corrId, name);
+          console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s][Email: %s] Company name of seller is not unique, seller will be blocked from proceeding",
+            corrId, name, request.state && request.state.session_token_login_id);
         } else {
           console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] Company name of RO is not unique", corrId, name);
         }
@@ -282,7 +283,7 @@ class CompanyManagerApi {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.error("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailabililty] Error occurred in API request for Company Name Availability:", corrId, err);
+      console.error("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability] Error occurred in API request for Company Name Availability:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.CHECK_COMPANY_NAME_AVAILABILILTY, mixpanelPayload);
