@@ -877,7 +877,7 @@ const FORMFIELDCONFIG = {
                       },
                       {
                         "field": "error",
-                        "value": "Please enter valid order number"
+                        "value": "Please enter a valid order number"
                       }
                     ]
                   },
@@ -955,11 +955,11 @@ const FORMFIELDCONFIG = {
                     "setFields": [
                       {
                         "field": "dataRuleRegex",
-                        "value": "^[0-9]{13}$"
+                        "value": "(^[0-9]{13}$|^$)"
                       },
                       {
                         "field": "error",
-                        "value": "Please enter a valid Order Number"
+                        "value": "Please enter a valid order number"
                       }
                     ]
                   }
