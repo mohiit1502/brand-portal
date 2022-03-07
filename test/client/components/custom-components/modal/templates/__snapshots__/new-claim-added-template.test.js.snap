@@ -51,7 +51,7 @@ exports[`NewClaimAddedTemplate test container should render the NewClaimAddedTem
             <span
               className="status-description"
             >
-              A confirmation email has been sent to your email address
+              We have sent a confirmation email to you
             </span>
           </div>
         </div>
