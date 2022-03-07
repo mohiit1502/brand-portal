@@ -128,7 +128,7 @@ export default class Validator {
                     urlObj.error = urlObj.error || urlObj.invalidError || "Please Enter Valid Input";
                     hasError = true;
                   }
-                  if(sellerNameObj && (sellerNameObj.error || (sellerNameObj.required && !sellerNameObj.value))){
+                  if(sellerNameObj && (sellerNameObj.error || (sellerNameObj.required && (!sellerNameObj.value || sellerNameObj.value.length === 0)))){
                     sellerNameObj.error = sellerNameObj.error || sellerNameObj.invalidError || "Please Enter Valid Input";
                     hasError = true;
                   }
