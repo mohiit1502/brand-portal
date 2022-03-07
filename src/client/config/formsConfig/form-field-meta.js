@@ -15,15 +15,43 @@ const FORMFIELDCONFIG = {
         "isClearDisabled": false,
         "formActions": "companyOnboardingActions",
         "requestAdministratorAccess": false,
-        "removeIntlSellerFields": ["patternPath", "invalidErrorPath", "invalidError", "pattern"],
-        "enableCountries": ["US", "USA", "CN", "HK", "United States"],
+        "removeIntlSellerFields": [
+          "patternPath",
+          "invalidErrorPath",
+          "invalidError",
+          "pattern"
+        ],
+        "enableCountries": [
+          "US",
+          "USA",
+          "CN",
+          "HK",
+          "United States"
+        ],
         "taxClassification_US": "W9",
         "taxClassification_INTL_BEN": "W-8 BEN-E",
         "taxClassification_INTL_ECI": "W-8 ECI",
-        "USTaxClassifications": ["W9"],
-        "internationalTaxClassifications": ["W-8 BEN-E", "W-8 ECI"],
-        "allowedCountriesForDomesticTaxClassification": ["US", "USA", "United States", "CN", "HK"],
-        "allowedCountriesForIntlTaxClassification": ["US", "USA", "United States", "CN", "HK"],
+        "USTaxClassifications": [
+          "W9"
+        ],
+        "internationalTaxClassifications": [
+          "W-8 BEN-E",
+          "W-8 ECI"
+        ],
+        "allowedCountriesForDomesticTaxClassification": [
+          "US",
+          "USA",
+          "United States",
+          "CN",
+          "HK"
+        ],
+        "allowedCountriesForIntlTaxClassification": [
+          "US",
+          "USA",
+          "United States",
+          "CN",
+          "HK"
+        ],
         "internationalSellerExceptions": [
           "ss1@mailinator.com"
         ]
@@ -31,7 +59,30 @@ const FORMFIELDCONFIG = {
       "fields": {
         "companyName": {
           "BEValidationError": "Your company has already been registered in Walmart Brand Portal. Please contact brandportal@walmart.com for further information.",
-          "disabled": {"default": false, "condition": [{"subCondition": [{"keyPath": "clientType", "keyLocator": "state", "dependencyValue": ["seller"]}, {"keyPath": "profile.context", "keyLocator": "props", "dependencyValue": ["new"]}], "value": true}]},
+          "disabled": {
+            "default": false,
+            "condition": [
+              {
+                "subCondition": [
+                  {
+                    "keyPath": "clientType",
+                    "keyLocator": "state",
+                    "dependencyValue": [
+                      "seller"
+                    ]
+                  },
+                  {
+                    "keyPath": "profile.context",
+                    "keyLocator": "props",
+                    "dependencyValue": [
+                      "new"
+                    ]
+                  }
+                ],
+                "value": true
+              }
+            ]
+          },
           "error": "",
           "fieldOk": false,
           "inputId": "companyName",
@@ -1436,37 +1487,37 @@ const FORMFIELDCONFIG = {
         "loader": false,
         "isSubmitDisabled": false,
         "brandNameSelected": false,
-        "showCompleteForm":false,
-        "showUnderTaking3":false,
-        "formError":"",
+        "showCompleteForm": false,
+        "showUnderTaking3": false,
+        "formError": "",
         "claimTypesWithMeta": [
           {
             "claimType": "trademark",
             "label": "Trademark",
             "claimTypeIdentifierLabel": "Trademark Number",
-            "subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
-            "underTakingOwnerLabel":"trademark"
+            "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
+            "underTakingOwnerLabel": "trademark"
           },
           {
             "claimType": "patent",
             "label": "Patent",
             "claimTypeIdentifierLabel": "Patent Number",
-            "subtitle":"The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
-            "underTakingOwnerLabel":"patent"
+            "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
+            "underTakingOwnerLabel": "patent"
           },
           {
             "claimType": "counterfeit",
             "label": "Counterfeit",
             "claimTypeIdentifierLabel": "Trademark Number",
-            "subtitle":"Inauthentic items that are intended to appear authentic",
-            "underTakingOwnerLabel":"intellectual property"
+            "subtitle": "Inauthentic items that are intended to appear authentic",
+            "underTakingOwnerLabel": "intellectual property"
           },
           {
             "claimType": "copyright",
             "label": "Copyright",
             "claimTypeIdentifierLabel": "Copyright Number",
-            "subtitle":"Unauthorized use of a creative work that is protected under copyright law",
-            "underTakingOwnerLabel":"copyright"
+            "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
+            "underTakingOwnerLabel": "copyright"
           }
         ]
       },
@@ -1487,7 +1538,7 @@ const FORMFIELDCONFIG = {
           "label": "Brand Name",
           "layout": "2.1.6",
           "onChange": "setSelectInputValue",
-          "invalidError": "Please select a brand",
+          "invalidError": "Please select a brand.",
           "pattern": null,
           "required": true,
           "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
@@ -1503,23 +1554,47 @@ const FORMFIELDCONFIG = {
           "type": "_formFieldsHeader",
           "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
         },
-        "banner":{
-          "type" : "_banner",
-          "layout" : "4.1.0",
+        "banner": {
+          "type": "_banner",
+          "layout": "4.1.0",
           "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
         },
         "claimType": {
           "customChangeHandler": "customChangeHandler",
           "disabled": false,
           "dropdownOptions": [
-            {"claimType": "trademark", "label": "Trademark", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods","underTakingOwnerLabel":"trademark"},
-            {"claimType": "patent", "label": "Patent", "claimTypeIdentifierLabel": "Patent Number","subtitle":"The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention","underTakingOwnerLabel":"patent"},
-            {"claimType": "counterfeit", "label": "Counterfeit", "claimTypeIdentifierLabel": "Trademark Number","subtitle":"Inauthentic items that are intended to appear authentic","underTakingOwnerLabel":"intellectual property"},
-            {"claimType": "copyright", "label": "Copyright", "claimTypeIdentifierLabel": "Copyright Number","subtitle":"Unauthorized use of a creative work that is protected under copyright law","underTakingOwnerLabel":"copyright"}
+            {
+              "claimType": "trademark",
+              "label": "Trademark",
+              "claimTypeIdentifierLabel": "Trademark Number",
+              "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
+              "underTakingOwnerLabel": "trademark"
+            },
+            {
+              "claimType": "patent",
+              "label": "Patent",
+              "claimTypeIdentifierLabel": "Patent Number",
+              "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
+              "underTakingOwnerLabel": "patent"
+            },
+            {
+              "claimType": "counterfeit",
+              "label": "Counterfeit",
+              "claimTypeIdentifierLabel": "Trademark Number",
+              "subtitle": "Inauthentic items that are intended to appear authentic",
+              "underTakingOwnerLabel": "intellectual property"
+            },
+            {
+              "claimType": "copyright",
+              "label": "Copyright",
+              "claimTypeIdentifierLabel": "Copyright Number",
+              "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
+              "underTakingOwnerLabel": "copyright"
+            }
           ],
           "error": "",
           "inputId": "claimType",
-          "invalidError": "Please select a claim type",
+          "invalidError": "Please select a claim type.",
           "label": "Claim Type",
           "key": "claimType",
           "layout": "5.1.6",
@@ -1528,10 +1603,10 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "pattern": null,
           "subtitle": "Not sure which claim type to select? `learnMore`",
-          "link" : {
-            "learnMore" : {
-              "url" : "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
-              "placeHolder" : "Learn More"
+          "link": {
+            "learnMore": {
+              "url": "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
+              "placeHolder": "Learn more"
             }
           },
           "type": "select",
@@ -1543,7 +1618,7 @@ const FORMFIELDCONFIG = {
           "key": "claimTypeIdentifier",
           "layout": "5.2.6",
           "inputId": "claimTypeIdentifier",
-          "invalidError": "Please select a claim type",
+          "invalidError": "Please select a claim type.",
           "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "value": "",
@@ -1586,9 +1661,9 @@ const FORMFIELDCONFIG = {
                 "type": "url",
                 "disabled": false,
                 "isValid": false,
-                "invalidError" : "Enter a valid url",
-                "pattern": "https:\/\/www.walmart.com\/.+",
-                "patternErrorMessage": "Enter a valid url",
+                "invalidError": "Enter a valid URL.",
+                "pattern": "https://www.walmart.com/.+",
+                "patternErrorMessage": "Enter a valid URL.",
                 "subtitle": "",
                 "error": ""
               },
@@ -1601,7 +1676,7 @@ const FORMFIELDCONFIG = {
                 "disabled": true,
                 "subtitle": "",
                 "type": "multiselect",
-                "invalidError":"Select at least one seller to report",
+                "invalidError": "Select at least one seller to report.",
                 "error": "",
                 "validators": {
                   "validateLength": {
@@ -1650,7 +1725,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_1",
           "inputId": "user_undertaking_1",
-          "invalidError":"You must agree to this statement in order to submit this claim ",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
           "key": "user_undertaking_1",
           "layout": "9.1.0",
           "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __claimType__ owner, its agent, or the law.",
@@ -1670,7 +1745,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_2",
           "inputId": "user_undertaking_2",
-          "invalidError":"You must agree to this statement in order to submit this claim ",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
           "key": "user_undertaking_2",
           "layout": "10.1.0",
           "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
@@ -1688,7 +1763,7 @@ const FORMFIELDCONFIG = {
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "id": "user_undertaking_3",
-          "invalidError":"You must agree to this statement in order to submit this claim ",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
           "inputId": "user_undertaking_3",
           "key": "user_undertaking_3",
           "layout": "11.1.0",
@@ -1708,7 +1783,7 @@ const FORMFIELDCONFIG = {
           "excludeColContainer": true,
           "id": "user_undertaking_4",
           "inputId": "user_undertaking_4",
-          "invalidError":"You must agree to this statement in order to submit this claim ",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
           "key": "user_undertaking_4",
           "layout": "12.1.0",
           "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
@@ -1733,7 +1808,7 @@ const FORMFIELDCONFIG = {
           "disabled": false,
           "required": true,
           "inputId": "signature",
-          "invalidError":"Digital signature is required",
+          "invalidError": "Digital signature is required.",
           "value": "",
           "key": "signature",
           "layout": "14.1.8",
