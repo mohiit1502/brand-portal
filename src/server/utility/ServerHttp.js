@@ -63,7 +63,12 @@ export default class ServerHttp {
         return isJson ? {status, body: await response.json()} : {status, body: await response.text()};
       }
       console.log("[Corr ID: %s][%s] 3. Response not OK, logging response: ", corrId, urlString, response);
-      const err = isJson ? await response.json() : await response.text();
+      let err;
+      try {
+        err = isJson ? await response.json() : await response.text();
+      } catch (e) {
+        isJson && (err = await response.text());
+      }
       const errorString = `[Corr ID: %s] 5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, corrId, err);
       throw new ServerHttpError(status, err.error, err.message, err.code, corrId, urlString,
