@@ -73,11 +73,11 @@ class CompanyManagerApi {
   async registerOrganization(request, h) {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
-    const isEditMode = request.query.context;
+    const context = request.query.context;
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/org/register",
-      SUBMISSION_MODE: isEditMode
+      SUBMISSION_MODE: context
     };
 
     console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] API request for Register organization has started", corrId);
@@ -87,7 +87,7 @@ class CompanyManagerApi {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
       }
       const options = {
-        method: isEditMode=="edit" ? "PUT" : "POST",
+        method: context === "edit" ? "PUT" : "POST",
         headers
       };
       console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] Fetching CCM dependencies", corrId);
@@ -105,7 +105,7 @@ class CompanyManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = isEditMode === "edit" ? await ServerHttp.put(url, options, payload) : await ServerHttp.post(url, options, payload);
+      const response = context === "edit" ? await ServerHttp.put(url, options, payload) : await ServerHttp.post(url, options, payload);
       console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] API request for Register organization has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {

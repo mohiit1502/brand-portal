@@ -1,6 +1,6 @@
 {
   "name": "ropro-brandportal",
-  "version": "8.1.0",
+  "version": "10.0.0",
   "description": "IP Dispute Portal for Brands",
   "homepage": "",
   "author": {
@@ -34,6 +34,7 @@
     "generate": "plop",
     "prod-start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 clap -n -x electrode/build prod",
     "start": "if test \"$NODE_ENV\" = \"production\"; then  npm run prod; else CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 clap dev; fi",
+    "dev": "CCM_ENV=dev NODE_TLS_REJECT_UNAUTHORIZED=0 ONEOPS_ENVIRONMENT=stg clap dev",
     "test": "jest --coverage",
     "coverage": "jest --coverage",
     "prod": "echo \"Starting standalone server in PROD mode\"; NODE_ENV=production node ./lib/server/",

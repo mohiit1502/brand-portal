@@ -21,14 +21,14 @@ class ServerUtils {
       Accept: "application/json",
       Consumer_id: "6aa8057e-8795-450a-b349-4ba99b633d2e",
       ROPRO_AUTH_TOKEN: request.state.auth_session_token,
-      ROPRO_USER_ID:	request.state.session_token_login_id,
+      ROPRO_USER_ID: request.state.session_token_login_id,
       ROPRO_CLIENT_TYPE: request.state.client_type || request.query.clientType,
-      ROPRO_CLIENT_ID:	"temp-client-id",
+      ROPRO_CLIENT_ID: "temp-client-id",
       ROPRO_CORRELATION_ID: this.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH)
     };
   }
 
-  getDocumentHeaders (request) {
+  getDocumentHeaders(request) {
     const headers = this.getHeaders(request);
     headers["transfer-encoding"] = "chunked";
     headers["Accept-Encoding"] = "gzip, deflate, br";
@@ -59,7 +59,7 @@ class ServerUtils {
       try {
         keystore.add(falconSSOTokenKey).then(addedKeyStore => {
           nj.JWE.createDecrypt(addedKeyStore).decrypt(idToken).then(result => {
-            const { payload: bufferArray } = result;
+            const {payload: bufferArray} = result;
             jwtt = String.fromCharCode(...[...bufferArray]);
             const payload = jwtt.split(".")[1];
             const decodedData = Buffer(payload, secrets.ENCODING).toString();
@@ -85,30 +85,31 @@ class ServerUtils {
     }
   }
 
-  async retry (request, incrementalTimeouts) {
+  async retry(request, incrementalTimeouts) {
+    const corrId = request && request.options && request.options.headers && request.options.headers.ROPRO_CORRELATION_ID;
     for (let attempt = 0; attempt <= incrementalTimeouts.length; attempt++) {
-        try {
-          const requestType = request.type && request.type.toLowerCase();
-
-          console.log("[WBP] Making request for request type ", requestType);
-          console.log("[WBP] Requested function is ", ServerHttp[requestType]);
-          const response = ServerHttp[requestType] && await ServerHttp[requestType](request.url, request.options, request.payload);
-          return response ? response : {status: 500, body: {}};
+      try {
+        const requestType = request.type && request.type.toLowerCase();
+        console.log("[Corr ID: %s][ServerUtils.retry] Retry attempt: ", corrId, attempt + 1);
+        console.log("[Corr ID: %s][ServerUtils.retry] Making request for request type ", corrId, requestType);
+        console.log("[Corr ID: %s][ServerUtils.retry] Requested function is ", corrId, ServerHttp[requestType]);
+        const response = ServerHttp[requestType] && await ServerHttp[requestType](request.url, request.options, request.payload);
+        return response ? response : {status: 500, body: {}};
       } catch (err) {
-        console.error("[WBP] Error while retrying: ", err);
-        console.log("[WBP] Retry Attempt: ", attempt + 1);
+        console.error("[Corr ID: %s][ServerUtils.retry] Error while retrying: ", corrId, err);
         incrementalTimeouts.length > attempt ? await new Promise(resolve => setTimeout(() => resolve(), incrementalTimeouts[attempt])) : {};
       }
     }
     return null;
   }
 
-  isContentJson (headers) {
+  isContentJson(headers) {
     const contentType = headers && headers.get(CONSTANTS.HEADERS.CONTENT_TYPE_LOWER)
       ? headers.get(CONSTANTS.HEADERS.CONTENT_TYPE_LOWER).split(";")
       : [];
     return contentType.indexOf(CONSTANTS.TYPES.APPLICATION_JSON) > -1;
   }
+
   // static search(path, obj, selector) {
   //   try {
   //     if (!path) return obj;
@@ -129,4 +130,5 @@ class ServerUtils {
   //   }
   // }
 }
+
 export default new ServerUtils();

@@ -17,12 +17,12 @@ class NewClaimAddedTemplate extends React.Component {
   }
 
   getHeaderString() {
-    return `Claim ${this.props.data.caseNumber} submitted`;
+    return `${this.props.data.caseNumber} submitted`;
   }
 
   getDescriptionString() {
     // return `You will receive a confirmation email with your claim number (${this.props.data.caseNumber}) details shortly. You can also check your claim status in "My claims"`;
-    return `We have sent a confirmation to your email address`;
+    return `We have sent a confirmation email to you`;
   }
   mixpanelAddNewTemplateUtil = (meta, payload) => {
     const templateName = meta.templateName;

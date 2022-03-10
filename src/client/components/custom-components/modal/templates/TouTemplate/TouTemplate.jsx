@@ -106,7 +106,7 @@ const TouTemplate = props => {
             <div className={`tou-acceptance position-absolute mx-auto w-100 px-5${page === pages.TOU_ACCEPTANCE ? " visible" : ""}`}>
               <p>To continue, please read and agree to the Terms of Use.</p>
               <hr />
-              <object data={staticContent.TOU} type="application/pdf" width="100%" height="470">
+              <object data={staticContent.TOU} type="application/pdf" width="100%" height="390">
                 alt : <a href="TOU.pdf">Terms of Use.pdf</a>
               </object>
             </div>

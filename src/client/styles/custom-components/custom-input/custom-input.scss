@@ -107,16 +107,21 @@ $dropdown-select-background: #E7F3F8;
 
   .dropdown-menu{
     width : 160%;
-    max-height: 250px;
-    max-width: 300px;
+    max-height: 300px;
+    max-width: 100%;
     overflow: auto;
     box-shadow: 0 2px 18px 0 rgba(0, 0, 18, 0.15);
     color: $ozark-noir-blue;
 
     .dropdown-item {
       cursor: pointer;
-      height: 38px;
-      line-height: 32px;
+      width: auto;
+
+      .dropdown-subtitle{
+        white-space: break-spaces;
+        font-size: 13px;
+        color: #657386;
+      }
 
       &:focus, &:hover {
         background: $dropdown-select-background;
@@ -143,6 +148,15 @@ $dropdown-select-background: #E7F3F8;
       }
     }
   }
+}
+
+.subtitle-link {
+  text-decoration: underline;
+  color: #657386;
+}
+
+.subtitle-link, .subtitle-link:hover{
+  color: #657386;
 }
 
 .custom-input-form-group {

@@ -10,13 +10,22 @@ import QuestionMarkIcon from "../../../images/question.svg";
 import "../../../styles/custom-components/custom-input/custom-input.scss";
 import Helper from "../../../utility/helper";
 import CONSTANTS from "../../../constants/constants";
-import {ButtonsPanel, CaptchaValidator, CheckBox, ErrorComponent, FileUploader, HeaderFormComponent, UrlItemList} from "../../index";
+import {
+  Banner,
+  ButtonsPanel,
+  CaptchaValidator,
+  CheckBox,
+  ErrorComponent,
+  FileUploader,
+  HeaderFormComponent,
+  UrlItemList
+} from "../../index";
 
 class CustomInput extends React.PureComponent {
 
   constructor (props) {
     super(props);
-    const functions = ["changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"];
+    const functions = ["getSubTitleWithLink","changeHandlers", "onChangeLocal", "getRadioInputType", "getTextInputType", "getTextAreaInputType", "getSelectInput", "getMultiSelectInput", "setSelectInputValue", "setMultiSelectInputValue", "setMultiSelectValueFromDropdownOptions", "getSubtitleAndError", "onBlur"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -141,8 +150,12 @@ class CustomInput extends React.PureComponent {
       <div className="dropdown-menu">
         {
           this.state.dropdownOptions && this.state.dropdownOptions.map((option, i) => {
-            return <a key={option.id || i} className="dropdown-item" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>{option.label || option.value}</a>;
-          })
+            return (
+              <a key={option.id || i} className="dropdown-item pt-2" onClick={ () => { this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>
+                  {option.label || option.value}
+                  <p className={`dropdown-subtitle m-0`}>{option.subtitle}</p>
+              </a>);
+            })
         }
       </div>
     </React.Fragment>);
@@ -208,6 +221,19 @@ class CustomInput extends React.PureComponent {
       }
     };
 
+    let dropDownMenuId = `${this.state.formId}-${this.state.inputId}-custom-input-dropdown`;
+    $("body").click((evt) => {
+      if(evt.target.id.indexOf("newclaim-sellerName") === -1){
+        console.log(evt.target.id,"========TargetId");
+        let temp = "#"+dropDownMenuId;
+        console.log("ID selector=======",temp);
+        let className = $(`${temp}`).attr(`class`);
+        if((className.indexOf("show") !== -1)){
+          $("#"+dropDownMenuId).removeClass("show");
+        }
+      }
+    });
+
     return (
       <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
@@ -226,7 +252,6 @@ class CustomInput extends React.PureComponent {
         <small className={`form-text custom-input-help-text ${subtitleClass}`} style={{paddingLeft: this.state.unpadSubtitle && "0.3rem"}}>
           { subtitleText }
         </small>
-
         {
           this.state.dropdownOptions && this.state.dropdownOptions.length > 0 &&
           <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
@@ -277,6 +302,25 @@ class CustomInput extends React.PureComponent {
     );
   }
 
+  getSubTitleWithLink(subtitle){
+    let index = subtitle.indexOf("`");
+    if(index > -1){
+      let linkTitle = subtitle.slice(subtitle.indexOf("`")+1,subtitle.lastIndexOf("`"));
+      let placeHolder = this.state.link[linkTitle].placeHolder;
+      let linkUrl = this.state.link[linkTitle].url;
+      let preSubTitleText = subtitle.slice(0,index);
+      let postLinkText = subtitle.slice(subtitle.lastIndexOf("`")+1);
+      return (
+        <span>
+          {preSubTitleText}
+          <a className={"subtitle-link"} href={linkUrl} target="_blank">{placeHolder}</a>
+          {postLinkText}
+        </span>
+      )
+    }
+    return subtitle;
+  }
+
   getSubtitleAndError () {
     let subtitleText = "";
     let subtitleClass = "text-muted";
@@ -287,7 +331,7 @@ class CustomInput extends React.PureComponent {
       subtitleClass = "text-danger";
       errorClass = "has-error";
     } else if (this.state.subtitle) {
-      subtitleText = this.state.subtitle;
+      subtitleText = this.getSubTitleWithLink(this.state.subtitle);
     } else if (!this.state.required) {
       subtitleText = "Optional";
     }
@@ -371,6 +415,8 @@ class CustomInput extends React.PureComponent {
         return <UrlItemList {...this.props} />;
       case "_captchaValidator" :
         return <CaptchaValidator {...this.props} onChange={this.onChangeLocal} />;
+      case "_banner":
+        return <Banner/>
     }
     return null;
   }

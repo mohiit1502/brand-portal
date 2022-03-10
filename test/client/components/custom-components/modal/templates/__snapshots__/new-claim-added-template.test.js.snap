@@ -38,7 +38,7 @@ exports[`NewClaimAddedTemplate test container should render the NewClaimAddedTem
             <span
               className="status-header font-weight-bold"
             >
-              Claim test-case-number submitted
+              test-case-number submitted
             </span>
           </div>
         </div>
@@ -51,7 +51,7 @@ exports[`NewClaimAddedTemplate test container should render the NewClaimAddedTem
             <span
               className="status-description"
             >
-              We have sent a confirmation to your email address
+              We have sent a confirmation email to you
             </span>
           </div>
         </div>

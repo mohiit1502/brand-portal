@@ -98,7 +98,8 @@ const ClaimListTable = function(props) {
               return (<div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
                   {row.cells.map((cell, k) => {
                     return (<div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
-                        {cell.column.id === "caseNumber" ? <Link className="cursor-pointer claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link> : cell.value}
+                        {cell.column.id === "caseNumber" ? <Link className="cursor-pointer claim-link" to={`/claims/${cell.value}`} onClick={() => showClaimDetails(row)}>{cell.value}</Link>
+                          : cell.column.id === "claimStatus" ? <span className={`claim-status ${cell.value}`} >{cell.value}</span> : cell.value}
                       </div>);
                   })}
                 </div>);

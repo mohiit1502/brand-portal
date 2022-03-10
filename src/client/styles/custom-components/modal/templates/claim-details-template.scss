@@ -10,7 +10,6 @@ $modal-header-background-color: $market-place-blue;
     .modal-dialog {
       max-height: 80%;
       .modal-content {
-        border-bottom: 9px solid #7ac4e4;
         height: 100%;
         .modal-header{
           font-weight: bold;
@@ -19,6 +18,7 @@ $modal-header-background-color: $market-place-blue;
           color: white;
         }
         .modal-body {
+
           .case-header-row {
             .case-header-text {
               font-size: 32px;
@@ -73,6 +73,15 @@ $modal-header-background-color: $market-place-blue;
 
           .status-description {
             font-size: 14px;
+          }
+
+          .modal-footer{
+            height: 80px;
+            width: 100%;
+            background: $background-blue;
+            border-bottom: 9px solid #7ac4e4;
+            z-index: 1000;
+            //box-shadow: 0px -4px 4px 0px rgba(0,0,0,0.15);
           }
         }
       }
