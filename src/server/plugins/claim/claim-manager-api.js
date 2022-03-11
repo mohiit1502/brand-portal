@@ -284,7 +284,7 @@ class ClaimManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = await ServerHttp.post(url, options, payload, "RAISE_CLAIM");
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[Corr ID: %s][ClaimManagerApi::createClaim] API request for Create Claim has completed", corrId);
       return h.response(response.body).code(response.status);
@@ -335,7 +335,7 @@ class ClaimManagerApi {
       mixpanelPayload.BRAND_INFO = payload && payload.brandInfo;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = await ServerHttp.post(url, options, payload, "RAISE_WEBFORM_CLAIM");
       console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {

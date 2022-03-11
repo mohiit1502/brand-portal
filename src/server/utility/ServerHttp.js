@@ -13,11 +13,11 @@ export default class ServerHttp {
     return await ServerHttp.crud(urlString, options, "get");
   }
 
-  static async post(url, options, data) {
+  static async post(url, options, data, workflow) {
     options.headers = options.headers ? {"Content-Type": "application/json", ...options.headers} : {"Content-Type": "application/json"};
     options.method = "POST";
     options.body = typeof data === "string" ? data : JSON.stringify(data);
-    return await ServerHttp.crud(url, options, "post");
+    return await ServerHttp.crud(url, options, "post", workflow);
   }
 
   static async postAsFormData(url, options, data) {
@@ -26,11 +26,11 @@ export default class ServerHttp {
     return await ServerHttp.crud(url, options, "postAsFormData");
   }
 
-  static async put(url, options, data) {
+  static async put(url, options, data, workflow) {
     options.headers = options.headers ? {"Content-Type": "application/json", ...options.headers} : {"Content-Type": "application/json"};
     options.method = "PUT";
     options.body = JSON.stringify(data);
-    return await ServerHttp.crud(url, options, "put");
+    return await ServerHttp.crud(url, options, "put", workflow);
   }
 
   static async delete(url, options, queryParams) {
@@ -42,12 +42,14 @@ export default class ServerHttp {
   /* eslint-disable max-statements */
   /* eslint-disable no-console */
   /* eslint-disable no-magic-numbers */
-  static async crud (urlString, options, method) {
+  static async crud (urlString, options, method, workflow) {
     let requestStartTime;
     let requestEndTime;
     const mixpanelPayload = {
-      URL: urlString
+      URL: urlString,
+      METHOD: method
     };
+    workflow && (mixpanelPayload.WORKFLOW = workflow);
     const corrId = options.headers.ROPRO_CORRELATION_ID || options.headers["WM_QOS.CORRELATION_ID"];
     try {
       /* eslint-disable no-unused-expressions */
