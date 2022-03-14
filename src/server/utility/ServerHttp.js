@@ -45,12 +45,13 @@ export default class ServerHttp {
   static async crud (urlString, options, method, workflow) {
     let requestStartTime;
     let requestEndTime;
+    const corrId = options.headers.ROPRO_CORRELATION_ID || options.headers["WM_QOS.CORRELATION_ID"];
     const mixpanelPayload = {
       URL: urlString,
-      METHOD: method
+      METHOD: method,
+      CORRELATION_ID: corrId
     };
     workflow && (mixpanelPayload.WORKFLOW = workflow);
-    const corrId = options.headers.ROPRO_CORRELATION_ID || options.headers["WM_QOS.CORRELATION_ID"];
     try {
       /* eslint-disable no-unused-expressions */
       !urlString && console.log("No URL!!");
