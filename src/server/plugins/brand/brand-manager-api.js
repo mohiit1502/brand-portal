@@ -118,7 +118,7 @@ class BrandManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = await ServerHttp.post(url, options, payload, "REGISTER_BRAND");
 
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[Corr ID: %s][BrandManagerApi::createBrand] API request for Create Brand has completed", corrId);
