@@ -39,6 +39,10 @@ const CONSTANTS = {
     }
   },
 
+  WORKFLOW_CODES: {
+    DASHBOARD: 4
+  },
+
   ROUTES: {
     PROTECTED: {
       ROOT_PATH: "/",
