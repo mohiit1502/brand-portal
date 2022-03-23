@@ -40,7 +40,8 @@ const CONSTANTS = {
   },
 
   WORKFLOW_CODES: {
-    DASHBOARD: 4
+    DASHBOARD: 4,
+    USER_ACCESS_REVOKED: 16
   },
 
   ROUTES: {
