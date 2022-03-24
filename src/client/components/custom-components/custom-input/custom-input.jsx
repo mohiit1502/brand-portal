@@ -224,11 +224,9 @@ class CustomInput extends React.PureComponent {
     let dropDownMenuId = `${this.state.formId}-${this.state.inputId}-custom-input-dropdown`;
     $("body").click((evt) => {
       if(evt.target.id.indexOf("newclaim-sellerName") === -1){
-        console.log(evt.target.id,"========TargetId");
         let temp = "#"+dropDownMenuId;
-        console.log("ID selector=======",temp);
         let className = $(`${temp}`).attr(`class`);
-        if((className.indexOf("show") !== -1)){
+        if(className && className.indexOf("show") !== -1) {
           $("#"+dropDownMenuId).removeClass("show");
         }
       }

@@ -88,6 +88,7 @@ class ClaimManagerApi {
     const corrId = headers["WM_QOS.CORRELATION_ID"];
     console.log("[Corr ID: %s][ClaimManagerApi::getSellers] API request for Get Sellers has started", corrId);
     console.log("[Corr ID: %s][ClaimManagerApi::getSellers] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::getSellers] Item ID: ", corrId, request.query && request.query.payload);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/sellers"
@@ -284,7 +285,7 @@ class ClaimManagerApi {
       mixpanelPayload.PAYLOAD = payload;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = await ServerHttp.post(url, options, payload, "RAISE_CLAIM");
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[Corr ID: %s][ClaimManagerApi::createClaim] API request for Create Claim has completed", corrId);
       return h.response(response.body).code(response.status);
@@ -335,7 +336,7 @@ class ClaimManagerApi {
       mixpanelPayload.BRAND_INFO = payload && payload.brandInfo;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.post(url, options, payload);
+      const response = await ServerHttp.post(url, options, payload, "RAISE_WEBFORM_CLAIM");
       console.log("[Corr ID: %s][ClaimManagerApi::createWebformClaim] API request for webform Create Claim has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -365,7 +366,12 @@ class ClaimManagerApi {
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const fd = new FormData();
-
+      try {
+        const fileSize = Buffer.byteLength(file._data);
+        console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] Appending document with name: '%s' & size:", corrId, filename, fileSize);
+      } catch (e) {
+        console.error("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] Error while trying to find file size, ignoring...");
+      }
       fd.append("file", file, {filename});
       console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");

@@ -13,11 +13,11 @@ export default class ServerHttp {
     return await ServerHttp.crud(urlString, options, "get");
   }
 
-  static async post(url, options, data) {
+  static async post(url, options, data, workflow) {
     options.headers = options.headers ? {"Content-Type": "application/json", ...options.headers} : {"Content-Type": "application/json"};
     options.method = "POST";
     options.body = typeof data === "string" ? data : JSON.stringify(data);
-    return await ServerHttp.crud(url, options, "post");
+    return await ServerHttp.crud(url, options, "post", workflow);
   }
 
   static async postAsFormData(url, options, data) {
@@ -26,11 +26,11 @@ export default class ServerHttp {
     return await ServerHttp.crud(url, options, "postAsFormData");
   }
 
-  static async put(url, options, data) {
+  static async put(url, options, data, workflow) {
     options.headers = options.headers ? {"Content-Type": "application/json", ...options.headers} : {"Content-Type": "application/json"};
     options.method = "PUT";
     options.body = JSON.stringify(data);
-    return await ServerHttp.crud(url, options, "put");
+    return await ServerHttp.crud(url, options, "put", workflow);
   }
 
   static async delete(url, options, queryParams) {
@@ -42,13 +42,16 @@ export default class ServerHttp {
   /* eslint-disable max-statements */
   /* eslint-disable no-console */
   /* eslint-disable no-magic-numbers */
-  static async crud (urlString, options, method) {
+  static async crud (urlString, options, method, workflow) {
     let requestStartTime;
     let requestEndTime;
-    const mixpanelPayload = {
-      URL: urlString
-    };
     const corrId = options.headers.ROPRO_CORRELATION_ID || options.headers["WM_QOS.CORRELATION_ID"];
+    const mixpanelPayload = {
+      URL: urlString,
+      METHOD: method,
+      CORRELATION_ID: corrId
+    };
+    workflow && (mixpanelPayload.WORKFLOW = workflow);
     try {
       /* eslint-disable no-unused-expressions */
       !urlString && console.log("No URL!!");
@@ -63,7 +66,12 @@ export default class ServerHttp {
         return isJson ? {status, body: await response.json()} : {status, body: await response.text()};
       }
       console.log("[Corr ID: %s][%s] 3. Response not OK, logging response: ", corrId, urlString, response);
-      const err = isJson ? await response.json() : await response.text();
+      let err;
+      try {
+        err = isJson ? await response.json() : await response.text();
+      } catch (e) {
+        isJson && (err = await response.text());
+      }
       const errorString = `[Corr ID: %s] 5. In ServerHttp.${method} - Capturing error for not Ok response ====== `;
       console.log(errorString, corrId, err);
       throw new ServerHttpError(status, err.error, err.message, err.code, corrId, urlString,
