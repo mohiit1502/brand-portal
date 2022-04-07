@@ -171,7 +171,7 @@ export default class Validator {
     const inputData = { ...form.inputData };
 
     if (!isEditMode || (isEditMode && this.props.originalValues && this.props.originalValues.brand && this.props.originalValues.brand.name && this.state.form.inputData.brandName
-      && this.state.form.inputData.brandName.value && this.props.originalValues.brand.name.trim() !== this.state.form.inputData.brandName.value.trim())) {
+      && this.state.form.inputData.brandName.value && this.props.originalValues.brand.name.toLowerCase().trim() !== this.state.form.inputData.brandName.value.toLowerCase().trim())) {
       state.form = form;
       form.inputData = inputData;
       inputData.brandName.loader = true;
@@ -272,7 +272,7 @@ export default class Validator {
     const clientType = this.state.clientType;
 
     if ((isEditMode && this.props.originalValues && this.props.originalValues.org && this.props.originalValues.org.name
-      && this.props.originalValues.org.name.trim() !== this.state.form.inputData.companyName.value.trim()) || !isEditMode) {
+      && this.props.originalValues.org.name.toLowerCase().trim() !== this.state.form.inputData.companyName.value.toLowerCase().trim()) || !isEditMode) {
       if (!this.state.form.inputData.companyName.value) return;
       state.form = form;
       form.inputData = inputData;
