@@ -256,6 +256,38 @@ const MODALSMETA = {
       },
       "TYPE": "CTA"
     },
+    "DELETE_CONTACT": {
+      "BODY_CLASSES": "text-center",
+      "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+      "HEADER": "Delete Public Contact Information",
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "If you delete the Public contact information, the Super Admin's ",
+            "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
+          },
+          "para2": {
+            "text": "contact information will be shared by default.",
+            "classes": "mx-2 text-center pb-5 font-size-16"
+          }
+        }
+      },
+      "PRIMARY_ACTION": {
+        "text": "Delete",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "navigation",
+        "actionParam": "https://seller.walmart.com"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "Back",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
+
+    },
     "LOGOUT": {
       "BODY_CONTENT_CLASSES": "text-left",
       "BODY_CLASSES": "px-5",
@@ -292,6 +324,39 @@ const MODALSMETA = {
         "text": "Go Back"
       },
       "TYPE": "CTA"
+    },
+    "DASHBOARD_MODAL": {
+      "BODY_CONTENT_CLASSES": "text-left px-5",
+      "BODY_CLASSES": "px-5",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
+      "HEADER": "Welcome to Walmart Brand Portal!",
+      "IMAGE": "ProblemSolving",
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "You can update the contact information for your ",
+            "classes": "mx-2"
+          },
+          "para2": {
+            "text": "company on the User Profile page.",
+            "classes": "mx-2"
+          }
+        }
+      },
+      "PRIMARY_ACTION": {
+        "text": "Go to your Profile",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "navigation",
+        "actionParam": "https://seller.walmart.com"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "I'll do it later",
+        "classes": "mt-0 d-inline-block text-right mr-3",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
     },
     "PORTAL_DASHBOARD": {
       "CODE": 4

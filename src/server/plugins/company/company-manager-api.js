@@ -65,6 +65,11 @@ class CompanyManagerApi {
         method: "GET",
         path: "/api/org/applicationDetails/{orgId}",
         handler: this.getApplicationDetails
+      },
+      {
+        method: "PUT",
+        path: "/api/org/deleteSecondaryContactInfo/{orgId}",
+        handler: this.deleteSecondaryContactInfo
       }
     ]);
   }
@@ -333,6 +338,10 @@ class CompanyManagerApi {
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.GET_APPLICATION_DETAILS, mixpanelPayload);
     }
+  }
+
+  async deleteSecondaryContactInfo(request, h) {
+    
   }
 
 }
