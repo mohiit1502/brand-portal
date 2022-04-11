@@ -12,16 +12,27 @@ export default class DocumentActions {
     const form = {...this.state.form};
     const otherType = form.inputData[key].otherType;
     const submitButton = form.submitButton;
-    const contextSpecificArgs = {actionsToDisable: form.actionsToDisable, endpoint: form.inputData[key].endpoint, formActions: form.formActions, 
+    const contextSpecificArgs = {actionsToDisable: form.actionsToDisable, endpoint: form.inputData[key].endpoint, formActions: form.formActions,
       key, otherType, submitButton};
     try {
       const file = evt.target.files[0];
       const filename = file.name;
       const fileSize = file.size;
       let allowedFileSize = form.inputData[key].allowedFileSize;
+      let allowedFileNameRegex = form.inputData[key].allowedFileNameRegex;
       if (allowedFileSize) {
         allowedFileSize = allowedFileSize * 1024 * 1024;
         if (fileSize > allowedFileSize) {
+          this.setState(state => {
+            state.form.inputData[key].error = state.form.inputData[key].fileValidationError;
+            return state;
+          })
+          return;
+        }
+      }
+      if (allowedFileNameRegex) {
+        const fileNameRegex = new RegExp(allowedFileNameRegex);
+        if (!fileNameRegex.test(filename)) {
           this.setState(state => {
             state.form.inputData[key].error = state.form.inputData[key].fileValidationError;
             return state;

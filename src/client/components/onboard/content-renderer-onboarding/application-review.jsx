@@ -18,10 +18,10 @@ class ApplicationReview extends React.Component {
         super(props);
         this.title = "Application Review";
         this.subtitle = "Please ensure the information below is accurate.";
-        const functions = ["gotoBrandRegistration", "restructureBeforeSubmit", "submitOnboardingForm", "checkAndSubmitOnboardingForm", "checkForEdit"];
+        const functions = ["gotoBrandRegistration", "restructureBeforeDirtyCheck", "restructureBeforeSubmit", "submitOnboardingForm", "checkAndSubmitOnboardingForm", "checkForEdit"];
         functions.forEach(name => {
             this[name] = this[name].bind(this);
-          });
+        });
         this.state = { ...props };
         this.state = {
           loader: false,
@@ -37,7 +37,15 @@ class ApplicationReview extends React.Component {
         }
         const isEditMode = this.props.userProfile && this.props.userProfile.context === "edit";
         this.setState({isEditMode});
+        this.restructureBeforeDirtyCheck();
         isEditMode && this.setState({dirtyCheckResponse: this.checkForEdit()});
+    }
+
+    restructureBeforeDirtyCheck() {
+        const data = this.props.onboardingDetails;;
+        const countryOptions = this.props.companyContent ? this.props.companyContent.fields.country.selectableCountries : [];
+        const selectedCountry = countryOptions.find(country => country.value === data.org.countryCode);
+        data.org.countryCode = selectedCountry ? selectedCountry.code : data.org.countryCode;
     }
 
     restructureBeforeSubmit (data) {
@@ -217,10 +225,11 @@ ApplicationReview.propTypes = {
 
 const mapStateToProps = state => {
     return {
-        steps: state.company && state.company.steps,
-        onboardingDetails: state.company && state.company.onboardingDetails,
-        originalValues: state.company && state.company.originalValues,
-        userProfile: state.user && state.user.profile
+      companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
+      steps: state.company && state.company.steps,
+      onboardingDetails: state.company && state.company.onboardingDetails,
+      originalValues: state.company && state.company.originalValues,
+      userProfile: state.user && state.user.profile
     }
 };
 
