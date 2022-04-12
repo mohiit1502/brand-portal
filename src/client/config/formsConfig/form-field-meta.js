@@ -166,6 +166,12 @@ const FORMFIELDCONFIG = {
           "layout": "4.2.6",
           "pattern": null,
           "required": true,
+          "selectableCountries": [
+            {"id": "china", "value": "China", "code": "CN", "label": "China"},
+            {"id": "hongkong", "value": "Hong Kong", "code": "HK", "label": "Hong Kong"},
+            {"id": "india", "value": "India", "code": "IN", "label": "India"},
+            {"id": "usa", "value": "USA", "code": "USA", "label": "USA"}
+          ],
           "subtitle": "",
           "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, or Hong Kong. If you have any questions, please contact brandportal@walmart.com.",
           "type": "text",
@@ -173,6 +179,7 @@ const FORMFIELDCONFIG = {
         },
         "businessRegistrationDoc": {
           "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
           "buttonText": "Upload",
           "cancelHandlerArg": "businessRegistrationDoc",
           "changeHandlerArg": "businessRegistrationDoc",
@@ -186,7 +193,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Optional: Attach additional documents if necessary (i.e. business registration)",
+          "label": "Optional: Attach additional documents (i.e. business registration)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
@@ -265,6 +272,8 @@ const FORMFIELDCONFIG = {
         },
         "additionalDoc": {
           "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileSize": 7,
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
           "buttonText": "Upload",
           "cancelHandlerArg": "additionalDoc",
           "changeHandlerArg": "additionalDoc",
@@ -272,6 +281,7 @@ const FORMFIELDCONFIG = {
           "endpoint": "/api/company/uploadAdditionalDocument",
           "error": "",
           "filename": "",
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
           "icon": "Question",
           "id": "",
           "inputId": "additionalDoc",
@@ -1271,6 +1281,7 @@ const FORMFIELDCONFIG = {
         },
         "webformDoc": {
           "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
           "allowedFileSize": 7,
           "buttonText": "Upload",
           "cancelHandlerArg": "webformDoc",

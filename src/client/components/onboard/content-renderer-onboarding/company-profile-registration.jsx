@@ -96,11 +96,7 @@ class CompanyProfileRegistration extends React.Component {
     state = state ? state : this.state;
     const zipField = state.form.inputData.zip;
     // ----- Retaining below for later when intl. seller onboarding is resumed ----
-    countryField.dropdownOptions = [
-      {id: "usa", value: "USA", label: "USA"},
-      {id: "china", value: "China", label: "China"},
-      {id: "hongkong", value: "Hong Kong", label: "Hong Kong"}
-    ];
+    countryField.dropdownOptions = JSON.parse(JSON.stringify(countryField.selectableCountries));
     countryField.onChange = "setSelectInputValue";
     countryField.type = "select";
     countryField.value = "";
@@ -164,12 +160,14 @@ class CompanyProfileRegistration extends React.Component {
           this.updateValidationsForIntlUsers(stateClone);
           this.setState(stateClone);
         }
+        const countryOptions = form.inputData.country.selectableCountries;
+        const selectedCountry = countryOptions.find(country => country.code === data.countryCode);
         form.inputData.companyName.value = data.name;
         form.inputData.address.value = data.address;
         form.inputData.city.value = data.city || "";
         form.inputData.state.value = data.state || "";
         form.inputData.zip.value = data.zip || "";
-        form.inputData.country.value = data.countryCode || "US";
+        form.inputData.country.value = data.countryCode ? selectedCountry ? selectedCountry.value : data.countryCode : "US";
         form.formPopulated = true;
         form.inputData.companyName.isUnique = true;
         this.props.dispatchOriginalValues({
