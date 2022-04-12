@@ -43,17 +43,16 @@ const FORMFIELDCONFIG = {
           "USA",
           "United States",
           "CN",
-          "HK"
+          "HK",
+          "IN"
         ],
         "allowedCountriesForIntlTaxClassification": [
           "US",
           "USA",
           "United States",
           "CN",
-          "HK"
-        ],
-        "internationalSellerExceptions": [
-          "ss1@mailinator.com"
+          "HK",
+          "IN"
         ]
       },
       "fields": {
@@ -173,7 +172,7 @@ const FORMFIELDCONFIG = {
             {"id": "usa", "value": "USA", "code": "USA", "label": "USA"}
           ],
           "subtitle": "",
-          "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, or Hong Kong. If you have any questions, please contact brandportal@walmart.com.",
+          "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, Hong Kong or India. If you have any questions, please contact brandportal@walmart.com.",
           "type": "text",
           "value": "USA"
         },
