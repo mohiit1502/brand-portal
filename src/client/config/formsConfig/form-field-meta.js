@@ -193,7 +193,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "businessRegistrationDoc",
           "key": "businessRegistrationDoc",
-          "label": "Optional: Attach additional documents if necessary (i.e. business registration)",
+          "label": "Optional: Attach additional documents (i.e. business registration)",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
@@ -272,6 +272,7 @@ const FORMFIELDCONFIG = {
         },
         "additionalDoc": {
           "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileSize": 7,
           "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
           "buttonText": "Upload",
           "cancelHandlerArg": "additionalDoc",

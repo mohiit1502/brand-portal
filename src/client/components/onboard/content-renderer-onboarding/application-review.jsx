@@ -42,7 +42,11 @@ class ApplicationReview extends React.Component {
     }
 
     restructureBeforeDirtyCheck() {
-        const data = this.props.onboardingDetails;;
+        const data = this.props.onboardingDetails;
+        if (!data.org && data.company) {
+          data.org = data.company;
+          delete data.company;
+        }
         const countryOptions = this.props.companyContent ? this.props.companyContent.fields.country.selectableCountries : [];
         const selectedCountry = countryOptions.find(country => country.value === data.org.countryCode);
         data.org.countryCode = selectedCountry ? selectedCountry.code : data.org.countryCode;
