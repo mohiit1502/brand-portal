@@ -95,17 +95,19 @@ class CompanyProfileRegistration extends React.Component {
     const countryField = this.state.form.inputData.country;
     state = state ? state : this.state;
     const zipField = state.form.inputData.zip;
-    // ----- Retaining below for later when intl. seller onboarding is resumed ----
-    countryField.dropdownOptions = JSON.parse(JSON.stringify(countryField.selectableCountries));
-    countryField.onChange = "setSelectInputValue";
-    countryField.type = "select";
-    countryField.value = "";
-    state.form.removeIntlSellerFields && state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
-    zipField.pattern = "^[\\d-]{5,}$";
-    zipField.invalidError = "Please enter a valid zip code";
-    zipField.patternErrorMessage = "Please enter a valid zip code";
-    zipField.maxLength = 30;
-    state.considerCountryForValidation = true;
+    if (this.props.profile && this.props.profile.context === "edit") {
+      // Country and zip field tweak
+      countryField.dropdownOptions = JSON.parse(JSON.stringify(countryField.selectableCountries));
+      countryField.onChange = "setSelectInputValue";
+      countryField.type = "select";
+      countryField.value = "";
+      state.form.removeIntlSellerFields && state.form.removeIntlSellerFields.forEach(val => delete zipField[val])
+      zipField.pattern = "^[\\d-]{5,}$";
+      zipField.invalidError = "Please enter a valid zip code";
+      zipField.patternErrorMessage = "Please enter a valid zip code";
+      zipField.maxLength = 30;
+      state.considerCountryForValidation = true;
+    }
     state.countryInitialized = true;
   }
 
