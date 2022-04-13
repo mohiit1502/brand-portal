@@ -166,10 +166,30 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "required": true,
           "selectableCountries": [
-            {"id": "china", "value": "China", "code": "CN", "label": "China"},
-            {"id": "hongkong", "value": "Hong Kong", "code": "HK", "label": "Hong Kong"},
-            {"id": "india", "value": "India", "code": "IN", "label": "India"},
-            {"id": "usa", "value": "USA", "code": "USA", "label": "USA"}
+            {
+              "id": "china",
+              "value": "China",
+              "code": "CN",
+              "label": "China"
+            },
+            {
+              "id": "hongkong",
+              "value": "Hong Kong",
+              "code": "HK",
+              "label": "Hong Kong"
+            },
+            {
+              "id": "india",
+              "value": "India",
+              "code": "IN",
+              "label": "India"
+            },
+            {
+              "id": "usa",
+              "value": "USA",
+              "code": "USA",
+              "label": "USA"
+            }
           ],
           "subtitle": "",
           "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, Hong Kong or India. If you have any questions, please contact brandportal@walmart.com.",
@@ -285,7 +305,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "additionalDoc",
           "key": "additionalDoc",
-          "label": "Optional: Attach additional documents if necessary (i.e. trademark registration)",
+          "label": "Optional: Attach additional documents (i.e. trademark registration)",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
           "tooltipContentKey": "additionalDocContent",
@@ -623,6 +643,646 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
               "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "NEWCLAIM": {
+      "sectionConfig": {
+        "id": "newclaim",
+        "sectionTitleNew": "New Claim",
+        "sectionTitleEdit": ""
+      },
+      "formConfig": {
+        "id": "newclaim",
+        "loader": false,
+        "isSubmitDisabled": false,
+        "brandNameSelected": false,
+        "showCompleteForm": false,
+        "showUnderTaking3": false,
+        "formError": "",
+        "claimTypesWithMeta": [
+          {
+            "claimType": "trademark",
+            "label": "Trademark",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
+            "underTakingOwnerLabel": "trademark"
+          },
+          {
+            "claimType": "patent",
+            "label": "Patent",
+            "claimTypeIdentifierLabel": "Patent Number",
+            "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
+            "underTakingOwnerLabel": "patent"
+          },
+          {
+            "claimType": "counterfeit",
+            "label": "Counterfeit",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "subtitle": "Inauthentic items that are intended to appear authentic",
+            "underTakingOwnerLabel": "intellectual property"
+          },
+          {
+            "claimType": "copyright",
+            "label": "Copyright",
+            "claimTypeIdentifierLabel": "Copyright Number",
+            "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
+            "underTakingOwnerLabel": "copyright"
+          }
+        ]
+      },
+      "fields": {
+        "fieldsHeader_1": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Select your brand",
+          "layout": "1.1.6",
+          "type": "_formFieldsHeader"
+        },
+        "brandName": {
+          "disabled": false,
+          "dropdownOptions": [],
+          "error": "",
+          "inputId": "brandName",
+          "key": "brandName",
+          "label": "Brand Name",
+          "layout": "2.1.6",
+          "onChange": "setSelectInputValue",
+          "invalidError": "Please select a brand.",
+          "pattern": null,
+          "required": true,
+          "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
+          "type": "select",
+          "unpadSubtitle": true,
+          "value": ""
+        },
+        "fieldsHeader_2": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Select the type of infringement you are reporting",
+          "layout": "3.1.0",
+          "type": "_formFieldsHeader",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
+        },
+        "banner": {
+          "type": "_banner",
+          "layout": "4.1.0",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
+        },
+        "claimType": {
+          "customChangeHandler": "customChangeHandler",
+          "disabled": false,
+          "dropdownOptions": [
+            {
+              "claimType": "trademark",
+              "label": "Trademark",
+              "claimTypeIdentifierLabel": "Trademark Number",
+              "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
+              "underTakingOwnerLabel": "trademark"
+            },
+            {
+              "claimType": "patent",
+              "label": "Patent",
+              "claimTypeIdentifierLabel": "Patent Number",
+              "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
+              "underTakingOwnerLabel": "patent"
+            },
+            {
+              "claimType": "counterfeit",
+              "label": "Counterfeit",
+              "claimTypeIdentifierLabel": "Trademark Number",
+              "subtitle": "Inauthentic items that are intended to appear authentic",
+              "underTakingOwnerLabel": "intellectual property"
+            },
+            {
+              "claimType": "copyright",
+              "label": "Copyright",
+              "claimTypeIdentifierLabel": "Copyright Number",
+              "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
+              "underTakingOwnerLabel": "copyright"
+            }
+          ],
+          "error": "",
+          "inputId": "claimType",
+          "invalidError": "Please select a claim type.",
+          "label": "Claim Type",
+          "key": "claimType",
+          "layout": "5.1.6",
+          "onChange": "setSelectInputValue",
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "pattern": null,
+          "subtitle": "Not sure which claim type to select? `learnMore`",
+          "link": {
+            "learnMore": {
+              "url": "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
+              "placeHolder": "Learn more"
+            }
+          },
+          "type": "select",
+          "value": ""
+        },
+        "claimTypeIdentifier": {
+          "disabled": true,
+          "label": "Claim Type Identifier",
+          "key": "claimTypeIdentifier",
+          "layout": "5.2.6",
+          "inputId": "claimTypeIdentifier",
+          "invalidError": "Please select a claim type.",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "value": "",
+          "type": "text",
+          "pattern": null,
+          "isValid": false,
+          "subtitle": "",
+          "error": "",
+          "onChange": "onChange"
+        },
+        "fieldsHeader_3": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Please fill out the following details to submit your claim",
+          "layout": "6.1.0",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "urlItems": {
+          "disableAddItem": true,
+          "error": "",
+          "fieldLoader": false,
+          "inputId": "items",
+          "isSellerNameDisabled": true,
+          "required": true,
+          "key": "items",
+          "layout": "7.1.0",
+          "type": "_urlItems",
+          "onChangeSellerName": "setSelectInputValue",
+          "onChangeItem": "getItemListFromChild",
+          "onChangeUrl": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "itemList": [
+            {
+              "id": "item-0",
+              "url": {
+                "label": "Item URL",
+                "required": true,
+                "value": "",
+                "type": "url",
+                "disabled": false,
+                "isValid": false,
+                "invalidError": "Enter a valid URL.",
+                "pattern": "https://www.walmart.com/.+",
+                "patternErrorMessage": "Enter a valid URL.",
+                "subtitle": "",
+                "error": ""
+              },
+              "sellerName": {
+                "dropdownOptions": [],
+                "label": "Seller Name",
+                "required": true,
+                "value": "",
+                "pattern": null,
+                "disabled": true,
+                "subtitle": "",
+                "type": "multiselect",
+                "invalidError": "Select at least one seller to report.",
+                "error": "",
+                "validators": {
+                  "validateLength": {
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "comments": {
+          "containerClasses": "mb-3",
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "layout": "8.1.0",
+          "label": "Comments",
+          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "required": true,
+          "rowCount": 2,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+          "placeholder": "Please provide additional information about the claim",
+          "onChange": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "validators": {
+            "validateRequired": {
+              "error": " "
+            },
+            "validateLength": {
+              "minLength": 20,
+              "maxLength": 2000,
+              "error": "Comments should be between 20 and 2000 characters!"
+            }
+          }
+        },
+        "user_undertaking_1": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_1",
+          "inputId": "user_undertaking_1",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "key": "user_undertaking_1",
+          "layout": "9.1.0",
+          "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __claimType__ owner, its agent, or the law.",
+          "label": "",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_2": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_2",
+          "inputId": "user_undertaking_2",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "key": "user_undertaking_2",
+          "layout": "10.1.0",
+          "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_3": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_3",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "inputId": "user_undertaking_3",
+          "key": "user_undertaking_3",
+          "layout": "11.1.0",
+          "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showUnderTaking3\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_4": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "key": "user_undertaking_4",
+          "layout": "12.1.0",
+          "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
+          "layout": "13.1.0",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "signature": {
+          "label": "Digital Signature",
+          "containerClasses": "signature",
+          "error": "",
+          "disabled": false,
+          "required": true,
+          "inputId": "signature",
+          "invalidError": "Digital signature is required.",
+          "value": "",
+          "key": "signature",
+          "layout": "14.1.8",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "text",
+          "pattern": null,
+          "subtitle": "",
+          "onChange": "onChange"
+        },
+        "userActions": {
+          "containerClasses": "modal-footer action-footer",
+          "colClasses": "text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "layout": "15.1.0",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
+              "disabled": false,
+              "onClick": "handleSubmit",
+              "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "RESETPASSWORD": {
+      "sectionConfig": {
+        "sectionTitle": "Change Password"
+      },
+      "formConfig": {
+        "apiPath": "/api/users/resetPassword",
+        "error": "",
+        "formHeading": "Input the fields below to change your password. Your new password will be in effect next time you login.",
+        "id": "resetPassword",
+        "incorrectPasswordError": "Current password is incorrect.",
+        "loader": false,
+        "old5PasswordsError": "New password can not be 1 of your previous 5 passwords",
+        "passwordsDifferent": false,
+        "passwordChangedMessage": "Password Changed Successfully!",
+        "failureMessage": "Unable to process your request, please try in sometime",
+        "passwordGuidance": "",
+        "passwordMismatchError": "\"New Password\" and \"Confirm Password\" do not match",
+        "passwordPolicyMessage": "Password doesn't adhere to Walmart Brand Portal's Security policy.",
+        "toastMessageExistingErrors": "Please resolve existing errors before proceeding!",
+        "falconPasswordMismatchError": "Password did not match.",
+        "falconPasswordPolicyError": "The specified password does not meet defined policy.",
+        "falconSamePasswordError": "New password matches old password."
+      },
+      "fields": {
+        "currentPassword": {
+          "canShowPassword": true,
+          "containerClasses": "px-0",
+          "error": "",
+          "id": "currentPassword",
+          "inputId": "currentPassword",
+          "key": "currentPassword",
+          "label": "Current Password",
+          "layout": "1.1.12",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "password",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter current password."
+            }
+          }
+        },
+        "newPassword": {
+          "canShowPassword": true,
+          "containerClasses": "px-0",
+          "error": "",
+          "inputId": "newPassword",
+          "key": "newPassword",
+          "label": "New Password",
+          "layout": "1.1.12",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "password",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter new password."
+            },
+            "validatePasswordMatch": {
+              "siblingField": "state.form.inputData.confirmNewPassword"
+            }
+          }
+        },
+        "confirmNewPassword": {
+          "canShowPassword": true,
+          "containerClasses": "px-0",
+          "error": "",
+          "inputId": "confirmNewPassword",
+          "key": "confirmNewPassword",
+          "label": "Confirm New Password",
+          "layout": "1.1.12",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "isLastField": true,
+          "subtitle": "",
+          "type": "password",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please confirm new password."
+            },
+            "validatePasswordMatch": {
+              "siblingField": "state.form.inputData.newPassword"
+            }
+          }
+        },
+        "errorSub": {
+          "containerClasses": "pl-2 mt-n23 mb-2rem",
+          "error": "",
+          "errorClasses": "form-text custom-input-help-text text-danger",
+          "id": "errorSub",
+          "layout": "1.1.12",
+          "type": "_error"
+        },
+        "resetPasswordAction": {
+          "containerClasses": "px-0 text-right",
+          "colClasses": "reset-password-button-panel text-right",
+          "layout": "1.1.12",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "changePassword": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "text": "Change Password",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "USERPROFILE": {
+      "sectionConfig": {
+        "headerClasses": "content-header-row h3 p-4",
+        "formClasses": "row content-row p-4 mt-4",
+        "sectionTitle": "User Profile"
+      },
+      "formConfig": {
+        "apiPath": "/api/users",
+        "excludeRowContainer": true,
+        "id": "userProfile",
+        "loader": false,
+        "isDisabled": true,
+        "profileSaveMessage": "Changes to Profile Successfully Saved!"
+      },
+      "fields": {
+        "firstName": {
+          "disabled": true,
+          "error": "",
+          "id": "firstName",
+          "inputId": "firstName",
+          "invalidError": "Please enter a valid First Name",
+          "key": "firstName",
+          "label": "First Name",
+          "layout": "1.1.6",
+          "patternPath": "CONSTANTS.REGEX.NAMES",
+          "patternErrorMessage": "Please enter a valid first name.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "firstName"
+        },
+        "lastName": {
+          "disabled": true,
+          "error": "",
+          "id": "lastName",
+          "inputId": "lastName",
+          "invalidError": "Please enter a valid Last Name",
+          "key": "lastName",
+          "label": "Last Name",
+          "layout": "1.1.6",
+          "patternPath": "CONSTANTS.REGEX.NAMES",
+          "patternErrorMessage": "Please enter a valid last name.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "lastName"
+        },
+        "companyName": {
+          "colClasses": "mr-1",
+          "disabled": true,
+          "error": "",
+          "id": "companyName",
+          "inputId": "companyName",
+          "invalidError": "Please enter valid Company Name",
+          "key": "companyName",
+          "label": "Company Name",
+          "layout": "1.1.6",
+          "patternPath": "CONSTANTS.REGEX.COMPANY",
+          "patternErrorMessage": "Please provide a valid company name.",
+          "preventHTMLRequiredValidation": true,
+          "renderCondition": "{\"keyPath\": \"props.userProfile.type\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "organization.name"
+        },
+        "emailId": {
+          "disabled": true,
+          "error": "",
+          "id": "emailId",
+          "inputId": "emailId",
+          "key": "emailId",
+          "label": "Email",
+          "layout": "1.1.6",
+          "pattern": null,
+          "required": true,
+          "type": "email",
+          "value": "",
+          "initValuePath": "email"
+        },
+        "phone": {
+          "disabled": true,
+          "error": "",
+          "id": "phone",
+          "inputId": "phone",
+          "invalidError": "Please select a valid Phone Number",
+          "key": "phone",
+          "label": "Mobile Number",
+          "layout": "1.1.6",
+          "maxLength": 17,
+          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "prebounceChangeHandler": "prebounceChangeHandler",
+          "preventHTMLRequiredValidation": true,
+          "required": false,
+          "type": "text",
+          "value": "",
+          "initValuePath": "phoneNumber"
+        },
+        "resetPasswordAction": {
+          "containerClasses": "password-reset-col",
+          "colClasses": "",
+          "layout": "1.1.6",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "changePassword": {
+              "classes": "btn btn-outline-primary btn-sm px-3 reset-password",
+              "onClick": "displayChangePassword",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}",
+              "text": "Change Password",
+              "type": "button"
+            },
+            "manage": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14 manage-profile",
+              "onClick": "displayManageProfileNotification",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
+              "text": "Manage Seller Center Profile",
+              "type": "submit"
+            }
+          }
+        },
+        "editActions": {
+          "containerClasses": "h-40 text-right",
+          "colClasses": "edit-button-panel text-right",
+          "layout": "1.1.6",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "edit": {
+              "classes": "btn btn-primary btn-sm px-4",
+              "handlerArg": false,
+              "onClick": "disableInput",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "text": "Edit",
+              "type": "button"
+            },
+            "cancel": {
+              "classes": "btn btn-link font-size-14 px-4 mr-3",
+              "handlerArg": true,
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "onClick": "disableInput",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "save": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "text": "Save",
               "type": "submit"
             }
           }
@@ -1480,646 +2140,6 @@ const FORMFIELDCONFIG = {
               "disabled": false,
               "onClick": "handleSubmit",
               "text": "Submit Claim",
-              "type": "submit"
-            }
-          }
-        }
-      }
-    },
-    "NEWCLAIM": {
-      "sectionConfig": {
-        "id": "newclaim",
-        "sectionTitleNew": "New Claim",
-        "sectionTitleEdit": ""
-      },
-      "formConfig": {
-        "id": "newclaim",
-        "loader": false,
-        "isSubmitDisabled": false,
-        "brandNameSelected": false,
-        "showCompleteForm": false,
-        "showUnderTaking3": false,
-        "formError": "",
-        "claimTypesWithMeta": [
-          {
-            "claimType": "trademark",
-            "label": "Trademark",
-            "claimTypeIdentifierLabel": "Trademark Number",
-            "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
-            "underTakingOwnerLabel": "trademark"
-          },
-          {
-            "claimType": "patent",
-            "label": "Patent",
-            "claimTypeIdentifierLabel": "Patent Number",
-            "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
-            "underTakingOwnerLabel": "patent"
-          },
-          {
-            "claimType": "counterfeit",
-            "label": "Counterfeit",
-            "claimTypeIdentifierLabel": "Trademark Number",
-            "subtitle": "Inauthentic items that are intended to appear authentic",
-            "underTakingOwnerLabel": "intellectual property"
-          },
-          {
-            "claimType": "copyright",
-            "label": "Copyright",
-            "claimTypeIdentifierLabel": "Copyright Number",
-            "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
-            "underTakingOwnerLabel": "copyright"
-          }
-        ]
-      },
-      "fields": {
-        "fieldsHeader_1": {
-          "excludeColContainer": true,
-          "excludeRowContainer": true,
-          "header": "Select your brand",
-          "layout": "1.1.6",
-          "type": "_formFieldsHeader"
-        },
-        "brandName": {
-          "disabled": false,
-          "dropdownOptions": [],
-          "error": "",
-          "inputId": "brandName",
-          "key": "brandName",
-          "label": "Brand Name",
-          "layout": "2.1.6",
-          "onChange": "setSelectInputValue",
-          "invalidError": "Please select a brand.",
-          "pattern": null,
-          "required": true,
-          "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
-          "type": "select",
-          "unpadSubtitle": true,
-          "value": ""
-        },
-        "fieldsHeader_2": {
-          "excludeColContainer": true,
-          "excludeRowContainer": true,
-          "header": "Select the type of infringement you are reporting",
-          "layout": "3.1.0",
-          "type": "_formFieldsHeader",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
-        },
-        "banner": {
-          "type": "_banner",
-          "layout": "4.1.0",
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
-        },
-        "claimType": {
-          "customChangeHandler": "customChangeHandler",
-          "disabled": false,
-          "dropdownOptions": [
-            {
-              "claimType": "trademark",
-              "label": "Trademark",
-              "claimTypeIdentifierLabel": "Trademark Number",
-              "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
-              "underTakingOwnerLabel": "trademark"
-            },
-            {
-              "claimType": "patent",
-              "label": "Patent",
-              "claimTypeIdentifierLabel": "Patent Number",
-              "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
-              "underTakingOwnerLabel": "patent"
-            },
-            {
-              "claimType": "counterfeit",
-              "label": "Counterfeit",
-              "claimTypeIdentifierLabel": "Trademark Number",
-              "subtitle": "Inauthentic items that are intended to appear authentic",
-              "underTakingOwnerLabel": "intellectual property"
-            },
-            {
-              "claimType": "copyright",
-              "label": "Copyright",
-              "claimTypeIdentifierLabel": "Copyright Number",
-              "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
-              "underTakingOwnerLabel": "copyright"
-            }
-          ],
-          "error": "",
-          "inputId": "claimType",
-          "invalidError": "Please select a claim type.",
-          "label": "Claim Type",
-          "key": "claimType",
-          "layout": "5.1.6",
-          "onChange": "setSelectInputValue",
-          "required": true,
-          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "pattern": null,
-          "subtitle": "Not sure which claim type to select? `learnMore`",
-          "link": {
-            "learnMore": {
-              "url": "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
-              "placeHolder": "Learn more"
-            }
-          },
-          "type": "select",
-          "value": ""
-        },
-        "claimTypeIdentifier": {
-          "disabled": true,
-          "label": "Claim Type Identifier",
-          "key": "claimTypeIdentifier",
-          "layout": "5.2.6",
-          "inputId": "claimTypeIdentifier",
-          "invalidError": "Please select a claim type.",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "required": true,
-          "value": "",
-          "type": "text",
-          "pattern": null,
-          "isValid": false,
-          "subtitle": "",
-          "error": "",
-          "onChange": "onChange"
-        },
-        "fieldsHeader_3": {
-          "excludeColContainer": true,
-          "excludeRowContainer": true,
-          "header": "Please fill out the following details to submit your claim",
-          "layout": "6.1.0",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "type": "_formFieldsHeader"
-        },
-        "urlItems": {
-          "disableAddItem": true,
-          "error": "",
-          "fieldLoader": false,
-          "inputId": "items",
-          "isSellerNameDisabled": true,
-          "required": true,
-          "key": "items",
-          "layout": "7.1.0",
-          "type": "_urlItems",
-          "onChangeSellerName": "setSelectInputValue",
-          "onChangeItem": "getItemListFromChild",
-          "onChangeUrl": "onChange",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "itemList": [
-            {
-              "id": "item-0",
-              "url": {
-                "label": "Item URL",
-                "required": true,
-                "value": "",
-                "type": "url",
-                "disabled": false,
-                "isValid": false,
-                "invalidError": "Enter a valid URL.",
-                "pattern": "https://www.walmart.com/.+",
-                "patternErrorMessage": "Enter a valid URL.",
-                "subtitle": "",
-                "error": ""
-              },
-              "sellerName": {
-                "dropdownOptions": [],
-                "label": "Seller Name",
-                "required": true,
-                "value": "",
-                "pattern": null,
-                "disabled": true,
-                "subtitle": "",
-                "type": "multiselect",
-                "invalidError": "Select at least one seller to report.",
-                "error": "",
-                "validators": {
-                  "validateLength": {
-                    "minLength": "3",
-                    "error": "Minimum length is 3 characters"
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "comments": {
-          "containerClasses": "mb-3",
-          "disabled": false,
-          "error": "",
-          "inputId": "comments",
-          "key": "comments",
-          "layout": "8.1.0",
-          "label": "Comments",
-          "pattern": null,
-          "prebounceChangeHandler": "trimSpaces",
-          "required": true,
-          "rowCount": 2,
-          "subtitle": "",
-          "type": "textarea",
-          "value": "",
-          "placeholder": "Please provide additional information about the claim",
-          "onChange": "onChange",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "validators": {
-            "validateRequired": {
-              "error": " "
-            },
-            "validateLength": {
-              "minLength": 20,
-              "maxLength": 2000,
-              "error": "Comments should be between 20 and 2000 characters!"
-            }
-          }
-        },
-        "user_undertaking_1": {
-          "category": "userUnderTaking",
-          "containerClasses": "mb-2",
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_1",
-          "inputId": "user_undertaking_1",
-          "invalidError": "You must agree to this statement in order to submit this claim.",
-          "key": "user_undertaking_1",
-          "layout": "9.1.0",
-          "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __claimType__ owner, its agent, or the law.",
-          "label": "",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "required": true,
-          "selected": false,
-          "type": "_checkBox"
-        },
-        "user_undertaking_2": {
-          "category": "userUnderTaking",
-          "containerClasses": "mb-2",
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_2",
-          "inputId": "user_undertaking_2",
-          "invalidError": "You must agree to this statement in order to submit this claim.",
-          "key": "user_undertaking_2",
-          "layout": "10.1.0",
-          "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "required": true,
-          "selected": false,
-          "type": "_checkBox"
-        },
-        "user_undertaking_3": {
-          "category": "userUnderTaking",
-          "containerClasses": "mb-2",
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_3",
-          "invalidError": "You must agree to this statement in order to submit this claim.",
-          "inputId": "user_undertaking_3",
-          "key": "user_undertaking_3",
-          "layout": "11.1.0",
-          "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"form.showUnderTaking3\", \"keyLocator\": \"state\", \"value\": true}",
-          "required": true,
-          "selected": false,
-          "type": "_checkBox"
-        },
-        "user_undertaking_4": {
-          "category": "userUnderTaking",
-          "containerClasses": "mb-2",
-          "checkBoxClasses": "user-undertaking",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "id": "user_undertaking_4",
-          "inputId": "user_undertaking_4",
-          "invalidError": "You must agree to this statement in order to submit this claim.",
-          "key": "user_undertaking_4",
-          "layout": "12.1.0",
-          "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
-          "labelClasses": "user-undertaking-label",
-          "onChange": "undertakingtoggle",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "required": true,
-          "selected": false,
-          "type": "_checkBox"
-        },
-        "fieldsHeader_4": {
-          "containerClasses": "font-weight-bold mt-2",
-          "header": "Typing your full name in this box will act as your digital signature",
-          "layout": "13.1.0",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "type": "_formFieldsHeader"
-        },
-        "signature": {
-          "label": "Digital Signature",
-          "containerClasses": "signature",
-          "error": "",
-          "disabled": false,
-          "required": true,
-          "inputId": "signature",
-          "invalidError": "Digital signature is required.",
-          "value": "",
-          "key": "signature",
-          "layout": "14.1.8",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "type": "text",
-          "pattern": null,
-          "subtitle": "",
-          "onChange": "onChange"
-        },
-        "userActions": {
-          "containerClasses": "modal-footer action-footer",
-          "colClasses": "text-right",
-          "excludeRowContainer": true,
-          "excludeColContainer": true,
-          "layout": "15.1.0",
-          "type": "_buttonsPanel",
-          "buttons": {
-            "cancel": {
-              "classes": "btn btn-sm cancel-btn text-primary",
-              "disabled": false,
-              "onClick": "resetTemplateStatus",
-              "text": "Cancel",
-              "type": "button"
-            },
-            "submit": {
-              "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
-              "disabled": false,
-              "onClick": "handleSubmit",
-              "text": "Submit",
-              "type": "submit"
-            }
-          }
-        }
-      }
-    },
-    "RESETPASSWORD": {
-      "sectionConfig": {
-        "sectionTitle": "Change Password"
-      },
-      "formConfig": {
-        "apiPath": "/api/users/resetPassword",
-        "error": "",
-        "formHeading": "Input the fields below to change your password. Your new password will be in effect next time you login.",
-        "id": "resetPassword",
-        "incorrectPasswordError": "Current password is incorrect.",
-        "loader": false,
-        "old5PasswordsError": "New password can not be 1 of your previous 5 passwords",
-        "passwordsDifferent": false,
-        "passwordChangedMessage": "Password Changed Successfully!",
-        "failureMessage": "Unable to process your request, please try in sometime",
-        "passwordGuidance": "",
-        "passwordMismatchError": "\"New Password\" and \"Confirm Password\" do not match",
-        "passwordPolicyMessage": "Password doesn't adhere to Walmart Brand Portal's Security policy.",
-        "toastMessageExistingErrors": "Please resolve existing errors before proceeding!",
-        "falconPasswordMismatchError": "Password did not match.",
-        "falconPasswordPolicyError": "The specified password does not meet defined policy.",
-        "falconSamePasswordError": "New password matches old password."
-      },
-      "fields": {
-        "currentPassword": {
-          "canShowPassword": true,
-          "containerClasses": "px-0",
-          "error": "",
-          "id": "currentPassword",
-          "inputId": "currentPassword",
-          "key": "currentPassword",
-          "label": "Current Password",
-          "layout": "1.1.12",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "password",
-          "value": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please enter current password."
-            }
-          }
-        },
-        "newPassword": {
-          "canShowPassword": true,
-          "containerClasses": "px-0",
-          "error": "",
-          "inputId": "newPassword",
-          "key": "newPassword",
-          "label": "New Password",
-          "layout": "1.1.12",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "subtitle": "",
-          "type": "password",
-          "value": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please enter new password."
-            },
-            "validatePasswordMatch": {
-              "siblingField": "state.form.inputData.confirmNewPassword"
-            }
-          }
-        },
-        "confirmNewPassword": {
-          "canShowPassword": true,
-          "containerClasses": "px-0",
-          "error": "",
-          "inputId": "confirmNewPassword",
-          "key": "confirmNewPassword",
-          "label": "Confirm New Password",
-          "layout": "1.1.12",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "isLastField": true,
-          "subtitle": "",
-          "type": "password",
-          "value": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please confirm new password."
-            },
-            "validatePasswordMatch": {
-              "siblingField": "state.form.inputData.newPassword"
-            }
-          }
-        },
-        "errorSub": {
-          "containerClasses": "pl-2 mt-n23 mb-2rem",
-          "error": "",
-          "errorClasses": "form-text custom-input-help-text text-danger",
-          "id": "errorSub",
-          "layout": "1.1.12",
-          "type": "_error"
-        },
-        "resetPasswordAction": {
-          "containerClasses": "px-0 text-right",
-          "colClasses": "reset-password-button-panel text-right",
-          "layout": "1.1.12",
-          "type": "_buttonsPanel",
-          "buttons": {
-            "cancel": {
-              "classes": "btn btn-sm cancel-btn text-primary",
-              "onClick": "resetTemplateStatus",
-              "text": "Cancel",
-              "type": "button"
-            },
-            "changePassword": {
-              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-              "text": "Change Password",
-              "type": "submit"
-            }
-          }
-        }
-      }
-    },
-    "USERPROFILE": {
-      "sectionConfig": {
-        "headerClasses": "content-header-row h3 p-4",
-        "formClasses": "row content-row p-4 mt-4",
-        "sectionTitle": "User Profile"
-      },
-      "formConfig": {
-        "apiPath": "/api/users",
-        "excludeRowContainer": true,
-        "id": "userProfile",
-        "loader": false,
-        "isDisabled": true,
-        "profileSaveMessage": "Changes to Profile Successfully Saved!"
-      },
-      "fields": {
-        "firstName": {
-          "disabled": true,
-          "error": "",
-          "id": "firstName",
-          "inputId": "firstName",
-          "invalidError": "Please enter a valid First Name",
-          "key": "firstName",
-          "label": "First Name",
-          "layout": "1.1.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid first name.",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "type": "text",
-          "value": "",
-          "initValuePath": "firstName"
-        },
-        "lastName": {
-          "disabled": true,
-          "error": "",
-          "id": "lastName",
-          "inputId": "lastName",
-          "invalidError": "Please enter a valid Last Name",
-          "key": "lastName",
-          "label": "Last Name",
-          "layout": "1.1.6",
-          "patternPath": "CONSTANTS.REGEX.NAMES",
-          "patternErrorMessage": "Please enter a valid last name.",
-          "preventHTMLRequiredValidation": true,
-          "required": true,
-          "type": "text",
-          "value": "",
-          "initValuePath": "lastName"
-        },
-        "companyName": {
-          "colClasses": "mr-1",
-          "disabled": true,
-          "error": "",
-          "id": "companyName",
-          "inputId": "companyName",
-          "invalidError": "Please enter valid Company Name",
-          "key": "companyName",
-          "label": "Company Name",
-          "layout": "1.1.6",
-          "patternPath": "CONSTANTS.REGEX.COMPANY",
-          "patternErrorMessage": "Please provide a valid company name.",
-          "preventHTMLRequiredValidation": true,
-          "renderCondition": "{\"keyPath\": \"props.userProfile.type\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
-          "required": true,
-          "type": "text",
-          "value": "",
-          "initValuePath": "organization.name"
-        },
-        "emailId": {
-          "disabled": true,
-          "error": "",
-          "id": "emailId",
-          "inputId": "emailId",
-          "key": "emailId",
-          "label": "Email",
-          "layout": "1.1.6",
-          "pattern": null,
-          "required": true,
-          "type": "email",
-          "value": "",
-          "initValuePath": "email"
-        },
-        "phone": {
-          "disabled": true,
-          "error": "",
-          "id": "phone",
-          "inputId": "phone",
-          "invalidError": "Please select a valid Phone Number",
-          "key": "phone",
-          "label": "Mobile Number",
-          "layout": "1.1.6",
-          "maxLength": 17,
-          "patternPath": "CONSTANTS.REGEX.PHONE",
-          "prebounceChangeHandler": "prebounceChangeHandler",
-          "preventHTMLRequiredValidation": true,
-          "required": false,
-          "type": "text",
-          "value": "",
-          "initValuePath": "phoneNumber"
-        },
-        "resetPasswordAction": {
-          "containerClasses": "password-reset-col",
-          "colClasses": "",
-          "layout": "1.1.6",
-          "type": "_buttonsPanel",
-          "buttons": {
-            "changePassword": {
-              "classes": "btn btn-outline-primary btn-sm px-3 reset-password",
-              "onClick": "displayChangePassword",
-              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}",
-              "text": "Change Password",
-              "type": "button"
-            },
-            "manage": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14 manage-profile",
-              "onClick": "displayManageProfileNotification",
-              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
-              "text": "Manage Seller Center Profile",
-              "type": "submit"
-            }
-          }
-        },
-        "editActions": {
-          "containerClasses": "h-40 text-right",
-          "colClasses": "edit-button-panel text-right",
-          "layout": "1.1.6",
-          "type": "_buttonsPanel",
-          "buttons": {
-            "edit": {
-              "classes": "btn btn-primary btn-sm px-4",
-              "handlerArg": false,
-              "onClick": "disableInput",
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "text": "Edit",
-              "type": "button"
-            },
-            "cancel": {
-              "classes": "btn btn-link font-size-14 px-4 mr-3",
-              "handlerArg": true,
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "onClick": "disableInput",
-              "text": "Cancel",
-              "type": "button"
-            },
-            "save": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "text": "Save",
               "type": "submit"
             }
           }
