@@ -18,7 +18,7 @@ class UserProfile extends React.Component {
 
   constructor (props) {
     super(props);
-    const functions = ["bubbleValue", "displayChangePassword", "displayManageProfileNotification", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
+    const functions = ["bubbleValue", "displayChangePassword", "displayContactModal", "displayManageProfileNotification", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -204,11 +204,17 @@ class UserProfile extends React.Component {
     return null;
   }
 
+  displayContactModal() {
+    const meta = { templateName: "FormModalTemplate", context: "edit"};
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+  }
+
   /* eslint-disable react/jsx-handler-names */
   render () {
     return (
       <div className={`user-profile-content h-100${this.state.form.loader ? " loader" : ""}`}>
         <header className={this.state.section.headerClasses}>{this.state.section.sectionTitle}</header>
+        <button onClick={this.displayContactModal}>Add Public contact</button>
         <form className={this.state.section.formClasses} autoComplete="off" onSubmit={this.saveUser} style={{marginRight: "50%"}}>
           {this.getFieldRenders()}
         </form>

@@ -9,10 +9,22 @@ import BrandList from "./brand/brand-list";
 import ClaimList from "./claim/claim-list";
 import Help from "../../Help/Help";
 import Dashboard from "../../Dashboard";
+import { TOGGLE_ACTIONS , toggleModal} from "../../../actions/modal-actions";
+
 
 class ContentRenderer extends React.Component {
   constructor (props) {
     super(props);
+    const {modalsMeta, toggleModal} = props;
+    this.state={
+      props: props
+    };
+  }
+
+  componentDidMount() {
+    const {modalsMeta, toggleModal} = this.props;
+    toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.GO_TO_USER_PROFILE});
+
   }
 
   render () {
@@ -45,5 +57,14 @@ class ContentRenderer extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = {
+};
+
+const mapStateToProps = state => {
+  return {
+    props: state.props
+  };
+};
 
 export  default  connect()(ContentRenderer);

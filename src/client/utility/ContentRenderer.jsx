@@ -159,6 +159,11 @@ export default class ContentRenderer {
   }
 
   //////// ====================== Changes for form field renders (only) ========================= /////
+
+  static layoutSections() {
+    
+  }
+
   static getFieldRenders() {
     try {
       const form = {...this.state.form};

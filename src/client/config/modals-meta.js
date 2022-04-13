@@ -288,6 +288,39 @@ const MODALSMETA = {
       "TYPE": "NOTIFICATION"
 
     },
+    "GO_TO_USER_PROFILE": {
+      "BODY_CLASSES": "text-center",
+      "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+      "HEADER": "Welcome to Walmart Brand Portal!",
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "You can update the contact information for your ",
+            "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
+          },
+          "para2": {
+            "text": "company on the User Profile page.",
+            "classes": "mx-2 text-center pb-5 font-size-16"
+          }
+        }
+      },
+      "HEIGHT": "110",
+      "IMAGE": "ProblemSolving",
+      "PRIMARY_ACTION": {
+        "text": "Go to your Profile",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "navigation",
+        "actionParam": "https://seller.walmart.com"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "I'll do it later",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
+    },
     "LOGOUT": {
       "BODY_CONTENT_CLASSES": "text-left",
       "BODY_CLASSES": "px-5",
@@ -347,7 +380,7 @@ const MODALSMETA = {
         "text": "Go to your Profile",
         "classes": "text-right float-right px-3",
         "containerClasses": "p-3",
-        "action": "navigation",
+        "action": "goToUserProfile",
         "actionParam": "https://seller.walmart.com"
       },
       "ADDITIONAL_ACTION": {

@@ -530,73 +530,122 @@ const FORMFIELDCONFIG = {
     },
     "NEWBRAND": {
       "sectionConfig": {
-        "sectionTitleNew": "Register a Brand",
-        "sectionTitleEdit": "Edit Brand Details"
+        "sectionTitleNew": "Create Public Contact",
+        "sectionTitleEdit": "Create Public Contact"
       },
       "formConfig": {
-        "formHeading": "Please complete the following fields to register your brand.",
-        "id": "newbrand",
+        "formHeading": "Please provide the following details:",
+        "id": "newPublicContact",
         "isSubmitDisabled": true,
         "isUpdateTemplate": false,
         "loader": false,
         "templateUpdateComplete": false
       },
       "fields": {
-        "trademarkNumber": {
+        "firstName": {
           "disabled": false,
           "error": "",
-          "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
           "fieldOk": false,
-          "inputId": "trademarkNumber",
-          "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
-          "isValid": false,
-          "key": "trademarkNumber",
-          "label": "Trademark Number",
+          "inputId": "firstName",
+          "isUnique": false,
+          "key": "firstName",
+          "label": "First Name",
           "loader": false,
-          "maxLength": 7,
           "pattern": null,
           "required": true,
           "subtitle": "",
           "type": "text",
           "value": "",
           "validators": {
-            "validateLength": {
-              "minLength": 7,
-              "maxLength": 7,
-              "error": "Trademark number should be 7 numeric characters long."
+            "validateRequired": {
+              "error": "Please enter a valid first name."
             }
           }
         },
-        "brandName": {
+        "lastName": {
           "disabled": false,
           "error": "",
           "fieldOk": false,
-          "inputId": "brandName",
+          "inputId": "lastName",
           "isUnique": false,
-          "key": "brandName",
-          "label": "Brand Name",
+          "key": "lastName",
+          "label": "Last Name",
           "loader": false,
           "pattern": null,
           "required": true,
           "subtitle": "",
           "type": "text",
-          "value": ""
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid last name."
+            }
+          }
         },
-        "comments": {
+        "email": {
           "disabled": false,
           "error": "",
-          "inputId": "comments",
-          "key": "comments",
-          "label": "Comments",
+          "fieldOk": false,
+          "inputId": "email",
+          "isUnique": false,
+          "key": "email",
+          "label": "Email",
+          "loader": false,
           "pattern": null,
-          "required": false,
+          "required": true,
+          "preventHTMLRequiredValidation": true,
           "subtitle": "",
-          "type": "textarea",
-          "placeholder": "Please provide additional information about your brand.",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid email."
+            }
+          },
+          "type": "text",
           "value": ""
         },
-        "brandCreateActions": {
+        "phone": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "phone",
+          "isUnique": false,
+          "key": "phone",
+          "label": "Phone",
+          "loader": false,
+          "pattern": null,
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid phone number."
+            }
+          },
+          "type": "text",
+          "value": ""
+        },
+        "user_undertaking_4": {
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "key": "user_undertaking_4",
+          "layout": "21.1.0",
+          "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to save a public contact."
+            }
+          }
+        },
+        "publiContactCreateActions": {
           "containerClasses": "mt-3",
           "colClasses": "new-brand-button-panel text-right",
           "excludeRowContainer": true,
@@ -612,8 +661,8 @@ const FORMFIELDCONFIG = {
             },
             "submit": {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-              "disabled": true,
-              "text": "Submit",
+              "disabled": false,
+              "text": "Save",
               "type": "submit"
             }
           }
