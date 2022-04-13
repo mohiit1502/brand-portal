@@ -350,7 +350,7 @@ class CompanyManagerApi {
     const corrId = headers.ROPRO_CORRELATION_ID;
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/org/deleteSecondaryContactInfo"
+      API: "/api/org/updateContactInfo/{orgId}"
     };
     console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information.", corrId);
     console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] User ID: ", corrId, request.state && request.state.session_token_login_id);
@@ -363,10 +363,11 @@ class CompanyManagerApi {
         headers
       };
       console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Fetching CCM dependencies", corrId);
-      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_INFO");
-      UPDATE_CONTACT_PATH && (UPDATE_CONTACT_PATH = UPDATE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
-      const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
+      // const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      // let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_INFO");
+      // UPDATE_CONTACT_PATH && (UPDATE_CONTACT_PATH = UPDATE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
+      // const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
+      const url = "http://localhost:8092/ropro/org-service/org/contact-info";
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
@@ -374,7 +375,7 @@ class CompanyManagerApi {
       mixpanelPayload.ORG_ID = request.params.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.get(url, options);
+      const response = await ServerHttp.put(url, options);
       console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {

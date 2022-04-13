@@ -115,6 +115,17 @@ const StatusModalTemplate = props => {
     toggleModal(TOGGLE_ACTIONS.HIDE);
   };
 
+  const goToUserProfile = () => {
+    console.log("fdsg");
+    toggleModal(TOGGLE_ACTIONS.HIDE, {});
+    history.push(CONSTANTS.ROUTES.PROTECTED.PROFILE);
+  };
+
+  // render() {
+  //   if (this.state.redirectToBrands) {
+  //     return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.BRAND_REGISTER}/>;
+  // };
+
   const linkAccounts = () => {
     setLoader(true);
     const mixpanelPayload = {
@@ -160,6 +171,7 @@ const StatusModalTemplate = props => {
     }
   };
 
+
   const runPrimaryAction = (action, actionParam) => {
     try {
       switch (action) {
@@ -184,6 +196,9 @@ const StatusModalTemplate = props => {
         case "refreshAndHideModal":
           toggleModal(TOGGLE_ACTIONS.HIDE);
           window.location.reload();
+          break;
+        case "goToUserProfile":
+          goToUserProfile();
           break;
         default:
           hideModal();
