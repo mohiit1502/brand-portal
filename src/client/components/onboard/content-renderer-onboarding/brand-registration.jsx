@@ -265,7 +265,7 @@ BrandRegistration.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    brandContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.BRANDREG,
+    brandContent: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.BRANDREG,
     brandState: state.company && state.company.brandState,
     steps: state.company && state.company.steps,
     userProfile: state.user.profile,

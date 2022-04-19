@@ -118,7 +118,7 @@ class FormModalTemplate extends React.Component {
     const payload = { firstName, lastName, email, phone };
     // Http.get(`/api/org/applicationDetails/${user.organization.id}`)
     // const url = `/api/org/updateContactInfo/${user.organization.id}`;
-    
+
     const url = `/api/org/updateContactInfo/${this.state.user.organization.id}`;
 
     if (!this.validateState()) {
@@ -180,9 +180,9 @@ class FormModalTemplate extends React.Component {
         //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
         // });
     // else {
-      
+
     // }
-  
+
 
   resetTemplateStatus (e) {
     const form = {...this.state.form};
@@ -263,7 +263,7 @@ FormModalTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     clientType: Cookies.get("client_type"),
-    newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWBRAND,
+    newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWBRAND,
     modal: state.modal,
     userProfile: state.user.profile
   };

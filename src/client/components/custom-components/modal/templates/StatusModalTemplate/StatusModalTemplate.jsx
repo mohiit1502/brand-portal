@@ -68,40 +68,14 @@ const StatusModalTemplate = props => {
     }
   };
 
-  const getDynamicReplacementConfig = node => {
-    const dynamicReplacementConfig = node.dynamicReplacementConfig;
-    dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
-      const replacement = dynamicReplacementConfig[key];
-      if (replacement.indexOf(".") > -1) {
-        const replacementPath = replacement.split(".");
-        let i = 0;
-        let traverser = replacementPath[i++];
-        if (traverser === "profile") {
-          traverser = profile;
-          while (traverser && i < replacementPath.length) {
-            traverser = traverser[replacementPath[i++]];
-          }
-          dynamicReplacementConfig[key] = traverser;
-        } else if (traverser === "org") {
-          traverser = org;
-          while (traverser && i < replacementPath.length) {
-            traverser = traverser[replacementPath[i++]];
-          }
-          dynamicReplacementConfig[key] = traverser;
-        }
-      }
-    });
-    // return dynamicReplacementConfig;
-  };
-
   const getPartialObject = node => {
     if (node) {
       if (node.length) {
         const matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
-        matchedNode && getDynamicReplacementConfig(matchedNode);
+        matchedNode && ContentRenderer.getDynamicReplacementConfig(matchedNode, profile, org);
         return matchedNode;
       } else {
-        getDynamicReplacementConfig(node);
+        ContentRenderer.getDynamicReplacementConfig(node, profile, org);
       }
     }
     return null;
@@ -261,7 +235,7 @@ const StatusModalTemplate = props => {
                         onboardingDetails));
                       if (shouldRender) {
                         content[node] = nodeContent;
-                        getDynamicReplacementConfig(nodeContent);
+                        ContentRenderer.getDynamicReplacementConfig(nodeContent, profile, org);
                         if (meta.TITLE.content[node].onClick) {
                           content[node].onClick = getAction(nodeContent.onClick);
                         }
@@ -306,7 +280,7 @@ const StatusModalTemplate = props => {
                             nodeContent[node] = parsedObject || nodeContent[node];
                           }
                           })
-                        : getDynamicReplacementConfig(nodeContent);
+                        : ContentRenderer.getDynamicReplacementConfig(nodeContent, profile, org);
                       return contentRenderer.getContent(meta.MESSAGE.content, node);
                       } else {
                         return null;

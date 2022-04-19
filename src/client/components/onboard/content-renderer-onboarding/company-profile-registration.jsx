@@ -366,7 +366,7 @@ CompanyProfileRegistration.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    companyContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.COMPANYREG,
+    companyContent: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.COMPANYREG,
     companyState: state.company && state.company.companyState,
     profile: state.user && state.user.profile,
     steps: state.company && state.company.steps,

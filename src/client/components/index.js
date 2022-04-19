@@ -1,5 +1,6 @@
 /* eslint-disable comma-dangle */
 /* PLOP_INJECT_IMPORT */
+import Section from "./Section";
 import Banner from "./Banner";
 import ApplicationDetails from "./ApplicationDetails";
 import LoginTypeCta from "./LoginTypeCta";
@@ -52,6 +53,7 @@ import WidgetSectionContainer from "./WidgetSectionContainer";
 
 export {
   /* PLOP_INJECT_EXPORT */
+	Section,
 	Banner,
   ApplicationDetails,
 	LoginTypeCta,

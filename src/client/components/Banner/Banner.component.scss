@@ -9,12 +9,22 @@
   background-repeat: no-repeat;
   background-position: 8px 12px;
 
+  &.blue {
+    border-color: #fff9e9;
+    border-left-color: blue;
+    background-color: lightblue;
+  }
+
   .banner-body{
     width: 100%;
     white-space: break-spaces;
     color: #662b0d;
     justify-content: flex-start;
     display: inline-flex;
+
+    &.blue {
+      color: black;
+    }
 
     .see-more-button{
       float: right;

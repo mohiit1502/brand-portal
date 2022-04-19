@@ -373,7 +373,7 @@ CreateUserTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    newUserContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWUSER,
+    newUserContent: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWUSER,
     userProfile: state.user.profile
   };
 };

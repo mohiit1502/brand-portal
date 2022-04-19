@@ -8,7 +8,7 @@ import {mount} from "enzyme";
 import Cookies from "electrode-cookies";
 import {clearFetchMock, mockFailFetch, mockFetch, testStore} from "../../../../../../src/client/utility/TestingUtils";
 import CreateUserTemplate from "../../../../../../src/client/components/custom-components/modal/templates/create-user-template";
-import MODALSMETA from "../../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../../src/client/config/formsConfig/form-field-meta";
 import profile from "../../../../mocks/userProfile";
 import CONSTANTS from "../../../../../../src/client/constants/constants";
@@ -119,7 +119,7 @@ describe("CreateUserTemplate test container", () => {
 
   it("should trigger the update workflow with failure", async () => {
     const formFieldMeta = JSON.parse(JSON.stringify(FORMFIELDMETA));
-    formFieldMeta.SECTIONSCONFIG.NEWUSER.formConfig.isUpdateTemplate = true;
+    formFieldMeta.FORMSCONFIG.NEWUSER.formConfig.isUpdateTemplate = true;
     mockFailFetch();
     const mockStore = {
       content: {metadata: {...MODALSMETA, ...formFieldMeta}},
@@ -132,7 +132,7 @@ describe("CreateUserTemplate test container", () => {
 
   it("should trigger the update workflow", async () => {
     const formFieldMeta = JSON.parse(JSON.stringify(FORMFIELDMETA));
-    formFieldMeta.SECTIONSCONFIG.NEWUSER.formConfig.isUpdateTemplate = true;
+    formFieldMeta.FORMSCONFIG.NEWUSER.formConfig.isUpdateTemplate = true;
     mockFetch({data: {brands: [{name: "test-role", brandName: "test-role", id: "test-role"}, {name: "all", brandName: "all", id: "all"}]}});
     const mockStore = {
       content: {metadata: {...MODALSMETA, ...formFieldMeta}},

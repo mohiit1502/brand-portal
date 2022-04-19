@@ -5,7 +5,7 @@ import * as imagesAll from "./../images";
 import CustomInput from "../components/custom-components/custom-input/custom-input";
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
-import { Tile } from "../components";
+import {Banner, Section, Tile} from "../components";
 
 export default class ContentRenderer {
 
@@ -83,6 +83,32 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
+  static getDynamicReplacementConfig (node, profile, org) {
+    const dynamicReplacementConfig = node.dynamicReplacementConfig;
+    dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
+      const replacement = dynamicReplacementConfig[key];
+      if (replacement.indexOf(".") > -1) {
+        const replacementPath = replacement.split(".");
+        let i = 0;
+        let traverser = replacementPath[i++];
+        if (traverser === "profile") {
+          traverser = profile;
+          while (traverser && i < replacementPath.length) {
+            traverser = traverser[replacementPath[i++]];
+          }
+          dynamicReplacementConfig[key] = traverser;
+        } else if (traverser === "org") {
+          traverser = org;
+          while (traverser && i < replacementPath.length) {
+            traverser = traverser[replacementPath[i++]];
+          }
+          dynamicReplacementConfig[key] = traverser;
+        }
+      }
+    });
+    // return dynamicReplacementConfig;
+  };
+
   static implementDynamicReplacements(dynamicReplacements, text) {
     dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
       const regex = new RegExp(key, "g");
@@ -90,7 +116,8 @@ export default class ContentRenderer {
     });
     return text;
   }
-  getContent(content, node, classes, isPartial) {
+
+  getContent(content, node, classes, isPartial, data) {
     if (node.startsWith("partial")) {
       return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
@@ -138,6 +165,21 @@ export default class ContentRenderer {
         {metaData.image && imagesAll[metaData.image] ? <img className="d-inline-block" src={imagesAll[metaData.image]}/> : ""}
         </a>
       </React.Fragment>);
+    } else if (node.startsWith("section")) {
+      return <Section config={content[node]} data={{user: this.props.userProfile}} parent={this} />
+    } else if (node.startsWith("banner")) {
+      return content ? <Banner classes={content[node].classes} variant={content[node].variant}
+                     content={content[node]} theme={content[node].theme} /> : null
+    } else if (node.startsWith("key-val")) {
+      const nodeContent = content ? content[node] : {};
+      let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
+      ContentRenderer.getDynamicReplacementConfig(nodeContent, data ? data.user : {});
+      const dynamicReplacements = nodeContent.dynamicReplacementConfig;
+      text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
+      return <div className={nodeContent ? nodeContent.containerClasses : ""}>
+        <span className="mr-4 font-disabled font-size-14">{nodeContent.key}</span>
+        <span>{text}</span>
+      </div>
     } else {
       return null;
     }
@@ -158,12 +200,18 @@ export default class ContentRenderer {
     );
   }
 
-  //////// ====================== Changes for form field renders (only) ========================= /////
-
-  static layoutSections() {
-    
+  static getSectionRenders() {
+    const sectionsConfig = {...this.state.sectionsConfig};
+    const renderer = new ContentRenderer();
+    return sectionsConfig && Object.keys(sectionsConfig).length > 0
+      ? Object.keys(sectionsConfig).map(sectionKey => {
+        const content = sectionsConfig[sectionKey];
+        return content.wrapInRow ? <div className="row">{renderer.getContent.call(this, sectionsConfig, sectionKey)}</div>
+          : renderer.getContent.call(this, sectionsConfig, sectionKey);
+      }) : null;
   }
 
+  //////// ====================== Changes for form field renders (only) ========================= /////
   static getFieldRenders() {
     try {
       const form = {...this.state.form};

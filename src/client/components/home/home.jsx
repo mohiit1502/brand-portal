@@ -64,7 +64,7 @@ class Home extends React.Component {
       .map(key => this.props.modalsMeta[key].CODE);
     const disablePortalAccess = (!workflowDecider || !workflowDecider.code
       || (workflowDecider && workflowDecider.code && codes.findIndex(code => typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code) > -1))
-      || (this.props.modal && this.props.modal.value === "show" && this.props.modal.templateName === "StatusModalTemplate");
+      // || (this.props.modal && this.props.modal.value === "show" && this.props.modal.templateName === "StatusModalTemplate");
 //     disablePortalAccess && this.props.history.push(CONSTANTS.ROUTES.PROTECTED.PREBOARD);
     return (
       <div className="view-container home-container">

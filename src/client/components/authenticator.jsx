@@ -12,7 +12,7 @@ import {dispatchLogoutUrl, updateUserProfile} from "../actions/user/user-actions
 import {dispatchClaims} from "../actions/claim/claim-actions";
 import {dispatchBrands} from "../actions/brand/brand-actions";
 import {dispatchUsers} from "../actions/user/user-actions";
-import {dispatchFormFieldMetadata, dispatchModalsMetadata} from "../actions/content/content-actions";
+import {dispatchFormFieldMetadata, dispatchModalsMetadata, dispatchSectionsMetadata} from "../actions/content/content-actions";
 import {GenericErrorPage} from "./index";
 import Onboarder from "./onboard/onboarder";
 import mixpanel from "../utility/mixpanelutils";
@@ -31,6 +31,7 @@ class Authenticator extends React.Component {
     this.fetchUsers = preLoadApiUtil.fetchUsers.bind(this);
     this.fetchModalConfig = preLoadApiUtil.fetchModalConfig.bind(this);
     this.fetchFormFieldConfig = preLoadApiUtil.fetchFormFieldConfig.bind(this);
+    this.fetchSectionsConfig = preLoadApiUtil.fetchSectionsConfig.bind(this);
 
     this.majorRoutes = {
       dynamic: {
@@ -55,6 +56,10 @@ class Authenticator extends React.Component {
         modals: {
           fetcher: this.fetchModalConfig,
           dispatcher: this.props.dispatchModalsMetadata
+        },
+        sections: {
+          fetcher: this.fetchSectionsConfig,
+          dispatcher: this.props.dispatchSectionsMetadata
         }
       }
     };
@@ -224,6 +229,7 @@ class Authenticator extends React.Component {
 Authenticator.propTypes = {
   dispatchFormFieldMetadata: PropTypes.func,
   dispatchModalsMetadata: PropTypes.func,
+  dispatchSectionsMetadata: PropTypes.func,
   dispatchClaims: PropTypes.func,
   dispatchBrands: PropTypes.func,
   dispatchUsers: PropTypes.func,
@@ -249,6 +255,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   dispatchFormFieldMetadata,
   dispatchModalsMetadata,
+  dispatchSectionsMetadata,
   updateUserProfile,
   dispatchLogoutUrl,
   dispatchClaims,

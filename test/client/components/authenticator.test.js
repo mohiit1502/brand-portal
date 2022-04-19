@@ -11,7 +11,7 @@ import Authenticator from "../../../src/client/components/authenticator";
 import Http from "../../../src/client/utility/Http";
 import {setupFetchStub, testStore} from "../../../src/client/utility/TestingUtils";
 import profile from "../mocks/userProfile";
-import modalsMeta from "../../../src/client/config/modals-meta";
+import modalsMeta from "../../../src/client/config/contentDescriptors/modals-meta";
 
 configure({ adapter: new Adapter() });
 jest.mock("electrode-cookies");

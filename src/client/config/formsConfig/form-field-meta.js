@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 const FORMFIELDCONFIG = {
-  "SECTIONSCONFIG": {
+  "FORMSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
         "sectionTitle": "Company Information",

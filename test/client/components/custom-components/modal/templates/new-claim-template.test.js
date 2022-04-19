@@ -14,7 +14,7 @@ import {
   update
 } from "../../../../../../src/client/utility/TestingUtils";
 import NewClaimTemplate from "../../../../../../src/client/components/custom-components/modal/templates/new-claim-template";
-import MODALSMETA from "../../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../../src/client/config/formsConfig/form-field-meta";
 import profile from "../../../../mocks/userProfile";
 

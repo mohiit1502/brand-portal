@@ -4,7 +4,7 @@ import ResetPasswordTemplate from "./ResetPasswordTemplate";
 import {Provider} from "react-redux";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import MODALSMETA from "../../../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../../../src/client/config/formsConfig/form-field-meta";
 import profile from "../../../../../../../test/client/mocks/userProfile";
 import renderer, {act} from "react-test-renderer";

@@ -58,6 +58,11 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   border-radius: 0;
 }
 
+.bordered-box {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+
 .shadowed-box {
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
 }
@@ -273,6 +278,25 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .font-size-28 {
   font-size: 1.75rem;
+}
+
+.footer-text {
+  cursor: pointer;
+  text-decoration: underline;
+  color: $market-place-blue;
+  background: $background-blue;
+  //font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  font-family: Bogle-Bold;
+
+  &:hover {
+    color: $navy-blue;
+  }
+}
+
+.font-disabled {
+  color: $text-disabled-color;
 }
 
 .width-small {
