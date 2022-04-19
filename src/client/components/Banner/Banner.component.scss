@@ -1,3 +1,5 @@
+@import "../../styles/override/variables";
+
 .c-Banner {
 
   width: 100%;
@@ -10,9 +12,9 @@
   background-position: 8px 12px;
 
   &.blue {
-    border-color: #fff9e9;
-    border-left-color: blue;
-    background-color: lightblue;
+    border-color: transparent;
+    border-left-color: $market-place-blue;
+    background: $background-blue;
   }
 
   .banner-body{

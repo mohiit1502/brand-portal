@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./Banner.component.scss";
 
 const Banner = (props) => {
-  const {classes, content, theme, variant} = props;
+  const {content, innerClasses, theme, variant} = props;
   const [expand,setExpand] = useState(false);
 
   const func = (evt) => {
@@ -31,7 +31,7 @@ const Banner = (props) => {
   }
 
   return (
-    <div className={`c-Banner mb-4${classes ? " " + classes : ""}${theme ? " " + theme : ""}`}>
+    <div className={`c-Banner mb-4${innerClasses ? " " + innerClasses : ""}${theme ? " " + theme : ""}`}>
       <div className={`banner-body pl-4 pr-2 py-2${theme ? " " + theme : ""}`}>
         {getVariant()}
       </div>

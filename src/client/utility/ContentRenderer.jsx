@@ -117,7 +117,7 @@ export default class ContentRenderer {
     return text;
   }
 
-  getContent(content, node, classes, isPartial, data) {
+  getContent(content, node, classes, isPartial) {
     if (node.startsWith("partial")) {
       return this.getPartialContent(content, node, classes, isPartial);
     } else if (node.startsWith("para")) {
@@ -168,17 +168,29 @@ export default class ContentRenderer {
     } else if (node.startsWith("section")) {
       return <Section config={content[node]} data={{user: this.props.userProfile}} parent={this} />
     } else if (node.startsWith("banner")) {
-      return content ? <Banner classes={content[node].classes} variant={content[node].variant}
-                     content={content[node]} theme={content[node].theme} /> : null
+      return content ? <div className={content[node].layoutClasses}>
+        <Banner classes={content[node].innerClasses} variant={content[node].variant}
+                content={content[node]} theme={content[node].theme} /></div> : null
     } else if (node.startsWith("key-val")) {
       const nodeContent = content ? content[node] : {};
       let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
-      ContentRenderer.getDynamicReplacementConfig(nodeContent, data ? data.user : {});
+      const user = this.props.userProfile;
+      ContentRenderer.getDynamicReplacementConfig(nodeContent, user || {});
       const dynamicReplacements = nodeContent.dynamicReplacementConfig;
       text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
       return <div className={nodeContent ? nodeContent.containerClasses : ""}>
         <span className="mr-4 font-disabled font-size-14">{nodeContent.key}</span>
         <span>{text}</span>
+      </div>
+    } else if (node.startsWith("subtitle")) {
+      const nodeContent = content ? content[node] : {};
+      let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
+      const user = this.props.userProfile;
+      ContentRenderer.getDynamicReplacementConfig(nodeContent, user || {});
+      const dynamicReplacements = nodeContent.dynamicReplacementConfig;
+      text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
+      return <div className={nodeContent ? nodeContent.containerClasses : ""}>
+        <span className="font-disabled font-size-12">{text}</span>
       </div>
     } else {
       return null;
@@ -200,14 +212,15 @@ export default class ContentRenderer {
     );
   }
 
-  static getSectionRenders() {
-    const sectionsConfig = {...this.state.sectionsConfig};
+  static getSectionRenders(config) {
+    const sectionsConfig = config || {...this.state.sectionsConfig};
     const renderer = new ContentRenderer();
     return sectionsConfig && Object.keys(sectionsConfig).length > 0
       ? Object.keys(sectionsConfig).map(sectionKey => {
         const content = sectionsConfig[sectionKey];
-        return content.wrapInRow ? <div className="row">{renderer.getContent.call(this, sectionsConfig, sectionKey)}</div>
-          : renderer.getContent.call(this, sectionsConfig, sectionKey);
+        const shouldRender = ContentRenderer.evaluateRenderDependency.call(this, content.renderCondition);
+        return shouldRender ? content.wrapInRow ? <div className="row">{renderer.getContent.call(this, sectionsConfig, sectionKey)}</div>
+          : renderer.getContent.call(this, sectionsConfig, sectionKey) : null;
       }) : null;
   }
 
