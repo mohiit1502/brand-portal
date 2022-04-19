@@ -348,6 +348,7 @@ class CompanyManagerApi {
   async updateContactInfo(request, h) {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
+    const payload = request.payload;
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/org/updateContactInfo/{orgId}"
@@ -375,7 +376,7 @@ class CompanyManagerApi {
       mixpanelPayload.ORG_ID = request.params.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.put(url, options);
+      const response = await ServerHttp.put(url, options, payload);
       console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -393,6 +394,7 @@ class CompanyManagerApi {
   async deleteSecondaryContactInfo(request, h) {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
+    const payload = request.payload;
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/org/deleteSecondaryContactInfo"
@@ -419,7 +421,7 @@ class CompanyManagerApi {
       mixpanelPayload.ORG_ID = request.params.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.get(url, options);
+      const response = await ServerHttp.put(url, options, payload);
       console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] API request for deleting secondary contact information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {

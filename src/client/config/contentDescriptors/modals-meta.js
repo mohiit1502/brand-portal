@@ -316,7 +316,7 @@ const MODALSMETA = {
       "ADDITIONAL_ACTION": {
         "text": "I'll do it later",
         "classes": "mt-0 d-inline-block text-right mr-3 blue",
-        "action": "hideModal"
+        "action": "closeModal"
       },
       "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
       "TYPE": "NOTIFICATION"

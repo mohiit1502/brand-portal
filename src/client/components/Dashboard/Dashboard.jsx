@@ -12,10 +12,12 @@ import AUTH_CONFIG from "../../config/authorizations";
 import "./Dashboard.component.scss";
 import mixpanel from "../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../constants/mixpanelConstants";
+import { TOGGLE_ACTIONS, toggleModal } from "../../actions/modal-actions";
 
 class Dashboard extends React.PureComponent {
   constructor(props) {
     super(props);
+    const {modalsMeta, toggleModal} = props;
     this.state = {
       data: {
         brand: {},
@@ -28,6 +30,8 @@ class Dashboard extends React.PureComponent {
       error: false,
       fetchComplete: false
     };
+    // toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.GO_TO_USER_PROFILE});
+
   }
 
   componentDidMount() {
@@ -72,7 +76,8 @@ class Dashboard extends React.PureComponent {
       });
       const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.VIEW_DASHBOARD, mixpanelPayload);
-  }
+      
+    }
 
   render() {
     return (

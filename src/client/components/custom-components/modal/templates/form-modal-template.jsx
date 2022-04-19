@@ -112,10 +112,10 @@ class FormModalTemplate extends React.Component {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
     evt.preventDefault();
     const firstName = this.state.form.inputData.firstName.value;
-    const lastName = this.state.form.inputData.lastName.usptoUrl;
+    const lastName = this.state.form.inputData.lastName.value;
     const email = this.state.form.inputData.email.value;
     const phone = this.state.form.inputData.phone.value;
-    const payload = { firstName, lastName, email, phone };
+    // const payload = { firstName, lastName, email, phone };
     // Http.get(`/api/org/applicationDetails/${user.organization.id}`)
     // const url = `/api/org/updateContactInfo/${user.organization.id}`;
 
@@ -135,12 +135,15 @@ class FormModalTemplate extends React.Component {
       //   return null;
       // } else {
         const payload = {
-            "secondaryContactInformation": {
-              "firstName": this.state.form.inputData.firstName.value,
-              "lastName": this.state.form.inputData.lastName.value,
-              "email": this.state.form.inputData.email.value,
-              "phone": this.state.form.inputData.phone.value
-          }
+            orgId: this.state.user.organization.id,
+            org: {
+              "secondaryContactInformation": {
+                "firstName": this.state.form.inputData.firstName.value,
+                "lastName": this.state.form.inputData.lastName.value,
+                "email": this.state.form.inputData.email.value,
+                "phone": this.state.form.inputData.phone.value
+              } 
+            }
         };
           this.loader("form", true);
         return Http.put(url, payload)
