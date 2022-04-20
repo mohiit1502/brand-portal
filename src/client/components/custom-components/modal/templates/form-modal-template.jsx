@@ -205,8 +205,8 @@ class FormModalTemplate extends React.Component {
               </button>
             </div>
             <div className={`modal-body p-0 text-left${this.state.form.loader && " loader"}`}>
-              <div className="row">
-                <div className="col px-4 mx-2 pb-1 pt-4">
+              <div className="row px-4">
+                <div className="col pb-1 pt-4">
                   <p>{form.formHeading}</p>
                 </div>
               </div>
