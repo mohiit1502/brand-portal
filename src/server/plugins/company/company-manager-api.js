@@ -376,8 +376,7 @@ class CompanyManagerApi {
       };
       console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_INFO");
-      // UPDATE_CONTACT_PATH && (UPDATE_CONTACT_PATH = UPDATE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
+      let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_PATH");
       const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
       // const url = "http://localhost:8092/ropro/org-service/org/contact-info";
 
