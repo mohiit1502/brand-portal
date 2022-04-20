@@ -62,6 +62,12 @@ class ApplicationReview extends React.Component {
       data.org = {...data.org, businessRegistrationDoc, additionalDoc};
       data.org && delete data.org.businessRegistrationDocList;
       data.brand && delete data.brand.additionalDocList;
+      data.org.primaryContactInformation = {
+          firstName: this.props.userProfile.firstName,
+          lastName: this.props.userProfile.lastName,
+          phone: this.props.userProfile.phoneNumber,
+          email: this.props.userProfile.email
+      };
       if (data.org.sellerInfo) {
         data.sellerInfo = data.org.sellerInfo;
         delete data.org.sellerInfo;

@@ -49,13 +49,13 @@ class FormModalTemplate extends React.Component {
     const contactDetails = data.organization.primaryContactInformation;
 
     if (contactDetails) {
-      form.inputData.firstName.value = this.props.meta.subContext === "myInfo" ? data.firstName
+      form.inputData.firstName.value = this.props.meta.subContext == "myInfo" ? data.firstName 
         : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.firstName : "");
-      form.inputData.lastName.value = this.props.meta.subContext === "myInfo" ? data.lastName
+      form.inputData.lastName.value = this.props.meta.subContext == "myInfo" ? data.lastName 
         : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.lastName : "");;
-      form.inputData.phone.value = this.props.meta.subContext === "myInfo" ? data.phoneCountry + " " + data.phoneNumber
+      form.inputData.phone.value = this.props.meta.subContext == "myInfo" ? data.phoneCountry + " " + data.phoneNumber 
         : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.phone : "");;
-      form.inputData.email.value = this.props.meta.subContext === "myInfo" ? data.email
+      form.inputData.email.value = this.props.meta.subContext == "myInfo" ? data.email 
         :(data.org.secondaryContactInformation ? data.org.secondaryContactInformation.email : "");;
     }
 
@@ -210,7 +210,8 @@ FormModalTemplate.propTypes = {
   newPublicContactConfiguration: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   showNotification: PropTypes.func,
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
+  meta: PropTypes.object
 };
 
 const mapStateToProps = state => {

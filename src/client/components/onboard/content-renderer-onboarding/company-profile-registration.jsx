@@ -330,6 +330,7 @@ class CompanyProfileRegistration extends React.Component {
     }
     const section = this.state.section;
     return (
+      
       <div className="row justify-content-center">
         <div className="col-lg-10 col-md-8 col-12 pl-5 pr-0">
           <div className="row title-row mb-4 pl-4">
