@@ -54,6 +54,7 @@ const SECTIONSMETA = {
             {
               "action": "displayModal",
               "actionParams": {"modal": "ResetPasswordTemplate"},
+              "classes": "reset-password",
               "text": "Change Password",
               "renderCondition": "{\"keyPath\": \"isSeller\", \"keyLocator\": \"state\", \"value\": false}",
             },

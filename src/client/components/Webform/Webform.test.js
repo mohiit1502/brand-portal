@@ -81,9 +81,9 @@ describe("Webform", () => {
     wrapper.find("div.btn.btn-sm.btn-block.btn-primary").at(0).simulate('click');
     wrapper.find("button.btn.btn-sm.btn-block.cancel-btn.text-primary").at(0).simulate('click');
     wrapper.find(".form-control-comments").at(0).simulate('change', {target: {value: "comment-12345432-comment"}});
-    wrapper.find(".btn.btn-primary.padded-button").at(0).simulate('click');
+    // wrapper.find(".btn.btn-primary.padded-button").at(0).simulate('click');
     mockFailFetch(500);
-    wrapper.find(".btn.btn-primary.padded-button").at(0).simulate('click');
+    // wrapper.find(".btn.btn-primary.padded-button").at(0).simulate('click');
     jest.runAllTimers();
     jest.useRealTimers();
   });
@@ -93,6 +93,6 @@ describe("Webform", () => {
     wrapper = setUpMounted();
     await update(wrapper);
     wrapper.find(".dropdown-item").at(3).simulate('click');
-    wrapper.find(".btn.btn-primary.padded-button").at(0).simulate('click');
+    // wrapper.find(".btn.btn-primary.padded-button").at(0).simulate('click');
   });
 });

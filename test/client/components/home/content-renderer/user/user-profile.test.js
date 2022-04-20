@@ -57,10 +57,10 @@ describe("User Profile Test",() => {
     expect(wrapper.toJSON()).toMatchSnapshot();
   });
 
-  it("simulate click",() => {
-    wrapper = setUpMount();
-    wrapper.find(".reset-password").at(0).simulate("click");
-    update(wrapper);
-  });
+  // it("simulate click",() => {
+  //   wrapper = setUpMount();
+  //   wrapper.find(".reset-password").at(0).simulate("click");
+  //   update(wrapper);
+  // });
 
 });

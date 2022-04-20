@@ -745,14 +745,14 @@ const FORMFIELDCONFIG = {
           "type": "text",
           "value": ""
         },
-        "user_undertaking_4": {
+        "user_undertaking": {
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
           "excludeColContainer": true,
-          "id": "user_undertaking_4",
-          "inputId": "user_undertaking_4",
-          "key": "user_undertaking_4",
-          "layout": "21.1.0",
+          "id": "user_undertaking",
+          "inputId": "user_undertaking",
+          "key": "user_undertaking",
+          "layout": "5.1.0",
           "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
