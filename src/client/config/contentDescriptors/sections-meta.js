@@ -56,14 +56,14 @@ const SECTIONSMETA = {
               "actionParams": {"modal": "ResetPasswordTemplate"},
               "classes": "reset-password",
               "text": "Change Password",
-              "renderCondition": "{\"keyPath\": \"isSeller\", \"keyLocator\": \"state\", \"value\": false}",
+              "renderCondition": "{\"keyPath\": \"isSeller\", \"keyLocator\": \"state\", \"value\": false}"
             },
             {
               "action": "displayModal",
               "actionParams": {"context": "edit", "subContext": "myInfo", "modal": [
                   {"key": "state.isSeller", "value": true, "modal": "StatusModalTemplate", "configName": "PASSWORD_RESET_SELLER"},
                   {"key": "state.isSeller", "value": false, "modal": "FormModalTemplate"}]},
-              "text": "Edit",
+              "text": "Edit"
             }
           ],
           "classes": "w-100 d-flex px-4 footer-text-individual py-875 text-center footer-text"
@@ -158,13 +158,13 @@ const SECTIONSMETA = {
                     "action": "displayModal",
                     "actionParams": {"modal": "StatusModalTemplate", "configName": "DELETE_CONTACT"},
                     "text": "Delete",
-                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}",
+                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}"
                   },
                   {
                     "action": "displayModal",
                     "actionParams": {"context": "new", "subContext": "publicContact", "modal": "FormModalTemplate"},
                     "text": "Add",
-                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": false}",
+                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": false}"
                   },
                   {
                     "action": "displayModal",
@@ -178,10 +178,9 @@ const SECTIONSMETA = {
             }
           }
         }
-      },
-
+      }
     }
   }
-}
+};
 
 export default SECTIONSMETA;
