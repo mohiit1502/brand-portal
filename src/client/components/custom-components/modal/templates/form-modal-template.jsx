@@ -49,15 +49,16 @@ class FormModalTemplate extends React.Component {
     const contactDetails = data.organization.primaryContactInformation;
 
     if (contactDetails) {
-      form.inputData.firstName.value = this.props.meta.subContext == "myInfo" ? data.firstName 
-        : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.firstName : "");
-      form.inputData.lastName.value = this.props.meta.subContext == "myInfo" ? data.lastName 
-        : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.lastName : "");;
-      form.inputData.phone.value = this.props.meta.subContext == "myInfo" ? data.phoneCountry + " " + data.phoneNumber 
-        : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.phone : "");;
-      form.inputData.email.value = this.props.meta.subContext == "myInfo" ? data.email 
-        :(data.org.secondaryContactInformation ? data.org.secondaryContactInformation.email : "");;
+      form.inputData.firstName.value = this.props.meta.subContext === "myInfo" ? data.firstName
+        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.firstName : "");
+      form.inputData.lastName.value = this.props.meta.subContext === "myInfo" ? data.lastName
+        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.lastName : "");;
+      form.inputData.phone.value = this.props.meta.subContext === "myInfo" ? data.phoneNumber
+        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.phone : "");;
+      form.inputData.email.value = this.props.meta.subContext === "myInfo" ? data.email
+        :(data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.email : "");;
     }
+
 
     form.templateUpdateComplete = true;
     form.isUpdateTemplate = true;
@@ -107,13 +108,15 @@ class FormModalTemplate extends React.Component {
     if (this.props.meta.subContext) {
       evt.preventDefault();
       const firstName = this.state.form.inputData.firstName.value;
-      const lastName = this.state.form.inputData.lastName.usptoUrl;
-      const email = this.state.form.inputData.email.value;
-      const phone = this.state.form.inputData.phone.value;
-      const payload = this.props.meta.subContext === "myInfo" ? {firstName, lastName, email, phone}
+      const lastName = this.state.form.inputData.lastName.value;
+      const loginId = this.state.form.inputData.email.value;
+      const phoneNumber = this.state.form.inputData.phone.value;
+      const payload = this.props.meta.subContext === "myInfo" ? {user: {firstName, lastName, loginId, phoneNumber}}
         : {
           "orgId": this.state.user.organization.id,
-          "secondaryContactInformation": {firstName, lastName, email, phone}
+          "org": {
+            "secondaryContactInformation": {firstName, lastName, loginId, phoneNumber}
+          }
         };
       const url = this.props.meta.subContext === "myInfo" ? `/api/users/${this.props.userProfile.email}` : `/api/org/updateContactInfo`;
 
@@ -126,7 +129,7 @@ class FormModalTemplate extends React.Component {
         return Http.put(url, payload)
           .then(res => {
             this.resetTemplateStatus();
-            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New Public Contact ‘${res.body.name}’ added to your organization.`);
+            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Request completed successfully.`);
             this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             this.loader("form", false);
             //   mixpanelPayload.API_SUCCESS = true;
@@ -136,6 +139,7 @@ class FormModalTemplate extends React.Component {
             mixpanelPayload.API_SUCCESS = false;
             // this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             mixpanelPayload.ERROR = err.message ? err.message : err;
+            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Something went wrong, please try again!`);
           })
           .finally(() => {
             //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
@@ -211,7 +215,6 @@ FormModalTemplate.propTypes = {
   saveBrandInitiated: PropTypes.func,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
-  meta: PropTypes.object
 };
 
 const mapStateToProps = state => {

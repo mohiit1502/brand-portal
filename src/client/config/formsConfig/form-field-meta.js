@@ -704,7 +704,19 @@ const FORMFIELDCONFIG = {
           }
         },
         "email": {
-          "disabled": false,
+          "disabled": {
+            "default": false,
+              "condition": [
+              {
+                "keyPath": "subContext",
+                "keyLocator": "props",
+                "dependencyValue": [
+                  "myInfo"
+                ],
+                "value": true
+              }
+            ]
+          },
           "error": "",
           "fieldOk": false,
           "inputId": "email",
