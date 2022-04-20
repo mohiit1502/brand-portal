@@ -110,7 +110,7 @@ class FormModalTemplate extends React.Component {
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "EDIT_CONTACT_INFO" : "ADD_NEW_CONTACT_INFO"
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
-    if (this.props.subContext) {
+    if (this.props.meta.subContext) {
       evt.preventDefault();
       const firstName = this.state.form.inputData.firstName.value;
       const lastName = this.state.form.inputData.lastName.usptoUrl;

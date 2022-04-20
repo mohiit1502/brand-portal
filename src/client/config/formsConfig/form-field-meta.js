@@ -522,7 +522,7 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": true,
               "textObj": "{\"condition\": \"state.form.isUpdateTemplate\", \"true\": \"Save\", \"false\": \"Invite\"}",
-              "type": "button"
+              "type": "submit"
             }
           }
         }
@@ -755,7 +755,8 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
               "disabled": false,
               "text": "Save",
-              "type": "submit"
+              "onClick": "handleSubmit",
+              "type": "button"
             }
           }
         }
