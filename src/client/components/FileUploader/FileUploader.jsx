@@ -23,6 +23,7 @@ const FileUploader = props => {
       <ol className="m-0 p-0">
         <ul className="m-0 pl-3 text-left font-size-12">
           <li>Please attach supporting documents in .doc, .pdf, .csv, .excel or image formats. The file should be less than 7MB</li>
+          <li>Filenames should contain English alphanumeric characters only.</li>
         </ul>
       </ol>
     </div>,
@@ -31,6 +32,7 @@ const FileUploader = props => {
         <ul className="m-0 pl-3 text-left font-size-12">
           <li>Supported File Types: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
           <li>Maximum file size: 7 MB</li>
+          <li>Filenames should contain English alphanumeric characters only.</li>
         </ul>
       </ol>
     </div>,
@@ -40,6 +42,7 @@ const FileUploader = props => {
           <li>Upload IP Registration Documents or Letter of Authorization</li>
           <li>Supported File Types: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
           <li>Maximum file size: 7 MB</li>
+          <li>Filenames should contain English alphanumeric characters only.</li>
         </ul>
       </ol>
     </div>

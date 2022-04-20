@@ -226,7 +226,7 @@ class CustomInput extends React.PureComponent {
       if(evt.target.id.indexOf("newclaim-sellerName") === -1){
         let temp = "#"+dropDownMenuId;
         let className = $(`${temp}`).attr(`class`);
-        if((className.indexOf("show") !== -1)){
+        if(className && className.indexOf("show") !== -1) {
           $("#"+dropDownMenuId).removeClass("show");
         }
       }
