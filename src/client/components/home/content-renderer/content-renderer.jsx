@@ -1,30 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import {Route, Switch} from "react-router";
-import CONSTANTS from "../../../constants/constants";
-import "../../../styles/home/content-renderer/content-renderer.scss";
+import { TOGGLE_ACTIONS , toggleModal} from "../../../actions/modal-actions";
 import UserProfile from "./user/profile/user-profile";
 import UserList from "./user/user-list";
 import BrandList from "./brand/brand-list";
 import ClaimList from "./claim/claim-list";
 import Help from "../../Help/Help";
 import Dashboard from "../../Dashboard";
-import { TOGGLE_ACTIONS , toggleModal} from "../../../actions/modal-actions";
+import CONSTANTS from "../../../constants/constants";
+import "../../../styles/home/content-renderer/content-renderer.scss";
 
 
 class ContentRenderer extends React.Component {
   constructor (props) {
     super(props);
-    const {modalsMeta, toggleModal} = props;
-    this.state={
-      props: props
-    };
   }
 
   componentDidMount() {
-    const {modalsMeta, toggleModal} = this.props;
-    toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.GO_TO_USER_PROFILE});
-
+    if (this.props.user && !this.props.user.doItLater) {
+      const {modalsMeta, toggleModal} = this.props;
+      toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.GO_TO_USER_PROFILE});
+    }
   }
 
   render () {
@@ -58,13 +55,10 @@ class ContentRenderer extends React.Component {
   }
 }
 
-const mapDispatchToProps = {
-};
-
 const mapStateToProps = state => {
   return {
-    props: state.props
+    user: state.user.profile
   };
 };
 
-export  default  connect()(ContentRenderer);
+export  default  connect(mapStateToProps)(ContentRenderer);

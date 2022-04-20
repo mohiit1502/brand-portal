@@ -89,17 +89,6 @@ const StatusModalTemplate = props => {
     toggleModal(TOGGLE_ACTIONS.HIDE);
   };
 
-  const goToUserProfile = () => {
-    console.log("fdsg");
-    toggleModal(TOGGLE_ACTIONS.HIDE, {});
-    history.push(CONSTANTS.ROUTES.PROTECTED.PROFILE);
-  };
-
-  // render() {
-  //   if (this.state.redirectToBrands) {
-  //     return <Redirect to={CONSTANTS.ROUTES.PROTECTED.ONBOARD.BRAND_REGISTER}/>;
-  // };
-
   const linkAccounts = () => {
     setLoader(true);
     const mixpanelPayload = {
@@ -127,6 +116,36 @@ const StatusModalTemplate = props => {
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.ACCOUNT_LINKING.ACCOUNT_LINKING_ATTEMPTED, mixpanelPayload);
       });
   };
+
+  const updateUser = () => {
+    setLoader(true);
+    const mixpanelPayload = {
+      API: "/api/users",
+      WORK_FLOW: "LINK_ACCOUNTS",
+      EMAIL: user.profile.email
+    };
+    const payload = {
+      user: {
+        doItLater: true
+      }
+    };
+    return Http.put(`/api/users/${user.profile.email}`, payload, null, null)
+      .then(async res => {
+        updateUserProfile(res.body);
+        showNotification(NOTIFICATION_TYPE.SUCCESS, "Saved your preference successfully!");
+        hideModal();
+        mixpanelPayload.API_SUCCESS = true;
+      })
+      .catch(err => {
+        showNotification(NOTIFICATION_TYPE.ERROR, "Accounts could not be linked, please try again!");
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      })
+      .finally(() => {
+        setLoader(false);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.UPDATE_PROFILE_LATER, mixpanelPayload);
+      });
+  }
 
   const getAction = action => {
     switch (action) {
@@ -171,8 +190,9 @@ const StatusModalTemplate = props => {
           toggleModal(TOGGLE_ACTIONS.HIDE);
           window.location.reload();
           break;
-        case "goToUserProfile":
-          goToUserProfile();
+        case "reroute":
+          toggleModal(TOGGLE_ACTIONS.HIDE);
+          history.push(actionParam);
           break;
         default:
           hideModal();
@@ -193,9 +213,10 @@ const StatusModalTemplate = props => {
         case "resendInvite":
           resendInvite();
           break;
-        case "closeModal":
-          hideModal();
+        case "updateUser":
+          updateUser();
           break;
+        case "closeModal":
         default:
           hideModal();
       }
@@ -204,6 +225,7 @@ const StatusModalTemplate = props => {
       console.log(e);
     }
   };
+
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className={`modal-dialog modal-dialog-centered modal-lg${meta.MODAL_DIALOG_CLASSES ? " "+meta.MODAL_DIALOG_CLASSES : ""}`} role="document">

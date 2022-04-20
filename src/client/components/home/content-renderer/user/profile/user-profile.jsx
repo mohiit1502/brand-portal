@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-// import Cookies from "electrode-cookies";
+import Cookies from "electrode-cookies";
 
 import {updateUserProfile} from "../../../../../actions/user/user-actions";
 import {dispatchDiscardChanges, TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
@@ -40,7 +40,7 @@ class UserProfile extends React.Component {
       //   ...userProfileConfiguration.formConfig,
       //   inputData: {...userProfileConfiguration.fields}
       // },
-      // isSeller: Cookies.get("client_type") === "seller",
+      isSeller: Cookies.get("client_type") === "seller",
       loader: false,
       sectionsConfig: {...userProfileSectionConfig}
     };

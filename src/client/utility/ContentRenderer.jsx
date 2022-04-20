@@ -6,6 +6,9 @@ import CustomInput from "../components/custom-components/custom-input/custom-inp
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
 import {Banner, Section, Tile} from "../components";
+import moment from "moment";
+import * as images from "../images";
+import Tooltip from "../components/custom-components/tooltip/tooltip";
 
 export default class ContentRenderer {
 
@@ -87,7 +90,7 @@ export default class ContentRenderer {
     const dynamicReplacementConfig = node.dynamicReplacementConfig;
     dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
       const replacement = dynamicReplacementConfig[key];
-      if (replacement.indexOf(".") > -1) {
+      if (replacement && replacement.indexOf(".") > -1) {
         const replacementPath = replacement.split(".");
         let i = 0;
         let traverser = replacementPath[i++];
@@ -104,6 +107,8 @@ export default class ContentRenderer {
           }
           dynamicReplacementConfig[key] = traverser;
         }
+        dynamicReplacementConfig[key] = dynamicReplacementConfig[key] && node.outgoingFormat ? moment(dynamicReplacementConfig[key],
+          node.incomingFormat).format(node.outgoingFormat) : dynamicReplacementConfig[key];
       }
     });
     // return dynamicReplacementConfig;
@@ -180,7 +185,7 @@ export default class ContentRenderer {
       text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
       return <div className={nodeContent ? nodeContent.containerClasses : ""}>
         <span className="mr-4 font-disabled font-size-14">{nodeContent.key}</span>
-        <span>{text}</span>
+        <span className="text-overflow-ellipsis" title={text}>{text && text !== "null" && text.indexOf("undefined") === -1 ? text : "-"}</span>
       </div>
     } else if (node.startsWith("subtitle")) {
       const nodeContent = content ? content[node] : {};

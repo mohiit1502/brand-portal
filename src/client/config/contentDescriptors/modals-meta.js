@@ -310,13 +310,13 @@ const MODALSMETA = {
         "text": "Go to your Profile",
         "classes": "text-right float-right px-3",
         "containerClasses": "p-3",
-        "action": "goToUserProfile",
-        "actionParam": "https://seller.walmart.com"
+        "action": "reroute",
+        "actionParam": "/profile"
       },
       "ADDITIONAL_ACTION": {
         "text": "I'll do it later",
         "classes": "mt-0 d-inline-block text-right mr-3 blue",
-        "action": "hideModal"
+        "action": "updateUser"
       },
       "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
       "TYPE": "NOTIFICATION"
