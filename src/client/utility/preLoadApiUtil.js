@@ -81,7 +81,7 @@ class PreLoadApiUtil {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
-                            response = MODALMETA;
+                            // response = MODALMETA;
                             dispatcher(response);
                         } catch (e) {
                             dispatcher(MODALMETA);
@@ -99,7 +99,7 @@ class PreLoadApiUtil {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
-                            response = FORMFIELDMETA;
+                            // response = FORMFIELDMETA;
                             dispatcher(response);
                         } catch (e) {
                             dispatcher(FORMFIELDMETA);
@@ -117,7 +117,7 @@ class PreLoadApiUtil {
             if (response.body) {
               try {
                 response = JSON.parse(response.body);
-                response = SECTIONSCONFIG;
+                // response = SECTIONSCONFIG;
                 dispatcher(response);
               } catch (e) {
                 dispatcher(SECTIONSCONFIG);
