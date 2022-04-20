@@ -49,6 +49,7 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
           dispatchFormFieldMetadata={[Function]}
           dispatchLogoutUrl={[Function]}
           dispatchModalsMetadata={[Function]}
+          dispatchSectionsMetadata={[Function]}
           dispatchUsers={[Function]}
           isNew={true}
           location={
@@ -393,6 +394,67 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
                 },
                 "TYPE": "CTA",
               },
+              "DASHBOARD_MODAL": Object {
+                "ADDITIONAL_ACTION": Object {
+                  "action": "closeModal",
+                  "classes": "mt-0 d-inline-block text-right mr-3",
+                  "text": "I'll do it later",
+                },
+                "BODY_CLASSES": "px-5",
+                "BODY_CONTENT_CLASSES": "text-left px-5",
+                "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+                "HEADER": "Welcome to Walmart Brand Portal!",
+                "IMAGE": "ProblemSolving",
+                "MODAL_DIALOG_CLASSES": "width-unset modal-md",
+                "PRIMARY_ACTION": Object {
+                  "action": "goToUserProfile",
+                  "actionParam": "https://seller.walmart.com",
+                  "classes": "text-right float-right px-3",
+                  "containerClasses": "p-3",
+                  "text": "Go to your Profile",
+                },
+                "SUBTITLE": Object {
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "mx-2",
+                      "text": "You can update the contact information for your ",
+                    },
+                    "para2": Object {
+                      "classes": "mx-2",
+                      "text": "company on the User Profile page.",
+                    },
+                  },
+                },
+                "TYPE": "NOTIFICATION",
+              },
+              "DELETE_CONTACT": Object {
+                "ADDITIONAL_ACTION": Object {
+                  "action": "closeModal",
+                  "classes": "mt-0 d-inline-block text-right mr-3 blue",
+                  "text": "Back",
+                },
+                "BODY_CLASSES": "text-center",
+                "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+                "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+                "HEADER": "Delete Contact Information",
+                "MODAL_DIALOG_CLASSES": "modal-lg",
+                "PRIMARY_ACTION": Object {
+                  "action": "deleteContactInfo",
+                  "classes": "text-right float-right px-3",
+                  "containerClasses": "p-3",
+                  "text": "Delete",
+                },
+                "SUBTITLE": Object {
+                  "classes": "px-4 mb-5",
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "mx-2 text-center mb-0 mt-4 font-size-16",
+                      "text": "Please note that the contact information of the user submitting the claim will be shared with the reported seller(s) by default if you delete the public contact information.",
+                    },
+                  },
+                },
+                "TYPE": "NOTIFICATION",
+              },
               "EMAIL_VERIFIED": Object {
                 "BODY_CLASSES": "px-5",
                 "BODY_CONTENT_CLASSES": "text-left px-5",
@@ -426,6 +488,39 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
                   "text": "Start",
                 },
                 "TYPE": "CTA",
+              },
+              "GO_TO_USER_PROFILE": Object {
+                "ADDITIONAL_ACTION": Object {
+                  "action": "updateUser",
+                  "classes": "mt-0 d-inline-block text-right mr-3 blue",
+                  "text": "I'll do it later",
+                },
+                "BODY_CLASSES": "text-center",
+                "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+                "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+                "HEADER": "Welcome to Walmart Brand Portal!",
+                "HEIGHT": "110",
+                "IMAGE": "ProblemSolving",
+                "PRIMARY_ACTION": Object {
+                  "action": "reroute",
+                  "actionParam": "/profile",
+                  "classes": "text-right float-right px-3",
+                  "containerClasses": "p-3",
+                  "text": "Go to your Profile",
+                },
+                "SUBTITLE": Object {
+                  "content": Object {
+                    "para1": Object {
+                      "classes": "mx-2 text-center mb-0 mt-4 font-size-16",
+                      "text": "You can update the contact information for your ",
+                    },
+                    "para2": Object {
+                      "classes": "mx-2 text-center pb-5 font-size-16",
+                      "text": "company on the User Profile page.",
+                    },
+                  },
+                },
+                "TYPE": "NOTIFICATION",
               },
               "LOGOUT": Object {
                 "ADDITIONAL_ACTION": Object {
