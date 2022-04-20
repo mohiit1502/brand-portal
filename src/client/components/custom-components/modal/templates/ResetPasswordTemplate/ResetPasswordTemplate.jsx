@@ -197,7 +197,7 @@ ResetPasswordTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    resetPasswordConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.RESETPASSWORD,
+    resetPasswordConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.RESETPASSWORD,
     modal: state.modal
   };
 };

@@ -1,6 +1,6 @@
 /* eslint-disable quote-props */
 const FORMFIELDCONFIG = {
-  "SECTIONSCONFIG": {
+  "FORMSCONFIG": {
     "COMPANYREG": {
       "sectionConfig": {
         "sectionTitle": "Company Information",
@@ -644,6 +644,148 @@ const FORMFIELDCONFIG = {
               "disabled": true,
               "text": "Submit",
               "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "CONTACTINFO": {
+      "sectionConfig": {
+        "sectionTitleNew": "Create Public Contact",
+        "sectionTitleEdit": "Create Public Contact"
+      },
+      "formConfig": {
+        "formHeading": "Please provide the following details:",
+        "id": "newPublicContact",
+        "isSubmitDisabled": true,
+        "isUpdateTemplate": false,
+        "loader": false,
+        "templateUpdateComplete": false
+      },
+      "fields": {
+        "firstName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "firstName",
+          "isUnique": false,
+          "key": "firstName",
+          "label": "First Name",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid first name."
+            }
+          }
+        },
+        "lastName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "lastName",
+          "isUnique": false,
+          "key": "lastName",
+          "label": "Last Name",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid last name."
+            }
+          }
+        },
+        "email": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "email",
+          "isUnique": false,
+          "key": "email",
+          "label": "Email",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "preventHTMLRequiredValidation": true,
+          "subtitle": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid email."
+            }
+          },
+          "type": "text",
+          "value": ""
+        },
+        "phone": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "phone",
+          "isUnique": false,
+          "key": "phone",
+          "label": "Phone",
+          "loader": false,
+          "pattern": null,
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid phone number."
+            }
+          },
+          "type": "text",
+          "value": ""
+        },
+        "user_undertaking_4": {
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "key": "user_undertaking_4",
+          "layout": "21.1.0",
+          "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to save a public contact."
+            }
+          }
+        },
+        "publiContactCreateActions": {
+          "containerClasses": "mt-3",
+          "colClasses": "new-brand-button-panel text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": false,
+              "text": "Save",
+              "onClick": "handleSubmit",
+              "type": "button"
             }
           }
         }
@@ -2135,12 +2277,27 @@ const FORMFIELDCONFIG = {
           "type": "_buttonsPanel",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "buttons": {
-            "submit": {
-              "classes": "btn btn-primary padded-button",
-              "disabled": false,
-              "onClick": "handleSubmit",
-              "text": "Submit Claim",
-              "type": "submit"
+            "edit": {
+              "classes": "btn btn-primary btn-sm px-4",
+              "handlerArg": false,
+              "onClick": "disableInput",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "text": "Edit",
+              "type": "button"
+            },
+            "cancel": {
+              "classes": "btn btn-link font-size-14 px-4 mr-3",
+              "handlerArg": true,
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "onClick": "disableInput",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "save": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "text": "Save",
+              "type": "button"
             }
           }
         }

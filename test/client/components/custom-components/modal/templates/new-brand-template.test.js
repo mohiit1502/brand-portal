@@ -7,7 +7,7 @@ import renderer, {act} from "react-test-renderer";
 import Cookies from "electrode-cookies";
 import {mockFailFetch, mockFetch, testStore} from "../../../../../../src/client/utility/TestingUtils";
 import NewBrandTemplate from "../../../../../../src/client/components/custom-components/modal/templates/new-brand-template";
-import MODALSMETA from "../../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../../src/client/config/formsConfig/form-field-meta";
 import {mount} from "enzyme";
 

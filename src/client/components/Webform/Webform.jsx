@@ -63,7 +63,7 @@ class Webform extends React.Component {
   updateStateAndFormatters(root) {
     try {
       const fields = {};
-      const webformFieldsConfiguration = root && root.SECTIONSCONFIG && root.SECTIONSCONFIG.WEBFORM ? root.SECTIONSCONFIG.WEBFORM : {};
+      const webformFieldsConfiguration = root && root.FORMSCONFIG && root.FORMSCONFIG.WEBFORM ? root.FORMSCONFIG.WEBFORM : {};
       webformFieldsConfiguration && webformFieldsConfiguration.fields && Object.keys(webformFieldsConfiguration.fields)
         .forEach(field => {
           fields[field] = {...webformFieldsConfiguration.fields[field]};

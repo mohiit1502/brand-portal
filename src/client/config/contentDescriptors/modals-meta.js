@@ -256,6 +256,68 @@ const MODALSMETA = {
       },
       "TYPE": "CTA"
     },
+    "DELETE_CONTACT": {
+      "BODY_CLASSES": "text-center",
+      "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+      "HEADER": "Delete Contact Information",
+      "MODAL_DIALOG_CLASSES": "modal-lg",
+      "SUBTITLE": {
+        "classes": "px-4 mb-5",
+        "content": {
+          "para1": {
+            "text": "Please note that the contact information of the user submitting the claim will be shared with the reported seller(s) by default if you delete the public contact information.",
+            "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
+          }
+        }
+      },
+      "PRIMARY_ACTION": {
+        "text": "Delete",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "deleteContactInfo"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "Back",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
+
+    },
+    "GO_TO_USER_PROFILE": {
+      "BODY_CLASSES": "text-center",
+      "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+      "HEADER": "Welcome to Walmart Brand Portal!",
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "You can update the contact information for your ",
+            "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
+          },
+          "para2": {
+            "text": "company on the User Profile page.",
+            "classes": "mx-2 text-center pb-5 font-size-16"
+          }
+        }
+      },
+      "HEIGHT": "110",
+      "IMAGE": "ProblemSolving",
+      "PRIMARY_ACTION": {
+        "text": "Go to your Profile",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "reroute",
+        "actionParam": "/profile"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "I'll do it later",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue",
+        "action": "updateUser"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
+    },
     "LOGOUT": {
       "BODY_CONTENT_CLASSES": "text-left",
       "BODY_CLASSES": "px-5",
@@ -292,6 +354,39 @@ const MODALSMETA = {
         "text": "Go Back"
       },
       "TYPE": "CTA"
+    },
+    "DASHBOARD_MODAL": {
+      "BODY_CONTENT_CLASSES": "text-left px-5",
+      "BODY_CLASSES": "px-5",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
+      "HEADER": "Welcome to Walmart Brand Portal!",
+      "IMAGE": "ProblemSolving",
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "You can update the contact information for your ",
+            "classes": "mx-2"
+          },
+          "para2": {
+            "text": "company on the User Profile page.",
+            "classes": "mx-2"
+          }
+        }
+      },
+      "PRIMARY_ACTION": {
+        "text": "Go to your Profile",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "goToUserProfile",
+        "actionParam": "https://seller.walmart.com"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "I'll do it later",
+        "classes": "mt-0 d-inline-block text-right mr-3",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
     },
     "PORTAL_DASHBOARD": {
       "CODE": 4

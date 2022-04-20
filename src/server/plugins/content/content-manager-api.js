@@ -36,6 +36,11 @@ class ContentManagerApi {
       },
       {
         method: "GET",
+        path: "/api/sectionsConfig",
+        handler: this.getSectionsConfiguration
+      },
+      {
+        method: "GET",
         path: "/api/mixpanelConfig",
         handler: this.getMixpanelConfiguration
       },
@@ -166,6 +171,32 @@ class ContentManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_MODAL_CONFIGURATION, mixpanelPayload);
+    }
+  }
+
+  async getSectionsConfiguration(request, h) {
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
+    console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] API request for sections configuration has started", corrId);
+    console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/sectionsConfig"
+    };
+    try {
+      const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.SECTIONSCONFIG");
+      mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] API request for sections configuration has completed", corrId);
+      return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.error("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] Error occurred in API request for sections configuration:", corrId, err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.CONTENT_MANAGER_API.GET_SECTION_CONFIGURATION, mixpanelPayload);
     }
   }
 

@@ -2,7 +2,7 @@ import {Provider} from "react-redux";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import React from "react";
-import MODALSMETA from "../../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../../src/client/config/formsConfig/form-field-meta";
 import profile from "../../../../mocks/userProfile";
 import renderer, {act} from "react-test-renderer";

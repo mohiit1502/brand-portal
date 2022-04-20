@@ -58,6 +58,11 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   border-radius: 0;
 }
 
+.bordered-box {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
+
 .shadowed-box {
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
 }
@@ -275,6 +280,45 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   font-size: 1.75rem;
 }
 
+.font-color-steel {
+  color: $text-steel-color !important;
+}
+
+.footer-text {
+  cursor: pointer;
+  text-decoration: underline;
+  color: $market-place-blue;
+  background: $background-blue;
+  //font-weight: bold;
+  font-size: 15px;
+  line-height: 22px;
+  font-family: Bogle-Bold;
+
+  &:hover {
+    color: $navy-blue;
+  }
+}
+
+.footer-text-individual {
+  cursor: default;
+  &:hover {
+    color: $market-place-blue;
+  }
+  span:hover{
+    color: $navy-blue;
+    cursor: pointer;
+  }
+}
+
+.font-disabled {
+  color: $text-disabled-color;
+}
+
+.text-overflow-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .width-small {
   width: 25rem;
 }
@@ -518,6 +562,12 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
 
 .move-beneath {
   z-index: -1;
+}
+
+.positioned-top-right {
+  position: absolute;
+  top: -1.5rem;
+  right: 0;
 }
 
 .tooltip-close-button {

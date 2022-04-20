@@ -15,6 +15,7 @@ import CompanyVerificationPendingTemplate from "./templates/company-verification
 import StatusModalTemplate from "./templates/StatusModalTemplate/StatusModalTemplate";
 import Alert from "../../Alert/Alert";
 import {DateSelector, ResetPasswordTemplate, TouTemplate} from "../../index";
+import FormModalTemplate from "./templates/form-modal-template";
 
 
 class CustomModal extends React.Component {
@@ -43,6 +44,7 @@ class CustomModal extends React.Component {
       case "CompanyBrandRegisteredTemplate": return CompanyBrandRegisteredTemplate;
       case "CompanyVerificationPendingTemplate": return CompanyVerificationPendingTemplate;
       case "CreateUserTemplate": return CreateUserTemplate;
+      case "FormModalTemplate": return FormModalTemplate;
       case "NewBrandTemplate": return NewBrandTemplate;
       case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
       case "NewClaimTemplate": return NewClaimTemplate;

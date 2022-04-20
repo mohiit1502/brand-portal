@@ -154,7 +154,7 @@ ContactUsForm.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    contactUsForm: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.CONTACTUS,
+    contactUsForm: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.CONTACTUS,
   };
 };
 

@@ -8,7 +8,7 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 // import FORMFIELDCONFIG from "../../../src/client/config/formsConfig/form-field-meta";
 import FORMFIELDMOCK from "../mocks/formFeildMock";
-import MODALSMETA from "../../../src/client/config/modals-meta"
+import MODALSMETA from "../../../src/client/config/contentDescriptors/modals-meta"
 import homePageMocks from "../mocks/homePageMocks";
 import profile from "../mocks/userProfile";
 import portalRegUserProfile from "../mocks/portalRegUserProfile";

@@ -23,19 +23,4 @@ $item-status-color: #8797A5;
       color: $navy-blue;
     }
   }
-
-  .footer-text {
-    cursor: pointer;
-    text-decoration: underline;
-    color: $market-place-blue;
-    background: $background-blue;
-    //font-weight: bold;
-    font-size: 15px;
-    line-height: 22px;
-    font-family: Bogle-Bold;
-
-    &:hover {
-      color: $navy-blue;
-    }
-  }
 }

@@ -9,7 +9,7 @@ import {testStore} from "../../../../../src/client/utility/TestingUtils";
 import BrandRegistration from "../../../../../src/client/components/onboard/content-renderer-onboarding/brand-registration";
 import profile from "../../../mocks/userProfile";
 import Http from "../../../../../src/client/utility/Http";
-import MODALSMETA from "../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../src/client/config/formsConfig/form-field-meta";
 import applicationDetails from "../../../mocks/applicationDetails";
 import {mount} from "enzyme";
