@@ -68,7 +68,7 @@ class CompanyManagerApi {
       },
       {
         method: "PUT",
-        path: "/api/org/updateContactInfo/{orgId}",
+        path: "/api/org/updateContactInfo",
         handler: this.updateContactInfo
       },
       {
@@ -362,10 +362,11 @@ class CompanyManagerApi {
     const payload = request.payload;
     const mixpanelPayload = {
       METHOD: "GET",
-      API: "/api/org/updateContactInfo/{orgId}"
+      API: "/api/org/updateContactInfo"
     };
     console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information.", corrId);
     console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Updating contact info for ID: ", corrId, payload.orgId);
     try {
       if (!headers.ROPRO_CLIENT_TYPE) {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
@@ -383,7 +384,7 @@ class CompanyManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.ORG_ID = request.params.orgId;
+      mixpanelPayload.ORG_ID = payload.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.put(url, options, payload);
@@ -428,7 +429,7 @@ class CompanyManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.ORG_ID = request.params.orgId;
+      mixpanelPayload.ORG_ID = payload.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
       const response = await ServerHttp.put(url, options, payload);
