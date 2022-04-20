@@ -49,10 +49,14 @@ class FormModalTemplate extends React.Component {
     const contactDetails = data.organization.primaryContactInformation;
 
     if (contactDetails) {
-      form.inputData.firstName.value = data.firstName;
-      form.inputData.lastName.value = data.lastName;
-      form.inputData.phone.value = data.phone;
-      form.inputData.email.value = data.email;
+      form.inputData.firstName.value = this.props.meta.subContext === "myInfo" ? data.firstName
+        : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.firstName : "");
+      form.inputData.lastName.value = this.props.meta.subContext === "myInfo" ? data.lastName
+        : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.lastName : "");;
+      form.inputData.phone.value = this.props.meta.subContext === "myInfo" ? data.phoneCountry + " " + data.phoneNumber
+        : (data.org.secondaryContactInformation ? data.org.secondaryContactInformation.phone : "");;
+      form.inputData.email.value = this.props.meta.subContext === "myInfo" ? data.email
+        :(data.org.secondaryContactInformation ? data.org.secondaryContactInformation.email : "");;
     }
 
     form.templateUpdateComplete = true;
@@ -64,16 +68,6 @@ class FormModalTemplate extends React.Component {
   //   if (key === "trademarkNumber" && ((evt.which < 48 || evt.which > 57) && !CONSTANTS.ALLOWED_KEY_CODES.includes(evt.which))) {
   //     evt.preventDefault();
   //   }
-  // }
-
-  // bubbleValue (evt, key, error) {
-  //   const targetVal = evt.target.value;
-  //   this.setState(state => {
-  //     state = {...state};
-  //     state.form.inputData[key].value = targetVal;
-  //     state.form.inputData[key].error = error;
-  //     return state;
-  //   }, this.checkToEnableSubmit);
   // }
 
   undertakingtoggle (evt) {
@@ -116,19 +110,23 @@ class FormModalTemplate extends React.Component {
       const lastName = this.state.form.inputData.lastName.usptoUrl;
       const email = this.state.form.inputData.email.value;
       const phone = this.state.form.inputData.phone.value;
-      const payload = this.props.subContext === "myInfo" ? {firstName, lastName, email, phone}
-        : {"secondaryContactInformation": {firstName, lastName, email, phone}};
-      const url = this.props.subContext === "myInfo" ? `/api/users/${this.props.userProfile.email}` : `/api/org/updateContactInfo/${this.state.user.organization.id}`;
+      const payload = this.props.meta.subContext === "myInfo" ? {firstName, lastName, email, phone}
+        : {
+          "orgId": this.state.user.organization.id,
+          "secondaryContactInformation": {firstName, lastName, email, phone}
+        };
+      const url = this.props.meta.subContext === "myInfo" ? `/api/users/${this.props.userProfile.email}` : `/api/org/updateContactInfo`;
 
       if (!this.validateState()) {
         const mixpanelPayload = {
-          API: url
+          API: url,
+          ORG_ID: this.state.user.organization.id
         };
         this.loader("form", true);
         return Http.put(url, payload)
           .then(res => {
             this.resetTemplateStatus();
-            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New Public Contact ‘${res.body.name}’ added to your orgamization.`);
+            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New Public Contact ‘${res.body.name}’ added to your organization.`);
             this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             this.loader("form", false);
             //   mixpanelPayload.API_SUCCESS = true;
@@ -136,7 +134,7 @@ class FormModalTemplate extends React.Component {
           .catch(err => {
             this.loader("form", false);
             mixpanelPayload.API_SUCCESS = false;
-            this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+            // this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             mixpanelPayload.ERROR = err.message ? err.message : err;
           })
           .finally(() => {
@@ -152,22 +150,14 @@ class FormModalTemplate extends React.Component {
     form.inputData.lastName.value = "";
     form.inputData.email.value = "";
     form.inputData.phone.value = "";
+    form.inputData.user_undertaking.value = "";
+    form.inputData.user_undertaking.selected = false;
 
     form.inputData.firstName.error = "";
     form.inputData.lastName.error = "";
     form.inputData.email.error = "";
     form.inputData.phone.error = "";
-
-    // form.inputData.trademarkNumber.fieldOk = false;
-    // form.inputData.trademarkNumber.fieldAlert = false;
-    // form.inputData.brandName.fieldOk = false;
-
-    // form.inputData.trademarkNumber.isValid = false;
-    // form.inputData.brandName.isUnique = false;
-
-    // form.inputData.trademarkNumber.disabled = false;
-    // form.inputData.brandName.disabled = false;
-    // form.inputData.publiContactCreateActions.buttons.submit.disabled = true;
+    form.inputData.user_undertaking.error = "";
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -215,6 +205,7 @@ class FormModalTemplate extends React.Component {
 FormModalTemplate.propTypes = {
   clientType: PropTypes.string,
   data: PropTypes.object,
+  meta: PropTypes.object,
   modal: PropTypes.object,
   newPublicContactConfiguration: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
@@ -225,8 +216,8 @@ FormModalTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     clientType: Cookies.get("client_type"),
-    newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.CONTACTINFO,
     modal: state.modal,
+    newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.CONTACTINFO,
     userProfile: state.user.profile
   };
 };
