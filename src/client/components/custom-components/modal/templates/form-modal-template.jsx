@@ -115,7 +115,7 @@ class FormModalTemplate extends React.Component {
         : {
           "orgId": this.state.user.organization.id,
           "org": {
-            "secondaryContactInformation": {firstName, lastName, loginId, phoneNumber}
+            "secondaryContactInformation": {firstName, lastName, email: loginId, phoneNumber}
           }
         };
       const url = this.props.meta.subContext === "myInfo" ? `/api/users/${this.props.userProfile.email}` : `/api/org/updateContactInfo`;
@@ -183,7 +183,7 @@ class FormModalTemplate extends React.Component {
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
-                form.isUpdateTemplate ? section.sectionTitleEdit : section.sectionTitleNew
+                (this.props.meta && this.props.meta.title) || (form.isUpdateTemplate ? section.sectionTitleEdit : section.sectionTitleNew)
               }
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>

@@ -60,7 +60,7 @@ const SECTIONSMETA = {
             },
             {
               "action": "displayModal",
-              "actionParams": {"context": "edit", "subContext": "myInfo", "modal": [
+              "actionParams": {"context": "edit", "subContext": "myInfo",  "title": "Edit Profile", "modal": [
                   {"key": "state.isSeller", "value": true, "modal": "StatusModalTemplate", "configName": "PASSWORD_RESET_SELLER"},
                   {"key": "state.isSeller", "value": false, "modal": "FormModalTemplate"}]},
               "text": "Edit"
@@ -156,19 +156,19 @@ const SECTIONSMETA = {
                 "buttons": [
                   {
                     "action": "displayModal",
-                    "actionParams": {"modal": "StatusModalTemplate", "configName": "DELETE_CONTACT"},
+                    "actionParams": {"title": "Delete Public Contact", "modal": "StatusModalTemplate", "configName": "DELETE_CONTACT"},
                     "text": "Delete",
                     "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}"
                   },
                   {
                     "action": "displayModal",
-                    "actionParams": {"context": "new", "subContext": "publicContact", "modal": "FormModalTemplate"},
+                    "actionParams": {"title": "Create Public Contact", "context": "new", "subContext": "publicContact", "modal": "FormModalTemplate"},
                     "text": "Add",
                     "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": false}"
                   },
                   {
                     "action": "displayModal",
-                    "actionParams": {"context": "edit", "subContext": "publicContact","modal": "FormModalTemplate"},
+                    "actionParams": {"title": "Edit Public Contact", "context": "edit", "subContext": "publicContact","modal": "FormModalTemplate"},
                     "text": "Edit",
                     "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}"
                   }
