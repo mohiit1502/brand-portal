@@ -156,7 +156,6 @@ const StatusModalTemplate = props => {
     const payload = {orgId: user.profile.organization.id};
     return Http.put(`/api/org/deleteSecondaryContactInfo`, payload, null, null)
       .then(async res => {
-        updateUserProfile(res.body);
         showNotification(NOTIFICATION_TYPE.SUCCESS, "Deleted contact information successfully!");
         hideModal();
         mixpanelPayload.API_SUCCESS = true;
