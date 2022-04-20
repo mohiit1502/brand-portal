@@ -29,9 +29,9 @@ const SECTIONSMETA = {
             },
             "key-val3": {
               "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-              "dynamicReplacementConfig": {"__phoneCountry__": "profile.phoneCountry", "__phoneNumber__": "profile.phoneNumber"},
+              "dynamicReplacementConfig": {"__phoneNumber__": "profile.phoneNumber"},
               "key": "Phone",
-              "value": "__phoneCountry__ __phoneNumber__"
+              "value": "__phoneNumber__"
             },
             "key-val4": {
               "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
