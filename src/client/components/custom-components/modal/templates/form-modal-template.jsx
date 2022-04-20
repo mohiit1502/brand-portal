@@ -225,7 +225,7 @@ FormModalTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     clientType: Cookies.get("client_type"),
-    newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWBRAND,
+    newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.CONTACTINFO,
     modal: state.modal,
     userProfile: state.user.profile
   };
