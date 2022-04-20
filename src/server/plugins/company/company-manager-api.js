@@ -73,7 +73,7 @@ class CompanyManagerApi {
       },
       {
         method: "PUT",
-        path: "/api/org/deleteSecondaryContactInfo/{orgId}",
+        path: "/api/org/deleteSecondaryContactInfo",
         handler: this.deleteSecondaryContactInfo
       }
     ]);
@@ -348,6 +348,7 @@ class CompanyManagerApi {
   async updateContactInfo(request, h) {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
+    const payload = request.payload;
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/org/updateContactInfo/{orgId}"
@@ -363,11 +364,11 @@ class CompanyManagerApi {
         headers
       };
       console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Fetching CCM dependencies", corrId);
-      // const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      // let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_INFO");
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_INFO");
       // UPDATE_CONTACT_PATH && (UPDATE_CONTACT_PATH = UPDATE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
-      // const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
-      const url = "http://localhost:8092/ropro/org-service/org/contact-info";
+      const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
+      // const url = "http://localhost:8092/ropro/org-service/org/contact-info";
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
@@ -375,7 +376,7 @@ class CompanyManagerApi {
       mixpanelPayload.ORG_ID = request.params.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.put(url, options);
+      const response = await ServerHttp.put(url, options, payload);
       console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
@@ -393,6 +394,7 @@ class CompanyManagerApi {
   async deleteSecondaryContactInfo(request, h) {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
+    const payload = request.payload;
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/org/deleteSecondaryContactInfo"
@@ -410,7 +412,7 @@ class CompanyManagerApi {
       console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       let DELETE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.DELETE_CONTACT_PATH");
-      DELETE_CONTACT_PATH && (DELETE_CONTACT_PATH = DELETE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
+      // DELETE_CONTACT_PATH && (DELETE_CONTACT_PATH = DELETE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
       const url = `${BASE_URL}${DELETE_CONTACT_PATH}`;
 
       mixpanelPayload.URL = url;
@@ -419,7 +421,7 @@ class CompanyManagerApi {
       mixpanelPayload.ORG_ID = request.params.orgId;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
-      const response = await ServerHttp.get(url, options);
+      const response = await ServerHttp.put(url, options, payload);
       console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] API request for deleting secondary contact information has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {

@@ -59,7 +59,9 @@ const SECTIONSMETA = {
             },
             {
               "action": "displayModal",
-              "actionParams": {"context": "edit", "subContext": "myInfo", "modal": "FormModalTemplate"},
+              "actionParams": {"context": "edit", "subContext": "myInfo", "modal": [
+                  {"key": "state.isSeller", "value": true, "modal": "StatusModalTemplate", "configName": "PASSWORD_RESET_SELLER"},
+                  {"key": "state.isSeller", "value": false, "modal": "FormModalTemplate"}]},
               "text": "Edit",
             }
           ],

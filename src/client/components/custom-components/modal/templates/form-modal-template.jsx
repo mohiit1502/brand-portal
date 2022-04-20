@@ -107,49 +107,31 @@ class FormModalTemplate extends React.Component {
   async handleSubmit(evt) {
     const mixpanelClickEventPayload = {
       IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
-      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "EDIT_CONTACT_INFO" : "ADD_NEW_CONTACT_INFO"
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
-    evt.preventDefault();
-    const firstName = this.state.form.inputData.firstName.value;
-    const lastName = this.state.form.inputData.lastName.usptoUrl;
-    const email = this.state.form.inputData.email.value;
-    const phone = this.state.form.inputData.phone.value;
-    const payload = { firstName, lastName, email, phone };
-    // Http.get(`/api/org/applicationDetails/${user.organization.id}`)
-    // const url = `/api/org/updateContactInfo/${user.organization.id}`;
+    if (this.props.subContext) {
+      evt.preventDefault();
+      const firstName = this.state.form.inputData.firstName.value;
+      const lastName = this.state.form.inputData.lastName.usptoUrl;
+      const email = this.state.form.inputData.email.value;
+      const phone = this.state.form.inputData.phone.value;
+      const payload = this.props.subContext === "myInfo" ? {firstName, lastName, email, phone}
+        : {"secondaryContactInformation": {firstName, lastName, email, phone}};
+      const url = this.props.subContext === "myInfo" ? `/api/users/${this.props.userProfile.email}` : `/api/org/updateContactInfo/${this.state.user.organization.id}`;
 
-    const url = `/api/org/updateContactInfo/${this.state.user.organization.id}`;
-
-    if (!this.validateState()) {
-      const mixpanelPayload = {
-        API: url
-      };
-      //   BRAND_NAME: name,
-      //   IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
-      //   TRADEMARK_NUMBER: trademarkNumber,
-      //   WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
-      // };
-      // if (this.state.form.isUpdateTemplate) {
-      //   this.loader("form", true);
-      //   return null;
-      // } else {
-        const payload = {
-            "secondaryContactInformation": {
-              "firstName": this.state.form.inputData.firstName.value,
-              "lastName": this.state.form.inputData.lastName.value,
-              "email": this.state.form.inputData.email.value,
-              "phone": this.state.form.inputData.phone.value
-          }
+      if (!this.validateState()) {
+        const mixpanelPayload = {
+          API: url
         };
-          this.loader("form", true);
+        this.loader("form", true);
         return Http.put(url, payload)
           .then(res => {
             this.resetTemplateStatus();
             this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New Public Contact ‘${res.body.name}’ added to your orgamization.`);
             this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             this.loader("form", false);
-          //   mixpanelPayload.API_SUCCESS = true;
+            //   mixpanelPayload.API_SUCCESS = true;
           })
           .catch(err => {
             this.loader("form", false);
@@ -158,31 +140,11 @@ class FormModalTemplate extends React.Component {
             mixpanelPayload.ERROR = err.message ? err.message : err;
           })
           .finally(() => {
-          //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+            //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
           });
       }
     }
-    //   return Http.put(`${url}/${this.props.data.brandId}`);
-        // .then(res => {
-        //   this.resetTemplateStatus();
-        //   this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
-        //   this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-        //   this.props.saveBrandInitiated();
-        //   this.loader("form", false);
-        //   mixpanelPayload.API_SUCCESS = true;
-        // })
-        // .catch(err => {
-        //   this.loader("form", false);
-        //   mixpanelPayload.API_SUCCESS = false;
-        //   mixpanelPayload.ERROR = err.message ? err.message : err;
-        // })
-        // .finally(() => {
-        //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
-        // });
-    // else {
-
-    // }
-
+  }
 
   resetTemplateStatus (e) {
     const form = {...this.state.form};

@@ -8,6 +8,7 @@ import Tooltip from "../custom-components/tooltip/tooltip";
 import ContentRenderer from "../../utility/ContentRenderer";
 import * as images from "../../images";
 import "./Section.component.scss";
+import Helper from "../../utility/helper";
 
 const Section = props => {
   const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, toggleModal} = props;
@@ -36,7 +37,14 @@ const Section = props => {
   const runAction = (action, actionParams) => {
     switch (action) {
       case "displayModal":
-        const meta = { templateName: actionParams.modal, ...(actionParams.configName ? modalsMeta[actionParams.configName] : {})};
+        const modal = actionParams.modal;
+        let params;
+        if (typeof modal === "string") {
+          params = actionParams;
+        } else if (typeof modal === "object") {
+          params = modal.find(conf => conf.value === Helper.search(conf.key, parent));
+        }
+        const meta = {templateName: params.modal, ...(params.configName ? modalsMeta[params.configName] : {})};
         actionParams.context && (meta.context = actionParams.context);
         actionParams.subContext && (meta.subContext = actionParams.subContext);
         toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});

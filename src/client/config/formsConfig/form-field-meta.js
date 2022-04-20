@@ -2159,7 +2159,7 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-primary btn-sm px-4 font-size-14",
               "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
               "text": "Save",
-              "type": "submit"
+              "type": "button"
             }
           }
         }

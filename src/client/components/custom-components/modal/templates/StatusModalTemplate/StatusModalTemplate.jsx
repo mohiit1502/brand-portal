@@ -133,11 +133,36 @@ const StatusModalTemplate = props => {
       .then(async res => {
         updateUserProfile(res.body);
         showNotification(NOTIFICATION_TYPE.SUCCESS, "Saved your preference successfully!");
+        mixpanelPayload.API_SUCCESS = true;
+      })
+      .catch(err => {
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      })
+      .finally(() => {
+        setLoader(false);
+        hideModal();
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.UPDATE_PROFILE_LATER, mixpanelPayload);
+      });
+  }
+
+  const deleteContactInfo = () => {
+    setLoader(true);
+    const mixpanelPayload = {
+      API: "/api/users",
+      WORK_FLOW: "LINK_ACCOUNTS",
+      EMAIL: user.profile.email
+    };
+    const payload = {orgId: user.profile.organization.id};
+    return Http.put(`/api/org/deleteSecondaryContactInfo`, payload, null, null)
+      .then(async res => {
+        updateUserProfile(res.body);
+        showNotification(NOTIFICATION_TYPE.SUCCESS, "Deleted contact information successfully!");
         hideModal();
         mixpanelPayload.API_SUCCESS = true;
       })
       .catch(err => {
-        showNotification(NOTIFICATION_TYPE.ERROR, "Accounts could not be linked, please try again!");
+        showNotification(NOTIFICATION_TYPE.ERROR, "Unable to delete contact information, please try again!");
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
@@ -180,11 +205,13 @@ const StatusModalTemplate = props => {
           break;
         case "navigation":
           window.open(actionParam, "_blank");
-          // window.location.href = actionParam;
           break;
         case "logout":
           mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
           window.location.href = logoutUrlSuperlated;
+          break;
+        case "deleteContactInfo":
+          deleteContactInfo();
           break;
         case "refreshAndHideModal":
           toggleModal(TOGGLE_ACTIONS.HIDE);

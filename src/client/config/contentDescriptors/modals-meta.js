@@ -259,16 +259,14 @@ const MODALSMETA = {
     "DELETE_CONTACT": {
       "BODY_CLASSES": "text-center",
       "BODY_CONTENT_CLASSES": "px-5 font-size-15",
-      "HEADER": "Delete Public Contact Information",
+      "HEADER": "Delete Contact Information",
+      "MODAL_DIALOG_CLASSES": "modal-lg",
       "SUBTITLE": {
+        "classes": "px-4 mb-5",
         "content": {
           "para1": {
-            "text": "If you delete the Public contact information, the Super Admin's ",
+            "text": "Please note that the contact information of the user submitting the claim will be shared with the reported seller(s) by default if you delete the public contact information.",
             "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
-          },
-          "para2": {
-            "text": "contact information will be shared by default.",
-            "classes": "mx-2 text-center pb-5 font-size-16"
           }
         }
       },
@@ -276,8 +274,7 @@ const MODALSMETA = {
         "text": "Delete",
         "classes": "text-right float-right px-3",
         "containerClasses": "p-3",
-        "action": "navigation",
-        "actionParam": "https://seller.walmart.com"
+        "action": "deleteContactInfo"
       },
       "ADDITIONAL_ACTION": {
         "text": "Back",
