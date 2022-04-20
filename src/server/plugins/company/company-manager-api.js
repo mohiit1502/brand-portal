@@ -184,6 +184,12 @@ class CompanyManagerApi {
       console.log("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] Fetching CCM dependencies", corrId);
       const file = request.payload.file;
       const filename = file.hapi.filename;
+      try {
+        const fileSize = Buffer.byteLength(file._data);
+        console.log("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] Appending document with name: '%s' & size:", corrId, filename, fileSize);
+      } catch (e) {
+        console.error("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] Error while trying to find file size, ignoring...");
+      }
       const fd = new FormData();
       fd.append("file", file, { filename });
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
@@ -224,7 +230,12 @@ class CompanyManagerApi {
       const file = request.payload.file;
       const filename = file.hapi.filename;
       const fd = new FormData();
-
+      try {
+        const fileSize = Buffer.byteLength(file._data);
+        console.log("[Corr ID: %s][CompanyManagerApi::uploadBusinessDocument] Appending document with name: '%s' & size:", corrId, filename, fileSize);
+      } catch (e) {
+        console.error("[Corr ID: %s][CompanyManagerApi::uploadBusinessDocument] Error while trying to find file size, ignoring...");
+      }
       fd.append("file", file, { filename });
       console.log("[Corr ID: %s][CompanyManagerApi::uploadBusinessDocument] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");

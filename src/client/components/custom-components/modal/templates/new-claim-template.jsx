@@ -336,8 +336,9 @@ class NewClaimTemplate extends React.Component {
             //form.inputData.claimType.options = form.inputData.claimType.options.map(v => ({value: v.claimType}));
             this.setState({form}, this.checkToEnableItemButton);
           } else if (res.body.length === 0) {
-            form.inputData.urlItems.itemList[i].sellerName.disabled = true;
-            form.inputData.urlItems.itemList[i].url.error = "Please check the URL and try again!";
+            form.inputData.urlItems.itemList[i].url.error = "Unable to retrieve seller names for this item at this time, please enter the name of the sellers(s) related to your report (comma separated if multiple sellers)";
+            form.inputData.urlItems.itemList[i].sellerName.disabled = false;
+            form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = [];
             this.setState({form}, this.checkToEnableItemButton);
           }
         })
@@ -348,7 +349,6 @@ class NewClaimTemplate extends React.Component {
             form.inputData.urlItems.itemList[i].url.error = "Unable to retrieve seller names for this item at this time, please enter the name of the sellers(s) related to your report (comma separated if multiple sellers)";
             form.inputData.urlItems.itemList[i].sellerName.disabled = false;
             form.inputData.urlItems.itemList[i].sellerName.dropdownOptions = [];
-            form.isSubmitDisabled = true;
           } else {
             form.inputData.urlItems.itemList[i].url.error = "Unable to retrieve sellers for this URL at this time, please try again!";
             form.inputData.urlItems.itemList[i].sellerName.disabled = true;

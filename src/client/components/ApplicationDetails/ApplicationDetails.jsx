@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Http from "../../utility/Http";
 import "./ApplicationDetails.component.scss";
+import CONSTANTS from "../../constants/constants";
 
 
 const ApplicationDetails = props => {
@@ -19,7 +20,7 @@ const ApplicationDetails = props => {
           companyDetails.org = companyDetails.company || {};
           companyDetails.org.businessRegistrationDocList = companyDetails.businessRegistrationDocList;
           companyDetails.brand.additionalDocList = companyDetails.additionalDocList;
-          if (companyDetails.orgStatus === "ON_HOLD" && companyDetails.reasonCode !== "hold_ro_application_edit") {
+          if (companyDetails.orgStatus === "ON_HOLD" && companyDetails.reasonCode !== "hold_ro_application_edit" && user.workflow.code !== CONSTANTS.WORKFLOW_CODES.USER_ACCESS_REVOKED) {
             companyDetails.orgStatus = "NEW";
           }
           delete companyDetails.company;
