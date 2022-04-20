@@ -708,10 +708,10 @@ const FORMFIELDCONFIG = {
             "default": false,
               "condition": [
               {
-                "keyPath": "subContext",
+                "keyPath": "meta.subContext",
                 "keyLocator": "props",
                 "dependencyValue": [
-                  "myInfo"
+                  "myinfo"
                 ],
                 "value": true
               }

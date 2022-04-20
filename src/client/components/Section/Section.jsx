@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import $ from "jquery";
@@ -11,12 +11,17 @@ import "./Section.component.scss";
 import Helper from "../../utility/helper";
 
 const Section = props => {
-  const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, toggleModal} = props;
+  const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, profile, toggleModal} = props;
+  const [userProfile, setUserProfile] = useState();
   const getTooltipContent = content => content.map(text => {
     return <div className="py-2">
       <p className="mt-2 pl-2 text-left font-size-12">{text}</p>
     </div>
   });
+
+  useEffect(() => {
+    setUserProfile(profile);
+  }, [profile])
 
   useEffect(() => {
     try {
@@ -53,6 +58,7 @@ const Section = props => {
   }
 
   const evaluateRenderFooter = footer => !footer.renderCondition || ContentRenderer.evaluateRenderDependency.call(parent, footer.renderCondition);
+  const bodyContent = ContentRenderer.getSectionRenders.call(parent, body.content);
 
   return (
     <div className={`c-Section${layoutClasses ? " " + layoutClasses : ""}`}>
@@ -63,7 +69,7 @@ const Section = props => {
             {header.tooltip && <Tooltip classes="ml-3" content={getTooltipContent(header.tooltip)}
               icon={images.Question}/>}
           </header>}
-          {ContentRenderer.getSectionRenders.call(parent, body.content)}
+          {bodyContent}
         </div>}
         {footer && evaluateRenderFooter(footer) && <footer
           className={`${footer.classes ? " " + footer.classes : ""}${buttonRenders ? buttonRenders.length > 1 ? " justify-content-between" : " justify-content-around" : ""}`}>
@@ -80,12 +86,14 @@ Section.propTypes = {
   data: PropTypes.object,
   modalsMeta: PropTypes.object,
   parent: PropTypes.object,
+  profile: PropTypes.object,
   toggleModal: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
-    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
+    profile: state.user.profile
   };
 };
 

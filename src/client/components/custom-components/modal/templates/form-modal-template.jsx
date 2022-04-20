@@ -6,14 +6,14 @@ import Cookies from "electrode-cookies";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
 import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
+import {updateUserProfile} from "../../../../actions/user/user-actions";
 import Http from "../../../../utility/Http";
 import Helper from "../../../../utility/helper";
 import Validator from "../../../../utility/validationUtil";
 import ContentRenderer from "../../../../utility/ContentRenderer";
-import CONSTANTS from "../../../../constants/constants";
-import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
+import "../../../../styles/custom-components/modal/templates/new-brand-template.scss";
 
 class FormModalTemplate extends React.Component {
 
@@ -34,7 +34,6 @@ class FormModalTemplate extends React.Component {
         ...newPublicContactConfiguration.formConfig
       },
       user: this.props.userProfile
-
     };
   }
 
@@ -54,11 +53,10 @@ class FormModalTemplate extends React.Component {
       form.inputData.lastName.value = this.props.meta.subContext === "myInfo" ? data.lastName
         : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.lastName : "");;
       form.inputData.phone.value = this.props.meta.subContext === "myInfo" ? data.phoneNumber
-        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.phone : "");;
+        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.phoneNumber : "");;
       form.inputData.email.value = this.props.meta.subContext === "myInfo" ? data.email
         :(data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.email : "");;
     }
-
 
     form.templateUpdateComplete = true;
     form.isUpdateTemplate = true;
@@ -128,6 +126,23 @@ class FormModalTemplate extends React.Component {
         this.loader("form", true);
         return Http.put(url, payload)
           .then(res => {
+            if (res.status === 200) {
+              const user = JSON.parse(JSON.stringify(this.state.user));
+              if (this.props.meta.subContext === "myInfo") {
+                user.firstName = firstName;
+                user.lastName = lastName;
+                user.email = loginId;
+                user.phoneNumber = phoneNumber;
+              } else {
+                const contactInfo = this.props.meta.context === "edit" ? user.organization.secondaryContactInformation : {};
+                user.organization.secondaryContactInformation = contactInfo;
+                contactInfo.firstName = firstName;
+                contactInfo.lastName = lastName;
+                contactInfo.email = loginId;
+                contactInfo.phoneNumber = phoneNumber;
+              }
+              this.props.updateUserProfile(user);
+            }
             this.resetTemplateStatus();
             this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Request completed successfully.`);
             this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -139,7 +154,7 @@ class FormModalTemplate extends React.Component {
             mixpanelPayload.API_SUCCESS = false;
             // this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             mixpanelPayload.ERROR = err.message ? err.message : err;
-            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Something went wrong, please try again!`);
+            this.props.showNotification(NOTIFICATION_TYPE.ERROR, `Something went wrong, please try again!`);
           })
           .finally(() => {
             //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
@@ -215,6 +230,7 @@ FormModalTemplate.propTypes = {
   saveBrandInitiated: PropTypes.func,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
+  updateUserProfile: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -229,7 +245,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   toggleModal,
   saveBrandInitiated,
-  showNotification
+  showNotification,
+  updateUserProfile
 };
 
 export default connect(

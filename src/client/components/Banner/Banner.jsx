@@ -24,7 +24,7 @@ const Banner = (props) => {
           <span className={`col-1 pl-3 pr-0`}><a className={`see-more-button`} onClick={func} href={`#`}>{expand ? `See less` : `See more`}</a></span>
         </>;
       case "v2":
-        return <div className={`banner-content pl-2`}>
+        return <div className={`banner-content pl-3`}>
           {content.text}
           </div>
     }

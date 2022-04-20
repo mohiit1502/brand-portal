@@ -21,7 +21,6 @@ class UserProfile extends React.Component {
 
   constructor (props) {
     super(props);
-    // const functions = ["bubbleValue", "displayChangePassword", "displayContactModal", "displayManageProfileNotification", "isDirty", "onChange", "setFormData", "disableInput", "saveUser"];
     const functions = ["displayChangePassword", "displayContactModal", "displayManageProfileNotification", "saveUser"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
@@ -35,11 +34,6 @@ class UserProfile extends React.Component {
     const userProfileSectionConfig = this.props.userProfileSectionConfig ? this.props.userProfileSectionConfig : {};
 
     this.state = {
-      // section: {...userProfileConfiguration.sectionConfig},
-      // form: {
-      //   ...userProfileConfiguration.formConfig,
-      //   inputData: {...userProfileConfiguration.fields}
-      // },
       isSeller: Cookies.get("client_type") === "seller",
       loader: false,
       sectionsConfig: {...userProfileSectionConfig}
@@ -59,12 +53,6 @@ class UserProfile extends React.Component {
     // });
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps !== this.props) {
-  //     this.setFormData(this.props.userProfile);
-  //   }
-  // }
-  //
   // isDirty () {
   //   const {firstName: originalFName, lastName: originalLName, email: originalEmail, phoneNumber: originalPhone, companyName: originalCompany} = this.props.userProfile;
   //   const {firstName: {value: currentFName}, lastName: {value: currentLName}, emailId: {value: currentEmail}, phone: {value: currentPhone}} = this.state.form.inputData;
@@ -74,57 +62,6 @@ class UserProfile extends React.Component {
   //     // || ((!originalCompany && currentCompany) || (originalCompany && !currentCompany) || (originalCompany !== currentCompany));
   // }
   //
-  // setFormData(obj) {
-  //   if (this.props.shouldDiscard) {
-  //     const form = {...this.state.form};
-  //     form.isDisabled = true;
-  //     form.inputData.firstName.value = obj.firstName;
-  //     form.inputData.lastName.value = obj.lastName;
-  //     form.inputData.companyName.value = obj.type === "ThirdParty" ? obj.companyName : "";
-  //     form.inputData.emailId.value = obj.email;
-  //     form.inputData.phone.value = (obj.phoneNumber === "0000000000") || (obj.phoneNumber === "(000) 000-0000") ? "" : obj.phoneNumber;
-  //
-  //     Object.keys(form.inputData).forEach(key => {
-  //       if (key !== "emailId") {
-  //         const item = form.inputData[key];
-  //         item.disabled = true;
-  //         item.error = "";
-  //       }
-  //     });
-  //
-  //     this.setState({form});
-  //     this.props.dispatchDiscardChanges(false);
-  //   }
-  // }
-  //
-  // bubbleValue (evt, key, error) {
-  //   const targetVal = evt.target.value;
-  //   this.setState(state => {
-  //     state = {...state};
-  //     state.form.inputData[key].value = targetVal;
-  //     state.form.inputData[key].error = error;
-  //     return state;
-  //   });
-  // }
-  //
-  // onChange (evt, key) {
-  //   if (evt && evt.target) {
-  //     if (evt.target.pattern && evt.target.checkValidity()) {
-  //       this.invalid[key] = false;
-  //     }
-  //     const targetVal = evt.target.value;
-  //     this.setState(state => {
-  //       state = {...state};
-  //       const inputData = state.form.inputData;
-  //       state.form.inputData[key].value = targetVal;
-  //       inputData[key].error = !this.invalid[key] ? "" : inputData[key].error;
-  //       this.invalid[key] = false;
-  //       return {
-  //         ...state
-  //       };
-  //     });
-  //   }
-  // }
 
   displayManageProfileNotification () {
     let template = this.props.modalsMeta && this.props.modalsMeta.PASSWORD_RESET_SELLER;
@@ -192,7 +129,6 @@ class UserProfile extends React.Component {
           .then(async res => {
             this.loader("state", false);
             this.props.updateUserProfile(res.body);
-            // this.disableInput(true, false);
             mixpanelPayload.API_SUCCESS = true;
           })
           .catch(err => {
@@ -205,7 +141,6 @@ class UserProfile extends React.Component {
           });
       } else {
         this.loader("state", false);
-        // this.disableInput(true);
       }
     }
     return null;
@@ -218,16 +153,9 @@ class UserProfile extends React.Component {
 
   /* eslint-disable react/jsx-handler-names */
   render () {
-    return (
-      <div className={`user-profile-content h-100 ml-4 mt-5${this.state.loader ? " loader" : ""}`}>
-        {/*<header className={this.state.section.headerClasses}>{this.state.section.sectionTitle}</header>*/}
-        {/*<button onClick={this.displayContactModal}>Add Public contact</button>*/}
+      return <div className={`user-profile-content h-100 ml-4 mt-5${this.state.loader ? " loader" : ""}`}>
         {this.getSectionRenders()}
-        {/*<form className={this.state.section.formClasses} autoComplete="off" onSubmit={this.saveUser} style={{marginRight: "50%"}}>*/}
-        {/*  {this.getFieldRenders()}*/}
-        {/*</form>*/}
       </div>
-    );
   }
 }
 
