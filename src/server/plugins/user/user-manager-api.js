@@ -167,8 +167,8 @@ class UserManagerApi {
         headers
       };
       console.log("[Corr ID: %s][UserManagerApi::checkHealth] Fetching dependencies from CCM", corrId);
-      // const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
-      const BASE_URL = "http://localhost:8091";
+      const BASE_URL = await ServerUtils.ccmGet(request, "USER_CONFIG.BASE_URL");
+      // const BASE_URL = "http://localhost:8091";
       const USER_PATH = await ServerUtils.ccmGet(request, "USER_CONFIG.USER_PATH");
       const url = `${BASE_URL}${USER_PATH}/${request.params.emailId}`;
 
