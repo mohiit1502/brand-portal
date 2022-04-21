@@ -65,7 +65,7 @@ class ApplicationReview extends React.Component {
       data.org.primaryContactInformation = {
           firstName: this.props.userProfile.firstName,
           lastName: this.props.userProfile.lastName,
-          phone: this.props.userProfile.phoneNumber,
+          phone: (this.props.userProfile.phoneNumber !== undefined) ? this.props.userProfile.phoneNumber : "0000000000",
           email: this.props.userProfile.email
       };
       if (data.org.sellerInfo) {
