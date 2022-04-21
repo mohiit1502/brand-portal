@@ -51,11 +51,11 @@ class FormModalTemplate extends React.Component {
       form.inputData.firstName.value = this.props.meta.subContext === "myInfo" ? data.firstName
         : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.firstName : "");
       form.inputData.lastName.value = this.props.meta.subContext === "myInfo" ? data.lastName
-        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.lastName : "");;
+        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.lastName : "");
       form.inputData.phone.value = this.props.meta.subContext === "myInfo" ? data.phoneNumber
-        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.phoneNumber : "");;
+        : (data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.phone : "");
       form.inputData.email.value = this.props.meta.subContext === "myInfo" ? data.email
-        :(data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.email : "");;
+        :(data.organization.secondaryContactInformation ? data.organization.secondaryContactInformation.email : "");
     }
 
     form.templateUpdateComplete = true;
