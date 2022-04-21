@@ -177,7 +177,7 @@ export default class ContentRenderer {
         <Banner classes={content[node].innerClasses} variant={content[node].variant}
                 content={content[node]} theme={content[node].theme} /></div> : null
     } else if (node.startsWith("key-val")) {
-      const nodeContent = content ? content[node] : {};
+      const nodeContent = content ? JSON.parse(JSON.stringify(content[node])) : {};
       let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
       const user = this.props.userProfile;
       ContentRenderer.getDynamicReplacementConfig(nodeContent, user || {});
@@ -342,7 +342,7 @@ export default class ContentRenderer {
     const self = this;
     iterationSet.forEach(key => {
       const conditionObj = field[key];
-      if (self.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
+      if (conditionObj && self.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
         if ("condition" in conditionObj) {
           const dependencyObj = conditionObj.condition.find(obj => {
             return obj.subCondition
