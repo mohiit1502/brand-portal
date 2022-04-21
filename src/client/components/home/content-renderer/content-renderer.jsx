@@ -26,7 +26,7 @@ class ContentRenderer extends React.Component {
 
   render () {
     return (
-      <div className="content-page d-inline-block">
+      <div className="content-page d-inline-block overflow-auto">
         <Switch>
           <Route path={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER}>
             <UserProfile {...this.props}/>
