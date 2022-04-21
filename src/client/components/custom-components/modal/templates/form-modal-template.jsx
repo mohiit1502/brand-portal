@@ -108,12 +108,12 @@ class FormModalTemplate extends React.Component {
       const firstName = this.state.form.inputData.firstName.value;
       const lastName = this.state.form.inputData.lastName.value;
       const loginId = this.state.form.inputData.email.value;
-      const phoneNumber = this.state.form.inputData.phone.value;
-      const payload = this.props.meta.subContext === "myInfo" ? {user: {firstName, lastName, loginId, phoneNumber}}
+      const phone = this.state.form.inputData.phone.value;
+      const payload = this.props.meta.subContext === "myInfo" ? {user: {firstName, lastName, loginId, phoneNumber: phone}}
         : {
           "orgId": this.state.user.organization.id,
           "org": {
-            "secondaryContactInformation": {firstName, lastName, email: loginId, phoneNumber}
+            "secondaryContactInformation": {firstName, lastName, email: loginId, phone}
           }
         };
       const url = this.props.meta.subContext === "myInfo" ? `/api/users/${this.props.userProfile.email}` : `/api/org/updateContactInfo`;
@@ -132,14 +132,14 @@ class FormModalTemplate extends React.Component {
                 user.firstName = firstName;
                 user.lastName = lastName;
                 user.email = loginId;
-                user.phoneNumber = phoneNumber;
+                user.phoneNumber = phone;
               } else {
                 const contactInfo = this.props.meta.context === "edit" ? user.organization.secondaryContactInformation : {};
                 user.organization.secondaryContactInformation = contactInfo;
                 contactInfo.firstName = firstName;
                 contactInfo.lastName = lastName;
                 contactInfo.email = loginId;
-                contactInfo.phoneNumber = phoneNumber;
+                contactInfo.phone = phone;
               }
               this.props.updateUserProfile(user);
             }
