@@ -45,7 +45,7 @@ class FormModalTemplate extends React.Component {
 
   prepopulateInputFields (data) {
     const form = {...this.state.form};
-    const contactDetails = data.organization.primaryContactInformation;
+    const contactDetails = data.organization.secondaryContactInformation;
 
     if (contactDetails) {
       form.inputData.firstName.value = this.props.meta.subContext === "myInfo" ? data.firstName
