@@ -56,7 +56,7 @@ class UserMenu extends React.Component {
         </Link>
         <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
           {
-            workflowCode === CODE_DASHBOARD && <Link className="dropdown-item" to={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</Link>
+            workflowCode === CODE_DASHBOARD && <Link className="dropdown-item" to={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>User Profile</Link>
           }
           <Link className="dropdown-item" onClick={this.handleLogout}>Logout</Link>
         </div>

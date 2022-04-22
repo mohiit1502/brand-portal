@@ -706,7 +706,7 @@ const FORMFIELDCONFIG = {
         "email": {
           "disabled": {
             "default": false,
-              "condition": [
+            "condition": [
               {
                 "keyPath": "meta.subContext",
                 "keyLocator": "props",
@@ -758,6 +758,7 @@ const FORMFIELDCONFIG = {
           "value": ""
         },
         "user_undertaking": {
+          "containerClasses": "mb-4",
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
           "excludeColContainer": true,
@@ -766,6 +767,7 @@ const FORMFIELDCONFIG = {
           "key": "user_undertaking",
           "layout": "5.1.0",
           "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+          "renderCondition": "{\"keyPath\": \"meta.subContext\", \"keyLocator\": \"props\", \"value\": \"publiccontact\"}",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
           "preventHTMLRequiredValidation": true,
@@ -779,8 +781,8 @@ const FORMFIELDCONFIG = {
           }
         },
         "publiContactCreateActions": {
-          "containerClasses": "mt-3",
-          "colClasses": "new-brand-button-panel text-right",
+          "colClasses": "new-brand-button-panel text-right pt-3 pb-3",
+          "containerClasses": "pr-4 bg-blue mx-minus24px",
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "type": "_buttonsPanel",
@@ -2289,27 +2291,12 @@ const FORMFIELDCONFIG = {
           "type": "_buttonsPanel",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "buttons": {
-            "edit": {
-              "classes": "btn btn-primary btn-sm px-4",
-              "handlerArg": false,
-              "onClick": "disableInput",
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "text": "Edit",
-              "type": "button"
-            },
-            "cancel": {
-              "classes": "btn btn-link font-size-14 px-4 mr-3",
-              "handlerArg": true,
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "onClick": "disableInput",
-              "text": "Cancel",
-              "type": "button"
-            },
-            "save": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "text": "Save",
-              "type": "button"
+            "submit": {
+              "classes": "btn btn-primary padded-button",
+              "disabled": false,
+              "onClick": "handleSubmit",
+              "text": "Submit Claim",
+              "type": "submit"
             }
           }
         }
