@@ -780,7 +780,7 @@ const FORMFIELDCONFIG = {
             }
           }
         },
-        "publiContactCreateActions": {
+        "publicContactCreateActions": {
           "colClasses": "new-brand-button-panel text-right pt-3 pb-3",
           "containerClasses": "pr-4 bg-blue mx-n4",
           "excludeRowContainer": true,
@@ -791,7 +791,7 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm cancel-btn text-primary",
               "disabled": false,
               "onClick": "resetTemplateStatus",
-              "text": "Cancel",
+              "text": "Back",
               "type": "button"
             },
             "submit": {
@@ -1180,7 +1180,7 @@ const FORMFIELDCONFIG = {
       "formConfig": {
         "apiPath": "/api/users/resetPassword",
         "error": "",
-        "formHeading": "Input the fields below to change your password. Your new password will be in effect next time you login.",
+        "formHeading": "Please type your current password and then create the new one.",
         "id": "resetPassword",
         "incorrectPasswordError": "Current password is incorrect.",
         "loader": false,
@@ -1199,8 +1199,9 @@ const FORMFIELDCONFIG = {
       "fields": {
         "currentPassword": {
           "canShowPassword": true,
-          "containerClasses": "px-0",
+          "colClasses": "px-0",
           "error": "",
+          "excludeRowContainer": true,
           "id": "currentPassword",
           "inputId": "currentPassword",
           "key": "currentPassword",
@@ -1219,7 +1220,7 @@ const FORMFIELDCONFIG = {
         },
         "newPassword": {
           "canShowPassword": true,
-          "containerClasses": "px-0",
+          "colClasses": "px-0",
           "error": "",
           "inputId": "newPassword",
           "key": "newPassword",
@@ -1241,7 +1242,7 @@ const FORMFIELDCONFIG = {
         },
         "confirmNewPassword": {
           "canShowPassword": true,
-          "containerClasses": "px-0",
+          "colClasses": "px-0",
           "error": "",
           "inputId": "confirmNewPassword",
           "key": "confirmNewPassword",
@@ -1263,7 +1264,7 @@ const FORMFIELDCONFIG = {
           }
         },
         "errorSub": {
-          "containerClasses": "pl-2 mt-n23 mb-2rem",
+          "containerClasses": "pl-2 mt-n23 mb-2rem pt-2",
           "error": "",
           "errorClasses": "form-text custom-input-help-text text-danger",
           "id": "errorSub",
@@ -1271,15 +1272,16 @@ const FORMFIELDCONFIG = {
           "type": "_error"
         },
         "resetPasswordAction": {
-          "containerClasses": "pr-4 text-right bg-blue py-3 mx-n4 mb-n3",
+          "containerClasses": "pr-4 text-right bg-blue py-3 mx-n4",
           "colClasses": "reset-password-button-panel text-right pr-0",
+          "excludeColContainer": true,
           "layout": "1.1.12",
           "type": "_buttonsPanel",
           "buttons": {
             "cancel": {
               "classes": "btn btn-sm cancel-btn text-primary",
               "onClick": "resetTemplateStatus",
-              "text": "Cancel",
+              "text": "Back",
               "type": "button"
             },
             "changePassword": {
