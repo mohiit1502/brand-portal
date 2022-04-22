@@ -185,7 +185,7 @@ export default class ContentRenderer {
       text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
       return <div className={nodeContent ? nodeContent.containerClasses : ""}>
         <span className="mr-4 font-disabled font-size-14">{nodeContent.key}</span>
-        <span className="text-overflow-ellipsis" title={text}>{text && text !== "null" && text.indexOf("undefined") === -1 ? text : "-"}</span>
+        <span className="text-overflow-ellipsis" title={text}>{text && text.indexOf("undefined") === -1 && text.indexOf("null") === -1 ? text : "-"}</span>
       </div>
     } else if (node.startsWith("subtitle")) {
       const nodeContent = content ? content[node] : {};
