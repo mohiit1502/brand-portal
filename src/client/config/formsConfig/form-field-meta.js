@@ -782,7 +782,7 @@ const FORMFIELDCONFIG = {
         },
         "publiContactCreateActions": {
           "colClasses": "new-brand-button-panel text-right pt-3 pb-3",
-          "containerClasses": "pr-4 bg-blue mx-minus24px",
+          "containerClasses": "pr-4 bg-blue mx-n4",
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "type": "_buttonsPanel",
@@ -1271,8 +1271,8 @@ const FORMFIELDCONFIG = {
           "type": "_error"
         },
         "resetPasswordAction": {
-          "containerClasses": "px-0 text-right",
-          "colClasses": "reset-password-button-panel text-right",
+          "containerClasses": "pr-4 text-right bg-blue py-3 mx-n4 mb-n3",
+          "colClasses": "reset-password-button-panel text-right pr-0",
           "layout": "1.1.12",
           "type": "_buttonsPanel",
           "buttons": {
