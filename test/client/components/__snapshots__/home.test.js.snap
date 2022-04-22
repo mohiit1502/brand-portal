@@ -80,7 +80,7 @@ exports[`Home Tests renders without error 1`] = `
               href="/profile"
               onClick={[Function]}
             >
-              Profile
+              User Profile
             </a>
             <a
               className="dropdown-item"
