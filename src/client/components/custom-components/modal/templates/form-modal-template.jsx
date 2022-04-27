@@ -2,11 +2,10 @@
 import React from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import Cookies from "electrode-cookies";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
-import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
 import {updateUserProfile} from "../../../../actions/user/user-actions";
+import InputFormatter from "../../../../utility/phoneOps";
 import Http from "../../../../utility/Http";
 import Helper from "../../../../utility/helper";
 import Validator from "../../../../utility/validationUtil";
@@ -35,6 +34,9 @@ class FormModalTemplate extends React.Component {
       },
       user: this.props.userProfile
     };
+     const formatter = new InputFormatter();
+    const handlers = formatter.on(`#${this.state.section.id}-${this.state.form.inputData.phone.inputId}-custom-input`);
+    this.prebounceChangeHandler = handlers.inputHandler;
   }
 
   componentDidMount() {
@@ -81,6 +83,7 @@ class FormModalTemplate extends React.Component {
   onChange(evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
+      evt.target.checkValidity && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
         state.form.inputData[key].value = targetVal;
@@ -99,10 +102,10 @@ class FormModalTemplate extends React.Component {
 
   async handleSubmit(evt) {
     const mixpanelClickEventPayload = {
-      IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
-      WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "EDIT_CONTACT_INFO" : "ADD_NEW_CONTACT_INFO"
+      IS_UPDATE_WORKFLOW: this.props.meta && this.props.meta.context === "edit",
+      WORK_FLOW: this.props.meta && this.props.meta.subContext
     };
-    mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
+    mixpanel.trackEvent(MIXPANEL_CONSTANTS.FORM_MODAL_TEMPLATE_EVENTS.SUBMIT_GENERIC_FORM_CLICKED, mixpanelClickEventPayload);
     if (this.props.meta.subContext) {
       evt.preventDefault();
       const firstName = this.state.form.inputData.firstName.value;
@@ -121,7 +124,8 @@ class FormModalTemplate extends React.Component {
       if (!this.validateState()) {
         const mixpanelPayload = {
           API: url,
-          ORG_ID: this.state.user.organization.id
+          ORG_ID: this.state.user.organization.id,
+          PAYLOAD: payload
         };
         this.loader("form", true);
         return Http.put(url, payload)
@@ -147,17 +151,16 @@ class FormModalTemplate extends React.Component {
             this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Request completed successfully.`);
             this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             this.loader("form", false);
-            //   mixpanelPayload.API_SUCCESS = true;
+            mixpanelPayload.API_SUCCESS = true;
           })
           .catch(err => {
             this.loader("form", false);
             mixpanelPayload.API_SUCCESS = false;
-            // this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
             mixpanelPayload.ERROR = err.message ? err.message : err;
             this.props.showNotification(NOTIFICATION_TYPE.ERROR, `Something went wrong, please try again!`);
           })
           .finally(() => {
-            //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+              mixpanel.trackEvent(MIXPANEL_CONSTANTS.FORM_MODAL_TEMPLATE_EVENTS.SUBMIT_GENERIC_FORM, mixpanelPayload);
           });
       }
     }
@@ -181,10 +184,11 @@ class FormModalTemplate extends React.Component {
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
     if (e) {
-    //   const mixpanelPayload = {
-    //     WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
-    //   };
-    //   mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.CANCEL_SUBMIT_BRAND_DETAILS, mixpanelPayload);
+      const mixpanelPayload = {
+        WORK_FLOW: this.props.meta.context === "edit" ? "EDIT_GENERIC_FORM" : "ADD_GENERIC_FORM",
+        FORM: this.props.meta.subContext
+      };
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.FORM_MODAL_TEMPLATE_EVENTS.CANCEL_SUBMIT_GENERIC_FORM, mixpanelPayload);
     }
   }
 
@@ -222,12 +226,9 @@ class FormModalTemplate extends React.Component {
 }
 
 FormModalTemplate.propTypes = {
-  clientType: PropTypes.string,
-  data: PropTypes.object,
   meta: PropTypes.object,
   modal: PropTypes.object,
   newPublicContactConfiguration: PropTypes.object,
-  saveBrandInitiated: PropTypes.func,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func,
   updateUserProfile: PropTypes.func,
@@ -235,7 +236,6 @@ FormModalTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    clientType: Cookies.get("client_type"),
     modal: state.modal,
     newPublicContactConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.CONTACTINFO,
     userProfile: state.user.profile
@@ -244,7 +244,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   toggleModal,
-  saveBrandInitiated,
   showNotification,
   updateUserProfile
 };

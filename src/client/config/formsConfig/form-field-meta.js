@@ -651,6 +651,7 @@ const FORMFIELDCONFIG = {
     },
     "CONTACTINFO": {
       "sectionConfig": {
+        "id": "newPublicContact",
         "sectionTitleNew": "Create Public Contact",
         "sectionTitleEdit": "Create Public Contact"
       },
@@ -742,12 +743,16 @@ const FORMFIELDCONFIG = {
           "fieldOk": false,
           "inputId": "phone",
           "isUnique": false,
+          "invalidError": "Please enter a valid phone number",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
           "key": "phone",
           "label": "Phone",
           "loader": false,
           "pattern": null,
           "preventHTMLRequiredValidation": true,
           "required": true,
+          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "prebounceChangeHandler": "prebounceChangeHandler",
           "subtitle": "",
           "validators": {
             "validateRequired": {
