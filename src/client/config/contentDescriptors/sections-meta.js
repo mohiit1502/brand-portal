@@ -65,11 +65,22 @@ const SECTIONSMETA = {
             {
               "action": "displayModal",
               "actionParams": {
-                "modal": "ResetPasswordTemplate"
+                "modal": [
+                  {
+                    "key": "state.isSeller",
+                    "value": true,
+                    "modal": "StatusModalTemplate",
+                    "configName": "PASSWORD_RESET_SELLER"
+                  },
+                  {
+                    "key": "state.isSeller",
+                    "value": false,
+                    "modal": "ResetPasswordTemplate"
+                  }
+                ]
               },
               "classes": "reset-password",
               "text": "Change Password",
-              "renderCondition": "{\"keyPath\": \"isSeller\", \"keyLocator\": \"state\", \"value\": false}"
             },
             {
               "action": "displayModal",

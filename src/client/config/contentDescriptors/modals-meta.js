@@ -565,17 +565,17 @@ const MODALSMETA = {
     "PASSWORD_RESET_SELLER": {
       "BODY_CLASSES": "",
       "BODY_CONTENT_CLASSES": "px-3 font-size-15",
-      "HEADER": "Seller Center Profile Management",
+      "HEADER": "Seller Center Profile",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
           "para1": {
-            "text": "Walmart Brand Portal accounts using Seller Center credentials cannot be managed directly through the Walmart Brand Portal.",
+            "text": "To change your Seller Center credentials, you will need to log into your Seller Center account.",
             "classes": "mx-2"
           },
           "para2": {
-            "text": "In order to update your profile information or reset your password, you will need to log out of Walmart Brand Portal and manage your account in Seller Center.",
-            "classes": "mx-2"
+            "text": "You cannot make changes to your Seller Center account through the Brand Portal.",
+            "classes": "mx-2 mb-5"
           }
         }
       },
@@ -588,7 +588,8 @@ const MODALSMETA = {
       },
       "ADDITIONAL_ACTION": {
         "text": "Cancel",
-        "classes": "mt-0 d-block",
+        "containerClasses": "mr-4 d-inline-block",
+        "classes": "mt-0 font-size-15",
         "action": "closeModal"
       },
       "FOOTER_CLASSES": "margin-unset bg-blue mt-4",

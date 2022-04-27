@@ -357,7 +357,8 @@ const StatusModalTemplate = props => {
                     {meta.PRIMARY_ACTION || "Logout"}
                   </a>
                 }
-                {meta.ADDITIONAL_ACTION && <div className={meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}>
+                {meta.ADDITIONAL_ACTION && <div className={`${meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}
+                ${meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.containerClasses ? ` ${meta.ADDITIONAL_ACTION.containerClasses}` : ""}`}>
                 {meta.ADDITIONAL_ACTION.actionHelpText && <span className={meta.ADDITIONAL_ACTION.actionHelpText.classes ? meta.ADDITIONAL_ACTION.actionHelpText.classes : ""}>{meta.ADDITIONAL_ACTION.actionHelpText.text}</span>}
                 <button className={`additional-action btn btn-link${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
                   onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>

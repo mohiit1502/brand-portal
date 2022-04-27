@@ -1394,7 +1394,7 @@ const FORMFIELDCONFIG = {
           "initValuePath": "phoneNumber"
         },
         "resetPasswordAction": {
-          "containerClasses": "password-reset-col",
+          "containerClasses": "password-reset-col mb-n3",
           "colClasses": "",
           "layout": "1.1.6",
           "type": "_buttonsPanel",
