@@ -661,6 +661,7 @@ const FORMFIELDCONFIG = {
         "isSubmitDisabled": true,
         "isUpdateTemplate": false,
         "loader": false,
+        "nothingModifiedError": "Nothing has been modified!",
         "templateUpdateComplete": false
       },
       "fields": {
@@ -784,6 +785,14 @@ const FORMFIELDCONFIG = {
               "error": "You must agree to this statement to save a public contact."
             }
           }
+        },
+        "errorSub": {
+          "containerClasses": "mt-n3 mb-3",
+          "error": "",
+          "errorClasses": "form-text custom-input-help-text text-danger",
+          "id": "errorSub",
+          "layout": "6.1.0",
+          "type": "_error"
         },
         "publicContactCreateActions": {
           "colClasses": "new-brand-button-panel text-right pt-3 pb-3",

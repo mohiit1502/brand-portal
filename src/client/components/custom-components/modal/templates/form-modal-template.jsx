@@ -63,12 +63,12 @@ class FormModalTemplate extends React.Component {
   }
 
   isDirty () {
-    const {firstName: originalFName, lastName: originalLName, email: originalEmail, phoneNumber: originalPhone, companyName: originalCompany} = this.props.userProfile;
-    const {firstName: {value: currentFName}, lastName: {value: currentLName}, emailId: {value: currentEmail}, phone: {value: currentPhone}} = this.state.form.inputData;
-    const currentCompany = this.state.form.inputData.company ? this.state.form.inputData.company.value : "";
+    const data = this.props.meta.subContext === "myInfo" ? this.props.userProfile : this.props.userProfile.organization.secondaryContactInformation;
+    const {firstName: originalFName, lastName: originalLName, email: originalEmail} = data;
+    const originalPhone = this.props.meta.subContext === "myInfo" ? data.phoneNumber : data.phone;
+    const {firstName: {value: currentFName}, lastName: {value: currentLName}, email: {value: currentEmail}, phone: {value: currentPhone}} = this.state.form.inputData;
     const originalPhoneModified = (originalPhone === "0000000000" || originalPhone === "(000) 000-0000") ? "" : originalPhone;
-    return originalFName !== currentFName || originalLName !== currentLName || originalEmail !== currentEmail || originalPhoneModified !== currentPhone || (originalCompany && currentCompany && originalCompany !== currentCompany);
-      // || ((!originalCompany && currentCompany) || (originalCompany && !currentCompany) || (originalCompany !== currentCompany));
+    return originalFName !== currentFName || originalLName !== currentLName || originalEmail !== currentEmail || originalPhoneModified !== currentPhone;
   }
 
   undertakingtoggle (evt) {
@@ -86,6 +86,7 @@ class FormModalTemplate extends React.Component {
       evt.target.checkValidity && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
+        state.form.inputData.errorSub.error = "";
         state.form.inputData[key].value = targetVal;
         return state;
       });
@@ -127,41 +128,49 @@ class FormModalTemplate extends React.Component {
           ORG_ID: this.state.user.organization.id,
           PAYLOAD: payload
         };
-        this.loader("form", true);
-        return Http.put(url, payload)
-          .then(res => {
-            if (res.status === 200) {
-              const user = JSON.parse(JSON.stringify(this.state.user));
-              if (this.props.meta.subContext === "myInfo") {
-                user.firstName = firstName;
-                user.lastName = lastName;
-                user.email = loginId;
-                user.phoneNumber = phone;
-              } else {
-                const contactInfo = this.props.meta.context === "edit" ? user.organization.secondaryContactInformation : {};
-                user.organization.secondaryContactInformation = contactInfo;
-                contactInfo.firstName = firstName;
-                contactInfo.lastName = lastName;
-                contactInfo.email = loginId;
-                contactInfo.phone = phone;
+        if (this.isDirty()) {
+          this.loader("form", true);
+          return Http.put(url, payload)
+            .then(res => {
+              if (res.status === 200) {
+                const user = JSON.parse(JSON.stringify(this.state.user));
+                if (this.props.meta.subContext === "myInfo") {
+                  user.firstName = firstName;
+                  user.lastName = lastName;
+                  user.email = loginId;
+                  user.phoneNumber = phone;
+                } else {
+                  const contactInfo = this.props.meta.context === "edit" ? user.organization.secondaryContactInformation : {};
+                  user.organization.secondaryContactInformation = contactInfo;
+                  contactInfo.firstName = firstName;
+                  contactInfo.lastName = lastName;
+                  contactInfo.email = loginId;
+                  contactInfo.phone = phone;
+                }
+                this.props.updateUserProfile(user);
               }
-              this.props.updateUserProfile(user);
-            }
-            this.resetTemplateStatus();
-            this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Request completed successfully.`);
-            this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-            this.loader("form", false);
-            mixpanelPayload.API_SUCCESS = true;
-          })
-          .catch(err => {
-            this.loader("form", false);
-            mixpanelPayload.API_SUCCESS = false;
-            mixpanelPayload.ERROR = err.message ? err.message : err;
-            this.props.showNotification(NOTIFICATION_TYPE.ERROR, `Something went wrong, please try again!`);
-          })
-          .finally(() => {
+              this.resetTemplateStatus();
+              this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Request completed successfully.`);
+              this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+              this.loader("form", false);
+              mixpanelPayload.API_SUCCESS = true;
+            })
+            .catch(err => {
+              this.loader("form", false);
+              mixpanelPayload.API_SUCCESS = false;
+              mixpanelPayload.ERROR = err.message ? err.message : err;
+              this.props.showNotification(NOTIFICATION_TYPE.ERROR, `Something went wrong, please try again!`);
+            })
+            .finally(() => {
               mixpanel.trackEvent(MIXPANEL_CONSTANTS.FORM_MODAL_TEMPLATE_EVENTS.SUBMIT_GENERIC_FORM, mixpanelPayload);
-          });
+            });
+        } else {
+          this.setState(state => {
+            state = {...state};
+            state.form.inputData.errorSub.error = state.form.nothingModifiedError;
+            return state;
+          })
+        }
       }
     }
   }
@@ -180,6 +189,7 @@ class FormModalTemplate extends React.Component {
     form.inputData.email.error = "";
     form.inputData.phone.error = "";
     form.inputData.user_undertaking.error = "";
+    form.inputData.errorSub.error = "";
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
