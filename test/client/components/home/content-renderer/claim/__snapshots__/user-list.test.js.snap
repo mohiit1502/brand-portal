@@ -105,6 +105,7 @@ exports[`UserList test container UserList renders without error should add filte
             }
             modal={
               Object {
+                "DISPLAY_DASHBOARD": true,
                 "enable": true,
                 "shouldDiscard": undefined,
                 "templateName": "CreateUserTemplate",
@@ -2058,6 +2059,7 @@ exports[`UserList test container UserList renders without error should render th
             }
             modal={
               Object {
+                "DISPLAY_DASHBOARD": true,
                 "enable": true,
                 "shouldDiscard": undefined,
                 "templateName": "CreateUserTemplate",

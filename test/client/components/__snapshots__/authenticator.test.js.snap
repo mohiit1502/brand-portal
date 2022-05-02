@@ -495,8 +495,8 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
                   "classes": "mt-0 d-inline-block text-right mr-3 blue",
                   "text": "I'll do it later",
                 },
-                "BODY_CLASSES": "text-center",
-                "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+                "BODY_CLASSES": "text-center pt-5",
+                "BODY_CONTENT_CLASSES": "px-5 py-2 font-size-18",
                 "DISPLAY_DASHBOARD": true,
                 "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
                 "HEADER": "Welcome to Walmart Brand Portal!",
@@ -507,17 +507,13 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
                   "actionParam": "/profile",
                   "classes": "text-right float-right px-3",
                   "containerClasses": "p-3",
-                  "text": "Go to your Profile",
+                  "text": "Go to User Profile",
                 },
                 "SUBTITLE": Object {
                   "content": Object {
                     "para1": Object {
-                      "classes": "mx-2 text-center mb-0 mt-4 font-size-16",
-                      "text": "You can update the contact information for your ",
-                    },
-                    "para2": Object {
-                      "classes": "mx-2 text-center pb-5 font-size-16",
-                      "text": "company on the User Profile page.",
+                      "classes": "mx-2 font-size-16 py-4 px-5",
+                      "text": "You can update the public contact information on the User Profile page. This contact information will be shared with sellers reported by the user(s) of this Brand Portal account.",
                     },
                   },
                 },
