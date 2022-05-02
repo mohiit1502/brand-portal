@@ -23,8 +23,10 @@ class FormModalTemplate extends React.Component {
       this[name] = this[name].bind(this);
     });
     this.validateState = Validator.validateState.bind(this);
+    this.onInvalid = Validator.onInvalid.bind(this);
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
+    this.invalid = {email: false, phone: false};
     const newPublicContactConfiguration = this.props.newPublicContactConfiguration ? this.props.newPublicContactConfiguration : {};
     this.state = {
       section: {...newPublicContactConfiguration.sectionConfig},
@@ -86,6 +88,8 @@ class FormModalTemplate extends React.Component {
       evt.target.checkValidity && evt.target.checkValidity();
       this.setState(state => {
         state = {...state};
+        state.form.inputData[key].error = !this.invalid[key] ? "" : state.form.inputData[key].error;
+        this.invalid[key] = false;
         state.form.inputData.errorSub.error = "";
         state.form.inputData[key].value = targetVal;
         return state;
