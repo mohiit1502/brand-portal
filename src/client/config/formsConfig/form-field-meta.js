@@ -730,38 +730,23 @@ const FORMFIELDCONFIG = {
           "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
           "patternPath": "CONSTANTS.REGEX.EMAIL",
           "required": true,
-          "preventHTMLRequiredValidation": true,
           "subtitle": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please enter a valid email."
-            }
-          },
-          "type": "text",
+          "type": "email",
           "value": ""
         },
         "phone": {
           "disabled": false,
+          "disableDefaultBlurValidation": true,
           "error": "",
-          "fieldOk": false,
           "inputId": "phone",
-          "isUnique": false,
           "invalidError": "Please enter a valid phone number",
           "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
           "key": "phone",
           "label": "Phone",
-          "loader": false,
-          "pattern": null,
-          "preventHTMLRequiredValidation": true,
           "required": true,
           "patternPath": "CONSTANTS.REGEX.PHONE",
           "prebounceChangeHandler": "prebounceChangeHandler",
           "subtitle": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please enter a valid phone number."
-            }
-          },
           "type": "text",
           "value": ""
         },

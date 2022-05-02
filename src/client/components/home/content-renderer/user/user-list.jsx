@@ -396,14 +396,14 @@ class UserList extends React.Component {
     mixpanel.trackEvent(eventName, payload);
   }
   createNewUser () {
-    const meta = { templateName: "CreateUserTemplate" };
+    const meta = { templateName: "CreateUserTemplate", DISPLAY_DASHBOARD: true };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
     this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
   }
 
   editUser (userData) {
-    const meta = { templateName: "CreateUserTemplate", data: {...userData} };
+    const meta = { templateName: "CreateUserTemplate", DISPLAY_DASHBOARD: true, data: {...userData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = {
       WORK_FLOW: "VIEW_USER_LIST",

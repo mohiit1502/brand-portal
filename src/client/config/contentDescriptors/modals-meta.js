@@ -286,26 +286,22 @@ const MODALSMETA = {
 
     },
     "GO_TO_USER_PROFILE": {
-      "BODY_CLASSES": "text-center",
-      "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+      "BODY_CLASSES": "text-center pt-5",
+      "BODY_CONTENT_CLASSES": "px-5 py-2 font-size-18",
       "HEADER": "Welcome to Walmart Brand Portal!",
       "DISPLAY_DASHBOARD": true,
       "SUBTITLE": {
         "content": {
           "para1": {
-            "text": "You can update the contact information for your ",
-            "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
-          },
-          "para2": {
-            "text": "company on the User Profile page.",
-            "classes": "mx-2 text-center pb-5 font-size-16"
+            "text": "You can update the public contact information on the User Profile page. This contact information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+            "classes": "mx-2 font-size-16 py-4 px-5"
           }
         }
       },
       "HEIGHT": "110",
       "IMAGE": "ProblemSolving",
       "PRIMARY_ACTION": {
-        "text": "Go to your Profile",
+        "text": "Go to User Profile",
         "classes": "text-right float-right px-3",
         "containerClasses": "p-3",
         "action": "reroute",

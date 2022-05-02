@@ -155,18 +155,18 @@ const SECTIONSMETA = {
                   "key-val2": {
                     "containerClasses": "col-6 mb-3 overflow-hidden",
                     "dynamicReplacementConfig": {
-                      "__phoneNumber__": "profile.organization.primaryContactInformation.phone"
-                    },
-                    "key": "Phone",
-                    "value": "__phoneNumber__"
-                  },
-                  "key-val3": {
-                    "containerClasses": "col-6 mb-3 overflow-hidden",
-                    "dynamicReplacementConfig": {
                       "__email__": "profile.organization.primaryContactInformation.email"
                     },
                     "key": "Email",
                     "value": "__email__"
+                  },
+                  "key-val3": {
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__phoneNumber__": "profile.organization.primaryContactInformation.phone"
+                    },
+                    "key": "Phone",
+                    "value": "__phoneNumber__"
                   }
                 }
               }
@@ -196,18 +196,18 @@ const SECTIONSMETA = {
                   "key-val2": {
                     "containerClasses": "col-6 mb-3 overflow-hidden",
                     "dynamicReplacementConfig": {
-                      "__phoneNumber__": "profile.organization.secondaryContactInformation.phone"
-                    },
-                    "key": "Phone",
-                    "value": "__phoneNumber__"
-                  },
-                  "key-val3": {
-                    "containerClasses": "col-6 mb-3 overflow-hidden",
-                    "dynamicReplacementConfig": {
                       "__email__": "profile.organization.secondaryContactInformation.email"
                     },
                     "key": "Email",
                     "value": "__email__"
+                  },
+                  "key-val3": {
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__phoneNumber__": "profile.organization.secondaryContactInformation.phone"
+                    },
+                    "key": "Phone",
+                    "value": "__phoneNumber__"
                   }
                 }
               },
