@@ -132,7 +132,7 @@ class FormModalTemplate extends React.Component {
           ORG_ID: this.state.user.organization.id,
           PAYLOAD: payload
         };
-        if (this.isDirty()) {
+        if (this.props.meta.context !== "edit" || this.isDirty()) {
           this.loader("form", true);
           return Http.put(url, payload)
             .then(res => {
