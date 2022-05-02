@@ -94,5 +94,52 @@ exports[`Home Tests renders without error 1`] = `
       </ul>
     </div>
   </nav>
+  <div
+    className="mx-n3"
+  >
+    <div
+      className="left-nav d-inline-block"
+    >
+      <ul
+        className="nav flex-column mt-3"
+      >
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/dashboard"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="dashboard.png"
+              width="46px"
+            />
+            My Dashboard
+          </a>
+        </li>
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/claims"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="claims.svg"
+              width="46px"
+            />
+            My Claims
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div
+      className="content-page d-inline-block overflow-auto"
+    />
+  </div>
 </div>
 `;
