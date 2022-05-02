@@ -706,6 +706,7 @@ const FORMFIELDCONFIG = {
           }
         },
         "email": {
+          "disableDefaultBlurValidation": true,
           "disabled": {
             "default": false,
             "condition": [
@@ -720,13 +721,14 @@ const FORMFIELDCONFIG = {
             ]
           },
           "error": "",
-          "fieldOk": false,
           "inputId": "email",
-          "isUnique": false,
+          "invalidError": "Please enter a valid Email ID",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
           "key": "email",
           "label": "Email",
           "loader": false,
-          "pattern": null,
+          "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+          "patternPath": "CONSTANTS.REGEX.EMAIL",
           "required": true,
           "preventHTMLRequiredValidation": true,
           "subtitle": "",
@@ -787,7 +789,7 @@ const FORMFIELDCONFIG = {
           }
         },
         "errorSub": {
-          "containerClasses": "mt-n3 mb-3",
+          "containerClasses": "mt-n2 mb-3",
           "error": "",
           "errorClasses": "form-text custom-input-help-text text-danger",
           "id": "errorSub",
