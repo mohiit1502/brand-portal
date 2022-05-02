@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import Cookies from "electrode-cookies";
 
 import { TOGGLE_ACTIONS, toggleModal} from "../../../../../actions/modal-actions";
 import {showNotification} from "../../../../../actions/notification/notification-actions";
@@ -29,6 +30,7 @@ class UserProfile extends React.Component {
     const userProfileSectionConfig = this.props.userProfileSectionConfig ? this.props.userProfileSectionConfig : {};
 
     this.state = {
+      isSeller: Cookies.get("bp_client_type") === "seller",
       loader: false,
       sectionsConfig: {...userProfileSectionConfig}
     };

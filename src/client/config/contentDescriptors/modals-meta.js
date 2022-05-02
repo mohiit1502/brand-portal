@@ -289,6 +289,7 @@ const MODALSMETA = {
       "BODY_CLASSES": "text-center",
       "BODY_CONTENT_CLASSES": "px-5 font-size-15",
       "HEADER": "Welcome to Walmart Brand Portal!",
+      "DISPLAY_DASHBOARD": true,
       "SUBTITLE": {
         "content": {
           "para1": {
@@ -565,6 +566,7 @@ const MODALSMETA = {
     "PASSWORD_RESET_SELLER": {
       "BODY_CLASSES": "",
       "BODY_CONTENT_CLASSES": "px-3 font-size-15",
+      "DISPLAY_DASHBOARD": true,
       "HEADER": "Seller Center Profile",
       "MESSAGE": {
         "classes": "mt-4",

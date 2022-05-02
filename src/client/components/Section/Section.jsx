@@ -50,7 +50,7 @@ const Section = props => {
         } else if (typeof modal === "object") {
           params = modal.find(conf => conf.value === Helper.search(conf.key, parent));
         }
-        const meta = {templateName: params.modal, ...(params.configName ? modalsMeta[params.configName] : {}), title};
+        const meta = {templateName: params.modal, DISPLAY_DASHBOARD: true, ...(params.configName ? modalsMeta[params.configName] : {}), title};
         actionParams.context && (meta.context = actionParams.context);
         actionParams.subContext && (meta.subContext = actionParams.subContext);
         toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
