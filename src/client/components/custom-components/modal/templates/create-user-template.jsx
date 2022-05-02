@@ -37,7 +37,7 @@ class CreateUserTemplate extends React.Component {
     const newUserContent = this.props.newUserContent ? this.props.newUserContent : {};
 
     this.state = {
-      clientType: Cookies.get("client_type"),
+      clientType: Cookies.get("bp_client_type"),
       section: {...newUserContent.sectionConfig},
       form: {
         ...newUserContent.formConfig,

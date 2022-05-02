@@ -42,7 +42,7 @@ const StatusModalTemplate = props => {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[64]
     };
     if (email) {
-      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("client_type")})
+      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("bp_client_type")})
         .then(res => {
           if (res.body === true) {
             showNotification(NOTIFICATION_TYPE.SUCCESS, "Email Resent", "variant2", "Verified2");

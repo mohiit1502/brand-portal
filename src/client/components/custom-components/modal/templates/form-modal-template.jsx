@@ -65,11 +65,14 @@ class FormModalTemplate extends React.Component {
     this.setState({form});
   }
 
-  // onKeyPress(evt, key) {
-  //   if (key === "trademarkNumber" && ((evt.which < 48 || evt.which > 57) && !CONSTANTS.ALLOWED_KEY_CODES.includes(evt.which))) {
-  //     evt.preventDefault();
-  //   }
-  // }
+  isDirty () {
+    const {firstName: originalFName, lastName: originalLName, email: originalEmail, phoneNumber: originalPhone, companyName: originalCompany} = this.props.userProfile;
+    const {firstName: {value: currentFName}, lastName: {value: currentLName}, emailId: {value: currentEmail}, phone: {value: currentPhone}} = this.state.form.inputData;
+    const currentCompany = this.state.form.inputData.company ? this.state.form.inputData.company.value : "";
+    const originalPhoneModified = (originalPhone === "0000000000" || originalPhone === "(000) 000-0000") ? "" : originalPhone;
+    return originalFName !== currentFName || originalLName !== currentLName || originalEmail !== currentEmail || originalPhoneModified !== currentPhone || (originalCompany && currentCompany && originalCompany !== currentCompany);
+      // || ((!originalCompany && currentCompany) || (originalCompany && !currentCompany) || (originalCompany !== currentCompany));
+  }
 
   undertakingtoggle (evt) {
     const state = {...this.state};
