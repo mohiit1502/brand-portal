@@ -5,7 +5,7 @@ exports[`Home Tests renders without error 1`] = `
   className="view-container home-container"
 >
   <nav
-    className="navbar navbar-expand-md navbar-dark home-header-nav home-header-nav-z-index"
+    className="navbar navbar-expand-md navbar-dark home-header-nav"
   >
     <a
       className="navbar-brand walmart-brand"
@@ -133,6 +133,38 @@ exports[`Home Tests renders without error 1`] = `
               width="46px"
             />
             My Claims
+          </a>
+        </li>
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/brands"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="brands.png"
+              width="46px"
+            />
+            My Brands
+          </a>
+        </li>
+        <li
+          className="nav-item main-nav-item py-2 inactive"
+        >
+          <a
+            className="nav-link"
+            href="/users"
+            onClick={[Function]}
+          >
+            <img
+              className="nav-link-image pl-3 pr-1"
+              src="users.png"
+              width="46px"
+            />
+            Users
           </a>
         </li>
       </ul>
