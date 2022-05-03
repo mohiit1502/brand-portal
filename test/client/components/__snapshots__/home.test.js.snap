@@ -73,10 +73,10 @@ exports[`Home Tests renders without error 1`] = `
             Test Mohit Nagar
           </a>
           <div
-            className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2"
+            className="dropdown-menu user-menu dropdown-menu-right mt-2"
           >
             <a
-              className="dropdown-item"
+              className="dropdown-item mb-2"
               href="/profile"
               onClick={[Function]}
             >

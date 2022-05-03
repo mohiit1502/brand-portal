@@ -289,10 +289,10 @@ exports[`CreateUserTemplate test container should render the CreateUserTemplate 
                   className="form-control form-control-phone custom-input-element"
                   disabled={false}
                   id="newuser-phone-custom-input"
-                  maxLength={17}
+                  maxLength={18}
                   onChange={[Function]}
                   onInvalid={[Function]}
-                  pattern="^(\\\\([0-9]{3}\\\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
+                  pattern="^([+0-9\\\\s]{3,4})?(\\\\([0-9]{3}\\\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
                   required={false}
                   type="text"
                   value=""
@@ -757,10 +757,10 @@ exports[`CreateUserTemplate test container should render the CreateUserTemplate 
                   className="form-control form-control-phone custom-input-element"
                   disabled={false}
                   id="newuser-phone-custom-input"
-                  maxLength={17}
+                  maxLength={18}
                   onChange={[Function]}
                   onInvalid={[Function]}
-                  pattern="^(\\\\([0-9]{3}\\\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
+                  pattern="^([+0-9\\\\s]{3,4})?(\\\\([0-9]{3}\\\\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$"
                   required={false}
                   type="text"
                   value="(234) 567-8901"
