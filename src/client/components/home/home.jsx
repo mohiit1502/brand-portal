@@ -68,8 +68,8 @@ class Home extends React.Component {
     //   || (workflowDecider && workflowDecider.code && codes.findIndex(code => typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code) > -1))
       // || (this.props.modal && this.props.modal.value === "show" && this.props.modal.templateName === "StatusModalTemplate");
 //     disablePortalAccess && this.props.history.push(CONSTANTS.ROUTES.PROTECTED.PREBOARD);
-    const disablePortalAccess = this.props.modal && this.props.modal.value && this.props.modal.value !== "hide"
-      && !this.props.modal.DISPLAY_DASHBOARD && this.props.userProfile.workflow.code === CONSTANTS.WORKFLOW_CODES.DASHBOARD;
+    const disablePortalAccess = (this.props.modal && this.props.modal.value && this.props.modal.value !== "hide"
+      && !this.props.modal.DISPLAY_DASHBOARD) || this.props.userProfile.workflow.code !== CONSTANTS.WORKFLOW_CODES.DASHBOARD;
     return (
       <div className="view-container home-container">
         <HomeHeader {...this.props}/>
