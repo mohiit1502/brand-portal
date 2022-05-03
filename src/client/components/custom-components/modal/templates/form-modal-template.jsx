@@ -18,7 +18,7 @@ class FormModalTemplate extends React.Component {
 
   constructor(props) {
     super(props);
-    const functions = ["onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields", "undertakingtoggle"];
+    const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields", "undertakingtoggle"];
     functions.forEach(name => {
       this[name] = this[name].bind(this);
     });
@@ -82,6 +82,16 @@ class FormModalTemplate extends React.Component {
     });
   }
 
+  bubbleValue (evt, key, error) {
+    const targetVal = evt.target.value;
+    this.setState(state => {
+      state = {...state};
+      state.form.inputData[key].value = targetVal;
+      state.form.inputData[key].error = error;
+      return state;
+    });
+  }
+
   onChange(evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
@@ -95,14 +105,6 @@ class FormModalTemplate extends React.Component {
         return state;
       });
     }
-  }
-
-  checkToEnableSubmit() {
-    const form = {...this.state.form};
-    const bool = form.isUpdateTemplate || (form.inputData.firstName.value &&
-      form.inputData.lastName.value && form.inputData.email.value && form.inputData.phone.value);
-    form.inputData.publiContactCreateActions.buttons.submit.disabled = !bool;
-    this.setState({form});
   }
 
   async handleSubmit(evt) {
