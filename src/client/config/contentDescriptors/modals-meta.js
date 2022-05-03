@@ -257,7 +257,7 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "DELETE_CONTACT": {
-      "BODY_CLASSES": "text-center",
+      "BODY_CLASSES": "text-center overflow-x-hidden",
       "BODY_CONTENT_CLASSES": "px-5 font-size-15",
       "HEADER": "Delete Contact Information",
       "MODAL_DIALOG_CLASSES": "modal-lg",
@@ -278,7 +278,7 @@ const MODALSMETA = {
       },
       "ADDITIONAL_ACTION": {
         "text": "Back",
-        "classes": "mt-0 d-inline-block text-right mr-3 blue",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue font-size-15",
         "action": "closeModal"
       },
       "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
@@ -286,7 +286,7 @@ const MODALSMETA = {
 
     },
     "GO_TO_USER_PROFILE": {
-      "BODY_CLASSES": "text-center pt-5",
+      "BODY_CLASSES": "text-center pt-5 overflow-x-hidden",
       "BODY_CONTENT_CLASSES": "px-5 py-2 font-size-18",
       "HEADER": "Welcome to Walmart Brand Portal!",
       "DISPLAY_DASHBOARD": true,
@@ -560,7 +560,7 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "PASSWORD_RESET_SELLER": {
-      "BODY_CLASSES": "",
+      "BODY_CLASSES": "overflow-x-hidden",
       "BODY_CONTENT_CLASSES": "px-3 font-size-15",
       "DISPLAY_DASHBOARD": true,
       "HEADER": "Seller Center Profile",

@@ -496,7 +496,7 @@ const FORMFIELDCONFIG = {
           "key": "phone",
           "label": "Mobile Number",
           "layout": "5.2.6",
-          "maxLength": 17,
+          "maxLength": 18,
           "patternPath": "CONSTANTS.REGEX.PHONE",
           "prebounceChangeHandler": "prebounceChangeHandler",
           "required": false,

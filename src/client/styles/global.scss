@@ -619,6 +619,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   overflow-x: auto;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg);
