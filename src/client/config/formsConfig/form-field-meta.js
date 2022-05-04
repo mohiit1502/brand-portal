@@ -492,6 +492,7 @@ const FORMFIELDCONFIG = {
           "inputId": "phone",
           "invalidError": "Please enter a valid phone number",
           "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
+          "preventHTMLRequiredValidation": true,
           "isUnique": true,
           "key": "phone",
           "label": "Mobile Number",
