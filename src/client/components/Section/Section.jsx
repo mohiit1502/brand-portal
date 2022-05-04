@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import $ from "jquery";
@@ -12,27 +12,11 @@ import Helper from "../../utility/helper";
 
 const Section = props => {
   const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, profile, toggleModal} = props;
-  const [userProfile, setUserProfile] = useState();
   const getTooltipContent = content => content.map(text => {
     return <div className="py-2">
       <p className="mt-2 pl-2 text-left font-size-12">{text}</p>
     </div>
   });
-
-  useEffect(() => {
-    setUserProfile(profile);
-  }, [profile])
-
-  useEffect(() => {
-    try {
-      $("[title]")
-        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
-        .tooltip();
-      $("body")
-        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
-        .on("mouseleave", ".tooltip, [title]", () => $(".tooltip").addClass("move-beneath"));
-    } catch (e) {}
-  }, [])
 
   const buttonRenders = footer && footer.buttons && footer.buttons.map(button => {
     const shouldRender = ContentRenderer.evaluateRenderDependency.call(parent, button.renderCondition);
