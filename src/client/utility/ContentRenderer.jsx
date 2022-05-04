@@ -1,14 +1,12 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-nested-ternary, max-params, no-unused-expressions, no-magic-numbers, max-statements, complexity */
 import React from "react";
-import * as imagesAll from "./../images";
+import moment from "moment";
 import CustomInput from "../components/custom-components/custom-input/custom-input";
+import {Banner, KeyVal, Section, Tile} from "../components";
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
-import {Banner, Section, Tile} from "../components";
-import moment from "moment";
 import * as images from "../images";
-import Tooltip from "../components/custom-components/tooltip/tooltip";
 
 export default class ContentRenderer {
 
@@ -25,7 +23,7 @@ export default class ContentRenderer {
         images && images.map((image, key) => {
           return (
             <div className={colClass} key={key}>
-              {image ? <img className={this.commonImageClass} src={imagesAll[image]}
+              {image ? <img className={this.commonImageClass} src={images[image]}
                 onClick={() => this.commonImageClass && this.commonClickHandler({
                               show: true,
                               imageSrc: image
@@ -150,7 +148,7 @@ export default class ContentRenderer {
       return <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
                      onClick={handler}
                      href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
-              {content[node].icon && <img src={imagesAll[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>}
+              {content[node].icon && <img src={images[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>}
               {content[node].buttonText}
             </button>;
     } else if (node.startsWith("customDivider")) {
@@ -167,7 +165,7 @@ export default class ContentRenderer {
       const metaData = content[node];
       return (<React.Fragment>
         <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}
-        {metaData.image && imagesAll[metaData.image] ? <img className="d-inline-block" src={imagesAll[metaData.image]}/> : ""}
+        {metaData.image && images[metaData.image] ? <img className="d-inline-block" src={images[metaData.image]}/> : ""}
         </a>
       </React.Fragment>);
     } else if (node.startsWith("section")) {
@@ -177,17 +175,7 @@ export default class ContentRenderer {
         <Banner classes={content[node].innerClasses} variant={content[node].variant}
                 content={content[node]} theme={content[node].theme} /></div> : null
     } else if (node.startsWith("key-val")) {
-      const nodeContent = content ? JSON.parse(JSON.stringify(content[node])) : {};
-      let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
-      const user = this.props.userProfile;
-      ContentRenderer.getDynamicReplacementConfig(nodeContent, user || {});
-      const dynamicReplacements = nodeContent.dynamicReplacementConfig;
-      text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
-      text = text && text.indexOf("undefined") === -1 && text.indexOf("null") === -1 && text !== "0000000000" && text !== "(000) 000-0000" ? text : "-";
-      return <div className={nodeContent ? nodeContent.containerClasses : ""}>
-        <span className="mr-4 font-disabled font-size-14">{nodeContent.key}</span>
-        <span className="text-overflow-ellipsis" title={text}>{text}</span>
-      </div>
+      return <KeyVal content={content} node={node} user={this.props.userProfile} />
     } else if (node.startsWith("subtitle")) {
       const nodeContent = content ? content[node] : {};
       let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
