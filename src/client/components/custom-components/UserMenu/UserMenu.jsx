@@ -34,7 +34,7 @@ class UserMenu extends React.Component {
     }, true);
 
     if (showLogoutPrompt) {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.LOGOUT});
+      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", DISPLAY_DASHBOARD: true, ...modalsMeta.LOGOUT});
     } else {
       mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
       const baseUrl = window.location.origin;

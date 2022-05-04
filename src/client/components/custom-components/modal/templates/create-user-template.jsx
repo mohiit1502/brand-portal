@@ -294,7 +294,7 @@ class CreateUserTemplate extends React.Component {
         .then(res => {
           this.resetTemplateStatus();
           this.props.saveUserInitiated();
-          const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
+          const meta = { templateName: "NewUserAddedTemplate", DISPLAY_DASHBOARD: true, data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
           this.loader("form", false);
           mixpanelPayload.API_SUCCESS = true;
