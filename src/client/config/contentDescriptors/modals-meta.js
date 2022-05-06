@@ -582,7 +582,7 @@ const MODALSMETA = {
         "classes": "text-right float-right px-3",
         "containerClasses": "p-3",
         "action": "navigation",
-        "actionParam": "https://seller.walmart.com"
+        "actionParam": "https://seller.stg.walmart.com"
       },
       "ADDITIONAL_ACTION": {
         "text": "Cancel",
