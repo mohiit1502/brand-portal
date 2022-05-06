@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-nested-ternary, max-params, no-unused-expressions, no-magic-numbers, max-statements, complexity */
 import React from "react";
-import * as imagesAll from "./../images";
+import moment from "moment";
 import CustomInput from "../components/custom-components/custom-input/custom-input";
+import {Banner, KeyVal, Section, Tile} from "../components";
 import Helper from "./helper";
 import CONSTANTS from "../constants/constants";
-import { Tile } from "../components";
+import * as images from "../images";
 
 export default class ContentRenderer {
 
@@ -22,7 +23,7 @@ export default class ContentRenderer {
         images && images.map((image, key) => {
           return (
             <div className={colClass} key={key}>
-              {image ? <img className={this.commonImageClass} src={imagesAll[image]}
+              {image ? <img className={this.commonImageClass} src={images[image]}
                 onClick={() => this.commonImageClass && this.commonClickHandler({
                               show: true,
                               imageSrc: image
@@ -83,6 +84,34 @@ export default class ContentRenderer {
       <div className={classes ? classes : ""}>{partialRenders}</div>;
   }
 
+  static getDynamicReplacementConfig (node, profile, org) {
+    const dynamicReplacementConfig = node.dynamicReplacementConfig;
+    dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
+      const replacement = dynamicReplacementConfig[key];
+      if (replacement && replacement.indexOf(".") > -1) {
+        const replacementPath = replacement.split(".");
+        let i = 0;
+        let traverser = replacementPath[i++];
+        if (traverser === "profile") {
+          traverser = profile;
+          while (traverser && i < replacementPath.length) {
+            traverser = traverser[replacementPath[i++]];
+          }
+          dynamicReplacementConfig[key] = traverser;
+        } else if (traverser === "org") {
+          traverser = org;
+          while (traverser && i < replacementPath.length) {
+            traverser = traverser[replacementPath[i++]];
+          }
+          dynamicReplacementConfig[key] = traverser;
+        }
+        dynamicReplacementConfig[key] = dynamicReplacementConfig[key] && node.outgoingFormat ? moment(dynamicReplacementConfig[key],
+          node.incomingFormat).format(node.outgoingFormat) : dynamicReplacementConfig[key];
+      }
+    });
+    // return dynamicReplacementConfig;
+  };
+
   static implementDynamicReplacements(dynamicReplacements, text) {
     dynamicReplacements && Object.keys(dynamicReplacements).forEach(key => {
       const regex = new RegExp(key, "g");
@@ -90,6 +119,7 @@ export default class ContentRenderer {
     });
     return text;
   }
+
   getContent(content, node, classes, isPartial) {
     if (node.startsWith("partial")) {
       return this.getPartialContent(content, node, classes, isPartial);
@@ -118,7 +148,7 @@ export default class ContentRenderer {
       return <button type="button" className={content[node].classes ? content[node].classes : ""} key={content[node].key}
                      onClick={handler}
                      href={content[node].href ? content[node].href : ""} value={content[node].value ? content[node].value : 0} >
-              {content[node].icon && <img src={imagesAll[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>}
+              {content[node].icon && <img src={images[content[node].icon]} alt={content[node].icon} className = "mr-2" style={{width: "1.3rem", height: "1.3rem"}}/>}
               {content[node].buttonText}
             </button>;
     } else if (node.startsWith("customDivider")) {
@@ -135,9 +165,27 @@ export default class ContentRenderer {
       const metaData = content[node];
       return (<React.Fragment>
         <a href={metaData.href} className={metaData.classes ? metaData.classes : ""} >{metaData.text}
-        {metaData.image && imagesAll[metaData.image] ? <img className="d-inline-block" src={imagesAll[metaData.image]}/> : ""}
+        {metaData.image && images[metaData.image] ? <img className="d-inline-block" src={images[metaData.image]}/> : ""}
         </a>
       </React.Fragment>);
+    } else if (node.startsWith("section")) {
+      return <Section config={content[node]} data={{user: this.props.userProfile}} parent={this} />
+    } else if (node.startsWith("banner")) {
+      return content ? <div className={content[node].layoutClasses}>
+        <Banner classes={content[node].innerClasses} variant={content[node].variant}
+                content={content[node]} theme={content[node].theme} /></div> : null
+    } else if (node.startsWith("key-val")) {
+      return <KeyVal content={content} node={node} user={this.props.userProfile} />
+    } else if (node.startsWith("subtitle")) {
+      const nodeContent = content ? content[node] : {};
+      let text = typeof nodeContent === "string" ? nodeContent : nodeContent.value;
+      const user = this.props.userProfile;
+      ContentRenderer.getDynamicReplacementConfig(nodeContent, user || {});
+      const dynamicReplacements = nodeContent.dynamicReplacementConfig;
+      text = ContentRenderer.implementDynamicReplacements(dynamicReplacements, text);
+      return <div className={nodeContent ? nodeContent.containerClasses : ""}>
+        <span className="font-disabled font-size-12">{text}</span>
+      </div>
     } else {
       return null;
     }
@@ -156,6 +204,18 @@ export default class ContentRenderer {
         {answer && Object.keys(answer).map(node => this.getContent(answer, node, "c-HelpMain__partial"))}
       </div>
     );
+  }
+
+  static getSectionRenders(config) {
+    const sectionsConfig = config || {...this.state.sectionsConfig};
+    const renderer = new ContentRenderer();
+    return sectionsConfig && Object.keys(sectionsConfig).length > 0
+      ? Object.keys(sectionsConfig).map(sectionKey => {
+        const content = sectionsConfig[sectionKey];
+        const shouldRender = ContentRenderer.evaluateRenderDependency.call(this, content.renderCondition);
+        return shouldRender ? content.wrapInRow ? <div className="row">{renderer.getContent.call(this, sectionsConfig, sectionKey)}</div>
+          : renderer.getContent.call(this, sectionsConfig, sectionKey) : null;
+      }) : null;
   }
 
   //////// ====================== Changes for form field renders (only) ========================= /////
@@ -271,7 +331,7 @@ export default class ContentRenderer {
     const self = this;
     iterationSet.forEach(key => {
       const conditionObj = field[key];
-      if (self.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
+      if (conditionObj && self.conditionalFields.indexOf(key) > -1 && typeof conditionObj === "object") {
         if ("condition" in conditionObj) {
           const dependencyObj = conditionObj.condition.find(obj => {
             return obj.subCondition

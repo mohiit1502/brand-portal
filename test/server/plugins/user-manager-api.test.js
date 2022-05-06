@@ -168,7 +168,7 @@ describe("Test User Manager API",() => {
           .mockResolvedValue(successResponse);
         server.inject(request).then(res => {
           expect(getHeadersMethod).toHaveBeenCalled();
-          expect(ccmGetMethod).toBeCalledTimes(2);
+          expect(ccmGetMethod).toHaveBeenCalled();
           expect(serverHttpMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(200);
           expect(JSON.parse(res.payload)).toEqual(successResponse.body);
@@ -199,7 +199,7 @@ describe("Test User Manager API",() => {
           });
         server.inject(request).then(res => {
           expect(getHeadersMethod).toHaveBeenCalled();
-          expect(ccmGetMethod).toBeCalledTimes(2);
+          expect(ccmGetMethod).toHaveBeenCalled();
           expect(serverHttpMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(500);
           expect(JSON.parse(res.payload)).toEqual(failureResponseWithErrorMessage);
@@ -227,7 +227,7 @@ describe("Test User Manager API",() => {
           });
         server.inject(request).then(res => {
           expect(getHeadersMethod).toHaveBeenCalled();
-          expect(ccmGetMethod).toBeCalledTimes(2);
+          expect(ccmGetMethod).toHaveBeenCalled();
           expect(serverHttpMethod).toHaveBeenCalled();
           expect(res.statusCode).toBe(500);
           expect(JSON.parse(res.payload)).toEqual(failureResponseWithoutErrorMessage);

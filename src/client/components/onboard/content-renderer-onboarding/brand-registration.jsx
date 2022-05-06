@@ -38,7 +38,7 @@ class BrandRegistration extends React.Component {
     this.state = this.props.brandState && Object.keys(this.props.brandState).length > 0 ? this.props.brandState : {
       redirectToCompanyReg: !this.props.org,
       section: {...brandConfiguration.sectionConfig},
-      clientType: Cookies.get("client_type"),
+      clientType: Cookies.get("bp_client_type"),
       form: {
         ...brandConfiguration.formConfig,
         inputData: {...brandConfiguration.fields},
@@ -265,7 +265,7 @@ BrandRegistration.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    brandContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.BRANDREG,
+    brandContent: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.BRANDREG,
     brandState: state.company && state.company.brandState,
     steps: state.company && state.company.steps,
     userProfile: state.user.profile,

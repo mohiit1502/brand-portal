@@ -256,6 +256,65 @@ const MODALSMETA = {
       },
       "TYPE": "CTA"
     },
+    "DELETE_CONTACT": {
+      "BODY_CLASSES": "text-center overflow-x-hidden",
+      "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+      "HEADER": "Delete Contact Information",
+      "MODAL_DIALOG_CLASSES": "modal-lg",
+      "SUBTITLE": {
+        "classes": "px-4 mb-5",
+        "content": {
+          "para1": {
+            "text": "Please note that the contact information of the user submitting the claim will be shared with the reported seller(s) by default if you delete the public contact information.",
+            "classes": "mx-2 text-center mb-0 mt-4 font-size-16"
+          }
+        }
+      },
+      "PRIMARY_ACTION": {
+        "text": "Delete",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "deleteContactInfo"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "Back",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue font-size-15",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
+
+    },
+    "GO_TO_USER_PROFILE": {
+      "BODY_CLASSES": "text-center pt-5 overflow-x-hidden",
+      "BODY_CONTENT_CLASSES": "px-5 py-2 font-size-18",
+      "HEADER": "Welcome to Walmart Brand Portal!",
+      "DISPLAY_DASHBOARD": true,
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "You can update the public contact information on the User Profile page. This contact information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+            "classes": "mx-2 font-size-16 py-4 px-5"
+          }
+        }
+      },
+      "HEIGHT": "110",
+      "IMAGE": "ProblemSolving",
+      "PRIMARY_ACTION": {
+        "text": "Go to User Profile",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "reroute",
+        "actionParam": "/profile"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "I'll do it later",
+        "classes": "mt-0 d-inline-block text-right mr-3 blue",
+        "action": "updateUser"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
+    },
     "LOGOUT": {
       "BODY_CONTENT_CLASSES": "text-left",
       "BODY_CLASSES": "px-5",
@@ -292,6 +351,39 @@ const MODALSMETA = {
         "text": "Go Back"
       },
       "TYPE": "CTA"
+    },
+    "DASHBOARD_MODAL": {
+      "BODY_CONTENT_CLASSES": "text-left px-5",
+      "BODY_CLASSES": "px-5",
+      "MODAL_DIALOG_CLASSES": "width-unset modal-md",
+      "HEADER": "Welcome to Walmart Brand Portal!",
+      "IMAGE": "ProblemSolving",
+      "SUBTITLE": {
+        "content": {
+          "para1": {
+            "text": "You can update the contact information for your ",
+            "classes": "mx-2"
+          },
+          "para2": {
+            "text": "company on the User Profile page.",
+            "classes": "mx-2"
+          }
+        }
+      },
+      "PRIMARY_ACTION": {
+        "text": "Go to your Profile",
+        "classes": "text-right float-right px-3",
+        "containerClasses": "p-3",
+        "action": "goToUserProfile",
+        "actionParam": "https://seller.walmart.com"
+      },
+      "ADDITIONAL_ACTION": {
+        "text": "I'll do it later",
+        "classes": "mt-0 d-inline-block text-right mr-3",
+        "action": "closeModal"
+      },
+      "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
+      "TYPE": "NOTIFICATION"
     },
     "PORTAL_DASHBOARD": {
       "CODE": 4
@@ -468,19 +560,20 @@ const MODALSMETA = {
       "TYPE": "CTA"
     },
     "PASSWORD_RESET_SELLER": {
-      "BODY_CLASSES": "",
+      "BODY_CLASSES": "overflow-x-hidden",
       "BODY_CONTENT_CLASSES": "px-3 font-size-15",
-      "HEADER": "Seller Center Profile Management",
+      "DISPLAY_DASHBOARD": true,
+      "HEADER": "Seller Center Profile",
       "MESSAGE": {
         "classes": "mt-4",
         "content": {
           "para1": {
-            "text": "Walmart Brand Portal accounts using Seller Center credentials cannot be managed directly through the Walmart Brand Portal.",
+            "text": "To change your Seller Center credentials, you will need to log into your Seller Center account.",
             "classes": "mx-2"
           },
           "para2": {
-            "text": "In order to update your profile information or reset your password, you will need to log out of Walmart Brand Portal and manage your account in Seller Center.",
-            "classes": "mx-2"
+            "text": "You cannot make changes to your Seller Center account through the Brand Portal.",
+            "classes": "mx-2 mb-5"
           }
         }
       },
@@ -489,11 +582,12 @@ const MODALSMETA = {
         "classes": "text-right float-right px-3",
         "containerClasses": "p-3",
         "action": "navigation",
-        "actionParam": "https://seller.walmart.com"
+        "actionParam": "https://seller.stg.walmart.com"
       },
       "ADDITIONAL_ACTION": {
         "text": "Cancel",
-        "classes": "mt-0 d-block",
+        "containerClasses": "mr-4 d-inline-block",
+        "classes": "mt-0 font-size-15",
         "action": "closeModal"
       },
       "FOOTER_CLASSES": "margin-unset bg-blue mt-4",

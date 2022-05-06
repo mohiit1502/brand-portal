@@ -76,9 +76,9 @@ export default class Http {
   }
 
   static logout(logoutUrl, errorType) {
-    Cookies.expire("auth_session_token");
-    Cookies.expire("session_token_login_id");
-    Cookies.expire("client_type");
+    Cookies.expire("bp_auth_session_token");
+    Cookies.expire("bp_session_token_login_id");
+    Cookies.expire("bp_client_type");
     const replacer = errorType ? `${window.location.origin}/login?${errorType}` : `${window.location.origin}/login`;
     if (!logoutUrl) {
       Http.get("/api/logoutProvider")

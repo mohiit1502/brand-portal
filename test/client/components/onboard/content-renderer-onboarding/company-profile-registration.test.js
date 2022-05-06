@@ -10,7 +10,7 @@ import {mockFetch, testStore, update} from "../../../../../src/client/utility/Te
 import {mount} from "enzyme";
 import CompanyProfileRegistration from "../../../../../src/client/components/onboard/content-renderer-onboarding/company-profile-registration";
 import profile from "../../../mocks/userProfile";
-import MODALSMETA from "../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../src/client/config/formsConfig/form-field-meta";
 import applicationDetails from "../../../mocks/applicationDetails";
 

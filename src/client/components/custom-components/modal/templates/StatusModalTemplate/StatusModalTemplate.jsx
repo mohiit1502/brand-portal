@@ -42,7 +42,7 @@ const StatusModalTemplate = props => {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[64]
     };
     if (email) {
-      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("client_type")})
+      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("bp_client_type")})
         .then(res => {
           if (res.body === true) {
             showNotification(NOTIFICATION_TYPE.SUCCESS, "Email Resent", "variant2", "Verified2");
@@ -68,40 +68,14 @@ const StatusModalTemplate = props => {
     }
   };
 
-  const getDynamicReplacementConfig = node => {
-    const dynamicReplacementConfig = node.dynamicReplacementConfig;
-    dynamicReplacementConfig && Object.keys(dynamicReplacementConfig).forEach(key => {
-      const replacement = dynamicReplacementConfig[key];
-      if (replacement.indexOf(".") > -1) {
-        const replacementPath = replacement.split(".");
-        let i = 0;
-        let traverser = replacementPath[i++];
-        if (traverser === "profile") {
-          traverser = profile;
-          while (traverser && i < replacementPath.length) {
-            traverser = traverser[replacementPath[i++]];
-          }
-          dynamicReplacementConfig[key] = traverser;
-        } else if (traverser === "org") {
-          traverser = org;
-          while (traverser && i < replacementPath.length) {
-            traverser = traverser[replacementPath[i++]];
-          }
-          dynamicReplacementConfig[key] = traverser;
-        }
-      }
-    });
-    // return dynamicReplacementConfig;
-  };
-
   const getPartialObject = node => {
     if (node) {
       if (node.length) {
         const matchedNode = node.find(obj => onboardingDetails && obj.key && obj.key.indexOf(onboardingDetails.orgStatus) > -1)
-        matchedNode && getDynamicReplacementConfig(matchedNode);
+        matchedNode && ContentRenderer.getDynamicReplacementConfig(matchedNode, profile, org);
         return matchedNode;
       } else {
-        getDynamicReplacementConfig(node);
+        ContentRenderer.getDynamicReplacementConfig(node, profile, org);
       }
     }
     return null;
@@ -143,6 +117,65 @@ const StatusModalTemplate = props => {
       });
   };
 
+  const updateUser = () => {
+    setLoader(true);
+    const mixpanelPayload = {
+      API: "/api/users",
+      WORK_FLOW: "LINK_ACCOUNTS",
+      EMAIL: user.profile.email
+    };
+    const payload = {
+      user: {
+        doItLater: true
+      }
+    };
+    return Http.put(`/api/users/${user.profile.email}`, payload, null, null)
+      .then(async res => {
+        updateUserProfile(res.body);
+        showNotification(NOTIFICATION_TYPE.SUCCESS, "Saved your preference successfully!");
+        mixpanelPayload.API_SUCCESS = true;
+      })
+      .catch(err => {
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      })
+      .finally(() => {
+        setLoader(false);
+        hideModal();
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.UPDATE_PROFILE_LATER, mixpanelPayload);
+      });
+  }
+
+  const deleteContactInfo = () => {
+    setLoader(true);
+    const mixpanelPayload = {
+      API: "/api/users",
+      WORK_FLOW: "LINK_ACCOUNTS",
+      EMAIL: user.profile.email
+    };
+    const payload = {orgId: user.profile.organization.id};
+    return Http.put(`/api/org/deleteSecondaryContactInfo`, payload, null, null)
+      .then(async res => {
+        if (res.status === 200) {
+          const userClone = JSON.parse(JSON.stringify(user.profile));
+          delete userClone.organization.secondaryContactInformation;
+          updateUserProfile(userClone);
+        }
+        showNotification(NOTIFICATION_TYPE.SUCCESS, "Deleted contact information successfully!");
+        hideModal();
+        mixpanelPayload.API_SUCCESS = true;
+      })
+      .catch(err => {
+        showNotification(NOTIFICATION_TYPE.ERROR, "Unable to delete contact information, please try again!");
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      })
+      .finally(() => {
+        setLoader(false);
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.VIEW_DASHBOARD_WORKFLOW.UPDATE_PROFILE_LATER, mixpanelPayload);
+      });
+  }
+
   const getAction = action => {
     switch (action) {
       case "updateCompanyDetails":
@@ -160,6 +193,7 @@ const StatusModalTemplate = props => {
     }
   };
 
+
   const runPrimaryAction = (action, actionParam) => {
     try {
       switch (action) {
@@ -175,15 +209,21 @@ const StatusModalTemplate = props => {
           break;
         case "navigation":
           window.open(actionParam, "_blank");
-          // window.location.href = actionParam;
           break;
         case "logout":
           mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
           window.location.href = logoutUrlSuperlated;
           break;
+        case "deleteContactInfo":
+          deleteContactInfo();
+          break;
         case "refreshAndHideModal":
           toggleModal(TOGGLE_ACTIONS.HIDE);
           window.location.reload();
+          break;
+        case "reroute":
+          toggleModal(TOGGLE_ACTIONS.HIDE);
+          history.push(actionParam);
           break;
         default:
           hideModal();
@@ -204,9 +244,10 @@ const StatusModalTemplate = props => {
         case "resendInvite":
           resendInvite();
           break;
-        case "closeModal":
-          hideModal();
+        case "updateUser":
+          updateUser();
           break;
+        case "closeModal":
         default:
           hideModal();
       }
@@ -215,6 +256,7 @@ const StatusModalTemplate = props => {
       console.log(e);
     }
   };
+
   return (
     <div className="c-StatusModalTemplate modal show" id="singletonModal" tabIndex="-1" role="dialog">
       <div className={`modal-dialog modal-dialog-centered modal-lg${meta.MODAL_DIALOG_CLASSES ? " "+meta.MODAL_DIALOG_CLASSES : ""}`} role="document">
@@ -246,7 +288,7 @@ const StatusModalTemplate = props => {
                         onboardingDetails));
                       if (shouldRender) {
                         content[node] = nodeContent;
-                        getDynamicReplacementConfig(nodeContent);
+                        ContentRenderer.getDynamicReplacementConfig(nodeContent, profile, org);
                         if (meta.TITLE.content[node].onClick) {
                           content[node].onClick = getAction(nodeContent.onClick);
                         }
@@ -291,7 +333,7 @@ const StatusModalTemplate = props => {
                             nodeContent[node] = parsedObject || nodeContent[node];
                           }
                           })
-                        : getDynamicReplacementConfig(nodeContent);
+                        : ContentRenderer.getDynamicReplacementConfig(nodeContent, profile, org);
                       return contentRenderer.getContent(meta.MESSAGE.content, node);
                       } else {
                         return null;
@@ -315,7 +357,8 @@ const StatusModalTemplate = props => {
                     {meta.PRIMARY_ACTION || "Logout"}
                   </a>
                 }
-                {meta.ADDITIONAL_ACTION && <div className={meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}>
+                {meta.ADDITIONAL_ACTION && <div className={`${meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}
+                ${meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.containerClasses ? ` ${meta.ADDITIONAL_ACTION.containerClasses}` : ""}`}>
                 {meta.ADDITIONAL_ACTION.actionHelpText && <span className={meta.ADDITIONAL_ACTION.actionHelpText.classes ? meta.ADDITIONAL_ACTION.actionHelpText.classes : ""}>{meta.ADDITIONAL_ACTION.actionHelpText.text}</span>}
                 <button className={`additional-action btn btn-link${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
                   onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>

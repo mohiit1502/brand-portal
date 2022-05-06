@@ -8,7 +8,7 @@ import {testStore} from "../../../../../../src/client/utility/TestingUtils";
 import ClaimDetailsTemplate from "../../../../../../src/client/components/custom-components/modal/templates/claim-details-template";
 import profile from "../../../../mocks/userProfile";
 import Http from "../../../../../../src/client/utility/Http";
-import MODALSMETA from "../../../../../../src/client/config/modals-meta";
+import MODALSMETA from "../../../../../../src/client/config/contentDescriptors/modals-meta";
 import FORMFIELDMETA from "../../../../../../src/client/config/formsConfig/form-field-meta";
 import {mount} from "enzyme";
 

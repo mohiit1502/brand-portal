@@ -9,6 +9,7 @@ import {TOGGLE_ACTIONS, toggleModal} from "../../actions/modal-actions";
 import * as images from "./../../images";
 import "../../styles/home/home.scss";
 import {withRouter} from "react-router";
+import CONSTANTS from "../../constants/constants";
 
 class Home extends React.Component {
   constructor(props) {
@@ -57,15 +58,18 @@ class Home extends React.Component {
   }
 
   render () {
-    const workflowDecider = this.props.userProfile && this.props.userProfile.workflow;
-    const codes = Object.keys(this.props.modalsMeta)
-      .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "APPLICATION_INFORMATION", "USER_ACCESS_REVOKED",
-        "REQUEST_ACCESS", "USER_VERIFICATION", "TOU_VERIFICATION", "ACCOUNT_LINKING", "ACCOUNT_LINKING_CONFIRM", "ACCOUNT_LINKED"].includes(key))
-      .map(key => this.props.modalsMeta[key].CODE);
-    const disablePortalAccess = (!workflowDecider || !workflowDecider.code
-      || (workflowDecider && workflowDecider.code && codes.findIndex(code => typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code) > -1))
-      || (this.props.modal && this.props.modal.value === "show" && this.props.modal.templateName === "StatusModalTemplate");
+    // const workflowDecider = this.props.userProfile && this.props.userProfile.workflow;
+    // const codes = Object.keys(this.props.modalsMeta)
+    //   .filter(key => ["PORTAL_REGISTRATION", "PORTAL_VERIFICATION", "APPLICATION_INFORMATION", "USER_ACCESS_REVOKED",
+    //     "REQUEST_ACCESS", "USER_VERIFICATION", "TOU_VERIFICATION", "ACCOUNT_LINKING", "ACCOUNT_LINKING_CONFIRM", "ACCOUNT_LINKED"].includes(key))
+    //   .map(key => this.props.modalsMeta[key].CODE);
+    // const modalObj = Object.values(this.props.modalsMeta).find(metaObj => metaObj.)
+    // const disablePortalAccess = (!workflowDecider || !workflowDecider.code
+    //   || (workflowDecider && workflowDecider.code && codes.findIndex(code => typeof code === "object" ? code.indexOf(workflowDecider.code) > -1 : code === workflowDecider.code) > -1))
+      // || (this.props.modal && this.props.modal.value === "show" && this.props.modal.templateName === "StatusModalTemplate");
 //     disablePortalAccess && this.props.history.push(CONSTANTS.ROUTES.PROTECTED.PREBOARD);
+    const disablePortalAccess = (this.props.modal && this.props.modal.value && this.props.modal.value !== "hide"
+      && !this.props.modal.DISPLAY_DASHBOARD) || this.props.userProfile.workflow.code !== CONSTANTS.WORKFLOW_CODES.DASHBOARD;
     return (
       <div className="view-container home-container">
         <HomeHeader {...this.props}/>

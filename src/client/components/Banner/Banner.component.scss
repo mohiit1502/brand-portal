@@ -1,3 +1,5 @@
+@import "../../styles/override/variables";
+
 .c-Banner {
 
   width: 100%;
@@ -9,12 +11,25 @@
   background-repeat: no-repeat;
   background-position: 8px 12px;
 
+  &.blue {
+    border-color: transparent;
+    border-left-color: $market-place-blue;
+    background-color: $background-blue;
+    background-image: url("./../../images/info-transparent.svg");
+    background-repeat: no-repeat;
+    background-position: 8px 12px;
+  }
+
   .banner-body{
     width: 100%;
     white-space: break-spaces;
     color: #662b0d;
     justify-content: flex-start;
     display: inline-flex;
+
+    &.blue {
+      color: black;
+    }
 
     .see-more-button{
       float: right;

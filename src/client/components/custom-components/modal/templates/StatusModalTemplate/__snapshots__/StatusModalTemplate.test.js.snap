@@ -350,7 +350,8 @@ exports[`StatusModalTemplate renders without error 1`] = `
                           Start
                         </button>
                         <div
-                          className=" font-size-15"
+                          className=" font-size-15
+                "
                         >
                           <button
                             className="additional-action btn btn-link mp-blue"

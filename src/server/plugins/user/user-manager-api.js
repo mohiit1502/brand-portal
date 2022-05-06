@@ -156,7 +156,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::updateUser] Initiating API request for Update User", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::updateUser] User ID: ", corrId, request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::updateUser] User ID: ", corrId, request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/${request.params && request.params.emailId}`
@@ -200,7 +200,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::reinviteUser] API request for Reinvite User has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::reinviteUser] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::reinviteUser] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/reinvite"
@@ -242,7 +242,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::resetPassword] API request for Reset Password has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::resetPassword] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::resetPassword] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/resetPassword"
@@ -282,7 +282,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::getUsers] API request for get Users has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getUsers] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getUsers] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users"
@@ -321,7 +321,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::checkUnique] API request for Check Unique User has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::checkUnique] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::checkUnique] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users/checkUnique"
@@ -364,7 +364,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] API request to get user's email configuration has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getEmailConfig] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/users/getEmailConfig"
@@ -405,7 +405,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::createUser] API request for Create User has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::createUser] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::createUser] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users"
@@ -454,7 +454,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] API request for Update User Status has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::updateUserStatus] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/{emailId}/status/${request.params.status}`
@@ -494,7 +494,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] API request for Update TOU status has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::updateTouStatus] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/users/updateTouStatus/${request.params && request.params.status}`
@@ -536,7 +536,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::deleteUser] API request for Delete Userhas started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::deleteUser] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::deleteUser] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       const options = {
         headers: { ...headers, "Content-Type": "text/plain" }
@@ -559,7 +559,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] API request for New User Roles has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getNewUserRoles] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/roles"
@@ -598,7 +598,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] API request for get New User Brand has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getNewUserBrands] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/newUser/brands"
@@ -638,7 +638,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::getUserInfo] API request for get User information has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getUserInfo] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getUserInfo] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/userInfo"
@@ -668,7 +668,7 @@ class UserManagerApi {
         if (country && ["US", "USA", "United States", "CN", "HK", "IN"].indexOf(country) === -1) {
           mixpanelPayload.USER_BLOCKED = true;
           console.log("[Corr ID: %s][UserManagerApi::getUserInfo][Country: %s][Email: %s] Unsupported seller's country, blocking the user",
-            corrId, country, request.state && request.state.session_token_login_id)
+            corrId, country, request.state && request.state.bp_session_token_login_id)
         }
       }
       console.log("[Corr ID: %s][UserManagerApi::getUserInfo] API request for get User information has completed", corrId);
@@ -694,7 +694,7 @@ class UserManagerApi {
   async loginSuccessRedirect (request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] API request for Redirect of Login Success has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/login-redirect",
@@ -720,9 +720,9 @@ class UserManagerApi {
       const authToken = user["iam-token"];
 
       console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Setting session token, login ID and client type cookies: ", corrId, h.state);
-      h.state("auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
-      h.state("session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
-      h.state("client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      h.state("bp_auth_session_token", authToken, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      h.state("bp_session_token_login_id", loginId, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
+      h.state("bp_client_type", clientType, {ttl, isSecure: false, isHttpOnly: false, path: "/"});
       console.log("[Corr ID: %s][UserManagerApi::loginSuccessRedirect] Done setting session token, login ID and client type cookies: ", corrId, h.state);
       mixpanelPayload.distinct_id = loginId;
       mixpanelPayload.API_SUCCESS = true;
@@ -748,9 +748,9 @@ class UserManagerApi {
     };
     try {
       console.log("[Corr ID: %s][UserManagerApi::logout] Clearing cookies", corrId);
-      h.unstate("auth_session_token");
-      h.unstate("session_token_login_id");
-      h.unstate("client_type");
+      h.unstate("bp_auth_session_token");
+      h.unstate("bp_session_token_login_id");
+      h.unstate("bp_client_type");
       console.log("[Corr ID: %s][UserManagerApi::logout] Cookies have been cleared", corrId);
 
       mixpanelPayload.API_SUCCESS = true;
@@ -770,7 +770,7 @@ class UserManagerApi {
   async getLogoutProvider(request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] API request for Get Logout provider has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/logoutProvider"
@@ -781,7 +781,7 @@ class UserManagerApi {
       logoutProviderURL = logoutProviderURL ? `${logoutProviderURL}&clientId=${secrets.CLIENT_ID}` : logoutProviderURL;
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
-      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.distinct_id = request.state && request.state.bp_session_token_login_id;
       console.log("[Corr ID: %s][UserManagerApi::getLogoutProvider] API request for Get Logout provider has completed", corrId);
       return h.response(logoutProviderURL).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -798,7 +798,7 @@ class UserManagerApi {
   async redirectToFalcon (request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] API request for Redirect to Falcon has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::redirectToFalcon] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const clientType = request.query.clientType;
     const mixpanelPayload = {
       METHOD: "GET",
@@ -826,7 +826,7 @@ class UserManagerApi {
   async getAccessToken(request, authorizationCode) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH).toUpperCase();
     console.log("[Corr ID: %s][UserManagerApi::getAccessToken] API request for Get Access Token has started", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::getAccessToken] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::getAccessToken] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {};
     try {
       console.log("[Corr ID: %s][UserManagerApi::getAccessToken] Fetching dependencies from CCM", corrId)
@@ -876,7 +876,7 @@ class UserManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][UserManagerApi::contactUs] API Request to send an email for support", corrId);
-    console.log("[Corr ID: %s][UserManagerApi::contactUs] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][UserManagerApi::contactUs] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/users/contactUs"

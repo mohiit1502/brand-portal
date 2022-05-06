@@ -423,7 +423,7 @@ class NewClaimTemplate extends React.Component {
         this.loader("loader", true);
         return Http.post("/api/claims", payload, null, null, this.props.showNotification, null, "Something went wrong, please try again..!")
           .then(res => {
-            const meta = { templateName: "NewClaimAddedTemplate", data: {...res.body} };
+            const meta = { templateName: "NewClaimAddedTemplate", DISPLAY_DASHBOARD: true, data: {...res.body} };
             this.resetTemplateStatus();
             this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
             this.fetchClaims();
@@ -531,7 +531,7 @@ NewClaimTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     modal: state.modal,
-    newClaimConfiguration: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWCLAIM
+    newClaimConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWCLAIM
   };
 };
 

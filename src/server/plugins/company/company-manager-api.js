@@ -65,6 +65,16 @@ class CompanyManagerApi {
         method: "GET",
         path: "/api/org/applicationDetails/{orgId}",
         handler: this.getApplicationDetails
+      },
+      {
+        method: "PUT",
+        path: "/api/org/updateContactInfo",
+        handler: this.updateContactInfo
+      },
+      {
+        method: "PUT",
+        path: "/api/org/deleteSecondaryContactInfo",
+        handler: this.deleteSecondaryContactInfo
       }
     ]);
   }
@@ -81,7 +91,7 @@ class CompanyManagerApi {
     };
 
     console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] API request for Register organization has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       if (!headers.ROPRO_CLIENT_TYPE) {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
@@ -127,7 +137,7 @@ class CompanyManagerApi {
       API: `/api/brand/trademark/validity/${request.params && request.params.trademarkNumber}`
     };
     console.log("[Corr ID: %s][CompanyManagerApi::checkTrademarkValidity] API request for Trademark Validity has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::checkTrademarkValidity] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::checkTrademarkValidity] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       if (!headers.ROPRO_CLIENT_TYPE) {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
@@ -168,7 +178,7 @@ class CompanyManagerApi {
       API: "/api/company/uploadAdditionalDocument"
     };
     console.log("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] API request for Upload Additional Document has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       const options = {headers};
       console.log("[Corr ID: %s][CompanyManagerApi::uploadAdditionalDocument] Fetching CCM dependencies", corrId);
@@ -214,7 +224,7 @@ class CompanyManagerApi {
       API: "/api/company/uploadBusinessDocument"
     };
     console.log("[Corr ID: %s][CompanyManagerApi::uploadBusinessDocument] API request for Upload Business document has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::uploadBusinessDocument] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::uploadBusinessDocument] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       const options = {headers};
       const file = request.payload.file;
@@ -261,7 +271,7 @@ class CompanyManagerApi {
       API: "/api/company/availability"
     };
     console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability] API request for Company Name Availability has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] User ID: ", corrId, request.query.name, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] User ID: ", corrId, request.query.name, request.state && request.state.bp_session_token_login_id);
     try {
       const name = request.query.name;
       if (!headers.ROPRO_CLIENT_TYPE) {
@@ -285,7 +295,7 @@ class CompanyManagerApi {
         if (request.query.clientType === "seller") {
           mixpanelPayload.USER_BLOCKED = true;
           console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s][Email: %s] Company name of seller is not unique, seller will be blocked from proceeding",
-            corrId, name, request.state && request.state.session_token_login_id);
+            corrId, name, request.state && request.state.bp_session_token_login_id);
         } else {
           console.log("[Corr ID: %s][CompanyManagerApi::checkCompanyNameAvailability][Name: %s] Company name of RO is not unique", corrId, name);
         }
@@ -311,7 +321,7 @@ class CompanyManagerApi {
       API: "/api/org/applicationDetails"
     };
     console.log("[Corr ID: %s][CompanyManagerApi::getApplicationDetails] API request for getting application details has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::getApplicationDetails] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::getApplicationDetails] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       if (!headers.ROPRO_CLIENT_TYPE) {
         headers.ROPRO_CLIENT_TYPE = request.query.clientType;
@@ -343,6 +353,96 @@ class CompanyManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.GET_APPLICATION_DETAILS, mixpanelPayload);
+    }
+  }
+
+  async updateContactInfo(request, h) {
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    const payload = request.payload;
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/org/updateContactInfo"
+    };
+    console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information.", corrId);
+    console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
+    console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Updating contact info for ID: ", corrId, payload.orgId);
+    try {
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
+      const options = {
+        method: "PUT",
+        headers
+      };
+      console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Fetching CCM dependencies", corrId);
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_PATH");
+      const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
+      // const url = "http://localhost:8092/ropro/org-service/org/contact-info";
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ORG_ID = payload.orgId;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
+      const response = await ServerHttp.put(url, options, payload);
+      console.log("[Corr ID: %s][CompanyManagerApi::updateContactInfo] API request for updating contact information has completed", corrId);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.error("[Corr ID: %s][CompanyManagerApi::updateContactInfo] Error occurred in API request for updating contact information: ", corrId, err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.DELETE_CONTACT_INFO, mixpanelPayload);
+    }
+
+  }
+
+  async deleteSecondaryContactInfo(request, h) {
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    const payload = request.payload;
+    const mixpanelPayload = {
+      METHOD: "GET",
+      API: "/api/org/deleteSecondaryContactInfo"
+    };
+    console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] API request for deleting secondary contact information.", corrId);
+    console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
+    try {
+      if (!headers.ROPRO_CLIENT_TYPE) {
+        headers.ROPRO_CLIENT_TYPE = request.query.clientType;
+      }
+      const options = {
+        method: "PUT",
+        headers
+      };
+      console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] Fetching CCM dependencies", corrId);
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      let DELETE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.DELETE_CONTACT_PATH");
+      // DELETE_CONTACT_PATH && (DELETE_CONTACT_PATH = DELETE_CONTACT_PATH.replace("__orgId__", request.params.orgId));
+      const url = `${BASE_URL}${DELETE_CONTACT_PATH}`;
+
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.ORG_ID = payload.orgId;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
+      const response = await ServerHttp.put(url, options, payload);
+      console.log("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] API request for deleting secondary contact information has completed", corrId);
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.error("[Corr ID: %s][CompanyManagerApi::deleteSecondaryContactInfo] Error occurred in API request for deleting secondary contact information: ", corrId, err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.DELETE_CONTACT_INFO, mixpanelPayload);
     }
   }
 

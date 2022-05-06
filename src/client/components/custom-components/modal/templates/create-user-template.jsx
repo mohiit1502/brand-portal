@@ -37,7 +37,7 @@ class CreateUserTemplate extends React.Component {
     const newUserContent = this.props.newUserContent ? this.props.newUserContent : {};
 
     this.state = {
-      clientType: Cookies.get("client_type"),
+      clientType: Cookies.get("bp_client_type"),
       section: {...newUserContent.sectionConfig},
       form: {
         ...newUserContent.formConfig,
@@ -294,7 +294,7 @@ class CreateUserTemplate extends React.Component {
         .then(res => {
           this.resetTemplateStatus();
           this.props.saveUserInitiated();
-          const meta = { templateName: "NewUserAddedTemplate", data: {...res.body.user} };
+          const meta = { templateName: "NewUserAddedTemplate", DISPLAY_DASHBOARD: true, data: {...res.body.user} };
           this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
           this.loader("form", false);
           mixpanelPayload.API_SUCCESS = true;
@@ -373,7 +373,7 @@ CreateUserTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    newUserContent: state.content && state.content.metadata && state.content.metadata.SECTIONSCONFIG && state.content.metadata.SECTIONSCONFIG.NEWUSER,
+    newUserContent: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWUSER,
     userProfile: state.user.profile
   };
 };

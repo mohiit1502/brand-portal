@@ -2,7 +2,8 @@
 import Http from "./Http";
 import Helper from "./helper";
 import FORMFIELDMETA from "../config/formsConfig/form-field-meta";
-import MODALMETA from "../config/modals-meta";
+import MODALMETA from "../config/contentDescriptors/modals-meta";
+import SECTIONSCONFIG from "../config/contentDescriptors/sections-meta";
 
 class PreLoadApiUtil {
 
@@ -72,40 +73,58 @@ class PreLoadApiUtil {
       });
   }
 
-    fetchModalConfig(dipatcher) {
+    fetchModalConfig(dispatcher) {
         try {
-            dipatcher(MODALMETA);
+            dispatcher(MODALMETA);
             Http.get("/api/modalConfig")
                 .then(response => {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
                             // response = MODALMETA;
-                            dipatcher(response);
+                            dispatcher(response);
                         } catch (e) {
-                            dipatcher(MODALMETA);
+                            dispatcher(MODALMETA);
                         }
                     }
                 });
         } catch (err) {}
     }
 
-    fetchFormFieldConfig (dipatcher) {
+    fetchFormFieldConfig (dispatcher) {
         try {
-            dipatcher(FORMFIELDMETA);
+            dispatcher(FORMFIELDMETA);
             Http.get("/api/formConfig")
                 .then(response => {
                     if (response.body) {
                         try {
                             response = JSON.parse(response.body);
                             // response = FORMFIELDMETA;
-                            dipatcher(response);
+                            dispatcher(response);
                         } catch (e) {
-                            dipatcher(FORMFIELDMETA);
+                            dispatcher(FORMFIELDMETA);
                         }
                     }
                 });
         } catch (err) {}
+    }
+
+    fetchSectionsConfig (dispatcher) {
+      try {
+        dispatcher(SECTIONSCONFIG);
+        Http.get("/api/sectionsConfig")
+          .then(response => {
+            if (response.body) {
+              try {
+                response = JSON.parse(response.body);
+                // response = SECTIONSCONFIG;
+                dispatcher(response);
+              } catch (e) {
+                dispatcher(SECTIONSCONFIG);
+              }
+            }
+          });
+      } catch (err) {}
     }
 }
 

@@ -4,6 +4,7 @@ import ServerHttpError from "./ServerHttpError";
 import mixpanel from "../utility/mixpanelutility";
 import {MIXPANEL_CONSTANTS} from "../constants/mixpanel-constants";
 import utils from "../utility/server-utils";
+// import fetchToCurl from "fetch-to-curl";
 
 export default class ServerHttp {
 
@@ -57,6 +58,7 @@ export default class ServerHttp {
       !urlString && console.log("No URL!!");
       console.log("[Corr ID: %s] 1. ===== Crud Request Start. Requesting URL: ", corrId, urlString);
       requestStartTime = Date.now();
+      // console.log(fetchToCurl(urlString, options));
       const response = await fetch(urlString, options);
       requestEndTime = Date.now();
       const {ok, status, headers} = response;
