@@ -44,6 +44,7 @@ const Section = props => {
   const evaluateRenderFooter = footer => !footer.renderCondition || ContentRenderer.evaluateRenderDependency.call(parent, footer.renderCondition);
   const bodyContent = ContentRenderer.getSectionRenders.call(parent, body.content);
 
+  
   return (
     <div className={`c-Section${layoutClasses ? " " + layoutClasses : ""}`}>
       <div className={`${innerClasses ? " " + innerClasses : ""}`}>
