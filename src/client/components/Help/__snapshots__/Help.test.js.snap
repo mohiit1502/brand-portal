@@ -2864,7 +2864,6 @@ exports[`Help should render help successfully 1`] = `
                                                 <img
                                                   className="c-FaqSingle__helpImage"
                                                   onClick={[Function]}
-                                                  src="Login Type CTA.png"
                                                 />
                                               </div>
                                             </div>
@@ -2882,7 +2881,6 @@ exports[`Help should render help successfully 1`] = `
                                                 <img
                                                   className="c-FaqSingle__helpImage"
                                                   onClick={[Function]}
-                                                  src="Falcon Login Form.jpg"
                                                 />
                                               </div>
                                             </div>
@@ -2900,7 +2898,6 @@ exports[`Help should render help successfully 1`] = `
                                                 <img
                                                   className="c-FaqSingle__helpImage"
                                                   onClick={[Function]}
-                                                  src="Account Linking.png"
                                                 />
                                               </div>
                                             </div>
@@ -2918,7 +2915,6 @@ exports[`Help should render help successfully 1`] = `
                                                 <img
                                                   className="c-FaqSingle__helpImage"
                                                   onClick={[Function]}
-                                                  src="Account Linking Success.png"
                                                 />
                                               </div>
                                             </div>

@@ -10,6 +10,17 @@ class Tooltip extends React.Component {
     super(props);
   }
 
+  componentDidMount(){
+    try {
+      $("[title]")
+        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
+        .tooltip();
+      $("body")
+        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
+        .on("mouseleave", ".tooltip, [title]", () => $(".tooltip").addClass("move-beneath"));
+    } catch (e) {}
+  }
+
   render() {
 
     return (

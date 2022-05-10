@@ -43,20 +43,26 @@ class ResetPasswordTemplate extends Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
-      const targetVal = evt.target.value;
       this.setState(state => {
         state = {...state};
-        if (key === "currentPassword" && state.form.error === state.form.incorrectPasswordError) {
-          state.form.error = false;
-        }
-        if (key === "newPassword" || key === "confirmNewPassword") {
-          (state.form.error === state.form.old5PasswordsError || state.form.error === state.form.passwordPolicyMessage) && (state.form.error = false);
-          state.form.inputData.errorSub.error = state.form.passwordsDifferent ? state.form.passwordMismatchError : "";
-        }
-        state.form.inputData[key].value = targetVal;
-        state.form.inputData[key].isDirty = true;
+        state.form.error = "";
         return state;
-      }, this.checkToEnableSubmit);
+      }, () => {
+        const targetVal = evt.target.value;
+        this.setState(state => {
+          state = {...state};
+          if (key === "currentPassword" && state.form.error === state.form.incorrectPasswordError) {
+            state.form.error = false;
+          }
+          if (key === "newPassword" || key === "confirmNewPassword") {
+            (state.form.error === state.form.old5PasswordsError || state.form.error === state.form.passwordPolicyMessage) && (state.form.error = false);
+            state.form.inputData.errorSub.error = state.form.passwordsDifferent ? state.form.passwordMismatchError : "";
+          }
+          state.form.inputData[key].value = targetVal;
+          state.form.inputData[key].isDirty = true;
+          return state;
+        }, this.checkToEnableSubmit);
+      })
     }
   }
 
@@ -125,6 +131,14 @@ class ResetPasswordTemplate extends Component {
                 state.form.error = form.passwordPolicyMessage;
                 return true;
               });
+            } else {
+              if (err.message) {
+                this.setState(state => {
+                  state = {...state};
+                  state.form.error = err.message;
+                  return true;
+                });
+              }
             }
           }
           mixpanelPayload.API_SUCCESS = false;
@@ -171,9 +185,9 @@ class ResetPasswordTemplate extends Component {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className={`modal-body text-left${this.state.form.loader ? " loader" : ""}`}>
-              <form onSubmit={this.handleSubmit} className="h-100 px-2">
-                <p>{form.formHeading}</p>
+            <div className={`modal-body text-left p-0${this.state.form.loader ? " loader" : ""}`}>
+              <form onSubmit={this.handleSubmit} className="h-100 px-4">
+                <p className="pb-1 pt-4">{form.formHeading}</p>
                 {form.passwordGuidance && <small className={`form-text font-size-12 custom-input-help-text mb-3`} style={{color: "#777"}}>{ form.passwordGuidance }</small>}
                 {form.error && <small className={`form-text custom-input-help-text text-danger mb-3 pl-3`}>{ form.error }</small>}
                 {this.getFieldRenders()}

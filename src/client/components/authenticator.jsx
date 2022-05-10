@@ -23,7 +23,7 @@ class Authenticator extends React.Component {
 
   constructor (props) {
     super(props);
-    const COOKIE_NAME = "auth_session_token";
+    const COOKIE_NAME = "bp_auth_session_token";
     const sessionCookie = Cookies.get(COOKIE_NAME);
 
     this.fetchClaims = preLoadApiUtil.fetchClaims.bind(this);
@@ -69,8 +69,8 @@ class Authenticator extends React.Component {
       isOnboarded: false,
       profileInformationLoaded: false,
       userInfoError: false,
-      logInId: Cookies.get("session_token_login_id"),
-      clientType: Cookies.get("client_type")
+      logInId: Cookies.get("bp_session_token_login_id"),
+      clientType: Cookies.get("bp_client_type")
     };
   }
 

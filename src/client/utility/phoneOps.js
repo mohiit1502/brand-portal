@@ -12,7 +12,8 @@ export default class InputFormatter {
         3: "(xxx",
         6: "(xxx) xxx",
         10: "(xxx) xxx-xxxx",
-        11: "+x (xxx) xxx-xxxx"
+        11: "+x (xxx) xxx-xxxx",
+        12: "+xx (xxx) xxx-xxxx"
       },
       replaceChar: "x",
       skipFormatOpts: [{

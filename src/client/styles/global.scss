@@ -619,6 +619,23 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   overflow-x: auto;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+.user-menu {
+  box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+
+  .dropdown-item {
+    transition: all 0.3s;
+    &:hover {
+      background: $market-place-blue;
+      color: white;
+    }
+  }
+}
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg);

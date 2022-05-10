@@ -38,7 +38,7 @@ const TouTemplate = props => {
       ORG_NAME: profile.organization.name,
       USER_STATUS: profile.status
     };
-    const clientType = Cookies.get("client_type");
+    const clientType = Cookies.get("bp_client_type");
     Http.put(`/api/users/updateTouStatus/${outgoingStatus}`, payload, null, null, props.showNotification, null, "Unable to complete Operation, please try again!")
       .then(() => {
         Http.get("/api/userInfo", {clientType})

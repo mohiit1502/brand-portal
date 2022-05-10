@@ -50,7 +50,7 @@ class DashboardManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][DashboardManagerApi::getDashboard] API request for Dashboard data has started", corrId);
-    console.log("[Corr ID: %s][DashboardManagerApi::getDashboard] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][DashboardManagerApi::getDashboard] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET"
     };
@@ -85,7 +85,7 @@ class DashboardManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][DashboardManagerApi::getReportedClaimsType] API request for Claim Submitted by Type has started", corrId);
-    console.log("[Corr ID: %s][DashboardManagerApi::getReportedClaimsType] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][DashboardManagerApi::getReportedClaimsType] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_TYPE"
@@ -123,7 +123,7 @@ class DashboardManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][DashboardManagerApi::getTopReportedBrands] API request for Top Reported Brands has started", corrId);
-    console.log("[Corr ID: %s][DashboardManagerApi::getTopReportedBrands] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][DashboardManagerApi::getTopReportedBrands] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_BRAND"
@@ -161,7 +161,7 @@ class DashboardManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][DashboardManagerApi::getTopReporters] API request for Top Reporters has started", corrId);
-    console.log("[Corr ID: %s][DashboardManagerApi::getTopReporters] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][DashboardManagerApi::getTopReporters] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       CHART_SELECTED: "CLAIM_SUBMITTED_BY_USER"

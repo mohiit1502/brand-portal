@@ -36,7 +36,7 @@ const ClaimListTable = function(props) {
       const ticketId = row.original && row.original.ticketId;
       const claimDetailsUrl = `/api/claims/${ticketId}`;
       const response = (await Http.get(claimDetailsUrl)).body;
-      const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
+      const meta = { templateName: "ClaimDetailsTemplate", DISPLAY_DASHBOARD: true, data: response && response.data };
       props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import $ from "jquery";
@@ -12,27 +12,11 @@ import Helper from "../../utility/helper";
 
 const Section = props => {
   const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, profile, toggleModal} = props;
-  const [userProfile, setUserProfile] = useState();
   const getTooltipContent = content => content.map(text => {
     return <div className="py-2">
       <p className="mt-2 pl-2 text-left font-size-12">{text}</p>
     </div>
   });
-
-  useEffect(() => {
-    setUserProfile(profile);
-  }, [profile])
-
-  useEffect(() => {
-    try {
-      $("[title]")
-        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
-        .tooltip();
-      $("body")
-        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
-        .on("mouseleave", ".tooltip, [title]", () => $(".tooltip").addClass("move-beneath"));
-    } catch (e) {}
-  }, [])
 
   const buttonRenders = footer && footer.buttons && footer.buttons.map(button => {
     const shouldRender = ContentRenderer.evaluateRenderDependency.call(parent, button.renderCondition);
@@ -50,7 +34,7 @@ const Section = props => {
         } else if (typeof modal === "object") {
           params = modal.find(conf => conf.value === Helper.search(conf.key, parent));
         }
-        const meta = {templateName: params.modal, ...(params.configName ? modalsMeta[params.configName] : {}), title};
+        const meta = {templateName: params.modal, DISPLAY_DASHBOARD: true, ...(params.configName ? modalsMeta[params.configName] : {}), title};
         actionParams.context && (meta.context = actionParams.context);
         actionParams.subContext && (meta.subContext = actionParams.subContext);
         toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
@@ -60,6 +44,7 @@ const Section = props => {
   const evaluateRenderFooter = footer => !footer.renderCondition || ContentRenderer.evaluateRenderDependency.call(parent, footer.renderCondition);
   const bodyContent = ContentRenderer.getSectionRenders.call(parent, body.content);
 
+  
   return (
     <div className={`c-Section${layoutClasses ? " " + layoutClasses : ""}`}>
       <div className={`${innerClasses ? " " + innerClasses : ""}`}>

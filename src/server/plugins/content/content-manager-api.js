@@ -60,7 +60,7 @@ class ContentManagerApi {
   async getHelpConfiguration(request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][ContentManagerApi::getHelpConfiguration] API request for Help configuration has started", corrId);
-    console.log("[Corr ID: %s][ContentManagerApi::getHelpConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ContentManagerApi::getHelpConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/helpConfig"
@@ -70,7 +70,7 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.HELPDESCRIPTOR");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.distinct_id = request.state && request.state.bp_session_token_login_id;
       console.log("[Corr ID: %s][ContentManagerApi::getHelpConfiguration] API request for Help configuration has completed", corrId);
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -87,7 +87,7 @@ class ContentManagerApi {
   async getWebformConfiguration(request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][ContentManagerApi::getWebformConfiguration] API request for Webform configuration has started", corrId);
-    console.log("[Corr ID: %s][ContentManagerApi::getWebformConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ContentManagerApi::getWebformConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.WEBFORMDESCRIPTOR");
       console.log("[Corr ID: %s][ContentManagerApi::getWebformConfiguration] API request for Webform configuration has completed", corrId);
@@ -125,7 +125,7 @@ class ContentManagerApi {
   async getFormFieldConfiguration(request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][ContentManagerApi::getFormFieldConfiguration] API request for form field configuration has started", corrId);
-    console.log("[Corr ID: %s][ContentManagerApi::getFormFieldConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ContentManagerApi::getFormFieldConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/formConfig"
@@ -134,7 +134,7 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.FORMFIELDCONFIG");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.distinct_id = request.state && request.state.bp_session_token_login_id;
       console.log("[Corr ID: %s][ContentManagerApi::getFormFieldConfiguration] API request for form field  configuration has completed", corrId);
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -151,7 +151,7 @@ class ContentManagerApi {
   async getModalConfiguration(request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][ContentManagerApi::getModalConfiguration] API request for modal configuration has started", corrId);
-    console.log("[Corr ID: %s][ContentManagerApi::getModalConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ContentManagerApi::getModalConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/modalConfig"
@@ -160,7 +160,7 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.MODALSCONFIG");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.distinct_id = request.state && request.state.bp_session_token_login_id;
       console.log("[Corr ID: %s][ContentManagerApi::getModalConfiguration] API request for modal configuration has completed", corrId);
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -177,7 +177,7 @@ class ContentManagerApi {
   async getSectionsConfiguration(request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] API request for sections configuration has started", corrId);
-    console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/sectionsConfig"
@@ -186,7 +186,7 @@ class ContentManagerApi {
       const configuration = await ServerUtils.ccmGet(request, "CONTENT_CONFIG.SECTIONSCONFIG");
       mixpanelPayload.RESPONSE_STATUS = CONSTANTS.STATUS_CODE_SUCCESS;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.distinct_id = request.state && request.state.bp_session_token_login_id;
       console.log("[Corr ID: %s][ContentManagerApi::getSectionsConfiguration] API request for sections configuration has completed", corrId);
       return h.response(configuration).code(CONSTANTS.STATUS_CODE_SUCCESS);
     } catch (err) {
@@ -203,7 +203,7 @@ class ContentManagerApi {
   async getMixpanelConfiguration (request, h) {
     const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
     console.log("[Corr ID: %s][ContentManagerApi::getMixpanelConfiguration] API request for mixpanel configuration has started", corrId);
-    console.log("[Corr ID: %s][ContentManagerApi::getMixpanelConfiguration] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ContentManagerApi::getMixpanelConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.MIXPANEL_PROJECT_TOKEN");
       response = JSON.parse(response);

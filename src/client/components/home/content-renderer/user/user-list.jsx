@@ -122,7 +122,7 @@ class UserList extends React.Component {
                 SELECTED_USER_NAME: data.username,
                 SELECTED_USER_BRANDS: data.brands
               };
-              Http.post("/api/users/reinvite", {email: data.loginId}, {clientType: Cookies.get("client_type")}, () => this.loader("loader", false))
+              Http.post("/api/users/reinvite", {email: data.loginId}, {clientType: Cookies.get("bp_client_type")}, () => this.loader("loader", false))
                 .then(res => {
                   if (res.body === true) {
                     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `User ${data.loginId} has been Invited Again`);
@@ -396,14 +396,14 @@ class UserList extends React.Component {
     mixpanel.trackEvent(eventName, payload);
   }
   createNewUser () {
-    const meta = { templateName: "CreateUserTemplate" };
+    const meta = { templateName: "CreateUserTemplate", DISPLAY_DASHBOARD: true };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = { WORK_FLOW: "VIEW_USER_LIST" };
     this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
   }
 
   editUser (userData) {
-    const meta = { templateName: "CreateUserTemplate", data: {...userData} };
+    const meta = { templateName: "CreateUserTemplate", DISPLAY_DASHBOARD: true, data: {...userData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = {
       WORK_FLOW: "VIEW_USER_LIST",

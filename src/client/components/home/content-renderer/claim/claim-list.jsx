@@ -177,11 +177,11 @@ class ClaimList extends React.Component {
       // this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "ClaimDetailsTemplate", data: {}});
       const claimDetailsUrl = `/api/claims/${ticketId}`;
       const response = (await Http.get(claimDetailsUrl)).body;
-      const meta = { templateName: "ClaimDetailsTemplate", data: response && response.data };
+      const meta = { templateName: "ClaimDetailsTemplate", DISPLAY_DASHBOARD: true, data: response && response.data };
       this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     } catch (e) {
       if (e.status === 404) {
-        const meta = { templateName: "ClaimDetailsTemplate", data: {error: true, ticketId} };
+        const meta = { templateName: "ClaimDetailsTemplate", DISPLAY_DASHBOARD: true, data: {error: true, ticketId} };
         this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
       }
     }
@@ -228,7 +228,7 @@ class ClaimList extends React.Component {
   }
 
   addNewClaim () {
-    const meta = { templateName: "NewClaimTemplate" };
+    const meta = { templateName: "NewClaimTemplate", DISPLAY_DASHBOARD: true };
     const mixpanelPayload = {WORK_FLOW: "ADD_NEW_CLAIM"};
     this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});

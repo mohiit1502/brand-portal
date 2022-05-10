@@ -87,7 +87,7 @@ class ClaimManagerApi {
     const headers = this.getIQSHeaders(request);
     const corrId = headers["WM_QOS.CORRELATION_ID"];
     console.log("[Corr ID: %s][ClaimManagerApi::getSellers] API request for Get Sellers has started", corrId);
-    console.log("[Corr ID: %s][ClaimManagerApi::getSellers] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::getSellers] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     console.log("[Corr ID: %s][ClaimManagerApi::getSellers] Item ID: ", corrId, request.query && request.query.payload);
     const mixpanelPayload = {
       METHOD: "GET",
@@ -106,7 +106,7 @@ class ClaimManagerApi {
       mixpanelPayload.URL = url;
       mixpanelPayload.ITEM_ID = request.query && request.query.payload;
       mixpanelPayload.API_SUCCESS = true;
-      mixpanelPayload.distinct_id = request.state && request.state.session_token_login_id;
+      mixpanelPayload.distinct_id = request.state && request.state.bp_session_token_login_id;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers["WM_QOS.CORRELATION_ID"];
 
       const response = await ServerUtils.retry({url, options, payload, type: "post"}, incrementalTimeouts || [50, 80, 100]);
@@ -134,7 +134,7 @@ class ClaimManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] API request for Get Claim type has started", corrId);
-    console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaimTypes] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/claims/types"
@@ -174,7 +174,7 @@ class ClaimManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][ClaimManagerApi::getClaims] API request for Get Claims has started", corrId);
-    console.log("[Corr ID: %s][ClaimManagerApi::getClaims] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaims] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/claims"
@@ -216,7 +216,7 @@ class ClaimManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][ClaimManagerApi::getClaim] API request for Get Claim has started", corrId);
-    console.log("[Corr ID: %s][ClaimManagerApi::getClaim] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::getClaim] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: `/api/claims/${request.params && request.params.ticketId}`
@@ -260,7 +260,7 @@ class ClaimManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][ClaimManagerApi::createClaim] API request for Create Claim has started", corrId);
-    console.log("[Corr ID: %s][ClaimManagerApi::createClaim] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::createClaim] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/claims"
@@ -358,7 +358,7 @@ class ClaimManagerApi {
       API: "/api/claims/uploadWebFormDocument"
     };
     console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] API request for Upload Business document has started", corrId);
-    console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::uploadWebFormDocument] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       const options = {
         headers

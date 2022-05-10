@@ -16,7 +16,7 @@ const SECTIONSMETA = {
           "classes": "px-4 pt-4 pb-3 row overflow-auto",
           "content": {
             "key-val1": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
               "dynamicReplacementConfig": {
                 "__firstNamePlaceholder__": "profile.firstName",
                 "__lastNamePlaceholder__": "profile.lastName"
@@ -25,7 +25,7 @@ const SECTIONSMETA = {
               "value": "__firstNamePlaceholder__ __lastNamePlaceholder__"
             },
             "key-val2": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
               "dynamicReplacementConfig": {
                 "__email__": "profile.email"
               },
@@ -33,7 +33,7 @@ const SECTIONSMETA = {
               "value": "__email__"
             },
             "key-val3": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
               "dynamicReplacementConfig": {
                 "__phoneNumber__": "profile.phoneNumber"
               },
@@ -41,7 +41,7 @@ const SECTIONSMETA = {
               "value": "__phoneNumber__"
             },
             "key-val4": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
               "dynamicReplacementConfig": {
                 "__orgName__": "profile.organization.name"
               },
@@ -65,11 +65,22 @@ const SECTIONSMETA = {
             {
               "action": "displayModal",
               "actionParams": {
-                "modal": "ResetPasswordTemplate"
+                "modal": [
+                  {
+                    "key": "state.isSeller",
+                    "value": true,
+                    "modal": "StatusModalTemplate",
+                    "configName": "PASSWORD_RESET_SELLER"
+                  },
+                  {
+                    "key": "state.isSeller",
+                    "value": false,
+                    "modal": "ResetPasswordTemplate"
+                  }
+                ]
               },
               "classes": "reset-password",
               "text": "Change Password",
-              "renderCondition": "{\"keyPath\": \"isSeller\", \"keyLocator\": \"state\", \"value\": false}"
             },
             {
               "action": "displayModal",
@@ -121,7 +132,7 @@ const SECTIONSMETA = {
             "section1": {
               "layoutClasses": "col-6 mb-3 pl-0",
               "innerClasses": "bordered-box shadow",
-              "renderCondition": "{\"keyPath\": \"userProfile.role.name\", \"keyLocator\": \"props\", \"value\": [\"admin\",\"reporter\"]}",
+              "renderCondition": "{\"keyPath\": \"userProfile.role.name\", \"keyLocator\": \"props\", \"value\": [\"administrator\",\"reporter\"]}",
               "header": {
                 "text": "Super Admin",
                 "classes": "mb-3 font-size-28 font-color-steel col-12",
@@ -133,7 +144,7 @@ const SECTIONSMETA = {
                 "classes": "p-4 row overflow-auto",
                 "content": {
                   "key-val1": {
-                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
+                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
                     "dynamicReplacementConfig": {
                       "__firstNamePlaceholder__": "profile.organization.primaryContactInformation.firstName",
                       "__lastNamePlaceholder__": "profile.organization.primaryContactInformation.lastName"
@@ -142,20 +153,20 @@ const SECTIONSMETA = {
                     "value": "__firstNamePlaceholder__ __lastNamePlaceholder__"
                   },
                   "key-val2": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {
-                      "__phoneNumber__": "profile.organization.primaryContactInformation.phone"
-                    },
-                    "key": "Phone",
-                    "value": "__phoneNumber__"
-                  },
-                  "key-val3": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
                     "dynamicReplacementConfig": {
                       "__email__": "profile.organization.primaryContactInformation.email"
                     },
                     "key": "Email",
                     "value": "__email__"
+                  },
+                  "key-val3": {
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__phoneNumber__": "profile.organization.primaryContactInformation.phone"
+                    },
+                    "key": "Phone",
+                    "value": "__phoneNumber__"
                   }
                 }
               }
@@ -171,10 +182,10 @@ const SECTIONSMETA = {
                 ]
               },
               "body": {
-                "classes": "p-4 row overflow-auto",
+                "classes": "p-4 row overflow-hidden",
                 "content": {
                   "key-val1": {
-                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
+                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
                     "dynamicReplacementConfig": {
                       "__firstNamePlaceholder__": "profile.organization.secondaryContactInformation.firstName",
                       "__lastNamePlaceholder__": "profile.organization.secondaryContactInformation.lastName"
@@ -183,20 +194,20 @@ const SECTIONSMETA = {
                     "value": "__firstNamePlaceholder__ __lastNamePlaceholder__"
                   },
                   "key-val2": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {
-                      "__phoneNumber__": "profile.organization.secondaryContactInformation.phone"
-                    },
-                    "key": "Phone",
-                    "value": "__phoneNumber__"
-                  },
-                  "key-val3": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
                     "dynamicReplacementConfig": {
                       "__email__": "profile.organization.secondaryContactInformation.email"
                     },
                     "key": "Email",
                     "value": "__email__"
+                  },
+                  "key-val3": {
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__phoneNumber__": "profile.organization.secondaryContactInformation.phone"
+                    },
+                    "key": "Phone",
+                    "value": "__phoneNumber__"
                   }
                 }
               },

@@ -34,7 +34,7 @@ class UserMenu extends React.Component {
     }, true);
 
     if (showLogoutPrompt) {
-      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.LOGOUT});
+      this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", DISPLAY_DASHBOARD: true, ...modalsMeta.LOGOUT});
     } else {
       mixpanel.logout(MIXPANEL_CONSTANTS.LOGOUT.LOGOUT, mixpanelPayload);
       const baseUrl = window.location.origin;
@@ -54,9 +54,9 @@ class UserMenu extends React.Component {
           && this.props.userProfile.firstName ? this.props.userProfile.firstName : ""} ${this.props.userProfile
           && this.props.userProfile.lastName ? this.props.userProfile.lastName : ""}`}
         </Link>
-        <div className="dropdown-menu dropdown-menu-right no-border-radius shadow-sm mt-2">
+        <div className="dropdown-menu user-menu dropdown-menu-right mt-2">
           {
-            workflowCode === CODE_DASHBOARD && <Link className="dropdown-item" to={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>Profile</Link>
+            workflowCode === CODE_DASHBOARD && <Link className="dropdown-item mb-2" to={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER} onClick={ () => {mixpanel.trackEvent(MIXPANEL_CONSTANTS.USER_PROFILE.VIEW_USER_PROFILE);}}>User Profile</Link>
           }
           <Link className="dropdown-item" onClick={this.handleLogout}>Logout</Link>
         </div>
