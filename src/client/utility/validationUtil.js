@@ -242,6 +242,7 @@ export default class Validator {
         mixpanelPayload.USPTO_VERIFICATION_STATUS = res.body.usptoVerification;
         mixpanelPayload.USPTO_URL = res.body.usptoUrl;
         mixpanelPayload.IS_VALID_TRADEMARK = (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED");
+        mixpanelPayload.TRADEMARK_CLASSES = res.body.trademarkClasses;
       })
       .catch(err => {
         inputData.trademarkNumber.isValid = true;
@@ -391,5 +392,6 @@ export default class Validator {
     tmMeta.fieldAlert = res.body.usptoVerification === "NOT_VERIFIED";
     tmMeta.usptoUrl = res.body.usptoUrl;
     tmMeta.usptoVerification = res.body.usptoVerification;
+    tmMeta.trademarkClasses = res.body.trademarkClasses;
   }
 }

@@ -121,9 +121,10 @@ class NewBrandTemplate extends React.Component {
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
     const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
     const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
+    const trademarkClasses = this.state.form.inputData.trademarkNumber.trademarkClasses;
     const name = this.state.form.inputData.brandName.value;
     const comments = this.state.form.inputData.comments.value;
-    const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification };
+    const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses };
     const url = "/api/brands";
     const mixpanelPayload = {
       API: url,
