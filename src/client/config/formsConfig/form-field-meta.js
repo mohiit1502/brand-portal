@@ -744,7 +744,7 @@ const FORMFIELDCONFIG = {
           "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
           "key": "phone",
           "label": "Phone",
-          "required": true,
+          "required": false,
           "patternPath": "CONSTANTS.REGEX.PHONE",
           "prebounceChangeHandler": "prebounceChangeHandler",
           "subtitle": "",
@@ -1015,9 +1015,53 @@ const FORMFIELDCONFIG = {
                     "error": "Minimum length is 3 characters"
                   }
                 }
+              },
+              "orderNumber": {
+                "dropdownOptions": [],
+                "label": "Order Number",
+                "required": true,
+                "value": "",
+                "pattern": null,
+                "disabled": false,
+                "subtitle": "",
+                // "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
+                "type": "multiselect",
+                "invalidError": "Select at least one seller to report.",
+                "error": "",
+                "validators": {
+                  "validateLength": {
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
+                  }
+                }
               }
             }
           ]
+        },
+        "claimDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "claimDoc",
+          "changeHandlerArg": "claimDoc",
+          "disabled": true,
+          "endpoint": "/api/company/uploadBusinessDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "id": "",
+          "inputId": "claimDoc",
+          "key": "claimDoc",
+          "label": "Optional: Attach claim documents",
+          "layout": "5.1.0",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "businessDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
         },
         "comments": {
           "containerClasses": "mb-3",

@@ -111,6 +111,9 @@ class ClaimDetailsTemplate extends React.Component {
                                     <div className="col-9 item-url">
                                       <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
                                     </div>
+                                    <div className="col-9 item-url">
+                                      <a target="_blank" className="text-primary cursor-pointer" href={item.orderNumber}> {item.orderNumber} </a>
+                                    </div>
                                   </div>
                                 );
                               })
