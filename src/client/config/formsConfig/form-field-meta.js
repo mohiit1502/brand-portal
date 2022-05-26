@@ -1054,7 +1054,7 @@ const FORMFIELDCONFIG = {
           "id": "",
           "inputId": "claimDoc",
           "key": "claimDoc",
-          "label": "Optional: Attach claim documents",
+          "label": "Optional:  Attach claim documents",
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
