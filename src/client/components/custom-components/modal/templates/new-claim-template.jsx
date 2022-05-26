@@ -396,10 +396,18 @@ class NewClaimTemplate extends React.Component {
           items.forEach(item => {
             const itemUrl = item.url.value.trim();
             if (item.sellerName.value && typeof item.sellerName.value === "object") {
-              item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl, sellerName}));
+              if (item.orderNumber.value) {
+                item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl, sellerName, orderNumber: item.orderNumber.value.trim()}));
+              } else {
+                item.sellerName.value.forEach(sellerName => sellerName !== "All" && itemList.push({itemUrl, sellerName}));
+              }
             } else if (item.sellerName.value) {
               const sellerNames = item.sellerName.value.trim();
-              itemList.push({ itemUrl, sellerName: sellerNames });
+              if (item.orderNumber.value) {
+                itemList.push({ itemUrl, sellerName: sellerNames, orderNumber: item.orderNumber.value.trim()});
+              } else {
+                itemList.push({ itemUrl, sellerName: sellerNames });
+              }
             }
           });
           return itemList;

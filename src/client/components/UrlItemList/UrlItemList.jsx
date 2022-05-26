@@ -66,7 +66,7 @@ const UrlItemList = props => {
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
     item = {...item};
     return (<div key={i} className="c-UrlItem row item-url-list">
-      <div className="col-8">
+      <div className="col-6">
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
           required={item.url.required}
           value={item.url.value} type={item.url.type} bubbleValue = {props.bubbleValue}
@@ -76,9 +76,9 @@ const UrlItemList = props => {
           preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
           loader={props.fieldLoader && itemUrlId === i}/>
       </div>
-      <div className="col-4">
+      <div className="col-6">
         <div className="row">
-          <div className="col-8">
+          <div className="col-4">
             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
               label={item.sellerName.label}
               required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
@@ -86,6 +86,15 @@ const UrlItemList = props => {
               bubbleValue = {props.bubbleValue}
               onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
               dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
+          </div>
+          <div className="col-4">
+            <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
+              label={item.orderNumber.label}
+              required={item.orderNumber.required} value={item.orderNumber.value} type={item.orderNumber.type}
+              pattern={item.orderNumber.pattern} validators={item.orderNumber.validators} error={item.orderNumber.error}
+              bubbleValue = {props.bubbleValue}
+              onChange={props.parentRef[props.onChangeSellerName]} disabled={item.orderNumber.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
+              dropdownOptions = {item.orderNumber.type === "multiselect" ? item.orderNumber.dropdownOptions : false} />
           </div>
           <div className="col-4">
             {
