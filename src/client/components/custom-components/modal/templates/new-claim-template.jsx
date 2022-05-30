@@ -427,14 +427,17 @@ class NewClaimTemplate extends React.Component {
 
         const getClaimDocs = () => {
           const docList = []
-          docList.push({
-            "documentName": this.state.form.inputData.claimDoc.filename,
-            "documentId": this.state.form.inputData.claimDoc.id,
-            "isUploadedToServiceNow": false
-          });
+          if (this.state.form.inputData.claimDoc.filename &&  this.state.form.inputData.claimDoc.id) {
+            docList.push({
+              "documentName": this.state.form.inputData.claimDoc.filename,
+              "documentId": this.state.form.inputData.claimDoc.id,
+              "isUploadedToServiceNow": false
+            });
+          }
           return docList;
         }
 
+        const claimDocList= getClaimDocs();
         const payload = {
           claimType,
           brandId,
@@ -444,7 +447,7 @@ class NewClaimTemplate extends React.Component {
           items: getItems(inputData.urlItems.itemList),
           usptoUrl,
           usptoVerification,
-          claimDocList: getClaimDocs()
+          claimDocList:  claimDocList.length > 0? claimDocList : []
         };
         const mixpanelPayload = {
           API: "/api/claims",
