@@ -91,6 +91,30 @@ class Authenticator extends React.Component {
     }
   }
 
+  initPendoData(){
+
+    const profile = this.props.userProfile;
+    if(profile){
+      localStorage.setItem("loginId",profile.email);
+      localStorage.setItem("brandPortalOrgId", (profile.organization) ? profile.organization.id : null);
+      localStorage.setItem("brandPortalOrgName",(profile.organization) ? profile.organization.name : null);
+      localStorage.setItem("brandPortalOrgStatus",(profile.organization) ? profile.organization.status : null);
+      localStorage.setItem("brandPortalRole",(profile.role) ? profile.role.name : null);
+      let sellerInfo = profile.sellerInfo;
+      if(sellerInfo){
+        localStorage.setItem("sellerPartnerId",sellerInfo.partnerId);
+        localStorage.setItem("sellerName",sellerInfo.legalName);
+        localStorage.setItem("isInternationalSeller",(!(sellerInfo.organizationAddress.country === "US" || sellerInfo.organizationAddress.country === "USA")))
+
+      }
+      localStorage.setItem("accountLinked",profile.accountLinked);
+      localStorage.setItem("isSeller",!(sellerInfo === null));
+      localStorage.setItem("doItLater",profile.doItLater);
+
+    }
+    import("./../../../pendoLoad");
+  }
+
   preLoadData() {
     Object.keys(this.majorRoutes.dynamic).forEach(currentPath => {
       const sectionObj = this.majorRoutes.dynamic[currentPath];
@@ -141,6 +165,7 @@ class Authenticator extends React.Component {
       }
       this.setOnboardStatus(profile.organization);
       this.setState({profileInformationLoaded: true});
+      this.initPendoData();
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
       /* eslint-disable no-undef */
@@ -165,7 +190,9 @@ class Authenticator extends React.Component {
   }
 
   removeSessionProfile () {
+    // Remove Local Storage variables
     this.props.updateUserProfile(undefined);
+    window.localStorage.clear();
   }
 
   isRootPath (pathname) {
