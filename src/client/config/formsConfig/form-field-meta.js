@@ -1019,22 +1019,22 @@ const FORMFIELDCONFIG = {
               },
               "orderNumber": {
                 "label": "Order Number",
-                "required": true,
+                "required": false,
                 "value": "",
                 "pattern": "[0-9,]",
                 "patternErrorMessage": "Enter a valid Order Number",
                 "disabled": true,
                 "subtitle": "",
-                // "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
+                "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
                 "type": "text",
-                // "invalidError": "Enter a valid Order Number.",
+                "invalidError": "Enter a valid Order Number.",
                 "error": "",
-                // "validators": {
-                //   "validateLength": {
-                //     "minLength": "3",
-                //     "error": "Minimum length is 3 characters"
-                //   }
-                // }
+                "validators": {
+                  "validateLength": {
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
+                  }
+                }
               }
             }
           ]
@@ -1054,6 +1054,7 @@ const FORMFIELDCONFIG = {
           "fileValidationError": "Please follow the guidelines to upload attachments.",
           "id": "",
           "inputId": "claimDoc",
+          "documentList": [],
           "key": "claimDoc",
           "label": "Optional:  Attach claim documents",
           "layout": "5.1.0",

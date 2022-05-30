@@ -241,8 +241,10 @@ class ClaimManagerApi {
       console.log("[Corr ID: %s][ClaimManagerApi::getClaim] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = `${await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH")}/${request.params.ticketId}`;
-      const url = `${BASE_URL}${CLAIMS_PATH}`;
+      // const url = `${BASE_URL}${CLAIMS_PATH}`;
 
+      // const url = "http://localhost:8097/ropro/claim-service/api/v1/claim/"+`${request.params.ticketId}`;
+      const url = "http://localhost:8097/ropro/claim-service/api/v1/claim/db7ae3c1-b1fd-43a6-af51-051ab6d575e0";
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
@@ -286,8 +288,8 @@ class ClaimManagerApi {
       console.log("[Corr ID: %s][ClaimManagerApi::createClaim] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.BASE_URL");
       const CLAIMS_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIMS_PATH");
-      // const url = `${BASE_URL}${CLAIMS_PATH}`;
-      const url = "http://localhost:8097/ropro/claim-service/api/v1/claim";
+      const url = `${BASE_URL}${CLAIMS_PATH}`;
+      // const url = "http://localhost:8097/ropro/claim-service/api/v1/claim";
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;

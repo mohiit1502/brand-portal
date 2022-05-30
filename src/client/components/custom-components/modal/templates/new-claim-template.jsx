@@ -151,7 +151,7 @@ class NewClaimTemplate extends React.Component {
 
       this.setState(state => {
         state = {...state};
-        if (index > -1) {
+        if (index > -1 && key !== "orderNumber") {
           state.form.inputData.urlItems.itemList[index].sellerName.value = "";
           state.form.inputData.urlItems.itemList[index].sellerName.disabled = true;
           state.form.inputData.urlItems.itemList[index].orderNumber.disabled = false;
@@ -159,7 +159,12 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.urlItems.itemList[index][key].error = "";
          // state.disableAddItem = true;
          // state.currentItem = index;
-        } else {
+        }
+        else if (key === "orderNumber") {
+          state.form.inputData.urlItems.itemList[index][key].value = targetVal;
+          state.form.inputData.urlItems.itemList[index][key].error = "";
+        }
+        else {
           state.form.inputData[key].value = targetVal;
           state.form.inputData[key].error = "";
         }
@@ -168,7 +173,7 @@ class NewClaimTemplate extends React.Component {
         };
       }, () => this.checkToEnableItemButton());
       evt.persist();
-      if (index > -1) {
+      if (index > -1 && key !== "orderNumber") {
         this.itemUrlDebounce(evt, index);
       }
     }
@@ -378,8 +383,8 @@ class NewClaimTemplate extends React.Component {
     this.setState(state => {
       return state;
     }, () => {
-      // if (!this.validateState()) {
-      if(true){
+      if (!this.validateState()) {
+      // if(true){
         this.disableSubmitButton();
         this.setState({
           formError: "",
@@ -419,7 +424,16 @@ class NewClaimTemplate extends React.Component {
           });
           return itemList;
         };
-        var claimDocList = [];
+
+        const getClaimDocs = () => {
+          const docList = []
+          docList.push({
+            "documentName": this.state.form.inputData.claimDoc.filename,
+            "documentId": this.state.form.inputData.claimDoc.id,
+            "isUploadedToServiceNow": false
+          });
+          return docList;
+        }
 
         const payload = {
           claimType,
@@ -429,7 +443,8 @@ class NewClaimTemplate extends React.Component {
           digitalSignatureBy,
           items: getItems(inputData.urlItems.itemList),
           usptoUrl,
-          usptoVerification
+          usptoVerification,
+          claimDocList: getClaimDocs()
         };
         const mixpanelPayload = {
           API: "/api/claims",
