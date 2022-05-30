@@ -30,7 +30,7 @@ class ServerUtils {
 
   getDocumentHeaders(request) {
     const headers = this.getHeaders(request);
-    // headers["transfer-encoding"] = "chunked";
+    headers["transfer-encoding"] = "chunked";
     headers["Accept-Encoding"] = "gzip, deflate, br";
     headers.Accept = "*/*";
     delete headers["Content-Type"];

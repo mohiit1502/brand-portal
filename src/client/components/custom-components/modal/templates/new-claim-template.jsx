@@ -15,6 +15,7 @@ import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
 import Validator from "../../../../utility/validationUtil";
+import DocumentActions from "../../../../utility/docOps";
 
 class NewClaimTemplate extends React.Component {
 
@@ -25,13 +26,16 @@ class NewClaimTemplate extends React.Component {
       functions.forEach(name => {
         this[name] = this[name].bind(this);
       });
-      this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
+    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
+    this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
       this.evaluateRenderDependency = ContentRenderer.evaluateRenderDependency.bind(this);
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
       this.validateState = Validator.validateState.bind(this);
+      this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
       this.onInvalid = Validator.onInvalid.bind(this);
       const newClaimConfiguration = this.props.newClaimConfiguration ? this.props.newClaimConfiguration : {};
+      this.invalid={};
       this.state = {
         section: {...newClaimConfiguration.sectionConfig},
         form: {
@@ -137,9 +141,10 @@ class NewClaimTemplate extends React.Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
+      // evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
       let index = -1;
-      if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName") && key.split("-")[1]) {
+      if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
@@ -149,6 +154,7 @@ class NewClaimTemplate extends React.Component {
         if (index > -1) {
           state.form.inputData.urlItems.itemList[index].sellerName.value = "";
           state.form.inputData.urlItems.itemList[index].sellerName.disabled = true;
+          state.form.inputData.urlItems.itemList[index].orderNumber.disabled = false;
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
           state.form.inputData.urlItems.itemList[index][key].error = "";
          // state.disableAddItem = true;
@@ -372,7 +378,8 @@ class NewClaimTemplate extends React.Component {
     this.setState(state => {
       return state;
     }, () => {
-      if (!this.validateState()) {
+      // if (!this.validateState()) {
+      if(true){
         this.disableSubmitButton();
         this.setState({
           formError: "",
@@ -412,6 +419,8 @@ class NewClaimTemplate extends React.Component {
           });
           return itemList;
         };
+        var claimDocList = [];
+
         const payload = {
           claimType,
           brandId,

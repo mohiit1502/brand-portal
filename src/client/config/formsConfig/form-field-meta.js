@@ -980,6 +980,7 @@ const FORMFIELDCONFIG = {
           "type": "_urlItems",
           "onChangeSellerName": "setSelectInputValue",
           "onChangeItem": "getItemListFromChild",
+          "onChangeOrderNumber": "onChange",
           "onChangeUrl": "onChange",
           "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "itemList": [
@@ -1017,23 +1018,23 @@ const FORMFIELDCONFIG = {
                 }
               },
               "orderNumber": {
-                "dropdownOptions": [],
                 "label": "Order Number",
                 "required": true,
                 "value": "",
-                "pattern": null,
-                "disabled": false,
+                "pattern": "[0-9,]",
+                "patternErrorMessage": "Enter a valid Order Number",
+                "disabled": true,
                 "subtitle": "",
                 // "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
-                "type": "multiselect",
-                "invalidError": "Select at least one seller to report.",
+                "type": "text",
+                // "invalidError": "Enter a valid Order Number.",
                 "error": "",
-                "validators": {
-                  "validateLength": {
-                    "minLength": "3",
-                    "error": "Minimum length is 3 characters"
-                  }
-                }
+                // "validators": {
+                //   "validateLength": {
+                //     "minLength": "3",
+                //     "error": "Minimum length is 3 characters"
+                //   }
+                // }
               }
             }
           ]
@@ -1044,8 +1045,8 @@ const FORMFIELDCONFIG = {
           "buttonText": "Upload",
           "cancelHandlerArg": "claimDoc",
           "changeHandlerArg": "claimDoc",
-          "disabled": true,
-          "endpoint": "/api/company/uploadBusinessDocument",
+          "disabled": false,
+          "endpoint": "/api/claims/uploadClaimDocument",
           "error": "",
           "filename": "",
           "icon": "Question",
@@ -1058,7 +1059,7 @@ const FORMFIELDCONFIG = {
           "layout": "5.1.0",
           "onCancel": "cancelSelection",
           "onChange": "displayProgressAndUpload",
-          "tooltipContentKey": "businessDocContent",
+          "tooltipContentKey": "claimDocContent",
           "type": "_fileUploader",
           "uploading": false,
           "uploadPercentage": 0
