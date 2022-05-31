@@ -104,8 +104,7 @@ class Authenticator extends React.Component {
       if(sellerInfo){
         localStorage.setItem("sellerPartnerId",sellerInfo.partnerId);
         localStorage.setItem("sellerName",sellerInfo.legalName);
-        localStorage.setItem("isInternationalSeller",(!(sellerInfo.organizationAddress.country === "US" || sellerInfo.organizationAddress.country === "USA")))
-
+        localStorage.setItem("sellerCountry",sellerInfo.organizationAddress.country);
       }
       localStorage.setItem("accountLinked",profile.accountLinked);
       localStorage.setItem("isSeller",!(sellerInfo === null));
