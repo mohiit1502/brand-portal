@@ -26,8 +26,8 @@ class NewClaimTemplate extends React.Component {
       functions.forEach(name => {
         this[name] = this[name].bind(this);
       });
-    this.cancelSelection = DocumentActions.cancelSelection.bind(this);
-    this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
+      this.cancelSelection = DocumentActions.cancelSelection.bind(this);
+      this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
       this.evaluateRenderDependency = ContentRenderer.evaluateRenderDependency.bind(this);
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
@@ -40,11 +40,14 @@ class NewClaimTemplate extends React.Component {
         section: {...newClaimConfiguration.sectionConfig},
         form: {
           inputData: newClaimConfiguration.fields,
+          docList: [],
+          fileCount: 0,
           ...newClaimConfiguration.formConfig
         },
         brandNameSelected: newClaimConfiguration.formConfig && newClaimConfiguration.formConfig.brandNameSelected,
         loader: false
       };
+    this.enableSubmitButton();
 
   }
 
@@ -141,7 +144,7 @@ class NewClaimTemplate extends React.Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
-      // evt.target.checkValidity && evt.target.checkValidity();
+      evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
       let index = -1;
       if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
@@ -182,7 +185,7 @@ class NewClaimTemplate extends React.Component {
   bubbleValue(evt, key, error) {
     const value = evt.target.value;
     let index = -1;
-    if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName") && key.split("-")[1]) {
+    if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1]) {
       index = Number(key.split("-")[1]);
       key = key.split("-")[0];
     }
@@ -236,20 +239,9 @@ class NewClaimTemplate extends React.Component {
 
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndertaking = Object.keys(form.inputData)
-      .filter(key => form.inputData[key].category === "userUnderTaking" ? true : false)
-      .reduce((boolResult, undertaking) => {
-        const shouldRender = this.evaluateRenderDependency(form.inputData[undertaking].renderCondition);
-        return !!(boolResult && (!shouldRender || (shouldRender && form.inputData[undertaking].selected)));
-      }, true);
-    const bool = userUndertaking && form.inputData.claimType.value &&
-      form.inputData.brandName.value &&
-      (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&
-      form.inputData.comments.value && !form.inputData.comments.error &&
-      form.inputData.signature.value;
-    form.isSubmitDisabled = !bool;
-    form.inputData.userActions.buttons.submit.disabled = !bool;
+    const bool = form.inputData.claimDoc.uploading;
+    form.isSubmitDisabled = bool;
+    form.inputData.userActions.buttons.submit.disabled = bool;
     this.setState({form}, callback && callback());
   }
 
@@ -378,6 +370,21 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
+  handleFileUpload(evt, key) {
+    this.displayProgressAndUpload(evt, key, ()=>{
+      this.state.form.fileCount += 1;
+      this.state.form.docList.push({
+        "documentName": this.state.form.inputData.claimDoc.filename,
+        "documentId": this.state.form.inputData.claimDoc.id,
+        "isUploadedToServiceNow": false
+      })
+    });
+
+    if(this.state.form.fileCount === 2) {
+      this.state.form.inputData.claimDoc.disabled=true;
+    }
+  }
+
   handleSubmit(evt) {
     evt.preventDefault();
     this.setState(state => {
@@ -425,19 +432,6 @@ class NewClaimTemplate extends React.Component {
           return itemList;
         };
 
-        const getClaimDocs = () => {
-          const docList = []
-          if (this.state.form.inputData.claimDoc.filename &&  this.state.form.inputData.claimDoc.id) {
-            docList.push({
-              "documentName": this.state.form.inputData.claimDoc.filename,
-              "documentId": this.state.form.inputData.claimDoc.id,
-              "isUploadedToServiceNow": false
-            });
-          }
-          return docList;
-        }
-
-        const claimDocList= getClaimDocs();
         const payload = {
           claimType,
           brandId,
@@ -447,7 +441,7 @@ class NewClaimTemplate extends React.Component {
           items: getItems(inputData.urlItems.itemList),
           usptoUrl,
           usptoVerification,
-          claimDocList:  claimDocList.length > 0? claimDocList : []
+          claimDocList:  (this.state.form.docList.length > 0) ? this.state.form.docList : []
         };
         const mixpanelPayload = {
           API: "/api/claims",

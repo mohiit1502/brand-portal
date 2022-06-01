@@ -14,6 +14,7 @@ const UrlItemList = props => {
 
     const newItemUrl = {...itemList[0].url};
     const newItemSellerName = {...itemList[0].sellerName};
+    const newItemOrderNumber = {...itemList[0].orderNumber};
 
     newItemUrl.inputId = `url-${itemUrlId}`;
     newItemUrl.key = `url-${itemUrlId}`;
@@ -31,10 +32,17 @@ const UrlItemList = props => {
     newItemSellerName.subtitle = "";
     newItemSellerName.error = "";
 
+    newItemOrderNumber.inputId = `orderNumber-${itemUrlId}`;
+    newItemOrderNumber.key = `orderNumber-${itemUrlId}`;
+    newItemOrderNumber.value = "";
+    newItemOrderNumber.disabled = false;
+    newItemOrderNumber.error = "";
+
     const item = {
       id: `item-${itemUrlId}`,
       url: newItemUrl,
-      sellerName: newItemSellerName
+      sellerName: newItemSellerName,
+      orderNumber: newItemOrderNumber
     };
 
     setItemUrlId(itemUrlId + 1);
@@ -62,9 +70,11 @@ const UrlItemList = props => {
     }
   };
 
+  const showOrderNumber = props.parentRef.state.form.inputData.claimType.value === "Counterfeit";
   /* eslint-disable react/jsx-handler-names */
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
     item = {...item};
+
     return (<div key={i} className="c-UrlItem row item-url-list">
       <div className="col-6">
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
@@ -78,7 +88,7 @@ const UrlItemList = props => {
       </div>
       <div className="col-6">
         <div className="row">
-          <div className="col-4">
+          <div className={showOrderNumber ? "col-4" : "col-8"}>
             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
                          label={item.sellerName.label}
                          required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
@@ -87,20 +97,26 @@ const UrlItemList = props => {
                          onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
                          dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
-          <div className="col-4">
-            <CustomInput key={`orderNumber-${i}`} inputId={`orderNumber-${i}`} formId={props.formId}
-                         label={item.orderNumber.label}
-                         required={item.orderNumber.required} value={item.orderNumber.value} type={item.orderNumber.type}
-                         pattern={item.orderNumber.pattern} validators={item.orderNumber.validators} error={item.orderNumber.error}
-                         onChange={props.parentRef[props.onChangeOrderNumber]} disabled={item.orderNumber.disabled}
-                         // onInvalid={e => props.onInvalid(e, `urlItems.itemList[${i}].orderNumber`, `orderNumber-${i}`) || (() => {})}
-                         preventHTMLRequiredValidation = {item.orderNumber.preventHTMLRequiredValidation} />
-          </div>
-          <div className="col-4">
+          {
+            showOrderNumber &&
+            <div className="col-6">
+                <CustomInput key={`orderNumber-${i}`} inputId={`orderNumber-${i}`} formId={props.formId}
+                             label={item.orderNumber.label}
+                             required={item.orderNumber.required} value={item.orderNumber.value}
+                             type={item.orderNumber.type}
+                             pattern={item.orderNumber.pattern} validators={item.orderNumber.validators}
+                             error={item.orderNumber.error}
+                             onChange={props.parentRef[props.onChangeOrderNumber]} disabled={item.orderNumber.disabled}
+                              onInvalid={e => props.onInvalid(e, `urlItems.itemList[${i}].orderNumber`, `orderNumber-${i}`) || (() => {})}
+                             preventHTMLRequiredValidation={item.orderNumber.preventHTMLRequiredValidation}/>
+
+            </div>
+          }
+          <div className="col-2">
             {
               i === 0 &&
               <div className={`btn btn-sm btn-block btn-primary${(props.disableAddItem || !enableAddItem) && " disabled" || ""}`} onClick={addToItemList} >
-                <img src={images.Plus} className="plus-icon make-it-white"/> Item </div> ||
+                <img src={images.Plus} className="plus-icon make-it-white"/></div> ||
               <button className="btn btn-sm btn-block cancel-btn text-primary" type="button" onClick={() => removeFromItemList(i)}>Remove</button>
             }
           </div>

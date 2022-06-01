@@ -8,12 +8,12 @@ import {NOTIFICATION_TYPE} from "../actions/notification/notification-actions";
 export default class DocumentActions {
 
   // eslint-disable-next-line max-statements
-  static displayProgressAndUpload (evt, key) {
+  static displayProgressAndUpload (evt, key, callback) {
     const form = {...this.state.form};
     const otherType = form.inputData[key].otherType;
     const submitButton = form.submitButton;
     const contextSpecificArgs = {actionsToDisable: form.actionsToDisable, endpoint: form.inputData[key].endpoint, formActions: form.formActions,
-      key, otherType, submitButton};
+      key, otherType, submitButton, callback};
     try {
       const file = evt.target.files[0];
       const filename = file.name;
@@ -60,7 +60,7 @@ export default class DocumentActions {
 
   /* eslint-disable max-statements */
   static async uploadDocument (file, interval, contextSpecificArgs) {
-    const {actionsToDisable, endpoint, formActions, key, otherType, submitButton} = contextSpecificArgs;
+    const {actionsToDisable, endpoint, formActions, key, otherType, submitButton, callback} = contextSpecificArgs;
     const mixpanelPayload = {
       DOCUMENT_TYPE: key,
       FILE_TYPE: file.type,
@@ -80,6 +80,7 @@ export default class DocumentActions {
         updatedForm.inputData[key].uploading = false;
         otherType && actionsToDisable && actionsToDisable.forEach(action => {updatedForm.inputData[formActions].buttons[action].disabled = updatedForm.inputData[otherType].uploading;});
         updatedForm.inputData[key].id = uploadResponse.id;
+        callback && callback();
         this.setState({updatedForm}, this.checkToEnableSubmit);
       }, 700);
       mixpanelPayload.API_SUCCESS = true;

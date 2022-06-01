@@ -17,8 +17,10 @@ class ClaimDetailsTemplate extends React.Component {
     };
     this.orderNumberList = [];
     for(let item=0; item<this.props.data.items.length; item++) {
-      this.orderNumberList.push(this.props.data.items[item].orderNumber);
-      this.orderNumberList.push(",");
+      if(this.orderNumberList.indexOf(this.props.data.items[item].orderNumber) == -1) {
+        this.orderNumberList.push(this.props.data.items[item].orderNumber);
+        this.orderNumberList.push(",");
+      }
     }
     this.orderNumberList.pop();
   }
@@ -103,11 +105,11 @@ class ClaimDetailsTemplate extends React.Component {
                     <div className="row justify-content-center items-row mt-4">
                       <div className="col">
                         <div className="row item-header-row py-2">
-                          <div className="col-3">
-                            REPORTED SELLER
-                          </div>
                           <div className="col-6">
                             ITEM URL
+                          </div>
+                          <div className="col-3">
+                            REPORTED SELLER
                           </div>
                           <div className="col-3">
                             ORDER NUMBER
@@ -119,11 +121,11 @@ class ClaimDetailsTemplate extends React.Component {
                               reformattedItems.map((item, i) => {
                                 return (
                                   <div key={i} className="row item-data-row align-items-center">
-                                    <div className="col-3 text-capitalize">
-                                      {item.sellerName}
-                                    </div>
                                     <div className="col-6 item-url">
                                       <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
+                                    </div>
+                                    <div className="col-3 text-capitalize">
+                                      {item.sellerName}
                                     </div>
                                     <div className="col-3 text-capitalize">
                                       {item.orderNumber}

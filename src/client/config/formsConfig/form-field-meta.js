@@ -1021,15 +1021,16 @@ const FORMFIELDCONFIG = {
                 "label": "Order Number",
                 "required": false,
                 "value": "",
-                "pattern": "[0-9,]",
+                "pattern": "https://www.walmart.com/.+",
                 "patternErrorMessage": "Enter a valid Order Number",
-                "disabled": true,
+                "disabled": false,
                 "subtitle": "",
                 "preventHTMLRequiredValidation": true,
                 "renderCondition": "{\"keyPath\": \"parentRef.state.form.inputData.claimType.value\", \"keyLocator\": \"props\", \"value\": \"Counterfeit\"}",
-                "type": "text",
+                "type": "url",
                 "invalidError": "Enter a valid Order Number.",
                 "error": "",
+                "tooltipContentKey": "orderNumberContent",
                 "validators": {
                   "validateLength": {
                     "minLength": "3",
@@ -1039,33 +1040,6 @@ const FORMFIELDCONFIG = {
               }
             }
           ]
-        },
-        "claimDoc": {
-          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
-          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
-          "buttonText": "Upload",
-          "cancelHandlerArg": "claimDoc",
-          "changeHandlerArg": "claimDoc",
-          "disabled": false,
-          "endpoint": "/api/claims/uploadClaimDocument",
-          "error": "",
-          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-          "filename": "",
-          "icon": "Question",
-          "allowedFileSize": 7,
-          "fileValidationError": "Please follow the guidelines to upload attachments.",
-          "id": "",
-          "inputId": "claimDoc",
-          "documentList": [],
-          "key": "claimDoc",
-          "label": "Optional:  Attach claim documents",
-          "layout": "5.1.0",
-          "onCancel": "cancelSelection",
-          "onChange": "displayProgressAndUpload",
-          "tooltipContentKey": "claimDocContent",
-          "type": "_fileUploader",
-          "uploading": false,
-          "uploadPercentage": 0
         },
         "comments": {
           "containerClasses": "mb-3",
@@ -1095,6 +1069,34 @@ const FORMFIELDCONFIG = {
               "error": "Comments should be between 20 and 2000 characters!"
             }
           }
+        },
+        "claimDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "claimDoc",
+          "changeHandlerArg": "claimDoc",
+          "disabled": false,
+          "endpoint": "/api/claims/uploadClaimDocument",
+          "error": "",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "filename": "",
+          "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "id": "",
+          "multiple": true,
+          "inputId": "claimDoc",
+          "documentList": [],
+          "key": "claimDoc",
+          "label": "Attach documents (Optional)",
+          "layout": "9.2.0",
+          "onCancel": "cancelSelection",
+          "onChange": "handleFileUpload",
+          "tooltipContentKey": "claimDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
         },
         "user_undertaking_1": {
           "category": "userUnderTaking",
