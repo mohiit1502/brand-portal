@@ -26,6 +26,7 @@ class NewClaimTemplate extends React.Component {
       functions.forEach(name => {
         this[name] = this[name].bind(this);
       });
+
       this.cancelSelection = DocumentActions.cancelSelection.bind(this);
       this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
       this.evaluateRenderDependency = ContentRenderer.evaluateRenderDependency.bind(this);
@@ -42,6 +43,7 @@ class NewClaimTemplate extends React.Component {
           inputData: newClaimConfiguration.fields,
           docList: [],
           fileCount: 0,
+          totalFileSize: 0,
           ...newClaimConfiguration.formConfig
         },
         brandNameSelected: newClaimConfiguration.formConfig && newClaimConfiguration.formConfig.brandNameSelected,
@@ -144,7 +146,7 @@ class NewClaimTemplate extends React.Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
-      evt.target.checkValidity && evt.target.checkValidity();
+      const isValid = evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
       let index = -1;
       if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
@@ -152,6 +154,9 @@ class NewClaimTemplate extends React.Component {
         key = key.split("-")[0];
       }
 
+      if (isValid) {
+        this.invalid[key + "-" + index] = false;
+      }
       this.setState(state => {
         state = {...state};
         if (index > -1 && key !== "orderNumber") {
@@ -165,7 +170,7 @@ class NewClaimTemplate extends React.Component {
         }
         else if (key === "orderNumber") {
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
-          state.form.inputData.urlItems.itemList[index][key].error = "";
+          state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;;
         }
         else {
           state.form.inputData[key].value = targetVal;

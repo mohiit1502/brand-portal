@@ -17,19 +17,34 @@ export default class DocumentActions {
     try {
       const file = evt.target.files[0];
       const filename = file.name;
-      const fileSize = file.size;
+      let fileSize = 0;
       let allowedFileSize = form.inputData[key].allowedFileSize;
       let allowedFileNameRegex = form.inputData[key].allowedFileNameRegex;
+      const isMultiple = form.inputData[key].multiple;
+      if (isMultiple) {
+        const uploadedFiles = form.docList;
+        form.totalFileSize += file.size;
+        // fileSize = uploadedFiles.reduce((acc, file) => acc + file.size, 0);
+      } else {
+        fileSize = file.size;
+      }
+
       if (allowedFileSize) {
         allowedFileSize = allowedFileSize * 1024 * 1024;
-        if (fileSize > allowedFileSize) {
+        if (form.totalFileSize > allowedFileSize) {
           this.setState(state => {
             state.form.inputData[key].error = state.form.inputData[key].fileValidationError;
             return state;
           })
           return;
+        } else {
+          this.setState(state => {
+            state.form.inputData[key].error = "";
+            return state;
+          })
         }
       }
+
       if (allowedFileNameRegex) {
         const fileNameRegex = new RegExp(allowedFileNameRegex);
         if (!fileNameRegex.test(filename)) {
@@ -96,18 +111,25 @@ export default class DocumentActions {
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.FILE_UPLOAD_EVENTS.UPLOAD_DOCUMENT, mixpanelPayload);
   }
 
-  static cancelSelection(docKey) {
+  static cancelSelection(docKey, docId) {
     const state = {...this.state};
     const form = {...state.form};
     const formActions = form.formActions;
     const actionsToDisable = form.actionsToDisable;
-    state.form = form;
-    form.inputData[docKey].id = "";
+    if (form.inputData[docKey].multiple) {
+      state.form.docList.splice(state.form.docList.findIndex(item => item.documentId === docId), 1);
+    } else {
+      state.form = form;
+      form.inputData[docKey].id = "";
+      actionsToDisable && actionsToDisable.forEach(action => {
+        form.inputData[formActions].buttons[action].disabled = false;
+      });
+      form.inputData[docKey].filename = "";
+    }
+
     form.inputData[docKey].uploading = false;
-    actionsToDisable && actionsToDisable.forEach(action => {form.inputData[formActions].buttons[action].disabled = false;});
-    form.inputData[docKey].uploadPercentage = 0;
-    form.inputData[docKey].filename = "";
     form.inputData[docKey].error = "";
+    form.inputData[docKey].uploadPercentage = 0;
     this.setState(state);
     const mixpanelPayload = {
       DOCUMENT_TYPE: docKey,

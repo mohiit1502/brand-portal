@@ -98,9 +98,10 @@ const FileUploader = props => {
             {props.error && <small className="d-block error">{props.error}</small>}
           </>
         }
-        {props.uploading && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>
-          || <ItemList name={props.filename} cancelHandler={cancelHandler} multiple={props.multiple} itemList={itemList.map(item => item.documentName)}/>
-        }
+
+          <ItemList name={props.filename} cancelHandler={cancelHandler} multiple={props.multiple} itemList={itemList} uploading={props.uploading}
+                    filename={props.filename} uploadPercentage={props.uploadPercentage}/>
+
       </div>
     </div>
   );
