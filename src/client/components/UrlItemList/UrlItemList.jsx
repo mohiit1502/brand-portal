@@ -98,6 +98,7 @@ const UrlItemList = props => {
                          dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
           {
+
             showOrderNumber &&
             <div className="col-6">
                 <CustomInput key={`orderNumber-${i}`} inputId={`orderNumber-${i}`} formId={props.formId}
