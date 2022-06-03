@@ -17,7 +17,7 @@ process.env.WEBPACK_DEV_MIDDLEWARE = true;
 
 process.env.ENABLE_SHORTEN_CSS_NAMES = true;
 
-// process.env.NODE_OPTIONS='--max-http-header-size=32768'
+process.env.NODE_OPTIONS='--max-http-header-size=32768'
 
 /*
  * Enable webpack's NodeSourcePlugin to simulate NodeJS libs in browser
