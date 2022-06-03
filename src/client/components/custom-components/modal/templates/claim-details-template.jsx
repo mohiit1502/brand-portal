@@ -130,6 +130,9 @@ class ClaimDetailsTemplate extends React.Component {
                                     <div className="col-3 text-capitalize">
                                       {item.orderNumber}
                                     </div>
+                                    <div className="col-9 item-url">
+                                      <a target="_blank" className="text-primary cursor-pointer" href={item.orderNumber}> {item.orderNumber} </a>
+                                    </div>
                                   </div>
                                 );
                               })
@@ -140,7 +143,7 @@ class ClaimDetailsTemplate extends React.Component {
                     </div>
                     <div className="row mt-4">
                       <div className="col">
-                        <span className="font-size-14 font-weight-bold">Attachments</span>
+                         { this.props.data.claimDocList.length > 0 && <span className="font-size-14 font-weight-bold">Attachments</span>}
                         {
                           this.props.data.claimDocList.map((item, i) => {
                             return (
