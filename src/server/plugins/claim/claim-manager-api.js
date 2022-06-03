@@ -436,7 +436,7 @@ class ClaimManagerApi {
       fd.append("file", file, { filename });
       console.log("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      const BUSINESS_DOC_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIM_DOC_PATH");
+      const CLAIM_DOC_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIM_DOC_PATH");
       const url = `${BASE_URL}${CLAIM_DOC_PATH}`;
       // const url = "http://localhost:8092/ropro/ipservices/claim/attachment";
 
