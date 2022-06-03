@@ -385,7 +385,7 @@ class NewClaimTemplate extends React.Component {
       })
     });
 
-    if(this.state.form.fileCount === 2) {
+    if(this.state.form.fileCount === 3) {
       this.state.form.inputData.claimDoc.disabled=true;
     }
   }
