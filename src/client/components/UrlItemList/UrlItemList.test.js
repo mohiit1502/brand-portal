@@ -39,7 +39,17 @@ describe("UrlItemList", () => {
       formId: "",
       items: [],
       patternErrorMessage: "",
-      parentRef: {}
+      parentRef: {
+        state:{
+          form:{
+            inputData:{
+              claimType:{
+                value:"Counterfeit"
+              }
+            }
+          }
+        }
+      }
     };
     wrapper = setUp(props);
 

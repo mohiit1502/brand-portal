@@ -4,6 +4,7 @@ import "./FileUploader.component.scss";
 import Tooltip from "../custom-components/tooltip/tooltip";
 import * as images from "../../images";
 import ProgressBar from "../custom-components/progress-bar/progress-bar";
+import {ItemList} from "../index";
 
 /* eslint-disable complexity, no-nested-ternary */
 const FileUploader = props => {
@@ -45,8 +46,29 @@ const FileUploader = props => {
           <li>Filenames should contain English alphanumeric characters only.</li>
         </ul>
       </ol>
+    </div>,
+    claimDocContent: <div>
+      <ol className="m-0 p-0">
+        <ul className="m-0 pl-3 text-left font-size-12">
+          <li>The maximum no. of files that can be uploaded are 3</li>
+          <li>Supported File Types: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
+          <li>Maximum file size: 7 MB</li>
+          <li>Filenames should contain English alphanumeric characters only.</li>
+        </ul>
+      </ol>
+    </div>,
+    orderNumberContent: <div>
+      <ol className="m-0 p-0">
+        <ul className="m-0 pl-3 text-left font-size-12">
+          {/*<li>Upload IP Registration Documents or Letter of Authorization</li>*/}
+          <li>Supported File Types: pdf, doc, docx, xls, xlsx, csv, jpeg, png</li>
+          <li>Maximum file size: 7 MB</li>
+          <li>Filenames should contain English alphanumeric characters only.</li>
+        </ul>
+      </ol>
     </div>
   };
+  const itemList = props.parentRef && props.parentRef.state.form.docList;
   const formIdentifier = props.formId;
   const sectionObject = props.company && props.company.onboardingDetails && props.company.onboardingDetails[formToDocMapper[formIdentifier].sectionName];
   let uploadedAttachments =  sectionObject && sectionObject[formToDocMapper[formIdentifier].attachmentKey];
@@ -65,7 +87,7 @@ const FileUploader = props => {
           <span>{uploadedAttachments.map(obj => obj.documentName).join(", ")}</span>
         </div>}
         {
-          !props.uploading && !props.id &&
+          (props.multiple || (!props.uploading && !props.id)) &&
           <>
             <label
               className={`btn btn-sm btn-outline-primary upload-btn my-2${props.disabled ? " disabled" : ""}`}>
@@ -76,16 +98,10 @@ const FileUploader = props => {
             {props.error && <small className="d-block error">{props.error}</small>}
           </>
         }
-        {props.uploading && !props.id && <ProgressBar filename={props.filename} uploadPercentage={props.uploadPercentage}/>}
-        {!props.uploading && props.id &&
-          <div className="col-6 field-container position-relative">
-            <div className={`uploaded-file-label form-control mb-2`}>
-              <span className="d-block overflow-auto">{props.filename}</span>
-            </div>
-            <span aria-hidden="true" className="cancel-file-selection-btn position-absolute cursor-pointer"
-                onClick={cancelHandler}>&times;</span>
-          </div>
-        }
+
+          <ItemList name={props.filename} cancelHandler={cancelHandler} multiple={props.multiple} itemList={itemList} uploading={props.uploading}
+                    filename={props.filename} uploadPercentage={props.uploadPercentage}/>
+
       </div>
     </div>
   );

@@ -89,6 +89,7 @@ class BrandRegistration extends React.Component {
         trademarkNumber: inputData.trademarkNumber.value,
         usptoUrl: inputData.trademarkNumber.usptoUrl,
         usptoVerification: inputData.trademarkNumber.usptoVerification,
+        trademarkClasses: inputData.trademarkNumber.trademarkClasses,
         name: inputData.brandName.value,
         // comments: inputData.comments.value
       };
