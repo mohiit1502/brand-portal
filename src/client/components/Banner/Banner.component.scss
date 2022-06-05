@@ -14,7 +14,10 @@
   &.blue {
     border-color: transparent;
     border-left-color: $market-place-blue;
-    background: $background-blue;
+    background-color: $background-blue;
+    background-image: url("./../../images/info-transparent.svg");
+    background-repeat: no-repeat;
+    background-position: 8px 12px;
   }
 
   .banner-body{

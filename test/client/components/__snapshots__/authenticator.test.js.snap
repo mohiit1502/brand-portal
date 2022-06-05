@@ -430,10 +430,10 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
               "DELETE_CONTACT": Object {
                 "ADDITIONAL_ACTION": Object {
                   "action": "closeModal",
-                  "classes": "mt-0 d-inline-block text-right mr-3 blue",
+                  "classes": "mt-0 d-inline-block text-right mr-3 blue font-size-15",
                   "text": "Back",
                 },
-                "BODY_CLASSES": "text-center",
+                "BODY_CLASSES": "text-center overflow-x-hidden",
                 "BODY_CONTENT_CLASSES": "px-5 font-size-15",
                 "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
                 "HEADER": "Delete Contact Information",
@@ -495,8 +495,9 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
                   "classes": "mt-0 d-inline-block text-right mr-3 blue",
                   "text": "I'll do it later",
                 },
-                "BODY_CLASSES": "text-center",
-                "BODY_CONTENT_CLASSES": "px-5 font-size-15",
+                "BODY_CLASSES": "text-center pt-5 overflow-x-hidden",
+                "BODY_CONTENT_CLASSES": "px-5 py-2 font-size-18",
+                "DISPLAY_DASHBOARD": true,
                 "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
                 "HEADER": "Welcome to Walmart Brand Portal!",
                 "HEIGHT": "110",
@@ -506,17 +507,13 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
                   "actionParam": "/profile",
                   "classes": "text-right float-right px-3",
                   "containerClasses": "p-3",
-                  "text": "Go to your Profile",
+                  "text": "Go to User Profile",
                 },
                 "SUBTITLE": Object {
                   "content": Object {
                     "para1": Object {
-                      "classes": "mx-2 text-center mb-0 mt-4 font-size-16",
-                      "text": "You can update the contact information for your ",
-                    },
-                    "para2": Object {
-                      "classes": "mx-2 text-center pb-5 font-size-16",
-                      "text": "company on the User Profile page.",
+                      "classes": "mx-2 font-size-16 py-4 px-5",
+                      "text": "You can update the public contact information on the User Profile page. This contact information will be shared with sellers reported by the user(s) of this Brand Portal account.",
                     },
                   },
                 },
@@ -561,29 +558,31 @@ exports[`Tests for redirection logic in Authenticator renders authenticator with
               "PASSWORD_RESET_SELLER": Object {
                 "ADDITIONAL_ACTION": Object {
                   "action": "closeModal",
-                  "classes": "mt-0 d-block",
+                  "classes": "mt-0 font-size-15",
+                  "containerClasses": "mr-4 d-inline-block",
                   "text": "Cancel",
                 },
-                "BODY_CLASSES": "",
+                "BODY_CLASSES": "overflow-x-hidden",
                 "BODY_CONTENT_CLASSES": "px-3 font-size-15",
+                "DISPLAY_DASHBOARD": true,
                 "FOOTER_CLASSES": "margin-unset bg-blue mt-4",
-                "HEADER": "Seller Center Profile Management",
+                "HEADER": "Seller Center Profile",
                 "MESSAGE": Object {
                   "classes": "mt-4",
                   "content": Object {
                     "para1": Object {
                       "classes": "mx-2",
-                      "text": "Walmart Brand Portal accounts using Seller Center credentials cannot be managed directly through the Walmart Brand Portal.",
+                      "text": "To change your Seller Center credentials, you will need to log into your Seller Center account.",
                     },
                     "para2": Object {
-                      "classes": "mx-2",
-                      "text": "In order to update your profile information or reset your password, you will need to log out of Walmart Brand Portal and manage your account in Seller Center.",
+                      "classes": "mx-2 mb-5",
+                      "text": "You cannot make changes to your Seller Center account through the Brand Portal.",
                     },
                   },
                 },
                 "PRIMARY_ACTION": Object {
                   "action": "navigation",
-                  "actionParam": "https://seller.walmart.com",
+                  "actionParam": "https://seller.stg.walmart.com",
                   "classes": "text-right float-right px-3",
                   "containerClasses": "p-3",
                   "text": "Go to Seller Center",

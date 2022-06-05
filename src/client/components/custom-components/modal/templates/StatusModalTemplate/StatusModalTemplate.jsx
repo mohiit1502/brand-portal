@@ -42,7 +42,7 @@ const StatusModalTemplate = props => {
       WORK_FLOW: MIXPANEL_CONSTANTS.MIXPANEL_WORKFLOW_MAPPING[64]
     };
     if (email) {
-      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("client_type")})
+      Http.post("/api/users/reinvite", {email}, {clientType: Cookies.get("bp_client_type")})
         .then(res => {
           if (res.body === true) {
             showNotification(NOTIFICATION_TYPE.SUCCESS, "Email Resent", "variant2", "Verified2");
@@ -156,7 +156,11 @@ const StatusModalTemplate = props => {
     const payload = {orgId: user.profile.organization.id};
     return Http.put(`/api/org/deleteSecondaryContactInfo`, payload, null, null)
       .then(async res => {
-        updateUserProfile(res.body);
+        if (res.status === 200) {
+          const userClone = JSON.parse(JSON.stringify(user.profile));
+          delete userClone.organization.secondaryContactInformation;
+          updateUserProfile(userClone);
+        }
         showNotification(NOTIFICATION_TYPE.SUCCESS, "Deleted contact information successfully!");
         hideModal();
         mixpanelPayload.API_SUCCESS = true;
@@ -353,7 +357,8 @@ const StatusModalTemplate = props => {
                     {meta.PRIMARY_ACTION || "Logout"}
                   </a>
                 }
-                {meta.ADDITIONAL_ACTION && <div className={meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}>
+                {meta.ADDITIONAL_ACTION && <div className={`${meta.TYPE !== "NOTIFICATION" ? " mx-auto mt-2" : " font-size-15"}
+                ${meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.containerClasses ? ` ${meta.ADDITIONAL_ACTION.containerClasses}` : ""}`}>
                 {meta.ADDITIONAL_ACTION.actionHelpText && <span className={meta.ADDITIONAL_ACTION.actionHelpText.classes ? meta.ADDITIONAL_ACTION.actionHelpText.classes : ""}>{meta.ADDITIONAL_ACTION.actionHelpText.text}</span>}
                 <button className={`additional-action btn btn-link${meta.ADDITIONAL_ACTION.classes ? ` ${  meta.ADDITIONAL_ACTION.classes}` : ""}`}
                   onClick={() => runSecondaryAction(meta.ADDITIONAL_ACTION && meta.ADDITIONAL_ACTION.action ? meta.ADDITIONAL_ACTION.action : "")}>

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import $ from "jquery";
@@ -11,23 +11,12 @@ import "./Section.component.scss";
 import Helper from "../../utility/helper";
 
 const Section = props => {
-  const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, toggleModal} = props;
+  const {config: {header, body, footer, innerClasses, layoutClasses}, modalsMeta, parent, profile, toggleModal} = props;
   const getTooltipContent = content => content.map(text => {
     return <div className="py-2">
       <p className="mt-2 pl-2 text-left font-size-12">{text}</p>
     </div>
   });
-
-  useEffect(() => {
-    try {
-      $("[title]")
-        .on("mouseenter", () => $(".tooltip").removeClass("move-beneath"))
-        .tooltip();
-      $("body")
-        .on("click", ".tooltip-close-button", () => $(".tooltip").addClass("move-beneath"))
-        .on("mouseleave", ".tooltip, [title]", () => $(".tooltip").addClass("move-beneath"));
-    } catch (e) {}
-  }, [])
 
   const buttonRenders = footer && footer.buttons && footer.buttons.map(button => {
     const shouldRender = ContentRenderer.evaluateRenderDependency.call(parent, button.renderCondition);
@@ -38,13 +27,14 @@ const Section = props => {
     switch (action) {
       case "displayModal":
         const modal = actionParams.modal;
+        const title = actionParams.title;
         let params;
         if (typeof modal === "string") {
           params = actionParams;
         } else if (typeof modal === "object") {
           params = modal.find(conf => conf.value === Helper.search(conf.key, parent));
         }
-        const meta = {templateName: params.modal, ...(params.configName ? modalsMeta[params.configName] : {})};
+        const meta = {templateName: params.modal, DISPLAY_DASHBOARD: true, ...(params.configName ? modalsMeta[params.configName] : {}), title};
         actionParams.context && (meta.context = actionParams.context);
         actionParams.subContext && (meta.subContext = actionParams.subContext);
         toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
@@ -52,7 +42,9 @@ const Section = props => {
   }
 
   const evaluateRenderFooter = footer => !footer.renderCondition || ContentRenderer.evaluateRenderDependency.call(parent, footer.renderCondition);
+  const bodyContent = ContentRenderer.getSectionRenders.call(parent, body.content);
 
+  
   return (
     <div className={`c-Section${layoutClasses ? " " + layoutClasses : ""}`}>
       <div className={`${innerClasses ? " " + innerClasses : ""}`}>
@@ -62,7 +54,7 @@ const Section = props => {
             {header.tooltip && <Tooltip classes="ml-3" content={getTooltipContent(header.tooltip)}
               icon={images.Question}/>}
           </header>}
-          {ContentRenderer.getSectionRenders.call(parent, body.content)}
+          {bodyContent}
         </div>}
         {footer && evaluateRenderFooter(footer) && <footer
           className={`${footer.classes ? " " + footer.classes : ""}${buttonRenders ? buttonRenders.length > 1 ? " justify-content-between" : " justify-content-around" : ""}`}>
@@ -79,12 +71,14 @@ Section.propTypes = {
   data: PropTypes.object,
   modalsMeta: PropTypes.object,
   parent: PropTypes.object,
+  profile: PropTypes.object,
   toggleModal: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
-    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {}
+    modalsMeta: state.content.metadata ? state.content.metadata.MODALSCONFIG : {},
+    profile: state.user.profile
   };
 };
 

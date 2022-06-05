@@ -155,7 +155,7 @@ class BrandList extends React.Component {
   }
 
   editBrand (brandData) {
-    const meta = { templateName: "NewBrandTemplate", data: {...brandData} };
+    const meta = { templateName: "NewBrandTemplate", DISPLAY_DASHBOARD: true, data: {...brandData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = {
         WORK_FLOW: "VIEW_BRAND_LIST",
@@ -302,7 +302,7 @@ class BrandList extends React.Component {
   }
 
   addNewBrand () {
-    const meta = { templateName: "NewBrandTemplate" };
+    const meta = { templateName: "NewBrandTemplate", DISPLAY_DASHBOARD: true };
     const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
     this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});

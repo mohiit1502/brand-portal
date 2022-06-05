@@ -16,32 +16,43 @@ const SECTIONSMETA = {
           "classes": "px-4 pt-4 pb-3 row overflow-auto",
           "content": {
             "key-val1": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-              "dynamicReplacementConfig": {"__firstNamePlaceholder__": "profile.firstName", "__lastNamePlaceholder__": "profile.lastName"},
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
+              "dynamicReplacementConfig": {
+                "__firstNamePlaceholder__": "profile.firstName",
+                "__lastNamePlaceholder__": "profile.lastName"
+              },
               "key": "Name",
               "value": "__firstNamePlaceholder__ __lastNamePlaceholder__"
             },
             "key-val2": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-              "dynamicReplacementConfig": {"__email__": "profile.email"},
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
+              "dynamicReplacementConfig": {
+                "__email__": "profile.email"
+              },
               "key": "Email",
               "value": "__email__"
             },
             "key-val3": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-              "dynamicReplacementConfig": {"__phoneCountry__": "profile.phoneCountry", "__phoneNumber__": "profile.phoneNumber"},
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
+              "dynamicReplacementConfig": {
+                "__phoneNumber__": "profile.phoneNumber"
+              },
               "key": "Phone",
-              "value": "__phoneCountry__ __phoneNumber__"
+              "value": "__phoneNumber__"
             },
             "key-val4": {
-              "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-              "dynamicReplacementConfig": {"__orgName__": "profile.organization.name"},
+              "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
+              "dynamicReplacementConfig": {
+                "__orgName__": "profile.organization.name"
+              },
               "key": "Company",
               "value": "__orgName__"
             },
             "subtitle1": {
               "containerClasses": "col-6",
-              "dynamicReplacementConfig": {"__date__": "profile.createTs"},
+              "dynamicReplacementConfig": {
+                "__date__": "profile.createTs"
+              },
               "incomingFormat": "YYYY-MM-DDTHH:mm:ss.SSSZ",
               "outgoingFormat": "MMM DD, YYYY",
               "key": "joinedDate",
@@ -53,17 +64,45 @@ const SECTIONSMETA = {
           "buttons": [
             {
               "action": "displayModal",
-              "actionParams": {"modal": "ResetPasswordTemplate"},
+              "actionParams": {
+                "modal": [
+                  {
+                    "key": "state.isSeller",
+                    "value": true,
+                    "modal": "StatusModalTemplate",
+                    "configName": "PASSWORD_RESET_SELLER"
+                  },
+                  {
+                    "key": "state.isSeller",
+                    "value": false,
+                    "modal": "ResetPasswordTemplate"
+                  }
+                ]
+              },
               "classes": "reset-password",
               "text": "Change Password",
-              "renderCondition": "{\"keyPath\": \"isSeller\", \"keyLocator\": \"state\", \"value\": false}",
             },
             {
               "action": "displayModal",
-              "actionParams": {"context": "edit", "subContext": "myInfo", "modal": [
-                  {"key": "state.isSeller", "value": true, "modal": "StatusModalTemplate", "configName": "PASSWORD_RESET_SELLER"},
-                  {"key": "state.isSeller", "value": false, "modal": "FormModalTemplate"}]},
-              "text": "Edit",
+              "actionParams": {
+                "context": "edit",
+                "subContext": "myInfo",
+                "title": "Edit Profile",
+                "modal": [
+                  {
+                    "key": "state.isSeller",
+                    "value": true,
+                    "modal": "StatusModalTemplate",
+                    "configName": "PASSWORD_RESET_SELLER"
+                  },
+                  {
+                    "key": "state.isSeller",
+                    "value": false,
+                    "modal": "FormModalTemplate"
+                  }
+                ]
+              },
+              "text": "Edit"
             }
           ],
           "classes": "w-100 d-flex px-4 footer-text-individual py-875 text-center footer-text"
@@ -74,7 +113,10 @@ const SECTIONSMETA = {
         "classes": "mb-4 h2 mt-5 font-weight-bold"
       },
       "banner1": {
-        "criteria": {"field": "userProfile.role", "value": "SuperAdmin"},
+        "criteria": {
+          "field": "userProfile.role",
+          "value": "SuperAdmin"
+        },
         "layoutClasses": "col-6 pl-0",
         "innerClasses": "",
         "renderCondition": "{\"keyPath\": \"userProfile.role.name\", \"keyLocator\": \"props\", \"value\": \"super admin\"}",
@@ -90,32 +132,41 @@ const SECTIONSMETA = {
             "section1": {
               "layoutClasses": "col-6 mb-3 pl-0",
               "innerClasses": "bordered-box shadow",
-              "renderCondition": "{\"keyPath\": \"userProfile.role.name\", \"keyLocator\": \"props\", \"value\": [\"admin\",\"reporter\"]}",
+              "renderCondition": "{\"keyPath\": \"userProfile.role.name\", \"keyLocator\": \"props\", \"value\": [\"administrator\",\"reporter\"]}",
               "header": {
                 "text": "Super Admin",
                 "classes": "mb-3 font-size-28 font-color-steel col-12",
-                "tooltip": ["The Super Admin is the Brand Portal account owner and has the ability to manage user access and permissions."]
+                "tooltip": [
+                  "The Super Admin is the Brand Portal account owner and has the ability to manage user access and permissions."
+                ]
               },
               "body": {
                 "classes": "p-4 row overflow-auto",
                 "content": {
                   "key-val1": {
-                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {"__firstNamePlaceholder__": "profile.organization.secondaryContactInformation.firstName", "__lastNamePlaceholder__": "profile.organization.secondaryContactInformation.lastName"},
+                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__firstNamePlaceholder__": "profile.organization.primaryContactInformation.firstName",
+                      "__lastNamePlaceholder__": "profile.organization.primaryContactInformation.lastName"
+                    },
                     "key": "Name",
                     "value": "__firstNamePlaceholder__ __lastNamePlaceholder__"
                   },
                   "key-val2": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {"__phoneNumber__": "profile.organization.secondaryContactInformation.phoneNumber"},
-                    "key": "Phone",
-                    "value": "__phoneNumber__"
-                  },
-                  "key-val3": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {"__email__": "profile.organization.secondaryContactInformation.email"},
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__email__": "profile.organization.primaryContactInformation.email"
+                    },
                     "key": "Email",
                     "value": "__email__"
+                  },
+                  "key-val3": {
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__phoneNumber__": "profile.organization.primaryContactInformation.phone"
+                    },
+                    "key": "Phone",
+                    "value": "__phoneNumber__"
                   }
                 }
               }
@@ -126,28 +177,37 @@ const SECTIONSMETA = {
               "header": {
                 "text": "Public Contact",
                 "classes": "mb-3 font-size-28 font-color-steel col-12",
-                "tooltip": ["This contact information will be shared with sellers reported by the user(s) of this Brand Portal account."]
+                "tooltip": [
+                  "This contact information will be shared with sellers reported by the user(s) of this Brand Portal account."
+                ]
               },
               "body": {
-                "classes": "p-4 row overflow-auto",
+                "classes": "p-4 row overflow-hidden",
                 "content": {
                   "key-val1": {
-                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {"__firstNamePlaceholder__": "profile.organization.secondaryContactInformation.firstName", "__lastNamePlaceholder__": "profile.organization.secondaryContactInformation.lastName"},
+                    "containerClasses": "col-12 col-lg-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__firstNamePlaceholder__": "profile.organization.secondaryContactInformation.firstName",
+                      "__lastNamePlaceholder__": "profile.organization.secondaryContactInformation.lastName"
+                    },
                     "key": "Name",
                     "value": "__firstNamePlaceholder__ __lastNamePlaceholder__"
                   },
                   "key-val2": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {"__phoneNumber__": "profile.organization.secondaryContactInformation.phoneNumber"},
-                    "key": "Phone",
-                    "value": "__phoneNumber__"
-                  },
-                  "key-val3": {
-                    "containerClasses": "col-6 mb-3 overflow-auto",
-                    "dynamicReplacementConfig": {"__email__": "profile.organization.secondaryContactInformation.email"},
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__email__": "profile.organization.secondaryContactInformation.email"
+                    },
                     "key": "Email",
                     "value": "__email__"
+                  },
+                  "key-val3": {
+                    "containerClasses": "col-6 mb-3 overflow-hidden",
+                    "dynamicReplacementConfig": {
+                      "__phoneNumber__": "profile.organization.secondaryContactInformation.phone"
+                    },
+                    "key": "Phone",
+                    "value": "__phoneNumber__"
                   }
                 }
               },
@@ -156,19 +216,33 @@ const SECTIONSMETA = {
                 "buttons": [
                   {
                     "action": "displayModal",
-                    "actionParams": {"modal": "StatusModalTemplate", "configName": "DELETE_CONTACT"},
+                    "actionParams": {
+                      "title": "Delete Public Contact",
+                      "modal": "StatusModalTemplate",
+                      "configName": "DELETE_CONTACT"
+                    },
                     "text": "Delete",
-                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}",
+                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}"
                   },
                   {
                     "action": "displayModal",
-                    "actionParams": {"context": "new", "subContext": "publicContact", "modal": "FormModalTemplate"},
+                    "actionParams": {
+                      "title": "Create Public Contact",
+                      "context": "new",
+                      "subContext": "publicContact",
+                      "modal": "FormModalTemplate"
+                    },
                     "text": "Add",
-                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": false}",
+                    "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": false}"
                   },
                   {
                     "action": "displayModal",
-                    "actionParams": {"context": "edit", "subContext": "publicContact","modal": "FormModalTemplate"},
+                    "actionParams": {
+                      "title": "Edit Public Contact",
+                      "context": "edit",
+                      "subContext": "publicContact",
+                      "modal": "FormModalTemplate"
+                    },
                     "text": "Edit",
                     "renderCondition": "{\"keyPath\": \"userProfile.organization.secondaryContactInformation\", \"keyLocator\": \"props\", \"hasValue\": true}"
                   }
@@ -178,10 +252,9 @@ const SECTIONSMETA = {
             }
           }
         }
-      },
-
+      }
     }
   }
-}
+};
 
 export default SECTIONSMETA;

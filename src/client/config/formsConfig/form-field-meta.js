@@ -492,11 +492,12 @@ const FORMFIELDCONFIG = {
           "inputId": "phone",
           "invalidError": "Please enter a valid phone number",
           "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
+          "preventHTMLRequiredValidation": true,
           "isUnique": true,
           "key": "phone",
           "label": "Mobile Number",
           "layout": "5.2.6",
-          "maxLength": 17,
+          "maxLength": 18,
           "patternPath": "CONSTANTS.REGEX.PHONE",
           "prebounceChangeHandler": "prebounceChangeHandler",
           "required": false,
@@ -651,6 +652,7 @@ const FORMFIELDCONFIG = {
     },
     "CONTACTINFO": {
       "sectionConfig": {
+        "id": "newPublicContact",
         "sectionTitleNew": "Create Public Contact",
         "sectionTitleEdit": "Create Public Contact"
       },
@@ -660,6 +662,7 @@ const FORMFIELDCONFIG = {
         "isSubmitDisabled": true,
         "isUpdateTemplate": false,
         "loader": false,
+        "nothingModifiedError": "Nothing has been modified!",
         "templateUpdateComplete": false
       },
       "fields": {
@@ -704,48 +707,52 @@ const FORMFIELDCONFIG = {
           }
         },
         "email": {
-          "disabled": false,
+          "disableDefaultBlurValidation": true,
+          "disabled": {
+            "default": false,
+            "condition": [
+              {
+                "keyPath": "meta.subContext",
+                "keyLocator": "props",
+                "dependencyValue": [
+                  "myinfo"
+                ],
+                "value": true
+              }
+            ]
+          },
           "error": "",
-          "fieldOk": false,
           "inputId": "email",
-          "isUnique": false,
+          "invalidError": "Please enter a valid Email ID",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
           "key": "email",
           "label": "Email",
           "loader": false,
-          "pattern": null,
+          "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+          "patternPath": "CONSTANTS.REGEX.EMAIL",
           "required": true,
-          "preventHTMLRequiredValidation": true,
           "subtitle": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please enter a valid email."
-            }
-          },
-          "type": "text",
+          "type": "email",
           "value": ""
         },
         "phone": {
           "disabled": false,
+          "disableDefaultBlurValidation": true,
           "error": "",
-          "fieldOk": false,
           "inputId": "phone",
-          "isUnique": false,
+          "invalidError": "Please enter a valid phone number",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
           "key": "phone",
           "label": "Phone",
-          "loader": false,
-          "pattern": null,
-          "preventHTMLRequiredValidation": true,
-          "required": true,
+          "required": false,
+          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "prebounceChangeHandler": "prebounceChangeHandler",
           "subtitle": "",
-          "validators": {
-            "validateRequired": {
-              "error": "Please enter a valid phone number."
-            }
-          },
           "type": "text",
           "value": ""
         },
         "user_undertaking": {
+          "containerClasses": "mb-4",
           "checkBoxClasses": "user-undertaking",
           "excludeRowContainer": true,
           "excludeColContainer": true,
@@ -754,6 +761,7 @@ const FORMFIELDCONFIG = {
           "key": "user_undertaking",
           "layout": "5.1.0",
           "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+          "renderCondition": "{\"keyPath\": \"meta.subContext\", \"keyLocator\": \"props\", \"value\": \"publiccontact\"}",
           "labelClasses": "user-undertaking-label",
           "onChange": "undertakingtoggle",
           "preventHTMLRequiredValidation": true,
@@ -766,9 +774,17 @@ const FORMFIELDCONFIG = {
             }
           }
         },
-        "publiContactCreateActions": {
-          "containerClasses": "mt-3",
-          "colClasses": "new-brand-button-panel text-right",
+        "errorSub": {
+          "containerClasses": "mt-n2 mb-3",
+          "error": "",
+          "errorClasses": "form-text custom-input-help-text text-danger",
+          "id": "errorSub",
+          "layout": "6.1.0",
+          "type": "_error"
+        },
+        "publicContactCreateActions": {
+          "colClasses": "new-brand-button-panel text-right pt-3 pb-3",
+          "containerClasses": "pr-4 bg-blue mx-n4",
           "excludeRowContainer": true,
           "excludeColContainer": true,
           "type": "_buttonsPanel",
@@ -777,7 +793,7 @@ const FORMFIELDCONFIG = {
               "classes": "btn btn-sm cancel-btn text-primary",
               "disabled": false,
               "onClick": "resetTemplateStatus",
-              "text": "Cancel",
+              "text": "Back",
               "type": "button"
             },
             "submit": {
@@ -999,9 +1015,53 @@ const FORMFIELDCONFIG = {
                     "error": "Minimum length is 3 characters"
                   }
                 }
+              },
+              "orderNumber": {
+                "dropdownOptions": [],
+                "label": "Order Number",
+                "required": true,
+                "value": "",
+                "pattern": null,
+                "disabled": false,
+                "subtitle": "",
+                // "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
+                "type": "multiselect",
+                "invalidError": "Select at least one seller to report.",
+                "error": "",
+                "validators": {
+                  "validateLength": {
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
+                  }
+                }
               }
             }
           ]
+        },
+        "claimDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "claimDoc",
+          "changeHandlerArg": "claimDoc",
+          "disabled": true,
+          "endpoint": "/api/company/uploadBusinessDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "id": "",
+          "inputId": "claimDoc",
+          "key": "claimDoc",
+          "label": "Optional: Attach claim documents",
+          "layout": "5.1.0",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "businessDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
         },
         "comments": {
           "containerClasses": "mb-3",
@@ -1166,7 +1226,7 @@ const FORMFIELDCONFIG = {
       "formConfig": {
         "apiPath": "/api/users/resetPassword",
         "error": "",
-        "formHeading": "Input the fields below to change your password. Your new password will be in effect next time you login.",
+        "formHeading": "Please type your current password and then create the new one.",
         "id": "resetPassword",
         "incorrectPasswordError": "Current password is incorrect.",
         "loader": false,
@@ -1185,8 +1245,9 @@ const FORMFIELDCONFIG = {
       "fields": {
         "currentPassword": {
           "canShowPassword": true,
-          "containerClasses": "px-0",
+          "colClasses": "px-0",
           "error": "",
+          "excludeRowContainer": true,
           "id": "currentPassword",
           "inputId": "currentPassword",
           "key": "currentPassword",
@@ -1205,7 +1266,7 @@ const FORMFIELDCONFIG = {
         },
         "newPassword": {
           "canShowPassword": true,
-          "containerClasses": "px-0",
+          "colClasses": "px-0",
           "error": "",
           "inputId": "newPassword",
           "key": "newPassword",
@@ -1227,7 +1288,7 @@ const FORMFIELDCONFIG = {
         },
         "confirmNewPassword": {
           "canShowPassword": true,
-          "containerClasses": "px-0",
+          "colClasses": "px-0",
           "error": "",
           "inputId": "confirmNewPassword",
           "key": "confirmNewPassword",
@@ -1249,7 +1310,7 @@ const FORMFIELDCONFIG = {
           }
         },
         "errorSub": {
-          "containerClasses": "pl-2 mt-n23 mb-2rem",
+          "containerClasses": "pl-2 mt-n23 mb-2rem pt-2",
           "error": "",
           "errorClasses": "form-text custom-input-help-text text-danger",
           "id": "errorSub",
@@ -1257,15 +1318,16 @@ const FORMFIELDCONFIG = {
           "type": "_error"
         },
         "resetPasswordAction": {
-          "containerClasses": "px-0 text-right",
-          "colClasses": "reset-password-button-panel text-right",
+          "containerClasses": "pr-4 text-right bg-blue py-3 mx-n4",
+          "colClasses": "reset-password-button-panel text-right pr-0",
+          "excludeColContainer": true,
           "layout": "1.1.12",
           "type": "_buttonsPanel",
           "buttons": {
             "cancel": {
               "classes": "btn btn-sm cancel-btn text-primary",
               "onClick": "resetTemplateStatus",
-              "text": "Cancel",
+              "text": "Back",
               "type": "button"
             },
             "changePassword": {
@@ -1378,7 +1440,7 @@ const FORMFIELDCONFIG = {
           "initValuePath": "phoneNumber"
         },
         "resetPasswordAction": {
-          "containerClasses": "password-reset-col",
+          "containerClasses": "password-reset-col mb-n3",
           "colClasses": "",
           "layout": "1.1.6",
           "type": "_buttonsPanel",
@@ -2277,27 +2339,12 @@ const FORMFIELDCONFIG = {
           "type": "_buttonsPanel",
           "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
           "buttons": {
-            "edit": {
-              "classes": "btn btn-primary btn-sm px-4",
-              "handlerArg": false,
-              "onClick": "disableInput",
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "text": "Edit",
-              "type": "button"
-            },
-            "cancel": {
-              "classes": "btn btn-link font-size-14 px-4 mr-3",
-              "handlerArg": true,
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "onClick": "disableInput",
-              "text": "Cancel",
-              "type": "button"
-            },
-            "save": {
-              "classes": "btn btn-primary btn-sm px-4 font-size-14",
-              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-              "text": "Save",
-              "type": "button"
+            "submit": {
+              "classes": "btn btn-primary padded-button",
+              "disabled": false,
+              "onClick": "handleSubmit",
+              "text": "Submit Claim",
+              "type": "submit"
             }
           }
         }

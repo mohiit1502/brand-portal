@@ -18,7 +18,7 @@ class ContentRenderer extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.user && !this.props.user.doItLater) {
+    if (this.props.user && !this.props.user.doItLater && this.props.user.role && this.props.user.role.name == "Super Admin" && this.props.location && this.props.location.pathname == "/dashboard") {
       const {modalsMeta, toggleModal} = this.props;
       toggleModal(TOGGLE_ACTIONS.SHOW, {templateName: "StatusModalTemplate", ...modalsMeta.GO_TO_USER_PROFILE});
     }
@@ -26,7 +26,7 @@ class ContentRenderer extends React.Component {
 
   render () {
     return (
-      <div className="content-page d-inline-block">
+      <div className="content-page d-inline-block overflow-auto">
         <Switch>
           <Route path={CONSTANTS.ROUTES.PROTECTED.PROFILE.USER}>
             <UserProfile {...this.props}/>

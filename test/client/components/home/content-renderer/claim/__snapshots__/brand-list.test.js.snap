@@ -110,6 +110,7 @@ exports[`BrandList test container BrandList renders without error should add fil
             }
             modal={
               Object {
+                "DISPLAY_DASHBOARD": true,
                 "enable": true,
                 "shouldDiscard": undefined,
                 "templateName": "NewBrandTemplate",

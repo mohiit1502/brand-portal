@@ -91,7 +91,7 @@ const Summary = props => {
   };
 
   const triggerAddAction = () => {
-    const meta = { templateName };
+    const meta = { templateName, DISPLAY_DASHBOARD: true };
     const mixpanelPayload = { WORK_FLOW: "MY_DASHBOARD"};
     mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});

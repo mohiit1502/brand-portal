@@ -65,7 +65,7 @@ describe("Home Tests", () => {
   it("renders without error", () => {
     const mRef = {current: document.createElement("div")};
     useRef.mockReturnValue(mRef);
-    wrapper = setUp({homePageMocks});
+    wrapper = setUp({homePageMocks, userProfile: profile});
     const tree = wrapper.toJSON();
     expect(tree).toMatchSnapshot();
   });

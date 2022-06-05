@@ -46,7 +46,7 @@ class BrandManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][BrandManagerApi::getBrands] API request for get Brand has started", corrId);
-    console.log("[Corr ID: %s][BrandManagerApi::getBrands] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][BrandManagerApi::getBrands] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands"
@@ -92,7 +92,7 @@ class BrandManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][BrandManagerApi::createBrand] API request for Create Brand has started", corrId);
-    console.log("[Corr ID: %s][BrandManagerApi::createBrand] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][BrandManagerApi::createBrand] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "POST",
       API: "/api/brands"
@@ -139,7 +139,7 @@ class BrandManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][BrandManagerApi::updateBrand] API request for Update Brand has started", corrId);
-    console.log("[Corr ID: %s][BrandManagerApi::updateBrand] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][BrandManagerApi::updateBrand] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "PUT",
       API: `/api/brands/${request.params && request.params.brandId}`
@@ -180,7 +180,7 @@ class BrandManagerApi {
     const headers = ServerUtils.getHeaders(request);
     const corrId = headers.ROPRO_CORRELATION_ID;
     console.log("[Corr ID: %s][BrandManagerApi::checkUnique] API request for Brand Uniqueness has started", corrId);
-    console.log("[Corr ID: %s][BrandManagerApi::checkUnique] User ID: ", corrId, request.state && request.state.session_token_login_id);
+    console.log("[Corr ID: %s][BrandManagerApi::checkUnique] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     const mixpanelPayload = {
       METHOD: "GET",
       API: "/api/brands/checkUnique",
