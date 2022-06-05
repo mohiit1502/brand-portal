@@ -15,6 +15,14 @@ class ClaimDetailsTemplate extends React.Component {
     this.state = {
       loader: false
     };
+    this.orderNumberList = [];
+    for(let item=0; item<this.props.data.items.length; item++) {
+      if(this.orderNumberList.indexOf(this.props.data.items[item].orderNumber) == -1) {
+        this.orderNumberList.push(this.props.data.items[item].orderNumber);
+        this.orderNumberList.push(",");
+      }
+    }
+    this.orderNumberList.pop();
   }
 
   loader (enable) {
@@ -27,6 +35,7 @@ class ClaimDetailsTemplate extends React.Component {
 
   // eslint-disable-next-line complexity
   render() {
+    console.log(this.orderNumberList);
     let firstName = "";
     let lastName = "";
     let reformattedItems = [];
@@ -85,6 +94,10 @@ class ClaimDetailsTemplate extends React.Component {
                         <div className="snapshot-value">{(firstName ? firstName.concat(" ") : "") + lastName}</div>
                       </div>
                       <div className="col">
+                        <div className="snapshot-header">Order number(s) </div>
+                        <div className="snapshot-value"> {this.orderNumberList} </div>
+                      </div>
+                      <div className="col">
                         <div className="snapshot-header">Claim Date </div>
                         <div className="snapshot-value"> {this.props.data.claimDate} </div>
                       </div>
@@ -92,11 +105,14 @@ class ClaimDetailsTemplate extends React.Component {
                     <div className="row justify-content-center items-row mt-4">
                       <div className="col">
                         <div className="row item-header-row py-2">
+                          <div className="col-6">
+                            ITEM URL
+                          </div>
                           <div className="col-3">
                             REPORTED SELLER
                           </div>
-                          <div className="col-9">
-                            ITEM URL
+                          <div className="col-3">
+                            ORDER NUMBER
                           </div>
                         </div>
                         <div className="row item-data-container">
@@ -105,11 +121,14 @@ class ClaimDetailsTemplate extends React.Component {
                               reformattedItems.map((item, i) => {
                                 return (
                                   <div key={i} className="row item-data-row align-items-center">
+                                    <div className="col-6 item-url">
+                                      <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
+                                    </div>
                                     <div className="col-3 text-capitalize">
                                       {item.sellerName}
                                     </div>
-                                    <div className="col-9 item-url">
-                                      <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
+                                    <div className="col-3 text-capitalize">
+                                      {item.orderNumber}
                                     </div>
                                     <div className="col-9 item-url">
                                       <a target="_blank" className="text-primary cursor-pointer" href={item.orderNumber}> {item.orderNumber} </a>
@@ -120,6 +139,20 @@ class ClaimDetailsTemplate extends React.Component {
                             }
                           </div>
                         </div>
+                      </div>
+                    </div>
+                    <div className="row mt-4">
+                      <div className="col">
+                         { this.props.data.claimDocList.length > 0 && <span className="font-size-14 font-weight-bold">Attachments</span>}
+                        {
+                          this.props.data.claimDocList.map((item, i) => {
+                            return (
+                              <div className="mt-2 text-capitalize">
+                                {item.documentName}
+                              </div>
+                            );
+                          })
+                        }
                       </div>
                     </div>
                     <div className="row mt-4">

@@ -15,6 +15,7 @@ import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 import ContentRenderer from "../../../../utility/ContentRenderer";
 import "../../../../styles/custom-components/modal/templates/new-claim-template.scss";
 import Validator from "../../../../utility/validationUtil";
+import DocumentActions from "../../../../utility/docOps";
 
 class NewClaimTemplate extends React.Component {
 
@@ -25,22 +26,30 @@ class NewClaimTemplate extends React.Component {
       functions.forEach(name => {
         this[name] = this[name].bind(this);
       });
+
+      this.cancelSelection = DocumentActions.cancelSelection.bind(this);
       this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
       this.evaluateRenderDependency = ContentRenderer.evaluateRenderDependency.bind(this);
       this.trimSpaces = Helper.trimSpaces.bind(this);
       this.itemUrlDebounce = Helper.debounce(this.onItemUrlChange, CONSTANTS.APIDEBOUNCETIMEOUT);
       this.validateState = Validator.validateState.bind(this);
+      this.displayProgressAndUpload = DocumentActions.displayProgressAndUpload.bind(this);
       this.onInvalid = Validator.onInvalid.bind(this);
       const newClaimConfiguration = this.props.newClaimConfiguration ? this.props.newClaimConfiguration : {};
+      this.invalid={};
       this.state = {
         section: {...newClaimConfiguration.sectionConfig},
         form: {
           inputData: newClaimConfiguration.fields,
+          docList: [],
+          fileCount: 0,
+          totalFileSize: 0,
           ...newClaimConfiguration.formConfig
         },
         brandNameSelected: newClaimConfiguration.formConfig && newClaimConfiguration.formConfig.brandNameSelected,
         loader: false
       };
+    this.enableSubmitButton();
 
   }
 
@@ -137,23 +146,33 @@ class NewClaimTemplate extends React.Component {
 
   onChange(evt, key) {
     if (evt && evt.target) {
+      const isValid = evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
       let index = -1;
-      if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName") && key.split("-")[1]) {
+      if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
 
+      if (isValid) {
+        this.invalid[key + "-" + index] = false;
+      }
       this.setState(state => {
         state = {...state};
-        if (index > -1) {
+        if (index > -1 && key !== "orderNumber") {
           state.form.inputData.urlItems.itemList[index].sellerName.value = "";
           state.form.inputData.urlItems.itemList[index].sellerName.disabled = true;
+          state.form.inputData.urlItems.itemList[index].orderNumber.disabled = false;
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
           state.form.inputData.urlItems.itemList[index][key].error = "";
          // state.disableAddItem = true;
          // state.currentItem = index;
-        } else {
+        }
+        else if (key === "orderNumber") {
+          state.form.inputData.urlItems.itemList[index][key].value = targetVal;
+          state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;;
+        }
+        else {
           state.form.inputData[key].value = targetVal;
           state.form.inputData[key].error = "";
         }
@@ -162,7 +181,7 @@ class NewClaimTemplate extends React.Component {
         };
       }, () => this.checkToEnableItemButton());
       evt.persist();
-      if (index > -1) {
+      if (index > -1 && key !== "orderNumber") {
         this.itemUrlDebounce(evt, index);
       }
     }
@@ -171,7 +190,7 @@ class NewClaimTemplate extends React.Component {
   bubbleValue(evt, key, error) {
     const value = evt.target.value;
     let index = -1;
-    if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName") && key.split("-")[1]) {
+    if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1]) {
       index = Number(key.split("-")[1]);
       key = key.split("-")[0];
     }
@@ -225,20 +244,9 @@ class NewClaimTemplate extends React.Component {
 
   checkToEnableSubmit(callback) {
     const form = {...this.state.form};
-    const userUndertaking = Object.keys(form.inputData)
-      .filter(key => form.inputData[key].category === "userUnderTaking" ? true : false)
-      .reduce((boolResult, undertaking) => {
-        const shouldRender = this.evaluateRenderDependency(form.inputData[undertaking].renderCondition);
-        return !!(boolResult && (!shouldRender || (shouldRender && form.inputData[undertaking].selected)));
-      }, true);
-    const bool = userUndertaking && form.inputData.claimType.value &&
-      form.inputData.brandName.value &&
-      (form.inputData.claimTypeIdentifier.required ? form.inputData.claimTypeIdentifier.value : true) &&
-      form.inputData.urlItems.itemList.reduce((boolResult, item) => !!(boolResult && item.url.value && !item.url.error && item.sellerName.value && item.sellerName.value.length > 0 && !item.sellerName.error), true) &&
-      form.inputData.comments.value && !form.inputData.comments.error &&
-      form.inputData.signature.value;
-    form.isSubmitDisabled = !bool;
-    form.inputData.userActions.buttons.submit.disabled = !bool;
+    const bool = form.inputData.claimDoc.uploading;
+    form.isSubmitDisabled = bool;
+    form.inputData.userActions.buttons.submit.disabled = bool;
     this.setState({form}, callback && callback());
   }
 
@@ -367,12 +375,28 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
+  handleFileUpload(evt, key) {
+    this.displayProgressAndUpload(evt, key, ()=>{
+      this.state.form.fileCount += 1;
+      this.state.form.docList.push({
+        "documentName": this.state.form.inputData.claimDoc.filename,
+        "documentId": this.state.form.inputData.claimDoc.id,
+        "isUploadedToServiceNow": false
+      })
+    });
+
+    if(this.state.form.fileCount === 3) {
+      this.state.form.inputData.claimDoc.disabled=true;
+    }
+  }
+
   handleSubmit(evt) {
     evt.preventDefault();
     this.setState(state => {
       return state;
     }, () => {
       if (!this.validateState()) {
+      // if(true){
         this.disableSubmitButton();
         this.setState({
           formError: "",
@@ -412,6 +436,7 @@ class NewClaimTemplate extends React.Component {
           });
           return itemList;
         };
+
         const payload = {
           claimType,
           brandId,
@@ -420,7 +445,8 @@ class NewClaimTemplate extends React.Component {
           digitalSignatureBy,
           items: getItems(inputData.urlItems.itemList),
           usptoUrl,
-          usptoVerification
+          usptoVerification,
+          claimDocList:  (this.state.form.docList.length > 0) ? this.state.form.docList : []
         };
         const mixpanelPayload = {
           API: "/api/claims",
