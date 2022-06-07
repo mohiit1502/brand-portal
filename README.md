@@ -9,6 +9,7 @@ $ npm install --save brand-portal
 ```
 ## Usage
 
+
 ```js
 var roPro = require("brand-portal");
 
