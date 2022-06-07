@@ -18,7 +18,7 @@ const FileUploader = props => {
       attachmentKey: "additionalDocList"
     }
   };
-  const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? () => props.parentRef[props.onCancel](props.cancelHandlerArg) : props.parentRef[props.onCancel] : null;
+  const cancelHandler = props.onCancel && props.parentRef[props.onCancel] ? props.cancelHandlerArg ? (docId) => props.parentRef[props.onCancel](props.cancelHandlerArg, docId) : props.parentRef[props.onCancel] : null;
   const tooltipContent = {
     webformDocContent: <div>
       <ol className="m-0 p-0">
@@ -99,9 +99,12 @@ const FileUploader = props => {
           </>
         }
 
-          <ItemList name={props.filename} cancelHandler={cancelHandler} multiple={props.multiple} itemList={itemList} uploading={props.uploading}
+        {
+          (props.uploading || props.filename) &&
+          <ItemList name={props.filename} cancelHandler={cancelHandler} multiple={props.multiple} itemList={itemList}
+                    uploading={props.uploading}
                     filename={props.filename} uploadPercentage={props.uploadPercentage}/>
-
+        }
       </div>
     </div>
   );

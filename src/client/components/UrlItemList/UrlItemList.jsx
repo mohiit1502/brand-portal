@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import CustomInput from "../custom-components/custom-input/custom-input";
 import * as images from "../../images";
 import "./UrlItemList.component.scss";
+import Tooltip from "../custom-components/tooltip/tooltip";
 
 const UrlItemList = props => {
   const [itemList, updateItemList] = useState(props.itemList);
@@ -70,6 +71,16 @@ const UrlItemList = props => {
     }
   };
 
+  const tooltipContent = {
+    orderNumberContent: <div>
+      <ol className="m-0 p-0">
+        <ul className="m-0 pl-3 text-left font-size-12">
+          {/*<li>Upload IP Registration Documents or Letter of Authorization</li>*/}
+          <li>You can include multiple order numbers using "," to separate them.</li>
+        </ul>
+      </ol>
+    </div>
+  };
   const showOrderNumber = props.parentRef.state.form.inputData.claimType.value === "Counterfeit";
   /* eslint-disable react/jsx-handler-names */
   return itemList && itemList.length > 0 ? itemList.map((item, i) => {
@@ -98,8 +109,7 @@ const UrlItemList = props => {
                          dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
           {
-
-            showOrderNumber &&
+            (props.formId !== "webform") && showOrderNumber &&
             <div className="col-6">
                 <CustomInput key={`orderNumber-${i}`} inputId={`orderNumber-${i}`} formId={props.formId}
                              label={item.orderNumber.label}
@@ -108,11 +118,17 @@ const UrlItemList = props => {
                              pattern={item.orderNumber.pattern} validators={item.orderNumber.validators}
                              error={item.orderNumber.error}
                              onChange={props.parentRef[props.onChangeOrderNumber]} disabled={item.orderNumber.disabled}
-                              onInvalid={e => props.onInvalid(e, `urlItems.itemList[${i}].orderNumber`, `orderNumber-${i}`) || (() => {})}
+                             onInvalid={e => props.onInvalid(e, `urlItems.itemList[${i}].orderNumber`, `orderNumber-${i}`) || (() => {})}
                              preventHTMLRequiredValidation={item.orderNumber.preventHTMLRequiredValidation}/>
 
             </div>
           }
+          {/*tooltipContent={tooltipContent[props.itemList[0].orderNumber.tooltipContentKey]}*/}
+          {/*<div>*/}
+          {/*  <Tooltip*/}
+          {/*    content={tooltipContent[props.itemList[0].orderNumber.tooltipContentKey]}*/}
+          {/*    icon={images[props.itemList[0].orderNumber.icon]}/>*/}
+          {/*</div>*/}
           <div className="col-2">
             {
               i === 0 &&

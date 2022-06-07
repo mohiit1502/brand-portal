@@ -123,6 +123,7 @@ export default class Validator {
                 obj.itemList && obj.itemList.forEach(item => {
                   const urlObj = item.url;
                   const sellerNameObj = item.sellerName;
+                  const orderNumberObj = item.orderNumber;
                   // if(validate)
                   if(urlObj && (urlObj.error || (urlObj.required && !urlObj.value))){
                     urlObj.error = urlObj.error || urlObj.invalidError || "Please Enter Valid Input";
@@ -130,6 +131,10 @@ export default class Validator {
                   }
                   if(sellerNameObj && (sellerNameObj.error || (sellerNameObj.required && (!sellerNameObj.value || sellerNameObj.value.length === 0)))){
                     sellerNameObj.error = sellerNameObj.error || sellerNameObj.invalidError || "Please Enter Valid Input";
+                    hasError = true;
+                  }
+                  if(orderNumberObj && (orderNumberObj.error || (orderNumberObj.required && !orderNumberObj.value))){
+                    orderNumberObj.error = orderNumberObj.error || orderNumberObj.invalidError || "Please Enter Valid Input";
                     hasError = true;
                   }
                 })

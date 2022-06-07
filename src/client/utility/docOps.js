@@ -6,7 +6,6 @@ import MIXPANEL_CONSTANTS from "../constants/mixpanelConstants";
 import {NOTIFICATION_TYPE} from "../actions/notification/notification-actions";
 
 export default class DocumentActions {
-
   // eslint-disable-next-line max-statements
   static displayProgressAndUpload (evt, key, callback) {
     const form = {...this.state.form};
@@ -17,10 +16,11 @@ export default class DocumentActions {
     try {
       const file = evt.target.files[0];
       const filename = file.name;
+
+      // DocumentActions.handleFileSize(form);
+      const isMultiple = form.inputData[key].multiple;
       let fileSize = 0;
       let allowedFileSize = form.inputData[key].allowedFileSize;
-      let allowedFileNameRegex = form.inputData[key].allowedFileNameRegex;
-      const isMultiple = form.inputData[key].multiple;
       if (isMultiple) {
         const uploadedFiles = form.docList;
         form.totalFileSize += file.size;
@@ -29,6 +29,7 @@ export default class DocumentActions {
         fileSize = file.size;
       }
 
+      form.fileSizeMap.push(file.size);
       if (allowedFileSize) {
         allowedFileSize = allowedFileSize * 1024 * 1024;
         if (form.totalFileSize > allowedFileSize) {
@@ -45,6 +46,7 @@ export default class DocumentActions {
         }
       }
 
+      let allowedFileNameRegex = form.inputData[key].allowedFileNameRegex;
       if (allowedFileNameRegex) {
         const fileNameRegex = new RegExp(allowedFileNameRegex);
         if (!fileNameRegex.test(filename)) {
@@ -117,7 +119,10 @@ export default class DocumentActions {
     const formActions = form.formActions;
     const actionsToDisable = form.actionsToDisable;
     if (form.inputData[docKey].multiple) {
-      state.form.docList.splice(state.form.docList.findIndex(item => item.documentId === docId), 1);
+      const removedDocIndex = state.form.docList.findIndex(item => item.documentId === docId);
+      state.form.totalFileSize -= state.form.fileSizeMap[removedDocIndex];
+      state.form.docList.splice(removedDocIndex, 1);
+      state.form.fileCount -= 1;
     } else {
       state.form = form;
       form.inputData[docKey].id = "";
@@ -125,6 +130,9 @@ export default class DocumentActions {
         form.inputData[formActions].buttons[action].disabled = false;
       });
       form.inputData[docKey].filename = "";
+    }
+    if (state.form.fileCount < 3) {
+      this.state.form.inputData.claimDoc.disabled = false;
     }
 
     form.inputData[docKey].uploading = false;

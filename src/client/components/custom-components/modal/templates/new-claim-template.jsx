@@ -44,11 +44,14 @@ class NewClaimTemplate extends React.Component {
           docList: [],
           fileCount: 0,
           totalFileSize: 0,
+          fileSizeMap:[],
+          fileDocIdMap:[],
           ...newClaimConfiguration.formConfig
         },
         brandNameSelected: newClaimConfiguration.formConfig && newClaimConfiguration.formConfig.brandNameSelected,
         loader: false
       };
+
     this.enableSubmitButton();
 
   }
@@ -56,6 +59,7 @@ class NewClaimTemplate extends React.Component {
   componentDidMount() {
     this.getBrands();
   }
+
 
   loader (type, enable) {
     this.setState(state => {
@@ -144,19 +148,38 @@ class NewClaimTemplate extends React.Component {
     return state;
   }
 
+  validateOrderNumber(targetVal) {
+    const specialChars = `/[!@#$%^&*()_+\\-=\\[\\]{};':"\\\\|,.<>\\/?]+/;`;
+    const isSpecialCharsPresent = specialChars.split('').some(char =>
+      targetVal.includes(char)) // true if present and false if not
+
+    const isLettersPresent = /[a-z]/i.test(targetVal);
+    const isValid = !isSpecialCharsPresent && !isLettersPresent;
+    return isValid;
+  }
+
   onChange(evt, key) {
     if (evt && evt.target) {
-      const isValid = evt.target.checkValidity && evt.target.checkValidity();
       const targetVal = evt.target.value;
+      // const isValid = evt.target.checkValidity && evt.target.checkValidity();
+
+
       let index = -1;
       if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
         index = Number(key.split("-")[1]);
         key = key.split("-")[0];
       }
 
-      if (isValid) {
-        this.invalid[key + "-" + index] = false;
-      }
+      // if(targetVal.length < 12) {
+      //   this.state.form.inputData.urlItems.itemList[index].orderNumber.error = "Minimum length is 12 characters";
+      // } else {
+      //   if (isValid) {
+      //     this.invalid[key + "-" + index] = false;
+      //   } else {
+      //     this.state.form.inputData.urlItems.itemList[index].orderNumber.error = "Enter a valid Order Number";
+      //   }
+      // }
+
       this.setState(state => {
         state = {...state};
         if (index > -1 && key !== "orderNumber") {
@@ -171,6 +194,10 @@ class NewClaimTemplate extends React.Component {
         else if (key === "orderNumber") {
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
           state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;;
+          // const isValid = this.validateOrderNumber(targetVal);
+          // if(!isValid) {
+          //       this.state.form.inputData.urlItems.itemList[index].orderNumber.error = "Enter a valid Order Number";
+          // }
         }
         else {
           state.form.inputData[key].value = targetVal;
@@ -258,8 +285,9 @@ class NewClaimTemplate extends React.Component {
         state.brands = res.body.content;
         state.form.inputData.brandName.dropdownOptions = state.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
         state.loader = false;
+        state.form.inputData.claimDoc.disabled=false;
         this.setState(state);
-        //this.loader("loader", false);
+        // this.loader("loader", false);
       }).catch(() => {
         this.loader("loader", false);
       });
@@ -278,6 +306,8 @@ class NewClaimTemplate extends React.Component {
     form.inputData.urlItems.itemList[0].url.error = "";
     form.inputData.urlItems.itemList[0].sellerName.value = "";
     form.inputData.urlItems.itemList[0].sellerName.error = "";
+    form.inputData.urlItems.itemList[0].orderNumber.value = "";
+    form.inputData.urlItems.itemList[0].orderNumber.error = "";
     form.inputData.comments.value = "";
     form.inputData.comments.error = "";
     form.inputData.user_undertaking_1.selected = false;
@@ -375,8 +405,8 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
-  handleFileUpload(evt, key) {
-    this.displayProgressAndUpload(evt, key, ()=>{
+  async handleFileUpload(evt, key) {
+    await this.displayProgressAndUpload(evt, key, ()=>{
       this.state.form.fileCount += 1;
       this.state.form.docList.push({
         "documentName": this.state.form.inputData.claimDoc.filename,
@@ -385,7 +415,8 @@ class NewClaimTemplate extends React.Component {
       })
     });
 
-    if(this.state.form.fileCount === 3) {
+    this.state.form.isSubmitDisabled = false;
+    if(this.state.form.fileCount === 2) {
       this.state.form.inputData.claimDoc.disabled=true;
     }
   }

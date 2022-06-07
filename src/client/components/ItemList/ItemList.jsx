@@ -12,8 +12,8 @@ const ItemList = props => {
       <div className={`uploaded-file-label form-control mb-2`}>
         <span className="d-block overflow-auto">{name}</span>
       </div>
-      <span aria-hidden="true" className="cancel-file-selection-btn position-absolute cursor-pointer"
-            onClick={docKey => cancelHandler(docKey, index) || (()=>{})}>&times;</span>
+      <span aria-hidden="true" className="cancel-file-selection-btn position-absolute cursor-pointer" id={`${index}`} value={`${name}`}
+            onClick={(evt) => cancelHandler(evt.target.id) || (()=>{})}>&times;</span>
 
     </div>
   }
