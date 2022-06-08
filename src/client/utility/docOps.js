@@ -29,7 +29,7 @@ export default class DocumentActions {
         fileSize = file.size;
       }
 
-      form.fileSizeMap.push(file.size);
+      form.fileSizeMap && form.fileSizeMap.push(file.size);
       if (allowedFileSize) {
         allowedFileSize = allowedFileSize * 1024 * 1024;
         if (form.totalFileSize > allowedFileSize) {

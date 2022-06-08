@@ -110,7 +110,7 @@ export default class Validator {
     /* eslint-disable complexity */
     Object.keys(matchForm.inputData).forEach(key => {
       const obj = { ...matchForm.inputData[key] };
-      if (obj.error && (!obj.renderCondition || (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this, obj.renderCondition)))) {
+      if (obj.key != "claimDoc" && obj.error && (!obj.renderCondition || (obj.renderCondition && ContentRenderer.evaluateRenderDependency.call(this, obj.renderCondition)))) {
         hasError = true;
         return;
       }

@@ -310,6 +310,7 @@ class NewClaimTemplate extends React.Component {
     form.inputData.urlItems.itemList[0].orderNumber.error = "";
     form.inputData.comments.value = "";
     form.inputData.comments.error = "";
+    form.inputData.claimDoc.error="";
     form.inputData.user_undertaking_1.selected = false;
     form.inputData.user_undertaking_1.error = false;
     form.inputData.user_undertaking_2.selected = false;

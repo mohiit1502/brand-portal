@@ -23,6 +23,9 @@ class ClaimDetailsTemplate extends React.Component {
       }
     }
     this.orderNumberList.pop();
+    if(this.orderNumberList[this.orderNumberList.length - 1] == ",") {
+      this.orderNumberList.pop();
+    }
   }
 
   loader (enable) {
@@ -130,9 +133,9 @@ class ClaimDetailsTemplate extends React.Component {
                                     <div className="col-3 text-capitalize">
                                       {item.orderNumber}
                                     </div>
-                                    <div className="col-9 item-url">
-                                      <a target="_blank" className="text-primary cursor-pointer" href={item.orderNumber}> {item.orderNumber} </a>
-                                    </div>
+                                    {/*<div className="col-9 item-url">*/}
+                                    {/*  <a target="_blank" className="text-primary cursor-pointer" href={item.orderNumber}> {item.orderNumber} </a>*/}
+                                    {/*</div>*/}
                                   </div>
                                 );
                               })
