@@ -1036,8 +1036,8 @@
                   "tooltipContentKey": "orderNumberContent",
                   "validators": {
                     "validateLength": {
-                      "minLength": "12",
-                      "error": "Minimum length is 12 characters"
+                      "minLength": "13",
+                      "error": "Minimum length is 13 characters"
                     },
                     "validateRegex": {
                       "dataRuleRegex": "(^[,0-9]{12,}$|^$)",

@@ -29,7 +29,6 @@ export default class DocumentActions {
         fileSize = file.size;
       }
 
-      form.fileSizeMap && form.fileSizeMap.push(file.size);
       if (allowedFileSize) {
         allowedFileSize = allowedFileSize * 1024 * 1024;
         if (form.totalFileSize > allowedFileSize) {
@@ -97,6 +96,7 @@ export default class DocumentActions {
         updatedForm.inputData[key].uploading = false;
         otherType && actionsToDisable && actionsToDisable.forEach(action => {updatedForm.inputData[formActions].buttons[action].disabled = updatedForm.inputData[otherType].uploading;});
         updatedForm.inputData[key].id = uploadResponse.id;
+        if(form.fileSizeMap) {form.fileSizeMap[uploadResponse.id]=file.size;}
         callback && callback();
         this.setState({updatedForm}, this.checkToEnableSubmit);
       }, 700);
@@ -120,7 +120,8 @@ export default class DocumentActions {
     const actionsToDisable = form.actionsToDisable;
     if (form.inputData[docKey].multiple) {
       const removedDocIndex = state.form.docList.findIndex(item => item.documentId === docId);
-      state.form.totalFileSize -= state.form.fileSizeMap[removedDocIndex];
+      state.form.totalFileSize -= state.form.fileSizeMap[docId];
+      delete state.form.fileSizeMap[docId];
       state.form.docList.splice(removedDocIndex, 1);
       state.form.fileCount -= 1;
     } else {

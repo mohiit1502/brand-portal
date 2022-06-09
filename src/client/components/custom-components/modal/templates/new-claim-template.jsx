@@ -44,7 +44,7 @@ class NewClaimTemplate extends React.Component {
           docList: [],
           fileCount: 0,
           totalFileSize: 0,
-          fileSizeMap:[],
+          fileSizeMap:{},
           fileDocIdMap:[],
           ...newClaimConfiguration.formConfig
         },
@@ -408,18 +408,23 @@ class NewClaimTemplate extends React.Component {
 
   async handleFileUpload(evt, key) {
     await this.displayProgressAndUpload(evt, key, ()=>{
-      this.state.form.fileCount += 1;
+      if(this.state.form.inputData.claimDoc.error == "") {
+        this.state.form.fileCount += 1;
+      }
       this.state.form.docList.push({
         "documentName": this.state.form.inputData.claimDoc.filename,
         "documentId": this.state.form.inputData.claimDoc.id,
         "isUploadedToServiceNow": false
       })
-    });
+      this.state.form.inputData.claimDoc.disabled=false;
+      if(this.state.form.fileCount === 3) {
+        this.state.form.inputData.claimDoc.disabled=true;
+      }
 
-    this.state.form.isSubmitDisabled = false;
-    if(this.state.form.fileCount === 2) {
-      this.state.form.inputData.claimDoc.disabled=true;
-    }
+    });
+    this.state.form.inputData.claimDoc.disabled=true;
+    this.state.form.isSubmitDisabled = true;
+
   }
 
   handleSubmit(evt) {
