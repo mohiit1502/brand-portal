@@ -422,7 +422,9 @@ class NewClaimTemplate extends React.Component {
       }
 
     });
-    this.state.form.inputData.claimDoc.disabled=true;
+    if(this.state.form.inputData.claimDoc.uploading) {
+      this.state.form.inputData.claimDoc.disabled=true;
+    }
     this.state.form.isSubmitDisabled = true;
 
   }

@@ -33,9 +33,11 @@ export default class DocumentActions {
         allowedFileSize = allowedFileSize * 1024 * 1024;
         if (form.totalFileSize > allowedFileSize) {
           this.setState(state => {
+            state.form.inputData[key].disabled=false;
             state.form.inputData[key].error = state.form.inputData[key].fileValidationError;
             return state;
           })
+          form.inputData[key].disabled=false;
           return;
         } else {
           this.setState(state => {
