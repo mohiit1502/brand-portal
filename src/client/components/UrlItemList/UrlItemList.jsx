@@ -87,7 +87,7 @@ const UrlItemList = props => {
     item = {...item};
 
     return (<div key={i} className="c-UrlItem row item-url-list">
-      <div className="col-6">
+      <div className={showOrderNumber ? "col-6": "col-7"}>
         <CustomInput key={`url-${i}`} inputId={`url-${i}`} formId={props.formId} label={item.url.label}
                      required={item.url.required}
                      value={item.url.value} type={item.url.type} bubbleValue = {props.bubbleValue}
@@ -97,7 +97,7 @@ const UrlItemList = props => {
                      preventHTMLRequiredValidation = {item.url.preventHTMLRequiredValidation}
                      loader={props.fieldLoader && itemUrlId === i}/>
       </div>
-      <div className="col-6">
+      <div className={showOrderNumber ? "col-6": "col-5"}>
         <div className="row">
           <div className={showOrderNumber ? "col-4" : "col-8"}>
             <CustomInput key={`sellerName-${i}`} inputId={`sellerName-${i}`} formId={props.formId}
@@ -129,7 +129,7 @@ const UrlItemList = props => {
           {/*    content={tooltipContent[props.itemList[0].orderNumber.tooltipContentKey]}*/}
           {/*    icon={images[props.itemList[0].orderNumber.icon]}/>*/}
           {/*</div>*/}
-          <div className="col-2">
+          <div className={showOrderNumber ? "col-2" : "col-4"}>
             {
               i === 0 &&
               <div className={`btn btn-sm btn-block btn-primary${(props.disableAddItem || !enableAddItem) && " disabled" || ""}`} onClick={addToItemList} >
