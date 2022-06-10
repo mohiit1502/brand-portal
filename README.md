@@ -11,11 +11,12 @@ $ npm install --save brand-portal
 
 
 ```js
-var roPro = require("brand-portal");
+var roPro = requi re("brand-portal");
 
 roPro("Rainbow");
 ```
 ## License
+
 
 
  © [Walmart Brand Portal]()
