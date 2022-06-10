@@ -163,7 +163,6 @@ class NewClaimTemplate extends React.Component {
       const targetVal = evt.target.value;
       // const isValid = evt.target.checkValidity && evt.target.checkValidity();
 
-
       let index = -1;
       if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
         index = Number(key.split("-")[1]);

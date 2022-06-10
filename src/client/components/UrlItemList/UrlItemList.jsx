@@ -104,7 +104,7 @@ const UrlItemList = props => {
                          label={item.sellerName.label}
                          required={item.sellerName.required} value={item.sellerName.value} type={item.sellerName.type}
                          pattern={item.sellerName.pattern} validators={item.sellerName.validators} error={item.sellerName.error}
-                         bubbleValue = {props.bubbleValue}
+                         bubbleValue = {props.bubbleValue} listClasses = {item.sellerName.listClasses}
                          onChange={props.parentRef[props.onChangeSellerName]} disabled={item.sellerName.disabled} onInvalid={() => {}} preventHTMLRequiredValidation = {item.sellerName.preventHTMLRequiredValidation}
                          dropdownOptions = {item.sellerName.type === "multiselect" ? item.sellerName.dropdownOptions : false} />
           </div>
@@ -116,7 +116,7 @@ const UrlItemList = props => {
                              required={item.orderNumber.required} value={item.orderNumber.value}
                              type={item.orderNumber.type}
                              pattern={item.orderNumber.pattern} validators={item.orderNumber.validators}
-                             error={item.orderNumber.error}
+                             error={item.orderNumber.error} bubbleValue={props.bubbleValue}
                              onChange={props.parentRef[props.onChangeOrderNumber]} disabled={item.orderNumber.disabled}
                              onInvalid={e => props.onInvalid(e, `urlItems.itemList[${i}].orderNumber`, `orderNumber-${i}`) || (() => {})}
                              preventHTMLRequiredValidation={item.orderNumber.preventHTMLRequiredValidation}/>

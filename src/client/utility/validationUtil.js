@@ -16,14 +16,15 @@ export default class Validator {
     const { validators } = this.props;
     let errorMsg;
     validators && Object.keys(validators).every(validation => {
-      errorMsg = Validator[validation](evt.target, validators[validation], parentRef);
+      errorMsg = Validator[validation](evt.target, validators, validation, parentRef);
       this.setState({ error: errorMsg });
       return !errorMsg;
     });
     return errorMsg;
   }
 
-  static validateRequired(target, validationObj) {
+  static validateRequired(target, validators, validation) {
+    const validationObj = validators[validation];
     const formFieldValue = target.value;
     if (validationObj && formFieldValue === "") {
       return validationObj.error;
@@ -32,13 +33,17 @@ export default class Validator {
     }
   }
 
-  static validateLength(target, validationObj) {
+  static validateLength(target, validators, validation, parentRef) {
+    const validationObj = validators[validation];
     const value = target.value ? target.value.trim() : "";
     const length = value.length;
     if (
       (validationObj && (validationObj.minLength && length < validationObj.minLength)) ||
       (validationObj.maxLength && length > validationObj.maxLength)
     ) {
+      if (!validators.validateRequired && length == 0) {
+        return "";
+      }
       return validationObj.error;
     } else {
       return "";
@@ -51,7 +56,8 @@ export default class Validator {
 
   }
 
-  static validateRegex(target, validationObj, parentRef, regexSelector) {
+  static validateRegex(target, validators, validation, parentRef, regexSelector) {
+    const validationObj = validators[validation];
     const formFieldValue = target.value.trim();
     if (validationObj) {
       const formFieldRegexString =
@@ -72,7 +78,8 @@ export default class Validator {
   }
 
   /* eslint-disable mo-magic-numbers */
-  static validateDate(target, validationObj) {
+  static validateDate(target, validators, validation) {
+    const validationObj = validators[validation];
     const formFieldValue = target.value;
     if (validationObj) {
       const month = +formFieldValue.substring(0, formFieldValue.indexOf("/"));
@@ -92,7 +99,8 @@ export default class Validator {
     }
   }
 
-  static validatePasswordMatch(target, validationObj, parentRef) {
+  static validatePasswordMatch(target, validators, validation, parentRef) {
+    const validationObj = validators[validation];
     const form = parentRef.state.form;
     const sibling = Helper.search(validationObj.siblingField, parentRef);
     if (sibling && sibling.isDirty) {
