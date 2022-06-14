@@ -78,6 +78,11 @@ class ApplicationReview extends React.Component {
     submitOnboardingForm(data, mixpanelPayload) {
 
         const brand = data && data.brand;
+      if(brand && !(brand.trademarkNumber)){
+        delete brand.trademarkClasses;
+        delete brand.usptoUrl;
+      }
+
         const org = data && data.org;
         mixpanelPayload.BRAND_NAME = brand && brand.name;
         mixpanelPayload.COMPANY_NAME = org && org.name;
