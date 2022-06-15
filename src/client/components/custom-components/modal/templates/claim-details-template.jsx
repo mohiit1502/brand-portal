@@ -96,10 +96,6 @@ class ClaimDetailsTemplate extends React.Component {
                         <div className="snapshot-header">Claim By </div>
                         <div className="snapshot-value">{(firstName ? firstName.concat(" ") : "") + lastName}</div>
                       </div>
-                      <div className="col order-number-col-class">
-                        <div className="snapshot-header">Order number(s) </div>
-                        <div className="snapshot-value"> {this.orderNumberList} </div>
-                      </div>
                       <div className="col">
                         <div className="snapshot-header">Claim Date </div>
                         <div className="snapshot-value"> {this.props.data.claimDate} </div>
