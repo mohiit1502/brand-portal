@@ -70,7 +70,8 @@ class Authenticator extends React.Component {
       profileInformationLoaded: false,
       userInfoError: false,
       logInId: Cookies.get("bp_session_token_login_id"),
-      clientType: Cookies.get("bp_client_type")
+      clientType: Cookies.get("bp_client_type"),
+      pendoTrackingEnabled : true
     };
   }
 
@@ -81,6 +82,13 @@ class Authenticator extends React.Component {
         mixpanel.initializeMixpanel(res.body.projectToken, res.body.enableTracking);
       }).catch(() => mixpanel.initializeMixpanel(CONSTANTS.MIXPANEL.PROJECT_TOKEN));
     }
+    Http.get("/api/getPendoConfig")
+      .then(res => {
+        this.setState({pendoTrackingEnabled:res.body.enableTracking});
+      })
+      .catch(() => {
+        this.setState({pendoTrackingEnabled:CONSTANTS.PENDO.TRACKING_ENABLED})
+      });
     if (this.state.isLoggedIn) {
       this.prepareLogoutEnvironment(() => {
         this.initMetaData();
@@ -88,6 +96,31 @@ class Authenticator extends React.Component {
       });
     } else {
       this.removeSessionProfile();
+    }
+  }
+
+  initPendoData(){
+
+    if(this.state.pendoTrackingEnabled) {
+      const profile = this.props.userProfile;
+      if (profile) {
+        localStorage.setItem("loginId", profile.email);
+        localStorage.setItem("brandPortalOrgId", (profile.organization) ? profile.organization.id : null);
+        localStorage.setItem("brandPortalOrgName", (profile.organization) ? profile.organization.name : null);
+        localStorage.setItem("brandPortalOrgStatus", (profile.organization) ? profile.organization.status : null);
+        localStorage.setItem("brandPortalRole", (profile.role) ? profile.role.name : null);
+        let sellerInfo = profile.sellerInfo;
+        if (sellerInfo) {
+          localStorage.setItem("sellerPartnerId", sellerInfo.partnerId);
+          localStorage.setItem("sellerName", sellerInfo.legalName);
+          localStorage.setItem("sellerCountry", sellerInfo.organizationAddress.country);
+        }
+        localStorage.setItem("accountLinked", profile.accountLinked);
+        localStorage.setItem("isSeller", !(sellerInfo === null));
+        localStorage.setItem("doItLater", profile.doItLater);
+
+      }
+      import("./../../../pendoLoad");
     }
   }
 
@@ -141,6 +174,7 @@ class Authenticator extends React.Component {
       }
       this.setOnboardStatus(profile.organization);
       this.setState({profileInformationLoaded: true});
+      this.initPendoData();
       mixpanelPayload.API_SUCCESS = true;
     } catch (e) {
       /* eslint-disable no-undef */
@@ -165,7 +199,9 @@ class Authenticator extends React.Component {
   }
 
   removeSessionProfile () {
+    // Remove Local Storage variables
     this.props.updateUserProfile(undefined);
+    window.localStorage.clear();
   }
 
   isRootPath (pathname) {
