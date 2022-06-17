@@ -9,14 +9,18 @@ $ npm install --save brand-portal
 ```
 ## Usage
 
+
 ```js
-var roPro = require("brand-portal");
+var roPro = requi re("brand-portal");
 
 roPro("Rainbow");
 ```
 ## License
 
+
+
  © [Walmart Brand Portal]()
+
 
 
 [npm-image]: https://badge.fury.io/js/RoPro.svg

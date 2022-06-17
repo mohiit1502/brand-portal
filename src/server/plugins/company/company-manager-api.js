@@ -22,6 +22,7 @@ class CompanyManagerApi {
 
   register(server) {
     return server.route([
+
       {
         method: "GET",
         path: "/api/company/availability",
@@ -102,9 +103,11 @@ class CompanyManagerApi {
       };
       console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] Fetching CCM dependencies", corrId);
       const payload = request.payload;
+      // console.log(payload);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const REGISTER_ORG_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.REGISTER_ORG_PATH");
       const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
+      // const url="http://localhost:8092/ropro/org-service/org";
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;

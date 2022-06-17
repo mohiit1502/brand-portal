@@ -35,6 +35,9 @@ $modal-header-background-color: $market-place-blue;
           }
 
           .claim-snapshots-row {
+            .order-number-col-class {
+              overflow: auto;
+            }
             .snapshot-header {
               font-size: 14px;
               font-weight: bold;

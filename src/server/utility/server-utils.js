@@ -28,6 +28,7 @@ class ServerUtils {
     };
   }
 
+
   getDocumentHeaders(request) {
     const headers = this.getHeaders(request);
     headers["transfer-encoding"] = "chunked";

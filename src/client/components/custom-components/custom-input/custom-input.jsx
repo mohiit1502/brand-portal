@@ -233,7 +233,7 @@ class CustomInput extends React.PureComponent {
     });
 
     return (
-      <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
+      <div className={`form-group custom-input-form-group custom-multi-select-form-group dropdown ${this.state.listClasses ? this.state.listClasses:""} ${this.state.disabled ? "disabled" : ""} ${errorClass} ${subtitleText ? "mb-0" : "mb-3"}`}>
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element`} id={`${this.state.formId}-${this.state.inputId}-custom-input`}
            value = { this.state.value && typeof this.state.value === "object" &&  this.state.value.length ? this.state.value.join(",") : this.state.value  }
            pattern = {this.state.pattern} required = {this.state.required} disabled = {this.state.disabled}
@@ -252,7 +252,7 @@ class CustomInput extends React.PureComponent {
         </small>
         {
           this.state.dropdownOptions && this.state.dropdownOptions.length > 0 &&
-          <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className="dropdown-menu" >
+          <div id={`${this.state.formId}-${this.state.inputId}-custom-input-dropdown`} className={`dropdown-menu ${this.state.listClasses ? this.state.listClasses:""} ` } style={{maxWidth: this.state.listClasses}}>
             {
               this.state.dropdownOptions.map((option, i) => {
                 return (
@@ -345,6 +345,7 @@ class CustomInput extends React.PureComponent {
       <div className={`form-group custom-input-form-group form-group-text${this.state.disabled ? " disabled" : ""}${subtitleText ? " mb-0" : this.state.isLastField ? " mb-2" : " mb-3"}${errorClass ? ` ${errorClass}` : ""}
         ${this.state.loader ? " field-loader" : ""}${this.state.fieldOk ? " field-ok" : this.state.fieldAlert ? " field-alert" : ""}`} style={{position: this.state.value ? "relative" : "static"}}
       >
+        {this.state.tooltipContent && <Tooltip placement={"right"} classes="positioned-top-right mr-3" content={this.state.tooltipContent} icon={QuestionMarkIcon}/>}
         <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && (e => this.state.onKeyPress(e, this.state.inputId))}
          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
