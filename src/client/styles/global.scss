@@ -405,6 +405,10 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   width:unset !important;
 }
 
+.max-width-unset {
+  max-width: unset !important;
+}
+
 .min-height-unset {
   min-height: unset !important;
 }

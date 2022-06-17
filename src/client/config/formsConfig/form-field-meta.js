@@ -1012,7 +1012,7 @@
                   "type": "multiselect",
                   "invalidError": "Select at least one seller to report.",
                   "error": "",
-                  "listClasses": "max-width:unset",
+                  "listClasses": "max-width-unset",
                   "validators": {
                     "validateLength": {
                       "minLength": "3",
