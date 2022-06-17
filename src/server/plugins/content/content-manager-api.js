@@ -53,6 +53,11 @@ class ContentManagerApi {
         method: "GET",
         path: "/api/getCaptchaConfig",
         handler: this.getCaptchaConfiguration
+      },
+      {
+        method: "GET",
+        path: "/api/getPendoConfig",
+        handler: this.getPendoConfiguration
       }
     ]);
   }
@@ -229,6 +234,24 @@ class ContentManagerApi {
       console.error("[Corr ID: %s][ContentManagerApi::getCaptchaConfiguration] Error occurred in API request for reCaptcha configuration:", corrId, err);
       return h.response(err).code(err.status);
     }
+  }
+
+  async getPendoConfiguration(request,h){
+    const corrId = ServerUtils.randomStringGenerator(CONSTANTS.CORRELATION_ID_LENGTH);
+    console.log("[Corr ID: %s][ContentManagerApi::getPendoConfiguration] API request for pendo configuration has started", corrId);
+    console.log("[Corr ID: %s][ContentManagerApi::getPendoConfiguration] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
+    try{
+      let response = await ServerUtils.ccmGet(request, "EXTERNAL_SERVICE_CONFIG.PENDO_CONFIGURATION");
+      response = JSON.parse(response);
+      const pendoApiKey = response.apiKey;
+      const enableTracking = response.enableTracking;
+      console.log("[Corr ID: %s][ContentManagerApi::getPendoConfiguration] API request for pendo configuration has completed", corrId);
+      return h.response({pendoApiKey, enableTracking}).code(CONSTANTS.STATUS_CODE_SUCCESS);
+    }catch (err) {
+      console.error("[Corr ID: %s][ContentManagerApi::getMixpanelConfiguration] Error occurred in API request for mixpanel field configuration:", corrId, err);
+      return h.response(err).code(err.status);
+    }
+
   }
 }
 

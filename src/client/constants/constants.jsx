@@ -251,6 +251,10 @@ const CONSTANTS = {
   MIXPANEL: {
     PROJECT_TOKEN: "1968bbc8bf2304c4c850ca1d53e79ea2"
   },
+  PENDO: {
+    API_KEY: "",
+    TRACKING_ENABLED: true
+  },
   WEBFORM: {
     CLAIM_SUBMISSION: "1",
     CTA: "2",

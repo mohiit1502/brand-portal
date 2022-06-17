@@ -36,6 +36,7 @@ window.pendo.initialize({
     sellerPartnerId:window.localStorage.getItem("sellerPartnerId"),
     sellerName:window.localStorage.getItem("sellerName"),
     isInternationalSeller:window.localStorage.getItem("isInternationalSeller"),
+    sellerCountry:window.localStorage.getItem("sellerCountry"),
     accountLinked:window.localStorage.getItem("accountLinked"),
     isSeller:window.localStorage.getItem("isSeller"),
     doItLater:window.localStorage.getItem("doItLater")
