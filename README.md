@@ -10,6 +10,7 @@ $ npm install --save brand-portal
 ## Usage
 
 
+
 ```js
 var roPro = requi re("brand-portal");
 
