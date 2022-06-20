@@ -120,13 +120,13 @@ class ClaimDetailsTemplate extends React.Component {
                               reformattedItems.map((item, i) => {
                                 return (
                                   <div key={i} className="row item-data-row align-items-center">
-                                    <div className="col-6 item-url">
+                                    <div className="col-6 item-url prevent-overflow">
                                       <a target="_blank" className="text-primary cursor-pointer" href={item.itemUrl}> {item.itemUrl} </a>
                                     </div>
-                                    <div className="col-3 text-capitalize">
+                                    <div className="col-3 text-capitalize prevent-overflow">
                                       {item.sellerName}
                                     </div>
-                                    <div className="col-3 text-capitalize">
+                                    <div className="col-3 text-capitalize prevent-overflow">
                                       {item.orderNumber}
                                     </div>
                                     {/*<div className="col-9 item-url">*/}
