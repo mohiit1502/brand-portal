@@ -57,7 +57,7 @@ $modal-header-background-color: $market-place-blue;
             }
             .item-data-container {
               max-height: 290px;
-              //overflow: auto;
+              overflow-y: auto;
               .item-data-row {
                 border-bottom: solid 2px #e5f1f7;
                 // height: 48px;
@@ -65,13 +65,12 @@ $modal-header-background-color: $market-place-blue;
                 padding-bottom: 1rem;
                 font-size: 14px;
                 position: relative;
-                .item-url{
+                .item-url {
                   font-weight: bold;
                   color: #006799 !important;
                 }
                 .prevent-overflow{
                   word-wrap: break-word
-
                 }
               }
             }
