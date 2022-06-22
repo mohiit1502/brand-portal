@@ -276,6 +276,21 @@ class CustomInput extends React.PureComponent {
     );
   }
 
+  getToggleInputType() {
+    const rowClasses = [...this.state.rowClasses];
+    return (
+      <div className="form-group custom-input-form-group">
+        <div className={`row ${rowClasses ? rowClasses: ""}`}>
+          <label className="toggle">
+            <input className="toggle__input" type="checkbox" id="myToggle"/>
+            <div className="toggle__fill" ></div>
+          </label>
+          <p className="px-2" >{this.state.label}</p>
+        </div>
+      </div>
+    );
+  }
+
   getRadioInputType () {
     const options = [...this.state.radioOptions];
     return (
@@ -396,6 +411,8 @@ class CustomInput extends React.PureComponent {
         return this.getTextAreaInputType();
       case "radio" :
         return this.getRadioInputType();
+      case "toggle" :
+        return this.getToggleInputType();
       case "select" :
         return this.getSelectInput();
       case "multiselect" :

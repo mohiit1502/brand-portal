@@ -626,6 +626,20 @@
             "placeholder": "Please provide additional information about your brand.",
             "value": ""
           },
+          "activeStatus": {
+            "disabled": false,
+            "error": "",
+            "inputId": "activeStatus",
+            "key": "activeStatus",
+            "label": "Active",
+            "pattern": null,
+            "rowClasses": "ml-2",
+            "required": false,
+            "subtitle": "",
+            "type": "toggle",
+            "placeholder": "",
+            "value": ""
+          },
           "brandCreateActions": {
             "containerClasses": "mt-3",
             "colClasses": "new-brand-button-panel text-right",
