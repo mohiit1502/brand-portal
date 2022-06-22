@@ -11,7 +11,7 @@ $ npm install --save brand-portal
 
 
 ```js
-var roPro = requi re("brand-portal");
+var roPro = require("brand-portal");
 
 roPro("Rainbow");
 ```
