@@ -558,6 +558,98 @@
           }
         }
       },
+      "EDITTRADEMARK": {
+        "sectionConfig": {
+          "sectionTitleNew": "Edit Trademark",
+          "sectionTitleEdit": "Edit Brand Details"
+        },
+        "formConfig": {
+          "formHeading": "Please update the following information.",
+          "id": "newbrand",
+          "isSubmitDisabled": true,
+          "isUpdateTemplate": false,
+          "loader": false,
+          "templateUpdateComplete": false
+        },
+        "fields": {
+          "brandName": {
+            "disabled": false,
+            "error": "",
+            "fieldOk": false,
+            "inputId": "brandName",
+            "isUnique": false,
+            "key": "brandName",
+            "label": "Brand Name",
+            "loader": false,
+            "pattern": null,
+            "required": true,
+            "subtitle": "",
+            "type": "text",
+            "value": ""
+          },
+          "trademarkNumber": {
+            "disabled": false,
+            "error": "",
+            "ERROR5XX": "Unable to reach our services!",
+            "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
+            "fieldOk": false,
+            "inputId": "trademarkNumber",
+            "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
+            "isValid": false,
+            "key": "trademarkNumber",
+            "label": "Trademark Number",
+            "loader": false,
+            "maxLength": 7,
+            "pattern": null,
+            "required": true,
+            "subtitle": "",
+            "type": "text",
+            "value": "",
+            "validators": {
+              "validateLength": {
+                "minLength": 7,
+                "maxLength": 7,
+                "error": "Trademark number should be 7 numeric characters long."
+              }
+            }
+          },
+          "comments": {
+            "disabled": false,
+            "error": "",
+            "inputId": "comments",
+            "key": "comments",
+            "label": "Description (Optional)",
+            "pattern": null,
+            "required": false,
+            "subtitle": "Include a description that helps to identify the trademark number",
+            "type": "text",
+            "placeholder": "Please provide additional information about your brand.",
+            "value": ""
+          },
+          "brandCreateActions": {
+            "containerClasses": "mt-3",
+            "colClasses": "new-brand-button-panel text-right",
+            "excludeRowContainer": true,
+            "excludeColContainer": true,
+            "type": "_buttonsPanel",
+            "buttons": {
+              "cancel": {
+                "classes": "btn btn-sm cancel-btn text-primary",
+                "disabled": false,
+                "onClick": "resetTemplateStatus",
+                "text": "Cancel",
+                "type": "button"
+              },
+              "submit": {
+                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+                "disabled": true,
+                "text": "Submit",
+                "type": "submit"
+              }
+            }
+          }
+        }
+      },
       "NEWBRAND": {
         "sectionConfig": {
           "sectionTitleNew": "Register a Brand",

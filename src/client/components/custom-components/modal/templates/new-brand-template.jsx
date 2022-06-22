@@ -251,7 +251,7 @@ NewBrandTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     clientType: Cookies.get("bp_client_type"),
-    newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWBRAND,
+    newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITTRADEMARK,
     modal: state.modal
   };
 };
