@@ -161,7 +161,6 @@ class NewClaimTemplate extends React.Component {
   onChange(evt, key) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
-      // const isValid = evt.target.checkValidity && evt.target.checkValidity();
 
       let index = -1;
       if ((key.split("-")[0] === "url" || key.split("-")[0] === "sellerName" || key.split("-")[0] === "orderNumber") && key.split("-")[1] ) {
@@ -169,15 +168,6 @@ class NewClaimTemplate extends React.Component {
         key = key.split("-")[0];
       }
 
-      // if(targetVal.length < 12) {
-      //   this.state.form.inputData.urlItems.itemList[index].orderNumber.error = "Minimum length is 12 characters";
-      // } else {
-      //   if (isValid) {
-      //     this.invalid[key + "-" + index] = false;
-      //   } else {
-      //     this.state.form.inputData.urlItems.itemList[index].orderNumber.error = "Enter a valid Order Number";
-      //   }
-      // }
 
       this.setState(state => {
         state = {...state};
@@ -187,16 +177,12 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.urlItems.itemList[index].orderNumber.disabled = false;
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
           state.form.inputData.urlItems.itemList[index][key].error = "";
-         // state.disableAddItem = true;
-         // state.currentItem = index;
+
         }
         else if (key === "orderNumber") {
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
           state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;;
-          // const isValid = this.validateOrderNumber(targetVal);
-          // if(!isValid) {
-          //       this.state.form.inputData.urlItems.itemList[index].orderNumber.error = "Enter a valid Order Number";
-          // }
+
         }
         else {
           state.form.inputData[key].value = targetVal;
@@ -286,7 +272,6 @@ class NewClaimTemplate extends React.Component {
         state.loader = false;
         state.form.inputData.claimDoc.disabled=false;
         this.setState(state);
-        // this.loader("loader", false);
       }).catch(() => {
         this.loader("loader", false);
       });

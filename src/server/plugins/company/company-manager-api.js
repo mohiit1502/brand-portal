@@ -103,12 +103,9 @@ class CompanyManagerApi {
       };
       console.log("[Corr ID: %s][CompanyManagerApi::registerOrganization] Fetching CCM dependencies", corrId);
       const payload = request.payload;
-      // console.log(payload);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const REGISTER_ORG_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.REGISTER_ORG_PATH");
       const url = `${BASE_URL}${REGISTER_ORG_PATH}`;
-      // const url="http://localhost:8092/ropro/org-service/org";
-
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
@@ -149,7 +146,6 @@ class CompanyManagerApi {
 
       console.log("[Corr ID: %s][CompanyManagerApi::checkTrademarkValidity] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      // const BASE_URL = "http://localhost:8092";
       const TM_VALIDITY_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.TM_VALIDITY_PATH");
       const url = `${BASE_URL}${TM_VALIDITY_PATH}/${request.params.trademarkNumber}`;
 
@@ -382,7 +378,6 @@ class CompanyManagerApi {
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       let UPDATE_CONTACT_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.UPDATE_CONTACT_PATH");
       const url = `${BASE_URL}${UPDATE_CONTACT_PATH}`;
-      // const url = "http://localhost:8092/ropro/org-service/org/contact-info";
 
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers && headers.ROPRO_USER_ID;
