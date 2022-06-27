@@ -278,11 +278,13 @@ class CustomInput extends React.PureComponent {
 
   getToggleInputType() {
     const rowClasses = [...this.state.rowClasses];
+    const onChange = [...this.state.onChange][0];
+    // console.log(onChange);
     return (
       <div className="form-group custom-input-form-group">
         <div className={`row ${rowClasses ? rowClasses: ""}`}>
           <label className="toggle">
-            <input className="toggle__input" type="checkbox" id="myToggle"/>
+            <input className="toggle__input" type="checkbox" id="myToggle" onChange={onChange}/>
             <div className="toggle__fill" ></div>
           </label>
           <p className="px-2" >{this.state.label}</p>

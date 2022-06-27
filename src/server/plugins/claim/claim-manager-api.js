@@ -417,8 +417,8 @@ class ClaimManagerApi {
       METHOD: "POST",
       API: "/api/company/uploadClaimDocument"
     };
-    console.log("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] API request for Upload Claim document has started", corrId);
-    console.log("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
+    console.log("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] API request for Upload Claim document has started", corrId);
+    console.log("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
     try {
       const options = {headers};
       const file = request.payload.file;
@@ -426,12 +426,12 @@ class ClaimManagerApi {
       const fd = new FormData();
       try {
         const fileSize = Buffer.byteLength(file._data);
-        console.log("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] Appending document with name: '%s' & size:", corrId, filename, fileSize);
+        console.log("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] Appending document with name: '%s' & size:", corrId, filename, fileSize);
       } catch (e) {
-        console.error("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] Error while trying to find file size, ignoring...");
+        console.error("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] Error while trying to find file size, ignoring...");
       }
       fd.append("file", file, { filename });
-      console.log("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] Fetching CCM dependencies", corrId);
+      console.log("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
       const CLAIM_DOC_PATH = await ServerUtils.ccmGet(request, "CLAIM_CONFIG.CLAIM_DOC_PATH");
       const url = `${BASE_URL}${CLAIM_DOC_PATH}`;
@@ -444,16 +444,16 @@ class ClaimManagerApi {
 
       const response = await ServerHttp.postAsFormData(url, options, fd);
       console.log("[Corr ID: %s]4. In CMA - post-request - Got Response from FIle Upload ====== ", corrId, response);
-      console.log("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] API request for Upload Claim document has completed", corrId);
+      console.log("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] API request for Upload Claim document has completed", corrId);
       return h.response(response.body).code(response.status);
     } catch (err) {
       mixpanelPayload.API_SUCCESS = false;
       mixpanelPayload.ERROR = err.message ? err.message : err;
       mixpanelPayload.RESPONSE_STATUS = err.status;
-      console.error("[Corr ID: %s][CompanyManagerApi::uploadClaimDocument] Error occurred in API request for Upload Claim document:", corrId, err);
+      console.error("[Corr ID: %s][ClaimManagerApi::uploadClaimDocument] Error occurred in API request for Upload Claim document:", corrId, err);
       return h.response(err).code(err.status);
     } finally {
-      mixpanel.trackEvent(MIXPANEL_CONSTANTS.COMPANY_MANAGER_API.UPLOAD_BUSINESS_DOCUMENT, mixpanelPayload);
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.CLAIMS_API.CLAIM_DOCUMENT, mixpanelPayload);
     }
   }
 

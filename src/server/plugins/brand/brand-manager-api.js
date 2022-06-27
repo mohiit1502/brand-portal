@@ -30,6 +30,11 @@ class BrandManagerApi {
       },
       {
         method: "PUT",
+        path: "/api/brands/trademark/{brandId}",
+        handler: this.updateTrademark
+      },
+      {
+        method: "PUT",
         path: "/api/brands/{brandId}",
         handler: this.updateBrand
       },
@@ -131,6 +136,46 @@ class BrandManagerApi {
       return h.response(err).code(err.status);
     } finally {
       mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRANDS_API.CREATE_BRAND, mixpanelPayload);
+    }
+  }
+
+  async updateTrademark(request, h) {
+    const headers = ServerUtils.getHeaders(request);
+    const corrId = headers.ROPRO_CORRELATION_ID;
+    console.log("[Corr ID: %s][BrandManagerApi::updateTrademark] API request for Update Trademark has started", corrId);
+    console.log("[Corr ID: %s][BrandManagerApi::updateTrademark] User ID: ", corrId, request.state && request.state.bp_session_token_login_id);
+    const mixpanelPayload = {
+      METHOD: "PUT",
+      API: `/api/brands/${request.params && request.params.brandId}`
+    };
+    try {
+      const payload = request.payload;
+      const options = {
+        headers
+      };
+
+      console.log("[Corr ID: %s][BrandManagerApi::updateTrademark] Fetching CCM dependencies", corrId);
+      const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
+      const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
+      const url = `${BASE_URL}${BRANDS_PATH}/${request.params.brandId}`;
+      mixpanelPayload.URL = url;
+      mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
+      mixpanelPayload.API_SUCCESS = true;
+      mixpanelPayload.PAYLOAD = payload;
+      mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
+
+      // const response = await ServerHttp.put(url, options, payload);
+      console.log("[Corr ID: %s][BrandManagerApi::updateBrand] API request for Update Trademark has completed", corrId);
+      mixpanelPayload.RESPONSE_STATUS = response.status;
+      return h.response(response.body).code(response.status);
+    } catch (err) {
+      mixpanelPayload.API_SUCCESS = false;
+      mixpanelPayload.ERROR = err.message ? err.message : err;
+      mixpanelPayload.RESPONSE_STATUS = err.status;
+      console.error("[Corr ID: %s][BrandManagerApi::updateTrademark] Error occurred in API request for Update Trademark:", corrId, err);
+      return h.response(err).code(err.status);
+    } finally {
+      mixpanel.trackEvent(MIXPANEL_CONSTANTS.BRANDS_API.UPDATE_TRADEMARK, mixpanelPayload);
     }
   }
 

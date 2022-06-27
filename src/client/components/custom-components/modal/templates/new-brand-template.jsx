@@ -19,7 +19,7 @@ class NewBrandTemplate extends React.Component {
 
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
+    const functions = ["bubbleValue", "onChange", "activeStatusToggle", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
     const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
     functions.forEach(name => {
       this[name] = this[name].bind(this);
@@ -36,7 +36,8 @@ class NewBrandTemplate extends React.Component {
       form: {
         inputData: newBrandConfiguration.fields,
         ...newBrandConfiguration.formConfig
-      }
+      },
+      isActive: false
     };
   }
 
@@ -123,9 +124,11 @@ class NewBrandTemplate extends React.Component {
     const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
     const trademarkClasses = this.state.form.inputData.trademarkNumber.trademarkClasses;
     const name = this.state.form.inputData.brandName.value;
+    const isActive = this.state.form.inputData.activeStatus.active;
     const comments = this.state.form.inputData.comments.value;
-    const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses };
-    const url = "/api/brands";
+    console.log(this.props.data);
+    const payload = {trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses, isActive};
+    const url = "/api/brands/trademark";
     const mixpanelPayload = {
       API: url,
       BRAND_NAME: name,
@@ -133,45 +136,112 @@ class NewBrandTemplate extends React.Component {
       TRADEMARK_NUMBER: trademarkNumber,
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
     };
-    if (this.state.form.isUpdateTemplate) {
-      this.loader("form", true);
-      return Http.put(`${url}/${this.props.data.brandId}`, {comments})
-        .then(res => {
-          this.resetTemplateStatus();
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
-          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-          this.props.saveBrandInitiated();
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = true;
-        })
-        .catch(err => {
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = false;
-          mixpanelPayload.ERROR = err.message ? err.message : err;
-        })
-        .finally(() => {
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
-        });
-    } else {
-      this.loader("form", true);
-      return Http.post(url, payload)
-        .then(res => {
-          this.resetTemplateStatus();
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.name}’ added to your brand portfolio`);
-          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-          this.props.saveBrandInitiated();
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = true;
-        })
-        .catch(err => {
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = false;
-          mixpanelPayload.ERROR = err.message ? err.message : err;
-        })
-        .finally(() => {
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
-        });
-    }
+    // if (this.state.form.isUpdateTemplate) {
+    // this.loader("form", true);
+  //   return Http.put(`${url}/${this.props.data.brandId}`, {comments})
+  //     .then(res => {
+  //       this.resetTemplateStatus();
+  //       this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
+  //       this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+  //       this.props.saveBrandInitiated();
+  //       this.loader("form", false);
+  //       mixpanelPayload.API_SUCCESS = true;
+  //     })
+  //     .catch(err => {
+  //       this.loader("form", false);
+  //       mixpanelPayload.API_SUCCESS = false;
+  //       mixpanelPayload.ERROR = err.message ? err.message : err;
+  //     })
+  //     .finally(() => {
+  //       mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+  //     });
+  }
+    // } else {
+      // this.loader("form", true);
+      // return Http.post(url, payload)
+      //   .then(res => {
+      //     this.resetTemplateStatus();
+      //     this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.name}’ added to your brand portfolio`);
+      //     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+      //     this.props.saveBrandInitiated();
+      //     this.loader("form", false);
+      //     mixpanelPayload.API_SUCCESS = true;
+      //   })
+      //   .catch(err => {
+      //     this.loader("form", false);
+      //     mixpanelPayload.API_SUCCESS = false;
+      //     mixpanelPayload.ERROR = err.message ? err.message : err;
+      //   })
+      //   .finally(() => {
+      //     mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+      //   });
+    // }
+    // const mixpanelClickEventPayload = {
+    //   IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
+    //   WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    // };
+    // mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
+    // evt.preventDefault();
+    // const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
+    // const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
+    // const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
+    // const trademarkClasses = this.state.form.inputData.trademarkNumber.trademarkClasses;
+    // const name = this.state.form.inputData.brandName.value;
+    // const comments = this.state.form.inputData.comments.value;
+    // const payload = { trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses };
+    // const url = "/api/brands";
+    // const mixpanelPayload = {
+    //   API: url,
+    //   BRAND_NAME: name,
+    //   IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
+    //   TRADEMARK_NUMBER: trademarkNumber,
+    //   WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
+    // };
+    // if (this.state.form.isUpdateTemplate) {
+    //   this.loader("form", true);
+    //   return Http.put(`${url}/${this.props.data.brandId}`, {comments})
+    //     .then(res => {
+    //       this.resetTemplateStatus();
+    //       this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
+    //       this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    //       this.props.saveBrandInitiated();
+    //       this.loader("form", false);
+    //       mixpanelPayload.API_SUCCESS = true;
+    //     })
+    //     .catch(err => {
+    //       this.loader("form", false);
+    //       mixpanelPayload.API_SUCCESS = false;
+    //       mixpanelPayload.ERROR = err.message ? err.message : err;
+    //     })
+    //     .finally(() => {
+    //       mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+    //     });
+    // } else {
+    //   this.loader("form", true);
+    //   return Http.post(url, payload)
+    //     .then(res => {
+    //       this.resetTemplateStatus();
+    //       this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.name}’ added to your brand portfolio`);
+    //       this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    //       this.props.saveBrandInitiated();
+    //       this.loader("form", false);
+    //       mixpanelPayload.API_SUCCESS = true;
+    //     })
+    //     .catch(err => {
+    //       this.loader("form", false);
+    //       mixpanelPayload.API_SUCCESS = false;
+    //       mixpanelPayload.ERROR = err.message ? err.message : err;
+    //     })
+    //     .finally(() => {
+    //       mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+    //     });
+    // }
+
+
+
+  activeStatusToggle(e){
+    // console.log(e.target.checked);
+    this.state.form.inputData.activeStatus.active = e.target.checked;
   }
 
   resetTemplateStatus (e) {

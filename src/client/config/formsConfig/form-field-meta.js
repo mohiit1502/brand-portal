@@ -627,6 +627,8 @@
             "value": ""
           },
           "activeStatus": {
+            "active": false,
+            "onChange": "activeStatusToggle",
             "disabled": false,
             "error": "",
             "inputId": "activeStatus",
@@ -868,8 +870,8 @@
             "layout": "5.1.0",
             "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
             "renderCondition": "{\"keyPath\": \"meta.subContext\", \"keyLocator\": \"props\", \"value\": \"publiccontact\"}",
-            "labelClasses": "user-undertaking-label",
             "onChange": "undertakingtoggle",
+            "labelClasses": "user-undertaking-label",
             "preventHTMLRequiredValidation": true,
             "required": true,
             "selected": false,
