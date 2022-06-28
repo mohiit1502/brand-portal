@@ -218,47 +218,48 @@ export default class Validator {
     }
   }
 
-  static checkTrademarkValidity() {
-    if (!this.state.form.inputData.trademarkNumber.value) return;
+  static checkTrademarkValidity(index) {
     const state = { ...this.state };
     const form = { ...state.form };
     const inputData = { ...form.inputData };
     state.form = form;
     form.inputData = inputData;
-    inputData.trademarkNumber.loader = true;
-    inputData.trademarkNumber.disabled = true;
-    inputData.trademarkNumber.fieldOk = false;
+    const tmMeta = index !== undefined ? inputData.trademarkDetailsList.itemList[index].fieldSet.trademarkNumber : inputData.trademarkNumber;
+    if (!tmMeta.value) return;
+    tmMeta.loader = true;
+    tmMeta.disabled = true;
+    tmMeta.fieldOk = false;
     this.setState(state);
     const mixpanelPayload = {
       API: "/api/brand/trademark/validity/",
-      TRADEMARK_NUMBER: this.state.form.inputData.trademarkNumber.value,
+      TRADEMARK_NUMBER: tmMeta.value,
       WORK_FLOW: MIXPANEL_CONSTANTS.WORK_FLOW_MAPPING[state.form.id]
     };
-    Http.get(`/api/brand/trademark/validity/${this.state.form.inputData.trademarkNumber.value}`,
-      { clientType: this.props.clientType }, null, this.props.showNotification, null, inputData.trademarkNumber.ERROR5XX)
+    Http.get(`/api/brand/trademark/validity/${tmMeta.value}`,
+      { clientType: this.props.clientType }, null, this.props.showNotification, null, tmMeta.ERROR5XX)
       .then(res => {
-        Validator.processTMUniquenessAPIResponse.call(this, res, inputData.trademarkNumber);
+        Validator.processTMUniquenessAPIResponse.call(this, res, tmMeta);
         mixpanelPayload.API_SUCCESS = true;
         mixpanelPayload.USPTO_VERIFICATION_STATUS = res.body.usptoVerification;
         mixpanelPayload.USPTO_URL = res.body.usptoUrl;
         mixpanelPayload.IS_VALID_TRADEMARK = (res.body.usptoVerification === "VALID" || res.body.usptoVerification === "NOT_VERIFIED");
       })
       .catch(err => {
-        inputData.trademarkNumber.isValid = true;
-        inputData.trademarkNumber.error = false;
-        inputData.trademarkNumber.fieldOk = false;
-        inputData.trademarkNumber.fieldAlert = false;
-        inputData.trademarkNumber.disabled = false;
-        inputData.trademarkNumber.loader = false;
-        inputData.trademarkNumber.usptoUrl = "";
-        inputData.trademarkNumber.usptoVerification = "NOT_VERIFIED";
+        tmMeta.isValid = true;
+        tmMeta.error = false;
+        tmMeta.fieldOk = false;
+        tmMeta.fieldAlert = false;
+        tmMeta.disabled = false;
+        tmMeta.loader = false;
+        tmMeta.usptoUrl = "";
+        tmMeta.usptoVerification = "NOT_VERIFIED";
         mixpanelPayload.API_SUCCESS = false;
         mixpanelPayload.ERROR = err.message ? err.message : err;
       })
       .finally(() => {
-        inputData.trademarkNumber.disabled = false;
-        inputData.trademarkNumber.loader = false;
-        this.setState(state, this.checkToEnableSubmit);
+        tmMeta.disabled = false;
+        tmMeta.loader = false;
+        this.setState(state, this.checkToEnableAddItemButton);
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.TRADEMARK_VALIDITY, mixpanelPayload);
       });
   }

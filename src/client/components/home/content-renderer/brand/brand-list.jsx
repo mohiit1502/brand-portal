@@ -5,6 +5,7 @@ import "../../../../styles/home/content-renderer/brand/brand-list.scss";
 import PropTypes from "prop-types";
 import Dropdown from "../../../custom-components/dropdown/dropdown";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
+import {dispatchBrands} from "./../../../../actions/brand/brand-actions";
 import ClientUtils from "../../../../utility/ClientUtils";
 import Http from "../../../../utility/Http";
 import filterIcon from "../../../../images/filterIcon.svg";
@@ -71,7 +72,8 @@ class BrandList extends React.Component {
         dropdownOptions: [
           {
             id: 1,
-            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.EDIT,
+            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.EDITBRAND,
+            parentOnly: true,
             disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDIT.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
               this.editBrand(data.original);
@@ -79,8 +81,27 @@ class BrandList extends React.Component {
           },
           {
             id: 2,
-            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND,
-            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.SUSPEND.ROLES.includes(userRole) : false,
+            value: CONSTANTS.BRAND.OPTIONS.DISPLAY.ADDTRADEMARK,
+            parentOnly: true,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.ADD.ROLES.includes(userRole) : false,
+            clickCallback: (evt, option, data) => {
+              this.editBrand(data, "addTrademark");
+            }
+          },
+          {
+            id: 3,
+            value: CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.EDITTRADEMARK,
+            childOnly: true,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDITCHILD.ROLES.includes(userRole) : false,
+            clickCallback: (evt, option, data) => {
+              this.editBrand(data.original);
+            }
+          },
+          {
+            id: 4,
+            value: CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.DEACTIVATETRADEMARK,
+            childOnly: true,
+            disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.DEACTIVATECHILD.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
               const outgoingStatus = data.brandStatus && data.brandStatus === CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND
                                       ? CONSTANTS.BRAND.OPTIONS.PAYLOAD.VERIFIED : CONSTANTS.BRAND.OPTIONS.PAYLOAD.SUSPEND;
@@ -108,18 +129,33 @@ class BrandList extends React.Component {
       },
       identifier: "brands",
       columns: [
-        {
-          Header: "#",
-          accessor: "sequence",
-          canSort: false,
-          sortState: {
-            level: CONSTANTS.SORTSTATE.RESET,
-            type: CONSTANTS.SORTSTATE.NUMERICTYPE
-          }
-        },
+        // {
+        //   Header: "#",
+        //   accessor: "sequence",
+        //   canSort: false,
+        //   sortState: {
+        //     level: CONSTANTS.SORTSTATE.RESET,
+        //     type: CONSTANTS.SORTSTATE.NUMERICTYPE
+        //   }
+        // },
         {
           Header: "BRAND NAME",
           accessor: "brandName",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.ASCENDING
+          }
+        },
+         {
+          Header: "TRADEMARK #",
+          accessor: "trademarkNumber",
+          sortState: {
+            level: CONSTANTS.SORTSTATE.RESET
+          }
+        },
+         {
+          Header: "DESCRIPTION",
+          accessor: "trademarkDescription",
+          canSort: false,
           sortState: {
             level: CONSTANTS.SORTSTATE.RESET
           }
@@ -128,16 +164,15 @@ class BrandList extends React.Component {
           Header: "DATE ADDED",
           accessor: "dateAdded",
           sortState: {
-            level: CONSTANTS.SORTSTATE.DESCENDING,
-            type: CONSTANTS.SORTSTATE.DATETYPE,
+            level: CONSTANTS.SORTSTATE.RESET,
             priorityLevel: 1
           }
         },
         {
           Header: "STATUS",
-          accessor: "brandStatus",
+          accessor: "trademarkStatus",
           sortState: {
-            level: CONSTANTS.SORTSTATE.ASCENDING,
+            level: CONSTANTS.SORTSTATE.RESET,
             priorityLevel: 0
           }
         }
@@ -154,8 +189,8 @@ class BrandList extends React.Component {
     });
   }
 
-  editBrand (brandData) {
-    const meta = { templateName: "NewBrandTemplate", DISPLAY_DASHBOARD: true, data: {...brandData} };
+  editBrand (brandData, context) {
+    const meta = { templateName: "NewBrandTemplate", DISPLAY_DASHBOARD: true, data: {context, ...brandData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = {
         WORK_FLOW: "VIEW_BRAND_LIST",
@@ -173,7 +208,7 @@ class BrandList extends React.Component {
       this.loader("nonBlockingLoader", false);
     })).body;
 
-    let brandList = [];
+    let brandList = [], dissectedBrandList = [];
 
     if (response.content && response.content.length) {
       brandList = response.content.map((brand, i) => {
@@ -181,6 +216,13 @@ class BrandList extends React.Component {
         newBrand.original = brand;
         return newBrand;
       });
+      brandList.forEach(brand => {
+        dissectedBrandList.push({brandName: brand.brandName, brandStatus: brand.statusInfo.status, trademarkStatus: brand.trademarkDetailsList.map(tm => tm.statusInfo.status).join(","),
+          parent: true, ...brand});
+        brand.trademarkDetailsList.forEach(tm => {
+          dissectedBrandList.push({brandName: brand.brandName, brandStatus: brand.statusInfo.status, trademarkStatus: tm.statusInfo.status, ...tm});
+        })
+      })
     }
 
     if (this.props.widgetAction) {
@@ -188,8 +230,9 @@ class BrandList extends React.Component {
       this.props.dispatchWidgetAction(false);
     }
 
-    this.setState({brandList, unsortedList: brandList}, () => this.checkAndApplyDashboardFilter(brandList));
-    return brandList;
+    this.props.dispatchBrands({brandList: dissectedBrandList});
+    this.setState({brandList: dissectedBrandList, unsortedList: dissectedBrandList}, () => this.checkAndApplyDashboardFilter(dissectedBrandList));
+    return dissectedBrandList;
   }
 
   resetFilters() {
@@ -228,10 +271,10 @@ class BrandList extends React.Component {
     });
 
     const statusFilter = {
-      id: "brandStatus",
-      name: "Brand Status",
+      id: "trademarkStatus",
+      name: "Trademark Status",
       // filterOptions: Array.from(statusSet, (value, i) => ({id: i + 1, name: value, value, selected: false}))
-      filterOptions: Array.from(Object.values(CONSTANTS.BRAND.STATUS), (value, i) => ({id: i + 1, name: value, value, selected: false}))
+      filterOptions: Array.from(Object.values(CONSTANTS.BRAND.TRADEMARK.STATUS), (value, i) => ({id: i + 1, name: value, value, selected: false}))
     };
 
     const filters = [ statusFilter];
@@ -441,14 +484,14 @@ class BrandList extends React.Component {
                       {
                         this.state.brandList ?
                         <CustomTable sortHandler={this.sortAndNormalise} data={[...this.state.paginatedList]} columns={this.state.columns} template={BrandListTable}
-                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader}}/>
+                          templateProps={{Dropdown, dropdownOptions: this.state.dropdown, userProfile: this.props.userProfile, loader: this.state.loader, columnsMeta: this.state.columns}}/>
                           : (!this.state.loader && <NoRecordsMatch message="No Records Found matching search and filters provided." />)
                       }
                     </div>
                   </div>
                 </div>
               </div>
-              <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} />
+              <Paginator createFilters={this.createFilters} paginatedList={this.state.paginatedList} records={brands} section="BRAND" updateListAndFilters={this.updateListAndFilters} withSubRows />
             </div>
           </div>
         </div>
@@ -458,6 +501,7 @@ class BrandList extends React.Component {
 }
 
 BrandList.propTypes = {
+  dispatchBrands: PropTypes.func,
   dispatchFilter: PropTypes.func,
   dispatchWidgetAction: PropTypes.func,
   filter: PropTypes.object,
@@ -482,6 +526,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  dispatchBrands,
   dispatchFilter,
   dispatchWidgetAction,
   toggleModal,

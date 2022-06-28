@@ -11,7 +11,15 @@ export default class SearchUtil {
             switch (identifier) {
                 case "brands": return record.brandName && record.brandName.toLowerCase().indexOf(searchText) !== -1
                 || record.dateAdded && record.dateAdded.toLowerCase().indexOf(searchText) !== -1
-                || record.brandStatus && record.brandStatus.toLowerCase().indexOf(searchText) !== -1;
+                || record.trademarkStatus && record.trademarkStatus.toLowerCase().indexOf(searchText) !== -1
+                || record.trademarkDescription && record.trademarkDescription.toLowerCase().indexOf(searchText) !== -1
+                || record.trademarkNumber && record.trademarkNumber.toLowerCase().indexOf(searchText) !== -1
+                || record.trademarkDetailsList && record.trademarkDetailsList.some(tm => {
+                    return tm.dateAdded && tm.dateAdded.toLowerCase().indexOf(searchText) !== -1
+                    || tm.trademarkStatus && tm.trademarkStatus.toLowerCase().indexOf(searchText) !== -1
+                    || tm.trademarkDescription && tm.trademarkDescription.toLowerCase().indexOf(searchText) !== -1
+                    || tm.trademarkNumber && tm.trademarkNumber.toLowerCase().indexOf(searchText) !== -1
+                  });
                 case "claims": return record.caseNumber.toLowerCase().indexOf(searchText) !== -1
                 || record.claimType.toLowerCase().indexOf(searchText) !== -1
                 || record.brandName.toLowerCase().indexOf(searchText) !== -1
@@ -32,7 +40,7 @@ export default class SearchUtil {
         const mixpanelPayload = {
             WORK_FLOW: MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] ?  MIXPANEL_CONSTANTS.TABLE_LIST_TO_WORKFLOW_MAPPING[identifier] : "WORK_FLOW_NOT_FOUND"
         };
-        const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText;
+        const searchText = evt ? evt.target.value && evt.target.value.toLowerCase() : this.state.searchText ? this.state.searchText.toLowerCase() : "";
         let allRecords;
         if (filteredRecords) {
             allRecords = filteredRecords;

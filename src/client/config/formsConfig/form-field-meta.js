@@ -572,29 +572,55 @@ const FORMFIELDCONFIG = {
         "templateUpdateComplete": false
       },
       "fields": {
-        "trademarkNumber": {
-          "disabled": false,
-          "error": "",
-          "ERROR5XX": "Unable to reach our services!",
-          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
-          "fieldOk": false,
-          "inputId": "trademarkNumber",
-          "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
-          "isValid": false,
-          "key": "trademarkNumber",
-          "label": "Trademark Number",
-          "loader": false,
-          "maxLength": 7,
-          "pattern": null,
+        "trademarkDetailsList": {
+          "addLabel": "Add trademark number",
+          "disableAddItem": true,
+          "inputId": "items",
           "required": true,
-          "subtitle": "",
-          "type": "text",
-          "value": "",
-          "validators": {
-            "validateLength": {
-              "minLength": 7,
+          "key": "items",
+          "layout": "2.1.0",
+          "maxItems": "10",
+          "type": "_fieldSet",
+          "onChangeItem": "bubbleItemList",
+          "itemList": [],
+          "itemListTemplate": {
+            "trademarkNumber": {
+              "disabled": false,
+              "error": "",
+              "ERROR5XX": "Unable to reach our services!",
+              "excludeRowContainer": true,
+              "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
+              "fieldOk": false,
+              "inputId": "trademarkNumber",
+              "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
+              "isValid": false,
+              "key": "trademarkNumber",
+              "label": "Trademark Number",
+              "layout": "1.1.5",
+              "loader": false,
               "maxLength": 7,
-              "error": "Trademark number should be 7 numeric characters long."
+              "pattern": null,
+              "required": true,
+              "subtitle": "",
+              "type": "text",
+              "value": "",
+              "validators": {
+                "validateLength": {
+                  "minLength": 7,
+                  "maxLength": 7,
+                  "error": "Trademark number should be 7 numeric characters long."
+                }
+              }
+            },
+            "description": {
+              "error": "",
+              "inputId": "description",
+              "key": "description",
+              "label": "Description (optional)",
+              "layout": "1.2.6",
+              "required": false,
+              "type": "text",
+              "value": ""
             }
           }
         },
@@ -603,14 +629,16 @@ const FORMFIELDCONFIG = {
           "error": "",
           "fieldOk": false,
           "inputId": "brandName",
+          "isEditable": true,
           "isUnique": false,
           "key": "brandName",
           "label": "Brand Name",
+          "layout": "1.1.0",
           "loader": false,
           "pattern": null,
           "required": true,
           "subtitle": "",
-          "type": "text",
+          "type": "select",
           "value": ""
         },
         "comments": {

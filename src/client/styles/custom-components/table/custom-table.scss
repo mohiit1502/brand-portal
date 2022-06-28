@@ -91,4 +91,10 @@ $row-height: 48px;
       }
     }
   }
+
+  &.brand-list-table {
+    .parent-row {
+      background: #F4F4F4;
+    }
+  }
 }

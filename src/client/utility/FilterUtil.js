@@ -17,13 +17,11 @@ export default class FilterUtil {
                     return bool;
                 });
             } else {
-            filteredList = filteredList.filter(record => {
-                let bool = false;
-                filterOptionsSelected.map(filterOption => {
-                bool = bool || (!!record[filterId] && record[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
+                filteredList = filteredList.filter(record => {
+                    return filterOptionsSelected.reduce((acc, filterOption) => {
+                      return acc || (!!record[filterId] && record[filterId].toLowerCase().indexOf(filterOption.value.toLowerCase()) !== -1);
+                    }, false);
                 });
-                return bool;
-            });
             }
         }
         return filteredList;
