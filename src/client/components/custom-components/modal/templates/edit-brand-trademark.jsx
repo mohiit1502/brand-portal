@@ -54,9 +54,8 @@ class EditBrandTrademark extends React.Component {
     form.inputData.brandName.disabled = true;
 
     form.inputData.trademarkNumber.value = data.trademarkNumber;
-    if(this.props.data.context != "editTrademark"){
-      form.inputData.trademarkNumber.disabled = true;
-    }
+    form.inputData.trademarkNumber.disabled = true;
+
 
     form.inputData.comments.value = data.comments;
 
