@@ -42,7 +42,7 @@ class BrandList extends React.Component {
     // this.changePageSize = this.changePageSize.bind(this);
     this.toggleFilterVisibility = this.toggleFilterVisibility.bind(this);
     this.updateListAndFilters = this.updateListAndFilters.bind(this);
-    this.editBrand = this.editBrand.bind(this);
+    this.dispatch = this.dispatch.bind(this);
     this.clearFilter = this.clearFilter.bind(this);
     this.multiSort = SortUtil.multiSort.bind(this);
     this.uiSearch = SearchUtil.uiSearch.bind(this);
@@ -76,7 +76,7 @@ class BrandList extends React.Component {
             parentOnly: true,
             disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDIT.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
-              this.editBrand(data.original, "editBrandO");
+              this.dispatch(data, "editBrand");
             }
           },
           {
@@ -85,7 +85,7 @@ class BrandList extends React.Component {
             parentOnly: true,
             disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.ADD.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
-              this.editBrand(data, "addTrademark");
+              this.dispatch(data, "addTrademark");
             }
           },
           {
@@ -94,7 +94,7 @@ class BrandList extends React.Component {
             childOnly: true,
             disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDITCHILD.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
-              this.editBrand(data.original, "editTrademark");
+              this.dispatch(data, "editTrademark");
             }
           },
           {
@@ -189,8 +189,8 @@ class BrandList extends React.Component {
     });
   }
 
-  editBrand (brandData, context) {
-    const meta = { templateName: "EditBrandTrademarkTemplate", DISPLAY_DASHBOARD: true, data: {context, ...brandData} };
+  dispatch (brandData, context) {
+    const meta = { templateName: context === "addTrademark" ? "NewBrandTemplate" : "EditBrandTrademarkTemplate", DISPLAY_DASHBOARD: true, data: {context, ...brandData} };
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
     const mixpanelPayload = {
         WORK_FLOW: "VIEW_BRAND_LIST",

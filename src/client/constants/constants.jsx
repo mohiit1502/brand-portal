@@ -159,7 +159,7 @@ const CONSTANTS = {
 
   BRAND: {
     SECTION_TITLE_SINGULAR: "Brand",
-    SECTION_TITLE_PLURAL: "Brands",
+    SECTION_TITLE_PLURAL: "Rows",
     STATUS: {
       PENDING: "Pending Verification",
       VERIFIED: "Verified",

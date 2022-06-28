@@ -18,12 +18,13 @@
 
   .dropdown-menu.show {
     //padding: 1rem 0;
+    border: unset;
     left: -47px !important;
     box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.15);
     .dropdown-item {
       //height: 24px;
       &:not(:last-child) {
-        border-bottom: 1px solid lightgrey;
+        border-bottom: 1px solid #eee;
       }
       &:hover{
         background: $dropdown-hover-background;

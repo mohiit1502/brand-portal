@@ -10,7 +10,7 @@ class Dropdown extends React.Component {
   }
 
   render () {
-    const {data, hideEllipsis, options} = this.props;
+    const {customItemClasses, data, hideEllipsis, options} = this.props;
     return (
       <div className="dropdown custom-dropdown d-inline-block">
 
@@ -20,7 +20,8 @@ class Dropdown extends React.Component {
           {
             options.dropdownOptions.map((option, i) => {
               return (
-                <a key={i} id={option.id} className={`dropdown-item${option.disabled ? " disabled" : ""}`} onClick={e => {option.clickCallback(e, option, data);}}>{option.value}</a>
+                <a key={i} id={option.id} className={`dropdown-item${option.disabled ? " disabled" : ""}${customItemClasses ? " " + customItemClasses : ""}`}
+                   onClick={e => {option.clickCallback(e, option, data);}}>{option.value}</a>
               );
             })
           }
@@ -31,6 +32,7 @@ class Dropdown extends React.Component {
 }
 
 Dropdown.propTypes = {
+  customItemClasses: PropTypes.string,
   hideEllipsis: PropTypes.bool,
   options: PropTypes.object,
   data: PropTypes.object

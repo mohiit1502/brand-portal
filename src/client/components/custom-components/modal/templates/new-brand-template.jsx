@@ -45,20 +45,19 @@ class NewBrandTemplate extends React.Component {
     if (this.props.data && !this.state.form.templateUpdateComplete) {
       this.prepopulateInputFields(this.props.data);
     }
-    if (this.props.context === "edit-trademark") {
-      this.setState(state => {
-        state = {...state};
-        state.form.inputData.brandName.disabled = true;
-        return state;
-      })
-    }
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.brands && this.props.brands.length > 0 && !this.props.brandListPopulated) {
       this.setState(state => {
         state = {...state};
-        state.form.inputData.brandName.dropdownOptions = this.props.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
+        const uniqueBrandList = [];
+        this.props.brands.forEach(brand => {
+          if (uniqueBrandList.findIndex(ubrand => ubrand.brandName === brand.brandName) === -1) {
+            uniqueBrandList.push(brand);
+          }
+        })
+        state.form.inputData.brandName.dropdownOptions = uniqueBrandList.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
         return state;
       })
       this.props.dispatchBrands({brandListPopulated: true});
@@ -68,6 +67,7 @@ class NewBrandTemplate extends React.Component {
   prepopulateInputFields (data) {
     const form = {...this.state.form};
 
+    form.inputData.brandName = {...form.inputData.brandName};
     form.inputData.brandName.value = data.brandName;
     form.inputData.brandName.type = "text";
     form.inputData.brandName.disabled = true;
@@ -262,6 +262,7 @@ class NewBrandTemplate extends React.Component {
 
     // form.inputData.trademarkNumber.disabled = false;
     form.inputData.brandName.disabled = false;
+    form.inputData.brandName.type = "select";
     form.inputData.brandCreateActions.buttons.submit.disabled = true;
 
     const fieldSet = JSON.parse(JSON.stringify(form.inputData.trademarkDetailsList.itemListTemplate));

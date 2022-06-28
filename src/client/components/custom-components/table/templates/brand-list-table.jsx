@@ -134,7 +134,7 @@ const BrandListTable = function(props) {
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            isParentRow ? (cell.column.id === "brandName" ? cell.value : null) : (cell.column.id === "brandName" ? null : (Array.isArray(cell.value) ? cell.value.join(", ") : cell.value))
+                            isParentRow ? (cell.column.id === "brandName" ? <span className="font-weight-bold">{cell.value}</span> : null) : (cell.column.id === "brandName" ? null : (Array.isArray(cell.value) ? cell.value.join(", ") : cell.value))
                           }
                           {
                             // cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
@@ -143,6 +143,7 @@ const BrandListTable = function(props) {
                             && <span className="float-right">
                               &nbsp;&nbsp;
                               <Dropdown
+                                customItemClasses="font-weight-bold"
                                 options={generateDropDownOptionsDynamic(dropdownOptions, row.original, isParentRow)}
                                 data={row.original}
                                 hideEllipsis={!showOptions}/>
