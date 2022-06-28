@@ -76,8 +76,17 @@ class BrandManagerApi {
       mixpanelPayload.API_SUCCESS = true;
       mixpanelPayload.ROPRO_CORRELATION_ID = headers && headers.ROPRO_CORRELATION_ID;
 
+
       const response = await ServerHttp.get(url, options);
 
+      response.body.content.forEach(brand => {
+        brand.statusInfo = {};
+        brand.statusInfo.status = brand.brandStatus;
+        brand.trademarkDetailsList = [
+          {trademarkNumber: brand.trademarkNumber, trademarkDescription: "Disc: abc", dateAdded: brand.dateAdded, statusInfo: {status: brand.brandStatus}},
+          {trademarkNumber: brand.trademarkNumber, trademarkDescription: "Disc: xyz", dateAdded: brand.dateAdded, statusInfo: {status: "REJECTED"}}
+        ];
+      })
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[Corr ID: %s][BrandManagerApi::getBrands] API request for get Brand has completed", corrId);
       return h.response(response.body).code(response.status);

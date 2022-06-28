@@ -30,7 +30,7 @@ class EditBrandTrademark extends React.Component {
     });
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const EditBrandTrademarkConfiguration = this.props.editBrandTrademarkConfiguration ? this.props.editBrandTrademarkConfiguration : {};
+    const editBrandTrademarkConfiguration = this.props.editBrandTrademarkConfiguration ? this.props.editBrandTrademarkConfiguration : {};
     this.state = {
       section: {...editBrandTrademarkConfiguration.sectionConfig},
       form: {
@@ -221,7 +221,7 @@ EditBrandTrademark.propTypes = {
 const mapStateToProps = state => {
   return {
     clientType: Cookies.get("bp_client_type"),
-    editBrandTrademarkConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITTRADEMARK,
+    editBrandTrademarkConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITBRANDTRADEMARK,
     modal: state.modal
   };
 };

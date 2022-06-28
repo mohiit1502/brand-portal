@@ -19,7 +19,7 @@ class NewBrandTemplate extends React.Component {
 
   constructor(props) {
     super(props);
-    const functions = ["bubbleValue", "onChange", "activeStatusToggle", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
+    const functions = ["bubbleValue", "onChange", "resetTemplateStatus", "handleSubmit", "prepopulateInputFields"];
     const debounceFunctions = {brandDebounce: "checkBrandUniqueness", trademarkDebounce: "checkTrademarkValidity"};
     functions.forEach(name => {
       this[name] = this[name].bind(this);
@@ -331,7 +331,7 @@ const mapStateToProps = state => {
     brandListPopulated: state.brandEdit.brandListPopulated,
     brands: state.brandEdit.brandList,
     clientType: Cookies.get("bp_client_type"),
-    newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITTRADEMARK,
+    newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.NEWBRAND,
     modal: state.modal
   };
 };
