@@ -42,7 +42,7 @@ class EditBrandTrademark extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.data && !this.state.form.templateUpdateComplete) {
+    if (this.props.data) {
       this.prepopulateInputFields(this.props.data);
     }
   }
@@ -54,7 +54,9 @@ class EditBrandTrademark extends React.Component {
     form.inputData.brandName.disabled = true;
 
     form.inputData.trademarkNumber.value = data.trademarkNumber;
-    form.inputData.trademarkNumber.disabled = true;
+    if(this.props.data.context != "editTrademark"){
+      form.inputData.trademarkNumber.disabled = true;
+    }
 
     form.inputData.comments.value = data.comments;
 

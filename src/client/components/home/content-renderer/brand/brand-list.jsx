@@ -76,7 +76,7 @@ class BrandList extends React.Component {
             parentOnly: true,
             disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDIT.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
-              this.editBrand(data.original, "editBrandO");
+              this.editBrand(data.original, "editBrand");
             }
           },
           {
@@ -94,7 +94,7 @@ class BrandList extends React.Component {
             childOnly: true,
             disabled: restConfig.AUTHORIZATIONS_ENABLED ? !AUTH_CONFIG.BRANDS.EDITCHILD.ROLES.includes(userRole) : false,
             clickCallback: (evt, option, data) => {
-              this.editBrand(data.original, "editTrademark");
+              this.editBrand(data, "editTrademark");
             }
           },
           {
@@ -191,7 +191,7 @@ class BrandList extends React.Component {
 
   editBrand (brandData, context) {
     const meta = { templateName: "EditBrandTrademarkTemplate", DISPLAY_DASHBOARD: true, data: {context, ...brandData} };
-    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
+    this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta, context:context});
     const mixpanelPayload = {
         WORK_FLOW: "VIEW_BRAND_LIST",
         SELECTED_BRAND_NAME: brandData.brandName,

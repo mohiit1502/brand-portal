@@ -558,6 +558,7 @@ const FORMFIELDCONFIG = {
         }
       }
     },
+
     "EDITBRANDTRADEMARK": {
       "sectionConfig": {
         "sectionTitleNew": "Edit Trademark",
@@ -618,14 +619,30 @@ const FORMFIELDCONFIG = {
           "error": "",
           "inputId": "comments",
           "key": "comments",
+          "label": "Comments",
+          "pattern": null,
+          "required": false,
+          "renderCondition": "{\"keyPath\": \"data.context\", \"keyLocator\": \"props\", \"value\": \"editbrand\"}",
+          "subtitle": "Include a description that helps to identify the trademark number",
+          "type": "textarea",
+          "placeholder": "Please provide additional information about your brand.",
+          "value": ""
+        },
+        "description": {
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
           "label": "Description (Optional)",
           "pattern": null,
           "required": false,
+          "renderCondition": "{\"keyPath\": \"data.context\", \"keyLocator\": \"props\", \"value\": \"edittrademark\"}",
           "subtitle": "Include a description that helps to identify the trademark number",
           "type": "text",
           "placeholder": "Please provide additional information about your brand.",
           "value": ""
         },
+
         "activeStatus": {
           "active": false,
           "onChange": "activeStatusToggle",
@@ -637,6 +654,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "rowClasses": "ml-2",
           "required": false,
+          "renderCondition": "{\"keyPath\": \"data.context\", \"keyLocator\": \"props\", \"value\": \"edittrademark\"}",
           "subtitle": "",
           "type": "toggle",
           "placeholder": "",

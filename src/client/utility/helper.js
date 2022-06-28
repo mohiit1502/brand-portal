@@ -138,7 +138,8 @@ export default class Helper {
   static wrap(textIncoming, width) {
     textIncoming.each(function () {
       const text = d3.select(this);
-      const words = text.text().match(/.{1,6}/g).reverse();
+      const matchValue = text.text().match(/.{1,6}/g);
+      const words = matchValue && matchValue.reverse();
       const lineHeight = 0.75;
       const y = text.attr("y");
       const dy = parseFloat(text.attr("dy"));
@@ -146,16 +147,18 @@ export default class Helper {
       let line = [];
       let lineNumber = 0;
       /* eslint-disable no-cond-assign */
-      let tspan = text.text(null).append("tspan").attr("x", -8).attr("y", y).attr("dy", `${(words.length > 1) ? (dy - 0.25) : dy}em`);
-      while (word = words.pop()) {
-        if (lineNumber === 1) {break;}
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width) {
-          line.pop();
+      let tspan = words && text.text(null).append("tspan").attr("x", -8).attr("y", y).attr("dy", `${(words.length > 1) ? (dy - 0.25) : dy}em`);
+      if(words) {
+        while (word = words.pop()) {
+          if (lineNumber === 1) {break;}
+          line.push(word);
           tspan.text(line.join(" "));
-          line = [word];
-          tspan = text.append("tspan").attr("x", -8).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy  }em`).text(word);
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+            line = [word];
+            tspan = text.append("tspan").attr("x", -8).attr("y", y).attr("dy", `${++lineNumber * lineHeight + dy  }em`).text(word);
+          }
         }
       }
     });
