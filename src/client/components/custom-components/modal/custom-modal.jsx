@@ -8,6 +8,7 @@ import CreateUserTemplate from "./templates/create-user-template";
 import NewUserAddedTemplate from "./templates/new-user-added-template";
 import CompanyBrandRegisteredTemplate from "./templates/company-brand-registered-template";
 import NewBrandTemplate from "./templates/new-brand-template";
+import EditBrandTrademark from "./templates/edit-brand-trademark";
 import NewClaimTemplate from "./templates/new-claim-template";
 import NewClaimAddedTemplate from "./templates/new-claim-added-template";
 import ClaimDetailsTemplate from "./templates/claim-details-template";
@@ -46,6 +47,7 @@ class CustomModal extends React.Component {
       case "CreateUserTemplate": return CreateUserTemplate;
       case "FormModalTemplate": return FormModalTemplate;
       case "NewBrandTemplate": return NewBrandTemplate;
+      case "EditBrandTrademarkTemplate": return EditBrandTrademark;
       case "NewClaimAddedTemplate": return NewClaimAddedTemplate;
       case "NewClaimTemplate": return NewClaimTemplate;
       case "NewUserAddedTemplate": return NewUserAddedTemplate;

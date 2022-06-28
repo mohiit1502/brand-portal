@@ -558,7 +558,7 @@
           }
         }
       },
-      "EDITTRADEMARK": {
+      "EDITBRANDTRADEMARK": {
         "sectionConfig": {
           "sectionTitleNew": "Edit Trademark",
           "sectionTitleEdit": "Edit Brand Details"

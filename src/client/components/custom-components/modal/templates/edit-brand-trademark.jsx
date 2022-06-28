@@ -15,7 +15,7 @@ import "../../../../styles/custom-components/modal/templates/new-brand-template.
 import mixpanel from "../../../../utility/mixpanelutils";
 import MIXPANEL_CONSTANTS from "../../../../constants/mixpanelConstants";
 
-class NewBrandTemplate extends React.Component {
+class EditBrandTrademark extends React.Component {
 
   constructor(props) {
     super(props);
@@ -30,12 +30,12 @@ class NewBrandTemplate extends React.Component {
     });
     this.getFieldRenders = ContentRenderer.getFieldRenders.bind(this);
     this.loader = Helper.loader.bind(this);
-    const newBrandConfiguration = this.props.newBrandConfiguration ? this.props.newBrandConfiguration : {};
+    const EditBrandTrademarkConfiguration = this.props.editBrandTrademarkConfiguration ? this.props.editBrandTrademarkConfiguration : {};
     this.state = {
-      section: {...newBrandConfiguration.sectionConfig},
+      section: {...editBrandTrademarkConfiguration.sectionConfig},
       form: {
-        inputData: newBrandConfiguration.fields,
-        ...newBrandConfiguration.formConfig
+        inputData: editBrandTrademarkConfiguration.fields,
+        ...editBrandTrademarkConfiguration.formConfig
       },
       isActive: false
     };
@@ -113,7 +113,6 @@ class NewBrandTemplate extends React.Component {
   }
 
   async handleSubmit(evt) {
-
     const mixpanelClickEventPayload = {
       IS_UPDATE_BRAND: this.state.form && this.state.form.isUpdateTemplate,
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
@@ -125,9 +124,11 @@ class NewBrandTemplate extends React.Component {
     const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
     const trademarkClasses = this.state.form.inputData.trademarkNumber.trademarkClasses;
     const name = this.state.form.inputData.brandName.value;
+    const isActive = this.state.form.inputData.activeStatus.active;
     const comments = this.state.form.inputData.comments.value;
-    const payload = {trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses};
-    const url = "/api/brands";
+    console.log(this.props.data);
+    const payload = {trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses, isActive};
+    const url = "/api/brands/trademark";
     const mixpanelPayload = {
       API: url,
       BRAND_NAME: name,
@@ -135,47 +136,13 @@ class NewBrandTemplate extends React.Component {
       TRADEMARK_NUMBER: trademarkNumber,
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
     };
-    if (this.state.form.isUpdateTemplate) {
-      this.loader("form", true);
-      return Http.put(`${url}/${this.props.data.brandId}`, {comments})
-        .then(res => {
-          this.resetTemplateStatus();
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
-          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-          this.props.saveBrandInitiated();
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = true;
-        })
-        .catch(err => {
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = false;
-          mixpanelPayload.ERROR = err.message ? err.message : err;
-        })
-        .finally(() => {
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
-        });
-    } else {
-      this.loader("form", true);
-      return Http.post(url, payload)
-        .then(res => {
-          this.resetTemplateStatus();
-          this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `New brand ‘${res.body.name}’ added to your brand portfolio`);
-          this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
-          this.props.saveBrandInitiated();
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = true;
-        })
-        .catch(err => {
-          this.loader("form", false);
-          mixpanelPayload.API_SUCCESS = false;
-          mixpanelPayload.ERROR = err.message ? err.message : err;
-        })
-        .finally(() => {
-          mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
-        });
-    }
   }
 
+
+  activeStatusToggle(e){
+    // console.log(e.target.checked);
+    this.state.form.inputData.activeStatus.active = e.target.checked;
+  }
 
   resetTemplateStatus (e) {
     const form = {...this.state.form};
@@ -241,11 +208,11 @@ class NewBrandTemplate extends React.Component {
   }
 }
 
-NewBrandTemplate.propTypes = {
+EditBrandTrademark.propTypes = {
   clientType: PropTypes.string,
   data: PropTypes.object,
   modal: PropTypes.object,
-  newBrandConfiguration: PropTypes.object,
+  editBrandTrademarkConfiguration: PropTypes.object,
   saveBrandInitiated: PropTypes.func,
   showNotification: PropTypes.func,
   toggleModal: PropTypes.func
@@ -254,7 +221,7 @@ NewBrandTemplate.propTypes = {
 const mapStateToProps = state => {
   return {
     clientType: Cookies.get("bp_client_type"),
-    newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITTRADEMARK,
+    editBrandTrademarkConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITTRADEMARK,
     modal: state.modal
   };
 };
@@ -268,4 +235,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NewBrandTemplate);
+)(EditBrandTrademark);
