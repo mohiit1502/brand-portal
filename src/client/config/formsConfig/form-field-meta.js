@@ -561,8 +561,8 @@ const FORMFIELDCONFIG = {
 
     "EDITBRANDTRADEMARK": {
       "sectionConfig": {
-        "sectionTitleNew": "Edit Trademark",
-        "sectionTitleEdit": "Edit Brand Details"
+        "sectionTitleBrand": "Edit Brand",
+        "sectionTitleTrademark": "Edit Trademark"
       },
       "formConfig": {
         "formHeading": "Please update the following information.",

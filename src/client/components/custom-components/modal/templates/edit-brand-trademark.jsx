@@ -187,7 +187,7 @@ class EditBrandTrademark extends React.Component {
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
-                form.isUpdateTemplate ? section.sectionTitleEdit : section.sectionTitleNew
+                this.props.data.context === "editBrand" ? section.sectionTitleBrand : section.sectionTitleTrademark
               }
               <button type="button" className="close text-white" aria-label="Close" onClick={this.resetTemplateStatus}>
                 <span aria-hidden="true">&times;</span>
