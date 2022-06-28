@@ -49,6 +49,7 @@ import ProblemSolving from "./group-1473.png";
 import Question from "./question.svg";
 import Refresh from "./refresh.svg";
 import RedCircleCross from "./red-circle-cross.svg";
+import RedCross from "./red-cross.svg";
 import ShieldTick from "./brandRegisteredIcon.png";
 import ShowPassword from "./showPassword.svg";
 import Sort from "./sort.svg";
@@ -120,6 +121,7 @@ export {
   ProblemSolving,
   Question,
   RedCircleCross,
+  RedCross,
   Refresh,
   ShieldTick,
   ShowPassword,

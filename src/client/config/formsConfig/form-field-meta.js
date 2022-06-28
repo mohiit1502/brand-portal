@@ -1,935 +1,1035 @@
-  /* eslint-disable quote-props */
-  const FORMFIELDCONFIG = {
-    "FORMSCONFIG": {
-      "COMPANYREG": {
-        "sectionConfig": {
-          "sectionTitle": "Company Information",
-          "sectionSellerTitle": "Company Information",
-          "sectionSubTitle": "Complete the form based on the information in the trademark registration.",
-          "sectionSellerSubTitle": "Complete the form based on the information in the trademark registration."
-        },
-        "formConfig": {
-          "id": "companyreg",
-          "loader": false,
-          "isSubmitDisabled": true,
-          "isClearDisabled": false,
-          "formActions": "companyOnboardingActions",
-          "requestAdministratorAccess": false,
-          "removeIntlSellerFields": [
-            "patternPath",
-            "invalidErrorPath",
-            "invalidError",
-            "pattern"
-          ],
-          "enableCountries": [
-            "US",
-            "USA",
-            "CN",
-            "HK",
-            "United States"
-          ],
-          "taxClassification_US": "W9",
-          "taxClassification_INTL_BEN": "W-8 BEN-E",
-          "taxClassification_INTL_ECI": "W-8 ECI",
-          "USTaxClassifications": [
-            "W9"
-          ],
-          "internationalTaxClassifications": [
-            "W-8 BEN-E",
-            "W-8 ECI"
-          ],
-          "allowedCountriesForDomesticTaxClassification": [
-            "US",
-            "USA",
-            "United States",
-            "CN",
-            "HK",
-            "IN"
-          ],
-          "allowedCountriesForIntlTaxClassification": [
-            "US",
-            "USA",
-            "United States",
-            "CN",
-            "HK",
-            "IN"
-          ]
-        },
-        "fields": {
-          "companyName": {
-            "BEValidationError": "Your company has already been registered in Walmart Brand Portal. Please contact brandportal@walmart.com for further information.",
-            "disabled": {
-              "default": false,
-              "condition": [
-                {
-                  "subCondition": [
-                    {
-                      "keyPath": "clientType",
-                      "keyLocator": "state",
-                      "dependencyValue": [
-                        "seller"
-                      ]
-                    },
-                    {
-                      "keyPath": "profile.context",
-                      "keyLocator": "props",
-                      "dependencyValue": [
-                        "new"
-                      ]
-                    }
-                  ],
-                  "value": true
-                }
-              ]
-            },
-            "error": "",
-            "fieldOk": false,
-            "inputId": "companyName",
-            "isUnique": true,
-            "key": "companyName",
-            "label": "Company Name",
-            "layout": "1.1.0",
-            "loader": false,
-            "pattern": null,
-            "required": true,
-            "subtitle": "The company name should match the information in the trademark registration. ",
-            "type": "text",
-            "value": ""
-          },
-          "address": {
-            "disabled": true,
-            "error": "",
-            "inputId": "address",
-            "key": "address",
-            "label": "Address",
-            "layout": "2.1.0",
-            "pattern": null,
-            "renderDependency": "requestAdministratorAccess",
-            "required": true,
-            "subtitle": "The company address should match the information in the trademark registration.",
-            "type": "text",
-            "value": ""
-          },
-          "city": {
-            "disabled": true,
-            "error": "",
-            "inputId": "city",
-            "key": "city",
-            "label": "City",
-            "layout": "3.1.6",
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "state": {
-            "colClasses": "col-6",
-            "disabled": true,
-            "error": "",
-            "inputId": "state",
-            "key": "state",
-            "label": "State",
-            "layout": "3.2.6",
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "zip": {
-            "colClasses": "col-6",
-            "disabled": true,
-            "error": "",
-            "inputId": "zip",
-            "invalidError": "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
-            "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
-            "key": "zip",
-            "label": "ZIP",
-            "layout": "4.1.6",
-            "maxLength": 10,
-            "pattern": "^\\d{5}(?:[-]\\d{4})?$",
-            "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "country": {
-            "colClasses": "col-6",
-            "disabled": true,
-            "error": "",
-            "inputId": "country",
-            "key": "country",
-            "label": "Country",
-            "layout": "4.2.6",
-            "pattern": null,
-            "required": true,
-            "selectableCountries": [
-              {
-                "id": "china",
-                "value": "China",
-                "code": "CN",
-                "label": "China"
-              },
-              {
-                "id": "hongkong",
-                "value": "Hong Kong",
-                "code": "HK",
-                "label": "Hong Kong"
-              },
-              {
-                "id": "india",
-                "value": "India",
-                "code": "IN",
-                "label": "India"
-              },
-              {
-                "id": "usa",
-                "value": "USA",
-                "code": "USA",
-                "label": "USA"
-              }
-            ],
-            "subtitle": "",
-            "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, Hong Kong or India. If you have any questions, please contact brandportal@walmart.com.",
-            "type": "text",
-            "value": "USA"
-          },
-          "businessRegistrationDoc": {
-            "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
-            "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
-            "buttonText": "Upload",
-            "cancelHandlerArg": "businessRegistrationDoc",
-            "changeHandlerArg": "businessRegistrationDoc",
-            "disabled": true,
-            "endpoint": "/api/company/uploadBusinessDocument",
-            "error": "",
-            "filename": "",
-            "icon": "Question",
-            "allowedFileSize": 7,
-            "fileValidationError": "Please follow the guidelines to upload attachments.",
-            "id": "",
-            "inputId": "businessRegistrationDoc",
-            "key": "businessRegistrationDoc",
-            "label": "Optional: Attach additional documents (i.e. business registration)",
-            "layout": "5.1.0",
-            "onCancel": "cancelSelection",
-            "onChange": "displayProgressAndUpload",
-            "tooltipContentKey": "businessDocContent",
-            "type": "_fileUploader",
-            "uploading": false,
-            "uploadPercentage": 0
-          },
-          "companyOnboardingActions": {
-            "containerClasses": "mt-3",
-            "colClasses": "company-onboarding-button-panel text-right",
-            "layout": "7.1.0",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": true,
-                "text": "Continue",
-                "type": "submit"
-              }
-            }
-          }
-        }
+/* eslint-disable quote-props */
+const FORMFIELDCONFIG = {
+  "FORMSCONFIG": {
+    "COMPANYREG": {
+      "sectionConfig": {
+        "sectionTitle": "Company Information",
+        "sectionSellerTitle": "Company Information",
+        "sectionSubTitle": "Complete the form based on the information in the trademark registration.",
+        "sectionSellerSubTitle": "Complete the form based on the information in the trademark registration."
       },
-      "BRANDREG": {
-        "sectionConfig": {
-          "sectionTitle": " Brand Information",
-          "sectionSubTitle": "Complete the form based on the information in the trademark registration."
-        },
-        "formConfig": {
-          "id": "brandreg",
-          "loader": false,
-          "formActions": "brandOnboardingActions"
-        },
-        "fields": {
-          "trademarkNumber": {
-            "disabled": false,
-            "error": "",
-            "ERROR5XX": "Unable to reach our services!",
-            "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
-            "fieldOk": false,
-            "inputId": "trademarkNumber",
-            "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
-            "isValid": false,
-            "key": "trademarkNumber",
-            "label": "Trademark Number",
-            "loader": false,
-            "maxLength": 7,
-            "pattern": null,
-            "subtitle": "Please enter the trademark registration number. Only registered USPTO trademarks are accepted at this time.",
-            "required": true,
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateLength": {
-                "minLength": 7,
-                "maxLength": 7,
-                "error": "Trademark number should be 7 numeric characters long."
-              }
-            }
-          },
-          "brandName": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "brandName",
-            "isUnique": false,
-            "key": "brandName",
-            "label": "Brand Name",
-            "loader": false,
-            "pattern": null,
-            "required": true,
-            "subtitle": "Please ensure that the brand name matches the registered trademark name.",
-            "type": "text",
-            "value": ""
-          },
-          "additionalDoc": {
-            "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
-            "allowedFileSize": 7,
-            "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
-            "buttonText": "Upload",
-            "cancelHandlerArg": "additionalDoc",
-            "changeHandlerArg": "additionalDoc",
-            "disabled": false,
-            "endpoint": "/api/company/uploadAdditionalDocument",
-            "error": "",
-            "filename": "",
-            "fileValidationError": "Please follow the guidelines to upload attachments.",
-            "icon": "Question",
-            "id": "",
-            "inputId": "additionalDoc",
-            "key": "additionalDoc",
-            "label": "Optional: Attach additional documents (i.e. trademark registration)",
-            "onCancel": "cancelSelection",
-            "onChange": "displayProgressAndUpload",
-            "tooltipContentKey": "additionalDocContent",
-            "type": "_fileUploader",
-            "uploading": false,
-            "uploadPercentage": 0
-          },
-          "comments": {
-            "disabled": false,
-            "error": "",
-            "inputId": "comments",
-            "key": "comments",
-            "label": "Comments",
-            "pattern": null,
-            "required": false,
-            "subtitle": "",
-            "type": "textarea",
-            "value": ""
-          },
-          "undertaking": {
-            "checkBoxClasses": "user-undertaking",
-            "containerClasses": "mt-5",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "undertaking",
-            "inputId": "undertaking",
-            "key": "undertaking",
-            "label": "I have read and agree to the ",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "required": true,
-            "selected": false,
-            "tou": true,
-            "touLink": "Terms of Use.",
-            "type": "_checkBox"
-          },
-          "brandOnboardingActions": {
-            "containerClasses": "mt-3",
-            "colClasses": "brand-onboarding-button-panel text-right",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "type": "_buttonsPanel",
-            "buttons": {
-              "back": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "gotoCompanyRegistration",
-                "text": "Back",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": true,
-                "onClick": "goToApplicationReview",
-                "text": "Continue",
-                "type": "button"
-              }
-            }
-          }
-        }
+      "formConfig": {
+        "id": "companyreg",
+        "loader": false,
+        "isSubmitDisabled": true,
+        "isClearDisabled": false,
+        "formActions": "companyOnboardingActions",
+        "requestAdministratorAccess": false,
+        "removeIntlSellerFields": [
+          "patternPath",
+          "invalidErrorPath",
+          "invalidError",
+          "pattern"
+        ],
+        "enableCountries": [
+          "US",
+          "USA",
+          "CN",
+          "HK",
+          "United States"
+        ],
+        "taxClassification_US": "W9",
+        "taxClassification_INTL_BEN": "W-8 BEN-E",
+        "taxClassification_INTL_ECI": "W-8 ECI",
+        "USTaxClassifications": [
+          "W9"
+        ],
+        "internationalTaxClassifications": [
+          "W-8 BEN-E",
+          "W-8 ECI"
+        ],
+        "allowedCountriesForDomesticTaxClassification": [
+          "US",
+          "USA",
+          "United States",
+          "CN",
+          "HK",
+          "IN"
+        ],
+        "allowedCountriesForIntlTaxClassification": [
+          "US",
+          "USA",
+          "United States",
+          "CN",
+          "HK",
+          "IN"
+        ]
       },
-      "DASHBOARD": {
-        "sectionConfig": {},
-        "formConfig": {
-          "id": "dashboard"
-        },
-        "fields": {}
-      },
-      "NEWUSER": {
-        "sectionConfig": {
-          "sectionTitleNew": "Invite a New User",
-          "sectionTitleEdit": "Edit User"
-        },
-        "formConfig": {
-          "formHeading": "Select the type of user you are inviting",
-          "id": "newuser",
-          "isDisabled": false,
-          "isUpdateTemplate": false,
-          "loader": false,
-          "submitDisabled": true,
-          "templateUpdateComplete": false,
-          "underwritingChecked": false
-        },
-        "fields": {
-          "userType": {
-            "containerClasses": "userType",
-            "disabled": false,
-            "name": "userType",
-            "inputId": "userType",
-            "key": "userType",
-            "label": "",
-            "layout": "1.1.0",
-            "required": true,
-            "value": "Internal",
-            "type": "radio",
-            "radioOptions": [
+      "fields": {
+        "companyName": {
+          "BEValidationError": "Your company has already been registered in Walmart Brand Portal. Please contact brandportal@walmart.com for further information.",
+          "disabled": {
+            "default": false,
+            "condition": [
               {
-                "id": 1,
-                "value": "Internal",
-                "label": "Internal"
-              },
-              {
-                "id": 2,
-                "value": "ThirdParty",
-                "label": "3rd Party"
+                "subCondition": [
+                  {
+                    "keyPath": "clientType",
+                    "keyLocator": "state",
+                    "dependencyValue": [
+                      "seller"
+                    ]
+                  },
+                  {
+                    "keyPath": "profile.context",
+                    "keyLocator": "props",
+                    "dependencyValue": [
+                      "new"
+                    ]
+                  }
+                ],
+                "value": true
               }
             ]
           },
-          "fieldsHeader": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Please complete the following fields to invite a new user.",
-            "layout": "2.1.0",
-            "type": "_formFieldsHeader"
-          },
-          "firstName": {
-            "containerClasses": "fname-lname",
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "firstName",
-            "key": "firstName",
-            "label": "First Name",
-            "layout": "4.1.6",
-            "pattern": null,
-            "required": true,
-            "type": "text",
-            "value": ""
-          },
-          "lastName": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "lastName",
-            "key": "lastName",
-            "label": "Last Name",
-            "layout": "4.2.6",
-            "pattern": null,
-            "required": true,
-            "type": "text",
-            "value": ""
-          },
-          "companyName": {
-            "colClasses": "pl-1",
-            "containerClasses": "company",
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "companyName",
-            "key": "companyName",
-            "label": "Company Name",
-            "layout": "4.1.6",
-            "pattern": null,
-            "renderCondition": "{\"keyPath\": \"state.form.inputData.userType.value\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
-            "required": true,
-            "type": "text",
-            "value": ""
-          },
-          "emailId": {
-            "containerClasses": "contact-details",
-            "disabled": false,
-            "disableDefaultBlurValidation": true,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "emailId",
-            "invalidError": "Please enter a valid Email ID",
-            "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
-            "isUnique": true,
-            "key": "emailId",
-            "label": "Email",
-            "layout": "5.1.6",
-            "loader": false,
-            "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
-            "patternPath": "CONSTANTS.REGEX.EMAIL",
-            "required": true,
-            "type": "email",
-            "value": ""
-          },
-          "phone": {
-            "disabled": false,
-            "disableDefaultBlurValidation": true,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "phone",
-            "invalidError": "Please enter a valid phone number",
-            "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
-            "preventHTMLRequiredValidation": true,
-            "isUnique": true,
-            "key": "phone",
-            "label": "Mobile Number",
-            "layout": "5.2.6",
-            "maxLength": 18,
-            "patternPath": "CONSTANTS.REGEX.PHONE",
-            "prebounceChangeHandler": "prebounceChangeHandler",
-            "required": false,
-            "type": "text",
-            "value": ""
-          },
-          "role": {
-            "containerClasses": "role-and-brand",
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "role",
-            "key": "role",
-            "label": "Set Role",
-            "layout": "6.1.6",
-            "onChange": "setSelectInputValue",
-            "dropdownOptions": [],
-            "required": true,
-            "type": "select",
-            "value": ""
-          },
-          "brands": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "brands",
-            "key": "brands",
-            "label": "Assign Brand",
-            "layout": "6.2.6",
-            "onChange": "setMultiSelectInputValue",
-            "dropdownOptions": [],
-            "required": true,
-            "type": "multiselect",
-            "value": ""
-          },
-          "userActions": {
-            "containerClasses": "action-footer",
-            "colClasses": "new-user-button-panel text-right",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "layout": "7.1.0",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "resetTemplateStatus",
-                "text": "Cancel",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": true,
-                "textObj": "{\"condition\": \"state.form.isUpdateTemplate\", \"true\": \"Save\", \"false\": \"Invite\"}",
-                "type": "submit"
-              }
-            }
-          }
-        }
-      },
-      "EDITBRANDTRADEMARK": {
-        "sectionConfig": {
-          "sectionTitleNew": "Edit Trademark",
-          "sectionTitleEdit": "Edit Brand Details"
-        },
-        "formConfig": {
-          "formHeading": "Please update the following information.",
-          "id": "newbrand",
-          "isSubmitDisabled": true,
-          "isUpdateTemplate": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "companyName",
+          "isUnique": true,
+          "key": "companyName",
+          "label": "Company Name",
+          "layout": "1.1.0",
           "loader": false,
-          "templateUpdateComplete": false
+          "pattern": null,
+          "required": true,
+          "subtitle": "The company name should match the information in the trademark registration. ",
+          "type": "text",
+          "value": ""
         },
-        "fields": {
-          "brandName": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "brandName",
-            "isUnique": false,
-            "key": "brandName",
-            "label": "Brand Name",
-            "loader": false,
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "trademarkNumber": {
-            "disabled": false,
-            "error": "",
-            "ERROR5XX": "Unable to reach our services!",
-            "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
-            "fieldOk": false,
-            "inputId": "trademarkNumber",
-            "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
-            "isValid": false,
-            "key": "trademarkNumber",
-            "label": "Trademark Number",
-            "loader": false,
-            "maxLength": 7,
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateLength": {
-                "minLength": 7,
-                "maxLength": 7,
-                "error": "Trademark number should be 7 numeric characters long."
-              }
-            }
-          },
-          "comments": {
-            "disabled": false,
-            "error": "",
-            "inputId": "comments",
-            "key": "comments",
-            "label": "Description (Optional)",
-            "pattern": null,
-            "required": false,
-            "subtitle": "Include a description that helps to identify the trademark number",
-            "type": "text",
-            "placeholder": "Please provide additional information about your brand.",
-            "value": ""
-          },
-          "activeStatus": {
-            "active": false,
-            "onChange": "activeStatusToggle",
-            "disabled": false,
-            "error": "",
-            "inputId": "activeStatus",
-            "key": "activeStatus",
-            "label": "Active",
-            "pattern": null,
-            "rowClasses": "ml-2",
-            "required": false,
-            "subtitle": "",
-            "type": "toggle",
-            "placeholder": "",
-            "value": ""
-          },
-          "brandCreateActions": {
-            "containerClasses": "mt-3",
-            "colClasses": "new-brand-button-panel text-right",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "resetTemplateStatus",
-                "text": "Cancel",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": true,
-                "text": "Submit",
-                "type": "submit"
-              }
-            }
-          }
-        }
-      },
-      "NEWBRAND": {
-        "sectionConfig": {
-          "sectionTitleNew": "Register a Brand",
-          "sectionTitleEdit": "Edit Brand Details"
+        "address": {
+          "disabled": true,
+          "error": "",
+          "inputId": "address",
+          "key": "address",
+          "label": "Address",
+          "layout": "2.1.0",
+          "pattern": null,
+          "renderDependency": "requestAdministratorAccess",
+          "required": true,
+          "subtitle": "The company address should match the information in the trademark registration.",
+          "type": "text",
+          "value": ""
         },
-        "formConfig": {
-          "formHeading": "Please complete the following fields to register your brand.",
-          "id": "newbrand",
-          "isSubmitDisabled": true,
-          "isUpdateTemplate": false,
-          "loader": false,
-          "templateUpdateComplete": false
+        "city": {
+          "disabled": true,
+          "error": "",
+          "inputId": "city",
+          "key": "city",
+          "label": "City",
+          "layout": "3.1.6",
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": ""
         },
-        "fields": {
-          "trademarkNumber": {
-            "disabled": false,
-            "error": "",
-            "ERROR5XX": "Unable to reach our services!",
-            "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
-            "fieldOk": false,
-            "inputId": "trademarkNumber",
-            "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
-            "isValid": false,
-            "key": "trademarkNumber",
-            "label": "Trademark Number",
-            "loader": false,
-            "maxLength": 7,
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateLength": {
-                "minLength": 7,
-                "maxLength": 7,
-                "error": "Trademark number should be 7 numeric characters long."
-              }
-            }
-          },
-          "brandName": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "brandName",
-            "isUnique": false,
-            "key": "brandName",
-            "label": "Brand Name",
-            "loader": false,
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "comments": {
-            "disabled": false,
-            "error": "",
-            "inputId": "comments",
-            "key": "comments",
-            "label": "Comments",
-            "pattern": null,
-            "required": false,
-            "subtitle": "",
-            "type": "textarea",
-            "placeholder": "Please provide additional information about your brand.",
-            "value": ""
-          },
-          "brandCreateActions": {
-            "containerClasses": "mt-3",
-            "colClasses": "new-brand-button-panel text-right",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "resetTemplateStatus",
-                "text": "Cancel",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": true,
-                "text": "Submit",
-                "type": "submit"
-              }
-            }
-          }
-        }
-      },
-      "CONTACTINFO": {
-        "sectionConfig": {
-          "id": "newPublicContact",
-          "sectionTitleNew": "Create Public Contact",
-          "sectionTitleEdit": "Create Public Contact"
+        "state": {
+          "colClasses": "col-6",
+          "disabled": true,
+          "error": "",
+          "inputId": "state",
+          "key": "state",
+          "label": "State",
+          "layout": "3.2.6",
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": ""
         },
-        "formConfig": {
-          "formHeading": "Please provide the following details:",
-          "id": "newPublicContact",
-          "isSubmitDisabled": true,
-          "isUpdateTemplate": false,
-          "loader": false,
-          "nothingModifiedError": "Nothing has been modified!",
-          "templateUpdateComplete": false
+        "zip": {
+          "colClasses": "col-6",
+          "disabled": true,
+          "error": "",
+          "inputId": "zip",
+          "invalidError": "Zip Code is invalid, expected format is [xxxxx] or [xxxxx-xxxx].",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
+          "key": "zip",
+          "label": "ZIP",
+          "layout": "4.1.6",
+          "maxLength": 10,
+          "pattern": "^\\d{5}(?:[-]\\d{4})?$",
+          "patternErrorMessagePath": "CONSTANTS.ERRORMESSAGES.ZIPERROR",
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": ""
         },
-        "fields": {
-          "firstName": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "firstName",
-            "isUnique": false,
-            "key": "firstName",
-            "label": "First Name",
-            "loader": false,
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Please enter a valid first name."
-              }
-            }
-          },
-          "lastName": {
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "lastName",
-            "isUnique": false,
-            "key": "lastName",
-            "label": "Last Name",
-            "loader": false,
-            "pattern": null,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Please enter a valid last name."
-              }
-            }
-          },
-          "email": {
-            "disableDefaultBlurValidation": true,
-            "disabled": {
-              "default": false,
-              "condition": [
-                {
-                  "keyPath": "meta.subContext",
-                  "keyLocator": "props",
-                  "dependencyValue": [
-                    "myinfo"
-                  ],
-                  "value": true
-                }
-              ]
+        "country": {
+          "colClasses": "col-6",
+          "disabled": true,
+          "error": "",
+          "inputId": "country",
+          "key": "country",
+          "label": "Country",
+          "layout": "4.2.6",
+          "pattern": null,
+          "required": true,
+          "selectableCountries": [
+            {
+              "id": "china",
+              "value": "China",
+              "code": "CN",
+              "label": "China"
             },
-            "error": "",
-            "inputId": "email",
-            "invalidError": "Please enter a valid Email ID",
-            "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
-            "key": "email",
-            "label": "Email",
-            "loader": false,
-            "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
-            "patternPath": "CONSTANTS.REGEX.EMAIL",
-            "required": true,
-            "subtitle": "",
-            "type": "email",
-            "value": ""
-          },
-          "phone": {
-            "disabled": false,
-            "disableDefaultBlurValidation": true,
-            "error": "",
-            "inputId": "phone",
-            "invalidError": "Please enter a valid phone number",
-            "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
-            "key": "phone",
-            "label": "Phone",
-            "required": false,
-            "patternPath": "CONSTANTS.REGEX.PHONE",
-            "prebounceChangeHandler": "prebounceChangeHandler",
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "user_undertaking": {
-            "containerClasses": "mb-4",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking",
-            "inputId": "user_undertaking",
-            "key": "user_undertaking",
-            "layout": "5.1.0",
-            "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
-            "renderCondition": "{\"keyPath\": \"meta.subContext\", \"keyLocator\": \"props\", \"value\": \"publiccontact\"}",
-            "onChange": "undertakingtoggle",
-            "labelClasses": "user-undertaking-label",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "selected": false,
-            "type": "_checkBox",
-            "validators": {
-              "validateRequired": {
-                "error": "You must agree to this statement to save a public contact."
-              }
+            {
+              "id": "hongkong",
+              "value": "Hong Kong",
+              "code": "HK",
+              "label": "Hong Kong"
+            },
+            {
+              "id": "india",
+              "value": "India",
+              "code": "IN",
+              "label": "India"
+            },
+            {
+              "id": "usa",
+              "value": "USA",
+              "code": "USA",
+              "label": "USA"
             }
-          },
-          "errorSub": {
-            "containerClasses": "mt-n2 mb-3",
-            "error": "",
-            "errorClasses": "form-text custom-input-help-text text-danger",
-            "id": "errorSub",
-            "layout": "6.1.0",
-            "type": "_error"
-          },
-          "publicContactCreateActions": {
-            "colClasses": "new-brand-button-panel text-right pt-3 pb-3",
-            "containerClasses": "pr-4 bg-blue mx-n4",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "resetTemplateStatus",
-                "text": "Back",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "disabled": false,
-                "text": "Save",
-                "onClick": "handleSubmit",
-                "type": "button"
-              }
+          ],
+          "subtitle": "",
+          "taxCountryMismatchError": "At this time, Walmart Brand Portal is only accepting applications from sellers who are based in the United States, China, Hong Kong or India. If you have any questions, please contact brandportal@walmart.com.",
+          "type": "text",
+          "value": "USA"
+        },
+        "businessRegistrationDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "businessRegistrationDoc",
+          "changeHandlerArg": "businessRegistrationDoc",
+          "disabled": true,
+          "endpoint": "/api/company/uploadBusinessDocument",
+          "error": "",
+          "filename": "",
+          "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "id": "",
+          "inputId": "businessRegistrationDoc",
+          "key": "businessRegistrationDoc",
+          "label": "Optional: Attach additional documents (i.e. business registration)",
+          "layout": "5.1.0",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "businessDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
+        "companyOnboardingActions": {
+          "containerClasses": "mt-3",
+          "colClasses": "company-onboarding-button-panel text-right",
+          "layout": "7.1.0",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": true,
+              "text": "Continue",
+              "type": "submit"
             }
           }
         }
+      }
+    },
+    "BRANDREG": {
+      "sectionConfig": {
+        "sectionTitle": " Brand Information",
+        "sectionSubTitle": "Complete the form based on the information in the trademark registration."
       },
-      "NEWCLAIM": {
-        "sectionConfig": {
-          "id": "newclaim",
-          "sectionTitleNew": "New Claim",
-          "sectionTitleEdit": ""
-        },
-        "formConfig": {
-          "id": "newclaim",
+      "formConfig": {
+        "id": "brandreg",
+        "loader": false,
+        "formActions": "brandOnboardingActions"
+      },
+      "fields": {
+        "trademarkNumber": {
+          "disabled": false,
+          "error": "",
+          "ERROR5XX": "Unable to reach our services!",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
+          "fieldOk": false,
+          "inputId": "trademarkNumber",
+          "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
+          "isValid": false,
+          "key": "trademarkNumber",
+          "label": "Trademark Number",
           "loader": false,
-          "isSubmitDisabled": false,
-          "brandNameSelected": false,
-          "showCompleteForm": false,
-          "showUnderTaking3": false,
-          "formError": "",
-          "claimTypesWithMeta": [
+          "maxLength": 7,
+          "pattern": null,
+          "subtitle": "Please enter the trademark registration number. Only registered USPTO trademarks are accepted at this time.",
+          "required": true,
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "minLength": 7,
+              "maxLength": 7,
+              "error": "Trademark number should be 7 numeric characters long."
+            }
+          }
+        },
+        "brandName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "brandName",
+          "isUnique": false,
+          "key": "brandName",
+          "label": "Brand Name",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "Please ensure that the brand name matches the registered trademark name.",
+          "type": "text",
+          "value": ""
+        },
+        "additionalDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileSize": 7,
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "additionalDoc",
+          "changeHandlerArg": "additionalDoc",
+          "disabled": false,
+          "endpoint": "/api/company/uploadAdditionalDocument",
+          "error": "",
+          "filename": "",
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "icon": "Question",
+          "id": "",
+          "inputId": "additionalDoc",
+          "key": "additionalDoc",
+          "label": "Optional: Attach additional documents (i.e. trademark registration)",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "tooltipContentKey": "additionalDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
+        "comments": {
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "label": "Comments",
+          "pattern": null,
+          "required": false,
+          "subtitle": "",
+          "type": "textarea",
+          "value": ""
+        },
+        "undertaking": {
+          "checkBoxClasses": "user-undertaking",
+          "containerClasses": "mt-5",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "undertaking",
+          "inputId": "undertaking",
+          "key": "undertaking",
+          "label": "I have read and agree to the ",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "required": true,
+          "selected": false,
+          "tou": true,
+          "touLink": "Terms of Use.",
+          "type": "_checkBox"
+        },
+        "brandOnboardingActions": {
+          "containerClasses": "mt-3",
+          "colClasses": "brand-onboarding-button-panel text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "type": "_buttonsPanel",
+          "buttons": {
+            "back": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "gotoCompanyRegistration",
+              "text": "Back",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": true,
+              "onClick": "goToApplicationReview",
+              "text": "Continue",
+              "type": "button"
+            }
+          }
+        }
+      }
+    },
+    "DASHBOARD": {
+      "sectionConfig": {},
+      "formConfig": {
+        "id": "dashboard"
+      },
+      "fields": {}
+    },
+    "NEWUSER": {
+      "sectionConfig": {
+        "sectionTitleNew": "Invite a New User",
+        "sectionTitleEdit": "Edit User"
+      },
+      "formConfig": {
+        "formHeading": "Select the type of user you are inviting",
+        "id": "newuser",
+        "isDisabled": false,
+        "isUpdateTemplate": false,
+        "loader": false,
+        "submitDisabled": true,
+        "templateUpdateComplete": false,
+        "underwritingChecked": false
+      },
+      "fields": {
+        "userType": {
+          "containerClasses": "userType",
+          "disabled": false,
+          "name": "userType",
+          "inputId": "userType",
+          "key": "userType",
+          "label": "",
+          "layout": "1.1.0",
+          "required": true,
+          "value": "Internal",
+          "type": "radio",
+          "radioOptions": [
+            {
+              "id": 1,
+              "value": "Internal",
+              "label": "Internal"
+            },
+            {
+              "id": 2,
+              "value": "ThirdParty",
+              "label": "3rd Party"
+            }
+          ]
+        },
+        "fieldsHeader": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Please complete the following fields to invite a new user.",
+          "layout": "2.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "firstName": {
+          "containerClasses": "fname-lname",
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "firstName",
+          "key": "firstName",
+          "label": "First Name",
+          "layout": "4.1.6",
+          "pattern": null,
+          "required": true,
+          "type": "text",
+          "value": ""
+        },
+        "lastName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "lastName",
+          "key": "lastName",
+          "label": "Last Name",
+          "layout": "4.2.6",
+          "pattern": null,
+          "required": true,
+          "type": "text",
+          "value": ""
+        },
+        "companyName": {
+          "colClasses": "pl-1",
+          "containerClasses": "company",
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "companyName",
+          "key": "companyName",
+          "label": "Company Name",
+          "layout": "4.1.6",
+          "pattern": null,
+          "renderCondition": "{\"keyPath\": \"state.form.inputData.userType.value\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
+          "required": true,
+          "type": "text",
+          "value": ""
+        },
+        "emailId": {
+          "containerClasses": "contact-details",
+          "disabled": false,
+          "disableDefaultBlurValidation": true,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "emailId",
+          "invalidError": "Please enter a valid Email ID",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
+          "isUnique": true,
+          "key": "emailId",
+          "label": "Email",
+          "layout": "5.1.6",
+          "loader": false,
+          "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+          "patternPath": "CONSTANTS.REGEX.EMAIL",
+          "required": true,
+          "type": "email",
+          "value": ""
+        },
+        "phone": {
+          "disabled": false,
+          "disableDefaultBlurValidation": true,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "phone",
+          "invalidError": "Please enter a valid phone number",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
+          "preventHTMLRequiredValidation": true,
+          "isUnique": true,
+          "key": "phone",
+          "label": "Mobile Number",
+          "layout": "5.2.6",
+          "maxLength": 18,
+          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "prebounceChangeHandler": "prebounceChangeHandler",
+          "required": false,
+          "type": "text",
+          "value": ""
+        },
+        "role": {
+          "containerClasses": "role-and-brand",
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "role",
+          "key": "role",
+          "label": "Set Role",
+          "layout": "6.1.6",
+          "onChange": "setSelectInputValue",
+          "dropdownOptions": [],
+          "required": true,
+          "type": "select",
+          "value": ""
+        },
+        "brands": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "brands",
+          "key": "brands",
+          "label": "Assign Brand",
+          "layout": "6.2.6",
+          "onChange": "setMultiSelectInputValue",
+          "dropdownOptions": [],
+          "required": true,
+          "type": "multiselect",
+          "value": ""
+        },
+        "userActions": {
+          "containerClasses": "action-footer",
+          "colClasses": "new-user-button-panel text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "layout": "7.1.0",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": true,
+              "textObj": "{\"condition\": \"state.form.isUpdateTemplate\", \"true\": \"Save\", \"false\": \"Invite\"}",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "EDITBRANDTRADEMARK": {
+      "sectionConfig": {
+        "sectionTitleNew": "Edit Trademark",
+        "sectionTitleEdit": "Edit Brand Details"
+      },
+      "formConfig": {
+        "formHeading": "Please update the following information.",
+        "id": "newbrand",
+        "isSubmitDisabled": true,
+        "isUpdateTemplate": false,
+        "loader": false,
+        "templateUpdateComplete": false
+      },
+      "fields": {
+        "brandName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "brandName",
+          "isUnique": false,
+          "key": "brandName",
+          "label": "Brand Name",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": ""
+        },
+        "trademarkNumber": {
+          "disabled": false,
+          "error": "",
+          "ERROR5XX": "Unable to reach our services!",
+          "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
+          "fieldOk": false,
+          "inputId": "trademarkNumber",
+          "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
+          "isValid": false,
+          "key": "trademarkNumber",
+          "label": "Trademark Number",
+          "loader": false,
+          "maxLength": 7,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "minLength": 7,
+              "maxLength": 7,
+              "error": "Trademark number should be 7 numeric characters long."
+            }
+          }
+        },
+        "comments": {
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "label": "Description (Optional)",
+          "pattern": null,
+          "required": false,
+          "subtitle": "Include a description that helps to identify the trademark number",
+          "type": "text",
+          "placeholder": "Please provide additional information about your brand.",
+          "value": ""
+        },
+        "activeStatus": {
+          "active": false,
+          "onChange": "activeStatusToggle",
+          "disabled": false,
+          "error": "",
+          "inputId": "activeStatus",
+          "key": "activeStatus",
+          "label": "Active",
+          "pattern": null,
+          "rowClasses": "ml-2",
+          "required": false,
+          "subtitle": "",
+          "type": "toggle",
+          "placeholder": "",
+          "value": ""
+        },
+        "brandCreateActions": {
+          "containerClasses": "mt-3",
+          "colClasses": "new-brand-button-panel text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": true,
+              "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "NEWBRAND": {
+      "sectionConfig": {
+        "sectionTitleNew": "Register a Brand",
+        "sectionTitleEdit": "Edit Brand Details"
+      },
+      "formConfig": {
+        "formHeading": "Please complete the following fields to register your brand.",
+        "id": "newbrand",
+        "isSubmitDisabled": true,
+        "isUpdateTemplate": false,
+        "loader": false,
+        "templateUpdateComplete": false
+      },
+      "fields": {
+        "trademarkDetailsList": {
+          "addLabel": "Add trademark number",
+          "disableAddItem": true,
+          "inputId": "items",
+          "required": true,
+          "key": "items",
+          "layout": "2.1.0",
+          "maxItems": "10",
+          "type": "_fieldSet",
+          "onChangeItem": "bubbleItemList",
+          "itemList": [],
+          "itemListTemplate": {
+            "trademarkNumber": {
+              "disabled": false,
+              "error": "",
+              "ERROR5XX": "Unable to reach our services!",
+              "excludeRowContainer": true,
+              "EXISTS": "__trademarkNumber__ is already registered with a Walmart Brand Portal account. For more information please contact brandportal@walmart.com",
+              "fieldOk": false,
+              "inputId": "trademarkNumber",
+              "INVALID": "__trademarkNumber__ is not a USPTO registered trademark number.",
+              "isValid": false,
+              "key": "trademarkNumber",
+              "label": "Trademark Number",
+              "layout": "1.1.5",
+              "loader": false,
+              "maxLength": 7,
+              "pattern": null,
+              "required": true,
+              "subtitle": "",
+              "type": "text",
+              "value": "",
+              "validators": {
+                "validateLength": {
+                  "minLength": 7,
+                  "maxLength": 7,
+                  "error": "Trademark number should be 7 numeric characters long."
+                }
+              }
+            },
+            "description": {
+              "error": "",
+              "inputId": "description",
+              "key": "description",
+              "label": "Description (optional)",
+              "layout": "1.2.6",
+              "required": false,
+              "type": "text",
+              "value": ""
+            }
+          }
+        },
+        "brandName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "brandName",
+          "isEditable": true,
+          "isUnique": false,
+          "key": "brandName",
+          "label": "Brand Name",
+          "layout": "1.1.0",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "select",
+          "value": ""
+        },
+        "comments": {
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "label": "Comments",
+          "pattern": null,
+          "required": false,
+          "subtitle": "",
+          "type": "textarea",
+          "placeholder": "Please provide additional information about your brand.",
+          "value": ""
+        },
+        "brandCreateActions": {
+          "containerClasses": "mt-3",
+          "colClasses": "new-brand-button-panel text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": true,
+              "text": "Submit",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "CONTACTINFO": {
+      "sectionConfig": {
+        "id": "newPublicContact",
+        "sectionTitleNew": "Create Public Contact",
+        "sectionTitleEdit": "Create Public Contact"
+      },
+      "formConfig": {
+        "formHeading": "Please provide the following details:",
+        "id": "newPublicContact",
+        "isSubmitDisabled": true,
+        "isUpdateTemplate": false,
+        "loader": false,
+        "nothingModifiedError": "Nothing has been modified!",
+        "templateUpdateComplete": false
+      },
+      "fields": {
+        "firstName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "firstName",
+          "isUnique": false,
+          "key": "firstName",
+          "label": "First Name",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid first name."
+            }
+          }
+        },
+        "lastName": {
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "lastName",
+          "isUnique": false,
+          "key": "lastName",
+          "label": "Last Name",
+          "loader": false,
+          "pattern": null,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter a valid last name."
+            }
+          }
+        },
+        "email": {
+          "disableDefaultBlurValidation": true,
+          "disabled": {
+            "default": false,
+            "condition": [
+              {
+                "keyPath": "meta.subContext",
+                "keyLocator": "props",
+                "dependencyValue": [
+                  "myinfo"
+                ],
+                "value": true
+              }
+            ]
+          },
+          "error": "",
+          "inputId": "email",
+          "invalidError": "Please enter a valid Email ID",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.EMAILERROR",
+          "key": "email",
+          "label": "Email",
+          "loader": false,
+          "pattern": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+          "patternPath": "CONSTANTS.REGEX.EMAIL",
+          "required": true,
+          "subtitle": "",
+          "type": "email",
+          "value": ""
+        },
+        "phone": {
+          "disabled": false,
+          "disableDefaultBlurValidation": true,
+          "error": "",
+          "inputId": "phone",
+          "invalidError": "Please enter a valid phone number",
+          "invalidErrorPath": "CONSTANTS.ERRORMESSAGES.PHONEERROR",
+          "key": "phone",
+          "label": "Phone",
+          "required": true,
+          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "prebounceChangeHandler": "prebounceChangeHandler",
+          "subtitle": "",
+          "type": "text",
+          "value": ""
+        },
+        "user_undertaking": {
+          "containerClasses": "mb-4",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking",
+          "inputId": "user_undertaking",
+          "key": "user_undertaking",
+          "layout": "5.1.0",
+          "label": "I understand that this information will be shared with sellers reported by the user(s) of this Brand Portal account.",
+          "renderCondition": "{\"keyPath\": \"meta.subContext\", \"keyLocator\": \"props\", \"value\": \"publiccontact\"}",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to save a public contact."
+            }
+          }
+        },
+        "errorSub": {
+          "containerClasses": "mt-n2 mb-3",
+          "error": "",
+          "errorClasses": "form-text custom-input-help-text text-danger",
+          "id": "errorSub",
+          "layout": "6.1.0",
+          "type": "_error"
+        },
+        "publicContactCreateActions": {
+          "colClasses": "new-brand-button-panel text-right pt-3 pb-3",
+          "containerClasses": "pr-4 bg-blue mx-n4",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Back",
+              "type": "button"
+            },
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "disabled": false,
+              "text": "Save",
+              "onClick": "handleSubmit",
+              "type": "button"
+            }
+          }
+        }
+      }
+    },
+    "NEWCLAIM": {
+      "sectionConfig": {
+        "id": "newclaim",
+        "sectionTitleNew": "New Claim",
+        "sectionTitleEdit": ""
+      },
+      "formConfig": {
+        "id": "newclaim",
+        "loader": false,
+        "isSubmitDisabled": false,
+        "brandNameSelected": false,
+        "showCompleteForm": false,
+        "showUnderTaking3": false,
+        "formError": "",
+        "claimTypesWithMeta": [
+          {
+            "claimType": "trademark",
+            "label": "Trademark",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
+            "underTakingOwnerLabel": "trademark"
+          },
+          {
+            "claimType": "patent",
+            "label": "Patent",
+            "claimTypeIdentifierLabel": "Patent Number",
+            "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
+            "underTakingOwnerLabel": "patent"
+          },
+          {
+            "claimType": "counterfeit",
+            "label": "Counterfeit",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "subtitle": "Inauthentic items that are intended to appear authentic",
+            "underTakingOwnerLabel": "intellectual property"
+          },
+          {
+            "claimType": "copyright",
+            "label": "Copyright",
+            "claimTypeIdentifierLabel": "Copyright Number",
+            "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
+            "underTakingOwnerLabel": "copyright"
+          }
+        ]
+      },
+      "fields": {
+        "fieldsHeader_1": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Select your brand",
+          "layout": "1.1.6",
+          "type": "_formFieldsHeader"
+        },
+        "brandName": {
+          "disabled": false,
+          "dropdownOptions": [],
+          "error": "",
+          "inputId": "brandName",
+          "key": "brandName",
+          "label": "Brand Name",
+          "layout": "2.1.6",
+          "onChange": "setSelectInputValue",
+          "invalidError": "Please select a brand.",
+          "pattern": null,
+          "required": true,
+          "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
+          "type": "select",
+          "unpadSubtitle": true,
+          "value": ""
+        },
+        "fieldsHeader_2": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Select the type of infringement you are reporting",
+          "layout": "3.1.0",
+          "type": "_formFieldsHeader",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
+        },
+        "banner": {
+          "type": "_banner",
+          "layout": "4.1.0",
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
+        },
+        "claimType": {
+          "customChangeHandler": "customChangeHandler",
+          "disabled": false,
+          "dropdownOptions": [
             {
               "claimType": "trademark",
               "label": "Trademark",
@@ -958,1644 +1058,1572 @@
               "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
               "underTakingOwnerLabel": "copyright"
             }
-          ]
-        },
-        "fields": {
-          "fieldsHeader_1": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Select your brand",
-            "layout": "1.1.6",
-            "type": "_formFieldsHeader"
-          },
-          "brandName": {
-            "disabled": false,
-            "dropdownOptions": [],
-            "error": "",
-            "inputId": "brandName",
-            "key": "brandName",
-            "label": "Brand Name",
-            "layout": "2.1.6",
-            "onChange": "setSelectInputValue",
-            "invalidError": "Please select a brand.",
-            "pattern": null,
-            "required": true,
-            "subtitle": "If you do not see a brand in this list, please have the administrator of the account register a new brand.",
-            "type": "select",
-            "unpadSubtitle": true,
-            "value": ""
-          },
-          "fieldsHeader_2": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Select the type of infringement you are reporting",
-            "layout": "3.1.0",
-            "type": "_formFieldsHeader",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
-          },
-          "banner": {
-            "type": "_banner",
-            "layout": "4.1.0",
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}"
-          },
-          "claimType": {
-            "customChangeHandler": "customChangeHandler",
-            "disabled": false,
-            "dropdownOptions": [
-              {
-                "claimType": "trademark",
-                "label": "Trademark",
-                "claimTypeIdentifierLabel": "Trademark Number",
-                "subtitle": "Unauthorized use of a trademark on or in connection with goods in a manner that is likely to cause confusion about the source of goods",
-                "underTakingOwnerLabel": "trademark"
-              },
-              {
-                "claimType": "patent",
-                "label": "Patent",
-                "claimTypeIdentifierLabel": "Patent Number",
-                "subtitle": "The unauthorized making, using, offering to sell, selling, or importing into the US of a patented invention",
-                "underTakingOwnerLabel": "patent"
-              },
-              {
-                "claimType": "counterfeit",
-                "label": "Counterfeit",
-                "claimTypeIdentifierLabel": "Trademark Number",
-                "subtitle": "Inauthentic items that are intended to appear authentic",
-                "underTakingOwnerLabel": "intellectual property"
-              },
-              {
-                "claimType": "copyright",
-                "label": "Copyright",
-                "claimTypeIdentifierLabel": "Copyright Number",
-                "subtitle": "Unauthorized use of a creative work that is protected under copyright law",
-                "underTakingOwnerLabel": "copyright"
-              }
-            ],
-            "error": "",
-            "inputId": "claimType",
-            "invalidError": "Please select a claim type.",
-            "label": "Claim Type",
-            "key": "claimType",
-            "layout": "5.1.6",
-            "onChange": "setSelectInputValue",
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "pattern": null,
-            "subtitle": "Not sure which claim type to select? `learnMore`",
-            "link": {
-              "learnMore": {
-                "url": "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
-                "placeHolder": "Learn more"
-              }
-            },
-            "type": "select",
-            "value": ""
-          },
-          "claimTypeIdentifier": {
-            "disabled": true,
-            "label": "Claim Type Identifier",
-            "key": "claimTypeIdentifier",
-            "layout": "5.2.6",
-            "inputId": "claimTypeIdentifier",
-            "invalidError": "Please select a claim type.",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "required": true,
-            "value": "",
-            "type": "text",
-            "pattern": null,
-            "isValid": false,
-            "subtitle": "",
-            "error": "",
-            "onChange": "onChange"
-          },
-          "fieldsHeader_3": {
-            "excludeColContainer": true,
-            "excludeRowContainer": true,
-            "header": "Please fill out the following details to submit your claim",
-            "layout": "6.1.0",
-            "tooltipContentKey": "orderNumberContent",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "type": "_formFieldsHeader",
-            "icon": "Question"
-          },
-          "urlItems": {
-            "disableAddItem": true,
-            "error": "",
-            "fieldLoader": false,
-            "inputId": "items",
-            "isSellerNameDisabled": true,
-            "required": true,
-            "key": "items",
-            "layout": "7.1.0",
-            "type": "_urlItems",
-            "onChangeSellerName": "setSelectInputValue",
-            "onChangeItem": "getItemListFromChild",
-            "onChangeOrderNumber": "onChange",
-            "onChangeUrl": "onChange",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "itemList": [
-              {
-                "id": "item-0",
-                "url": {
-                  "label": "Item URL",
-                  "required": true,
-                  "value": "",
-                  "type": "url",
-                  "disabled": false,
-                  "isValid": false,
-                  "invalidError": "Enter a valid URL.",
-                  "pattern": "https://www.walmart.com/.+",
-                  "patternErrorMessage": "Enter a valid URL.",
-                  "subtitle": "",
-                  "error": ""
-                },
-                "sellerName": {
-                  "dropdownOptions": [],
-                  "label": "Seller Name",
-                  "required": true,
-                  "value": "",
-                  "pattern": null,
-                  "disabled": true,
-                  "subtitle": "",
-                  "type": "multiselect",
-                  "invalidError": "Select at least one seller to report.",
-                  "error": "",
-                  "listClasses": "max-width-unset",
-                  "validators": {
-                    "validateLength": {
-                      "minLength": "3",
-                      "error": "Minimum length is 3 characters"
-                    }
-                  }
-                },
-                "orderNumber": {
-                  "label": "Order Number(s)",
-                  "required": false,
-                  "value": "",
-                  // "pattern": "^([0-9\,])+$",
-                  // "patternErrorMessage": "Enter a valid Order Number",
-                  "disabled": false,
-                  "subtitle": "",
-                  "icon": "Question",
-                  "preventHTMLRequiredValidation": true,
-                  "renderCondition": "{\"keyPath\": \"parentRef.state.form.inputData.claimType.value\", \"keyLocator\": \"props\", \"value\": \"Counterfeit\"}",
-                  "type": "url",
-                  // "invalidError": "Enter a valid Order Number.",
-                  "error": "",
-                  "tooltipContentKey": "orderNumberContent",
-                  "validators": {
-                    "validateLength": {
-                      "minLength": "12",
-                      "error": "Minimum length is 12 characters"
-                    },
-                    "validateRegex": {
-                      "dataRuleRegex": "(^[,0-9]{12,}$|^$)",
-                      "error": "Please enter a valid Order Number"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          "comments": {
-            "containerClasses": "mb-3",
-            "disabled": false,
-            "error": "",
-            "inputId": "comments",
-            "key": "comments",
-            "layout": "8.1.0",
-            "label": "Comments",
-            "pattern": null,
-            "prebounceChangeHandler": "trimSpaces",
-            "required": true,
-            "rowCount": 2,
-            "subtitle": "",
-            "type": "textarea",
-            "value": "",
-            "placeholder": "Please provide additional information about the claim",
-            "onChange": "onChange",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "validators": {
-              "validateRequired": {
-                "error": " "
-              },
-              "validateLength": {
-                "minLength": 20,
-                "maxLength": 2000,
-                "error": "Comments should be between 20 and 2000 characters!"
-              }
-            }
-          },
-          "claimDoc": {
-            "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
-            "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
-            "buttonText": "Upload",
-            "cancelHandlerArg": "claimDoc",
-            "changeHandlerArg": "claimDoc",
-            "disabled": false,
-            "endpoint": "/api/claims/uploadClaimDocument",
-            "error": "",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "filename": "",
-            "icon": "Question",
-            "allowedFileSize": 7,
-            "fileValidationError": "Please follow the guidelines to upload attachments.",
-            "id": "",
-            "multiple": true,
-            "inputId": "claimDoc",
-            "documentList": [],
-            "key": "claimDoc",
-            "label": "Attach documents (Optional)",
-            "layout": "9.0.0",
-            "onCancel": "cancelSelection",
-            "onChange": "handleFileUpload",
-            "tooltipContentKey": "claimDocContent",
-            "type": "_fileUploader",
-            "uploading": false,
-            "uploadPercentage": 0
-          },
-          "user_undertaking_1": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_1",
-            "inputId": "user_undertaking_1",
-            "invalidError": "You must agree to this statement in order to submit this claim.",
-            "key": "user_undertaking_1",
-            "layout": "10.1.0",
-            "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __claimType__ owner, its agent, or the law.",
-            "label": "",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "user_undertaking_2": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_2",
-            "inputId": "user_undertaking_2",
-            "invalidError": "You must agree to this statement in order to submit this claim.",
-            "key": "user_undertaking_2",
-            "layout": "11.1.0",
-            "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "user_undertaking_3": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_3",
-            "invalidError": "You must agree to this statement in order to submit this claim.",
-            "inputId": "user_undertaking_3",
-            "key": "user_undertaking_3",
-            "layout": "12.1.0",
-            "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"form.showUnderTaking3\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "user_undertaking_4": {
-            "category": "userUnderTaking",
-            "containerClasses": "mb-2",
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_4",
-            "inputId": "user_undertaking_4",
-            "invalidError": "You must agree to this statement in order to submit this claim.",
-            "key": "user_undertaking_4",
-            "layout": "13.1.0",
-            "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "required": true,
-            "selected": false,
-            "type": "_checkBox"
-          },
-          "fieldsHeader_4": {
-            "containerClasses": "font-weight-bold mt-2",
-            "header": "Typing your full name in this box will act as your digital signature",
-            "layout": "14.1.0",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "signature": {
-            "label": "Digital Signature",
-            "containerClasses": "signature",
-            "error": "",
-            "disabled": false,
-            "required": true,
-            "inputId": "signature",
-            "invalidError": "Digital signature is required.",
-            "value": "",
-            "key": "signature",
-            "layout": "15.1.8",
-            "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "type": "text",
-            "pattern": null,
-            "subtitle": "",
-            "onChange": "onChange"
-          },
-          "userActions": {
-            "containerClasses": "modal-footer action-footer",
-            "colClasses": "text-right",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "layout": "16.1.0",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "disabled": false,
-                "onClick": "resetTemplateStatus",
-                "text": "Cancel",
-                "type": "button"
-              },
-              "submit": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
-                "disabled": false,
-                "onClick": "handleSubmit",
-                "text": "Submit",
-                "type": "submit"
-              }
-            }
-          }
-        }
-      },
-      "RESETPASSWORD": {
-        "sectionConfig": {
-          "sectionTitle": "Change Password"
-        },
-        "formConfig": {
-          "apiPath": "/api/users/resetPassword",
-          "error": "",
-          "formHeading": "Please type your current password and then create the new one.",
-          "id": "resetPassword",
-          "incorrectPasswordError": "Current password is incorrect.",
-          "loader": false,
-          "old5PasswordsError": "New password can not be 1 of your previous 5 passwords",
-          "passwordsDifferent": false,
-          "passwordChangedMessage": "Password Changed Successfully!",
-          "failureMessage": "Unable to process your request, please try in sometime",
-          "passwordGuidance": "",
-          "passwordMismatchError": "\"New Password\" and \"Confirm Password\" do not match",
-          "passwordPolicyMessage": "Password doesn't adhere to Walmart Brand Portal's Security policy.",
-          "toastMessageExistingErrors": "Please resolve existing errors before proceeding!",
-          "falconPasswordMismatchError": "Password did not match.",
-          "falconPasswordPolicyError": "The specified password does not meet defined policy.",
-          "falconSamePasswordError": "New password matches old password."
-        },
-        "fields": {
-          "currentPassword": {
-            "canShowPassword": true,
-            "colClasses": "px-0",
-            "error": "",
-            "excludeRowContainer": true,
-            "id": "currentPassword",
-            "inputId": "currentPassword",
-            "key": "currentPassword",
-            "label": "Current Password",
-            "layout": "1.1.12",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "password",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Please enter current password."
-              }
-            }
-          },
-          "newPassword": {
-            "canShowPassword": true,
-            "colClasses": "px-0",
-            "error": "",
-            "inputId": "newPassword",
-            "key": "newPassword",
-            "label": "New Password",
-            "layout": "1.1.12",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "password",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Please enter new password."
-              },
-              "validatePasswordMatch": {
-                "siblingField": "state.form.inputData.confirmNewPassword"
-              }
-            }
-          },
-          "confirmNewPassword": {
-            "canShowPassword": true,
-            "colClasses": "px-0",
-            "error": "",
-            "inputId": "confirmNewPassword",
-            "key": "confirmNewPassword",
-            "label": "Confirm New Password",
-            "layout": "1.1.12",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "isLastField": true,
-            "subtitle": "",
-            "type": "password",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Please confirm new password."
-              },
-              "validatePasswordMatch": {
-                "siblingField": "state.form.inputData.newPassword"
-              }
-            }
-          },
-          "errorSub": {
-            "containerClasses": "pl-2 mt-n23 mb-2rem pt-2",
-            "error": "",
-            "errorClasses": "form-text custom-input-help-text text-danger",
-            "id": "errorSub",
-            "layout": "1.1.12",
-            "type": "_error"
-          },
-          "resetPasswordAction": {
-            "containerClasses": "pr-4 text-right bg-blue py-3 mx-n4",
-            "colClasses": "reset-password-button-panel text-right pr-0",
-            "excludeColContainer": true,
-            "layout": "1.1.12",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "cancel": {
-                "classes": "btn btn-sm cancel-btn text-primary",
-                "onClick": "resetTemplateStatus",
-                "text": "Back",
-                "type": "button"
-              },
-              "changePassword": {
-                "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
-                "text": "Change Password",
-                "type": "submit"
-              }
-            }
-          }
-        }
-      },
-      "USERPROFILE": {
-        "sectionConfig": {
-          "headerClasses": "content-header-row h3 p-4",
-          "formClasses": "row content-row p-4 mt-4",
-          "sectionTitle": "User Profile"
-        },
-        "formConfig": {
-          "apiPath": "/api/users",
-          "excludeRowContainer": true,
-          "id": "userProfile",
-          "loader": false,
-          "isDisabled": true,
-          "profileSaveMessage": "Changes to Profile Successfully Saved!"
-        },
-        "fields": {
-          "firstName": {
-            "disabled": true,
-            "error": "",
-            "id": "firstName",
-            "inputId": "firstName",
-            "invalidError": "Please enter a valid First Name",
-            "key": "firstName",
-            "label": "First Name",
-            "layout": "1.1.6",
-            "patternPath": "CONSTANTS.REGEX.NAMES",
-            "patternErrorMessage": "Please enter a valid first name.",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "type": "text",
-            "value": "",
-            "initValuePath": "firstName"
-          },
-          "lastName": {
-            "disabled": true,
-            "error": "",
-            "id": "lastName",
-            "inputId": "lastName",
-            "invalidError": "Please enter a valid Last Name",
-            "key": "lastName",
-            "label": "Last Name",
-            "layout": "1.1.6",
-            "patternPath": "CONSTANTS.REGEX.NAMES",
-            "patternErrorMessage": "Please enter a valid last name.",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "type": "text",
-            "value": "",
-            "initValuePath": "lastName"
-          },
-          "companyName": {
-            "colClasses": "mr-1",
-            "disabled": true,
-            "error": "",
-            "id": "companyName",
-            "inputId": "companyName",
-            "invalidError": "Please enter valid Company Name",
-            "key": "companyName",
-            "label": "Company Name",
-            "layout": "1.1.6",
-            "patternPath": "CONSTANTS.REGEX.COMPANY",
-            "patternErrorMessage": "Please provide a valid company name.",
-            "preventHTMLRequiredValidation": true,
-            "renderCondition": "{\"keyPath\": \"props.userProfile.type\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
-            "required": true,
-            "type": "text",
-            "value": "",
-            "initValuePath": "organization.name"
-          },
-          "emailId": {
-            "disabled": true,
-            "error": "",
-            "id": "emailId",
-            "inputId": "emailId",
-            "key": "emailId",
-            "label": "Email",
-            "layout": "1.1.6",
-            "pattern": null,
-            "required": true,
-            "type": "email",
-            "value": "",
-            "initValuePath": "email"
-          },
-          "phone": {
-            "disabled": true,
-            "error": "",
-            "id": "phone",
-            "inputId": "phone",
-            "invalidError": "Please select a valid Phone Number",
-            "key": "phone",
-            "label": "Mobile Number",
-            "layout": "1.1.6",
-            "maxLength": 17,
-            "patternPath": "CONSTANTS.REGEX.PHONE",
-            "prebounceChangeHandler": "prebounceChangeHandler",
-            "preventHTMLRequiredValidation": true,
-            "required": false,
-            "type": "text",
-            "value": "",
-            "initValuePath": "phoneNumber"
-          },
-          "resetPasswordAction": {
-            "containerClasses": "password-reset-col mb-n3",
-            "colClasses": "",
-            "layout": "1.1.6",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "changePassword": {
-                "classes": "btn btn-outline-primary btn-sm px-3 reset-password",
-                "onClick": "displayChangePassword",
-                "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}",
-                "text": "Change Password",
-                "type": "button"
-              },
-              "manage": {
-                "classes": "btn btn-primary btn-sm px-4 font-size-14 manage-profile",
-                "onClick": "displayManageProfileNotification",
-                "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
-                "text": "Manage Seller Center Profile",
-                "type": "submit"
-              }
-            }
-          },
-          "editActions": {
-            "containerClasses": "h-40 text-right",
-            "colClasses": "edit-button-panel text-right",
-            "layout": "1.1.6",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "edit": {
-                "classes": "btn btn-primary btn-sm px-4",
-                "handlerArg": false,
-                "onClick": "disableInput",
-                "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-                "text": "Edit",
-                "type": "button"
-              },
-              "cancel": {
-                "classes": "btn btn-link font-size-14 px-4 mr-3",
-                "handlerArg": true,
-                "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-                "onClick": "disableInput",
-                "text": "Cancel",
-                "type": "button"
-              },
-              "save": {
-                "classes": "btn btn-primary btn-sm px-4 font-size-14",
-                "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
-                "text": "Save",
-                "type": "submit"
-              }
-            }
-          }
-        }
-      },
-      "WEBFORM": {
-        "sectionConfig": {
-          "headerClasses": "content-header-row h3 p-4",
-          "formClasses": "row content-row p-4 mt-4"
-        },
-        "formConfig": {
-          "actionsToDisable": [
-            "submit"
           ],
-          "id": "webform",
-          "loader": false,
-          "isSubmitDisabled": true,
-          "userTypeSelected": false,
-          "claimTypeSelected": false,
-          "showClaimIdentifierNumber": false,
-          "counterfeitValidatorLength": 13,
-          "counterfeitValidatorError": "Please enter valid order number",
-          "formActions": "webformActions",
-          "formError": "",
-          "claimTypes": [
+          "error": "",
+          "inputId": "claimType",
+          "invalidError": "Please select a claim type.",
+          "label": "Claim Type",
+          "key": "claimType",
+          "layout": "5.1.6",
+          "onChange": "setSelectInputValue",
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"brandNameSelected\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "pattern": null,
+          "subtitle": "Not sure which claim type to select? `learnMore`",
+          "link": {
+            "learnMore": {
+              "url": "https://www.walmart.com/help/article/claims-of-intellectual-property-infringement/6171b9ac00384f3f920aa14a9c08bdac",
+              "placeHolder": "Learn more"
+            }
+          },
+          "type": "select",
+          "value": ""
+        },
+        "claimTypeIdentifier": {
+          "disabled": true,
+          "label": "Claim Type Identifier",
+          "key": "claimTypeIdentifier",
+          "layout": "5.2.6",
+          "inputId": "claimTypeIdentifier",
+          "invalidError": "Please select a claim type.",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "value": "",
+          "type": "text",
+          "pattern": null,
+          "isValid": false,
+          "subtitle": "",
+          "error": "",
+          "onChange": "onChange"
+        },
+        "fieldsHeader_3": {
+          "excludeColContainer": true,
+          "excludeRowContainer": true,
+          "header": "Please fill out the following details to submit your claim",
+          "layout": "6.1.0",
+          "tooltipContentKey": "orderNumberContent",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "_formFieldsHeader",
+          "icon": "Question"
+        },
+        "urlItems": {
+          "disableAddItem": true,
+          "error": "",
+          "fieldLoader": false,
+          "inputId": "items",
+          "isSellerNameDisabled": true,
+          "required": true,
+          "key": "items",
+          "layout": "7.1.0",
+          "type": "_urlItems",
+          "onChangeSellerName": "setSelectInputValue",
+          "onChangeItem": "getItemListFromChild",
+          "onChangeOrderNumber": "onChange",
+          "onChangeUrl": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "itemList": [
             {
-              "claimType": "trademark",
-              "claimTypeSectionHeader": "Trademark Information",
-              "label": "Trademark",
-              "claimTypeIdentifierLabel": "Trademark Number",
-              "companyNameIdentifierLabel": "Trademark Company Name",
-              "ownerNameIdentifierLabel": "Trademark Owner Name",
-              "underTakingOwnerLabel": "trademark owner"
-            },
-            {
-              "claimType": "patent",
-              "claimTypeSectionHeader": "Patent Information",
-              "label": "Patent",
-              "claimTypeIdentifierLabel": "Patent Number",
-              "companyNameIdentifierLabel": "Patent Company Name",
-              "ownerNameIdentifierLabel": "Patent Owner Name",
-              "underTakingOwnerLabel": "patent owner"
-            },
-            {
-              "claimType": "counterfeit",
-              "claimTypeSectionHeader": "Counterfeit Information",
-              "label": "Counterfeit",
-              "claimTypeIdentifierLabel": "Order Number",
-              "companyNameIdentifierLabel": "Rights Owner Company Name",
-              "ownerNameIdentifierLabel": "Rights Owner Name",
-              "underTakingOwnerLabel": "intellectual property owner"
-            },
-            {
-              "claimType": "copyright",
-              "claimTypeSectionHeader": "Copyright Information",
-              "label": "Copyright",
-              "claimTypeIdentifierLabel": "",
-              "companyNameIdentifierLabel": "Copyright Company Name",
-              "ownerNameIdentifierLabel": "Copyright Owner Name",
-              "underTakingOwnerLabel": "copyright owner"
+              "id": "item-0",
+              "url": {
+                "label": "Item URL",
+                "required": true,
+                "value": "",
+                "type": "url",
+                "disabled": false,
+                "isValid": false,
+                "invalidError": "Enter a valid URL.",
+                "pattern": "https://www.walmart.com/.+",
+                "patternErrorMessage": "Enter a valid URL.",
+                "subtitle": "",
+                "error": ""
+              },
+              "sellerName": {
+                "dropdownOptions": [],
+                "label": "Seller Name",
+                "required": true,
+                "value": "",
+                "pattern": null,
+                "disabled": true,
+                "subtitle": "",
+                "type": "multiselect",
+                "invalidError": "Select at least one seller to report.",
+                "error": "",
+                "listClasses": "max-width-unset",
+                "validators": {
+                  "validateLength": {
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
+                  }
+                }
+              },
+              "orderNumber": {
+                "label": "Order Number(s)",
+                "required": false,
+                "value": "",
+                // "pattern": "^([0-9\,])+$",
+                // "patternErrorMessage": "Enter a valid Order Number",
+                "disabled": false,
+                "subtitle": "",
+                "icon": "Question",
+                "preventHTMLRequiredValidation": true,
+                "renderCondition": "{\"keyPath\": \"parentRef.state.form.inputData.claimType.value\", \"keyLocator\": \"props\", \"value\": \"Counterfeit\"}",
+                "type": "url",
+                // "invalidError": "Enter a valid Order Number.",
+                "error": "",
+                "tooltipContentKey": "orderNumberContent",
+                "validators": {
+                  "validateLength": {
+                    "minLength": "12",
+                    "error": "Minimum length is 12 characters"
+                  },
+                  "validateRegex": {
+                    "dataRuleRegex": "(^[,0-9]{12,}$|^$)",
+                    "error": "Please enter a valid Order Number"
+                  }
+                }
+              }
             }
           ]
         },
-        "fields": {
-          "fieldsHeader_1": {
-            "containerClasses": "font-weight-bold",
-            "header": "Filing Claim As",
-            "layout": "1.1.0",
-            "type": "_formFieldsHeader"
-          },
-          "userType": {
-            "containerClasses": "mb-3",
-            "customChangeHandler": "customUserTypeChangeHandler",
-            "disabled": false,
-            "error": "",
-            "inputId": "userType",
-            "invalidError": "Please select user role",
-            "key": "userType",
-            "label": "User Type",
-            "layout": "2.1.6",
-            "onChange": "setSelectInputValue",
-            "dropdownOptions": [
-              {
-                "id": "customer",
-                "label": "Customer",
-                "value": "Customer"
-              },
-              {
-                "id": "rightsOwner",
-                "label": "Rights Owner",
-                "value": "Rights Owner"
-              },
-              {
-                "id": "thirdParty",
-                "label": "Third party",
-                "value": "Third party"
-              }
-            ],
-            "required": true,
-            "type": "select",
-            "preventHTMLRequiredValidation": true,
-            "tooltipContent": "This is a test tooltip",
-            "tooltipBody": [
-              {
-                "heading": "Rights Owner",
-                "body": "Brand owners with registered trademarks."
-              },
-              {
-                "heading": "Third Party representative",
-                "body": "Authorized third-party brand protection agencies/ Legal representatives."
-              },
-              {
-                "heading": "Customer",
-                "body": "Walmart customer."
-              }
-            ],
-            "value": ""
-          },
-          "fieldsHeader_2": {
-            "containerClasses": "font-weight-bold",
-            "header": "Type of infringement",
-            "layout": "12.1.6",
-            "type": "_formFieldsHeader"
-          },
-          "claimType": {
-            "containerClasses": "mb-3",
-            "customChangeHandler": "customChangeHandler",
-            "disabled": false,
-            "error": "",
-            "inputId": "claimType",
-            "key": "claimType",
-            "label": "Claim type",
-            "layout": "13.1.6",
-            "onChange": "setSelectInputValue",
-            "dropdownOptions": [],
-            "required": true,
-            "type": "select",
-            "value": ""
-          },
-          "fieldsHeader_3": {
-            "containerClasses": "font-weight-bold",
-            "header": "Contact Information",
-            "layout": "3.1.0",
-            "type": "_formFieldsHeader"
-          },
-          "firstName": {
-            "disabled": false,
-            "error": "",
-            "id": "firstName",
-            "inputId": "firstName",
-            "key": "firstName",
-            "label": "First Name",
-            "layout": "5.1.6",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "type": "text",
-            "value": "",
-            "initValuePath": "firstName",
-            "validators": {
-              "validateRequired": {
-                "error": "First Name is required"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
-                "error": "Please enter a valid First Name"
-              }
-            }
-          },
-          "lastName": {
-            "disabled": false,
-            "error": "",
-            "id": "lastName",
-            "inputId": "lastName",
-            "key": "lastName",
-            "label": "Last Name",
-            "layout": "5.2.6",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "type": "text",
-            "value": "",
-            "initValuePath": "lastName",
-            "validators": {
-              "validateRequired": {
-                "error": "Last Name is required"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
-                "error": "Please enter a valid First Name"
-              }
-            }
-          },
-          "claimTypeSectionHeader": {
-            "containerClasses": "font-weight-bold mt-2",
-            "header": "Claim Type Information",
-            "layout": "14.1.0",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "ownerName": {
-            "disabled": false,
-            "error": "",
-            "id": "ownerName",
-            "inputId": "ownerName",
-            "key": "ownerName",
-            "label": "Owner Name",
-            "layout": "15.1.6",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "text",
-            "value": "",
-            "initValuePath": "ownerName",
-            "validators": {
-              "validateRequired": {
-                "error": "Owner Name is required"
-              }
-            }
-          },
-          "companyName": {
-            "disabled": false,
-            "error": "",
-            "id": "companyName",
-            "inputId": "companyName",
-            "invalidError": "Company Name is required",
-            "key": "companyName",
-            "label": "Company Name",
-            "layout": "15.2.6",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "text",
-            "value": "",
-            "initValuePath": "companyName",
-            "validators": {
-              "validateRequired": {
-                "error": "Company Name is required"
-              }
-            }
-          },
-          "brandName": {
-            "disabled": false,
-            "error": "",
-            "inputId": "brandName",
-            "invalidError": "Brand is required",
-            "key": "brandName",
-            "label": "Brand Name",
-            "layout": "16.1.6",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Brand Name is required"
-              }
-            }
-          },
-          "claimIdentifierNumber": {
-            "disabled": false,
-            "error": "",
-            "inputId": "claimIdentifierNumber",
-            "key": "claimIdentifierNumber",
-            "label": "Claim Type Identifier Number",
-            "layout": "16.2.6",
-            "preventHTMLRequiredValidation": true,
-            "required": {
-              "default": false,
-              "condition": [
-                {
-                  "subCondition": [
-                    {
-                      "keyPath": "form.inputData.userType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": [
-                        "third party",
-                        "rights owner"
-                      ]
-                    },
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": [
-                        "patent",
-                        "trademark"
-                      ]
-                    }
-                  ],
-                  "value": true
-                }
-              ]
+        "comments": {
+          "containerClasses": "mb-3",
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "layout": "8.1.0",
+          "label": "Comments",
+          "pattern": null,
+          "prebounceChangeHandler": "trimSpaces",
+          "required": true,
+          "rowCount": 2,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+          "placeholder": "Please provide additional information about the claim",
+          "onChange": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "validators": {
+            "validateRequired": {
+              "error": " "
             },
-            "renderCondition": "[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateLength": {
-                "evaluator": {
-                  "default": 30,
-                  "condition": [
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": "counterfeit",
-                      "setFields": [
-                        {
-                          "field": "maxLength",
-                          "value": 13
-                        },
-                        {
-                          "field": "error",
-                          "value": "Please enter a valid order number"
-                        }
-                      ]
-                    },
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": "trademark",
-                      "setFields": [
-                        {
-                          "field": "maxLength",
-                          "value": 30
-                        },
-                        {
-                          "field": "error",
-                          "value": "Please enter valid Trademark Number"
-                        }
-                      ]
-                    },
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": "patent",
-                      "setFields": [
-                        {
-                          "field": "maxLength",
-                          "value": 30
-                        },
-                        {
-                          "field": "error",
-                          "value": "Please enter valid Patent Number"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              },
-              "validateRegex": {
-                "evaluator": {
-                  "default": "",
-                  "condition": [
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": "trademark",
-                      "setFields": [
-                        {
-                          "field": "dataRuleRegex",
-                          "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,/]+$"
-                        },
-                        {
-                          "field": "error",
-                          "value": "Please enter a valid Trademark Number"
-                        }
-                      ]
-                    },
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": "patent",
-                      "setFields": [
-                        {
-                          "field": "dataRuleRegex",
-                          "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,/]+$"
-                        },
-                        {
-                          "field": "error",
-                          "value": "Please enter a valid Patent Number"
-                        }
-                      ]
-                    },
-                    {
-                      "keyPath": "form.inputData.claimType.value",
-                      "keyLocator": "state",
-                      "dependencyValue": "counterfeit",
-                      "setFields": [
-                        {
-                          "field": "dataRuleRegex",
-                          "value": "(^[0-9]{13}$|^$)"
-                        },
-                        {
-                          "field": "error",
-                          "value": "Please enter a valid order number"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }
+            "validateLength": {
+              "minLength": 20,
+              "maxLength": 2000,
+              "error": "Comments should be between 20 and 2000 characters!"
             }
-          },
-          "address_1": {
-            "disabled": false,
-            "error": "",
-            "inputId": "address_1",
-            "key": "address_1",
-            "label": "Address 1",
-            "layout": "8.1.6",
-            "prebounceChangeHandler": "trimSpaces",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Address 1 is required"
-              }
-            }
-          },
-          "address_2": {
-            "disabled": false,
-            "error": "",
-            "inputId": "address_2",
-            "key": "address_2",
-            "label": "Address 2",
-            "layout": "8.2.6",
-            "prebounceChangeHandler": "trimSpaces",
-            "preventHTMLRequiredValidation": true,
-            "required": false,
-            "subtitle": "",
-            "type": "text",
-            "value": ""
-          },
-          "city": {
-            "disabled": false,
-            "error": "",
-            "inputId": "city",
-            "key": "city",
-            "label": "City",
-            "layout": "9.1.6",
-            "prebounceChangeHandler": "trimSpaces",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "City is required"
-              }
-            }
-          },
-          "country": {
-            "disabled": false,
-            "error": "",
-            "inputId": "country",
-            "key": "country",
-            "label": "Country",
-            "layout": "9.2.6",
-            "prebounceChangeHandler": "trimSpaces",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "USA",
-            "validators": {
-              "validateRequired": {
-                "error": "Country is required"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[a-zA-Z\\s]+$",
-                "error": "Please enter a valid Country name"
-              },
-              "validateLength": {
-                "minLength": "2",
-                "error": "Minimum length is 2 characters"
-              }
-            }
-          },
-          "state": {
-            "colClasses": "col-6",
-            "disabled": false,
-            "error": "",
-            "inputId": "state",
-            "key": "state",
-            "label": "State",
-            "layout": "10.1.6",
-            "prebounceChangeHandler": "trimSpaces",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "State/Province/Region is required"
-              }
-            }
-          },
-          "zip": {
-            "colClasses": "col-6",
-            "disabled": false,
-            "error": "",
-            "inputId": "zip",
-            "key": "zip",
-            "label": "ZIP",
-            "layout": "10.2.6",
-            "maxLength": 10,
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Zip/Postal Code is required"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[a-zA-Z0-9]+$",
-                "error": "Please enter a valid Zip Code"
-              },
-              "validateLength": {
-                "minLength": "3",
-                "error": "Minimum length is 3 characters"
-              }
-            }
-          },
-          "phone": {
-            "disabled": false,
-            "disableDefaultBlurValidation": true,
-            "error": "",
-            "fieldOk": false,
-            "id": "phone",
-            "inputId": "phone",
-            "isUnique": true,
-            "key": "phone",
-            "label": "Phone Number",
-            "layout": "11.1.6",
-            "maxLength": 15,
-            "prebounceChangeHandler": "prebounceChangeHandler",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Phone number is required"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "^[0-9]+$",
-                "error": "Please enter all numbers."
-              },
-              "validateLength": {
-                "minLength": "7",
-                "error": "Minimum length is 7 characters"
-              }
-            }
-          },
-          "emailId": {
-            "containerClasses": "contact-details",
-            "disabled": false,
-            "disableDefaultBlurValidation": true,
-            "error": "",
-            "id": "emailId",
-            "inputId": "emailId",
-            "key": "emailId",
-            "label": "Email Address",
-            "layout": "11.2.6",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Email address is required"
-              },
-              "validateRegex": {
-                "dataRuleRegex": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
-                "error": "Please enter a valid Email Address"
-              }
-            }
-          },
-          "fieldsHeader_6": {
-            "containerClasses": "font-weight-bold",
-            "header": "Claim Information",
-            "layout": "17.1.0",
-            "renderCondition": "{\"keyPath\": \"form.claimType\", \"keyLocator\": \"state\", \"hasValue\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "urlItems": {
-            "disableAddItem": true,
-            "error": "",
-            "fieldLoader": false,
-            "inputId": "items",
-            "isSellerNameDisabled": false,
-            "layout": "18.1.0",
-            "key": "items",
-            "maxItems": 10,
-            "onChangeItem": "getItemListFromChild",
-            "prebounceChangeHandler": "disableSubmitButton",
-            "onChangeSellerName": "onChange",
-            "onChangeUrl": "onChange",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "required": true,
-            "type": "_urlItems",
-            "itemList": [
-              {
-                "id": "item-0",
-                "url": {
-                  "invalidError": "Please adhere to URL format",
-                  "label": "Item URL",
-                  "required": true,
-                  "value": "",
-                  "type": "url",
-                  "pattern": "https?://www.walmart.com/.*",
-                  "patternErrorMessage": "Please adhere to URL format",
-                  "preventHTMLRequiredValidation": true,
-                  "disabled": false,
-                  "isValid": false,
-                  "subtitle": "",
-                  "error": "",
-                  "validators": {
-                    "validateRequired": {
-                      "error": "Item URL is required"
-                    }
-                  }
-                },
-                "sellerName": {
-                  "label": "Seller Name",
-                  "required": true,
-                  "value": "",
-                  "disabled": false,
-                  "dropdownOptions": [],
-                  "subtitle": "",
-                  "type": "text",
-                  "error": "",
-                  "preventHTMLRequiredValidation": true,
-                  "validators": {
-                    "validateRequired": {
-                      "error": "Seller Name is required"
-                    },
-                    "validateLength": {
-                      "minLength": "3",
-                      "error": "Minimum length is 3 characters"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          "webformDoc": {
-            "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
-            "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
-            "allowedFileSize": 7,
-            "buttonText": "Upload",
-            "cancelHandlerArg": "webformDoc",
-            "changeHandlerArg": "webformDoc",
-            "disabled": false,
-            "error": "",
-            "endpoint": "/api/claims/uploadWebFormDocument",
-            "filename": "",
-            "fileValidationError": "Please follow the guidelines to upload attachments.",
-            "icon": "Question",
-            "id": "",
-            "inputId": "webformDoc",
-            "key": "webformDoc",
-            "label": "Attach Documents (Optional)",
-            "layout": "19.1.0",
-            "onCancel": "cancelSelection",
-            "onChange": "displayProgressAndUpload",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "tooltipContentKey": "webformDocContent",
-            "type": "_fileUploader",
-            "uploading": false,
-            "uploadPercentage": 0
-          },
-          "comments": {
-            "disabled": false,
-            "error": "",
-            "inputId": "comments",
-            "key": "comments",
-            "layout": "20.1.0",
-            "label": "Comments",
-            "maxLength": 3000,
-            "pattern": null,
-            "required": true,
-            "onChange": "onChange",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "rowCount": 2,
-            "placeholder": {
-              "default": "Please provide additional information about the claim",
-              "condition": [
-                {
-                  "keyPath": "form.inputData.claimType.value",
-                  "keyLocator": "state",
-                  "dependencyValue": "counterfeit",
-                  "value": "If possible, please provide evidence that the reported listing is selling a counterfeit product, such as the order number and/or description of the counterfeit item received."
-                }
-              ]
+          }
+        },
+        "claimDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "buttonText": "Upload",
+          "cancelHandlerArg": "claimDoc",
+          "changeHandlerArg": "claimDoc",
+          "disabled": false,
+          "endpoint": "/api/claims/uploadClaimDocument",
+          "error": "",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "filename": "",
+          "icon": "Question",
+          "allowedFileSize": 7,
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "id": "",
+          "multiple": true,
+          "inputId": "claimDoc",
+          "documentList": [],
+          "key": "claimDoc",
+          "label": "Attach documents (Optional)",
+          "layout": "9.0.0",
+          "onCancel": "cancelSelection",
+          "onChange": "handleFileUpload",
+          "tooltipContentKey": "claimDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
+        "user_undertaking_1": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_1",
+          "inputId": "user_undertaking_1",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "key": "user_undertaking_1",
+          "layout": "10.1.0",
+          "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __claimType__ owner, its agent, or the law.",
+          "label": "",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_2": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_2",
+          "inputId": "user_undertaking_2",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "key": "user_undertaking_2",
+          "layout": "11.1.0",
+          "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_3": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_3",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "inputId": "user_undertaking_3",
+          "key": "user_undertaking_3",
+          "layout": "12.1.0",
+          "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showUnderTaking3\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "user_undertaking_4": {
+          "category": "userUnderTaking",
+          "containerClasses": "mb-2",
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "invalidError": "You must agree to this statement in order to submit this claim.",
+          "key": "user_undertaking_4",
+          "layout": "13.1.0",
+          "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "required": true,
+          "selected": false,
+          "type": "_checkBox"
+        },
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
+          "layout": "14.1.0",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "signature": {
+          "label": "Digital Signature",
+          "containerClasses": "signature",
+          "error": "",
+          "disabled": false,
+          "required": true,
+          "inputId": "signature",
+          "invalidError": "Digital signature is required.",
+          "value": "",
+          "key": "signature",
+          "layout": "15.1.8",
+          "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "text",
+          "pattern": null,
+          "subtitle": "",
+          "onChange": "onChange"
+        },
+        "userActions": {
+          "containerClasses": "modal-footer action-footer",
+          "colClasses": "text-right",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "layout": "16.1.0",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "disabled": false,
+              "onClick": "resetTemplateStatus",
+              "text": "Cancel",
+              "type": "button"
             },
-            "prebounceChangeHandler": "trimSpaces",
-            "preventHTMLRequiredValidation": true,
-            "subtitle": "",
-            "type": "textarea",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Please be sure to provide details regarding your claim."
-              },
-              "validateLength": {
-                "minLength": 20,
-                "maxLength": 3000,
-                "error": "Comment should be 20 characters long!"
-              }
-            }
-          },
-          "user_undertaking_1": {
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_1",
-            "inputId": "user_undertaking_1",
-            "key": "user_undertaking_1",
-            "layout": "21.1.0",
-            "label": "",
-            "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __owner_label__, its agent, or the law.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "selected": false,
-            "type": "_checkBox",
-            "validators": {
-              "validateRequired": {
-                "error": "You must agree to this statement to submit a report"
-              }
-            }
-          },
-          "user_undertaking_2": {
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_2",
-            "inputId": "user_undertaking_2",
-            "key": "user_undertaking_2",
-            "layout": "22.1.0",
-            "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "selected": false,
-            "type": "_checkBox",
-            "validators": {
-              "validateRequired": {
-                "error": "You must agree to this statement to submit a report"
-              }
-            }
-          },
-          "user_undertaking_3": {
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_3",
-            "inputId": "user_undertaking_3",
-            "key": "user_undertaking_3",
-            "layout": "23.1.0",
-            "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"copyright\"}",
-            "selected": false,
-            "type": "_checkBox",
-            "validators": {
-              "validateRequired": {
-                "error": "You must agree to this statement to submit a report"
-              }
-            }
-          },
-          "user_undertaking_4": {
-            "checkBoxClasses": "user-undertaking",
-            "excludeRowContainer": true,
-            "excludeColContainer": true,
-            "id": "user_undertaking_4",
-            "inputId": "user_undertaking_4",
-            "key": "user_undertaking_4",
-            "layout": "24.1.0",
-            "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
-            "labelClasses": "user-undertaking-label",
-            "onChange": "undertakingtoggle",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "selected": false,
-            "type": "_checkBox",
-            "validators": {
-              "validateRequired": {
-                "error": "You must agree to this statement to submit a report"
-              }
-            }
-          },
-          "fieldsHeader_4": {
-            "containerClasses": "font-weight-bold mt-2",
-            "header": "Typing your full name in this box will act as your digital signature",
-            "layout": "25.1.0",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "digitalSignature": {
-            "disabled": false,
-            "containerClasses": "",
-            "disableDefaultBlurValidation": true,
-            "error": "",
-            "inputId": "digitalSignature",
-            "key": "digitalSignature",
-            "layout": "26.1.8",
-            "label": "Digital Signature",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateRequired": {
-                "error": "Digital Signature is required"
-              }
-            }
-          },
-          "fieldsHeader_5": {
-            "containerClasses": "font-weight-bold",
-            "colClasses": "pt-2",
-            "header": "Please review your contact information and make sure it's correct before clicking \"Submit Claim\"",
-            "layout": "28.1.8",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "type": "_formFieldsHeader"
-          },
-          "webformActions": {
-            "containerClasses": "pb-5 mb-5",
-            "colClasses": "web-form-button-panel text-right",
-            "layout": "28.2.4",
-            "type": "_buttonsPanel",
-            "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
-            "buttons": {
-              "submit": {
-                "classes": "btn btn-primary padded-button",
-                "disabled": false,
-                "onClick": "handleSubmit",
-                "text": "Submit Claim",
-                "type": "submit"
-              }
+            "submit": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 mx-3",
+              "disabled": false,
+              "onClick": "handleSubmit",
+              "text": "Submit",
+              "type": "submit"
             }
           }
         }
+      }
+    },
+    "RESETPASSWORD": {
+      "sectionConfig": {
+        "sectionTitle": "Change Password"
       },
-      "CONTACTUS": {
-        "formConfig": {
-          "api": "/api/users/contactUs",
-          "id": "contactUs",
-          "isSubmitDisabled": true,
-          "loader": false,
-          "successNotificationMessage": "Request successfully submitted. Our agents will process your request",
-          "failedNotificationMessage": "Sorry request cannot be processed at the moment"
+      "formConfig": {
+        "apiPath": "/api/users/resetPassword",
+        "error": "",
+        "formHeading": "Please type your current password and then create the new one.",
+        "id": "resetPassword",
+        "incorrectPasswordError": "Current password is incorrect.",
+        "loader": false,
+        "old5PasswordsError": "New password can not be 1 of your previous 5 passwords",
+        "passwordsDifferent": false,
+        "passwordChangedMessage": "Password Changed Successfully!",
+        "failureMessage": "Unable to process your request, please try in sometime",
+        "passwordGuidance": "",
+        "passwordMismatchError": "\"New Password\" and \"Confirm Password\" do not match",
+        "passwordPolicyMessage": "Password doesn't adhere to Walmart Brand Portal's Security policy.",
+        "toastMessageExistingErrors": "Please resolve existing errors before proceeding!",
+        "falconPasswordMismatchError": "Password did not match.",
+        "falconPasswordPolicyError": "The specified password does not meet defined policy.",
+        "falconSamePasswordError": "New password matches old password."
+      },
+      "fields": {
+        "currentPassword": {
+          "canShowPassword": true,
+          "colClasses": "px-0",
+          "error": "",
+          "excludeRowContainer": true,
+          "id": "currentPassword",
+          "inputId": "currentPassword",
+          "key": "currentPassword",
+          "label": "Current Password",
+          "layout": "1.1.12",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "password",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter current password."
+            }
+          }
         },
-        "fields": {
-          "area": {
-            "containerClasses": "mt-4 contact-us-form-row w-100",
-            "colClasses": "contact-us-form-area",
-            "disabled": false,
-            "dropdownOptions": [
-              {
-                "id": "technicalSupport",
-                "label": "Technical Support",
-                "value": "Technical Support"
-              },
-              {
-                "label": "Claim Support",
-                "value": "Claim Support",
-                "id": "claimSupport"
-              },
-              {
-                "label": "User Management Support",
-                "value": "User Management Support",
-                "id": "userManagementSupport"
-              },
-              {
-                "label": "Follow-Up",
-                "value": "Follow-Up",
-                "id": "followUp"
-              },
-              {
-                "label": "IP Management Support",
-                "value": "IP Management Support",
-                "id": "ipManagementSupport"
-              },
-              {
-                "label": "Other",
-                "value": "Other",
-                "id": "other"
-              }
-            ],
-            "error": "",
-            "fieldOk": false,
-            "inputId": "area",
-            "key": "area",
-            "label": "Area",
-            "layout": "1.1.5",
-            "invalidError": "Please select from the drop down",
-            "patternErrorMessage": "Please select from the drop down.",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "select",
-            "tooltipContent": "",
-            "value": ""
+        "newPassword": {
+          "canShowPassword": true,
+          "colClasses": "px-0",
+          "error": "",
+          "inputId": "newPassword",
+          "key": "newPassword",
+          "label": "New Password",
+          "layout": "1.1.12",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "password",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please enter new password."
+            },
+            "validatePasswordMatch": {
+              "siblingField": "state.form.inputData.confirmNewPassword"
+            }
+          }
+        },
+        "confirmNewPassword": {
+          "canShowPassword": true,
+          "colClasses": "px-0",
+          "error": "",
+          "inputId": "confirmNewPassword",
+          "key": "confirmNewPassword",
+          "label": "Confirm New Password",
+          "layout": "1.1.12",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "isLastField": true,
+          "subtitle": "",
+          "type": "password",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please confirm new password."
+            },
+            "validatePasswordMatch": {
+              "siblingField": "state.form.inputData.newPassword"
+            }
+          }
+        },
+        "errorSub": {
+          "containerClasses": "pl-2 mt-n23 mb-2rem pt-2",
+          "error": "",
+          "errorClasses": "form-text custom-input-help-text text-danger",
+          "id": "errorSub",
+          "layout": "1.1.12",
+          "type": "_error"
+        },
+        "resetPasswordAction": {
+          "containerClasses": "pr-4 text-right bg-blue py-3 mx-n4",
+          "colClasses": "reset-password-button-panel text-right pr-0",
+          "excludeColContainer": true,
+          "layout": "1.1.12",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "cancel": {
+              "classes": "btn btn-sm cancel-btn text-primary",
+              "onClick": "resetTemplateStatus",
+              "text": "Back",
+              "type": "button"
+            },
+            "changePassword": {
+              "classes": "btn btn-sm btn-primary submit-btn px-3 ml-3",
+              "text": "Change Password",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "USERPROFILE": {
+      "sectionConfig": {
+        "headerClasses": "content-header-row h3 p-4",
+        "formClasses": "row content-row p-4 mt-4",
+        "sectionTitle": "User Profile"
+      },
+      "formConfig": {
+        "apiPath": "/api/users",
+        "excludeRowContainer": true,
+        "id": "userProfile",
+        "loader": false,
+        "isDisabled": true,
+        "profileSaveMessage": "Changes to Profile Successfully Saved!"
+      },
+      "fields": {
+        "firstName": {
+          "disabled": true,
+          "error": "",
+          "id": "firstName",
+          "inputId": "firstName",
+          "invalidError": "Please enter a valid First Name",
+          "key": "firstName",
+          "label": "First Name",
+          "layout": "1.1.6",
+          "patternPath": "CONSTANTS.REGEX.NAMES",
+          "patternErrorMessage": "Please enter a valid first name.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "firstName"
+        },
+        "lastName": {
+          "disabled": true,
+          "error": "",
+          "id": "lastName",
+          "inputId": "lastName",
+          "invalidError": "Please enter a valid Last Name",
+          "key": "lastName",
+          "label": "Last Name",
+          "layout": "1.1.6",
+          "patternPath": "CONSTANTS.REGEX.NAMES",
+          "patternErrorMessage": "Please enter a valid last name.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "lastName"
+        },
+        "companyName": {
+          "colClasses": "mr-1",
+          "disabled": true,
+          "error": "",
+          "id": "companyName",
+          "inputId": "companyName",
+          "invalidError": "Please enter valid Company Name",
+          "key": "companyName",
+          "label": "Company Name",
+          "layout": "1.1.6",
+          "patternPath": "CONSTANTS.REGEX.COMPANY",
+          "patternErrorMessage": "Please provide a valid company name.",
+          "preventHTMLRequiredValidation": true,
+          "renderCondition": "{\"keyPath\": \"props.userProfile.type\", \"keyLocator\": \"parentRef\", \"value\": \"thirdparty\"}",
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "organization.name"
+        },
+        "emailId": {
+          "disabled": true,
+          "error": "",
+          "id": "emailId",
+          "inputId": "emailId",
+          "key": "emailId",
+          "label": "Email",
+          "layout": "1.1.6",
+          "pattern": null,
+          "required": true,
+          "type": "email",
+          "value": "",
+          "initValuePath": "email"
+        },
+        "phone": {
+          "disabled": true,
+          "error": "",
+          "id": "phone",
+          "inputId": "phone",
+          "invalidError": "Please select a valid Phone Number",
+          "key": "phone",
+          "label": "Mobile Number",
+          "layout": "1.1.6",
+          "maxLength": 17,
+          "patternPath": "CONSTANTS.REGEX.PHONE",
+          "prebounceChangeHandler": "prebounceChangeHandler",
+          "preventHTMLRequiredValidation": true,
+          "required": false,
+          "type": "text",
+          "value": "",
+          "initValuePath": "phoneNumber"
+        },
+        "resetPasswordAction": {
+          "containerClasses": "password-reset-col mb-n3",
+          "colClasses": "",
+          "layout": "1.1.6",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "changePassword": {
+              "classes": "btn btn-outline-primary btn-sm px-3 reset-password",
+              "onClick": "displayChangePassword",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}",
+              "text": "Change Password",
+              "type": "button"
+            },
+            "manage": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14 manage-profile",
+              "onClick": "displayManageProfileNotification",
+              "renderCondition": "{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": true}",
+              "text": "Manage Seller Center Profile",
+              "type": "submit"
+            }
+          }
+        },
+        "editActions": {
+          "containerClasses": "h-40 text-right",
+          "colClasses": "edit-button-panel text-right",
+          "layout": "1.1.6",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "edit": {
+              "classes": "btn btn-primary btn-sm px-4",
+              "handlerArg": false,
+              "onClick": "disableInput",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": true},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "text": "Edit",
+              "type": "button"
+            },
+            "cancel": {
+              "classes": "btn btn-link font-size-14 px-4 mr-3",
+              "handlerArg": true,
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "onClick": "disableInput",
+              "text": "Cancel",
+              "type": "button"
+            },
+            "save": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14",
+              "renderCondition": "[{\"keyPath\": \"state.form.isDisabled\", \"keyLocator\": \"parentRef\", \"value\": false},{\"keyPath\": \"state.isSeller\", \"keyLocator\": \"parentRef\", \"value\": false}]",
+              "text": "Save",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "WEBFORM": {
+      "sectionConfig": {
+        "headerClasses": "content-header-row h3 p-4",
+        "formClasses": "row content-row p-4 mt-4"
+      },
+      "formConfig": {
+        "actionsToDisable": [
+          "submit"
+        ],
+        "id": "webform",
+        "loader": false,
+        "isSubmitDisabled": true,
+        "userTypeSelected": false,
+        "claimTypeSelected": false,
+        "showClaimIdentifierNumber": false,
+        "counterfeitValidatorLength": 13,
+        "counterfeitValidatorError": "Please enter valid order number",
+        "formActions": "webformActions",
+        "formError": "",
+        "claimTypes": [
+          {
+            "claimType": "trademark",
+            "claimTypeSectionHeader": "Trademark Information",
+            "label": "Trademark",
+            "claimTypeIdentifierLabel": "Trademark Number",
+            "companyNameIdentifierLabel": "Trademark Company Name",
+            "ownerNameIdentifierLabel": "Trademark Owner Name",
+            "underTakingOwnerLabel": "trademark owner"
           },
-          "title": {
-            "containerClasses": " contact-us-form-row w-100",
-            "colClasses": "contact-us-form-title",
-            "disabled": false,
-            "error": "",
-            "fieldOk": false,
-            "inputId": "title",
-            "invalidError": "Please provide a short description of the request",
-            "key": "title",
-            "label": "Title",
-            "layout": "2.0.5",
-            "patternErrorMessage": "Please provide a short description of the request",
-            "preventHTMLRequiredValidation": true,
-            "required": true,
-            "subtitle": "",
-            "type": "text",
-            "value": "",
-            "validators": {
-              "validateLength": {
-                "maxLength": 60,
-                "error": "Max. length is 60"
+          {
+            "claimType": "patent",
+            "claimTypeSectionHeader": "Patent Information",
+            "label": "Patent",
+            "claimTypeIdentifierLabel": "Patent Number",
+            "companyNameIdentifierLabel": "Patent Company Name",
+            "ownerNameIdentifierLabel": "Patent Owner Name",
+            "underTakingOwnerLabel": "patent owner"
+          },
+          {
+            "claimType": "counterfeit",
+            "claimTypeSectionHeader": "Counterfeit Information",
+            "label": "Counterfeit",
+            "claimTypeIdentifierLabel": "Order Number",
+            "companyNameIdentifierLabel": "Rights Owner Company Name",
+            "ownerNameIdentifierLabel": "Rights Owner Name",
+            "underTakingOwnerLabel": "intellectual property owner"
+          },
+          {
+            "claimType": "copyright",
+            "claimTypeSectionHeader": "Copyright Information",
+            "label": "Copyright",
+            "claimTypeIdentifierLabel": "",
+            "companyNameIdentifierLabel": "Copyright Company Name",
+            "ownerNameIdentifierLabel": "Copyright Owner Name",
+            "underTakingOwnerLabel": "copyright owner"
+          }
+        ]
+      },
+      "fields": {
+        "fieldsHeader_1": {
+          "containerClasses": "font-weight-bold",
+          "header": "Filing Claim As",
+          "layout": "1.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "userType": {
+          "containerClasses": "mb-3",
+          "customChangeHandler": "customUserTypeChangeHandler",
+          "disabled": false,
+          "error": "",
+          "inputId": "userType",
+          "invalidError": "Please select user role",
+          "key": "userType",
+          "label": "User Type",
+          "layout": "2.1.6",
+          "onChange": "setSelectInputValue",
+          "dropdownOptions": [
+            {
+              "id": "customer",
+              "label": "Customer",
+              "value": "Customer"
+            },
+            {
+              "id": "rightsOwner",
+              "label": "Rights Owner",
+              "value": "Rights Owner"
+            },
+            {
+              "id": "thirdParty",
+              "label": "Third party",
+              "value": "Third party"
+            }
+          ],
+          "required": true,
+          "type": "select",
+          "preventHTMLRequiredValidation": true,
+          "tooltipContent": "This is a test tooltip",
+          "tooltipBody": [
+            {
+              "heading": "Rights Owner",
+              "body": "Brand owners with registered trademarks."
+            },
+            {
+              "heading": "Third Party representative",
+              "body": "Authorized third-party brand protection agencies/ Legal representatives."
+            },
+            {
+              "heading": "Customer",
+              "body": "Walmart customer."
+            }
+          ],
+          "value": ""
+        },
+        "fieldsHeader_2": {
+          "containerClasses": "font-weight-bold",
+          "header": "Type of infringement",
+          "layout": "12.1.6",
+          "type": "_formFieldsHeader"
+        },
+        "claimType": {
+          "containerClasses": "mb-3",
+          "customChangeHandler": "customChangeHandler",
+          "disabled": false,
+          "error": "",
+          "inputId": "claimType",
+          "key": "claimType",
+          "label": "Claim type",
+          "layout": "13.1.6",
+          "onChange": "setSelectInputValue",
+          "dropdownOptions": [],
+          "required": true,
+          "type": "select",
+          "value": ""
+        },
+        "fieldsHeader_3": {
+          "containerClasses": "font-weight-bold",
+          "header": "Contact Information",
+          "layout": "3.1.0",
+          "type": "_formFieldsHeader"
+        },
+        "firstName": {
+          "disabled": false,
+          "error": "",
+          "id": "firstName",
+          "inputId": "firstName",
+          "key": "firstName",
+          "label": "First Name",
+          "layout": "5.1.6",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "firstName",
+          "validators": {
+            "validateRequired": {
+              "error": "First Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
+            }
+          }
+        },
+        "lastName": {
+          "disabled": false,
+          "error": "",
+          "id": "lastName",
+          "inputId": "lastName",
+          "key": "lastName",
+          "label": "Last Name",
+          "layout": "5.2.6",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "initValuePath": "lastName",
+          "validators": {
+            "validateRequired": {
+              "error": "Last Name is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9\\- .]+$",
+              "error": "Please enter a valid First Name"
+            }
+          }
+        },
+        "claimTypeSectionHeader": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Claim Type Information",
+          "layout": "14.1.0",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "ownerName": {
+          "disabled": false,
+          "error": "",
+          "id": "ownerName",
+          "inputId": "ownerName",
+          "key": "ownerName",
+          "label": "Owner Name",
+          "layout": "15.1.6",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "text",
+          "value": "",
+          "initValuePath": "ownerName",
+          "validators": {
+            "validateRequired": {
+              "error": "Owner Name is required"
+            }
+          }
+        },
+        "companyName": {
+          "disabled": false,
+          "error": "",
+          "id": "companyName",
+          "inputId": "companyName",
+          "invalidError": "Company Name is required",
+          "key": "companyName",
+          "label": "Company Name",
+          "layout": "15.2.6",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "text",
+          "value": "",
+          "initValuePath": "companyName",
+          "validators": {
+            "validateRequired": {
+              "error": "Company Name is required"
+            }
+          }
+        },
+        "brandName": {
+          "disabled": false,
+          "error": "",
+          "inputId": "brandName",
+          "invalidError": "Brand is required",
+          "key": "brandName",
+          "label": "Brand Name",
+          "layout": "16.1.6",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Brand Name is required"
+            }
+          }
+        },
+        "claimIdentifierNumber": {
+          "disabled": false,
+          "error": "",
+          "inputId": "claimIdentifierNumber",
+          "key": "claimIdentifierNumber",
+          "label": "Claim Type Identifier Number",
+          "layout": "16.2.6",
+          "preventHTMLRequiredValidation": true,
+          "required": {
+            "default": false,
+            "condition": [
+              {
+                "subCondition": [
+                  {
+                    "keyPath": "form.inputData.userType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": [
+                      "third party",
+                      "rights owner"
+                    ]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": [
+                      "patent",
+                      "trademark"
+                    ]
+                  }
+                ],
+                "value": true
+              }
+            ]
+          },
+          "renderCondition": "[{\"keyPath\": \"form.inputData.userType.value\", \"keyLocator\": \"state\", \"value\": [\"third party\",\"rights owner\"]}, {\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": [\"counterfeit\", \"patent\", \"trademark\"]}]||{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"counterfeit\"}",
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "evaluator": {
+                "default": 30,
+                "condition": [
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": "counterfeit",
+                    "setFields": [
+                      {
+                        "field": "maxLength",
+                        "value": 13
+                      },
+                      {
+                        "field": "error",
+                        "value": "Please enter a valid order number"
+                      }
+                    ]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": "trademark",
+                    "setFields": [
+                      {
+                        "field": "maxLength",
+                        "value": 30
+                      },
+                      {
+                        "field": "error",
+                        "value": "Please enter valid Trademark Number"
+                      }
+                    ]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": "patent",
+                    "setFields": [
+                      {
+                        "field": "maxLength",
+                        "value": 30
+                      },
+                      {
+                        "field": "error",
+                        "value": "Please enter valid Patent Number"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "validateRegex": {
+              "evaluator": {
+                "default": "",
+                "condition": [
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": "trademark",
+                    "setFields": [
+                      {
+                        "field": "dataRuleRegex",
+                        "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,/]+$"
+                      },
+                      {
+                        "field": "error",
+                        "value": "Please enter a valid Trademark Number"
+                      }
+                    ]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": "patent",
+                    "setFields": [
+                      {
+                        "field": "dataRuleRegex",
+                        "value": "^[a-zA-Z0-9-.!\"#$%&'()*+,/]+$"
+                      },
+                      {
+                        "field": "error",
+                        "value": "Please enter a valid Patent Number"
+                      }
+                    ]
+                  },
+                  {
+                    "keyPath": "form.inputData.claimType.value",
+                    "keyLocator": "state",
+                    "dependencyValue": "counterfeit",
+                    "setFields": [
+                      {
+                        "field": "dataRuleRegex",
+                        "value": "(^[0-9]{13}$|^$)"
+                      },
+                      {
+                        "field": "error",
+                        "value": "Please enter a valid order number"
+                      }
+                    ]
+                  }
+                ]
               }
             }
-          },
-          "details": {
-            "containerClasses": "contact-us-form-row w-100",
-            "colClasses": "contact-us-form-details",
-            "error": "",
-            "inputId": "details",
-            "invalidError": "Please provide additional information about the request",
-            "key": "details",
-            "label": "Details",
-            "layout": "3.0.7",
-            "patternErrorMessage": "Please provide additional information about the request",
-            "preventHTMLRequiredValidation": true,
-            "placeholder": "Please provide additional information about the request",
-            "required": true,
-            "subtitle": "",
-            "type": "textarea",
-            "value": "",
-            "validators": {
-              "validateLength": {
-                "maxLength": 1000,
-                "minLength": 20,
-                "error": "Details should be between 20 to 1000 characters long."
+          }
+        },
+        "address_1": {
+          "disabled": false,
+          "error": "",
+          "inputId": "address_1",
+          "key": "address_1",
+          "label": "Address 1",
+          "layout": "8.1.6",
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Address 1 is required"
+            }
+          }
+        },
+        "address_2": {
+          "disabled": false,
+          "error": "",
+          "inputId": "address_2",
+          "key": "address_2",
+          "label": "Address 2",
+          "layout": "8.2.6",
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "required": false,
+          "subtitle": "",
+          "type": "text",
+          "value": ""
+        },
+        "city": {
+          "disabled": false,
+          "error": "",
+          "inputId": "city",
+          "key": "city",
+          "label": "City",
+          "layout": "9.1.6",
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "City is required"
+            }
+          }
+        },
+        "country": {
+          "disabled": false,
+          "error": "",
+          "inputId": "country",
+          "key": "country",
+          "label": "Country",
+          "layout": "9.2.6",
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "USA",
+          "validators": {
+            "validateRequired": {
+              "error": "Country is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z\\s]+$",
+              "error": "Please enter a valid Country name"
+            },
+            "validateLength": {
+              "minLength": "2",
+              "error": "Minimum length is 2 characters"
+            }
+          }
+        },
+        "state": {
+          "colClasses": "col-6",
+          "disabled": false,
+          "error": "",
+          "inputId": "state",
+          "key": "state",
+          "label": "State",
+          "layout": "10.1.6",
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "State/Province/Region is required"
+            }
+          }
+        },
+        "zip": {
+          "colClasses": "col-6",
+          "disabled": false,
+          "error": "",
+          "inputId": "zip",
+          "key": "zip",
+          "label": "ZIP",
+          "layout": "10.2.6",
+          "maxLength": 10,
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Zip/Postal Code is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[a-zA-Z0-9]+$",
+              "error": "Please enter a valid Zip Code"
+            },
+            "validateLength": {
+              "minLength": "3",
+              "error": "Minimum length is 3 characters"
+            }
+          }
+        },
+        "phone": {
+          "disabled": false,
+          "disableDefaultBlurValidation": true,
+          "error": "",
+          "fieldOk": false,
+          "id": "phone",
+          "inputId": "phone",
+          "isUnique": true,
+          "key": "phone",
+          "label": "Phone Number",
+          "layout": "11.1.6",
+          "maxLength": 15,
+          "prebounceChangeHandler": "prebounceChangeHandler",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Phone number is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "^[0-9]+$",
+              "error": "Please enter all numbers."
+            },
+            "validateLength": {
+              "minLength": "7",
+              "error": "Minimum length is 7 characters"
+            }
+          }
+        },
+        "emailId": {
+          "containerClasses": "contact-details",
+          "disabled": false,
+          "disableDefaultBlurValidation": true,
+          "error": "",
+          "id": "emailId",
+          "inputId": "emailId",
+          "key": "emailId",
+          "label": "Email Address",
+          "layout": "11.2.6",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Email address is required"
+            },
+            "validateRegex": {
+              "dataRuleRegex": "(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))",
+              "error": "Please enter a valid Email Address"
+            }
+          }
+        },
+        "fieldsHeader_6": {
+          "containerClasses": "font-weight-bold",
+          "header": "Claim Information",
+          "layout": "17.1.0",
+          "renderCondition": "{\"keyPath\": \"form.claimType\", \"keyLocator\": \"state\", \"hasValue\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "urlItems": {
+          "disableAddItem": true,
+          "error": "",
+          "fieldLoader": false,
+          "inputId": "items",
+          "isSellerNameDisabled": false,
+          "layout": "18.1.0",
+          "key": "items",
+          "maxItems": 10,
+          "onChangeItem": "getItemListFromChild",
+          "prebounceChangeHandler": "disableSubmitButton",
+          "onChangeSellerName": "onChange",
+          "onChangeUrl": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "required": true,
+          "type": "_urlItems",
+          "itemList": [
+            {
+              "id": "item-0",
+              "url": {
+                "invalidError": "Please adhere to URL format",
+                "label": "Item URL",
+                "required": true,
+                "value": "",
+                "type": "url",
+                "pattern": "https?://www.walmart.com/.*",
+                "patternErrorMessage": "Please adhere to URL format",
+                "preventHTMLRequiredValidation": true,
+                "disabled": false,
+                "isValid": false,
+                "subtitle": "",
+                "error": "",
+                "validators": {
+                  "validateRequired": {
+                    "error": "Item URL is required"
+                  }
+                }
+              },
+              "sellerName": {
+                "label": "Seller Name",
+                "required": true,
+                "value": "",
+                "disabled": false,
+                "dropdownOptions": [],
+                "subtitle": "",
+                "type": "text",
+                "error": "",
+                "preventHTMLRequiredValidation": true,
+                "validators": {
+                  "validateRequired": {
+                    "error": "Seller Name is required"
+                  },
+                  "validateLength": {
+                    "minLength": "3",
+                    "error": "Minimum length is 3 characters"
+                  }
+                }
               }
             }
-          },
-          "sendActions": {
-            "containerClasses": "contact-us-form-row w-100 m-0",
-            "colClasses": "contact-us-button-panel text-right",
-            "layout": "4.0.7",
-            "type": "_buttonsPanel",
-            "buttons": {
-              "send": {
-                "classes": "btn btn-primary btn-sm px-4 font-size-14",
-                "text": "Send",
-                "type": "submit"
+          ]
+        },
+        "webformDoc": {
+          "accept": "application/msword,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/pdf,image/*",
+          "allowedFileNameRegex": "^[a-zA-Z0-9\\- ._@]+$",
+          "allowedFileSize": 7,
+          "buttonText": "Upload",
+          "cancelHandlerArg": "webformDoc",
+          "changeHandlerArg": "webformDoc",
+          "disabled": false,
+          "error": "",
+          "endpoint": "/api/claims/uploadWebFormDocument",
+          "filename": "",
+          "fileValidationError": "Please follow the guidelines to upload attachments.",
+          "icon": "Question",
+          "id": "",
+          "inputId": "webformDoc",
+          "key": "webformDoc",
+          "label": "Attach Documents (Optional)",
+          "layout": "19.1.0",
+          "onCancel": "cancelSelection",
+          "onChange": "displayProgressAndUpload",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "tooltipContentKey": "webformDocContent",
+          "type": "_fileUploader",
+          "uploading": false,
+          "uploadPercentage": 0
+        },
+        "comments": {
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
+          "layout": "20.1.0",
+          "label": "Comments",
+          "maxLength": 3000,
+          "pattern": null,
+          "required": true,
+          "onChange": "onChange",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "rowCount": 2,
+          "placeholder": {
+            "default": "Please provide additional information about the claim",
+            "condition": [
+              {
+                "keyPath": "form.inputData.claimType.value",
+                "keyLocator": "state",
+                "dependencyValue": "counterfeit",
+                "value": "If possible, please provide evidence that the reported listing is selling a counterfeit product, such as the order number and/or description of the counterfeit item received."
               }
+            ]
+          },
+          "prebounceChangeHandler": "trimSpaces",
+          "preventHTMLRequiredValidation": true,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Please be sure to provide details regarding your claim."
+            },
+            "validateLength": {
+              "minLength": 20,
+              "maxLength": 3000,
+              "error": "Comment should be 20 characters long!"
+            }
+          }
+        },
+        "user_undertaking_1": {
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_1",
+          "inputId": "user_undertaking_1",
+          "key": "user_undertaking_1",
+          "layout": "21.1.0",
+          "label": "",
+          "originalLabel": "I have a good faith belief that the use of the material in the manner complained of is not authorized by the __owner_label__, its agent, or the law.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
+        },
+        "user_undertaking_2": {
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_2",
+          "inputId": "user_undertaking_2",
+          "key": "user_undertaking_2",
+          "layout": "22.1.0",
+          "label": "This notification is accurate; and UNDER PENALTY OF PERJURY, I am authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
+        },
+        "user_undertaking_3": {
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_3",
+          "inputId": "user_undertaking_3",
+          "key": "user_undertaking_3",
+          "layout": "23.1.0",
+          "label": "I acknowledge that under Section 512(f) of the DMCA any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability for damages.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.inputData.claimType.value\", \"keyLocator\": \"state\", \"value\": \"copyright\"}",
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
+        },
+        "user_undertaking_4": {
+          "checkBoxClasses": "user-undertaking",
+          "excludeRowContainer": true,
+          "excludeColContainer": true,
+          "id": "user_undertaking_4",
+          "inputId": "user_undertaking_4",
+          "key": "user_undertaking_4",
+          "layout": "24.1.0",
+          "label": "I understand that abuse of this tool will result in termination of my Walmart account.",
+          "labelClasses": "user-undertaking-label",
+          "onChange": "undertakingtoggle",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "selected": false,
+          "type": "_checkBox",
+          "validators": {
+            "validateRequired": {
+              "error": "You must agree to this statement to submit a report"
+            }
+          }
+        },
+        "fieldsHeader_4": {
+          "containerClasses": "font-weight-bold mt-2",
+          "header": "Typing your full name in this box will act as your digital signature",
+          "layout": "25.1.0",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "digitalSignature": {
+          "disabled": false,
+          "containerClasses": "",
+          "disableDefaultBlurValidation": true,
+          "error": "",
+          "inputId": "digitalSignature",
+          "key": "digitalSignature",
+          "layout": "26.1.8",
+          "label": "Digital Signature",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateRequired": {
+              "error": "Digital Signature is required"
+            }
+          }
+        },
+        "fieldsHeader_5": {
+          "containerClasses": "font-weight-bold",
+          "colClasses": "pt-2",
+          "header": "Please review your contact information and make sure it's correct before clicking \"Submit Claim\"",
+          "layout": "28.1.8",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "type": "_formFieldsHeader"
+        },
+        "webformActions": {
+          "containerClasses": "pb-5 mb-5",
+          "colClasses": "web-form-button-panel text-right",
+          "layout": "28.2.4",
+          "type": "_buttonsPanel",
+          "renderCondition": "{\"keyPath\": \"form.claimTypeSelected\", \"keyLocator\": \"state\", \"value\": true}",
+          "buttons": {
+            "submit": {
+              "classes": "btn btn-primary padded-button",
+              "disabled": false,
+              "onClick": "handleSubmit",
+              "text": "Submit Claim",
+              "type": "submit"
+            }
+          }
+        }
+      }
+    },
+    "CONTACTUS": {
+      "formConfig": {
+        "api": "/api/users/contactUs",
+        "id": "contactUs",
+        "isSubmitDisabled": true,
+        "loader": false,
+        "successNotificationMessage": "Request successfully submitted. Our agents will process your request",
+        "failedNotificationMessage": "Sorry request cannot be processed at the moment"
+      },
+      "fields": {
+        "area": {
+          "containerClasses": "mt-4 contact-us-form-row w-100",
+          "colClasses": "contact-us-form-area",
+          "disabled": false,
+          "dropdownOptions": [
+            {
+              "id": "technicalSupport",
+              "label": "Technical Support",
+              "value": "Technical Support"
+            },
+            {
+              "label": "Claim Support",
+              "value": "Claim Support",
+              "id": "claimSupport"
+            },
+            {
+              "label": "User Management Support",
+              "value": "User Management Support",
+              "id": "userManagementSupport"
+            },
+            {
+              "label": "Follow-Up",
+              "value": "Follow-Up",
+              "id": "followUp"
+            },
+            {
+              "label": "IP Management Support",
+              "value": "IP Management Support",
+              "id": "ipManagementSupport"
+            },
+            {
+              "label": "Other",
+              "value": "Other",
+              "id": "other"
+            }
+          ],
+          "error": "",
+          "fieldOk": false,
+          "inputId": "area",
+          "key": "area",
+          "label": "Area",
+          "layout": "1.1.5",
+          "invalidError": "Please select from the drop down",
+          "patternErrorMessage": "Please select from the drop down.",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "select",
+          "tooltipContent": "",
+          "value": ""
+        },
+        "title": {
+          "containerClasses": " contact-us-form-row w-100",
+          "colClasses": "contact-us-form-title",
+          "disabled": false,
+          "error": "",
+          "fieldOk": false,
+          "inputId": "title",
+          "invalidError": "Please provide a short description of the request",
+          "key": "title",
+          "label": "Title",
+          "layout": "2.0.5",
+          "patternErrorMessage": "Please provide a short description of the request",
+          "preventHTMLRequiredValidation": true,
+          "required": true,
+          "subtitle": "",
+          "type": "text",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "maxLength": 60,
+              "error": "Max. length is 60"
+            }
+          }
+        },
+        "details": {
+          "containerClasses": "contact-us-form-row w-100",
+          "colClasses": "contact-us-form-details",
+          "error": "",
+          "inputId": "details",
+          "invalidError": "Please provide additional information about the request",
+          "key": "details",
+          "label": "Details",
+          "layout": "3.0.7",
+          "patternErrorMessage": "Please provide additional information about the request",
+          "preventHTMLRequiredValidation": true,
+          "placeholder": "Please provide additional information about the request",
+          "required": true,
+          "subtitle": "",
+          "type": "textarea",
+          "value": "",
+          "validators": {
+            "validateLength": {
+              "maxLength": 1000,
+              "minLength": 20,
+              "error": "Details should be between 20 to 1000 characters long."
+            }
+          }
+        },
+        "sendActions": {
+          "containerClasses": "contact-us-form-row w-100 m-0",
+          "colClasses": "contact-us-button-panel text-right",
+          "layout": "4.0.7",
+          "type": "_buttonsPanel",
+          "buttons": {
+            "send": {
+              "classes": "btn btn-primary btn-sm px-4 font-size-14",
+              "text": "Send",
+              "type": "submit"
             }
           }
         }
       }
     }
-  };
-  export default FORMFIELDCONFIG;
+  }
+};
+export default FORMFIELDCONFIG;

@@ -80,7 +80,7 @@ class Paginator extends Component {
           {page.size} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL} &nbsp;&nbsp;&nbsp;
         </button>
         <div className="dropdown-menu count-dropdown-menu">
-          {page.sizeOptions.map(val => (<a key={val} className="dropdown-item" onClick={() => {this.changePageSize(val);}}>
+          {page.sizeOptions.map(val => (<a key={val} className="dropdown-item" onClick={() => this.changePageSize(val)}>
             {val} {CONSTANTS[this.props.section].SECTION_TITLE_PLURAL}</a>))}
         </div>
       </React.Fragment>) : null;

@@ -1,0 +1,8 @@
+.c-FieldSetContainer {
+  .btn-outline-primary.disabled {
+    cursor: default;
+    &:hover {
+      background: white;
+    }
+  }
+}

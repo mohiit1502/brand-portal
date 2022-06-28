@@ -225,9 +225,9 @@ class Authenticator extends React.Component {
   render () {
     const {modalsMeta} = this.props;
     const WORKFLOW_CODE = this.props.userProfile && this.props.userProfile.workflow && this.props.userProfile.workflow.code;
-    if (this.state.isLoggedIn) {
+    if (this.state.isLoggedIn) { // authentication check
       mixpanel.login(this.state.logInId, MIXPANEL_CONSTANTS.LOGIN.LOGIN_SUCCESS);
-      if (this.state.profileInformationLoaded) {
+      if (this.state.profileInformationLoaded) { // authorization check
         if (this.isRootPath(this.props.location.pathname)) {
           if (this.state.isOnboarded) {
             const redirectURI = window.localStorage.getItem("redirectURI");

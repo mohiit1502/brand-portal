@@ -23,7 +23,7 @@ export default class SortUtil {
   }
   static multiSort(dataList) {
       const columns = [...this.state.columns];
-      const sortingColumns = columns.filter(column => column.sortState.priorityLevel >= 0 ?  column : false);
+      const sortingColumns = columns.filter(column => column.sortState.priorityLevel >= 0);
       sortingColumns.sort((a, b) => {
         return a.sortState.priorityLevel - b.sortState.priorityLevel;
       });

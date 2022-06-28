@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Cookies from "electrode-cookies";
 import {TOGGLE_ACTIONS, toggleModal} from "../../../../actions/modal-actions";
 import {NOTIFICATION_TYPE, showNotification} from "../../../../actions/notification/notification-actions";
-import {saveBrandInitiated} from "../../../../actions/brand/brand-actions";
+import {saveBrandInitiated, dispatchBrands} from "../../../../actions/brand/brand-actions";
 import Http from "../../../../utility/Http";
 import Helper from "../../../../utility/helper";
 import Validator from "../../../../utility/validationUtil";
@@ -45,16 +45,35 @@ class NewBrandTemplate extends React.Component {
     if (this.props.data && !this.state.form.templateUpdateComplete) {
       this.prepopulateInputFields(this.props.data);
     }
+    if (this.props.context === "edit-trademark") {
+      this.setState(state => {
+        state = {...state};
+        state.form.inputData.brandName.disabled = true;
+        return state;
+      })
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.brands && this.props.brands.length > 0 && !this.props.brandListPopulated) {
+      this.setState(state => {
+        state = {...state};
+        state.form.inputData.brandName.dropdownOptions = this.props.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
+        return state;
+      })
+      this.props.dispatchBrands({brandListPopulated: true});
+    }
   }
 
   prepopulateInputFields (data) {
     const form = {...this.state.form};
 
     form.inputData.brandName.value = data.brandName;
+    form.inputData.brandName.type = "text";
     form.inputData.brandName.disabled = true;
 
-    form.inputData.trademarkNumber.value = data.trademarkNumber;
-    form.inputData.trademarkNumber.disabled = true;
+    // form.inputData.trademarkNumber.value = data.trademarkNumber;
+    // form.inputData.trademarkNumber.disabled = true;
 
     form.inputData.comments.value = data.comments;
 
@@ -69,48 +88,95 @@ class NewBrandTemplate extends React.Component {
     }
   }
 
-  bubbleValue (evt, key, error) {
-    const targetVal = evt.target.value;
+  bubbleValue(evt, key, error) {
+    const value = evt.target.value;
+    let index = -1;
+    if ((key.split("-")[0] === "trademarkNumber" || key.split("-")[0] === "description") && key.split("-")[1]) {
+      index = Number(key.split("-")[1]);
+      key = key.split("-")[0];
+    }
     this.setState(state => {
       state = {...state};
-      state.form.inputData[key].value = targetVal;
-      state.form.inputData[key].error = error;
-      return state;
-    }, this.checkToEnableSubmit);
+      if (index > -1) {
+        state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].value = value;
+        state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].error = error;
+      } else {
+        state.form.inputData[key].value = value;
+        state.form.inputData[key].error = error;
+      }
+      return {
+        ...state
+      };
+    },() => {
+      this.checkToEnableAddItemButton()
+    });
   }
 
-  onChange(evt, key) {
+  bubbleItemList (itemList) {
+    this.setState(state => {
+      state = {...state};
+      state.form.inputData.trademarkDetailsList.itemList = [...itemList];
+      return state;
+    }, () => {
+      this.checkToEnableAddItemButton()
+    });
+  }
+
+  onChange(evt, key, options) {
     if (evt && evt.target) {
       const targetVal = evt.target.value;
+      let index = -1;
+      if ((key.split("-")[0] === "trademarkNumber" || key.split("-")[0] === "description") && key.split("-")[1]) {
+        index = Number(key.split("-")[1]);
+        key = key.split("-")[0];
+      }
       this.setState(state => {
+        state = {...state};
         if (key === "trademarkNumber") {
-          state.form.inputData[key].isValid = false;
-          state.form.inputData[key].error = "";
-          state.form.inputData[key].fieldAlert = false;
-          state.form.inputData[key].fieldOk = false;
-          this.trademarkDebounce();
+          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].isValid = false;
+          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].fieldAlert = false;
+          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].fieldOk = false;
+          this.trademarkDebounce(index);
+        }
+        if (key === "description" || key === "trademarkNumber") {
+          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].value = targetVal;
+          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].error = "";
         }
         if (key === "brandName") {
           state.form.inputData[key].isUnique = false;
           state.form.inputData[key].error = "";
+          state.form.inputData[key].value = targetVal;
           state.form.inputData[key].fieldOk = false;
-          this.brandDebounce({brandName: targetVal, wf: "BRAND_WORKFLOW"});
+          options && options.shouldTriggerAPI && this.brandDebounce({brandName: targetVal, wf: "BRAND_WORKFLOW"});
         }
-        state = {...state};
-        state.form.inputData[key].value = targetVal;
         return state;
-      }, this.checkToEnableSubmit);
+      });
+      if (key === "trademarkNumber") {
+        this.checkToEnableAddItemButton();
+      }
     }
   }
 
-  checkToEnableSubmit() {
-    const form = {...this.state.form};
-    const bool = form.isUpdateTemplate || (form.inputData.trademarkNumber.isValid  &&
-      form.inputData.trademarkNumber.value && form.inputData.brandName.value &&
-      form.inputData.brandName.isUnique);
-    form.inputData.brandCreateActions.buttons.submit.disabled = !bool;
-    this.setState({form});
+  getItemListFromChild(itemList) {
+    this.setState(state => {
+      state = {...state};
+      state.form.inputData.trademarkDetailsList.itemList = [...itemList];
+      return {
+        ...state
+      };
+    }, () => {
+      this.checkToEnableAddItemButton();
+    });
   }
+
+  // checkToEnableSubmit() {
+  //   const form = {...this.state.form};
+  //   const bool = form.isUpdateTemplate || (form.inputData.trademarkNumber.isValid  &&
+  //     form.inputData.trademarkNumber.value && form.inputData.brandName.value &&
+  //     form.inputData.brandName.isUnique);
+  //   form.inputData.brandCreateActions.buttons.submit.disabled = !bool;
+  //   this.setState({form});
+  // }
 
   async handleSubmit(evt) {
 
@@ -179,24 +245,31 @@ class NewBrandTemplate extends React.Component {
 
   resetTemplateStatus (e) {
     const form = {...this.state.form};
-    form.inputData.trademarkNumber.value = "";
+    // form.inputData.trademarkNumber.value = "";
     form.inputData.brandName.value = "";
     form.inputData.comments.value = "";
 
-    form.inputData.trademarkNumber.error = "";
+    // form.inputData.trademarkNumber.error = "";
     form.inputData.brandName.error = "";
     form.inputData.comments.error = "";
 
-    form.inputData.trademarkNumber.fieldOk = false;
-    form.inputData.trademarkNumber.fieldAlert = false;
+    // form.inputData.trademarkNumber.fieldOk = false;
+    // form.inputData.trademarkNumber.fieldAlert = false;
     form.inputData.brandName.fieldOk = false;
 
-    form.inputData.trademarkNumber.isValid = false;
+    // form.inputData.trademarkNumber.isValid = false;
     form.inputData.brandName.isUnique = false;
 
-    form.inputData.trademarkNumber.disabled = false;
+    // form.inputData.trademarkNumber.disabled = false;
     form.inputData.brandName.disabled = false;
     form.inputData.brandCreateActions.buttons.submit.disabled = true;
+
+    const fieldSet = JSON.parse(JSON.stringify(form.inputData.trademarkDetailsList.itemListTemplate));
+    Object.values(fieldSet).forEach(field => {
+      field.inputId = `${field.inputId}-0`;
+      field.key = field.inputId;
+    });
+    form.inputData.trademarkDetailsList.itemList = [{id: 0, fieldSet}];
 
     this.setState({form});
     this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
@@ -214,7 +287,7 @@ class NewBrandTemplate extends React.Component {
     const section = this.state.section;
     return (
       <div className="modal show new-brand-modal" id="singletonModal" tabIndex="-1" role="dialog">
-        <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div className="modal-content">
             <div className="modal-header align-items-center">
               {
@@ -242,6 +315,8 @@ class NewBrandTemplate extends React.Component {
 }
 
 NewBrandTemplate.propTypes = {
+  brandListPopulated: PropTypes.string,
+  brands: PropTypes.array,
   clientType: PropTypes.string,
   data: PropTypes.object,
   modal: PropTypes.object,
@@ -253,6 +328,8 @@ NewBrandTemplate.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    brandListPopulated: state.brandEdit.brandListPopulated,
+    brands: state.brandEdit.brandList,
     clientType: Cookies.get("bp_client_type"),
     newBrandConfiguration: state.content && state.content.metadata && state.content.metadata.FORMSCONFIG && state.content.metadata.FORMSCONFIG.EDITTRADEMARK,
     modal: state.modal
@@ -260,6 +337,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
+  dispatchBrands,
   toggleModal,
   saveBrandInitiated,
   showNotification

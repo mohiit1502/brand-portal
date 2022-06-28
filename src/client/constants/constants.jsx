@@ -168,15 +168,33 @@ const CONSTANTS = {
     },
     OPTIONS: {
       DISPLAY: {
-        EDIT: "Edit Brand Details",
-        SUSPEND: "Suspend Brand",
-        REACTIVATE: "Activate Brand",
-        DELETE: "Delete Brand"
+        EDITBRAND: "Edit Brand",
+        ADDTRADEMARK: "Add Trademark"
       },
       PAYLOAD: {
         VERIFIED: "Verified",
         SUSPEND: "Suspended",
         ACTIVE: "Active"
+      },
+    },
+    TRADEMARK: {
+      STATUS: {
+        PENDING: "Pending Verification",
+        VERIFIED: "Verified",
+        SUSPENDED: "Suspended",
+        REJECTED: "Rejected"
+      },
+      OPTIONS: {
+        DISPLAY: {
+          EDITTRADEMARK: "Edit Trademark",
+          DEACTIVATETRADEMARK: "Deactivate Trademark",
+          ACTIVATETRADEMARK: "Activate Trademark"
+        },
+        PAYLOAD: {
+          VERIFIED: "Verified",
+          SUSPEND: "Suspended",
+          ACTIVE: "Active"
+        },
       }
     }
   },

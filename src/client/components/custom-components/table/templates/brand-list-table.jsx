@@ -12,60 +12,79 @@ import NoRecordsMatch from "../../NoRecordsMatch";
 const BrandListTable = function(props) {
 
   const { getTableBodyProps, headerGroups, sortHandler, templateProps: {loader}, rows,  prepareRow, templateProps } = props;
-  const { Dropdown, dropdownOptions, userProfile } = templateProps;
+  const { Dropdown, dropdownOptions, userProfile, columnsMeta } = templateProps;
   const classColMap = {
     sequence: "col-1"
   };
   const sortStateAscending = CONSTANTS.SORTSTATE.ASCENDING;
   const sortStateReset = CONSTANTS.SORTSTATE.RESET;
+
   const updateDDOptions = (index, values, ddOptions) => {
-    const statusPending = CONSTANTS.BRAND.STATUS.PENDING.toLowerCase();
-    const statusVerified = CONSTANTS.BRAND.STATUS.VERIFIED.toLowerCase();
+    const statusPending = CONSTANTS.BRAND.TRADEMARK.STATUS.PENDING.toLowerCase();
+    const statusVerified = CONSTANTS.BRAND.TRADEMARK.STATUS.VERIFIED.toLowerCase();
     const statusSuspended = CONSTANTS.BRAND.STATUS.SUSPENDED.toLowerCase();
     if (index !== -1) {
       const toggleStatusDropdown = ddOptions[index];
-      const incoming = values.brandStatus ? values.brandStatus.toLowerCase() : "";
+      const incoming = values.trademarkStatus ? values.trademarkStatus.toLowerCase() : "";
       const toggleStatusDropdownCloned = {...toggleStatusDropdown};
       ddOptions[index] = toggleStatusDropdownCloned;
-      (incoming === statusVerified || incoming === statusPending) && (toggleStatusDropdownCloned.value = CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND);
-      incoming === statusSuspended && (toggleStatusDropdownCloned.value = CONSTANTS.BRAND.OPTIONS.DISPLAY.REACTIVATE);
+      (incoming === statusVerified || incoming === statusPending) && (toggleStatusDropdownCloned.value = CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.DEACTIVATETRADEMARK);
+      incoming === statusSuspended && (toggleStatusDropdownCloned.value = CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.ACTIVATETRADEMARK);
     }
   };
 
   const getOptionsConfigMap = () => {
     return {
-        [CONSTANTS.BRAND.OPTIONS.DISPLAY.EDIT]: "EDIT",
-        [CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND]: "SUSPEND",
-        [CONSTANTS.BRAND.OPTIONS.DISPLAY.REACTIVATE]: "REACTIVATE",
-        [CONSTANTS.BRAND.OPTIONS.DISPLAY.DELETE]: "DELETE"
+        [CONSTANTS.BRAND.OPTIONS.DISPLAY.EDITBRAND]: "EDIT",
+        [CONSTANTS.BRAND.OPTIONS.DISPLAY.ADDTRADEMARK]: "ADD",
+        [CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.EDITTRADEMARK]: "EDITCHILD",
+        [CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.DEACTIVATETRADEMARK]: "DEACTIVATECHILD"
     };
   };
 
-  const generateDropDownOptionsDynamic = (options, values) => {
+  const generateDropDownOptionsDynamic = (options, values, isParentRow) => {
+    // Clone dd options
     const optionsCloned = {...options};
+    optionsCloned.dropdownOptions = [...optionsCloned.dropdownOptions];
     const optionsConfigMap = getOptionsConfigMap();
-    const dropDownOptionsCloned = [...optionsCloned.dropdownOptions];
-    optionsCloned.dropdownOptions = dropDownOptionsCloned;
-    const displaySuspended = CONSTANTS.BRAND.OPTIONS.DISPLAY.SUSPEND.toLowerCase();
-    const displayReactivate = CONSTANTS.BRAND.OPTIONS.DISPLAY.REACTIVATE.toLowerCase();
-    const toggleStatusDropdownIndex = dropDownOptionsCloned.findIndex(dropDownOption => {
+    optionsCloned.dropdownOptions = optionsCloned.dropdownOptions.filter(option => isParentRow ? option.parentOnly : option.childOnly);
+
+    // Get Changeable Options
+    const displaySuspended = CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.DEACTIVATETRADEMARK.toLowerCase();
+    const displayReactivate = CONSTANTS.BRAND.TRADEMARK.OPTIONS.DISPLAY.ACTIVATETRADEMARK.toLowerCase();
+    const toggleStatusDropdownIndex = optionsCloned.dropdownOptions.findIndex(dropDownOption => {
       const currentDDOption = dropDownOption.value.toLowerCase();
       return currentDDOption === displaySuspended || currentDDOption === displayReactivate;
     });
-    updateDDOptions(toggleStatusDropdownIndex, values, dropDownOptionsCloned);
-    dropDownOptionsCloned.forEach(option => {
-      const i = dropDownOptionsCloned.findIndex(opt => opt === option);
-      const optCloned = {...option};
-      dropDownOptionsCloned[i] = optCloned;
-      const statusBasedEnable = !AUTH_CONFIG.BRANDS[optionsConfigMap[optCloned.value]].STATUS
-        || (AUTH_CONFIG.BRANDS[optionsConfigMap[optCloned.value]].STATUS && AUTH_CONFIG.BRANDS[optionsConfigMap[optCloned.value]].STATUS.includes(values.brandStatus));
-      optCloned.disabled = optCloned.notMvp || !statusBasedEnable;
+
+    // Based on state of record update option
+    updateDDOptions(toggleStatusDropdownIndex, values, optionsCloned.dropdownOptions);
+
+    // Enable/Disable DD Options
+    optionsCloned.dropdownOptions.forEach(option => {
+      const i = optionsCloned.dropdownOptions.findIndex(opt => opt === option);
+      const optionCloned = {...option};
+      optionsCloned.dropdownOptions[i] = optionCloned;
+      // Disable option based on authorizations
+      const configObj = AUTH_CONFIG.BRANDS[optionsConfigMap[optionCloned.value]];
+      const enabledStatuses = configObj.STATUS;
+      const dependency = values[configObj.DEPENDENCY];
+      const statusBasedEnable = !enabledStatuses || enabledStatuses.includes(dependency);
+      optionCloned.disabled = !statusBasedEnable;
     });
     return optionsCloned;
   };
 
+  const shouldShowOptions = (cell, isParentRow, values) => {
+    const status = values[isParentRow ? "brandStatus" : "trademarkStatus"];
+    const matchStatus = isParentRow ? AUTH_CONFIG.BRANDS.SHOW_PARENT_OPTIONS.STATUS : AUTH_CONFIG.BRANDS.SHOW_CHILD_OPTIONS.STATUS
+    const roleBasedAccess = AUTH_CONFIG.BRANDS[isParentRow ? "SHOW_PARENT_OPTIONS" : "SHOW_CHILD_OPTIONS"].ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : "")
+    const statusBasedAccess = status === undefined || matchStatus === undefined || matchStatus.map(status1 => status1.toLowerCase()).includes(status.toLowerCase());
+    return roleBasedAccess && statusBasedAccess;
+  }
+
   return (
-    <div className="custom-table px-0 h-100">
+    <div className="custom-table brand-list-table px-0 h-100">
 
       <div className="table-header">
         {
@@ -74,6 +93,7 @@ const BrandListTable = function(props) {
               <div className="table-row row align-items-center" key={`trh${j}`} {...headerGroup.getHeaderGroupProps()}>
                 {
                   headerGroup.headers.map(header => {
+                    const canSort = columnsMeta.find(meta => meta.accessor === header.id).canSort !== false;
                     const sortByToggleProps = header.getSortByToggleProps();
                     sortByToggleProps.onClick = () => sortHandler(header);
                     let sortIcondisplay;
@@ -88,7 +108,7 @@ const BrandListTable = function(props) {
                       <div className={`table-head-cell col ${classColMap[header.id]}`} key={`trth${header.id}`} {...header.getHeaderProps(sortByToggleProps)}>
                         { header.render("Header") }
                         {
-                          <img className={"sort-icon"} src={sortIcondisplay} />
+                          canSort && <img className={"sort-icon"} src={sortIcondisplay} />
                         }
                       </div>
                     );
@@ -103,30 +123,29 @@ const BrandListTable = function(props) {
         <div className="table-body" {...getTableBodyProps()}>
           {
             rows.map(row => {
+              const isParentRow = !!row.original.parent;
               prepareRow(row);
-              const status = row && row.original && row.original.brandStatus;
-              const negativeStatuses = [CONSTANTS.BRAND.STATUS.REJECTED.toLowerCase(), CONSTANTS.BRAND.STATUS.PENDING.toLowerCase()];
               const {values} = row;
               return (
-                <div className="table-row row align-items-center" key={`tr${row.id}`} {...row.getRowProps()}>
+                <div className={`table-row ${isParentRow ? " parent-row" : ""} row align-items-center`} key={`tr${row.id}`} {...row.getRowProps()}>
                   {
                     row.cells.map((cell, k) => {
+                      const showOptions = shouldShowOptions(cell, isParentRow, values);
                       return (
                         <div className={`table-body-cell col ${classColMap[cell.column.id]}`} key={`td${k}`}>
                           {
-                            Array.isArray(cell.value) ? cell.value.join(", ") : cell.value
+                            isParentRow ? (cell.column.id === "brandName" ? cell.value : null) : (cell.column.id === "brandName" ? null : (Array.isArray(cell.value) ? cell.value.join(", ") : cell.value))
                           }
                           {
                             // cell.column.id === "brandStatus" && (cell.row.values.role === undefined) &&
-                            cell.column.id === "brandStatus"
-                            && AUTH_CONFIG.BRANDS.SHOW_OPTIONS.ROLES.map(role => role.toLowerCase()).includes(userProfile && userProfile.role ? userProfile.role.name.toLowerCase() : "")
-                            && (values.brandStatus === undefined || AUTH_CONFIG.BRANDS.SHOW_OPTIONS.STATUS.map(status1 => status1.toLowerCase()).includes(values.brandStatus.toLowerCase()))
+                            cell.column.id === "trademarkStatus"
+                            && showOptions
                             && <span className="float-right">
                               &nbsp;&nbsp;
                               <Dropdown
-                                options={generateDropDownOptionsDynamic(dropdownOptions, values)}
+                                options={generateDropDownOptionsDynamic(dropdownOptions, row.original, isParentRow)}
                                 data={row.original}
-                                hideEllipsis={negativeStatuses.includes(status ? status.toLowerCase() : "")}/>
+                                hideEllipsis={!showOptions}/>
                               &nbsp;&nbsp;
                             </span>
                           }
