@@ -5,4 +5,10 @@
       background: white;
     }
   }
+  .btn-outline-primary:not(.disabled):hover {
+    img {
+      -webkit-filter: grayscale(100%) brightness(100);
+      filter: grayscale(100%) brightness(100);
+    }
+  }
 }

@@ -34,7 +34,7 @@ class NewBrandTemplate extends React.Component {
     this.state = {
       section: {...newBrandConfiguration.sectionConfig},
       form: {
-        inputData: newBrandConfiguration.fields,
+        inputData: JSON.parse(JSON.stringify(newBrandConfiguration.fields)),
         ...newBrandConfiguration.formConfig
       },
       isActive: false
@@ -98,8 +98,9 @@ class NewBrandTemplate extends React.Component {
     this.setState(state => {
       state = {...state};
       if (index > -1) {
-        state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].value = value;
-        state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].error = error;
+        const item = state.form.inputData.trademarkDetailsList.itemList.find(item => item.id === `item-${index}`);
+        item.fieldSet[key].value = value;
+        item.fieldSet[key].error = error;
       } else {
         state.form.inputData[key].value = value;
         state.form.inputData[key].error = error;
@@ -107,9 +108,7 @@ class NewBrandTemplate extends React.Component {
       return {
         ...state
       };
-    },() => {
-      this.checkToEnableAddItemButton()
-    });
+    },() => this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList));
   }
 
   bubbleItemList (itemList) {
@@ -117,9 +116,7 @@ class NewBrandTemplate extends React.Component {
       state = {...state};
       state.form.inputData.trademarkDetailsList.itemList = [...itemList];
       return state;
-    }, () => {
-      this.checkToEnableAddItemButton()
-    });
+    }, () => this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList));
   }
 
   onChange(evt, key, options) {
@@ -132,15 +129,16 @@ class NewBrandTemplate extends React.Component {
       }
       this.setState(state => {
         state = {...state};
+        const item = state.form.inputData.trademarkDetailsList.itemList.find(item => item.id === `item-${index}`);
         if (key === "trademarkNumber") {
-          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].isValid = false;
-          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].fieldAlert = false;
-          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].fieldOk = false;
+          item.fieldSet[key].isValid = false;
+          item.fieldSet[key].fieldAlert = false;
+          item.fieldSet[key].fieldOk = false;
           this.trademarkDebounce(index);
         }
         if (key === "description" || key === "trademarkNumber") {
-          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].value = targetVal;
-          state.form.inputData.trademarkDetailsList.itemList[index].fieldSet[key].error = "";
+          item.fieldSet[key].value = targetVal;
+          item.fieldSet[key].error = "";
         }
         if (key === "brandName") {
           state.form.inputData[key].isUnique = false;
@@ -150,10 +148,11 @@ class NewBrandTemplate extends React.Component {
           options && options.shouldTriggerAPI && this.brandDebounce({brandName: targetVal, wf: "BRAND_WORKFLOW"});
         }
         return state;
+      }, () => {
+        if (key === "trademarkNumber") {
+          this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList);
+        }
       });
-      if (key === "trademarkNumber") {
-        this.checkToEnableAddItemButton();
-      }
     }
   }
 
@@ -164,9 +163,7 @@ class NewBrandTemplate extends React.Component {
       return {
         ...state
       };
-    }, () => {
-      this.checkToEnableAddItemButton();
-    });
+    }, () => this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList));
   }
 
   // checkToEnableSubmit() {
@@ -244,36 +241,30 @@ class NewBrandTemplate extends React.Component {
 
 
   resetTemplateStatus (e) {
-    const form = {...this.state.form};
-    // form.inputData.trademarkNumber.value = "";
-    form.inputData.brandName.value = "";
-    form.inputData.comments.value = "";
+    const state = {...this.state};
+    const form = {...state.form};
+    const inputData = {...form.inputData};
+    inputData.brandName.value = "";
+    inputData.brandName.error = "";
+    inputData.brandName.fieldOk = false;
+    inputData.brandName.isUnique = false;
+    inputData.brandName.disabled = false;
+    inputData.brandName.type = "select";
 
-    // form.inputData.trademarkNumber.error = "";
-    form.inputData.brandName.error = "";
-    form.inputData.comments.error = "";
+    inputData.comments.error = "";
+    inputData.comments.value = "";
 
-    // form.inputData.trademarkNumber.fieldOk = false;
-    // form.inputData.trademarkNumber.fieldAlert = false;
-    form.inputData.brandName.fieldOk = false;
+    inputData.brandCreateActions.buttons.submit.disabled = true;
 
-    // form.inputData.trademarkNumber.isValid = false;
-    form.inputData.brandName.isUnique = false;
-
-    // form.inputData.trademarkNumber.disabled = false;
-    form.inputData.brandName.disabled = false;
-    form.inputData.brandName.type = "select";
-    form.inputData.brandCreateActions.buttons.submit.disabled = true;
-
-    const fieldSet = JSON.parse(JSON.stringify(form.inputData.trademarkDetailsList.itemListTemplate));
+    const fieldSet = JSON.parse(JSON.stringify(inputData.trademarkDetailsList.itemListTemplate));
     Object.values(fieldSet).forEach(field => {
       field.inputId = `${field.inputId}-0`;
       field.key = field.inputId;
+      field.id = field.inputId;
     });
-    form.inputData.trademarkDetailsList.itemList = [{id: 0, fieldSet}];
+    inputData.trademarkDetailsList.itemList = [{id: "item-0", fieldSet}];
 
-    this.setState({form});
-    this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+    this.setState(state, () => this.props.toggleModal(TOGGLE_ACTIONS.HIDE));
     if (e) {
       const mixpanelPayload = {
         WORK_FLOW: this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
@@ -300,7 +291,7 @@ class NewBrandTemplate extends React.Component {
             </div>
             <div className={`modal-body p-0 text-left${this.state.form.loader && " loader"}`}>
               <div className="row">
-                <div className="col px-4 mx-2 pb-1 pt-4">
+                <div className="col px-4 mx-3 pb-1 pt-4">
                   <p>{form.formHeading}</p>
                 </div>
               </div>

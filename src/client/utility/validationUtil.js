@@ -232,17 +232,14 @@ export default class Validator {
   }
 
   static checkTrademarkValidity(index) {
-    const state = { ...this.state };
-    const form = { ...state.form };
-    const inputData = { ...form.inputData };
-    state.form = form;
-    form.inputData = inputData;
-    const tmMeta = index !== undefined ? inputData.trademarkDetailsList.itemList[index].fieldSet.trademarkNumber : inputData.trademarkNumber;
+    const state = JSON.parse(JSON.stringify(this.state));
+    const inputData = state.form.inputData;
+    const tmMeta = index !== undefined ? inputData.trademarkDetailsList.itemList.find(item => item.id === `item-${index}`).fieldSet.trademarkNumber : inputData.trademarkNumber;
     if (!tmMeta.value) return;
     tmMeta.loader = true;
     tmMeta.disabled = true;
     tmMeta.fieldOk = false;
-    this.setState(state);
+    this.setState(state, () => index && this.checkToEnableAddItemButton(inputData.trademarkDetailsList.itemList));
     const mixpanelPayload = {
       API: "/api/brand/trademark/validity/",
       TRADEMARK_NUMBER: tmMeta.value,
@@ -273,7 +270,7 @@ export default class Validator {
       .finally(() => {
         tmMeta.disabled = false;
         tmMeta.loader = false;
-        this.setState(state, this.checkToEnableAddItemButton);
+        this.setState(state, () => index && this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList));
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.TRADEMARK_VALIDITY, mixpanelPayload);
       });
   }

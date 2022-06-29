@@ -6,9 +6,14 @@ import "./FieldSet.component.scss";
 
 const FieldSet = props => {
   const [itemList, updateItemList] = useState(props.itemList);
-  // const [currentItemId, setCurrentItemId] = useState(0);
+  const [currentItemId, setCurrentItemId] = useState(0);
   const [enableAddItem, setEnableAddItem] = useState(false);
   const [maxItemsAdded, setMaxItemsAdded] = useState(false);
+
+  useEffect(() => {
+    updateItemList(props.itemList);
+  }, [props.itemList])
+
   useEffect(() => {
     if (itemList) {
       if (itemList.length === 0) {
@@ -38,7 +43,7 @@ const FieldSet = props => {
 
   const addToItemList = isFirst => {
     const newItem = JSON.parse(JSON.stringify(props.itemListTemplate));
-    const index = itemList.length + 1;
+    const index = currentItemId;
     const item = {
       id: `item-${index}`,
       fieldSet: newItem
@@ -66,7 +71,7 @@ const FieldSet = props => {
       }
     }
 
-    // setCurrentItemId(currentItemId + 1);
+    setCurrentItemId(currentItemId + 1);
 
     const itemListClone = [...itemList];
     itemListClone.push(item);
@@ -80,8 +85,12 @@ const FieldSet = props => {
     }
   };
 
-  props.parentRef && (props.parentRef.checkToEnableAddItemButton = () => {
-    const enableAddItemButton = itemList && itemList.length > 0 && itemList.every(item => Object.values(item.fieldSet).every(field => (!field.required || !!field.value) && !field.error));
+  props.parentRef && (props.parentRef.checkToEnableAddItemButton = itemList => {
+    const enableAddItemButton = itemList && itemList.length > 0 && itemList.every(item => {
+      return Object.values(item.fieldSet).every(field => {
+        return (!field.required || !!field.value) && !field.error && !field.loader && field.fieldOk !== false;
+      })
+    });
     setEnableAddItem(enableAddItemButton);
   });
 
@@ -116,9 +125,9 @@ const FieldSet = props => {
   }
   <div className="offset-8 col-4 px-0">
     {
-      <button type="button" className={`btn btn-sm btn-block btn-outline-primary${disableAddItems && " disabled" || ""}`}
+      <button type="button" className={`btn btn-sm btn-block btn-outline-primary${disableAddItems && " disabled" || " font-weight-bold"}`}
         onClick={e => addToItemList(false)} disabled={disableAddItems}>
-        <img src={images.Plus} className={`plus-icon${!disableAddItems ? " make-it-white" : ""}`}/> {props.addLabel || "Item"} </button>
+        <img src={images.Plus} className={`plus-icon pb-1`}/> {props.addLabel || "Item"} </button>
     }
   </div>
   </div>;
