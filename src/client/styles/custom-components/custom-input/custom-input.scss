@@ -123,6 +123,14 @@ $dropdown-select-background: #E7F3F8;
         color: #657386;
       }
 
+      &.dropdown-control {
+        border-top: 2px solid $market-place-blue;
+        color: $market-place-blue;
+        .plus-icon {
+          width: 1.8rem;
+        }
+      }
+
       &:focus, &:hover {
         background: $dropdown-select-background;
       }
@@ -160,8 +168,6 @@ $dropdown-select-background: #E7F3F8;
 }
 
 .custom-input-form-group {
-
-
   min-height: 58px;
   //font-family: MyriadPro-Regular, sans-serif;
   .form-control{

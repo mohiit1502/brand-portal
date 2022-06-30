@@ -627,6 +627,15 @@ input[type="checkbox"], input[type="text"], input[type="select"] {
   overflow-x: hidden !important;
 }
 
+.dropdown-menu {
+  border: unset;
+  border-radius: 0.3rem;
+}
+
+.dropdown-item-border-bottom:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
 .user-menu {
   box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.15);
   border-radius: 0.5rem;

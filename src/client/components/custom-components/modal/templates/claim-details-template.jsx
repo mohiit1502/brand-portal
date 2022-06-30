@@ -88,6 +88,11 @@ class ClaimDetailsTemplate extends React.Component {
                         <div className="snapshot-header">{claimTypeLabel} </div>
                         <div className="snapshot-value"> {this.props.data.registrationNumber} </div>
                       </div>
+                      { ((this.props.data.claimType === "Counterfeit") ||  (this.props.data.claimType === "Trademark" )) && <div className="col">
+                        <div className="snapshot-header">Description </div>
+                        <div className="snapshot-value"> {this.props.data.shortHandDescription} </div>
+                      </div>
+                      }
                       <div className="col">
                         <div className="snapshot-header">Brand Name </div>
                         <div className="snapshot-value"> {this.props.data.brandName} </div>

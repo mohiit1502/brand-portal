@@ -21,7 +21,7 @@ const BrandListTable = function(props) {
 
   const updateDDOptions = (index, values, ddOptions) => {
     const statusPending = CONSTANTS.BRAND.TRADEMARK.STATUS.PENDING.toLowerCase();
-    const statusVerified = CONSTANTS.BRAND.TRADEMARK.STATUS.VERIFIED.toLowerCase();
+    const statusVerified = CONSTANTS.BRAND.TRADEMARK.STATUS.ACCEPTED.toLowerCase();
     const statusSuspended = CONSTANTS.BRAND.STATUS.SUSPENDED.toLowerCase();
     if (index !== -1) {
       const toggleStatusDropdown = ddOptions[index];

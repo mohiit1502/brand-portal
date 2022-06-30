@@ -558,10 +558,11 @@ const FORMFIELDCONFIG = {
         }
       }
     },
+
     "EDITBRANDTRADEMARK": {
       "sectionConfig": {
-        "sectionTitleNew": "Edit Trademark",
-        "sectionTitleEdit": "Edit Brand Details"
+        "sectionTitleBrand": "Edit Brand",
+        "sectionTitleTrademark": "Edit Trademark"
       },
       "formConfig": {
         "formHeading": "Please update the following information.",
@@ -618,14 +619,30 @@ const FORMFIELDCONFIG = {
           "error": "",
           "inputId": "comments",
           "key": "comments",
+          "label": "Comments",
+          "pattern": null,
+          "required": false,
+          "renderCondition": "{\"keyPath\": \"data.context\", \"keyLocator\": \"props\", \"value\": \"editbrand\"}",
+          "subtitle": "Include a description that helps to identify the trademark number",
+          "type": "textarea",
+          "placeholder": "Please provide additional information about your brand.",
+          "value": ""
+        },
+        "description": {
+          "disabled": false,
+          "error": "",
+          "inputId": "comments",
+          "key": "comments",
           "label": "Description (Optional)",
           "pattern": null,
           "required": false,
+          "renderCondition": "{\"keyPath\": \"data.context\", \"keyLocator\": \"props\", \"value\": \"edittrademark\"}",
           "subtitle": "Include a description that helps to identify the trademark number",
           "type": "text",
           "placeholder": "Please provide additional information about your brand.",
           "value": ""
         },
+
         "activeStatus": {
           "active": false,
           "onChange": "activeStatusToggle",
@@ -637,6 +654,7 @@ const FORMFIELDCONFIG = {
           "pattern": null,
           "rowClasses": "ml-2",
           "required": false,
+          "renderCondition": "{\"keyPath\": \"data.context\", \"keyLocator\": \"props\", \"value\": \"edittrademark\"}",
           "subtitle": "",
           "type": "toggle",
           "placeholder": "",
@@ -668,8 +686,8 @@ const FORMFIELDCONFIG = {
     },
     "NEWBRAND": {
       "sectionConfig": {
-        "sectionTitleNew": "Register a Brand",
-        "sectionTitleEdit": "Edit Brand Details"
+        "sectionTitleTrademark": "Add Trademark",
+        "sectionTitleBrand": "Register a Brand"
       },
       "formConfig": {
         "formHeading": "Please complete the following fields to register your brand.",
@@ -733,6 +751,7 @@ const FORMFIELDCONFIG = {
           }
         },
         "brandName": {
+          "customLabel": "Add new brand",
           "disabled": false,
           "error": "",
           "fieldOk": false,
@@ -743,6 +762,7 @@ const FORMFIELDCONFIG = {
           "label": "Brand Name",
           "layout": "1.1.0",
           "loader": false,
+          "onChange": "setSelectInputValue",
           "pattern": null,
           "required": true,
           "subtitle": "",
@@ -1081,6 +1101,7 @@ const FORMFIELDCONFIG = {
         },
         "claimTypeIdentifier": {
           "disabled": true,
+          "dropdownOptions": [],
           "label": "Claim Type Identifier",
           "key": "claimTypeIdentifier",
           "layout": "5.2.6",
@@ -1089,12 +1110,12 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "value": "",
-          "type": "text",
+          "type": "select",
           "pattern": null,
           "isValid": false,
           "subtitle": "",
           "error": "",
-          "onChange": "onChange"
+          "onChange": "setSelectInputValue"
         },
         "fieldsHeader_3": {
           "excludeColContainer": true,

@@ -239,7 +239,7 @@ export default class Validator {
     tmMeta.loader = true;
     tmMeta.disabled = true;
     tmMeta.fieldOk = false;
-    this.setState(state, () => index && this.checkToEnableAddItemButton(inputData.trademarkDetailsList.itemList));
+    this.setState(state, () => index !== undefined && this.checkToEnableAddItemButton(inputData.trademarkDetailsList.itemList));
     const mixpanelPayload = {
       API: "/api/brand/trademark/validity/",
       TRADEMARK_NUMBER: tmMeta.value,
@@ -270,7 +270,7 @@ export default class Validator {
       .finally(() => {
         tmMeta.disabled = false;
         tmMeta.loader = false;
-        this.setState(state, () => index && this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList));
+        this.setState(state, () => index !== undefined && this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList, this.checkToEnableSubmit));
         mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.TRADEMARK_VALIDITY, mixpanelPayload);
       });
   }

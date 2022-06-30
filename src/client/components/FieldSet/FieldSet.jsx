@@ -85,13 +85,14 @@ const FieldSet = props => {
     }
   };
 
-  props.parentRef && (props.parentRef.checkToEnableAddItemButton = itemList => {
+  props.parentRef && (props.parentRef.checkToEnableAddItemButton = (itemList, cb) => {
     const enableAddItemButton = itemList && itemList.length > 0 && itemList.every(item => {
       return Object.values(item.fieldSet).every(field => {
         return (!field.required || !!field.value) && !field.error && !field.loader && field.fieldOk !== false;
       })
     });
     setEnableAddItem(enableAddItemButton);
+    cb && cb(enableAddItemButton);
   });
 
   const removeFromItemList = index => {

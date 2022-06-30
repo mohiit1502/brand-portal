@@ -208,21 +208,28 @@ class BrandList extends React.Component {
       this.loader("nonBlockingLoader", false);
     })).body;
 
-    let brandList = [], dissectedBrandList = [];
+    let trademarkList = [], dissectedBrandList;
 
     if (response.content && response.content.length) {
-      brandList = response.content.map((brand, i) => {
+      trademarkList = response.content.map((brand, i) => {
         const newBrand = { ...brand, sequence: i + 1 };
         newBrand.original = brand;
         return newBrand;
       });
-      brandList.forEach(brand => {
-        dissectedBrandList.push({brandName: brand.brandName, brandStatus: brand.statusInfo.status, trademarkStatus: brand.trademarkDetailsList.map(tm => tm.statusInfo.status).join(","),
-          parent: true, ...brand});
-        brand.trademarkDetailsList.forEach(tm => {
-          dissectedBrandList.push({brandName: brand.brandName, brandStatus: brand.statusInfo.status, trademarkStatus: tm.statusInfo.status, ...tm});
-        })
+      const brandList = {};
+      trademarkList.forEach(brand => {
+        if (!brandList[brand.brandId]) {
+          brandList[brand.brandId] = [];
+          brandList[brand.brandId].push({
+            brandName: brand.brandName,
+            brandStatus: brand.brandStatus,
+            trademarkStatus: brand.caseStatus,
+            parent: true, ...brand
+          });
+        }
+        brandList[brand.brandId].push({brandName: brand.brandName, brandStatus: brand.brandStatus, trademarkStatus: brand.caseStatus, ...brand});
       })
+      dissectedBrandList = Object.values(brandList).reduce((acc, arr) => acc.concat(arr), []);
     }
 
     if (this.props.widgetAction) {

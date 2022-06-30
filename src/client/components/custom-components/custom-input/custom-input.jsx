@@ -54,10 +54,12 @@ class CustomInput extends React.PureComponent {
     if (this.state.type === "select" && this.state.dropdownOptions && this.state.isEditable && !this.state.ddOptionsUpdated) {
       this.setState(state => {
         state = {...state};
-        state.dropdownOptions && state.dropdownOptions.push({id: "custom-value", label: this.state.customLabel || "Add", value: "CUSTOMVALUE", onClick: () => {
+        state.dropdownOptions && state.dropdownOptions.push({id: "custom-value", classes: "dropdown-control", icon: "Plus", displayValue: this.state.customLabel || "Add", value: "", onClick: () => {
           this.setState(state => {
             state = {...state};
             state.type = "text";
+            state.onChange = state.parentRef.onChange;
+            state.value = "";
             return state;
           });
         }});
@@ -104,14 +106,14 @@ class CustomInput extends React.PureComponent {
   }
 
 
-  setSelectInputValue (value, key) {
+  setSelectInputValue (value, key, subtitle, options) {
     if (value) {
       this.setState({
         value
       });
     }
     this.state.customChangeHandler && this.state.customChangeHandler(value);
-    this.state.onChange(value, key);
+    this.state.onChange(value, key, subtitle, options);
   }
 
   havePropsChanged(prevProps, newProps) {
@@ -155,8 +157,8 @@ class CustomInput extends React.PureComponent {
     const handleLocalChange = e => {
       // e.persist();
       if (this.state.isEditable) {
-        const localDdOptions = [...this.state.dropdownOptions].filter(option => (option.label || option.value).toLowerCase().indexOf(e.target.value.toLowerCase()) > -1);
-        this.onChangeLocal(e, this.state.inputId, {shouldTriggerAPI: localDdOptions.length === 0})
+        const localDdOptions = [...this.state.dropdownOptions].filter(option => ((option.label || option.value).toLowerCase().indexOf(e.target.value.toLowerCase()) > -1) || option.id === "custom-value");
+        this.onChangeLocal(e, this.state.inputId)
         this.setState(state => {
           state = {...state};
           state.localDdOptions = localDdOptions;
@@ -165,7 +167,7 @@ class CustomInput extends React.PureComponent {
       }
     }
     const content = (<React.Fragment>
-      <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
+      <input disabled={this.state.disabled} type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
         id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={handleLocalChange}
         pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
         data-toggle="dropdown" autoComplete="off" />
@@ -174,15 +176,16 @@ class CustomInput extends React.PureComponent {
         <div className="label-lower-bg position-absolute w-100 h-50 d-block"/>
         <span className="label-text"> { this.state.label } </span>
       </label>
-      <div className={`dropdown-menu${!ddOptions || ddOptions.length === 0 ? " h-0" : ""}`}>
+      <div className={`dropdown-menu py-0${!ddOptions || ddOptions.length === 0 ? " h-0" : ""}`}>
         {
           ddOptions && ddOptions.map((option, i) => {
-            return <a key={option.id || i} className="dropdown-item pt-2" onClick={ () => {
+            return <a key={option.id || i} className={`dropdown-item-border-bottom dropdown-item py-2 font-weight-bold${option.classes ? " " + option.classes : ""}`} onClick={ () => {
               option.onClick
               && option.onClick()
-              || this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>
-                  {option.label || option.value}
-                  <p className={`dropdown-subtitle m-0`}>{option.subtitle}</p>
+              || this.setSelectInputValue(option.value || option.label, this.state.inputId, option.subtitle, option.id); } }>
+                {option.icon && <img src={images[option.icon]} className={`plus-icon pb-1 pr-2`} />}
+                {option.displayValue || option.label || option.value}
+                <p className={`dropdown-subtitle m-0`}>{option.subtitle}</p>
               </a>;
             })
         }
@@ -398,7 +401,7 @@ class CustomInput extends React.PureComponent {
          id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onKeyPress={this.state.onKeyPress && (e => this.state.onKeyPress(e, this.state.inputId))}
          pattern={pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
          onBlur={!this.state.disableDefaultBlurValidation ? evt => this.onBlur(evt, this.state.inputId) : undefined} maxLength={this.state.maxLength}
-         onChange={e => this.onChangeLocal(e, this.state.inputId)} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string"
+         onChange={e => this.onChangeLocal(e, this.state.inputId, {sourceType: "text"})} onInvalid={this.state.parentRef && typeof this.state.onInvalid === "string"
           ? (e => this.state.parentRef[this.state.onInvalid](e, this.state.inputId)) : (e => this.state.onInvalid(e, this.state.inputId))} />
         {this.state.value && this.state.canShowPassword && (this.state.type === "password" ?
           <span className="icon-view-password" onClick={() => this.setState({type: "text"})} />

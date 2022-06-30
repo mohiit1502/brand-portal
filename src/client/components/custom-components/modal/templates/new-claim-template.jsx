@@ -94,7 +94,7 @@ class NewClaimTemplate extends React.Component {
     }
   }
 
-  setSelectInputValue (value, key) {
+  setSelectInputValue (value, key, subtitle) {
     if (value) {
       let index = -1;
       if (key.split("-")[0] === "sellerName" && key.split("-")[1]) {
@@ -109,7 +109,11 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.urlItems.itemList[index][key].error = "";
           state.form.inputData.urlItems.itemList[index].url.error = "";
         } else {
-          state.form.inputData[key].value = value;
+          if(key === "claimTypeIdentifier" && subtitle) {
+            state.form.inputData[key].value = [value,subtitle];
+          }else{
+            state.form.inputData[key].value = value;
+          }
           state.form.inputData[key].error = "";
         }
         this.checkToDisplayForm(state.form)
@@ -135,11 +139,13 @@ class NewClaimTemplate extends React.Component {
         claimType = value;
       }
       if (claimType === "Trademark" || claimType === "Counterfeit") {
+        state.form.inputData.claimTypeIdentifier.onChange="setSelectInputValue";
         const brandObj = state.brands.find(brand => brand.brandName === brandName);
-        const trademarkNumber = brandObj && brandObj.trademarkNumber ? brandObj.trademarkNumber : "";
-        state.form.inputData.claimTypeIdentifier.value = trademarkNumber;
-        state.form.inputData.claimTypeIdentifier.disabled = true;
+        state.form.inputData.claimTypeIdentifier.type="select";
+        state.form.inputData.claimTypeIdentifier.dropdownOptions = brandObj.trademarkDetailsList.map(v => ({value:v.trademarkNumber, subtitle: v.trademarkDescription}));
       } else {
+        state.form.inputData.claimTypeIdentifier.type="text";
+        state.form.inputData.claimTypeIdentifier.onChange="onChange";
         state.form.inputData.claimTypeIdentifier.value = "";
         state.form.inputData.claimTypeIdentifier.disabled = false;
         state.form.inputData.claimTypeIdentifier.required = false;
@@ -183,6 +189,10 @@ class NewClaimTemplate extends React.Component {
           state.form.inputData.urlItems.itemList[index][key].value = targetVal;
           state.form.inputData.urlItems.itemList[index][key].error = !this.invalid[key + "-" + index] ? "" : state.form.inputData.urlItems.itemList[index][key].error;;
 
+        }
+        else if((state.form.inputData.claimType.value === "Trademark" || state.form.inputData.claimType.value === "Counterfeit") && key === "claimTypeIdentifier") {
+          state.form.inputData[key].value = targetVal;
+          state.form.inputData[key].subtitle = targetVal;
         }
         else {
           state.form.inputData[key].value = targetVal;
@@ -262,12 +272,39 @@ class NewClaimTemplate extends React.Component {
     this.setState({form}, callback && callback());
   }
 
+  structureBrands(brandList) {
+    let restructuredBrandList = [];
+
+    brandList.forEach((brand) => {
+      const brandId = brand.brandId;
+      const sameBrandsList = restructuredBrandList.filter((restructedBrand) => restructedBrand.brandId === brandId);
+      if(sameBrandsList.length === 0) {
+        restructuredBrandList.push({...brand, trademarkDetailsList: [{
+          trademarkNumber: brand.trademarkNumber,
+            trademarkId: brand.trademarkId,
+            usptoUrl: brand.usptoUrl,
+            trademarkDescription: brand.shortHandDescription
+          }]})
+      } else {
+        const trademarkListObject = {
+          trademarkNumber: brand.trademarkNumber,
+          trademarkId: brand.trademarkId,
+          usptoUrl: brand.usptoUrl,
+          trademarkDescription: brand.shortHandDescription
+        };
+        sameBrandsList.at(0).trademarkDetailsList.push(trademarkListObject);
+      }
+    });
+
+    return restructuredBrandList;
+  }
+
   getBrands () {
     this.loader("loader", true);
     return Http.get("/api/brands?brandStatus=ACCEPTED", null, null, this.props.showNotification, null, "Request failed, please try again.")
       .then(res => {
         const state = {...this.state};
-        state.brands = res.body.content;
+        state.brands = this.structureBrands(res.body.content);
         state.form.inputData.brandName.dropdownOptions = state.brands.map(v => ({id: v.brandId, value: v.brandName, usptoUrl: v.usptoUrl, usptoVerification: v.usptoVerification}));
         state.loader = false;
         state.form.inputData.claimDoc.disabled=false;
@@ -429,7 +466,13 @@ class NewClaimTemplate extends React.Component {
 
         const inputData = this.state.form.inputData;
         const claimType = inputData.claimType.value;
-        const registrationNumber = inputData.claimTypeIdentifier.value.trim();
+        let registrationNumber, shortHandDesc;
+        if (typeof inputData.claimTypeIdentifier.value !== "string") {
+          registrationNumber = inputData.claimTypeIdentifier.value[0];
+          shortHandDesc = inputData.claimTypeIdentifier.value[1];
+        }else{
+          registrationNumber= inputData.claimTypeIdentifier.value.trim();
+        }
 
         const brandName = inputData.brandName.value;
         const index = ClientUtils.where(inputData.brandName.dropdownOptions, {value: brandName});
@@ -460,17 +503,33 @@ class NewClaimTemplate extends React.Component {
           return itemList;
         };
 
-        const payload = {
-          claimType,
-          brandId,
-          registrationNumber,
-          comments,
-          digitalSignatureBy,
-          items: getItems(inputData.urlItems.itemList),
-          usptoUrl,
-          usptoVerification,
-          claimDocList:  (this.state.form.docList.length > 0) ? this.state.form.docList : []
-        };
+        let payload;
+        if(shortHandDesc) {
+          payload = {
+            claimType,
+            brandId,
+            registrationNumber,
+            shortHandDescription: shortHandDesc,
+            comments,
+            digitalSignatureBy,
+            items: getItems(inputData.urlItems.itemList),
+            usptoUrl,
+            usptoVerification,
+            claimDocList:  (this.state.form.docList.length > 0) ? this.state.form.docList : []
+          };
+        } else {
+          payload = {
+            claimType,
+            brandId,
+            registrationNumber,
+            comments,
+            digitalSignatureBy,
+            items: getItems(inputData.urlItems.itemList),
+            usptoUrl,
+            usptoVerification,
+            claimDocList:  (this.state.form.docList.length > 0) ? this.state.form.docList : []
+          };
+        }
         const mixpanelPayload = {
           API: "/api/claims",
           BRAND_NAME: brandName,
