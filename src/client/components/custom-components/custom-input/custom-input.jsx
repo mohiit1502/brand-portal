@@ -104,14 +104,14 @@ class CustomInput extends React.PureComponent {
   }
 
 
-  setSelectInputValue (value, key) {
+  setSelectInputValue (value, key, subtitle) {
     if (value) {
       this.setState({
         value
       });
     }
     this.state.customChangeHandler && this.state.customChangeHandler(value);
-    this.state.onChange(value, key);
+    this.state.onChange(value, key, subtitle);
   }
 
   havePropsChanged(prevProps, newProps) {
@@ -165,7 +165,7 @@ class CustomInput extends React.PureComponent {
       }
     }
     const content = (<React.Fragment>
-      <input type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
+      <input disabled={this.state.disabled} type={this.state.type} className={`form-control form-control-${this.state.inputId} custom-input-element${errorClass.indexOf("has-error") > -1 ? " text-danger border-danger" : ""}`}
         id={`${this.state.formId}-${this.state.inputId}-custom-input`} value={this.state.value} onChange={handleLocalChange}
         pattern={this.state.pattern} required={!this.state.preventHTMLRequiredValidation ? this.state.required : false} disabled={this.state.disabled}
         data-toggle="dropdown" autoComplete="off" />
@@ -180,7 +180,7 @@ class CustomInput extends React.PureComponent {
             return <a key={option.id || i} className="dropdown-item pt-2" onClick={ () => {
               option.onClick
               && option.onClick()
-              || this.setSelectInputValue(option.value || option.label, this.state.inputId); } }>
+              || this.setSelectInputValue(option.value || option.label, this.state.inputId, option.subtitle); } }>
                   {option.label || option.value}
                   <p className={`dropdown-subtitle m-0`}>{option.subtitle}</p>
               </a>;

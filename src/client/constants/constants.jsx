@@ -180,8 +180,8 @@ const CONSTANTS = {
     TRADEMARK: {
       STATUS: {
         PENDING: "Pending Verification",
-        VERIFIED: "Verified",
-        SUSPENDED: "Suspended",
+        ACCEPTED: "ACCEPTED",
+        NEW: "New",
         REJECTED: "Rejected"
       },
       OPTIONS: {

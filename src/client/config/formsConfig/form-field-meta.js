@@ -1099,6 +1099,7 @@ const FORMFIELDCONFIG = {
         },
         "claimTypeIdentifier": {
           "disabled": true,
+          "dropdownOptions": [],
           "label": "Claim Type Identifier",
           "key": "claimTypeIdentifier",
           "layout": "5.2.6",
@@ -1107,12 +1108,12 @@ const FORMFIELDCONFIG = {
           "renderCondition": "{\"keyPath\": \"form.showCompleteForm\", \"keyLocator\": \"state\", \"hasValue\": true}",
           "required": true,
           "value": "",
-          "type": "text",
+          "type": "select",
           "pattern": null,
           "isValid": false,
           "subtitle": "",
           "error": "",
-          "onChange": "onChange"
+          "onChange": "setSelectInputValue"
         },
         "fieldsHeader_3": {
           "excludeColContainer": true,

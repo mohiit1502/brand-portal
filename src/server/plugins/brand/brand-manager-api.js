@@ -79,14 +79,15 @@ class BrandManagerApi {
 
       const response = await ServerHttp.get(url, options);
 
-      response.body.content.forEach(brand => {
-        brand.statusInfo = {};
-        brand.statusInfo.status = brand.brandStatus;
-        brand.trademarkDetailsList = [
-          {trademarkNumber: brand.trademarkNumber, trademarkDescription: "Disc: abc", dateAdded: brand.dateAdded, statusInfo: {status: brand.brandStatus}},
-          {trademarkNumber: brand.trademarkNumber, trademarkDescription: "Disc: xyz", dateAdded: brand.dateAdded, statusInfo: {status: "REJECTED"}}
-        ];
-      })
+      // response.body.content.forEach(brand => {
+      //   brand.brandId = "d7c08b31-50fd-4d55-8794-c6ca118658c7";
+      //   brand.statusInfo = {};
+      //   brand.statusInfo.status = brand.brandStatus;
+      //   brand.trademarkDetailsList = [
+      //     {trademarkNumber: brand.trademarkNumber, trademarkDescription: "Disc: abc", dateAdded: brand.dateAdded, statusInfo: {status: brand.brandStatus}},
+      //     {trademarkNumber: brand.trademarkNumber, trademarkDescription: "Disc: xyz", dateAdded: brand.dateAdded, statusInfo: {status: "APPROVED"}}
+      //   ];
+      // })
       mixpanelPayload.RESPONSE_STATUS = response.status;
       console.log("[Corr ID: %s][BrandManagerApi::getBrands] API request for get Brand has completed", corrId);
       return h.response(response.body).code(response.status);

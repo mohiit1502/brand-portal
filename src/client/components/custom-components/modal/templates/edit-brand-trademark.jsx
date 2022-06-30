@@ -120,6 +120,12 @@ class EditBrandTrademark extends React.Component {
     };
     mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.SUBMIT_BRAND_CLICKED, mixpanelClickEventPayload);
     evt.preventDefault();
+    let url,payload;
+    if(this.props.data.context === "editBrand") {
+      url = "/api/brands/"+this.props.data.brandId;
+    } else {
+      url = "/api/brands/trademark/"+this.props.data.caseId;
+    }
     const trademarkNumber = this.state.form.inputData.trademarkNumber.value;
     const usptoUrl = this.state.form.inputData.trademarkNumber.usptoUrl;
     const usptoVerification = this.state.form.inputData.trademarkNumber.usptoVerification;
@@ -128,8 +134,12 @@ class EditBrandTrademark extends React.Component {
     const isActive = this.state.form.inputData.activeStatus.active;
     const comments = this.state.form.inputData.comments.value;
     console.log(this.props.data);
-    const payload = {trademarkNumber, name, comments, usptoUrl, usptoVerification, trademarkClasses, isActive};
-    const url = "/api/brands/trademark";
+    if(this.props.data.context === "editBrand") {
+      payload = {comments};
+    } else {
+      payload = {comments, isActive};
+    }
+
     const mixpanelPayload = {
       API: url,
       BRAND_NAME: name,
@@ -137,12 +147,32 @@ class EditBrandTrademark extends React.Component {
       TRADEMARK_NUMBER: trademarkNumber,
       WORK_FLOW: this.state.form && this.state.form.isUpdateTemplate ? "VIEW_BRAND_LIST" : "ADD_NEW_BRAND"
     };
+
+    this.loader("form", true);
+    return Http.put(`${url}`, payload)
+      .then(res => {
+        this.resetTemplateStatus();
+        this.props.showNotification(NOTIFICATION_TYPE.SUCCESS, `Changes to ${res.body.brandName} saved successfully`);
+        this.props.toggleModal(TOGGLE_ACTIONS.HIDE);
+        this.props.saveBrandInitiated();
+        this.loader("form", false);
+        mixpanelPayload.API_SUCCESS = true;
+      })
+      .catch(err => {
+        this.loader("form", false);
+        mixpanelPayload.API_SUCCESS = false;
+        mixpanelPayload.ERROR = err.message ? err.message : err;
+      })
+      .finally(() => {
+        mixpanel.trackEvent(MIXPANEL_CONSTANTS.NEW_BRAND_TEMPLATE_EVENTS.BRAND_DETAILS_SUBMISSION, mixpanelPayload);
+      });
   }
 
 
   activeStatusToggle(e){
     // console.log(e.target.checked);
     this.state.form.inputData.activeStatus.active = e.target.checked;
+    this.checkToEnableSubmit();
   }
 
   resetTemplateStatus (e) {
