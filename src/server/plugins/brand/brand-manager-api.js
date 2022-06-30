@@ -166,8 +166,8 @@ class BrandManagerApi {
 
       console.log("[Corr ID: %s][BrandManagerApi::updateTrademark] Fetching CCM dependencies", corrId);
       const BASE_URL = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BASE_URL");
-      const BRANDS_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.BRANDS_PATH");
-      const url = `${BASE_URL}${BRANDS_PATH}/${request.params.brandId}`;
+      const TRADEMARK_PATH = await ServerUtils.ccmGet(request, "BRAND_CONFIG.TRADEMARK_PATH");
+      const url = `${BASE_URL}${TRADEMARK_PATH}/${request.params.brandId}`;
       mixpanelPayload.URL = url;
       mixpanelPayload.distinct_id = headers.ROPRO_USER_ID;
       mixpanelPayload.API_SUCCESS = true;
