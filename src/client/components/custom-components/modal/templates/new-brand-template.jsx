@@ -42,7 +42,7 @@ class NewBrandTemplate extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.data && !this.state.form.templateUpdateComplete) {
+    if (this.props.data && !this.state.form.templateUpdateComplete && this.props.data.context === "addTrademark") {
       this.prepopulateInputFields(this.props.data);
     }
     if (this.props.brands) {
@@ -211,7 +211,7 @@ class NewBrandTemplate extends React.Component {
     this.setState({form});
   }
 
-  consolidateRows
+  // consolidateRows
 
 
   setSelectInputValue (value, key, subtitle, brandId) {

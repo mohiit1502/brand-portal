@@ -217,7 +217,7 @@ export default class Validator {
         .finally(() => {
           inputData.brandName.disabled = false;
           inputData.brandName.loader = false;
-          this.setState(state, this.checkToEnableSubmit);
+          this.setState(state, this.checkToEnableAddItemButton && this.checkToEnableAddItemButton(this.state.form.inputData.trademarkDetailsList.itemList, this.checkToEnableSubmit));
           mixpanel.trackEvent(MIXPANEL_CONSTANTS.VALIDATION_EVENTS.BRAND_UNIQUENESS_CHECK, mixpanelPayload);
         });
     } else {

@@ -55,13 +55,7 @@ class CustomInput extends React.PureComponent {
       this.setState(state => {
         state = {...state};
         state.dropdownOptions && state.dropdownOptions.push({id: "custom-value", classes: "dropdown-control", icon: "Plus", displayValue: this.state.customLabel || "Add", value: "", onClick: () => {
-          this.setState(state => {
-            state = {...state};
-            state.type = "text";
-            state.onChange = state.parentRef.onChange;
-            state.value = "";
-            return state;
-          });
+          this.state.parentRef.updateBrandNameAttributes && this.state.parentRef.updateBrandNameAttributes("text");
         }});
         state.ddOptionsUpdated = true;
         return state;

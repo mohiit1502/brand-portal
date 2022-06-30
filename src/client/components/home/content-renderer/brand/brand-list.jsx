@@ -352,7 +352,7 @@ class BrandList extends React.Component {
   }
 
   addNewBrand () {
-    const meta = { templateName: "NewBrandTemplate", DISPLAY_DASHBOARD: true };
+    const meta = { templateName: "NewBrandTemplate", DISPLAY_DASHBOARD: true, data: {context: "registerBrand"} };
     const mixpanelPayload = { WORK_FLOW: "VIEW_BRAND_LIST" };
     this.mixpanelAddNewTemplateUtil(meta, mixpanelPayload);
     this.props.toggleModal(TOGGLE_ACTIONS.SHOW, {...meta});
